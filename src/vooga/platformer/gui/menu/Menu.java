@@ -1,4 +1,4 @@
-package vooga.platformer.utility;
+package src.vooga.platformer.gui.menu;
 
 import java.awt.Button;
 import java.awt.Color;
