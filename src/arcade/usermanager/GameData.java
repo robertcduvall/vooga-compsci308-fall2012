@@ -1,9 +1,15 @@
+package arcade.usermanager;
 
 public class GameData {
-public String gameName, gameInfo;
-public int highScore, timesPlayed;
+    private String myGameName;
+    private String myGameInfo;
+    private int myHighScore;
+    private int myTimesPlayed;
 
-public GameData(){
-    
-}
+    public GameData (String name, String gameInfo, int highScore, int timesPlayed) {
+        myGameName = name;
+        myGameInfo = gameInfo;
+        myHighScore = highScore;
+        myTimesPlayed = timesPlayed;
+    }
 }
