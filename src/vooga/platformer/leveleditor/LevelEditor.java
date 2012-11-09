@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import vooga.platformer.utility.*;
+
 
 public class LevelEditor extends JFrame{
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
