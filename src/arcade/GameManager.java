@@ -1,5 +1,7 @@
 package arcade;
 
+import java.util.List;
+
 /**
  * Class of the arcade used to start, end, and maintain
  * the relationship with all games in the arcade.
@@ -18,7 +20,7 @@ public class GameManager {
      * 
      * @param gameObject the game to be managed
      */
-    public GameManager (Game gameObject) {
+    public GameManager (IArcadeGame gameObject) {
         // TODO
     }
 
@@ -55,6 +57,7 @@ public class GameManager {
      */
     public List<Integer> getUserScores () {
         // TODO
+        return null;
     }
 
     /**
@@ -62,6 +65,7 @@ public class GameManager {
      */
     public String getUserPreferences () {
         // TODO
+        return null;
     }
 
     /**
@@ -70,14 +74,16 @@ public class GameManager {
      */
     public String getReviews () {
         // TODO
+        return null;
     }
 
     /**
      * Returns all reviews for the given game, displaying the current user’s
      * review first (if it exists).
      */
-    public int getAverageRatings () {
+    public Integer getAverageRatings () {
         // TODO
+        return null;
     }
 
     /**
@@ -86,6 +92,7 @@ public class GameManager {
      */
     public List<Integer> getRatings () {
         // TODO
+        return null;
     }
 
     /**
