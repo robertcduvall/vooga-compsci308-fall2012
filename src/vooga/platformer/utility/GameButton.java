@@ -141,7 +141,7 @@ public class GameButton extends JComponent {
 
     private void setImage (String fileName, String state) {
         try {
-            myImg = ImageIO.read(new File("src/src/vooga/platformer/utility/buttonimg/"
+            myImg = ImageIO.read(new File("src/vooga/platformer/buttonimg/"
                     + fileName + "." + state + ".png"));
         }
         catch (IOException e) {
