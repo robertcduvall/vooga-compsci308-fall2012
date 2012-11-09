@@ -1,4 +1,4 @@
-package src.vooga.platformer.utility;
+package vooga.platformer.utility;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

@@ -1,4 +1,4 @@
-package src.vooga.platformer.utility;
+package vooga.platformer.utility;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -142,7 +142,7 @@ public class GameButton extends JComponent {
 
     private void setImage (String fileName, String state) {
         try {
-            myImg = ImageIO.read(new File("src/src/vooga/shooter/buttonimg/"
+            myImg = ImageIO.read(new File("src/vooga/platformer/buttonimg/"
                     + fileName + "." + state + ".png"));
         }
         catch (IOException e) {
