@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,7 +27,7 @@ import org.w3c.dom.Text;
  * @author geo4
  * 
  */
-public class LevelFileWriter {
+public final class LevelFileWriter {
 
     /**
      * Integer constant that is returned by writeLevel if the file data cannot
@@ -39,12 +40,18 @@ public class LevelFileWriter {
      */
     public static final int SUCCESSFUL_WRITE = 1;
 
+    private LevelFileWriter () {
+        /*
+         * Empty constructor
+         */
+    }
+
     // Simple (temporary) test method
     public static void main (String[] args) {
         ArrayList<Sprite> sprites = new ArrayList<Sprite>();
         sprites.add(new Sprite());
         sprites.add(new Sprite());
-        writeLevel("src/vooga/platformer/data/test.xml", sprites, 3, 3, "something.jpg");
+        writeLevel("src/vooga/platformer/data/test.xml", "level 1", 3, 3, "something.jpg", sprites);
     }
 
     /**
@@ -52,16 +59,17 @@ public class LevelFileWriter {
      * so that it can be reconstructed by a level factory.
      * 
      * @param filePath where the XML should be saved
-     * @param levelObjects Sprites that populate the level
+     * @param levelID name of the level
      * @param width overall width of the level in pixels
      * @param height overall height of the level in pixels
      * @param backgroundImage path to the image that should be painted to the
      *        level's background
+     * @param levelObjects Sprites that populate the level
      * @return an integer constant representing whether the file was written
      *         successfully or not
      */
-    public static int writeLevel (String filePath, Collection<Sprite> levelObjects, int width,
-                                  int height, String backgroundImage) {
+    public static int writeLevel (String filePath, String levelID, int width, int height,
+                                  String backgroundImage, Collection<Sprite> levelObjects) {
         try {
             DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -71,6 +79,7 @@ public class LevelFileWriter {
             Element level = doc.createElement("level");
             doc.appendChild(level);
 
+            appendChildTextNode(doc, level, "id", levelID);
             appendChildTextNode(doc, level, "width", String.valueOf(width));
             appendChildTextNode(doc, level, "height", String.valueOf(height));
             appendChildTextNode(doc, level, "backgroundImage", backgroundImage);
@@ -113,9 +122,29 @@ public class LevelFileWriter {
             appendChildTextNode(doc, spriteElement, "height", String.valueOf(s.getHeight()));
             appendChildTextNode(doc, spriteElement, "imagePath", String.valueOf(s.getImagePath()));
 
+            if (s.getUpdateStrategies() != null) {
+                Element strategiesElement = doc.createElement("strategies");
+                for (Map<String, String> strategy : s.getUpdateStrategies()) {
+                    appendMapContents(doc, strategiesElement, "strategy", strategy);
+                }
+                spriteElement.appendChild(strategiesElement);
+            }
+
+            if (s.getAttributes() != null) {
+                appendMapContents(doc, spriteElement, "attr", s.getAttributes());
+            }
+
             level.appendChild(spriteElement);
-            // TODO add Sprite updateStrategies
         }
+    }
+
+    private static void appendMapContents (Document doc, Element parentElement,
+                                           String childElementName, Map<String, String> map) {
+        Element strategyElement = doc.createElement(childElementName);
+        for (String param : map.keySet()) {
+            appendChildTextNode(doc, strategyElement, param, map.get(param));
+        }
+        parentElement.appendChild(strategyElement);
     }
 
     private static String getXMLAsString (Document doc) throws TransformerException {

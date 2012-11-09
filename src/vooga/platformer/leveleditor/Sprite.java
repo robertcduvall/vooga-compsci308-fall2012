@@ -1,5 +1,12 @@
 package vooga.platformer.leveleditor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+
 public class Sprite {
 
     public String getTag () {
@@ -30,5 +37,15 @@ public class Sprite {
     public String getImagePath () {
         // TODO
         return "";
+    }
+
+    public Collection<Map<String, String>> getUpdateStrategies () {
+        // TODO
+        return null;
+    }
+
+    public Map<String, String> getAttributes () {
+        // TODO
+        return null;
     }
 }
