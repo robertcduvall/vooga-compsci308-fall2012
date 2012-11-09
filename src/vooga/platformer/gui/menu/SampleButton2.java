@@ -1,5 +1,4 @@
-package src.vooga.platformer.utility;
-import java.awt.BorderLayout;
+package vooga.platformer.gui.menu;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -10,10 +9,10 @@ import javax.swing.WindowConstants;
  * @author Yaqi Zhang
  *
  */
-public class SampleButton1 {
+public class SampleButton2 {
     public static void main (String[] args) {
         JFrame frame = new JFrame();
-        GameButton gb = new GameButton("ball","Press");
+        GameButton gb = new GameButton("button");
         gb.setSize(new Dimension(200, 200));
         frame.getContentPane().add(gb);
         frame.pack();
