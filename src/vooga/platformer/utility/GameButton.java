@@ -27,7 +27,7 @@ public class GameButton extends JComponent {
     private GameListener myGameListener;
 
     /**
-     * Create a game button that allows customizing the image of the button.
+     * Create a game button that allows to customize the image of the button.
      * 
      * @param fileName of the button image
      */
@@ -38,7 +38,7 @@ public class GameButton extends JComponent {
     }
 
     /**
-     * Create a game button that allows customizing the image of the button.
+     * Create a game button that allows to customize the image of the button.
      * 
      * @param fileName of the button image
      * @param command String appears on the button.
@@ -49,7 +49,7 @@ public class GameButton extends JComponent {
     }
 
     /**
-     * Create a game button that allows customizing the image of the button.
+     * Create a game button that allows to customize the image of the button.
      * 
      * @param fileName of the button image
      * @param command String appears on the button.
@@ -99,9 +99,8 @@ public class GameButton extends JComponent {
     }
 
     /**
-     * User define what will happen after this button being clicked in
+     * User define what will happen once this button being clicked in the
      * actionPerformed() of a GameListener.
-     * 
      * 
      */
     public void setGameListener () {
