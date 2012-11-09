@@ -1,3 +1,8 @@
+/**
+ * The main game frame that switch between menu, game and editor canvases.
+ * Also It is responsible to load general game settings from the resource file
+ * @author Rex, Volodymyr
+ */
 package gui;
 
 import java.awt.Dimension;
@@ -8,8 +13,6 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import editor.EditorCanvas;
-
 
 /**
  * contains a Canvas, and menu that respond to change in games
@@ -58,7 +61,7 @@ public class GameWindow extends JFrame {
         myCanvases.add(new MenuCanvas(this));
         myCanvases.add(new EditorCanvas(this));
         myCanvases.add(new GameCanvas(this));
-        myCurrentCanvas = myCanvases.get(0);
+        myCurrentCanvas = myCanvases.get(MENU);
         //default: start with MenuCanvas
         changeCurrentCanvas(MENU);
     }

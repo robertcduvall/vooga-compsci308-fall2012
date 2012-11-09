@@ -1,3 +1,8 @@
+/**
+ * The canvas that paints game objects every for every myDelayTime milliseconds
+ * Responds to input events 
+ * @author Rex, Vo
+ */
 package gui;
 
 import gamecore.GameManager;
@@ -7,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ResourceBundle;
-
 
 public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
