@@ -1,11 +1,15 @@
 package src.vooga.shooter.utility;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.text.JTextComponent;
 
 
 /**
@@ -16,15 +20,16 @@ import javax.swing.WindowConstants;
  * 
  */
 
-public class SampleMenu {
-    private static JPanel myPanel;
+public class SampleMenu extends JComponent {
+    private static JComponent myPanel;
     private static JFrame myFrame;
+
     public static void main (String[] args) {
         // ---Assume these exist for original game.---
         JFrame frame = new JFrame();
         myFrame = frame;
         // jp is the Component to paint game
-        JPanel jp = new JPanel();
+        JComponent jp = new SampleMenu();
         myPanel = jp;
         jp.setPreferredSize(new Dimension(1000, 800));
         frame.getContentPane().add(jp);
@@ -48,12 +53,18 @@ public class SampleMenu {
                     };
                     gb1.setGameListener(gl);
                     GameButton gb2 = new GameButton("button", "Do nothing");
-                    gb2.setSize(new Dimension(130,130));
+                    gb2.setSize(new Dimension(130, 130));
                     menu.addButtons(gb1);
                     menu.addButtons(gb2);
                     myFrame.pack();
                 }
             }
         });
+    }
+
+    @Override
+    protected void paintComponent (Graphics pen) {
+        pen.drawString("Assume this is game canvas. Press M to bring up the menu.",
+                (int) (getSize().width / 4), (int) (getSize().height / 2));
     }
 }

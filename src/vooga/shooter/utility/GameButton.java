@@ -132,6 +132,10 @@ public class GameButton extends JComponent {
         setGameListener();
     }
 
+    /**
+     * @param width
+     * @param height
+     */
     public void setButtonSize (int width, int height) {
         setPreferredSize(new Dimension(width, height));
     }
