@@ -21,6 +21,10 @@ public class GameManager implements Observer {
     private Sprite myPlayer;
     private final boolean isOver;
 
+    /**
+     * Constructor of GameManager
+     * @param gameCanvas The GameCanvas it paints to
+     */
     public GameManager (GameCanvas gameCanvas) {
         myGameCanvas = gameCanvas;
         isOver = false;

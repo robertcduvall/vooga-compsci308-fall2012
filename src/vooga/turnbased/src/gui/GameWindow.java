@@ -39,7 +39,10 @@ public class GameWindow extends JFrame {
     private List<Canvas> myCanvases = new ArrayList<Canvas>();
 
     /**
-     * Constructor
+     * Constructor construct a game window given the size of the window
+     * @param width Width of the window
+     * @param height Height of the window
+     * @param title The title of the game
      */
     public GameWindow (int width, int height, String title) {
         myWidth = width;
@@ -51,12 +54,18 @@ public class GameWindow extends JFrame {
         setResizable(true);
     }
 
+    /**
+     * refresh the screen to update new changes to its components
+     */
     public void refreshScreen () {
         Dimension mySize = getSize();
         setSize(new Dimension(mySize.width, mySize.height - 1));
         setSize(mySize);
     }
     
+    /**
+     * initialize the Canvases as prototypes
+     */
     public void initializeCanvas() {
         myCanvases.add(new MenuCanvas(this));
         myCanvases.add(new EditorCanvas(this));
@@ -66,6 +75,10 @@ public class GameWindow extends JFrame {
         changeCurrentCanvas(MENU);
     }
 
+    /**
+     * change the current Canvas to a specific canvas specified by canvasIndex
+     * @param canvasIndex MENU=0; EDITOR=1; GAME=2
+     */
     public void changeCurrentCanvas (int canvasIndex) {
         remove(myCurrentCanvas);
         myCurrentCanvas = myCanvases.get(canvasIndex);
@@ -74,20 +87,38 @@ public class GameWindow extends JFrame {
         refreshScreen();
     }
 
+    /**
+     * import images from ResourceBundle
+     * @param resources ResourceBundle object
+     * @param address image name under the image folder
+     * @return Image object
+     */
     public static Image importImage(ResourceBundle resources, String address) {
     	String ImageFolder = resources.getString("ImageFolder");
         ImageIcon myImageIcon = new ImageIcon(ImageFolder + resources.getString(address));
         return myImageIcon.getImage();   
     }
 
+    /**
+     * add the ResourceBundle to the canvas
+     * @param resource The name of the resource bundle
+     */
     public void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle("resources." + resource);
     }
 
+    /**
+     * get the ResourceBundle that is currently used by the Canvas
+     * @return ResourceBundle object used for the canvas
+     */
     public ResourceBundle getResources () {
         return myResources;
     }
 
+    /**
+     * set a ResourceBundle to be used by the canvas
+     * @param myResources the ResourceBundle to be used
+     */
     public void setResources (ResourceBundle myResources) {
         this.myResources = myResources;
     }

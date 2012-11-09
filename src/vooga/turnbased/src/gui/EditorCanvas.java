@@ -1,6 +1,5 @@
 package gui;
 
-
 public class EditorCanvas extends Canvas{
 
 	public EditorCanvas(GameWindow gameWindow) {
