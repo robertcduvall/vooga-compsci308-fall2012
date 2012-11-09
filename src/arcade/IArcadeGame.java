@@ -2,7 +2,6 @@ package arcade;
 
 import java.awt.Image;
 import java.util.List;
-import arcade.gamemanager.GameSaver;
 
 /**
  * Interface that each game must implement that will allow the arcade to 
