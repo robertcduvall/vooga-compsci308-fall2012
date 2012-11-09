@@ -4,6 +4,15 @@ import java.awt.Image;
 import java.util.Collection;
 
 
+/**
+ * Instances of this class are created using the path to an XML level data file.
+ * Once the instance is created, the getter methods can be used to get the
+ * contents of this data file as java types (ints and Sprites, rather than
+ * string values).
+ * 
+ * @author Grant Oakley
+ * 
+ */
 public class LevelFileReader {
 
     public LevelFileReader (String levelFilePath) {

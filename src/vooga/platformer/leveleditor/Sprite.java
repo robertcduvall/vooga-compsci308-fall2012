@@ -6,6 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * A data wrapper class for sprites the user drags, drops, and modifies while
+ * editing a level. Unlike a GameObject, these objects just store data about the
+ * objects, and cannot actually perform updateStrategies, but rather keeps a
+ * list of these strategies to be written into a data file. Similarly, the
+ * instances only store string path names to images, not java Image types
+ * themselves.
+ * 
+ * @author Grant Oakley
+ * 
+ */
 public class Sprite {
 
     private String myTag;
