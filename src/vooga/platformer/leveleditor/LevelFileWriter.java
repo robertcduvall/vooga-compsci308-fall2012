@@ -49,8 +49,10 @@ public final class LevelFileWriter {
     // Simple (temporary) test method
     public static void main (String[] args) {
         ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-        sprites.add(new Sprite());
-        sprites.add(new Sprite());
+        sprites.add(new Sprite("enemy", 0, 0, 0, 0, "somepath.jpg"));
+        sprites.add(new Sprite("enemy", 0, 0, 0, 0, "somepath.jpg"));
+        sprites.get(0).addAttribute("hp", String.valueOf(10));
+        sprites.get(0).addAttribute("jumpHeight", String.valueOf(5));
         writeLevel("src/vooga/platformer/data/test.xml", "level 1", 3, 3, "something.jpg", sprites);
     }
 
@@ -122,7 +124,7 @@ public final class LevelFileWriter {
             appendChildTextNode(doc, spriteElement, "height", String.valueOf(s.getHeight()));
             appendChildTextNode(doc, spriteElement, "imagePath", String.valueOf(s.getImagePath()));
 
-            if (s.getUpdateStrategies() != null) {
+            if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
                 Element strategiesElement = doc.createElement("strategies");
                 for (Map<String, String> strategy : s.getUpdateStrategies()) {
                     appendMapContents(doc, strategiesElement, "strategy", strategy);
@@ -130,7 +132,7 @@ public final class LevelFileWriter {
                 spriteElement.appendChild(strategiesElement);
             }
 
-            if (s.getAttributes() != null) {
+            if (s.getAttributes() != null && s.getAttributes().size() > 0) {
                 appendMapContents(doc, spriteElement, "attr", s.getAttributes());
             }
 
