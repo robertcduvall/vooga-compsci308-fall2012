@@ -1,4 +1,4 @@
-package src.vooga.shooter.utility;
+package src.vooga.platformer.utility;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;

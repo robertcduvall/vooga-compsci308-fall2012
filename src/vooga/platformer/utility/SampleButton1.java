@@ -1,4 +1,5 @@
-package src.vooga.shooter.utility;
+package src.vooga.platformer.utility;
+import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -7,11 +8,11 @@ import javax.swing.WindowConstants;
  * @author Yaqi Zhang
  *
  */
-public class SampleButton2 {
+public class SampleButton1 {
     public static void main (String[] args) {
         JFrame frame = new JFrame();
         GameButton gb = new GameButton();
-        gb.setImage("button");
+        gb.setImage("ball");
         frame.getContentPane().add(gb);
         frame.pack();
         frame.setVisible(true);
