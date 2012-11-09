@@ -1,17 +1,19 @@
 package src.vooga.platformer.utility;
+import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 
 /**
+ * This class shows how to create a new GameButton.
  * @author Yaqi Zhang
  *
  */
 public class SampleButton2 {
     public static void main (String[] args) {
         JFrame frame = new JFrame();
-        GameButton gb = new GameButton();
-        gb.setImage("button");
+        GameButton gb = new GameButton("button");
+        gb.setSize(new Dimension(200, 200));
         frame.getContentPane().add(gb);
         frame.pack();
         frame.setVisible(true);
