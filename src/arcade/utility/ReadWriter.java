@@ -1,6 +1,7 @@
 package arcade.utility;
 
 import java.io.File;
+import java.util.List;
 
 public class ReadWriter {
 
@@ -14,6 +15,7 @@ public class ReadWriter {
      */
     public List<String> search (File f, String query) {
         // TODO
+        return null;
     }
 
     /**
@@ -41,5 +43,6 @@ public class ReadWriter {
      */
     public String loadData (File f, String tag) {
         // TODO
+        return null;
     }
 }
