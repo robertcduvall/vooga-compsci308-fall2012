@@ -102,7 +102,6 @@ public class GameButton extends JComponent {
      * User define what will happen after this button being clicked in
      * actionPerformed() of a GameListener.
      * 
-     * 
      */
     public void setGameListener () {
         MouseListener ml = new MouseAdapter() {
