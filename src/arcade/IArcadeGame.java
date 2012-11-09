@@ -2,6 +2,7 @@ package arcade;
 
 import java.awt.Image;
 import java.util.List;
+import arcade.gamemanager.GameSaver;
 
 /**
  * Interface that each game must implement that will allow the arcade to 
@@ -17,7 +18,7 @@ public interface IArcadeGame {
      * @param userPreferences string that contains any saved game data
      * @param s pointer to the GameSaver object
      */
-    public void runGame(String userPreferences, GameManager m);
+    public void runGame(String userPreferences, GameSaver s);
     
     /**
      * Method called by the Arcade to get screenshots of the game.
