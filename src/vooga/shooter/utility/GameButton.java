@@ -1,4 +1,6 @@
 package src.vooga.shooter.utility;
+
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -17,35 +19,75 @@ import javax.swing.JComponent;
  */
 public class GameButton extends JComponent {
     private static final long serialVersionUID = 1L;
-    private static final int DEFAULT_BUTTON_SIZE = 200;
+    private static final int DEFAULT_BUTTON_WIDTH = 130;
+    private static final int DEFAULT_BUTTON_HEIGHT = 40;
     private Image myImg;
     private String myImgName;
-    private Dimension myImgSize = new Dimension(DEFAULT_BUTTON_SIZE,
-            DEFAULT_BUTTON_SIZE);
-    private MouseListener myMouseListener;
+    private String myCommand = "";
+    private GameListener myGameListener;
 
     /**
      * Create a game button that allows customizing the image of the button.
+     * 
+     * @param fileName of the button image
      */
-    public GameButton () {
-        setPreferredSize(myImgSize);
-        setMouseListener(null);
+    public GameButton (String fileName) {
+        setImage(fileName);
+        setSize(new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT));
+        setGameListener(null);
+    }
+
+    /**
+     * Create a game button that allows customizing the image of the button.
+     * 
+     * @param fileName of the button image
+     * @param command String appears on the button.
+     */
+    public GameButton (String fileName, String command) {
+        this(fileName);
+        setString(command);
+    }
+
+    /**
+     * Create a game button that allows customizing the image of the button.
+     * 
+     * @param fileName of the button image
+     * @param command String appears on the button.
+     * @param gl GameListener
+     */
+    public GameButton (String fileName, String command, GameListener gl) {
+        this(fileName);
+        setGameListener(gl);
+    }
+
+    /**
+     * Set String appears on the button.
+     * 
+     * @param command String appears on the button
+     */
+    public void setString (String command) {
+        myCommand = command;
     }
 
     @Override
     protected void paintComponent (Graphics pen) {
-        pen.drawImage(myImg, 0, 0, myImgSize.width, myImgSize.height, null);
+        Dimension myButtonSize = getSize();
+        pen.drawImage(myImg, 0, 0, myButtonSize.width, myButtonSize.height,
+                null);
+        pen.setColor(Color.BLACK);
+        pen.drawString(myCommand, (int) (getSize().width / 4), (int) (getSize()
+                .getHeight() / 2));
     }
 
     /**
-     * @param img 
+     * @param img image
      */
     public void setImage (Image img) {
         myImg = img;
     }
 
     /**
-     * @param fileName 
+     * @param fileName in String
      */
     public void setImage (String fileName) {
         myImgName = fileName;
@@ -60,18 +102,18 @@ public class GameButton extends JComponent {
      * User define what will happen after this button being clicked in
      * actionPerformed() of a GameListener.
      * 
-     * @param gl GameListener
+     * 
      */
-    public void setMouseListener (final GameListener gl) {
-        myMouseListener = new MouseAdapter() {
+    public void setGameListener () {
+        MouseListener ml = new MouseAdapter() {
             @Override
             public void mousePressed (MouseEvent arg0) {
                 changeImage("pressed");
                 try {
-                    gl.actionPerformed();
+                    myGameListener.actionPerformed();
                 }
                 catch (NullPointerException e) {
-                    
+
                 }
             }
 
@@ -79,27 +121,36 @@ public class GameButton extends JComponent {
                 changeImage("normal");
             }
         };
-        addMouseListener(myMouseListener);
+        addMouseListener(ml);
     }
 
     /**
-     * @param width 
-     * @param height 
+     * @param gl GameListener
      */
+    public void setGameListener (GameListener gl) {
+        myGameListener = gl;
+        setGameListener();
+    }
+
     public void setButtonSize (int width, int height) {
-        myImgSize.width = width;
-        myImgSize.height = height;
         setPreferredSize(new Dimension(width, height));
     }
 
     private void setImage (String fileName, String state) {
         try {
-            myImg = ImageIO.read(new File("src/buttonimg/" + fileName + "."
-                    + state + ".png"));
+            myImg = ImageIO.read(new File("src/src/vooga/shooter/buttonimg/"
+                    + fileName + "." + state + ".png"));
         }
         catch (IOException e) {
             e.printStackTrace();
         }
         repaint();
+    }
+
+    /**
+     * @param size of the menu
+     */
+    public void setSize (Dimension size) {
+        setPreferredSize(size);
     }
 }
