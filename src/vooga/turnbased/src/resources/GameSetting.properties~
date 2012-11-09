@@ -1,0 +1,6 @@
+Width=800
+Height=800
+ImageFolder=src/resources/image/
+StartButton=start-button.png
+Background=morte1.jpg
+
