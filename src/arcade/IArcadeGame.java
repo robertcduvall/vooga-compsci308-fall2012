@@ -17,7 +17,7 @@ public interface IArcadeGame {
      * @param userPreferences string that contains any saved game data
      * @param s pointer to the GameSaver object
      */
-    public void runGame(String userPreferences, GameManager m);
+    public void runGame(String userPreferences, GameSaver s);
     
     /**
      * Method called by the Arcade to get screenshots of the game.
