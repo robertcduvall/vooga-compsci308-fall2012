@@ -25,6 +25,7 @@ public class GameButton extends JComponent {
     private String myImgName;
     private String myCommand = "";
     private GameListener myGameListener;
+    private MouseListener myMouseListener;
 
     /**
      * Create a game button that allows to customize the image of the button.
@@ -104,7 +105,8 @@ public class GameButton extends JComponent {
      * 
      */
     public void setGameListener () {
-        MouseListener ml = new MouseAdapter() {
+        this.removeMouseListener(myMouseListener);
+        myMouseListener = new MouseAdapter() {
             @Override
             public void mousePressed (MouseEvent arg0) {
                 changeImage("pressed");
@@ -120,7 +122,7 @@ public class GameButton extends JComponent {
                 changeImage("normal");
             }
         };
-        addMouseListener(ml);
+        addMouseListener(myMouseListener);
     }
 
     /**
