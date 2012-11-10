@@ -1,6 +1,7 @@
 package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
+import java.awt.geom.RectangularShape;
 
 /**
  * 
@@ -10,6 +11,7 @@ import java.awt.Graphics;
 
 public abstract class GameObject {
     private boolean removeFlag;
+    private RectangularShape myShape;
     
     /**
      * Update the GameObject. This method is called once per update cycle.
@@ -37,5 +39,14 @@ public abstract class GameObject {
      */
     public boolean checkForRemoval() {
         return removeFlag;
+    }
+    
+    /**
+     * Gives the GameObject's bounds.
+     * 
+     * @return GameObject's bounds.
+     */
+    public RectangularShape getShape () {
+        return myShape;
     }
 }
