@@ -51,7 +51,7 @@ public class GameManager {
     }
 
     /**
-     * Loads a sorted list of the user’s scores for that particular game from
+     * Loads a sorted list of the user's scores for that particular game from
      * User.xml. The highest score is always the first item on the list, for
      * easy access
      */
@@ -61,7 +61,7 @@ public class GameManager {
     }
 
     /**
-     * Loads the user’s preferences for that particular game from User.xml.
+     * Loads the user's preferences for that particular game from User.xml.
      */
     public String getUserPreferences () {
         // TODO
@@ -69,7 +69,7 @@ public class GameManager {
     }
 
     /**
-     * Returns all reviews for the given game, displaying the current user’s
+     * Returns all reviews for the given game, displaying the current user's
      * review first (if it exists).
      */
     public String getReviews () {
@@ -78,7 +78,7 @@ public class GameManager {
     }
 
     /**
-     * Returns all reviews for the given game, displaying the current user’s
+     * Returns all reviews for the given game, displaying the current user's
      * review first (if it exists).
      */
     public Integer getAverageRatings () {
@@ -87,7 +87,7 @@ public class GameManager {
     }
 
     /**
-     * Returns all reviews for the given game, displaying the current user’s
+     * Returns all reviews for the given game, displaying the current user's
      * review first (if it exists).
      */
     public List<Integer> getRatings () {
@@ -117,7 +117,7 @@ public class GameManager {
     }
 
     /**
-     * Gets the user’s review for the game, lets the user modify it, and then
+     * Gets the user's review for the game, lets the user modify it, and then
      * replaces it in the review list for that game.
      * 
      * @param tag location of the previous review in the xml file
@@ -148,7 +148,7 @@ public class GameManager {
     }
 
     /**
-     * Gets the user’s rating for the game, lets the user modify it, and then
+     * Gets the user's rating for the game, lets the user modify it, and then
      * replaces it in the ratings list for that game.
      * 
      * @param tag location of the previous rating
