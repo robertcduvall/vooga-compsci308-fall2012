@@ -7,8 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * The <code>SizedCamera</code> abstract class is used to keeps track of a
- * rectangular
- * window of a specific size within a larger rectangular region.
+ * rectangular window of a specific size within a larger rectangular region.
  * 
  * @author Mark Govea
  */
@@ -17,10 +16,21 @@ public abstract class SizedCamera implements Camera {
     private Rectangle2D myOuterBounds;
     private Dimension2D mySize;
 
+    /**
+     * Creates a new <code>SizedCamera</code> by cloning the inputs and making
+     * the bounds of the camera a <code>java.awt.Rectangle</code> of the correct
+     * size.
+     * 
+     * @param cameraSize The size of the <code>SizedCamera</code>.
+     * @param outerBounds The larger region that limits the range of the
+     *        camera's bounds.
+     */
     public SizedCamera (Dimension2D cameraSize, Rectangle2D outerBounds) {
-        mySize = cameraSize;
-        myOuterBounds = outerBounds;
-        myBounds = new Rectangle(0, 0, (int) mySize.getWidth(), (int) mySize.getHeight());
+        mySize = (Dimension2D) cameraSize.clone();
+        myOuterBounds = (Rectangle2D) outerBounds.clone();
+        myBounds =
+                new Rectangle(0, 0, (int) mySize.getWidth(),
+                              (int) mySize.getHeight());
     }
 
     @Override
@@ -34,7 +44,7 @@ public abstract class SizedCamera implements Camera {
     /**
      * Sets the bounds of the camera. Used in construction.
      * 
-     * @param bounds Rectangle used to
+     * @param bounds Rectangle used to set bounds.
      */
     protected void setBounds (Rectangle2D bounds) {
         myBounds = bounds;
