@@ -1,4 +1,4 @@
-package arcade.gamemanager;
+package arcade;
 
 /**
  * Class that the games use to save preferences and score.

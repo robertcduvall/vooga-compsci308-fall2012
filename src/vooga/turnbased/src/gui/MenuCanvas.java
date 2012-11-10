@@ -1,3 +1,8 @@
+/**
+ * Prints game menu buttons before the game is loaded or the game quits
+ * Buttons will responds to user input and the screen will show game, editor or some new menus
+ * @author Rex, Volodymyr
+ */
 package gui;
 
 import java.awt.Graphics;
@@ -14,10 +19,17 @@ public class MenuCanvas extends Canvas {
     private ResourceBundle myResources;
     private GameWindow myFrame;
 
+    /**
+     * Constructor
+     * @param frame GameWindow on which its components will be displayed
+     */
     public MenuCanvas (GameWindow frame) {
         myFrame = frame;
     }
 
+    /**
+     * create buttons for user to choose
+     */
     private void createButtons() {
 		String ImageFolder = myResources.getString("ImageFolder");
 		ImageIcon myImageIcon = new ImageIcon(ImageFolder + myResources.getString("StartButtonImage"));
@@ -30,11 +42,10 @@ public class MenuCanvas extends Canvas {
 		add(startButton);
 	}
 
-    public void paint (Graphics g) {
-
-    }
-
     @Override
+    /**
+     * initialize the canvas when user switch to Menu
+     */
     public void initialize () {
         myResources = myFrame.getResources();
         createButtons();

@@ -1,6 +1,6 @@
 /**
  * Main entrance of the game
- * @author Rex, Vo
+ * @author Rex
  */
 import gui.GameWindow;
 
