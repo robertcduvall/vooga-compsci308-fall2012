@@ -6,7 +6,7 @@ import java.awt.geom.Rectangle2D;
 
 
 /**
- * The <code>SizedCamera</code> abstract class is used to keeps track of a
+ * The <code>SizedCamera</code> abstract class is used to keep track of a
  * rectangular window of a specific size within a larger rectangular region.
  * 
  * @author Mark Govea
