@@ -2,6 +2,8 @@ package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
 import java.awt.geom.RectangularShape;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -12,6 +14,35 @@ import java.awt.geom.RectangularShape;
 public abstract class GameObject {
     private boolean removeFlag;
     private RectangularShape myShape;
+    private List<UpdateStrategy> strategyList;
+    
+    public GameObject() {
+        strategyList = new ArrayList<UpdateStrategy>();
+    }
+    
+    /**
+     * Add a strategy to this GameObject's strategy list.
+     * @param strat
+     */
+    public void addStrategy(UpdateStrategy strat) {
+        strategyList.add(strat);
+    }
+    
+    /**
+     * Remove a strategy from the list.
+     * @param strat
+     */
+    public void removeStrategy(UpdateStrategy strat) {
+        strategyList.remove(strat);
+    }
+    
+    /**
+     * Used by concrete subclasses to work with the strategy list.
+     * @return the strategy list
+     */
+    protected Iterable<UpdateStrategy> getStrategyList() {
+        return strategyList;
+    }
     
     /**
      * Update the GameObject. This method is called once per update cycle.
