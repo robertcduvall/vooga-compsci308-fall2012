@@ -24,8 +24,6 @@ public class GameButton extends JComponent {
     private Image myImg;
     private String myImgName;
     private String myCommand = "";
-    private GameListener myGameListener;
-    private MouseListener myMouseListener;
 
     /**
      * Create a game button that allows to customize the image of the button.
@@ -35,7 +33,7 @@ public class GameButton extends JComponent {
     public GameButton (String fileName) {
         setImage(fileName);
         setSize(new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT));
-        setGameListener(null);
+        setAnimation();
     }
 
     /**
@@ -56,9 +54,9 @@ public class GameButton extends JComponent {
      * @param command String appears on the button.
      * @param gl GameListener
      */
-    public GameButton (String fileName, String command, GameListener gl) {
+    public GameButton (String fileName, String command, MouseListener ml) {
         this(fileName);
-        setGameListener(gl);
+        addMouseListener(ml);
     }
 
     /**
@@ -104,33 +102,19 @@ public class GameButton extends JComponent {
      * actionPerformed() of a GameListener.
      * 
      */
-    public void setGameListener () {
-        this.removeMouseListener(myMouseListener);
-        myMouseListener = new MouseAdapter() {
+    public void setAnimation () {
+        MouseListener ml = new MouseAdapter() {
             @Override
             public void mousePressed (MouseEvent arg0) {
                 changeImage("pressed");
-                try {
-                    myGameListener.actionPerformed();
-                }
-                catch (NullPointerException e) {
-
-                }
             }
+
             @Override
             public void mouseReleased (MouseEvent arg0) {
                 changeImage("normal");
             }
         };
-        addMouseListener(myMouseListener);
-    }
-
-    /**
-     * @param gl GameListener
-     */
-    public void setGameListener (GameListener gl) {
-        myGameListener = gl;
-        setGameListener();
+        addMouseListener(ml);
     }
 
     /**
@@ -143,9 +127,9 @@ public class GameButton extends JComponent {
 
     private void setImage (String fileName, String state) {
         try {
-            myImg = ImageIO.read(new File("src/vooga/platformer/gui/menu" +
-                        "/buttonimg/"
-                    + fileName + "." + state + ".png"));
+            myImg = ImageIO.read(new File(
+                    "src/vooga/platformer/gui/menu/buttonimg/" + fileName + "."
+                            + state + ".png"));
         }
         catch (IOException e) {
             e.printStackTrace();

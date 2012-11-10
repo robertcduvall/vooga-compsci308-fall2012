@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
@@ -50,8 +51,8 @@ public class Menu extends JComponent {
      * @param command name of this button
      * @param gl GameListener to listen to this button.
      */
-    public void addButtons (String fileName, String command, GameListener gl) {
-        GameButton gb = new GameButton(fileName, command, gl);
+    public void addButtons (String fileName, String command, MouseListener ml) {
+        GameButton gb = new GameButton(fileName, command, ml);
         myButtonMap.put(command, gb);
         add(gb, new GridBagConstraints());
     }

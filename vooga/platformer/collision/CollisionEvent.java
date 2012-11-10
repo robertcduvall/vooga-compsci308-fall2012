@@ -1,5 +1,8 @@
 package vooga.platformer.collision;
 
+import java.util.logging.Level;
+import vooga.platformer.gameobject.GameObject;
+
 /**
  * For collisions happen between any pair of game objects there would be a specific
  * collision event to deal with that. This CollisionEvent is a super class for all

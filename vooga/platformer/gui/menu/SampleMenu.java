@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -44,14 +47,14 @@ public class SampleMenu extends JComponent {
                 if (e.getKeyCode() == KeyEvent.VK_M) {
                     final Menu menu = new Menu(myPanel);
                     GameButton gb1 = new GameButton("greenbutton", "Back");
-                    GameListener gl = new GameListener() {
+                    MouseListener ml = new MouseAdapter() {
                         @Override
-                        public void actionPerformed () {
+                        public void mouseClicked (MouseEvent arg0) {
                             myPanel.remove(menu);
                             myFrame.repaint();
                         }
                     };
-                    gb1.setGameListener(gl);
+                    gb1.addMouseListener(ml);
                     GameButton gb2 = new GameButton("button", "Do nothing");
                     gb2.setSize(new Dimension(130, 130));
                     menu.addButtons(gb1);
