@@ -22,6 +22,7 @@ public interface Camera {
 
     /**
      * Returns the current bounds.
+     * 
      * @return The bounds of the <code>Camera</code>.
      */
     Rectangle2D getBounds ();
