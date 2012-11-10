@@ -8,11 +8,23 @@ import javax.swing.Timer;
  *
  */
 public class Canvas extends JApplet{
-    
+    private static final Dimension defaultSize = new Dimension(800,800);
+    private static final int ONE_SECOND = 1000;
+    private static final int FRAMES_PER_SECOND = 30;
     /**
      * Initializes the applet --- called by the browser.
      */
     public void init()
+    {
+        init(defaultSize);
+    }
+    
+    /**
+     * Initilizes the applet, but is called by the main method
+     * 
+     * @param size the window size
+     */
+    public void init(Dimension size)
     {
         
     }
