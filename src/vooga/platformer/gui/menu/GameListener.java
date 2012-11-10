@@ -1,4 +1,4 @@
-package src.vooga.platformer.gui.menu;
+package vooga.platformer.gui.menu;
 
 /**
  * Implement this interface to wrap the action invoked by pressing a button.

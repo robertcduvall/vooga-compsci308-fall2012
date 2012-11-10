@@ -1,3 +1,8 @@
+/**
+ * The canvas that paints game objects every for every myDelayTime milliseconds
+ * Responds to input events 
+ * @author Rex, Vo
+ */
 package gui;
 
 import gamecore.GameManager;
@@ -7,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ResourceBundle;
-
 
 public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
@@ -19,6 +23,10 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     // InfoPanel infoPanel;
 
+    /**
+     * Constructor of the canvas which displays the game
+     * @param gameWindow The GameWindow it belongs to
+     */
     public GameCanvas (GameWindow gameWindow) {
         myGameWindow = gameWindow;
         myGameThread = new Thread(this);
@@ -26,8 +34,10 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         myDelayTime = Integer.parseInt(myResources.getString("Delay"));
     }
 
+    /**
+     * initialize properties when user switch to game
+     */
     public void initialize () {
-        addMenu();
         addKeyListener(this);
         myGameManager = new GameManager(this);
         repaint();
@@ -36,16 +46,19 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         myGameThread.start();
     }
 
+    /**
+     * paint components of the Canvas
+     */
+    @Override
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
         Image background = GameWindow.importImage(myResources, "BackgroundImage");
         g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
     }
 
-    private void addMenu () {
-        // TODO Auto-generated method stub
-    }
-
+    /**
+     * main game loop
+     */
     @Override
     public void run () {
         while (!myGameManager.isOver()) {
@@ -60,16 +73,25 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * event handling when user types anything
+     */
     @Override
     public void keyTyped (KeyEvent e) {
         System.out.println("Typed " + e.getKeyCode());
     }
 
+    /**
+     * event handling when any key is pressed
+     */
     @Override
     public void keyPressed (KeyEvent e) {
         System.out.println("Pressed " + e.getKeyCode());
     }
 
+    /**
+     * event handling when any key is released
+     */
     @Override
     public void keyReleased (KeyEvent e) {
         System.out.println("Released " + e.getKeyCode());

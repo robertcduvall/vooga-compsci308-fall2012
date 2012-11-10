@@ -1,4 +1,4 @@
-package src.vooga.platformer.gui.menu;
+package vooga.platformer.gui.menu;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -35,7 +36,6 @@ public class GameButton extends JComponent {
     public GameButton (String fileName) {
         setImage(fileName);
         setSize(new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT));
-        setGameListener(null);
     }
 
     /**
@@ -114,12 +114,12 @@ public class GameButton extends JComponent {
                     myGameListener.actionPerformed();
                 }
                 catch (NullPointerException e) {
-
                 }
             }
 
+            @Override
             public void mouseReleased (MouseEvent arg0) {
-                changeImage("normal");
+                changeImage("normal");                
             }
         };
         addMouseListener(myMouseListener);
@@ -143,11 +143,12 @@ public class GameButton extends JComponent {
 
     private void setImage (String fileName, String state) {
         try {
-            myImg = ImageIO.read(new File("src/src/vooga/platformer/gui/menu" +
-            		"/buttonimg/"
+            myImg = ImageIO.read(new File("src/vooga/platformer/gui/menu/buttonimg/"
                     + fileName + "." + state + ".png"));
         }
         catch (IOException e) {
+            System.out.println("src/vooga/platformer/gui/menu/buttonimg/"
+                    + fileName + "." + state + ".png was not found");
             e.printStackTrace();
         }
         repaint();

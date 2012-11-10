@@ -24,7 +24,7 @@ import org.w3c.dom.Text;
  * A static class responsible for writing level data to an XML file that can
  * parsed by the level factory.
  * 
- * @author geo4
+ * @author Grant Oakley
  * 
  */
 public final class LevelFileWriter {

@@ -1,4 +1,4 @@
-package src.vooga.platformer.gui.menu;
+package vooga.platformer.gui.menu;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
