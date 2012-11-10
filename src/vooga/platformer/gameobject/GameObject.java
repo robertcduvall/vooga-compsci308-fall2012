@@ -3,7 +3,9 @@ package vooga.platformer.gameobject;
 import java.awt.Graphics;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -15,9 +17,58 @@ public abstract class GameObject {
     private boolean removeFlag;
     private RectangularShape myShape;
     private List<UpdateStrategy> strategyList;
+    private int x;
+    private int y;
     
     public GameObject() {
         strategyList = new ArrayList<UpdateStrategy>();
+    }
+    
+    /**
+     * 
+     * @param inX starting x position
+     * @param inY starting y position
+     */
+    public GameObject(int inX, int inY) {
+        this();
+        x = inX;
+        y = inY;
+    }
+    
+    /**
+     * @param configString containing key-value pairs for x and y
+     */
+    public GameObject(String configString) {
+        this();
+        Map<String,String> configMap = parseConfigString(configString);
+        x = Integer.parseInt(configMap.get("x"));
+        y = Integer.parseInt(configMap.get("y"));
+    }
+    
+    protected Map<String,String> parseConfigString(String configString) {
+        Map<String,String> configMap = new HashMap<String,String>();
+        String[] pairs = configString.split(" ");
+        for (String entry : pairs) {
+            String[] entrySplit = entry.split("=");
+            configMap.put(entrySplit[0],entrySplit[1]);
+        }
+        return configMap;
+    }
+    
+    protected int getX() {
+        return x;
+    }
+    
+    protected int getY() {
+        return y;
+    }
+    
+    protected void setX(int inX) {
+        x = inX;
+    }
+    
+    protected void setY(int inY) {
+        y = inY;
     }
     
     /**
