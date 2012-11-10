@@ -20,9 +20,7 @@ public abstract class SizedCamera implements Camera {
     public SizedCamera (Dimension2D cameraSize, Rectangle2D outerBounds) {
         mySize = cameraSize;
         myOuterBounds = outerBounds;
-        if (myBounds == null) {
-            myBounds = new Rectangle();
-        }
+        myBounds = new Rectangle(0, 0, (int) mySize.getWidth(), (int) mySize.getHeight());
     }
 
     @Override
@@ -34,7 +32,17 @@ public abstract class SizedCamera implements Camera {
     }
 
     /**
+     * Sets the bounds of the camera. Used in construction.
+     * 
+     * @param bounds Rectangle used to
+     */
+    protected void setBounds (Rectangle2D bounds) {
+        myBounds = bounds;
+    }
+
+    /**
      * Returns the outer bounding box which this camera will stay within.
+     * 
      * @return The <code>SizedCamera</code>'s outer bounds.
      */
     protected Rectangle2D outerBounds () {
@@ -43,6 +51,7 @@ public abstract class SizedCamera implements Camera {
 
     /**
      * Returns the size of the camera's window.
+     * 
      * @return The <code>SizedCamera</code>'s size.
      */
     protected Dimension2D size () {
