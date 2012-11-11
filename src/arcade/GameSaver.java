@@ -10,6 +10,13 @@ package arcade;
 public class GameSaver {
 
     private String myUser;
+    
+    /**
+     * Constructor for GameSaver.
+     */
+    public GameSaver() {
+        // TODO
+    }
 
     /**
      * Called by the game to store the user preferences, overwriting any
