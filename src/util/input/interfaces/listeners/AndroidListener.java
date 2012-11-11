@@ -17,8 +17,4 @@ public interface AndroidListener {
      */
     public void onScreenPress(AndroidButtonEvent b);
 
-    /**
-     * Method will be called if device detects motion
-     */
-    public void onMotion(AndroidMotionEvent m);
 }
