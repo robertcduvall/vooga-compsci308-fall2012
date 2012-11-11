@@ -2,6 +2,7 @@ package vooga.platformer.core;
 
 import java.awt.Graphics;
 import javax.swing.JPanel;
+import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.PlayState;
 
 public class Controller extends JPanel implements Runnable {
@@ -11,6 +12,11 @@ public class Controller extends JPanel implements Runnable {
     
     private LevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
+    
+    public Controller(LevelFactory lf, GameInitializer gi) {
+        myLevelFactory = lf;
+        myGameInitializer = gi;
+    }
     
     /**
      * The main update cycle method.

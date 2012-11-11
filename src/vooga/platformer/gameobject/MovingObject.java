@@ -1,6 +1,6 @@
 package vooga.platformer.gameobject;
 
-import vooga.platformer.core.Level;
+import vooga.platformer.level.Level;
 
 public abstract class MovingObject extends GameObject {
     private int vx;

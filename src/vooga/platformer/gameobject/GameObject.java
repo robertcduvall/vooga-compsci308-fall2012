@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import util.camera.Camera;
-import vooga.platformer.core.Level;
+import vooga.platformer.level.Level;
 
 /**
  * 

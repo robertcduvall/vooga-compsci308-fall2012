@@ -1,8 +1,8 @@
 package vooga.platformer.collision;
 
 import java.awt.geom.Rectangle2D;
-import vooga.platformer.core.Level;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.CollisionDirection;
 
 
