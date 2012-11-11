@@ -1,11 +1,15 @@
 package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.camera.Camera;
+import vooga.platformer.core.Level;
 
 /**
  * 
@@ -15,10 +19,11 @@ import java.util.Map;
 
 public abstract class GameObject {
     private boolean removeFlag;
-    private RectangularShape myShape;
     private List<UpdateStrategy> strategyList;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
+    private double width;
+    private double height;
     
     public GameObject() {
         strategyList = new ArrayList<UpdateStrategy>();
@@ -29,10 +34,12 @@ public abstract class GameObject {
      * @param inX starting x position
      * @param inY starting y position
      */
-    public GameObject(int inX, int inY) {
+    public GameObject(double inX, double inY, double inWidth, double inHeight) {
         this();
         x = inX;
         y = inY;
+        width = inWidth;
+        height = inHeight;
     }
     
     /**
@@ -41,8 +48,10 @@ public abstract class GameObject {
     public GameObject(String configString) {
         this();
         Map<String,String> configMap = parseConfigString(configString);
-        x = Integer.parseInt(configMap.get("x"));
-        y = Integer.parseInt(configMap.get("y"));
+        x = Double.parseDouble(configMap.get("x"));
+        y = Double.parseDouble(configMap.get("y"));
+        width = Double.parseDouble(configMap.get("width"));
+        height = Double.parseDouble(configMap.get("height"));
     }
     
     protected Map<String,String> parseConfigString(String configString) {
@@ -55,19 +64,19 @@ public abstract class GameObject {
         return configMap;
     }
     
-    protected int getX() {
+    protected double getX() {
         return x;
     }
     
-    protected int getY() {
+    protected double getY() {
         return y;
     }
     
-    protected void setX(int inX) {
+    protected void setX(double inX) {
         x = inX;
     }
     
-    protected void setY(int inY) {
+    protected void setY(double inY) {
         y = inY;
     }
     
@@ -99,13 +108,17 @@ public abstract class GameObject {
      * Update the GameObject. This method is called once per update cycle.
      * @param elapsedTime time duration of the update cycle
      */
-    public abstract void update(long elapsedTime);
+    public void update(Level level, long elapsedTime) {
+        for (UpdateStrategy us : strategyList) {
+            us.applyAction();
+        }
+    }
     
     /**
      * Paints the GameObject to the given Graphics object.
      * @param pen Graphics object to paint on
      */
-    public abstract void paint(Graphics pen);
+    public abstract void paint(Graphics pen, Camera cam);
     
     /**
      * Mark the GameObject for removal by the Level. The level should delete
@@ -128,7 +141,7 @@ public abstract class GameObject {
      * 
      * @return GameObject's bounds.
      */
-    public RectangularShape getShape () {
-        return myShape;
+    public Rectangle2D getShape() {
+        return new Rectangle2D.Double(x,y,width,height);
     }
 }
