@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,7 +47,7 @@ public class SampleMenu extends JComponent {
                     GameButton gb1 = new GameButton("greenbutton", "Back");
                     GameListener gl = new GameListener() {
                         @Override
-                        public void actionPerformed () {
+                        public void actionPerformed (MouseEvent arg0) {
                             myPanel.remove(menu);
                             myFrame.repaint();
                         }
