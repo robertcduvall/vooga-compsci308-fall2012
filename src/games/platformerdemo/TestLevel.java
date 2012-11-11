@@ -13,6 +13,8 @@ public class TestLevel extends Level {
     
     public TestLevel (Dimension dim) {
         super(dim);
+        numEnemies = 0;
+        myPlayer = null;
     }
 
     @Override
