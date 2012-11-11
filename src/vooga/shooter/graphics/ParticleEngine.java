@@ -1,3 +1,5 @@
+package vooga.shooter.graphics;
+
 /**
  * This class enables the game creators to create, draw, and update a particle
  * engine that maintains many different sprites and randomly animates them so

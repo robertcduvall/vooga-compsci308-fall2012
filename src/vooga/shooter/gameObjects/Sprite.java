@@ -1,3 +1,5 @@
+package vooga.shooter.gameObjects;
+
 /**
  * This class encompasses the basic layout for any sprites that appear in the
  * game. Any specific type of sprite (e.g. player, enemy, boss, etc.) will

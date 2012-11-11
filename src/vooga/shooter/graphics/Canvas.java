@@ -1,3 +1,5 @@
+package vooga.shooter.graphics;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
