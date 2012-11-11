@@ -2,11 +2,24 @@ package vooga.platformer.core;
 
 import java.awt.Graphics;
 import javax.swing.JPanel;
+import vooga.platformer.level.Level;
+import vooga.platformer.level.LevelFactory;
+import vooga.platformer.util.enums.PlayState;
 
 public class Controller extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
     
     private Level myCurrentLevel;
+    
+    private LevelFactory myLevelFactory;
+    private GameInitializer myGameInitializer;
+    
+    public Controller(LevelFactory lf, GameInitializer gi) {
+        myLevelFactory = lf;
+        myGameInitializer = gi;
+        
+        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer.getFirstLevelName());
+    }
     
     /**
      * The main update cycle method.
@@ -14,6 +27,12 @@ public class Controller extends JPanel implements Runnable {
      */
     public void update(long elapsedTime) {
         myCurrentLevel.update(elapsedTime);
+        PlayState currentState = myCurrentLevel.getLevelStatus();
+        
+        if (currentState == PlayState.NEXT_LEVEL) {
+            String nextLevelName = myCurrentLevel.getNextLevelName();
+            myCurrentLevel = myLevelFactory.loadLevel(nextLevelName);
+        }
     }
     
     public void paint(Graphics pen) {

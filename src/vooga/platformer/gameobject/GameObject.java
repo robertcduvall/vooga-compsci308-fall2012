@@ -1,6 +1,7 @@
 package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import util.camera.Camera;
-import vooga.platformer.core.Level;
+import vooga.platformer.level.Level;
 
 /**
  * 
@@ -25,7 +26,7 @@ public abstract class GameObject {
     private double width;
     private double height;
     
-    public GameObject() {
+    private GameObject() {
         strategyList = new ArrayList<UpdateStrategy>();
     }
     
@@ -64,19 +65,19 @@ public abstract class GameObject {
         return configMap;
     }
     
-    protected double getX() {
+    public double getX() {
         return x;
     }
     
-    protected double getY() {
+    public double getY() {
         return y;
     }
     
-    protected void setX(double inX) {
+    public void setX(double inX) {
         x = inX;
     }
     
-    protected void setY(double inY) {
+    public void setY(double inY) {
         y = inY;
     }
     
@@ -118,7 +119,22 @@ public abstract class GameObject {
      * Paints the GameObject to the given Graphics object.
      * @param pen Graphics object to paint on
      */
-    public abstract void paint(Graphics pen, Camera cam);
+    public void paint(Graphics pen, Camera cam) {
+        double x = this.getX();
+        double y = this.getY();
+        Rectangle2D rect = cam.getBounds();
+        double xOffset = rect.getX();
+        double yOffset = rect.getY();
+        if (this.getShape().intersects(rect)) {
+            pen.drawImage(getCurrentImage(), (int)(x-xOffset), (int)(y-yOffset), null);
+        }  
+    }
+    
+    
+    /**
+     * @return the current Image of this GameObject
+     */
+    public abstract Image getCurrentImage();
     
     /**
      * Mark the GameObject for removal by the Level. The level should delete
