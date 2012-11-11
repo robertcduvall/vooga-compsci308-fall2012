@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -23,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -36,43 +37,80 @@ import vooga.platformer.gui.menu.*;
 
 public class LevelEditor extends JFrame{
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
-    private Map<String,List<String>> mySprites;
+    private static final String IMAGE_PATH = "src/vooga/platformer/data/";
+    private static final int FRAMES_PER_SECOND = 25;
+    private static final int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
+    private Map<String,List<String>> mySpriteTypes;
     private JFrame myContainer;
     private JPanel myViewPane;
     private BufferedImage backbuffer;
     private Graphics2D g2d;
     private boolean isRunning;
     private MouseListener myMouseListener;
+    private List<Sprite> mySprites;
+    private boolean follow;
+    private Sprite currentSprite;
+    private KeyListener myKeyListener;
+    private long startTime;
+    private long nextTick;
     public static void main (String[] args) {
         new LevelEditor();
     }
     public LevelEditor () {
         super("LevelEditor");
+        startTime = System.currentTimeMillis();
+        nextTick = startTime;
         isRunning = true;
+        follow = false;
         frameBuild();
         fillMap();
+        createListeners();
         createEditPane();
         createButtonPanel();
         pack();
         setVisible(true);
         editLoop();
     }
+    private void createListeners () {
+        myMouseListener = new MouseAdapter() {
+            
+        };
+        myKeyListener = new KeyAdapter() {
+
+        };
+        
+    }
     private void editLoop () {
         while(isRunning){
             update();
             repaint();
+            nextTick += SKIP_TICKS;
+            long sleepTime = nextTick - startTime;
+            try {
+                Thread.sleep(sleepTime);
+            }
+            catch (InterruptedException e) {
+                System.out.println("bummer dude");
+            }
         }
     }
     private void update() {
-        Image myImg;
-        try {
-            myImg = ImageIO.read(new File("src/vooga/platformer/data/mario.background.jpg"));
-            g2d.drawImage(myImg, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
+        g2d.drawImage(getImage(IMAGE_PATH + "mario.background.jpg"), 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
+        for(Sprite sprite : mySprites) {
+            g2d.drawImage(getImage(sprite.getImagePath()), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), null);
+        }
+    }
+    private Image getImage (String filename) {
+        Image ret = null;
+        try{
+            ret = ImageIO.read(new File(filename));
         }
         catch (IOException e) {
             System.out.println("file was not found");
             e.printStackTrace();
         }
+        return ret;
+        
     }
     private void frameBuild () {
         myContainer = this;
@@ -122,9 +160,9 @@ public class LevelEditor extends JFrame{
     private void createButtonPanel () {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
-        subpanel.setLayout(new GridLayout(mySprites.size(), 1));
+        subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
         subpanel.setPreferredSize(new Dimension(50, 150));
-        for(String  sprite : mySprites.keySet()) {
+        for(String  sprite : mySpriteTypes.keySet()) {
             subpanel.add(createButton(sprite));
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -132,13 +170,17 @@ public class LevelEditor extends JFrame{
         panel.setOpaque(false);
         myViewPane.add(panel, BorderLayout.WEST);
     }
-    protected void createPopupMenu (Component comp, int x, int y) {
+    protected void createPopupMenu (final Component comp, final int x, final int y) {
         JPopupMenu pop = new JPopupMenu();
-        for(String subsprite : mySprites.get(comp.getName())){
+        for(String subsprite : mySpriteTypes.get(comp.getName())){
             JMenuItem j = new JMenuItem(subsprite);
             j.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
-                    System.out.println(event.getActionCommand());
+                    Sprite s = new Sprite(event.getActionCommand(), x, y, 20, 20, 
+                            IMAGE_PATH + event.getActionCommand() + ".png");
+                    mySprites.add(s);
+                    follow = true;
+                    currentSprite = s;
                 }
             });
             pop.add(j);
@@ -146,15 +188,16 @@ public class LevelEditor extends JFrame{
         pop.show(comp, x, y);
     }
     private void fillMap() {
-        mySprites = new HashMap<String, List<String>>();
+        mySpriteTypes = new HashMap<String, List<String>>();
         List<String> list = new ArrayList<String>();
-        list.add("Yoshi"); list.add("Pink Yoshi"); list.add("Yoshi Egg"); list.add("Flying Yoshi");
-        mySprites.put("Yoshi", list); list = new ArrayList<String>();
-        list.add("Mario"); list.add("Fireflower Mario"); list.add("Mario on Yoshi"); list.add("Baby Mario");
-        mySprites.put("Mario", list); list = new ArrayList<String>();
-        list.add("Squished Goomba"); list.add("Giant Goomba"); list.add("Tiny Goomba");
-        mySprites.put("Goomba", list); list = new ArrayList<String>();
+        list.add("Yoshi"); list.add("Pink Yoshi"); //list.add("Yoshi Egg"); list.add("Flying Yoshi");
+        mySpriteTypes.put("Yoshi", list); list = new ArrayList<String>();
+        list.add("Mario"); //list.add("Fireflower Mario"); list.add("Mario on Yoshi"); list.add("Baby Mario");
+        mySpriteTypes.put("Mario", list); list = new ArrayList<String>();
+//        list.add("Squished Goomba"); list.add("Giant Goomba"); list.add("Tiny Goomba");
+//        mySpriteTypes.put("Goomba", list); list = new ArrayList<String>();
         list.add("Bowser"); list.add("Baby Bowser");
-        mySprites.put("Bowser", list); 
+        mySpriteTypes.put("Bowser", list); 
+        mySprites = new ArrayList<Sprite>();
     }
 }
