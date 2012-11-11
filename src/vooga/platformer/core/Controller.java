@@ -31,7 +31,7 @@ public class Controller extends JPanel implements Runnable {
         
         if (currentState == PlayState.NEXT_LEVEL) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
-            Level nextLevel = myLevelFactory.loadLevel(nextLevelName);
+            myCurrentLevel = myLevelFactory.loadLevel(nextLevelName);
         }
     }
     

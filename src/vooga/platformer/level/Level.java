@@ -3,19 +3,21 @@ package vooga.platformer.level;
 import util.camera.Camera;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 
- * @author Niel
+ * @author Niel Lebeck
  *
  */
 
 public abstract class Level {
     private List<GameObject> objectList;
     private Camera cam;
+    private Dimension myDimension;
     
     /**
      * Paint the level, including all its GameObjects.
@@ -28,9 +30,24 @@ public abstract class Level {
         }
     }
     
-    public Level() {
+    public Level(Dimension dim) {
         objectList = new ArrayList<GameObject>();
-        initializeCamera();
+    }
+
+    /**
+     * Set the dimensions of the level.
+     * @param d
+     */
+    public void setDimension(Dimension d) {
+        myDimension = d;
+    }
+    
+    /**
+     * Return the dimensions of this level.
+     * @return
+     */
+    public Dimension getDimension() {
+        return myDimension;
     }
     
     /**
