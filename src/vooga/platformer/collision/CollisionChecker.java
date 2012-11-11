@@ -1,12 +1,14 @@
 package vooga.platformer.collision;
 
+import vooga.platformer.level.Level;
+
 /**
- * This class is used to scan the screen and return a list of CollisionEvents
+ * CollisionChecker is used to scan the screen and return a list of CollisionEvents
  * for each collision detected on the screen
  * @author Bruce
  *
  */
-public class CollisionChecker {
+public interface CollisionChecker {
     
-    static Iterable<CollisionEvent> checkCollisions(Level level);
+    Iterable<CollisionEvent> checkCollisions(Level level);
 }
