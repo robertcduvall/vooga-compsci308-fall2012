@@ -34,6 +34,7 @@ public class GameButton extends JComponent {
      * @param fileName of the button image
      */
     public GameButton (String fileName) {
+        setName(fileName);
         setImage(fileName);
         setSize(new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT));
     }
@@ -47,6 +48,7 @@ public class GameButton extends JComponent {
     public GameButton (String fileName, String command) {
         this(fileName);
         setString(command);
+        setGameListener(null);
     }
 
     /**
@@ -111,7 +113,7 @@ public class GameButton extends JComponent {
             public void mousePressed (MouseEvent arg0) {
                 changeImage("pressed");
                 try {
-                    myGameListener.actionPerformed();
+                    myGameListener.actionPerformed(arg0);
                 }
                 catch (NullPointerException e) {
                 }
