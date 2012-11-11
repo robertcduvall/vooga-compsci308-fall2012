@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -38,8 +39,6 @@ import vooga.platformer.gui.menu.*;
 public class LevelEditor extends JFrame{
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
-    private static final int FRAMES_PER_SECOND = 25;
-    private static final int SKIP_TICKS = 1000 / FRAMES_PER_SECOND;
     private Map<String,List<String>> mySpriteTypes;
     private JFrame myContainer;
     private JPanel myViewPane;
@@ -51,15 +50,11 @@ public class LevelEditor extends JFrame{
     private boolean follow;
     private Sprite currentSprite;
     private KeyListener myKeyListener;
-    private long startTime;
-    private long nextTick;
     public static void main (String[] args) {
         new LevelEditor();
     }
     public LevelEditor () {
         super("LevelEditor");
-        startTime = System.currentTimeMillis();
-        nextTick = startTime;
         isRunning = true;
         follow = false;
         frameBuild();
@@ -73,31 +68,34 @@ public class LevelEditor extends JFrame{
     }
     private void createListeners () {
         myMouseListener = new MouseAdapter() {
-            
+            @Override 
+            public void mousePressed(MouseEvent e) {
+                if(follow) {
+                    follow = false;
+                }
+            }
+
         };
         myKeyListener = new KeyAdapter() {
 
         };
-        
+
     }
     private void editLoop () {
         while(isRunning){
+            System.out.println("update");
             update();
             repaint();
-            nextTick += SKIP_TICKS;
-            long sleepTime = nextTick - startTime;
-            try {
-                Thread.sleep(sleepTime);
-            }
-            catch (InterruptedException e) {
-                System.out.println("bummer dude");
-            }
         }
     }
     private void update() {
         g2d.drawImage(getImage(IMAGE_PATH + "mario.background.jpg"), 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
         for(Sprite sprite : mySprites) {
             g2d.drawImage(getImage(sprite.getImagePath()), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), null);
+        }
+        if(follow) {
+            currentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
+            currentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
         }
     }
     private Image getImage (String filename) {
@@ -110,7 +108,7 @@ public class LevelEditor extends JFrame{
             e.printStackTrace();
         }
         return ret;
-        
+
     }
     private void frameBuild () {
         myContainer = this;
@@ -194,8 +192,8 @@ public class LevelEditor extends JFrame{
         mySpriteTypes.put("Yoshi", list); list = new ArrayList<String>();
         list.add("Mario"); //list.add("Fireflower Mario"); list.add("Mario on Yoshi"); list.add("Baby Mario");
         mySpriteTypes.put("Mario", list); list = new ArrayList<String>();
-//        list.add("Squished Goomba"); list.add("Giant Goomba"); list.add("Tiny Goomba");
-//        mySpriteTypes.put("Goomba", list); list = new ArrayList<String>();
+        //        list.add("Squished Goomba"); list.add("Giant Goomba"); list.add("Tiny Goomba");
+        //        mySpriteTypes.put("Goomba", list); list = new ArrayList<String>();
         list.add("Bowser"); list.add("Baby Bowser");
         mySpriteTypes.put("Bowser", list); 
         mySprites = new ArrayList<Sprite>();
