@@ -1,12 +1,14 @@
 package vooga.platformer.gameobject;
 
+import vooga.platformer.core.Level;
+
 public abstract class MovingObject extends GameObject {
     private int vx;
     private int vy;
     
     @Override
-    public void update(long elapsedTime) {
-        super.update(elapsedTime);
+    public void update(Level level, long elapsedTime) {
+        super.update(level, elapsedTime);
         setX((int)(vx * (elapsedTime/1000)) + getX());
         setY((int)(vy * (elapsedTime/1000)) + getY());
     }

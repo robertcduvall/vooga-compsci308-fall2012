@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.camera.Camera;
+import vooga.platformer.core.Level;
 
 /**
  * 
@@ -98,7 +100,7 @@ public abstract class GameObject {
      * Update the GameObject. This method is called once per update cycle.
      * @param elapsedTime time duration of the update cycle
      */
-    public void update(long elapsedTime) {
+    public void update(Level level, long elapsedTime) {
         for (UpdateStrategy us : strategyList) {
             us.applyAction();
         }
@@ -108,7 +110,7 @@ public abstract class GameObject {
      * Paints the GameObject to the given Graphics object.
      * @param pen Graphics object to paint on
      */
-    public abstract void paint(Graphics pen);
+    public abstract void paint(Graphics pen, Camera cam);
     
     /**
      * Mark the GameObject for removal by the Level. The level should delete
