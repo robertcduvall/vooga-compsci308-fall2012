@@ -1,5 +1,5 @@
 package vooga.platformer.core;
 
-public class Level {
+public abstract class Level {
 
 }
