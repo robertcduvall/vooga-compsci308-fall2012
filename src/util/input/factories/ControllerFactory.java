@@ -3,6 +3,7 @@ package util.input.factories;
 import java.awt.Component;
 import wiiusej.Wiimote;
 import util.input.core.Controller;
+import util.input.core.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,12 +19,12 @@ public class ControllerFactory {
 
     public static Controller createKeyBoardController(Component c) {
         //Create keyboard controller
-        return null;
+        return new KeyboardController(c);
     }
     
     public static Controller createMouseController(Component c) {
         //Create mouse controller
-        return null;
+        return new MouseController(c);
     }
     
     public static Controller createWiiController(Wiimote wiiControl) {
