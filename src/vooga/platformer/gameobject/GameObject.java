@@ -15,7 +15,6 @@ import java.util.Map;
 
 public abstract class GameObject {
     private boolean removeFlag;
-    private RectangularShape myShape;
     private List<UpdateStrategy> strategyList;
     private int x;
     private int y;
@@ -128,7 +127,5 @@ public abstract class GameObject {
      * 
      * @return GameObject's bounds.
      */
-    public RectangularShape getShape () {
-        return myShape;
-    }
+    public abstract RectangularShape getShape();
 }
