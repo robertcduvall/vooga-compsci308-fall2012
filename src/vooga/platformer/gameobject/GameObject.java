@@ -25,7 +25,7 @@ public abstract class GameObject {
     private double width;
     private double height;
     
-    public GameObject() {
+    private GameObject() {
         strategyList = new ArrayList<UpdateStrategy>();
     }
     

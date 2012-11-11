@@ -3,6 +3,7 @@ package vooga.platformer.core;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 import vooga.platformer.level.Level;
+import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 public class Controller extends JPanel implements Runnable {
@@ -17,7 +18,7 @@ public class Controller extends JPanel implements Runnable {
         myLevelFactory = lf;
         myGameInitializer = gi;
         
-        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer.getFirstLevel());
+        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer.getFirstLevelName());
     }
     
     /**

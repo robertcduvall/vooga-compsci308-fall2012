@@ -30,6 +30,7 @@ public abstract class Level {
     
     public Level() {
         objectList = new ArrayList<GameObject>();
+        initializeCamera();
     }
     
     /**
@@ -77,6 +78,11 @@ public abstract class Level {
     public void setCamera(Camera c) {
         cam = c;
     }
+    
+    /**
+     * Set up the camera properly, most likely by calling setCamera.
+     */
+    public abstract void initializeCamera();
     
     /**
      * @return a PlayState representing the progress of the player
