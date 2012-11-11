@@ -16,6 +16,8 @@ public class Controller extends JPanel implements Runnable {
     public Controller(LevelFactory lf, GameInitializer gi) {
         myLevelFactory = lf;
         myGameInitializer = gi;
+        
+        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer.getFirstLevel());
     }
     
     /**
