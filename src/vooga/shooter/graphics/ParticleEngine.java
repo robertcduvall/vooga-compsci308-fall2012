@@ -52,7 +52,6 @@ public class ParticleEngine {
         duration = length;
         
         for(int i=0;i<spriteCount;i++) {
-            particles.add(new Sprite())
         }
     }
 
