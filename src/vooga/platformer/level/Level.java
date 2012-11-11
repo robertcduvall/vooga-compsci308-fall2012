@@ -18,6 +18,7 @@ public abstract class Level {
     private List<GameObject> objectList;
     private Camera cam;
     private Dimension myDimension;
+    private String myNextLevelName;
     
     /**
      * Paint the level, including all its GameObjects.
@@ -97,18 +98,19 @@ public abstract class Level {
     }
     
     /**
-     * Set up the camera properly, most likely by calling setCamera.
-     */
-    public abstract void initializeCamera();
-    
-    /**
      * @return a PlayState representing the progress of the player
      * through the level.
      */
     public abstract PlayState getLevelStatus();
     
+    public void setNextLevelName(String lvlName) {
+        myNextLevelName = lvlName;
+    }
+    
     /**
      * @return a string representing the name of the next level to load
      */
-    public abstract String getNextLevelName();
+    public String getNextLevelName() {
+        return myNextLevelName;
+    }
 }

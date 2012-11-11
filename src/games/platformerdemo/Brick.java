@@ -2,6 +2,7 @@ package games.platformerdemo;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -20,9 +21,9 @@ public class Brick extends GameObject{
             e.printStackTrace();
         }
     }
+    
     @Override
-    public void paint (Graphics pen, Camera cam) {
-        // TODO Auto-generated method stub
-        
+    public Image getCurrentImage() {
+        return myImg;
     }
 }
