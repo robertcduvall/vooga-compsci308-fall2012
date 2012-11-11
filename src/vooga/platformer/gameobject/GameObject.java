@@ -64,11 +64,11 @@ public abstract class GameObject {
         return configMap;
     }
     
-    protected double getX() {
+    public double getX() {
         return x;
     }
     
-    protected double getY() {
+    public double getY() {
         return y;
     }
     

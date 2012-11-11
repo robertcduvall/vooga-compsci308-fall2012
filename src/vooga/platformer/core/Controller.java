@@ -2,6 +2,7 @@ package vooga.platformer.core;
 
 import java.awt.Graphics;
 import javax.swing.JPanel;
+import vooga.platformer.util.enums.PlayState;
 
 public class Controller extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
@@ -14,6 +15,11 @@ public class Controller extends JPanel implements Runnable {
      */
     public void update(long elapsedTime) {
         myCurrentLevel.update(elapsedTime);
+        PlayState currentState = myCurrentLevel.getLevelStatus();
+        if (currentState == PlayState.NEXT_LEVEL) {
+            String nextLevelName = myCurrentLevel.getNextLevelName();
+            Level nextLevel
+        }
     }
     
     public void paint(Graphics pen) {
