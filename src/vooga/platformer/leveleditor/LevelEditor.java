@@ -14,10 +14,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -67,11 +70,18 @@ public class LevelEditor extends JFrame{
         setVisible(true);
         pack();
     }
-    @Override
-    public void update(Graphics g) {
-        ImageIcon ii = new ImageIcon("vooga/platformer/data/mario.background.jpg");
-        Image i = ii.getImage();
-        g2d.drawImage(i, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
+    public void update() {
+        System.out.println("update");
+        Image myImg;
+        try {
+            myImg = ImageIO.read(new File("src/vooga/platformer/data/mario.background.jpg"));
+            g2d.drawImage(myImg, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
+        }
+        catch (IOException e) {
+            System.out.println("file was not found");
+            e.printStackTrace();
+        }
+        repaint();
     }
     private GameButton createButton (final String spritename) {
         GameButton gb = new GameButton(spritename);
