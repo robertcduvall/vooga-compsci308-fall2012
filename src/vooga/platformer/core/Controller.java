@@ -16,9 +16,10 @@ public class Controller extends JPanel implements Runnable {
     public void update(long elapsedTime) {
         myCurrentLevel.update(elapsedTime);
         PlayState currentState = myCurrentLevel.getLevelStatus();
+        
         if (currentState == PlayState.NEXT_LEVEL) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
-            Level nextLevel
+            Level nextLevel = LevelFactory.loadLevel(nextLevelName);
         }
     }
     

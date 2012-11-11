@@ -4,6 +4,7 @@ import util.camera.Camera;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,10 @@ public abstract class Level {
         }
     }
     
+    public Level() {
+        objectList = new ArrayList<GameObject>();
+    }
+    
     /**
      * Template method. Paint the background of the level.
      * @param pen Graphics object
@@ -34,12 +39,27 @@ public abstract class Level {
     public abstract void paintBackground(Graphics pen);
     
     /**
+     * Add a GameObject to the level.
+     * @param go
+     */
+    public void addGameObject(GameObject go) {
+        objectList.add(go);
+    }
+    
+    /**
      * Update the level. 
      * @param elapsedTime time since last update cycle
      */
     public void update(long elapsedTime) {
+        List<GameObject> removalList = new ArrayList<GameObject>();
         for (GameObject go : objectList) {
             go.update(this, elapsedTime);
+            if(go.checkForRemoval()) {
+                removalList.add(go);
+            }
+        }
+        for (GameObject removeObj : removalList) {
+            objectList.remove(removeObj);
         }
     }
     
