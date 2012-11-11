@@ -9,6 +9,9 @@ public class Controller extends JPanel implements Runnable {
     
     private Level myCurrentLevel;
     
+    private LevelFactory myLevelFactory;
+    private GameInitializer myGameInitializer;
+    
     /**
      * The main update cycle method.
      * @param elapsedTime
@@ -19,7 +22,7 @@ public class Controller extends JPanel implements Runnable {
         
         if (currentState == PlayState.NEXT_LEVEL) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
-            Level nextLevel = LevelFactory.loadLevel(nextLevelName);
+            Level nextLevel = myLevelFactory.loadLevel(nextLevelName);
         }
     }
     

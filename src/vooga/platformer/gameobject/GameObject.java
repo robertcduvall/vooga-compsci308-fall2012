@@ -72,11 +72,11 @@ public abstract class GameObject {
         return y;
     }
     
-    protected void setX(double inX) {
+    public void setX(double inX) {
         x = inX;
     }
     
-    protected void setY(double inY) {
+    public void setY(double inY) {
         y = inY;
     }
     
