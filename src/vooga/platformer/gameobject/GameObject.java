@@ -98,7 +98,11 @@ public abstract class GameObject {
      * Update the GameObject. This method is called once per update cycle.
      * @param elapsedTime time duration of the update cycle
      */
-    public abstract void update(long elapsedTime);
+    public void update(long elapsedTime) {
+        for (UpdateStrategy us : strategyList) {
+            us.applyAction();
+        }
+    }
     
     /**
      * Paints the GameObject to the given Graphics object.
