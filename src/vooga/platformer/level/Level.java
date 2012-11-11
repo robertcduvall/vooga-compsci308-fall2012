@@ -66,6 +66,14 @@ public abstract class Level {
     }
     
     /**
+     * Return the list of game objects of this level.
+     * @return
+     */
+    public List<GameObject> getObjectList() {
+        return objectList;
+    }
+    
+    /**
      * Update the level. 
      * @param elapsedTime time since last update cycle
      */
