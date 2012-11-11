@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -40,11 +41,40 @@ public class LevelEditor extends JFrame{
     private JPanel myViewPane;
     private BufferedImage backbuffer;
     private Graphics2D g2d;
+    private boolean isRunning;
+    private MouseListener myMouseListener;
     public static void main (String[] args) {
         new LevelEditor();
     }
     public LevelEditor () {
         super("LevelEditor");
+        isRunning = true;
+        frameBuild();
+        fillMap();
+        createEditPane();
+        createButtonPanel();
+        pack();
+        setVisible(true);
+        editLoop();
+    }
+    private void editLoop () {
+        while(isRunning){
+            update();
+            repaint();
+        }
+    }
+    private void update() {
+        Image myImg;
+        try {
+            myImg = ImageIO.read(new File("src/vooga/platformer/data/mario.background.jpg"));
+            g2d.drawImage(myImg, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
+        }
+        catch (IOException e) {
+            System.out.println("file was not found");
+            e.printStackTrace();
+        }
+    }
+    private void frameBuild () {
         myContainer = this;
         setPreferredSize(DEFAULT_FRAME_SIZE);
         setResizable(false);
@@ -64,24 +94,6 @@ public class LevelEditor extends JFrame{
         catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        fillMap();
-        createEditPane();
-        createButtonPanel();
-        setVisible(true);
-        pack();
-    }
-    public void update() {
-        System.out.println("update");
-        Image myImg;
-        try {
-            myImg = ImageIO.read(new File("src/vooga/platformer/data/mario.background.jpg"));
-            g2d.drawImage(myImg, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
-        }
-        catch (IOException e) {
-            System.out.println("file was not found");
-            e.printStackTrace();
-        }
-        repaint();
     }
     private GameButton createButton (final String spritename) {
         GameButton gb = new GameButton(spritename);
@@ -99,9 +111,8 @@ public class LevelEditor extends JFrame{
         g2d = backbuffer.createGraphics();
         JPanel panel = new JPanel() {
             @Override
-            public void paint(Graphics g) {
-                g.drawImage(backbuffer, 0, 0, this);
-                super.paint(g);
+            public void paintComponent(Graphics g) {
+                g.drawImage(backbuffer, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, myContainer);
             }
         };
         panel.setLayout(new BorderLayout());
@@ -118,6 +129,7 @@ public class LevelEditor extends JFrame{
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         panel.add(subpanel, BorderLayout.CENTER);
+        panel.setOpaque(false);
         myViewPane.add(panel, BorderLayout.WEST);
     }
     protected void createPopupMenu (Component comp, int x, int y) {
