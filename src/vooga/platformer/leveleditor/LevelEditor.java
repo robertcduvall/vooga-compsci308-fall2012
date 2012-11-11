@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -64,6 +66,12 @@ public class LevelEditor extends JFrame{
         createButtonPanel();
         setVisible(true);
         pack();
+    }
+    @Override
+    public void update(Graphics g) {
+        ImageIcon ii = new ImageIcon("vooga/platformer/data/mario.background.jpg");
+        Image i = ii.getImage();
+        g2d.drawImage(i, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
     }
     private GameButton createButton (final String spritename) {
         GameButton gb = new GameButton(spritename);
@@ -126,6 +134,5 @@ public class LevelEditor extends JFrame{
         mySprites.put("Goomba", list); list = new ArrayList<String>();
         list.add("Bowser"); list.add("Baby Bowser");
         mySprites.put("Bowser", list); 
-
     }
 }

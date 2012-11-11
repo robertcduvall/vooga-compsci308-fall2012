@@ -48,6 +48,7 @@ public class GameButton extends JComponent {
     public GameButton (String fileName, String command) {
         this(fileName);
         setString(command);
+        setGameListener(null);
     }
 
     /**
