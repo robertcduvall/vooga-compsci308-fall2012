@@ -1,17 +1,25 @@
 package util.input.core;
 
-import util.input.input_utils.BoolTuple;
 import util.input.input_utils.UKeyCode;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Method;
 import util.input.exceptions.InvalidControllerActionException;
 
+/**
+ * This class allows users to enter input through the keyboard
+ * 
+ * @author Amay
+ *
+ */
 public class KeyboardController extends Controller<KeyListener> implements KeyListener{
-
+    
+    /**
+     * Create a new keyboard controller
+     * 
+     * @param comp - The component to which we add the KeyListener
+     */
     public KeyboardController (Component comp) {
         super();
         comp.addKeyListener(this);

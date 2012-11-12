@@ -1,3 +1,5 @@
+package vooga.shooter.graphics;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -5,16 +7,35 @@ import javax.swing.Timer;
 /**
  * 
  * @author David Spruill
- *
+ *  Applet initialization code by Robert Duvall
  */
 public class Canvas extends JApplet{
-    
+    private static final Dimension defaultSize = new Dimension(800,800);
+    private static final int ONE_SECOND = 1000;
+    private static final int FRAMES_PER_SECOND = 30;
     /**
      * Initializes the applet --- called by the browser.
      */
     public void init()
     {
-        
+        init(defaultSize);
+    }
+    
+    /**
+     * Initilizes the applet, but is called by the main method
+     * 
+     * @param size the window size
+     */
+    public void init(Dimension size)
+    {
+        // set dimensions for animation area
+        // note, applet's size is not actually set until after this method
+        setSize(size);
+        setPreferredSize(size);
+        // set applet to receive user input
+        setInputListeners();
+        setFocusable(true);
+        requestFocus();
     }
     
     /**
