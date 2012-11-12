@@ -8,6 +8,7 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.Observable;
 
 
@@ -57,5 +58,7 @@ public abstract class GameMode extends Observable {
      * @param canvasHeight
      */
     public abstract void paint(Graphics g, int canvasWidth, int canvasHeight);
+
+    public abstract void handleKeyEvent (KeyEvent e);
     
 }

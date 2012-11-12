@@ -6,6 +6,7 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 import vooga.turnbased.gameobject.battle.Enemy;
@@ -69,5 +70,9 @@ public class GameManager implements Observer {
     @Override
     public void update (Observable arg0, Object arg1) {
         
+    }
+
+    public void notifyKeyEvent (KeyEvent e) {
+        myCurrentGameMode.handleKeyEvent(e);
     }
 }

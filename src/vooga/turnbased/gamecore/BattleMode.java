@@ -1,6 +1,7 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import vooga.turnbased.gameobject.battle.Enemy;
 
 public class BattleMode extends GameMode {
@@ -18,6 +19,12 @@ public class BattleMode extends GameMode {
     }
 
     public void setEnemy (Enemy e) {
+        
+    }
+
+    @Override
+    public void handleKeyEvent (KeyEvent e) {
+        // TODO Auto-generated method stub
         
     }
 }

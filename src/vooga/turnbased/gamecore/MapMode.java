@@ -8,6 +8,7 @@ package vooga.turnbased.gamecore;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +24,14 @@ import vooga.turnbased.gui.GameWindow;
  * @author Tony, Rex
  **/
 public class MapMode extends GameMode {
+    private final Point UP = new Point(0, -1);
+    private final Point RIGHT = new Point(1, 0);
+    private final Point DOWN = new Point(0, 1);
+    private final Point LEFT = new Point(-1, 0);
     private Map<Point, List<MapSprite>> mySprites;
     private int myNumDisplayRows;
     private int myNumDisplayCols;
+    private MapSprite myPlayer;
     private Point myScreenOrigin;
 
     public MapMode (GameManager gm) {
@@ -36,7 +42,8 @@ public class MapMode extends GameMode {
         myScreenOrigin = new Point(0, 0);
         addSpriteToAll();
         Point center = new Point(7, 5);
-        addSprite(center, new MapPlayer(center));
+        myPlayer = new MapPlayer(center);
+        addSprite(center, myPlayer);
     }
 
     // only for testing purposes
@@ -44,7 +51,6 @@ public class MapMode extends GameMode {
         for (int i = 0; i < myNumDisplayRows; i++) {
             for (int j = 0; j < myNumDisplayCols; j++) {
                 Point p = new Point(j, i);
-                System.out.println(p.x);
                 addSprite(p, new MapSprite(p));
             }
         }
@@ -91,8 +97,32 @@ public class MapMode extends GameMode {
                 else {
                     addSprite(dest, s);
                 }
-                mySprites.remove(s);
+                mySprites.get(p).remove(s);
             }
+        }
+    }
+
+    @Override
+    public void handleKeyEvent (KeyEvent e) {
+        //internal testing for now...use Input team's stuff later
+        int keyCode = e.getKeyCode();
+        switch(keyCode) {
+            case KeyEvent.VK_LEFT:
+                moveSprite(myPlayer, myPlayer.getCoord(LEFT));
+                myPlayer.move(LEFT);
+                break;
+            case KeyEvent.VK_UP:
+                moveSprite(myPlayer, myPlayer.getCoord(UP));
+                myPlayer.move(UP);
+                break;
+            case KeyEvent.VK_RIGHT:
+                moveSprite(myPlayer, myPlayer.getCoord(RIGHT));
+                myPlayer.move(RIGHT);
+                break;
+            case KeyEvent.VK_DOWN:
+                moveSprite(myPlayer, myPlayer.getCoord(DOWN));
+                myPlayer.move(DOWN);
+                break;
         }
     }
 }
