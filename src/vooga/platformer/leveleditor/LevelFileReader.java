@@ -32,7 +32,15 @@ public class LevelFileReader {
      * @param levelFilePath path to the level data file (XML format)
      */
     public LevelFileReader (String levelFilePath) {
-        levelFile = new File(levelFilePath);
+        this(new File(levelFilePath));
+    }
+
+    /**
+     * Creates a new LevelFileReader using the File specified.
+     * 
+     * @param levelFile File in XML format representing the level to be read
+     */
+    public LevelFileReader (File levelFile) {
         document = XMLUtils.initializeDocument(levelFile);
         root = document.getElementById("level");
     }
