@@ -1,11 +1,12 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Canvas;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import javax.swing.JPanel;
 
 
 /*
@@ -26,8 +27,7 @@ import javax.swing.JPanel;
  * @author Paul Dannenberg
  * 
  */
-public class LevelBoard extends JPanel implements ISavable, IUpdatable,
-        IPaintable {
+public class LevelBoard extends Canvas implements ISavable {
 
     private static final long serialVersionUID = -3528519211577278934L;
     private Collection<Sprite> mySprites;
@@ -37,33 +37,41 @@ public class LevelBoard extends JPanel implements ISavable, IUpdatable,
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
      * off empty.
      */
-    public LevelBoard() {
+    public LevelBoard () {
         mySprites = new ArrayList<Sprite>();
         myPlacementManager = new SpritePlacementManager(this);
+        setupMouseInput();
+    }
+
+    private void setupMouseInput () {
+        LevelEditorMouseListener mouseListener = 
+                new LevelEditorMouseListener(myPlacementManager);
+        addMouseListener(mouseListener);
+        addMouseMotionListener(mouseListener);
     }
 
     @Override
-    public void update() {
+    public void update (Graphics pen) {
         for (Sprite s : mySprites) {
             s.update();
         }
     }
 
     @Override
-    public void paint(Graphics2D pen) {
+    public void paint (Graphics pen) {
         for (Sprite s : mySprites) {
-            s.paint(pen);
+            s.paint((Graphics2D) pen);
         }
     }
 
     @Override
-    public void save() {
+    public void save () {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void load(URL path) {
+    public void load (URL path) {
         // TODO Auto-generated method stub
 
     }
@@ -72,7 +80,7 @@ public class LevelBoard extends JPanel implements ISavable, IUpdatable,
      * @return An unmodifiable Collection of the sprites
      *         currently positioned on the board.
      */
-    protected Collection<Sprite> getSprites() {
+    protected Collection<Sprite> getSprites () {
         return Collections.unmodifiableCollection(mySprites);
     }
 
@@ -83,7 +91,7 @@ public class LevelBoard extends JPanel implements ISavable, IUpdatable,
      * 
      * @param sprite
      */
-    protected void add(Sprite sprite) {
+    protected void add (Sprite sprite) {
         mySprites.add(sprite);
     }
 
@@ -93,7 +101,8 @@ public class LevelBoard extends JPanel implements ISavable, IUpdatable,
      * @param sprite The sprite that should
      *        be removed.
      */
-    protected void remove(Sprite sprite) {
+    protected void remove (Sprite sprite) {
         mySprites.remove(sprite);
     }
+
 }

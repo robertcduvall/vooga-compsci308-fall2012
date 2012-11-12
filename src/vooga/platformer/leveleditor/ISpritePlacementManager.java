@@ -1,6 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 
 
 /**
@@ -45,20 +46,43 @@ public interface ISpritePlacementManager {
     void selectSprite (Sprite toSelect);
 
     /**
-     * Removes a sprite from the LevelBoard.
-     * @param toClear
+     * Selects the sprite(s) occupying the
+     * position on the LevelBoard specified
+     * by the parameter, point IF point lies
+     * within one of the sprites currently on
+     * the LevelBoard.
+     * 
+     * @param point Sprites whose images
+     *        overlap with point will be selected
+     *        by the user. The user will then be able
+     *        to move them.
+     * 
+     * @return true if a sprite was successfully
+     *         selected.
      */
-    void clearSprite (Sprite toClear);
+    boolean selectSprite (Point2D point);
+
+    /**
+     * Clears the current selection of sprites.
+     */
+    void clearSelection ();
+
+    /**
+     * Removes a sprite from the LevelBoard.
+     * 
+     * @param toRemove The sprite to be removed.
+     */
+    void removeSprite (Sprite toRemove);
 
     /**
      * Selects any sprites whose outlines
      * overlap with the region determined
      * by the parameter, region.
+     * 
      * @param region If any Sprite's outline
-     * intersects with this Rectangle, the
-     * sprite will be selected and can be 
-     * controlled by user input. 
+     *        intersects with this Rectangle, the
+     *        sprite will be selected and can be
+     *        controlled by user input.
      */
     void selectRegion (Rectangle region);
-
 }
