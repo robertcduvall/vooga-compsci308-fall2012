@@ -230,7 +230,6 @@ public class EditorLauncher extends JFrame {
         setupSearchBox();
 
         pack();
-        setVisible(true);
     }
 
 }

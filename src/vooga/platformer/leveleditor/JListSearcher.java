@@ -97,12 +97,11 @@ public class JListSearcher extends JTextField {
 
             @Override
             public void keyPressed (KeyEvent e) {
-                refreshList(getText());
             }
 
             @Override
             public void keyReleased (KeyEvent e) {
-
+                refreshList(getText());
             }
 
             @Override
