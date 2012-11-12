@@ -39,7 +39,7 @@ public class Sprite {
         myAttributes = new HashMap<String, String>();
     }
 
-    public String getTag () {
+    public String getType () {
         return myTag;
     }
 
