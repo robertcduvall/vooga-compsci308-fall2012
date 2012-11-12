@@ -44,7 +44,7 @@ public class LevelFileReader {
      */
     public LevelFileReader (File levelFile) {
         myDocument = XMLUtils.initializeDocument(levelFile);
-        myRoot = myDocument.getElementById("level");
+        myRoot = myDocument.getDocumentElement();
     }
 
     /**
