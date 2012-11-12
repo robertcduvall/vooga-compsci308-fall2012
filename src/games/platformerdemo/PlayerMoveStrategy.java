@@ -7,7 +7,7 @@ import vooga.platformer.gameobject.UpdateStrategy;
  * @author Yaqi Zhang
  * 
  */
-public class PlayerMoveStrategy implements UpdateStrategy {
+public class PlayerMoveStrategy extends SimpleMoveStrategy {
     private static final double VELOCITY = 10;
     private Player myPlayer;
 
@@ -15,13 +15,8 @@ public class PlayerMoveStrategy implements UpdateStrategy {
      * @param player GameObject
      */
     public PlayerMoveStrategy (Player player) {
+        super(player);
         myPlayer = player;
-    }
-
-    @Override
-    public void applyAction () {
-        myPlayer.setX(myPlayer.getVelocity().getX() + myPlayer.getX());
-        myPlayer.setY(myPlayer.getVelocity().getY() + myPlayer.getY());
     }
 
     /**
