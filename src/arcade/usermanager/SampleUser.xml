@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<user>
+<name>Howard</name>
+<picture>images/howard.jpg</picture>
+<credits>50</credits>
+<message>
+	<from>someOtherUser</from>
+	<content>Hi There</content>
+</message>
+<game>
+	<name>Shooter</name>
+	<highscore>50</highscore>
+	<timesplayed>10</timesplayed>
+	<gameinfo>level 6, health 200</gameinfo>
+</game>
+</user>
