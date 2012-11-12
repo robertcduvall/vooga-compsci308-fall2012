@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * Represents a User of the arcade.
  * 
- * @author Howard 
- * modified by Difan Zhao
+ * @author Howard
+ *         modified by Difan Zhao
  * 
  */
 public class User {
@@ -25,17 +25,10 @@ public class User {
      * @param name
      * @param picture
      */
-    public User (String name, String password, String picture) {
+    public User (String name, String password, String picture, int credits, List<Message> messages,
+                 List<GameData> gameData) {
         myName = name;
-        myPassword=password;
-        myPicture = picture;
-        myCredits = 0;
-        myMessages = new ArrayList<Message>();
-        myGameData = new ArrayList<GameData>();
-    }
-
-    public User (String name, String picture, int credits, List<Message> messages, List<GameData> gameData) {
-        myName = name;
+        myPassword = password;
         myPicture = picture;
         myCredits = credits;
         myMessages = messages;
