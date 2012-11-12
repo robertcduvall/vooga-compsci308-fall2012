@@ -26,28 +26,62 @@ public class LevelFileReader {
     private Element root;
     private File levelFile;
 
+    /**
+     * Creates a new LevelFileReader using the level data file specified.
+     * 
+     * @param levelFilePath path to the level data file (XML format)
+     */
     public LevelFileReader (String levelFilePath) {
         levelFile = new File(levelFilePath);
         document = XMLUtils.initializeDocument(levelFile);
         root = document.getElementById("level");
     }
 
+    /**
+     * Gets the name of the level.
+     * 
+     * @return name of the level as a String
+     */
     public String getLevelID () {
         return XMLUtils.getTagValue("id", root);
     }
 
+    /**
+     * Gets the overall width of the level.
+     * 
+     * @return width of the level as an int
+     */
     public int getWidth () {
         return XMLUtils.getTagInt("width", root);
     }
 
+    /**
+     * Gets the overall height of the level.
+     * 
+     * @return height of the level as an int
+     */
     public int getHeight () {
         return XMLUtils.getTagInt("height", root);
     }
 
+    /**
+     * Gets the image that is to be the background scenery of the level. This
+     * will be rendered behind the Sprites.
+     * 
+     * @return Image representing the background of the level
+     */
     public Image getBackgroundImage () {
         return XMLUtils.fileNameToImage(levelFile, XMLUtils.getTagValue("backgroundImage", root));
     }
 
+    /**
+     * Gets all the elements in the level data file tagged as gameObjects. The
+     * Sprite objects are built using the parameters specified in level data
+     * file.
+     * 
+     * @return a collection of Sprite objects representing the level's
+     *         gameObjects
+     */
     public Collection<Sprite> getSprites () {
         NodeList spritesNode = document.getElementsByTagName("gameobject");
         Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
