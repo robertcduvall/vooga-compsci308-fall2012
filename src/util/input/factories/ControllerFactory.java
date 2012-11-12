@@ -4,6 +4,7 @@ import java.awt.Component;
 import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
+import util.input.core.WiiController;
 import wiiusej.Wiimote;
 
 
@@ -40,7 +41,7 @@ public class ControllerFactory {
     
     public static Controller createWiiController(Wiimote wiiControl) {
         //Create wii controller
-        return null;
+        return new WiiController(wiiControl);
     }
     
     public static Controller createAndroidController(Object androidControl) {

@@ -1,5 +1,10 @@
 package arcade.usermanager;
 
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * social center accommodate all the requests concerning user
  * including basic operations such as log on/register user
@@ -12,11 +17,24 @@ package arcade.usermanager;
 
 public class SocialCenter {
     private User myCurrentUser;
+    private List<String> availableUsers;
 
     /*
      * initiate user list
      */
-    public void run () {
+    public void updateUser () {
+        
+        availableUsers=new ArrayList<String>();
+        
+        File folder = new File("your/path");
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+        if (listOfFiles[i].isFile()) {
+        availableUsers.add(listOfFiles[i].getName());
+      }
+    }
+        
 
     }
 
