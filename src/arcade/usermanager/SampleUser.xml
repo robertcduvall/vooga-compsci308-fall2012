@@ -2,7 +2,8 @@
 
 
 <user>
-<name>Howard</name>
+<name>SampleUser</name>
+<password>123</password>
 <picture>images/howard.jpg</picture>
 <credits>50</credits>
 <message>

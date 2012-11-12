@@ -10,49 +10,25 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.io.File;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
- 
+
 
 /**
- * Reads in user data from an XML file 
+ * Reads in user data from an XML file and creates list of User objects
  * 
- * @author Howard, Difan
+ * @author Howard
  * 
  */
 public class UserXMLReader {
 
-   
+    private List<User> myUsers;
     private Document dom;
-    
-    public void creatUserFromXML(String userName){
-        try {
-            File file = new File("c:\\testxml.xml");
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(file);
-            Element root=doc.getDocumentElement();
-            String name = getTextValue(root, "name");
-            String password = getTextValue(root, "password");
-            String picture = getTextValue(root, "picture");
-            int credits = getIntValue(root, "credits");
-            new User(name,password,picture);
-            
-            }
-        catch(Exception e){}
-        
+
+    public UserXMLReader () {
+        // create a list to hold the employee objects
+        myUsers = new ArrayList<User>();
     }
 
-    
-    private void parseXmlFile (String userName) {
+    private void parseXmlFile () {
         // get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -62,7 +38,7 @@ public class UserXMLReader {
             DocumentBuilder db = dbf.newDocumentBuilder();
 
             // parse using builder to get DOM representation of the XML file
-            dom = db.parse(userName+".xml");
+            dom = db.parse("testxml.xml");
 
         }
         catch (ParserConfigurationException pce) {
@@ -76,28 +52,45 @@ public class UserXMLReader {
         }
     }
 
-//    private void parseDocument () {
-//        // get the root elememt
-//        Element docEle = dom.getDocumentElement();
-//
-//        // get a nodelist of elements
-//        NodeList nl = docEle.getElementsByTagName("user");
-//        if (nl != null && nl.getLength() > 0) {
-//            for (int i = 0; i < nl.getLength(); i++) {
-//
-//                // get an element
-//                Element el = (Element) nl.item(i);
-//
-//                // create the User object
-//                User e = getUser(el);
-//
-//                // add it to list
-//                myUsers.add(e);
-//            }
-//        }
-//    }
+    private void parseDocument () {
+        // get the root elememt
+        Element docEle = dom.getDocumentElement();
 
-    
+        // get a nodelist of elements
+        NodeList nl = docEle.getElementsByTagName("user");
+        if (nl != null && nl.getLength() > 0) {
+            for (int i = 0; i < nl.getLength(); i++) {
+
+                // get an element
+                Element el = (Element) nl.item(i);
+
+                // create the User object
+                User e = getUser(el);
+
+                // add it to list
+                myUsers.add(e);
+            }
+        }
+    }
+
+    /**
+     * Creates a user object from XML data.
+     * 
+     * @param el
+     * @return
+     */
+    private User getUser (Element el) {
+
+        String name = getTextValue(el, "name");
+        String password = getTextValue(el, "password");
+        String picture = getTextValue(el, "picture");
+        int credits = getIntValue(el, "credits");
+
+        // Create a new User with the value read from the xml nodes
+        User e = new User(name,password, picture);
+
+        return e;
+    }
 
     /**
      * I take a xml element and the tag name, look for the tag and get
@@ -133,30 +126,28 @@ public class UserXMLReader {
         return Integer.parseInt(getTextValue(ele, tagName));
     }
 
-//    /**
-//     * Iterate through the list and print the
-//     * content to console
-//     */
-//    private void printData () {
-//
-//        System.out.println("# Users '" + myUsers.size() + "'.");
-//        for (int i = 0; i < myUsers.size(); i++) {
-//            System.out.println(myUsers.get(i).getName());
-//            System.out.println(myUsers.get(i).getPicture());
-//        }
-//    }
+    /**
+     * Iterate through the list and print the
+     * content to console
+     */
+    private void printData () {
+
+        System.out.println("# Users '" + myUsers.size() + "'.");
+        for (int i = 0; i < myUsers.size(); i++) {
+            System.out.println(myUsers.get(i).getName());
+            System.out.println(myUsers.get(i).getPicture());
+        }
+    }
 
     public void runExample () {
-//        // parse the xml file and get the dom object
-//        parseXmlFile();
-//
-//        // get each employee element and create a Employee object
-//        parseDocument();
+        // parse the xml file and get the dom object
+        parseXmlFile();
+
+        // get each employee element and create a Employee object
+        parseDocument();
 
         // Iterate through the list and print the data
-       // printData();
-        
-        creatUserFromXML("dummy");
+        printData();
     }
 
     public static void main (String[] args) {
