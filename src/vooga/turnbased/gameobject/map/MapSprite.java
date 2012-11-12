@@ -21,6 +21,7 @@ public class MapSprite {
     
     public void animateMove() {
         myIsMoving = true;
+        myIsMoving = true;
     }
     
     public void interact() {
