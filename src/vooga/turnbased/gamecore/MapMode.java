@@ -81,4 +81,18 @@ public class MapMode extends GameMode {
             }
         }
     }
+    
+    public void moveSprite(MapSprite s, Point dest) {
+        for (Point p : mySprites.keySet()) {
+            if (mySprites.get(p).contains(s)) {
+                if (mySprites.get(dest) != null) {
+                    mySprites.get(dest).add(s);
+                }
+                else {
+                    addSprite(dest, s);
+                }
+                mySprites.remove(s);
+            }
+        }
+    }
 }
