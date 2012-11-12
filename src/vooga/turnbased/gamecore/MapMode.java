@@ -91,12 +91,8 @@ public class MapMode extends GameMode {
     public void moveSprite(MapSprite s, Point dest) {
         for (Point p : mySprites.keySet()) {
             if (mySprites.get(p).contains(s)) {
-                if (mySprites.get(dest) != null) {
-                    mySprites.get(dest).add(s);
-                }
-                else {
-                    addSprite(dest, s);
-                }
+                addSprite(dest, s);
+                s.moveTo(dest);
                 mySprites.get(p).remove(s);
             }
         }
@@ -109,19 +105,15 @@ public class MapMode extends GameMode {
         switch(keyCode) {
             case KeyEvent.VK_LEFT:
                 moveSprite(myPlayer, myPlayer.getCoord(LEFT));
-                myPlayer.move(LEFT);
                 break;
             case KeyEvent.VK_UP:
                 moveSprite(myPlayer, myPlayer.getCoord(UP));
-                myPlayer.move(UP);
                 break;
             case KeyEvent.VK_RIGHT:
                 moveSprite(myPlayer, myPlayer.getCoord(RIGHT));
-                myPlayer.move(RIGHT);
                 break;
             case KeyEvent.VK_DOWN:
                 moveSprite(myPlayer, myPlayer.getCoord(DOWN));
-                myPlayer.move(DOWN);
                 break;
         }
     }

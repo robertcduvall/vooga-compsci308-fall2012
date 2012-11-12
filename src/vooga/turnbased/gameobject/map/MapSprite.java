@@ -19,11 +19,6 @@ public class MapSprite {
         myImage = new ImageIcon("src/vooga/turnbased/resources/image/grass.png").getImage();
     }
     
-    public void move(Point dir) {
-        myCoordinate.x += dir.x;
-        myCoordinate.y += dir.y;
-    }
-    
     public void animateMove() {
         myIsMoving = true;
     }
@@ -46,5 +41,10 @@ public class MapSprite {
     
     public Point getCoord(Point dir) {
         return new Point(myCoordinate.x + dir.x, myCoordinate.y + dir.y);
+    }
+
+    public void moveTo (Point dest) {
+        myCoordinate.x = dest.x;
+        myCoordinate.y = dest.y;
     }
 }
