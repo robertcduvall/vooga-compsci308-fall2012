@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class Sprite {
 
-    private String myTag;
+    private String myType;
     private int myX;
     private int myY;
     private int myWidth;
@@ -28,8 +28,21 @@ public class Sprite {
     private Collection<Map<String, String>> myUpdateStrategies;
     private Map<String, String> myAttributes;
 
-    public Sprite (String tag, int x, int y, int width, int height, String imagePath) {
-        myTag = tag;
+    /**
+     * Creates a new instance of Sprite of the type, position, size, and
+     * appearance specified.
+     * 
+     * @param type attribute of the sprite describing what its role in the game
+     *        is
+     * @param x x position of the sprite at level load
+     * @param y y position of the sprite at level load
+     * @param width width of the sprite in pixels
+     * @param height height of the sprite in pixels
+     * @param imagePath location of the image in the file system representing
+     *        the sprite
+     */
+    public Sprite (String type, int x, int y, int width, int height, String imagePath) {
+        myType = type;
         myX = x;
         myY = y;
         myWidth = width;
@@ -39,38 +52,83 @@ public class Sprite {
         myAttributes = new HashMap<String, String>();
     }
 
+    /**
+     * Gets the attribute describing the sprites role in the game.
+     * 
+     * @return String representation of the sprites type
+     */
     public String getType () {
-        return myTag;
+        return myType;
     }
 
+    /**
+     * Gets the x location of the sprite at level load.
+     * 
+     * @return x location in pixels
+     */
     public int getX () {
         return myX;
     }
 
+    /**
+     * Sets where the sprite should appear on level load
+     * 
+     * @param x starting x location of the sprite in pixels
+     */
     public void setX (int x) {
         myX = x;
     }
 
+    /**
+     * Gets the y location of the sprite at level load.
+     * 
+     * @return y location in pixels
+     */
     public int getY () {
         return myY;
     }
 
+    /**
+     * Sets where the sprite should appear on level load
+     * 
+     * @param y starting y location of the sprite in pixels
+     */
     public void setY (int y) {
         myY = y;
     }
 
+    /**
+     * Gets the width of the sprite.
+     * 
+     * @return width of the sprite in pixels
+     */
     public int getWidth () {
         return myWidth;
     }
 
+    /**
+     * Sets the width of the sprite.
+     * 
+     * @param width new width of the sprite in pixels
+     */
     public void setWidth (int width) {
         myWidth = width;
     }
 
+    /**
+     * Gets the height of the sprite.
+     * 
+     * @return height of the sprite in pixels
+     */
     public int getHeight () {
         return myHeight;
     }
 
+    /**
+     * Sets the height of the sprite.
+     * 
+     * @param width new height of the sprite in pixels
+     */
     public void setHeight (int height) {
         myHeight = height;
     }
@@ -85,14 +143,37 @@ public class Sprite {
         myUpdateStrategies.add(strategy);
     }
 
+    /**
+     * Gets the update strategies that the sprite should implement. The value is
+     * returned as a collection of Maps. Each Map represents an update strategy.
+     * The keys of this map are the parameter names of the update strategy, and
+     * these keys map onto corresponding the values of the parameters as
+     * Strings.
+     * 
+     * @return collection of maps representing the parameters of the update
+     *         strategy
+     */
     public Collection<Map<String, String>> getUpdateStrategies () {
         return myUpdateStrategies;
     }
 
+    /**
+     * Adds an attribute to the sprite.
+     * 
+     * @param tag name for the attribute
+     * @param value value for the attribute
+     */
     public void addAttribute (String tag, String value) {
         myAttributes.put(tag, value);
     }
 
+    /**
+     * Returns all the attributes of a sprite as a Map. The keys of this map are
+     * the attribute names, and they map onto their corresponding values. Both
+     * are stored as Strings.
+     * 
+     * @return Map of the sprite's attributes
+     */
     public Map<String, String> getAttributes () {
         return myAttributes;
     }

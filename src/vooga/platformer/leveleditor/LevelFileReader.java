@@ -98,6 +98,8 @@ public class LevelFileReader {
             Node spriteNode = spritesNode.item(i);
             if (spriteNode.getNodeType() == Node.ELEMENT_NODE) {
                 Sprite builtSprite = buildSprite(spriteNode);
+                // TODO add update strategies
+                // TODO add attributes
                 spritesList.add(builtSprite);
             }
         }
