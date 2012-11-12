@@ -84,7 +84,7 @@ public class UserXMLReader {
         String name = getTextValue(el, "name");
         String picture = getTextValue(el, "picture");
         int credits = getIntValue(el, "credits");
-
+        
         // Create a new User with the value read from the xml nodes
         User e = new User(name, picture);
 
