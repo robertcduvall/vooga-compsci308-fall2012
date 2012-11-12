@@ -3,6 +3,14 @@ package arcade.utility;
 import java.io.File;
 import java.util.List;
 
+
+/**
+ * This is a general utility class used to handle all read/write access to the
+ * xml file.
+ * 
+ * @author Patrick Royal
+ * 
+ */
 public class ReadWriter {
 
     /**
@@ -13,7 +21,7 @@ public class ReadWriter {
      * @param f file to be searched
      * @param query query to search for
      */
-    public List<String> search (File f, String query) {
+    public static List<String> search (File f, List<String> query) {
         // TODO
         return null;
     }
@@ -28,7 +36,7 @@ public class ReadWriter {
      * @param tag location of the data
      * @param data data to be stored
      */
-    public void storeData (File f, String tag, String data) {
+    public static void storeData (File f, List<String> tags, String data) {
         // TODO
     }
 
@@ -41,7 +49,7 @@ public class ReadWriter {
      * @param f file to get data from
      * @param tag location of the data
      */
-    public String loadData (File f, String tag) {
+    public static String loadData (File f, List<String> tags) {
         // TODO
         return null;
     }

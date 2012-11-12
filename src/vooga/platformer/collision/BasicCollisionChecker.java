@@ -1,17 +1,19 @@
 package vooga.platformer.collision;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
 
-public class BasicCollisionChecker implements CollisionChecker{
+/**
+ * This class is used for collision detection. It iterates through all the GameObjects
+ * in the game level and return a list of CollisionEvent
+ * @author Bruce
+ *
+ */
+public class BasicCollisionChecker extends CollisionChecker{
 
-    Map<String, HashMap<String, String>> collisionEventsMap = new HashMap<String, HashMap<String, String>>();
+    
     List<CollisionEvent> collisionEvents = new ArrayList<CollisionEvent>();
     
     @Override
@@ -28,59 +30,4 @@ public class BasicCollisionChecker implements CollisionChecker{
         }
         return collisionEvents;
     }
-    
-    public CollisionEvent buildCollisionEvent(GameObject a, GameObject b) {
-        String className;
-             
-        if (a.getClass().getCanonicalName().compareTo(b.getClass().getCanonicalName()) == 1) {
-            className = collisionEventsMap.get(a.getClass().getCanonicalName()).get(b.getClass().getCanonicalName());
-        }
-        else {
-            className = collisionEventsMap.get(b.getClass().getCanonicalName()).get(a.getClass().getCanonicalName());
-        }
-        
-        CollisionEvent c = null;
-        Constructor collisionEventConstructor = null;
-        
-        try {
-            collisionEventConstructor = Class.forName(className).getConstructor();
-        }
-        catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
-    
-          
-        try {
-            c = (CollisionEvent) collisionEventConstructor.newInstance();
-        }
-        catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-            
-        return c;
-    }
-
 }

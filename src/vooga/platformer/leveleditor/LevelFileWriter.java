@@ -116,7 +116,7 @@ public final class LevelFileWriter {
                                          Element level) {
         for (Sprite s : levelObjects) {
             Element spriteElement = doc.createElement("gameObject");
-            spriteElement.setAttribute("tag", s.getTag());
+            spriteElement.setAttribute("type", s.getType());
 
             appendChildTextNode(doc, spriteElement, "x", String.valueOf(s.getX()));
             appendChildTextNode(doc, spriteElement, "y", String.valueOf(s.getY()));

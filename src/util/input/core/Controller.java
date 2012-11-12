@@ -10,15 +10,12 @@ import java.lang.reflect.Modifier;
 import java.util.*;
 import util.input.exceptions.InvalidControllerActionException;
 
-
 /**
- * Created with IntelliJ IDEA.
- * User: lance
- * Date: 11/3/12
- * Time: 7:42 PM
- * To change this template use File | Settings | File Templates.
+ * This class represents an abstract controller to provide input.
  * 
- * @author Lance, Amay
+ * @author Amay, Lance
+ *
+ * @param <T>
  */
 public abstract class Controller<T> {
 
@@ -26,12 +23,21 @@ public abstract class Controller<T> {
     Map<String, String> objectMethodMap;
     Map<Integer, BoolTuple<Object, Method>> menuPlate;
 
+    /**
+     * Create a new Controller.
+     */
     Controller () {
         objectMethodMap = new HashMap<String, String>();
         subscribedElements = new ArrayList<T>();
         menuPlate = new HashMap<Integer, BoolTuple<Object, Method>>();
     }
 
+    /**
+     * Create a new Controller with an elements that
+     * subscribes to its raw data.
+     * 
+     * @param element - The subscribing element
+     */
     Controller (T element) {
         this();
         subscribe(element);
@@ -39,13 +45,21 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events
+     *      
+     * @param element - The subscribing class
      */
     public void subscribe (T element) {
         subscribedElements.add(element);
     }
 
     /**
-     * Object invokes a method every time action occurs
+     * Object invokes a method every time action and type occur
+     * 
+     * @param action - The button to listen for
+     * @param type - Pressed or released
+     * @param o - The invoking object
+     * @param method - The method to be invoked
+     * @throws NoSuchMethodException
      */
     public void setControl (int action, int type, Object o, String method)
             throws NoSuchMethodException {
@@ -57,6 +71,17 @@ public abstract class Controller<T> {
                 new BoolTuple<Object, Method>(o, m));
     }
 
+    /**
+     * Class invokes a static method every time action and type occur
+     * 
+     * @param action - The controller button/key to listen for
+     * @param type - Pressed or released
+     * @param c - The invoking Class
+     * @param method - The static method to be invoked
+     * @throws NoSuchMethodException     
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     */
     public void setControl (int action, int type, Class c, String method)
             throws NoSuchMethodException, IllegalAccessException,
             InstantiationException {
@@ -75,7 +100,15 @@ public abstract class Controller<T> {
     // public abstract void actionValidate(int action) throws
     // InvalidControllerActionException;
 
-    // Sets the action on or off
+    
+    /**
+     * Set the desired action on or off
+     * 
+     * @param action - The controller button/key to listen for
+     * @param type - Pressed or released
+     * @param isActive - Whether the action should be active or not
+     * @throws InvalidControllerActionException
+     */
     public void setActionActive (int action, int type, boolean isActive)
             throws InvalidControllerActionException {
         // actionValidate(action);
