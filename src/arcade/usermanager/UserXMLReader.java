@@ -82,11 +82,12 @@ public class UserXMLReader {
     private User getUser (Element el) {
 
         String name = getTextValue(el, "name");
+        String password = getTextValue(el, "password");
         String picture = getTextValue(el, "picture");
         int credits = getIntValue(el, "credits");
         
         // Create a new User with the value read from the xml nodes
-        User e = new User(name, picture);
+        User e = new User(name,password, picture);
 
         return e;
     }
