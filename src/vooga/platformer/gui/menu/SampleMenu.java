@@ -1,3 +1,4 @@
+
 package vooga.platformer.gui.menu;
 
 import java.awt.Dimension;
@@ -17,7 +18,7 @@ import javax.swing.text.JTextComponent;
  * This class demos how to insert a menu into a given game canvas.
  * Press M to bring up the menu
  * 
- * @author Yaqi
+ * @author Yaqi Zhang
  * 
  */
 
