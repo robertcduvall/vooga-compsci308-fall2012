@@ -1,6 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -33,6 +35,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.gui.menu.*;
 
 
@@ -43,6 +46,7 @@ public class LevelEditor extends JFrame{
     private JFrame myContainer;
     private JPanel myViewPane;
     private BufferedImage backbuffer;
+    private Image background;
     private Graphics2D g2d;
     private boolean isRunning;
     private MouseListener myMouseListener;
@@ -50,6 +54,7 @@ public class LevelEditor extends JFrame{
     private boolean follow;
     private Sprite currentSprite;
     private KeyListener myKeyListener;
+    private GameListener myGameListener;
     public static void main (String[] args) {
         new LevelEditor();
     }
@@ -57,6 +62,7 @@ public class LevelEditor extends JFrame{
         super("LevelEditor");
         isRunning = true;
         follow = false;
+        background = null;
         frameBuild();
         fillMap();
         createListeners();
@@ -66,30 +72,15 @@ public class LevelEditor extends JFrame{
         setVisible(true);
         editLoop();
     }
-    private void createListeners () {
-        myMouseListener = new MouseAdapter() {
-            @Override 
-            public void mousePressed(MouseEvent e) {
-                if(follow) {
-                    follow = false;
-                }
-            }
 
-        };
-        myKeyListener = new KeyAdapter() {
-
-        };
-
-    }
     private void editLoop () {
         while(isRunning){
-            System.out.println("update");
             update();
             repaint();
         }
     }
     private void update() {
-        g2d.drawImage(getImage(IMAGE_PATH + "mario.background.jpg"), 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
+        g2d.drawImage(background, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
         for(Sprite sprite : mySprites) {
             g2d.drawImage(getImage(sprite.getImagePath()), sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), null);
         }
@@ -131,15 +122,49 @@ public class LevelEditor extends JFrame{
             e.printStackTrace();
         }
     }
-    private GameButton createButton (final String spritename) {
-        GameButton gb = new GameButton(spritename);
-        GameListener gl = new GameListener() {
+    private void createListeners () {
+        myMouseListener = new MouseAdapter() {
+            @Override 
+            public void mousePressed(MouseEvent e) {
+                if(follow && e.getComponent() == myViewPane) {
+                    follow = false;
+                } else if(e.getButton() == 3) {
+                    for(Sprite s : mySprites) {
+                        if(e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth()
+                                && e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()){
+                        } else {
+                            JFileChooser chooser = new JFileChooser();
+                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                                "JPG & GIF Images", "jpg", "gif");
+                            chooser.setFileFilter(filter);
+                            int returnVal = chooser.showOpenDialog(myContainer);
+                            if(returnVal == JFileChooser.APPROVE_OPTION)  {
+                                try {
+                                     background = ImageIO.read(chooser.getSelectedFile());
+                                }
+                                catch (IOException io) {
+                                    System.out.println("File not found. Try again");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        };
+        myKeyListener = new KeyAdapter() {
+
+        };
+        myGameListener = new GameListener() {
             @Override 
             public void actionPerformed(MouseEvent arg0) {
                 createPopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
             }
         };
-        gb.setGameListener(gl);
+    }
+    private GameButton createButton (String spritename) {
+        GameButton gb = new GameButton(spritename);
+        gb.setGameListener(myGameListener);
         return gb;
     }
     private void createEditPane () {
@@ -153,6 +178,8 @@ public class LevelEditor extends JFrame{
         };
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
+        panel.addMouseListener(myMouseListener);
+        panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
     private void createButtonPanel () {
