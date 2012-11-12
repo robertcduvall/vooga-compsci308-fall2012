@@ -20,7 +20,7 @@ public class LevelFileReaderTest {
 
     @Test
     public void testGetLevelID() throws Exception {
-        Assert.assertEquals(1234, lfr.getLevelID());
+        Assert.assertEquals("1234", lfr.getLevelID());
     }
 
     @Test
