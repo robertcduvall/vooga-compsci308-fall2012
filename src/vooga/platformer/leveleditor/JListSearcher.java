@@ -33,7 +33,7 @@ public class JListSearcher extends JTextField {
      *        search over. This list should already be populated
      *        when it is passed to this constructor.
      */
-    public JListSearcher (String text, JList listToSearch) {
+    public JListSearcher(String text, JList listToSearch) {
         super(text);
         myOriginalText = text;
         myOriginalListItems = getItems(listToSearch);
@@ -48,7 +48,7 @@ public class JListSearcher extends JTextField {
      *        returned.
      * @return All the items in the list parameter.
      */
-    private Object[] getItems (JList list) {
+    private Object[] getItems(JList list) {
         Object[] items = new Object[list.getModel().getSize()];
         for (int i = 0; i < list.getModel().getSize(); i++) {
             items[i] = list.getModel().getElementAt(i);
@@ -66,7 +66,7 @@ public class JListSearcher extends JTextField {
      *         (A Vector is used since JLists take Vector's in their
      *         constructors.)
      */
-    private Vector<Object> match (String text) {
+    private Vector<Object> match(String text) {
         Vector<Object> items = new Stack<Object>();
         for (Object myOriginalListItem : myOriginalListItems) {
             String listEntry = (String) myOriginalListItem;
@@ -79,10 +79,11 @@ public class JListSearcher extends JTextField {
 
     /**
      * Updates the ongoing search. This method is called
-     * whenever a key is entered into the text field. 
-     * @param inputText The user input text. 
+     * whenever a key is entered into the text field.
+     * 
+     * @param inputText The user input text.
      */
-    private void refreshList (String inputText) {
+    private void refreshList(String inputText) {
         if (!myOriginalText.equals(inputText)) {
             myListToSearch.setListData(match(inputText));
         }
@@ -92,20 +93,20 @@ public class JListSearcher extends JTextField {
      * Creates a key listener that will respond to
      * changes in the user's input to the text box.
      */
-    private void setKeyListener () {
+    private void setKeyListener() {
         super.addKeyListener(new KeyListener() {
 
             @Override
-            public void keyPressed (KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
             }
 
             @Override
-            public void keyReleased (KeyEvent e) {
+            public void keyReleased(KeyEvent e) {
                 refreshList(getText());
             }
 
             @Override
-            public void keyTyped (KeyEvent e) {
+            public void keyTyped(KeyEvent e) {
             }
 
         });

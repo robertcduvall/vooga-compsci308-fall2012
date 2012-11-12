@@ -37,41 +37,34 @@ public class LevelBoard extends Canvas implements ISavable {
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
      * off empty.
      */
-    public LevelBoard () {
+    public LevelBoard() {
         mySprites = new ArrayList<Sprite>();
         myPlacementManager = new SpritePlacementManager(this);
         setupMouseInput();
     }
 
-    private void setupMouseInput () {
-        LevelEditorMouseListener mouseListener = 
-                new LevelEditorMouseListener(myPlacementManager);
+    private void setupMouseInput() {
+        SelectionMouseListener mouseListener = new SelectionMouseListener(
+                myPlacementManager);
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
     }
 
     @Override
-    public void update (Graphics pen) {
-        for (Sprite s : mySprites) {
-            s.update();
-        }
-    }
-
-    @Override
-    public void paint (Graphics pen) {
+    public void paint(Graphics pen) {
         for (Sprite s : mySprites) {
             s.paint((Graphics2D) pen);
         }
     }
 
     @Override
-    public void save () {
+    public void save() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void load (URL path) {
+    public void load(URL path) {
         // TODO Auto-generated method stub
 
     }
@@ -80,7 +73,7 @@ public class LevelBoard extends Canvas implements ISavable {
      * @return An unmodifiable Collection of the sprites
      *         currently positioned on the board.
      */
-    protected Collection<Sprite> getSprites () {
+    protected Collection<Sprite> getSprites() {
         return Collections.unmodifiableCollection(mySprites);
     }
 
@@ -91,7 +84,7 @@ public class LevelBoard extends Canvas implements ISavable {
      * 
      * @param sprite
      */
-    protected void add (Sprite sprite) {
+    protected void add(Sprite sprite) {
         mySprites.add(sprite);
     }
 
@@ -101,7 +94,7 @@ public class LevelBoard extends Canvas implements ISavable {
      * @param sprite The sprite that should
      *        be removed.
      */
-    protected void remove (Sprite sprite) {
+    protected void remove(Sprite sprite) {
         mySprites.remove(sprite);
     }
 

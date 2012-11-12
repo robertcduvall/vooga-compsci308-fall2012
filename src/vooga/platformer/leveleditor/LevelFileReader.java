@@ -1,14 +1,14 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Image;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import vooga.platformer.util.xml.XMLUtils;
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 
 
 /**
@@ -31,7 +31,7 @@ public class LevelFileReader {
      * 
      * @param levelFilePath path to the level data file (XML format)
      */
-    public LevelFileReader (String levelFilePath) {
+    public LevelFileReader(String levelFilePath) {
         this(new File(levelFilePath));
     }
 
@@ -40,7 +40,7 @@ public class LevelFileReader {
      * 
      * @param levelFile File in XML format representing the level to be read
      */
-    public LevelFileReader (File levelFile) {
+    public LevelFileReader(File levelFile) {
         document = XMLUtils.initializeDocument(levelFile);
         root = document.getElementById("level");
     }
@@ -50,7 +50,7 @@ public class LevelFileReader {
      * 
      * @return name of the level as a String
      */
-    public String getLevelID () {
+    public String getLevelID() {
         return XMLUtils.getTagValue("id", root);
     }
 
@@ -59,7 +59,7 @@ public class LevelFileReader {
      * 
      * @return width of the level as an int
      */
-    public int getWidth () {
+    public int getWidth() {
         return XMLUtils.getTagInt("width", root);
     }
 
@@ -68,7 +68,7 @@ public class LevelFileReader {
      * 
      * @return height of the level as an int
      */
-    public int getHeight () {
+    public int getHeight() {
         return XMLUtils.getTagInt("height", root);
     }
 
@@ -78,8 +78,9 @@ public class LevelFileReader {
      * 
      * @return Image representing the background of the level
      */
-    public Image getBackgroundImage () {
-        return XMLUtils.fileNameToImage(levelFile, XMLUtils.getTagValue("backgroundImage", root));
+    public Image getBackgroundImage() {
+        return XMLUtils.fileNameToImage(levelFile,
+                XMLUtils.getTagValue("backgroundImage", root));
     }
 
     /**
@@ -90,9 +91,10 @@ public class LevelFileReader {
      * @return a collection of Sprite objects representing the level's
      *         gameObjects
      */
-    public Collection<Sprite> getSprites () {
+    public Collection<Sprite> getSprites() {
         NodeList spritesNode = document.getElementsByTagName("gameobject");
-        Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
+        Collection<Sprite> spritesList = new ArrayList<Sprite>(
+                spritesNode.getLength());
 
         for (int i = 0; i < spritesNode.getLength(); i++) {
             Node spriteNode = spritesNode.item(i);
@@ -108,7 +110,7 @@ public class LevelFileReader {
         return spritesList;
     }
 
-    private Sprite buildSprite (Element spriteElement) {
+    private Sprite buildSprite(Element spriteElement) {
         String tag = spriteElement.getAttribute("type");
         int x = XMLUtils.getTagInt("x", spriteElement);
         int y = XMLUtils.getTagInt("y", spriteElement);
@@ -119,11 +121,11 @@ public class LevelFileReader {
         return builtSprite;
     }
 
-    private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
+    private void addUpdateStrategies(Element spriteElement, Sprite builtSprite) {
         // TODO add update strategies
     }
 
-    private void addSpriteAttributes (Element spriteElement, Sprite builtSprite) {
+    private void addSpriteAttributes(Element spriteElement, Sprite builtSprite) {
         // TODO add attributes
     }
 

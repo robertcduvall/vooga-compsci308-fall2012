@@ -12,6 +12,6 @@ public interface IUpdatable {
      * This method should be called at every frame
      * update.
      */
-    void update ();
+    void update();
 
 }

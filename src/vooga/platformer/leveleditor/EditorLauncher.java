@@ -29,7 +29,7 @@ import javax.swing.border.TitledBorder;
 
 /**
  * This class represents a Frame containing the components necessary
- * to launch the Sprite Editor. 
+ * to launch the Sprite Editor.
  * 
  * @author Paul Dannenberg
  * 
@@ -75,7 +75,7 @@ public class EditorLauncher extends JFrame {
      * 
      * @param language The language that the buttons/labels should be in.
      */
-    public EditorLauncher (String language) {
+    public EditorLauncher(String language) {
         myResources = ResourceBundle.getBundle("resources." + language);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initializeComponents();
@@ -86,15 +86,15 @@ public class EditorLauncher extends JFrame {
      * Creates all the different JComponents that will be displayed in the
      * EditorLauncher window.
      */
-    private void initializeComponents () {
+    private void initializeComponents() {
         mySpriteOptions = createSpriteList();
         myLeft = new JPanel();
         myRight = new JPanel();
         mySpriteCreatorLauncher = new JButton();
         mySpriteEditLauncher = new JButton();
         myScrollPane = new JScrollPane();
-        mySearchBox =
-                new JListSearcher(myResources.getString(DEFAULT_SEARCH_ENTRY), mySpriteOptions);
+        mySearchBox = new JListSearcher(
+                myResources.getString(DEFAULT_SEARCH_ENTRY), mySpriteOptions);
         mySearchBoxLabel = new JLabel();
 
     }
@@ -105,7 +105,7 @@ public class EditorLauncher extends JFrame {
      * 
      * @return The JList containing the names of any loaded sprites.
      */
-    private JList createSpriteList () {
+    private JList createSpriteList() {
         JList spriteList = new JList();
         spriteList.setModel(new AbstractListModel() {
 
@@ -113,12 +113,12 @@ public class EditorLauncher extends JFrame {
             String[] strings = { "Item 1", "Item 2" };
 
             @Override
-            public int getSize () {
+            public int getSize() {
                 return strings.length;
             }
 
             @Override
-            public Object getElementAt (int i) {
+            public Object getElementAt(int i) {
                 return strings[i];
             }
         });
@@ -132,11 +132,11 @@ public class EditorLauncher extends JFrame {
      * @param toSetBorderFor The panel for which a border should be set.
      * @param title The title of the border.
      */
-    private void setPanelBorder (JPanel toSetBorderFor, String title) {
-        toSetBorderFor
-                .setBorder(BorderFactory.createTitledBorder(null, myResources.getString(title),
-                                                            TitledBorder.DEFAULT_JUSTIFICATION,
-                                                            TitledBorder.DEFAULT_POSITION, FONT));
+    private void setPanelBorder(JPanel toSetBorderFor, String title) {
+        toSetBorderFor.setBorder(BorderFactory.createTitledBorder(null,
+                myResources.getString(title),
+                TitledBorder.DEFAULT_JUSTIFICATION,
+                TitledBorder.DEFAULT_POSITION, FONT));
     }
 
     /**
@@ -146,7 +146,7 @@ public class EditorLauncher extends JFrame {
      * @param font The font of the label.
      * @param label The String to be displayed on the button.
      */
-    private void setButtonLabel (JButton button, Font font, String label) {
+    private void setButtonLabel(JButton button, Font font, String label) {
         button.setFont(font);
         button.setText(label);
     }
@@ -155,7 +155,7 @@ public class EditorLauncher extends JFrame {
      * Sets this objects Layout to a GridLayout, dividing it into two separate
      * panels, a left and a right panel.
      */
-    private void setFrameLayout () {
+    private void setFrameLayout() {
         GridLayout myLayout = new GridLayout(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS);
         setLayout(myLayout);
         setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
@@ -165,7 +165,7 @@ public class EditorLauncher extends JFrame {
     /**
      * Adds two panels to the JFrame. One left panel and one right panel.
      */
-    private void addPanelsToFrame () {
+    private void addPanelsToFrame() {
         add(myLeft);
         add(myRight);
     }
@@ -176,7 +176,7 @@ public class EditorLauncher extends JFrame {
      * 
      * @param panel
      */
-    private void addButtonsToPanel (JPanel panel) {
+    private void addButtonsToPanel(JPanel panel) {
         panel.add(mySpriteCreatorLauncher);
         panel.add(mySpriteEditLauncher);
     }
@@ -186,7 +186,7 @@ public class EditorLauncher extends JFrame {
      * This view should support scrolling in case the number of sprites
      * becomes particularly large.
      */
-    private void setupScrollingList () {
+    private void setupScrollingList() {
         myScrollPane.setPreferredSize(new Dimension(LIST_WIDTH, LIST_HEIGHT));
         myScrollPane.setViewportView(mySpriteOptions);
         myLeft.add(myScrollPane);
@@ -197,7 +197,7 @@ public class EditorLauncher extends JFrame {
      * cause mySearchBox to search for the possible sprites to which the user's
      * input could refer to.
      */
-    private void setupSearchBox () {
+    private void setupSearchBox() {
 
         myLeft.add(mySearchBoxLabel, BorderLayout.SOUTH);
         myLeft.add(mySearchBox, BorderLayout.SOUTH);
@@ -208,7 +208,7 @@ public class EditorLauncher extends JFrame {
     /**
      * Creates the label for the search box.
      */
-    private void createTextLabel () {
+    private void createTextLabel() {
         mySearchBoxLabel.setFont(FONT);
         mySearchBoxLabel.setLabelFor(mySearchBox);
         mySearchBoxLabel.setText(myResources.getString(SEARCH_BOX_LABEL));
@@ -217,13 +217,14 @@ public class EditorLauncher extends JFrame {
     /**
      * Designs the overall layout of the JFrame.
      */
-    private void createLayout () {
+    private void createLayout() {
 
         setFrameLayout();
         setPanelBorder(myRight, BUTTON_BOX_TITLE);
         setButtonLabel(mySpriteCreatorLauncher, FONT,
-                       myResources.getString(SPRITE_CREATOR_BUTTON_LABEL));
-        setButtonLabel(mySpriteEditLauncher, FONT, myResources.getString(SPRITE_EDIT_BUTTON_LABEL));
+                myResources.getString(SPRITE_CREATOR_BUTTON_LABEL));
+        setButtonLabel(mySpriteEditLauncher, FONT,
+                myResources.getString(SPRITE_EDIT_BUTTON_LABEL));
         addPanelsToFrame();
         addButtonsToPanel(myRight);
         setupScrollingList();

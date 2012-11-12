@@ -18,6 +18,6 @@ public interface IPaintable {
      * @param pen The Graphics2D that will be used to
      *        draw the object that implements this interface.
      */
-    void paint (Graphics2D pen);
+    void paint(Graphics2D pen);
 
 }
