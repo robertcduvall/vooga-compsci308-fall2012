@@ -46,6 +46,7 @@ public final class LevelFileWriter {
          */
     }
 
+<<<<<<< HEAD
     // Simple (temporary) test method
     public static void main(String[] args) {
         ArrayList<Sprite> sprites = new ArrayList<Sprite>();
@@ -57,6 +58,8 @@ public final class LevelFileWriter {
                 "something.jpg", sprites);
     }
 
+=======
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     /**
      * Method that writes the data describing a platformer level to an XML file
      * so that it can be reconstructed by a level factory.
