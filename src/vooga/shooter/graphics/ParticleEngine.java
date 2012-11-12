@@ -1,14 +1,18 @@
 package vooga.shooter.graphics;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+
 /**
  * This class enables the game creators to create, draw, and update a particle
  * engine that maintains many different sprites and randomly animates them so
  * that the creators can use more realistic animations for explosions or
  * rockets, etc.
- *
+ * 
  * To use this you simply need to create an object of this type and have it
  * update and draw.
- *
+ * 
  * @author David Spruill
  */
 public class ParticleEngine {
@@ -30,7 +34,7 @@ public class ParticleEngine {
      * 
      * @param particleImage the image to use as the particle
      */
-    public ParticleEngine (Image particleImage) {
+    public ParticleEngine(Image particleImage) {
         ParticleEngine(DEFAULT_COUNT, particleImage, DEFAULT_DIRECTION,
                 DEFAULT_VARIANCE, DEFAULT_DURATION);
     }
@@ -45,39 +49,39 @@ public class ParticleEngine {
      * @param tolerance how much the particles can vary from the given direction
      * @param length how long the particles will exist before being reset
      */
-    public ParticleEngine (int density, Image particleImage, Point direction,
+    public ParticleEngine(int density, Image particleImage, Point direction,
             int tolerance, int length) {
         spriteCount = density;
         spriteImage = particleImage;
         mainDirection = direction;
         variance = tolerance;
         duration = length;
-        
-        for(int i=0;i<spriteCount;i++) {
+
+        for (int i = 0; i < spriteCount; i++) {
         }
     }
 
-    public void draw (Graphics g) {
+    public void draw(Graphics g) {
 
     }
 
-    public void update () {
+    public void update() {
 
     }
 
-    public void setDuration (int length) {
+    public void setDuration(int length) {
         duration = length;
     }
 
-    public void setDensity (int density) {
+    public void setDensity(int density) {
         spriteCount = density;
     }
 
-    public void setDirection (Point direction) {
+    public void setDirection(Point direction) {
         mainDirection = direction;
     }
 
-    public void setLength (int length) {
+    public void setLength(int length) {
         duration = length;
     }
 }

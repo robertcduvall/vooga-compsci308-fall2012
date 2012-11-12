@@ -6,7 +6,7 @@ import vooga.platformer.gameobject.UpdateStrategy;
 
 /**
  * @author Yaqi Zhang
- *
+ * 
  */
 public class PlayerMoveStrategy implements UpdateStrategy {
     private static final double VELOCITY = 3;
@@ -17,11 +17,12 @@ public class PlayerMoveStrategy implements UpdateStrategy {
     /**
      * @param player GameObject
      */
-    public PlayerMoveStrategy (GameObject player) {
+    public PlayerMoveStrategy(GameObject player) {
         myPlayer = player;
     }
 
-    public void applyAction () {
+    @Override
+    public void applyAction() {
         myPlayer.setX(myVelocityX + myPlayer.getX());
         myPlayer.setY(myVelocityY + myPlayer.getY());
     }
@@ -29,28 +30,28 @@ public class PlayerMoveStrategy implements UpdateStrategy {
     /**
      * 
      */
-    public void jump () {
+    public void jump() {
         myVelocityY = -VELOCITY;
     }
 
     /**
      * 
      */
-    public void goLeft () {
+    public void goLeft() {
         myVelocityX = -VELOCITY;
     }
 
     /**
      * 
      */
-    public void goRight () {
+    public void goRight() {
         myVelocityX = VELOCITY;
     }
 
     /**
      * This method needs to be called by input when there is no button pressed.
      */
-    public void stop () {
+    public void stop() {
         myVelocityX = 0;
     }
 }

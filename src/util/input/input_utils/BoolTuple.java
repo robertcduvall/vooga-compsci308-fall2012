@@ -2,7 +2,7 @@ package util.input.input_utils;
 
 /**
  * @author Amay
- *
+ * 
  * @param <T>
  * @param <E>
  */
@@ -12,26 +12,26 @@ public class BoolTuple<T, E> {
     E elem2;
     Boolean active;
 
-    public BoolTuple (T elem1, E elem2) {
+    public BoolTuple(T elem1, E elem2) {
         this.elem1 = elem1;
         this.elem2 = elem2;
-        active=true;
+        active = true;
     }
 
-    public BoolTuple(T elem1, E elem2, boolean b){
-        this(elem1,elem2);
-        active=b;
+    public BoolTuple(T elem1, E elem2, boolean b) {
+        this(elem1, elem2);
+        active = b;
     }
 
-    public void activate(){
-        active=true;
+    public void activate() {
+        active = true;
     }
 
-    public void deactivate(){
-        active=false;
+    public void deactivate() {
+        active = false;
     }
 
-    public boolean isActive(){
+    public boolean isActive() {
         return active;
     }
 

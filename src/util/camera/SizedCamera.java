@@ -25,19 +25,18 @@ public abstract class SizedCamera implements Camera {
      * @param outerBounds The larger region that limits the range of the
      *        camera's bounds.
      */
-    public SizedCamera (Dimension2D cameraSize, Rectangle2D outerBounds) {
+    public SizedCamera(Dimension2D cameraSize, Rectangle2D outerBounds) {
         mySize = (Dimension2D) cameraSize.clone();
         myOuterBounds = (Rectangle2D) outerBounds.clone();
-        myBounds =
-                new Rectangle(0, 0, (int) mySize.getWidth(),
-                              (int) mySize.getHeight());
+        myBounds = new Rectangle(0, 0, (int) mySize.getWidth(),
+                (int) mySize.getHeight());
     }
 
     @Override
-    public abstract void update ();
+    public abstract void update();
 
     @Override
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
         return myBounds;
     }
 
@@ -46,7 +45,7 @@ public abstract class SizedCamera implements Camera {
      * 
      * @param bounds Rectangle used to set bounds.
      */
-    protected void setBounds (Rectangle2D bounds) {
+    protected void setBounds(Rectangle2D bounds) {
         myBounds = bounds;
     }
 
@@ -55,7 +54,7 @@ public abstract class SizedCamera implements Camera {
      * 
      * @return The <code>SizedCamera</code>'s outer bounds.
      */
-    protected Rectangle2D outerBounds () {
+    protected Rectangle2D outerBounds() {
         return myOuterBounds;
     }
 
@@ -64,7 +63,7 @@ public abstract class SizedCamera implements Camera {
      * 
      * @return The <code>SizedCamera</code>'s size.
      */
-    protected Dimension2D size () {
+    protected Dimension2D size() {
         return mySize;
     }
 }

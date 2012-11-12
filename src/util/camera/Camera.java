@@ -18,12 +18,12 @@ public interface Camera {
      * Updates the <code>Camera</code>. Will update the bounds, and may
      * update other state.
      */
-    void update ();
+    void update();
 
     /**
      * Returns the current bounds.
      * 
      * @return The bounds of the <code>Camera</code>.
      */
-    Rectangle2D getBounds ();
+    Rectangle2D getBounds();
 }

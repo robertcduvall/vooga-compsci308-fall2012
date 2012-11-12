@@ -1,4 +1,5 @@
 package vooga.shooter.gameObjects;
-public class Bullet extends Sprite{
+
+public class Bullet extends Sprite {
 
 }

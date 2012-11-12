@@ -7,10 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.text.JTextComponent;
 
 
 /**
@@ -25,7 +22,7 @@ public class SampleMenu extends JComponent {
     private static JComponent myPanel;
     private static JFrame myFrame;
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         // ---Assume these exist for original game.---
         JFrame frame = new JFrame();
         myFrame = frame;
@@ -41,13 +38,13 @@ public class SampleMenu extends JComponent {
         // ---This is what you need to do to add this menu---
         frame.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed (KeyEvent e) {
+            public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_M) {
                     final Menu menu = new Menu(myPanel);
                     GameButton gb1 = new GameButton("greenbutton", "Back");
                     GameListener gl = new GameListener() {
                         @Override
-                        public void actionPerformed (MouseEvent arg0) {
+                        public void actionPerformed(MouseEvent arg0) {
                             myPanel.remove(menu);
                             myFrame.repaint();
                         }
@@ -64,8 +61,9 @@ public class SampleMenu extends JComponent {
     }
 
     @Override
-    protected void paintComponent (Graphics pen) {
-        pen.drawString("Assume this is game canvas. Press M to bring up the menu.",
-                (int) (getSize().width / 4), (int) (getSize().height / 2));
+    protected void paintComponent(Graphics pen) {
+        pen.drawString(
+                "Assume this is game canvas. Press M to bring up the menu.",
+                (getSize().width / 4), (getSize().height / 2));
     }
 }

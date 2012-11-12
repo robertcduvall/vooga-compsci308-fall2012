@@ -3,8 +3,6 @@ package arcade;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import arcade.utility.ReadWriter;
 
 
@@ -29,7 +27,7 @@ public class GameManager {
      * 
      * @param gameObject the game to be managed
      */
-    public GameManager (IArcadeGame gameObject) {
+    public GameManager(IArcadeGame gameObject) {
         mySaver = new GameSaver();
         myGame = gameObject;
         // TODO
@@ -45,7 +43,7 @@ public class GameManager {
      * 
      * @param gameName name of the game to be managed
      */
-    public GameManager (String gameName) {
+    public GameManager(String gameName) {
         mySaver = new GameSaver();
         // TODO
     }
@@ -58,7 +56,7 @@ public class GameManager {
      * The Game Saver allows the game to save user preferences and high scores
      * without accessing the rest of the game manager.
      */
-    public void runGame () {
+    public void runGame() {
         myGame.runGame(getUserPreferences(), mySaver);
         // TODO
     }
@@ -68,7 +66,7 @@ public class GameManager {
      * User.xml. The highest score is always the first item on the list, for
      * easy access
      */
-    public List<Integer> getUserScores () {
+    public List<Integer> getUserScores() {
         // TODO
         return null;
     }
@@ -76,7 +74,7 @@ public class GameManager {
     /**
      * Loads the user's preferences for that particular game from User.xml.
      */
-    public String getUserPreferences () {
+    public String getUserPreferences() {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
@@ -88,7 +86,7 @@ public class GameManager {
      * Returns all reviews for the given game, displaying the current user's
      * review first (if it exists).
      */
-    public List<String> getReviews () {
+    public List<String> getReviews() {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
@@ -99,14 +97,14 @@ public class GameManager {
     /**
      * Returns the average of all the rations for the game.
      */
-    public Integer getAverageRatings () {
+    public Integer getAverageRatings() {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
         tags.add("rating");
         Integer scores = 0;
         List<String> ratings = ReadWriter.search(f, tags);
-        if(ratings.size() == 0) return null;
+        if (ratings.size() == 0) return null;
         for (String s : ratings) {
             scores += Integer.parseInt(s);
         }
@@ -117,14 +115,14 @@ public class GameManager {
      * Returns all ratings for the given game, displaying the current user's
      * rating first (if it exists).
      */
-    public List<Integer> getRatings () {
+    public List<Integer> getRatings() {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
         tags.add("rating");
         List<Integer> scores = new ArrayList<Integer>();
         List<String> ratings = ReadWriter.search(f, tags);
-        for(String s : ratings) {
+        for (String s : ratings) {
             scores.add(Integer.parseInt(s));
         }
         return scores;
@@ -136,13 +134,16 @@ public class GameManager {
      * 
      * @param review text for the review
      */
-    public void setReview (String review) {
+    public void setReview(String review) {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
         tags.add("review");
-        if(ReadWriter.loadData(f, tags) == null) addReview(review);
-        else editReview(review);
+        if (ReadWriter.loadData(f, tags) == null) {
+            addReview(review);
+        } else {
+            editReview(review);
+        }
     }
 
     /**
@@ -152,7 +153,7 @@ public class GameManager {
      * 
      * @param review text for the review
      */
-    public void addReview (String review) {
+    public void addReview(String review) {
         // TODO
     }
 
@@ -163,7 +164,7 @@ public class GameManager {
      * @param tag location of the previous review in the xml file
      * @param review text for the review
      */
-    public void editReview (String tag, String review) {
+    public void editReview(String tag, String review) {
         // TODO
     }
 
@@ -173,7 +174,7 @@ public class GameManager {
      * 
      * @param rating rating to be added
      */
-    public void setRating (int rating) {
+    public void setRating(int rating) {
         // TODO
     }
 
@@ -183,7 +184,7 @@ public class GameManager {
      * 
      * @param rating rating to be added
      */
-    public void addRating (int rating) {
+    public void addRating(int rating) {
         // TODO
     }
 
@@ -194,7 +195,7 @@ public class GameManager {
      * @param tag location of the previous rating
      * @param rating rating to be added
      */
-    public void setRating (String tag, int rating) {
+    public void setRating(String tag, int rating) {
         // TODO
     }
 }

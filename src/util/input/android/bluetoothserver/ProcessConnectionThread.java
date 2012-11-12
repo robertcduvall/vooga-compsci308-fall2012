@@ -1,22 +1,17 @@
 package util.input.android.bluetoothserver;
 
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.InputStream;
-
-import javax.microedition.io.StreamConnection;
 
 
 /**
  * 
  * @author BlueCove opensource Android project
- * Modified by Ben Schwab
- *
+ *         Modified by Ben Schwab
+ * 
  */
 
-public class ProcessConnectionThread implements Runnable{
+public class ProcessConnectionThread implements Runnable {
 
-   
     private AndroidCommandProcessor myProcessor;
     private StreamConnection mConnection;
 
@@ -25,8 +20,7 @@ public class ProcessConnectionThread implements Runnable{
     private static final int KEY_RIGHT = 1;
     private static final int KEY_LEFT = 2;
 
-    public ProcessConnectionThread(StreamConnection connection)
-    {
+    public ProcessConnectionThread(StreamConnection connection) {
         mConnection = connection;
         myProcessor = new AndroidGameBoyCommandProcessor();
     }
@@ -43,8 +37,7 @@ public class ProcessConnectionThread implements Runnable{
             while (true) {
                 int command = inputStream.read();
 
-                if (command == EXIT_CMD)
-                {	
+                if (command == EXIT_CMD) {
                     System.out.println("finish process");
                     break;
                 }
@@ -58,9 +51,10 @@ public class ProcessConnectionThread implements Runnable{
 
     /**
      * Process the command from client
+     * 
      * @param command the command code
      */
     private void processCommand(int command) {
-       myProcessor.processCommand(command);
+        myProcessor.processCommand(command);
     }
 }

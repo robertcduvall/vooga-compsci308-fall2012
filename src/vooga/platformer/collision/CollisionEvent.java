@@ -22,35 +22,35 @@ public abstract class CollisionEvent {
     private GameObject b;
     private CollisionDirection myDirection;
 
-    public CollisionEvent (GameObject a, GameObject b) {
+    public CollisionEvent(GameObject a, GameObject b) {
         this.a = a;
         this.b = b;
         computeDirection();
     }
 
-    public abstract void applyCollision (Level level);
+    public abstract void applyCollision(Level level);
 
-    protected GameObject a () {
+    protected GameObject a() {
         return a;
     }
 
-    protected GameObject b () {
+    protected GameObject b() {
         return b;
     }
 
-    protected CollisionDirection direction () {
+    protected CollisionDirection direction() {
         return myDirection;
     }
 
-    private void computeDirection () {
-        Rectangle2D intersection = a.getShape().createIntersection(b.getShape());
+    private void computeDirection() {
+        Rectangle2D intersection = a.getShape()
+                .createIntersection(b.getShape());
 
         // lateral collision ?
         if (intersection.getHeight() > intersection.getWidth()) {
             if (a.getX() > b.getX()) { // determine collision direction
                 myDirection = CollisionDirection.RIGHT;
-            }
-            else {
+            } else {
                 myDirection = CollisionDirection.LEFT;
             }
         }
@@ -58,8 +58,7 @@ public abstract class CollisionEvent {
         else {
             if (a.getY() > b.getY()) { // determine collision direction
                 myDirection = CollisionDirection.DOWN;
-            }
-            else {
+            } else {
                 myDirection = CollisionDirection.UP;
             }
         }

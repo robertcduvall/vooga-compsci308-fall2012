@@ -23,12 +23,12 @@ public class UserXMLReader {
     private List<User> myUsers;
     private Document dom;
 
-    public UserXMLReader () {
+    public UserXMLReader() {
         // create a list to hold the employee objects
         myUsers = new ArrayList<User>();
     }
 
-    private void parseXmlFile () {
+    private void parseXmlFile() {
         // get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
@@ -40,19 +40,16 @@ public class UserXMLReader {
             // parse using builder to get DOM representation of the XML file
             dom = db.parse("testxml.xml");
 
-        }
-        catch (ParserConfigurationException pce) {
+        } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        }
-        catch (SAXException se) {
+        } catch (SAXException se) {
             se.printStackTrace();
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
 
-    private void parseDocument () {
+    private void parseDocument() {
         // get the root elememt
         Element docEle = dom.getDocumentElement();
 
@@ -79,15 +76,15 @@ public class UserXMLReader {
      * @param el
      * @return
      */
-    private User getUser (Element el) {
+    private User getUser(Element el) {
 
         String name = getTextValue(el, "name");
         String password = getTextValue(el, "password");
         String picture = getTextValue(el, "picture");
-        int credits = getIntValue(el, "credits");
+        getIntValue(el, "credits");
 
         // Create a new User with the value read from the xml nodes
-        User e = new User(name,password, picture);
+        User e = new User(name, password, picture);
 
         return e;
     }
@@ -103,7 +100,7 @@ public class UserXMLReader {
      * @param tagName
      * @return
      */
-    private String getTextValue (Element ele, String tagName) {
+    private String getTextValue(Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
@@ -121,7 +118,7 @@ public class UserXMLReader {
      * @param tagName
      * @return
      */
-    private int getIntValue (Element ele, String tagName) {
+    private int getIntValue(Element ele, String tagName) {
         // in production application you would catch the exception
         return Integer.parseInt(getTextValue(ele, tagName));
     }
@@ -130,7 +127,7 @@ public class UserXMLReader {
      * Iterate through the list and print the
      * content to console
      */
-    private void printData () {
+    private void printData() {
 
         System.out.println("# Users '" + myUsers.size() + "'.");
         for (int i = 0; i < myUsers.size(); i++) {
@@ -139,7 +136,7 @@ public class UserXMLReader {
         }
     }
 
-    public void runExample () {
+    public void runExample() {
         // parse the xml file and get the dom object
         parseXmlFile();
 
@@ -150,7 +147,7 @@ public class UserXMLReader {
         printData();
     }
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         // create an instance
         UserXMLReader dpe = new UserXMLReader();
 
