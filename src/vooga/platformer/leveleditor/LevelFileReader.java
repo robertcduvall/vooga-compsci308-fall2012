@@ -55,18 +55,24 @@ public class LevelFileReader {
         for (int i = 0; i < spritesNode.getLength(); i++) {
             Node spriteNode = spritesNode.item(i);
             if (spriteNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element spriteElement = (Element) spriteNode;
-                String tag = spriteElement.getAttribute("type");
-                int x = XMLUtils.getTagInt("x", spriteElement);
-                int y = XMLUtils.getTagInt("y", spriteElement);
-                int width = XMLUtils.getTagInt("width", spriteElement);
-                int height = XMLUtils.getTagInt("height", spriteElement);
-                String imagePath = XMLUtils.getTagValue("imagePath", spriteElement);
-                spritesList.add(new Sprite(tag, x, y, width, height, imagePath));
+                Sprite builtSprite = buildSprite(spriteNode);
+                spritesList.add(builtSprite);
             }
         }
 
         return spritesList;
+    }
+
+    private Sprite buildSprite (Node spriteNode) {
+        Element spriteElement = (Element) spriteNode;
+        String tag = spriteElement.getAttribute("type");
+        int x = XMLUtils.getTagInt("x", spriteElement);
+        int y = XMLUtils.getTagInt("y", spriteElement);
+        int width = XMLUtils.getTagInt("width", spriteElement);
+        int height = XMLUtils.getTagInt("height", spriteElement);
+        String imagePath = XMLUtils.getTagValue("imagePath", spriteElement);
+        Sprite builtSprite = new Sprite(tag, x, y, width, height, imagePath);
+        return builtSprite;
     }
 
 }
