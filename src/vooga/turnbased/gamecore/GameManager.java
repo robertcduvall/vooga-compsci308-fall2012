@@ -5,20 +5,20 @@
  */
 package vooga.turnbased.gamecore;
 
-import vooga.turnbased.gameobject.Sprite;
-import vooga.turnbased.gui.GameCanvas;
-import java.awt.Point;
-import java.util.HashMap;
+import java.awt.Graphics;
 import java.util.Observable;
 import java.util.Observer;
+import vooga.turnbased.gameobject.battle.Enemy;
+import vooga.turnbased.gameobject.map.MapSprite;
+import vooga.turnbased.gui.GameCanvas;
 
 public class GameManager implements Observer {
 
     private final GameCanvas myGameCanvas;
-    private HashMap<Sprite, Point> mySprites;
-    private final GameMode myCurrentGameMode;
+    private GameMode myCurrentGameMode;
+    private GameMode myPausedMapMode;
     private Factory myFactory;
-    private Sprite myPlayer;
+    private MapSprite myPlayer;
     private final boolean isOver;
 
     /**
@@ -32,7 +32,7 @@ public class GameManager implements Observer {
         myCurrentGameMode = new MapMode(this);
         //myCurrentGameMode.initializeMap();
     }
-
+    
     public boolean isOver () {
         return isOver;
     }
@@ -40,13 +40,34 @@ public class GameManager implements Observer {
     public void update () {
 
     }
-
-    public void paint () {
-
+    
+    /**
+     * paint the images to the buffer
+     * @param g the Graphics object of the offScreenImage
+     * @param width Width of the image
+     * @param height Height of the image
+     */
+    public void paintImage(Graphics g, int width, int height) {
+    	myCurrentGameMode.paint(g, width, height);
     }
 
+    public void paint () {
+        myCurrentGameMode.paint(myGameCanvas.getGraphics(), myGameCanvas.getWidth(), 
+                myGameCanvas.getHeight());
+    }
+
+    public void startBattle(Enemy e) {
+        // "pause" the current MapMode and switch to BattleMode with the given enemy
+        myPausedMapMode = myCurrentGameMode;
+        myCurrentGameMode = new BattleMode(this, e);
+    }
+    
+    public void backToMap() {
+        myCurrentGameMode = myPausedMapMode;
+    }
+    
     @Override
     public void update (Observable arg0, Object arg1) {
-        // TODO: Receive notifications from GameModes.
+        
     }
 }

@@ -5,20 +5,19 @@
  */
 package vooga.turnbased.gui;
 
-import vooga.turnbased.gamecore.GameManager;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ResourceBundle;
+import vooga.turnbased.gamecore.GameManager;
 
 public class GameCanvas extends Canvas implements Runnable, KeyListener {
 
     private GameWindow myGameWindow;
     private GameManager myGameManager;
     private Thread myGameThread;
-    private ResourceBundle myResources;
     private int myDelayTime;
 
     // InfoPanel infoPanel;
@@ -30,8 +29,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     public GameCanvas (GameWindow gameWindow) {
         myGameWindow = gameWindow;
         myGameThread = new Thread(this);
-        myResources = myGameWindow.getResources();
-        myDelayTime = Integer.parseInt(myResources.getString("Delay"));
+        myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
     }
 
     /**
@@ -52,10 +50,30 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     @Override
     public void paintComponent (Graphics g) {
         super.paintComponent(g);
-        Image background = GameWindow.importImage(myResources, "BackgroundImage");
-        g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
+        Image background = GameWindow.importImage("BackgroundImage");
+        //g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
     }
 
+    /**
+     * override to implement buffer for painting objects
+     */
+    @Override
+    public void update(Graphics g) {
+    	Image offScreenImage = createImage(getSize().width, getSize().height);
+    	Graphics offScreenGraphics = offScreenImage.getGraphics();
+    	paint(offScreenGraphics);
+    	g.drawImage(offScreenImage, 0, 0, null);
+    }
+    
+    /**
+     * Paint gameobjects and background to the canvas
+     */
+    @Override
+    public void paint(Graphics g) {
+    	super.paint(g);
+    	myGameManager.paintImage(g, getSize().width, getSize().height);
+    }
+    
     /**
      * main game loop
      */
@@ -63,7 +81,8 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     public void run () {
         while (!myGameManager.isOver()) {
             myGameManager.update();
-            myGameManager.paint();
+            //myGameManager.paint();
+            repaint();
             try {
                 Thread.sleep(myDelayTime);
             }
@@ -72,7 +91,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
             }
         }
     }
-
+    
     /**
      * event handling when user types anything
      */

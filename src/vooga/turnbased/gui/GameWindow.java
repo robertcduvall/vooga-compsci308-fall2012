@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -17,7 +18,7 @@ import javax.swing.JMenuBar;
 /**
  * contains a Canvas, and menu that respond to change in games
  * 
- * @author Rex
+ * @author Rex, Tony
  **/
 public class GameWindow extends JFrame {
 
@@ -29,9 +30,10 @@ public class GameWindow extends JFrame {
     private int myInfoHeight = 100;
     private int myWidth;
     private int myHeight;
+    private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
 
     private GameCanvas myCanvas;
-    private ResourceBundle myResources;
+    private static ResourceBundle myResources;
 
     private JMenuBar myMenuBar;
     private Canvas myCurrentCanvas;
@@ -80,6 +82,7 @@ public class GameWindow extends JFrame {
      * @param canvasIndex MENU=0; EDITOR=1; GAME=2
      */
     public void changeCurrentCanvas (int canvasIndex) {
+        myCurrentCanvas.removeAll();
         remove(myCurrentCanvas);
         myCurrentCanvas = myCanvases.get(canvasIndex);
         add(myCurrentCanvas);
@@ -90,38 +93,33 @@ public class GameWindow extends JFrame {
     /**
      * import images from ResourceBundle
      * @param resources ResourceBundle object
-     * @param address image name under the image folder
+     * @param imageName image name under the image folder
      * @return Image object
      */
-    public static Image importImage(ResourceBundle resources, String address) {
-    	String ImageFolder = resources.getString("ImageFolder");
-        ImageIcon myImageIcon = new ImageIcon(ImageFolder + resources.getString(address));
-        return myImageIcon.getImage();   
+    public static Image importImage(String imageName) {
+    	String imageFolder = myResources.getString("ImageFolder");
+        ImageIcon imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        return imageIcon.getImage();   
     }
-
+    
+    /**
+     * import string from ResourceBundle
+     * 
+     * @param stringName string name in resource bundle
+     * @return
+     */
+    public static String importString(String stringName) {
+        return myResources.getString(stringName); 
+    }
+    
     /**
      * add the ResourceBundle to the canvas
-     * @param resource The name of the resource bundle
+     * @param resource Path to the resource bundle
      */
     public void addResourceBundle (String resource) {
-        myResources = ResourceBundle.getBundle("resources." + resource);
+        myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
     }
-
-    /**
-     * get the ResourceBundle that is currently used by the Canvas
-     * @return ResourceBundle object used for the canvas
-     */
-    public ResourceBundle getResources () {
-        return myResources;
-    }
-
-    /**
-     * set a ResourceBundle to be used by the canvas
-     * @param myResources the ResourceBundle to be used
-     */
-    public void setResources (ResourceBundle myResources) {
-        this.myResources = myResources;
-    }
+    
     /*
      * public void startFirstGame() {
      * myCanvas = new Canvas(myResources, myWidth, myHeight-myInfoHeight, this);
