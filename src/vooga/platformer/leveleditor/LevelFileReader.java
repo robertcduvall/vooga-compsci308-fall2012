@@ -5,7 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import vooga.platformer.util.xml.XMLUtils;
-import java.awt.*;
+import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,9 +24,9 @@ import java.util.Map;
  */
 public class LevelFileReader {
 
-    private final Document document;
-    private Element root;
-    private File levelFile;
+    private final Document myDocument;
+    private Element myRoot;
+    private File myLevelFile;
 
     /**
      * Creates a new LevelFileReader using the level data file specified.
@@ -43,8 +43,8 @@ public class LevelFileReader {
      * @param levelFile File in XML format representing the level to be read
      */
     public LevelFileReader (File levelFile) {
-        document = XMLUtils.initializeDocument(levelFile);
-        root = document.getElementById("level");
+        myDocument = XMLUtils.initializeDocument(levelFile);
+        myRoot = myDocument.getElementById("level");
     }
 
     /**
@@ -53,7 +53,7 @@ public class LevelFileReader {
      * @return name of the level as a String
      */
     public String getLevelID () {
-        return XMLUtils.getTagValue("id", root);
+        return XMLUtils.getTagValue("id", myRoot);
     }
 
     /**
@@ -62,7 +62,7 @@ public class LevelFileReader {
      * @return width of the level as an int
      */
     public int getWidth () {
-        return XMLUtils.getTagInt("width", root);
+        return XMLUtils.getTagInt("width", myRoot);
     }
 
     /**
@@ -71,7 +71,7 @@ public class LevelFileReader {
      * @return height of the level as an int
      */
     public int getHeight () {
-        return XMLUtils.getTagInt("height", root);
+        return XMLUtils.getTagInt("height", myRoot);
     }
 
     /**
@@ -81,7 +81,8 @@ public class LevelFileReader {
      * @return Image representing the background of the level
      */
     public Image getBackgroundImage () {
-        return XMLUtils.fileNameToImage(levelFile, XMLUtils.getTagValue("backgroundImage", root));
+        return XMLUtils.fileNameToImage(myLevelFile,
+                                        XMLUtils.getTagValue("backgroundImage", myRoot));
     }
 
     /**
@@ -93,7 +94,7 @@ public class LevelFileReader {
      *         gameObjects
      */
     public Collection<Sprite> getSprites () {
-        NodeList spritesNode = document.getElementsByTagName("gameobject");
+        NodeList spritesNode = myDocument.getElementsByTagName("gameobject");
         Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
 
         for (int i = 0; i < spritesNode.getLength(); i++) {
