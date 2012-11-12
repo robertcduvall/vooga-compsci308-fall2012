@@ -9,6 +9,8 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -120,7 +122,34 @@ public class LevelFileReader {
     }
 
     private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
-        // TODO add update strategies
+        NodeList strategiesNodeList = spriteElement.getElementsByTagName("strategies");
+
+        for (int i = 0; i < strategiesNodeList.getLength(); i++) {
+            Node strategiesNode = strategiesNodeList.item(i);
+            if (strategiesNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element strategiesElement = (Element) strategiesNode;
+                NodeList strategyNodeList = strategiesElement.getElementsByTagName("strategy");
+
+                for (int j = 0; j < strategyNodeList.getLength(); j++) {
+                    Node strategyNode = strategyNodeList.item(j);
+                    if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element strategyElement = (Element) strategyNode;
+                        NodeList paramNodeList = strategyElement.getChildNodes();
+                        Map<String, String> strategyMap = new HashMap<String, String>();
+
+                        for (int k = 0; k < paramNodeList.getLength(); k++) {
+                            Node paramNode = paramNodeList.item(k);
+                            if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element paramElement = (Element) paramNode;
+                                strategyMap.put(paramElement.getTagName(),
+                                                XMLUtils.getTagValue(paramElement));
+                            }
+                        }
+                        builtSprite.addUpdateStrategy(strategyMap);
+                    }
+                }
+            }
+        }
     }
 
     private void addSpriteAttributes (Element spriteElement, Sprite builtSprite) {
