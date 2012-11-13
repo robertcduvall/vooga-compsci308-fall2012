@@ -1,7 +1,10 @@
 package vooga.shooter.gameObjects;
+
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
 
 
 /**
@@ -20,7 +23,7 @@ public class Particle extends Sprite {
     private int durationLimit;
     private int durationExisted;
 
-    public void draw (Graphics2D g) {
+    public void draw(Graphics2D g) {
         Composite originalComposite = g.getComposite();
         g.setPaint(Color.blue);
         g.fill(blueSquare);
@@ -30,39 +33,45 @@ public class Particle extends Sprite {
         g.setComposite(originalComposite);
     }
 
-    public void update () {
+    @Override
+    public void update() {
 
     }
 
-    public void delete () {
+    @Override
+    public void delete() {
 
     }
 
-    public Point getPosition () {
+    @Override
+    public Point getPosition() {
 
     }
 
-    public void setPosition (Point position) {
+    public void setPosition(Point position) {
 
     }
 
-    public Point getDirection () {
+    @Override
+    public Point getDirection() {
 
     }
 
-    public void setDirection (Point direction) {
+    public void setDirection(Point direction) {
 
     }
 
-    public Image getImage () {
+    @Override
+    public Image getImage() {
 
     }
 
-    public void setImage (Image image) {
+    public void setImage(Image image) {
 
     }
 
-    public List<Sprite> collisions () {
+    @Override
+    public List<Sprite> collisions() {
 
     }
 }

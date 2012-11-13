@@ -21,7 +21,7 @@ public class ReadWriter {
      * @param f file to be searched
      * @param query query to search for
      */
-    public static List<String> search (File f, List<String> query) {
+    public static List<String> search(File f, List<String> query) {
         // TODO
         return null;
     }
@@ -36,7 +36,7 @@ public class ReadWriter {
      * @param tag location of the data
      * @param data data to be stored
      */
-    public static void storeData (File f, List<String> tags, String data) {
+    public static void storeData(File f, List<String> tags, String data) {
         // TODO
     }
 
@@ -49,7 +49,7 @@ public class ReadWriter {
      * @param f file to get data from
      * @param tag location of the data
      */
-    public static String loadData (File f, List<String> tags) {
+    public static String loadData(File f, List<String> tags) {
         // TODO
         return null;
     }

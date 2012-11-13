@@ -6,7 +6,7 @@ public class GameData {
     private int myHighScore;
     private int myTimesPlayed;
 
-    public GameData (String name, String gameInfo, int highScore, int timesPlayed) {
+    public GameData(String name, String gameInfo, int highScore, int timesPlayed) {
         myGameName = name;
         myGameInfo = gameInfo;
         myHighScore = highScore;

@@ -1,11 +1,14 @@
 /**
  * Abstract class that represent a mode in a game,
- * such as map mode where players walk around, or battle mode where players fight against enemies
+ * such as map mode where players walk around, or battle mode where players
+ * fight against enemies
+ * 
  * @author rex, Volodymyr
  */
 package vooga.turnbased.gamecore;
 
 import java.util.Observable;
+
 
 public abstract class GameMode extends Observable {
 
@@ -13,15 +16,18 @@ public abstract class GameMode extends Observable {
 
     /**
      * Constructor
-     * @param gm The GameManager which receive information about how sprites interact
+     * 
+     * @param gm The GameManager which receive information about how sprites
+     *        interact
      */
     public GameMode(GameManager gm) {
         myGameManager = gm;
-        this.addObserver(myGameManager);
+        addObserver(myGameManager);
     }
 
     /**
      * Notify GameManager about the events that happened
+     * 
      * @param event Event to be handled by the GameManager
      */
     private void notifyGameManager(Object event) {
@@ -29,13 +35,14 @@ public abstract class GameMode extends Observable {
         notifyObservers(event);
     }
 
-	/**
-	 * Test Test Test
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+    /**
+     * Test Test Test
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
 }

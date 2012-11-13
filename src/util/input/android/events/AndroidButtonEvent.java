@@ -16,17 +16,18 @@ public class AndroidButtonEvent {
     public static final int B = 6;
     public static final int START = 7;
     public static final int SELECT = 8;
-    
+
     /**
      * @return the id of this button event
      */
-    public int getID(){
+    public int getID() {
         return 0;
     }
+
     /**
      * @return returns an integer describing the type of press
      */
-    public int getPressType(){
+    public int getPressType() {
         return 0;
     }
 }

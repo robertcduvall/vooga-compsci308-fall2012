@@ -25,7 +25,11 @@ public abstract class GameObject {
     private double width;
     private double height;
 
+<<<<<<< HEAD
+    private GameObject() {
+=======
     private GameObject () {
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
         strategyList = new ArrayList<UpdateStrategy>();
     }
 
@@ -54,7 +58,11 @@ public abstract class GameObject {
         height = Double.parseDouble(configMap.get("height"));
     }
 
+<<<<<<< HEAD
+    protected Map<String, String> parseConfigString(String configString) {
+=======
     protected Map<String, String> parseConfigString (String configString) {
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
         Map<String, String> configMap = new HashMap<String, String>();
         String[] pairs = configString.split(" ");
         for (String entry : pairs) {
@@ -64,6 +72,21 @@ public abstract class GameObject {
         return configMap;
     }
 
+<<<<<<< HEAD
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setX(double inX) {
+        x = inX;
+    }
+
+    public void setY(double inY) {
+=======
     public double getX () {
         return x;
     }
@@ -77,6 +100,7 @@ public abstract class GameObject {
     }
 
     public void setY (double inY) {
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
         y = inY;
     }
 
@@ -123,6 +147,15 @@ public abstract class GameObject {
      * 
      * @param pen Graphics object to paint on
      */
+<<<<<<< HEAD
+    public void paint(Graphics pen, Camera cam) {
+        double x = getX();
+        double y = getY();
+        Rectangle2D rect = cam.getBounds();
+        double xOffset = rect.getX();
+        double yOffset = rect.getY();
+        if (getShape().intersects(rect)) {
+=======
     public void paint (Graphics pen, Camera cam) {
         double x = this.getX();
         double y = this.getY();
@@ -130,6 +163,7 @@ public abstract class GameObject {
         double xOffset = rect.getX();
         double yOffset = rect.getY();
         if (this.getShape().intersects(rect)) {
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
             pen.drawImage(getCurrentImage(), (int) (x - xOffset),
                     (int) (y - yOffset), null);
         }
@@ -138,7 +172,11 @@ public abstract class GameObject {
     /**
      * @return the current Image of this GameObject
      */
+<<<<<<< HEAD
+    public abstract Image getCurrentImage();
+=======
     public abstract Image getCurrentImage ();
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
 
     /**
      * Mark the GameObject for removal by the Level. The level should delete
@@ -162,7 +200,11 @@ public abstract class GameObject {
      * 
      * @return GameObject's bounds.
      */
+<<<<<<< HEAD
+    public Rectangle2D getShape() {
+=======
     public Rectangle2D getShape () {
+>>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
         return new Rectangle2D.Double(x, y, width, height);
     }
 }

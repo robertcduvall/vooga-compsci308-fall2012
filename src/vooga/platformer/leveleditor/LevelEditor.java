@@ -1,9 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,7 +11,6 @@ import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,7 +36,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import vooga.platformer.gui.menu.*;
+import vooga.platformer.gui.menu.GameButton;
+import vooga.platformer.gui.menu.GameListener;
 
 /**
  * 
@@ -68,7 +66,8 @@ public class LevelEditor extends JFrame{
     public static void main (String[] args) {
         new LevelEditor();
     }
-    public LevelEditor () {
+
+    public LevelEditor() {
         super("LevelEditor");
         isRunning = true;
         follow = false;
@@ -89,6 +88,7 @@ public class LevelEditor extends JFrame{
             repaint();
         }
     }
+
     private void update() {
         g2d.drawImage(background, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
         for (Sprite sprite : mySprites) {
@@ -100,39 +100,38 @@ public class LevelEditor extends JFrame{
             currentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
         }
     }
-    private Image getImage (String filename) {
+
+    private Image getImage(String filename) {
         Image ret = null;
         try {
             ret = ImageIO.read(new File(filename));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("file was not found");
             e.printStackTrace();
         }
         return ret;
 
     }
-    private void frameBuild () {
+
+    private void frameBuild() {
         myContainer = this;
         setPreferredSize(DEFAULT_FRAME_SIZE);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-        }
-        catch (ClassNotFoundException e) {
+            UIManager.setLookAndFeel(UIManager
+                    .getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        catch (InstantiationException e) {
+        } catch (InstantiationException e) {
             e.printStackTrace();
-        }
-        catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-        catch (UnsupportedLookAndFeelException e) {
+        } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
     }
+
     private void createListeners () {
         myMouseListener = new MouseAdapter() {
             @Override 
@@ -181,15 +180,15 @@ public class LevelEditor extends JFrame{
         gb.setGameListener(myGameListener);
         return gb;
     }
-    private void createEditPane () {
-        backbuffer = new BufferedImage(DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height,
-                BufferedImage.TYPE_INT_RGB);
+    private void createEditPane() {
+        backbuffer = new BufferedImage(DEFAULT_FRAME_SIZE.width,
+                DEFAULT_FRAME_SIZE.height, BufferedImage.TYPE_INT_RGB);
         g2d = backbuffer.createGraphics();
         JPanel panel = new JPanel() {
             @Override
             public void paintComponent(Graphics g) {
-                g.drawImage(backbuffer, 0, 0,
-                        DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, myContainer);
+                g.drawImage(backbuffer, 0, 0, DEFAULT_FRAME_SIZE.width,
+                        DEFAULT_FRAME_SIZE.height, myContainer);
             }
         };
         panel.setLayout(new BorderLayout());
@@ -198,12 +197,13 @@ public class LevelEditor extends JFrame{
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
-    private void createButtonPanel () {
+
+    private void createButtonPanel() {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
         subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
         subpanel.setPreferredSize(new Dimension(50, 150));
-        for (String  sprite : mySpriteTypes.keySet()) {
+        for (String sprite : mySpriteTypes.keySet()) {
             subpanel.add(createButton(sprite));
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -211,11 +211,14 @@ public class LevelEditor extends JFrame{
         panel.setOpaque(false);
         myViewPane.add(panel, BorderLayout.WEST);
     }
-    protected void createPopupMenu (final Component comp, final int x, final int y) {
+
+    protected void createPopupMenu(final Component comp, final int x,
+            final int y) {
         JPopupMenu pop = new JPopupMenu();
         for (String subsprite : mySpriteTypes.get(comp.getName())) {
             JMenuItem j = new JMenuItem(subsprite);
             j.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent event) {
                     Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40, 
                             IMAGE_PATH + event.getActionCommand() + ".png");
@@ -280,14 +283,22 @@ public class LevelEditor extends JFrame{
     private void fillMap() {
         mySpriteTypes = new HashMap<String, List<String>>();
         List<String> list = new ArrayList<String>();
-        list.add("Yoshi"); list.add("Pink Yoshi"); //list.add("Yoshi Egg"); list.add("Flying Yoshi");
-        mySpriteTypes.put("Yoshi", list); list = new ArrayList<String>();
-        list.add("Mario"); //list.add("Fireflower Mario"); list.add("Mario on Yoshi"); list.add("Baby Mario");
-        mySpriteTypes.put("Mario", list); list = new ArrayList<String>();
-        //        list.add("Squished Goomba"); list.add("Giant Goomba"); list.add("Tiny Goomba");
-        //        mySpriteTypes.put("Goomba", list); list = new ArrayList<String>();
-        list.add("Bowser"); list.add("Baby Bowser");
-        mySpriteTypes.put("Bowser", list); 
+        list.add("Yoshi");
+        list.add("Pink Yoshi"); // list.add("Yoshi Egg");
+                                // list.add("Flying Yoshi");
+        mySpriteTypes.put("Yoshi", list);
+        list = new ArrayList<String>();
+        list.add("Mario"); // list.add("Fireflower Mario");
+                           // list.add("Mario on Yoshi");
+                           // list.add("Baby Mario");
+        mySpriteTypes.put("Mario", list);
+        list = new ArrayList<String>();
+        // list.add("Squished Goomba"); list.add("Giant Goomba");
+        // list.add("Tiny Goomba");
+        // mySpriteTypes.put("Goomba", list); list = new ArrayList<String>();
+        list.add("Bowser");
+        list.add("Baby Bowser");
+        mySpriteTypes.put("Bowser", list);
         mySprites = new ArrayList<Sprite>();
     }
 }
