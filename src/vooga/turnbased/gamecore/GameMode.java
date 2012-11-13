@@ -57,7 +57,9 @@ public abstract class GameMode extends Observable {
      * @param canvasWidth
      * @param canvasHeight
      */
-    public abstract void paint(Graphics g, int canvasWidth, int canvasHeight);
+    public abstract void paint(Graphics g);
+    
+    public abstract void update ();
 
     public abstract void handleKeyPressed (KeyEvent e);
 

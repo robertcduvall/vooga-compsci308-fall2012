@@ -8,13 +8,14 @@ package vooga.turnbased.gamecore;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gui.GameWindow;
 
 
@@ -33,30 +34,31 @@ public class MapMode extends GameMode {
     private int myNumDisplayRows;
     private int myNumDisplayCols;
     private MapObject myPlayer;
-    private Point myDimension;
-    //private Point myScreenOrigin;
+    private Point myBottomRightCorner;
+    private int myCurrentTileWidth;
+    private int myCurrentTileHeight;
+    private Rectangle myCurrentCamera;
 
     public MapMode (GameManager gm) {
         super(gm);
-        mySprites = new HashMap<Point, List<MapObject>>();
-        myNumDisplayRows = 5;
-        myNumDisplayCols = 7;
-        myDimension = new Point (20, 30);
-        //myScreenOrigin = new Point(0, 0);
-        addSpriteToAll();
-        Point center = new Point(7, 5);
-        myPlayer = new MapPlayerObject(ID, center);
-        addSprite(center, myPlayer);
+        myNumDisplayRows = 11;
+        myNumDisplayCols = 15;
+        myBottomRightCorner = new Point (20, 30);
+        addHardcodedSprites();
     }
 
     // only for testing purposes
-    public void addSpriteToAll () {
-        for (int i = 0; i < myDimension.x; i++) {
-            for (int j = 0; j < myDimension.y; j++) {
+    public void addHardcodedSprites () {
+        mySprites = new HashMap<Point, List<MapObject>>();
+        for (int i = 0; i < myBottomRightCorner.x; i++) {
+            for (int j = 0; j < myBottomRightCorner.y; j++) {
                 Point p = new Point(i, j);
                 addSprite(p, new MapObject(ID, p));
             }
         }
+        Point center = new Point(7, 5);
+        myPlayer = new MapPlayerObject(ID, center);
+        addSprite(center, myPlayer);
     }
 
     public void addSprite (Point p, MapObject s) {
@@ -69,23 +71,29 @@ public class MapMode extends GameMode {
             mySprites.put(p, spriteList);
         }
     }
+    
+    @Override
+    public void update () {
+        myCurrentTileWidth = getGM().getCanvasDimension().width / myNumDisplayCols;
+        myCurrentTileHeight = getGM().getCanvasDimension().height / myNumDisplayRows;
+        Point playerCoord = myPlayer.getCoord();
+        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1) / 2,
+                                        playerCoord.y - (myNumDisplayRows - 1) / 2,
+                                        myNumDisplayCols, myNumDisplayRows);
+    }
 
     @Override
-    public void paint (Graphics g, int canvasWidth, int canvasHeight) {
-        int tileWidth = canvasWidth / (myNumDisplayCols*2) + 1;
-        int tileHeight = canvasHeight / (myNumDisplayRows*2) + 1;
-        Point playerCoord = myPlayer.getCoord();
-        for (int i = playerCoord.x - myNumDisplayCols; i < playerCoord.x + myNumDisplayCols; i++) {
-            for (int j = playerCoord.y - myNumDisplayRows; j < playerCoord.y + myNumDisplayRows; j++) {
-
+    public void paint (Graphics g) {
+        for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
+            for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
                 List<MapObject> spriteList = mySprites.get(new Point(i, j));
-                int xOffset = (i - (playerCoord.x - myNumDisplayCols)) * tileWidth;
-                int yOffset = (j - (playerCoord.y - myNumDisplayRows)) * tileHeight;
+                int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth;
+                int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight;
                 Image background = GameWindow.importImage("TileBackground");
-                g.drawImage(background, xOffset, yOffset, tileWidth, tileHeight, null);
+                g.drawImage(background, xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
                 if (spriteList != null) {
                     for (MapObject s : spriteList) {
-                        g.drawImage(s.getImage(), xOffset, yOffset, tileWidth, tileHeight, null);
+                        g.drawImage(s.getImage(), xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
                     }
                 }
             }
@@ -93,7 +101,7 @@ public class MapMode extends GameMode {
     }
     
     public void moveSprite(MapObject s, Point dest) {
-        if (dest.x >= 0 && dest.x < myDimension.x && dest.y >= 0 && dest.y < myDimension.y) {
+        if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0 && dest.y < myBottomRightCorner.y) {
             Point oldCoord = s.getCoord();
             
             if (mySprites.get(oldCoord).contains(s)) {

@@ -17,7 +17,13 @@ public class BattleMode extends GameMode {
     }
 
     @Override
-    public void paint (Graphics g, int canvasWidth, int canvasHeight) {
+    public void update () {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    @Override
+    public void paint (Graphics g) {
         
     }
     
