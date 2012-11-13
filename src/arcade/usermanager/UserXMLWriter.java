@@ -24,6 +24,7 @@ import javax.xml.transform.Transformer;
  *
  */
 public class UserXMLWriter {
+    private final String myUserFilePath="src/arcade/database/";
     
     /**
      * initiate a new xml for user   (we should specify where to store these user xmls)
@@ -59,7 +60,7 @@ public class UserXMLWriter {
           TransformerFactory transformerFactory = TransformerFactory.newInstance();
           Transformer transformer = transformerFactory.newTransformer();
           DOMSource source = new DOMSource(doc);
-          StreamResult result = new StreamResult(new File("C:\\Users\\difan\\workspace\\gediva-group8"));
+          StreamResult result = new StreamResult(new File( myUserFilePath));
 
           // Output to console for testing
           // StreamResult result = new StreamResult(System.out);

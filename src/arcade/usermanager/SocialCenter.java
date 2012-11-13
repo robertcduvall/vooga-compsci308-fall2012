@@ -17,25 +17,47 @@ import java.util.List;
 
 public class SocialCenter {
     private User myCurrentUser;
-    private List<String> availableUsers;
+    private List<String> availableUserName;
+    private List<User> myAllUser;
+    private final String myUserFilePath="src/arcade/database/";
+    private UserXMLReader myXMLReader;
+    private UserXMLWriter myXMLWriter;
+    
 
     /*
      * initiate user list
      */
-    public void updateUser () {
+    public void initiateUser () {
+        myXMLReader=new UserXMLReader();
+        myXMLWriter=new UserXMLWriter();
         
-        availableUsers=new ArrayList<String>();
+        availableUserName=new ArrayList<String>();
+        myAllUser=new ArrayList<User>();
         
-        File folder = new File("your/path");
+        File folder = new File(myUserFilePath);
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < listOfFiles.length; i++) {
         if (listOfFiles[i].isFile()) {
-        availableUsers.add(listOfFiles[i].getName());
+        availableUserName.add(listOfFiles[i].getName());
       }
+        
+        for(String name:availableUserName){
+            User newUser= myXMLReader.initiateUser(myUserFilePath+name+".xml");
+            myAllUser.add(newUser);
+        }
     }
         
 
+    }
+    
+    private void addNewUser(String userName, String password, String picture){
+        //write an xml file
+        UserXMLWriter.makeUserXML(userName, password, picture);
+        availableUserName.add(userName);
+        User newUser= myXMLReader.initiateUser(myUserFilePath+userName+".xml");
+        myAllUser.add(newUser);
+        
     }
 
     /*
@@ -48,7 +70,7 @@ public class SocialCenter {
     /*
      * return log on status
      */
-    public String registerUser (String username, String password) {
+    public String registerUser (String username, String password, String picture) {
 
     }
 
