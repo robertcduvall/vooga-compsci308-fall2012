@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
+import vooga.turnbased.gamecreation.Factory;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gui.GameCanvas;
 

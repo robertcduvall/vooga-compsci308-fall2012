@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecreation;
 
 import java.util.HashMap;
 
