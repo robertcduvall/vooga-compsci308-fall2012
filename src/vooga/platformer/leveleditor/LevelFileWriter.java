@@ -40,26 +40,12 @@ public final class LevelFileWriter {
      */
     public static final int SUCCESSFUL_WRITE = 1;
 
-    private LevelFileWriter() {
+    private LevelFileWriter () {
         /*
          * Empty constructor
          */
     }
 
-<<<<<<< HEAD
-    // Simple (temporary) test method
-    public static void main(String[] args) {
-        ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-        sprites.add(new Sprite("enemy", 0, 0, 0, 0, "somepath.jpg"));
-        sprites.add(new Sprite("enemy", 0, 0, 0, 0, "somepath.jpg"));
-        sprites.get(0).addAttribute("hp", String.valueOf(10));
-        sprites.get(0).addAttribute("jumpHeight", String.valueOf(5));
-        writeLevel("src/vooga/platformer/data/test.xml", "level 1", 3, 3,
-                "something.jpg", sprites);
-    }
-
-=======
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     /**
      * Method that writes the data describing a platformer level to an XML file
      * so that it can be reconstructed by a level factory.
@@ -74,8 +60,8 @@ public final class LevelFileWriter {
      * @return an integer constant representing whether the file was written
      *         successfully or not
      */
-    public static int writeLevel(String filePath, String levelID, int width,
-            int height, String backgroundImage, Collection<Sprite> levelObjects) {
+    public static int writeLevel (String filePath, String levelID, int width, int height,
+                                  String backgroundImage, Collection<Sprite> levelObjects) {
         try {
             DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -99,44 +85,39 @@ public final class LevelFileWriter {
             writer.close();
 
             // print xml to console
-            System.out.println("What was written in " + filePath + "\n\n"
-                    + xmlString);
-        } catch (ParserConfigurationException e) {
+            System.out.println("What was written in " + filePath + "\n\n" + xmlString);
+        }
+        catch (ParserConfigurationException e) {
             e.printStackTrace();
             return UNSUCCESSFUL_WRITE;
-        } catch (TransformerException e) {
+        }
+        catch (TransformerException e) {
             e.printStackTrace();
             return UNSUCCESSFUL_WRITE;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             return UNSUCCESSFUL_WRITE;
         }
         return SUCCESSFUL_WRITE;
     }
 
-    private static void addLevelObjects(Collection<Sprite> levelObjects,
-            Document doc, Element level) {
+    private static void addLevelObjects (Collection<Sprite> levelObjects, Document doc,
+                                         Element level) {
         for (Sprite s : levelObjects) {
             Element spriteElement = doc.createElement("gameObject");
             spriteElement.setAttribute("type", s.getType());
 
-            appendChildTextNode(doc, spriteElement, "x",
-                    String.valueOf(s.getX()));
-            appendChildTextNode(doc, spriteElement, "y",
-                    String.valueOf(s.getY()));
-            appendChildTextNode(doc, spriteElement, "width",
-                    String.valueOf(s.getWidth()));
-            appendChildTextNode(doc, spriteElement, "height",
-                    String.valueOf(s.getHeight()));
-            appendChildTextNode(doc, spriteElement, "imagePath",
-                    String.valueOf(s.getImagePath()));
+            appendChildTextNode(doc, spriteElement, "x", String.valueOf(s.getX()));
+            appendChildTextNode(doc, spriteElement, "y", String.valueOf(s.getY()));
+            appendChildTextNode(doc, spriteElement, "width", String.valueOf(s.getWidth()));
+            appendChildTextNode(doc, spriteElement, "height", String.valueOf(s.getHeight()));
+            appendChildTextNode(doc, spriteElement, "imagePath", String.valueOf(s.getImagePath()));
 
-            if (s.getUpdateStrategies() != null
-                    && s.getUpdateStrategies().size() > 0) {
+            if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
                 Element strategiesElement = doc.createElement("strategies");
                 for (Map<String, String> strategy : s.getUpdateStrategies()) {
-                    appendMapContents(doc, strategiesElement, "strategy",
-                            strategy);
+                    appendMapContents(doc, strategiesElement, "strategy", strategy);
                 }
                 spriteElement.appendChild(strategiesElement);
             }
@@ -149,8 +130,8 @@ public final class LevelFileWriter {
         }
     }
 
-    private static void appendMapContents(Document doc, Element parentElement,
-            String childElementName, Map<String, String> map) {
+    private static void appendMapContents (Document doc, Element parentElement,
+                                           String childElementName, Map<String, String> map) {
         Element strategyElement = doc.createElement(childElementName);
         for (String param : map.keySet()) {
             appendChildTextNode(doc, strategyElement, param, map.get(param));
@@ -158,8 +139,7 @@ public final class LevelFileWriter {
         parentElement.appendChild(strategyElement);
     }
 
-    private static String getXMLAsString(Document doc)
-            throws TransformerException {
+    private static String getXMLAsString (Document doc) throws TransformerException {
         TransformerFactory transfac = TransformerFactory.newInstance();
         Transformer trans = transfac.newTransformer();
         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -173,8 +153,8 @@ public final class LevelFileWriter {
         return xmlString;
     }
 
-    private static void appendChildTextNode(Document doc,
-            Element parentElement, String attributeName, String value) {
+    private static void appendChildTextNode (Document doc, Element parentElement,
+                                             String attributeName, String value) {
         Element element = doc.createElement(attributeName);
         Text text = doc.createTextNode(value);
         element.appendChild(text);

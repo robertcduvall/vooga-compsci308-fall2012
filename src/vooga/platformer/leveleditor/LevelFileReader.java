@@ -1,23 +1,17 @@
 package vooga.platformer.leveleditor;
 
-import java.awt.Image;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import vooga.platformer.util.xml.XMLUtils;
-<<<<<<< HEAD
-=======
-import java.awt.Image;
+
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
 
 
 /**
@@ -49,15 +43,11 @@ public class LevelFileReader {
      * 
      * @param levelFile File in XML format representing the level to be read
      */
-<<<<<<< HEAD
-    public LevelFileReader(File levelFile) {
-        document = XMLUtils.initializeDocument(levelFile);
-        root = document.getElementById("level");
-=======
+
     public LevelFileReader (File levelFile) {
         myDocument = XMLUtils.initializeDocument(levelFile);
+        myLevelFile = levelFile;
         myRoot = myDocument.getDocumentElement();
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     }
 
     /**
@@ -65,13 +55,8 @@ public class LevelFileReader {
      * 
      * @return name of the level as a String
      */
-<<<<<<< HEAD
-    public String getLevelID() {
-        return XMLUtils.getTagValue("id", root);
-=======
     public String getLevelID () {
         return XMLUtils.getTagValue("id", myRoot);
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     }
 
     /**
@@ -79,13 +64,8 @@ public class LevelFileReader {
      * 
      * @return width of the level as an int
      */
-<<<<<<< HEAD
-    public int getWidth() {
-        return XMLUtils.getTagInt("width", root);
-=======
     public int getWidth () {
         return XMLUtils.getTagInt("width", myRoot);
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     }
 
     /**
@@ -93,50 +73,32 @@ public class LevelFileReader {
      * 
      * @return height of the level as an int
      */
-<<<<<<< HEAD
-    public int getHeight() {
-        return XMLUtils.getTagInt("height", root);
-=======
     public int getHeight () {
         return XMLUtils.getTagInt("height", myRoot);
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     }
 
     /**
      * Gets the image that is to be the background scenery of the level. This
      * will be rendered behind the Sprites.
-     * 
+     *
      * @return Image representing the background of the level
      */
-<<<<<<< HEAD
-    public Image getBackgroundImage() {
-        return XMLUtils.fileNameToImage(levelFile,
-                XMLUtils.getTagValue("backgroundImage", root));
-=======
     public Image getBackgroundImage () {
         return XMLUtils.fileNameToImage(myLevelFile,
                                         XMLUtils.getTagValue("backgroundImage", myRoot));
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     }
 
     /**
      * Gets all the elements in the level data file tagged as gameObjects. The
      * Sprite objects are built using the parameters specified in level data
      * file.
-     * 
+     *
      * @return a collection of Sprite objects representing the level's
      *         gameObjects
      */
-<<<<<<< HEAD
-    public Collection<Sprite> getSprites() {
-        NodeList spritesNode = document.getElementsByTagName("gameobject");
-        Collection<Sprite> spritesList = new ArrayList<Sprite>(
-                spritesNode.getLength());
-=======
     public Collection<Sprite> getSprites () {
         NodeList spritesNode = myDocument.getElementsByTagName("gameobject");
         Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
 
         for (int i = 0; i < spritesNode.getLength(); i++) {
             Node spriteNode = spritesNode.item(i);
@@ -163,10 +125,6 @@ public class LevelFileReader {
         return builtSprite;
     }
 
-<<<<<<< HEAD
-    private void addUpdateStrategies(Element spriteElement, Sprite builtSprite) {
-        // TODO add update strategies
-=======
     private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
         NodeList strategiesNodeList = spriteElement.getElementsByTagName("strategies");
 
@@ -196,7 +154,6 @@ public class LevelFileReader {
                 }
             }
         }
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
     }
 
     private void addSpriteAttributes(Element spriteElement, Sprite builtSprite) {
