@@ -48,8 +48,8 @@ public class MapMode extends GameMode {
 
     // only for testing purposes
     public void addSpriteToAll () {
-        for (int i = 0; i < myNumDisplayRows; i++) {
-            for (int j = 0; j < myNumDisplayCols; j++) {
+        for (int i = 0; i < myNumDisplayRows*2; i++) {
+            for (int j = 0; j < myNumDisplayCols*2; j++) {
                 Point p = new Point(j, i);
                 addSprite(p, new MapSprite(p));
             }
@@ -105,16 +105,25 @@ public class MapMode extends GameMode {
         switch(keyCode) {
             case KeyEvent.VK_LEFT:
                 moveSprite(myPlayer, myPlayer.getCoord(LEFT));
+                changeScreenOrigin(LEFT);
                 break;
             case KeyEvent.VK_UP:
                 moveSprite(myPlayer, myPlayer.getCoord(UP));
+                changeScreenOrigin(UP);
                 break;
             case KeyEvent.VK_RIGHT:
                 moveSprite(myPlayer, myPlayer.getCoord(RIGHT));
+                changeScreenOrigin(RIGHT);
                 break;
             case KeyEvent.VK_DOWN:
                 moveSprite(myPlayer, myPlayer.getCoord(DOWN));
+                changeScreenOrigin(DOWN);
                 break;
         }
+    }
+    
+    public void changeScreenOrigin (Point dir) {
+        myScreenOrigin.x += dir.x;
+        myScreenOrigin.y += dir.y;
     }
 }
