@@ -28,11 +28,13 @@ public class OnButton {
     private static final int buttonWidth = 400;
 
     /**
+     * This code starts it all!
+     * 
      * @param args
      */
     public static void main (String[] args) {
 
-        // creates JFrame and waits for button press.
+        // sets up the jframe and jpanel
         startFrame = new JFrame("Are you ready?");
         startFrame.setSize(new Dimension(frameWidth, frameHeight));
         startPanel = new JPanel();
@@ -42,10 +44,10 @@ public class OnButton {
 
         startFrame.getContentPane().add(startPanel, BorderLayout.CENTER);
 
+        // starts the jframe
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startFrame.pack();
         startFrame.setVisible(true);
-
     }
 
     private static void addPowerButton () {
