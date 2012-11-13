@@ -34,6 +34,10 @@ public abstract class SizedCamera implements Camera {
 
     @Override
     public Rectangle2D getBounds() {
+        if (myOuterBounds.contains(myBounds)) {
+            return myBounds;
+        }
+        obeyOuterBounds();
         return myBounds;
     }
 
@@ -51,7 +55,7 @@ public abstract class SizedCamera implements Camera {
      * 
      * @return The <code>SizedCamera</code>'s outer bounds.
      */
-    protected Rectangle2D outerBounds() {
+    protected Rectangle2D outerBounds () {
         return myOuterBounds;
     }
 
@@ -60,7 +64,29 @@ public abstract class SizedCamera implements Camera {
      * 
      * @return The <code>SizedCamera</code>'s size.
      */
-    protected Dimension2D size() {
+    protected Dimension2D getSize () {
         return mySize;
+    }
+
+    /**
+     * Ensures that the <code>SizedCamera</code>'s bounds are inside its outer
+     * bounds.</br>If the outer bounds are smaller than the camera bounds,
+     * the camera's top-left corner will be set to the outer bounds' top-left
+     * corner.
+     */
+    protected void obeyOuterBounds () {
+        double x = Math.min(getBounds().getX(),
+                            outerBounds().getX() +
+                            outerBounds().getWidth() -
+                            getSize().getHeight());
+        x = Math.max(x, outerBounds().getX());
+
+        double y = Math.min(getBounds().getY(),
+                            outerBounds().getY() +
+                            outerBounds().getHeight() -
+                            getSize().getHeight());
+        y = Math.max(y, outerBounds().getY());
+
+        getBounds().setRect(x, y, getSize().getWidth(), getSize().getHeight());
     }
 }
