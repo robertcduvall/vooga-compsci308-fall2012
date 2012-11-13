@@ -1,6 +1,7 @@
 package arcade.gui.panel;
 
 import javax.swing.JPanel;
+import arcade.gui.Arcade;
 
 
 /**
@@ -12,8 +13,9 @@ import javax.swing.JPanel;
 public abstract class AbstractPanel extends JPanel {
     
     private String myPanelType;
+    private Arcade myArcade;
 
-    public AbstractPanel (AbstractPanel thePanel) {
+    public AbstractPanel (Arcade a) {
 
         makeListeners();
         addComponents();
@@ -31,6 +33,10 @@ public abstract class AbstractPanel extends JPanel {
     
     protected void setPanelType(String panelType){
         myPanelType = panelType;
+    }
+    
+    protected Arcade getArcade(){
+        return myArcade;
     }
     
     

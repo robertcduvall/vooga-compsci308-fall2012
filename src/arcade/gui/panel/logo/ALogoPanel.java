@@ -1,5 +1,6 @@
 package arcade.gui.panel.logo;
 
+import arcade.gui.Arcade;
 import arcade.gui.panel.AbstractPanel;
 
 /**
@@ -7,32 +8,22 @@ import arcade.gui.panel.AbstractPanel;
  * @author Michael Deng
  *
  */
-public class ALogoPanel extends AbstractPanel {
+abstract public class ALogoPanel extends AbstractPanel {
 
     private static final String PANEL_TYPE = "logo";
     
-    public ALogoPanel(AbstractPanel thePanel){
-        super(thePanel);
+    public ALogoPanel(Arcade a){
+        super(a);
         super.setPanelType(PANEL_TYPE);
         
     }
 
-    @Override
-    protected void addComponents () {
-        // TODO Auto-generated method stub
-        
-    }
+    abstract protected void makeListeners ();
 
-    @Override
-    protected void makeListeners () {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    abstract protected void addComponents (); 
 
-    @Override
-    public void refresh () {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    abstract public void refresh () ;
     
 }

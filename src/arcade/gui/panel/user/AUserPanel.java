@@ -1,5 +1,6 @@
 package arcade.gui.panel.user;
 
+import arcade.gui.Arcade;
 import arcade.gui.panel.AbstractPanel;
 
 /**
@@ -7,33 +8,24 @@ import arcade.gui.panel.AbstractPanel;
  * @author Michael Deng
  *
  */
-public class AUserPanel extends AbstractPanel {
+abstract public class AUserPanel extends AbstractPanel {
     
     private static final String PANEL_TYPE = "user";
     
-    public AUserPanel(AbstractPanel thePanel){
-        super(thePanel);
+    public AUserPanel(Arcade a){
+        super(a);
         super.setPanelType(PANEL_TYPE);
         
     }
 
-    @Override
-    protected void addComponents () {
-        // TODO Auto-generated method stub
-        
-    }
+    abstract protected void makeListeners ();
 
-    @Override
-    protected void makeListeners () {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    abstract protected void addComponents (); 
 
-    @Override
-    public void refresh () {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    abstract public void refresh () ;
+
     
 
 }

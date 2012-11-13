@@ -1,5 +1,6 @@
 package arcade.gui.panel.nav;
 
+import arcade.gui.Arcade;
 import arcade.gui.panel.AbstractPanel;
 
 /**
@@ -7,32 +8,22 @@ import arcade.gui.panel.AbstractPanel;
  * @author Michael Deng
  *
  */
-public class ANavPanel extends AbstractPanel {
+abstract public class ANavPanel extends AbstractPanel {
 
     private static final String PANEL_TYPE = "nav";
     
-    public ANavPanel(AbstractPanel thePanel){
-        super(thePanel);
+    public ANavPanel(Arcade a){
+        super(a);
         super.setPanelType(PANEL_TYPE);
         
     }
 
-    @Override
-    protected void addComponents () {
-        // TODO Auto-generated method stub
-        
-    }
+    abstract protected void makeListeners ();
 
-    @Override
-    protected void makeListeners () {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    abstract protected void addComponents (); 
 
-    @Override
-    public void refresh () {
-        // TODO Auto-generated method stub
-        
-    }
+    
+    abstract public void refresh () ;
     
 }
