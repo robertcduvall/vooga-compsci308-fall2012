@@ -10,8 +10,10 @@ import javax.swing.JPanel;
  * 
  */
 public abstract class AbstractPanel extends JPanel {
+    
+    private String myPanelType;
 
-    public AbstractPanel (JPanel thePanel) {
+    public AbstractPanel (AbstractPanel thePanel) {
 
         makeListeners();
         addComponents();
@@ -23,4 +25,13 @@ public abstract class AbstractPanel extends JPanel {
     
     abstract public void refresh();
 
+    public String getPanelType(){
+        return myPanelType;
+    }
+    
+    protected void setPanelType(String panelType){
+        myPanelType = panelType;
+    }
+    
+    
 }
