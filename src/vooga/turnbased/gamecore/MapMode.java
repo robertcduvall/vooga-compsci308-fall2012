@@ -33,14 +33,14 @@ public class MapMode extends GameMode {
     private int myNumDisplayRows;
     private int myNumDisplayCols;
     private MapObject myPlayer;
-    private Point myScreenOrigin;
+    //private Point myScreenOrigin;
 
     public MapMode (GameManager gm) {
         super(gm);
         mySprites = new HashMap<Point, List<MapObject>>();
-        myNumDisplayRows = 11;
-        myNumDisplayCols = 15;
-        myScreenOrigin = new Point(0, 0);
+        myNumDisplayRows = 5;
+        myNumDisplayCols = 7;
+        //myScreenOrigin = new Point(0, 0);
         addSpriteToAll();
         Point center = new Point(7, 5);
         myPlayer = new MapPlayerObject(ID, center);
@@ -49,8 +49,8 @@ public class MapMode extends GameMode {
 
     // only for testing purposes
     public void addSpriteToAll () {
-        for (int i = 0; i < myNumDisplayRows*2; i++) {
-            for (int j = 0; j < myNumDisplayCols*2; j++) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 30; j++) {
                 Point p = new Point(j, i);
                 addSprite(p, new MapObject(ID, p));
             }
@@ -70,14 +70,15 @@ public class MapMode extends GameMode {
 
     @Override
     public void paint (Graphics g, int canvasWidth, int canvasHeight) {
-        int tileWidth = canvasWidth / myNumDisplayCols;
-        int tileHeight = canvasHeight / myNumDisplayRows;
-        for (int i = myScreenOrigin.x; i < myScreenOrigin.x + myNumDisplayCols; i++) {
-            for (int j = myScreenOrigin.y; j < myScreenOrigin.x + myNumDisplayRows; j++) {
+        int tileWidth = canvasWidth / (myNumDisplayCols*2) + 1;
+        int tileHeight = canvasHeight / (myNumDisplayRows*2) + 1;
+        Point playerCoord = myPlayer.getCoord();
+        for (int i = playerCoord.x - myNumDisplayCols; i < playerCoord.x + myNumDisplayCols; i++) {
+            for (int j = playerCoord.y - myNumDisplayRows; j < playerCoord.y + myNumDisplayRows; j++) {
 
                 List<MapObject> spriteList = mySprites.get(new Point(i, j));
-                int xOffset = (i - myScreenOrigin.x) * tileWidth;
-                int yOffset = (j - myScreenOrigin.y) * tileHeight;
+                int xOffset = (i - (playerCoord.x - myNumDisplayCols)) * tileWidth;
+                int yOffset = (j - (playerCoord.y - myNumDisplayRows)) * tileHeight;
                 Image background = GameWindow.importImage("TileBackground");
                 g.drawImage(background, xOffset, yOffset, tileWidth, tileHeight, null);
                 if (spriteList != null) {
@@ -90,12 +91,12 @@ public class MapMode extends GameMode {
     }
     
     public void moveSprite(MapObject s, Point dest) {
-        Point spriteCoord = s.getCoord();
+        Point oldCoord = s.getCoord();
        
-        if (mySprites.get(spriteCoord).contains(s)) {
+        if (mySprites.get(oldCoord).contains(s)) {
             addSprite(dest, s);
             s.moveTo(dest);
-            mySprites.get(spriteCoord).remove(s);
+            mySprites.get(oldCoord).remove(s);
         }
     }
 
@@ -106,25 +107,16 @@ public class MapMode extends GameMode {
         switch(keyCode) {
             case KeyEvent.VK_LEFT:
                 moveSprite(myPlayer, myPlayer.getCoord(LEFT));
-                changeScreenOrigin(LEFT);
                 break;
             case KeyEvent.VK_UP:
                 moveSprite(myPlayer, myPlayer.getCoord(UP));
-                changeScreenOrigin(UP);
                 break;
             case KeyEvent.VK_RIGHT:
                 moveSprite(myPlayer, myPlayer.getCoord(RIGHT));
-                changeScreenOrigin(RIGHT);
                 break;
             case KeyEvent.VK_DOWN:
                 moveSprite(myPlayer, myPlayer.getCoord(DOWN));
-                changeScreenOrigin(DOWN);
                 break;
         }
-    }
-    
-    public void changeScreenOrigin (Point dir) {
-        myScreenOrigin.x += dir.x;
-        myScreenOrigin.y += dir.y;
     }
 }
