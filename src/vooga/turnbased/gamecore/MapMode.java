@@ -41,8 +41,8 @@ public class MapMode extends GameMode {
 
     public MapMode (GameManager gm) {
         super(gm);
-        myNumDisplayRows = 11;
-        myNumDisplayCols = 15;
+        myNumDisplayRows = Integer.parseInt(GameWindow.importString("CameraHeight"));
+        myNumDisplayCols = Integer.parseInt(GameWindow.importString("CameraWidth"));
         myBottomRightCorner = new Point (20, 30);
         addHardcodedSprites();
     }
