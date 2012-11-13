@@ -43,7 +43,9 @@ public abstract class GameObject {
     }
 
     /**
-     * @param configString containing key-value pairs for x and y
+     * @param configString containing key-value pairs for the GameObject's parameters. The
+     * config string should contain a sequence of these pairs separated by commas (','), and within
+     * each pair, the key should be separated from the value by an '=' character.
      */
     public GameObject(String configString) {
         this();
@@ -56,7 +58,7 @@ public abstract class GameObject {
 
     protected Map<String, String> parseConfigString(String configString) {
         Map<String, String> configMap = new HashMap<String, String>();
-        String[] pairs = configString.split(" ");
+        String[] pairs = configString.split(",");
         for (String entry : pairs) {
             String[] entrySplit = entry.split("=");
             configMap.put(entrySplit[0], entrySplit[1]);

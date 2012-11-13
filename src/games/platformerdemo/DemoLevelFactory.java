@@ -9,7 +9,9 @@ public class DemoLevelFactory extends LevelFactory {
     @Override
     public Level loadLevel (String levelName) {
         if (levelName.equals("level1")) {
-            return new TestLevel(new Dimension(800, 600));
+            Level currLevel = new TestLevel(new Dimension(800, 600));
+            currLevel.addGameObject(new Player("x=4,y=5"));
+            return currLevel;
         }
         else {
             return null;
