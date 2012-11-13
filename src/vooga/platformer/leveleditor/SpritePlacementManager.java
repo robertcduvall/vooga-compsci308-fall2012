@@ -28,13 +28,13 @@ public class SpritePlacementManager implements ISpritePlacementManager {
      * @param board The board whose sprite placement this
      *        object will manage.
      */
-    public SpritePlacementManager(LevelBoard board) {
+    public SpritePlacementManager (LevelBoard board) {
         myLevelBoard = board;
         mySelectedSprites = new ArrayList<Sprite>();
     }
 
     @Override
-    public void positionSprite(Sprite sprite) {
+    public void positionSprite (Sprite sprite) {
         if (isValidPosition(sprite)) {
             myLevelBoard.add(sprite);
         }
@@ -42,18 +42,18 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     }
 
     @Override
-    public void clearSelection() {
+    public void clearSelection () {
         mySelectedSprites.clear();
     }
 
     @Override
-    public void selectSprite(Sprite sprite) {
+    public void selectSprite (Sprite sprite) {
         mySelectedSprites.add(sprite);
 
     }
 
     @Override
-    public boolean selectSprite(Point2D point) {
+    public boolean selectSprite (Point2D point) {
         int initialNumberSelected = mySelectedSprites.size();
         selectRegion(new Rectangle((int) point.getX(), (int) point.getY(), 0, 0));
         int finalNumberSelected = mySelectedSprites.size();
@@ -61,12 +61,12 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     }
 
     @Override
-    public void removeSprite(Sprite toRemove) {
+    public void removeSprite (Sprite toRemove) {
         myLevelBoard.remove(toRemove);
     }
 
     @Override
-    public void selectRegion(Rectangle region) {
+    public void selectRegion (Rectangle region) {
         for (Sprite currentlyPlacedSprites : myLevelBoard.getSprites()) {
             if (currentlyPlacedSprites.isIntersecting(region)) {
                 mySelectedSprites.add(currentlyPlacedSprites);
@@ -76,12 +76,20 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     }
 
     @Override
-    public boolean isValidPosition(Sprite sprite) {
+    public boolean isValidPosition (Sprite sprite) {
         for (Sprite currentlyPlacedSprites : myLevelBoard.getSprites()) {
-            if (sprite.isIntersecting(currentlyPlacedSprites.getOutline()))
-                return false;
+            if (sprite.isIntersecting(currentlyPlacedSprites.getOutline())) { return false; }
         }
         return true;
+
+    }
+
+    @Override
+    public void follow (int x, int y) {
+        for (Sprite s : mySelectedSprites) {
+            s.setX(x);
+            s.setY(y);
+        }
 
     }
 
