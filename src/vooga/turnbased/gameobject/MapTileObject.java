@@ -5,28 +5,25 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
+public class MapTileObject extends MapObject {
 
-public class MovingMapObject extends MapObject {
-	
-	static private boolean smoothMovingOn;
-	
-    public MovingMapObject (int id, Point coord, Image mapImage, Rectangle camera) {
-        super(id, coord, mapImage, camera);
-        smoothMovingOn = true;
+    public MapTileObject(int id, Point location, Image mapImage, Rectangle camera) {
+        super(id, location, mapImage, camera);
     }
     
+    @Override 
     public void update() {
-    	
+        // tile behaviour on update
     }
     
     @Override
     public void handleKeyPressed(KeyEvent e) {
-        
+        // tile behaviour on keyPress
     }
     
     @Override
     public void handleKeyReleased(KeyEvent e) {
-        
+        // tile behaviour on keyReleased
     }
+
 }

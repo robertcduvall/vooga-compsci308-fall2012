@@ -46,8 +46,6 @@ public abstract class GameMode extends Observable {
         // TODO Auto-generated method stub
 
     }
-    
-    public abstract void update();
 
     protected GameManager getGM () {
         return myGameManager;
@@ -59,8 +57,12 @@ public abstract class GameMode extends Observable {
      * @param canvasWidth
      * @param canvasHeight
      */
-    public abstract void paint(Graphics g, int canvasWidth, int canvasHeight);
+    public abstract void paint(Graphics g);
+    
+    public abstract void update ();
 
-    public abstract void handleKeyEvent (KeyEvent e);
+    public abstract void handleKeyPressed (KeyEvent e);
+
+    public abstract void handleKeyReleased (KeyEvent e);
     
 }

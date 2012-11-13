@@ -1,12 +1,31 @@
 package vooga.turnbased.gameobject;
 
+import java.awt.Image;
 import java.awt.Point;
-import javax.swing.ImageIcon;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 public class MapPlayerObject extends MapObject {
 
-    public MapPlayerObject (int id, Point coord) {
-        super(id, coord);
-        setImage(new ImageIcon("src/vooga/turnbased/resources/image/player.png").getImage());
+    public MapPlayerObject (int id, Point coord, Image mapImage, Rectangle camera) {
+        super(id, coord, mapImage, camera);
+    }
+
+    @Override
+    public void handleKeyReleased (KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void handleKeyPressed (KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void update () {
+        // TODO Auto-generated method stub
+        
     }
 }

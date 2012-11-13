@@ -34,8 +34,8 @@ public abstract class BattleObject extends GameObject {
     public abstract void takeDamage(int damageDone);
 
     /**
-     * Implement this method to determine how to attack the other enemy, depending on 
-     * which stats for input. Can call <enemy>.takeDamage(damageDone) once the total 
+     * Implement this method to determine how to attack the other enemy, depending on
+     * which stats for input. Can call <enemy>.takeDamage(damageDone) once the total
      * amount of damage is called.
      * @param enemy The other BattleObject which this BattleObject is fighting.
      */
@@ -92,6 +92,14 @@ public abstract class BattleObject extends GameObject {
      */
     public int getMyHealth () {
         return myHealth;
+    }
+
+    /**
+     * Changes the current health by healthDiff.
+     * @param healthDiff amount to change health by.
+     */
+    public void changeHealth(int healthDiff) {
+        this.myHealth += healthDiff;
     }
 
 }
