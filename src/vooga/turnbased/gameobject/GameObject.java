@@ -12,4 +12,13 @@ package vooga.turnbased.gameobject;
  */
 public abstract class GameObject {
 
+    private int myID;
+
+    /**
+     * Construct the new game object.
+     * @param objectID The ID number of the new object.
+     */
+    public GameObject(int objectID) {
+        myID = objectID;
+    }
 }

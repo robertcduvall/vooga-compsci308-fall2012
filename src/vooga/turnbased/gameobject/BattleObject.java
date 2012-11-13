@@ -14,11 +14,13 @@ public abstract class BattleObject extends GameObject {
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
+     * @param id the ID number of the object.
      * @param defense The amount of defense that mitigates losses to health.
      * @param attack The amount of damage the sprite/monster does with each attack.
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      */
-    public BattleObject(int defense, int attack, int health) {
+    public BattleObject(int id, int defense, int attack, int health) {
+        super(id);
         setMyDefense(defense);
         setMyAttack(attack);
         setMyHealth(health);
