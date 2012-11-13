@@ -92,11 +92,11 @@ public class MapMode extends GameMode {
     
     public void moveSprite(MapObject s, Point dest) {
         Point oldCoord = s.getCoord();
-       
+        
         if (mySprites.get(oldCoord).contains(s)) {
+            mySprites.get(oldCoord).remove(s);
             addSprite(dest, s);
             s.moveTo(dest);
-            mySprites.get(oldCoord).remove(s);
         }
     }
 
