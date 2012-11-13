@@ -86,18 +86,22 @@ public class MapMode extends GameMode {
     public void paint (Graphics g) {
         for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
             for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
-                List<MapObject> spriteList = mySprites.get(new Point(i, j));
+                List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
                 int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth;
                 int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight;
                 Image background = GameWindow.importImage("TileBackground");
                 g.drawImage(background, xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
-                if (spriteList != null) {
-                    for (MapObject s : spriteList) {
+                if (spritesOnTile != null) {
+                    for (MapObject s : spritesOnTile) {
                         g.drawImage(s.getImage(), xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
                     }
                 }
             }
         }
+    }
+
+    private List<MapObject> getSpritesOnTile (int i, int j) {
+        return mySprites.get(new Point(i, j));
     }
     
     public void moveSprite(MapObject s, Point dest) {

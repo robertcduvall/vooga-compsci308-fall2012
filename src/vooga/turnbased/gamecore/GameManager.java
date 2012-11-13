@@ -52,8 +52,6 @@ public class GameManager implements Observer {
      * paint the images to the buffer
      * 
      * @param g the Graphics object of the offScreenImage
-     * @param width Width of the image
-     * @param height Height of the image
      */
     public void paint (Graphics g) {
         myCurrentGameMode.paint(g);

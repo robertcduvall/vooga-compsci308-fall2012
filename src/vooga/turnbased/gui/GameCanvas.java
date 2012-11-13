@@ -71,7 +71,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     @Override
     public void paint(Graphics g) {
     	super.paint(g);
-    	myGameManager.paint(g);
+        myGameManager.paint(g);
     }
     
     /**
