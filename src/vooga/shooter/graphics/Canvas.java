@@ -1,7 +1,10 @@
 package vooga.shooter.graphics;
 
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JApplet;
 import javax.swing.Timer;
 
 /**
@@ -13,6 +16,8 @@ public class Canvas extends JApplet{
     private static final Dimension defaultSize = new Dimension(800,800);
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 30;
+    private Timer myTimer;
+    
     /**
      * Initializes the applet --- called by the browser.
      */
@@ -33,7 +38,10 @@ public class Canvas extends JApplet{
         setSize(size);
         setPreferredSize(size);
         // set applet to receive user input
-        setInputListeners();
+        
+        // this method doesn't exist. please fix this!
+        // setInputListeners();
+        
         setFocusable(true);
         requestFocus();
     }
@@ -52,7 +60,9 @@ public class Canvas extends JApplet{
                 @Override
                 public void actionPerformed (ActionEvent e)
                 {
-                    myGame.update();
+                    // myGame doesn't exist! please fix
+                    // myGame.update();
+                    
                     // indirectly causes paint to be called
                     repaint();
                 }

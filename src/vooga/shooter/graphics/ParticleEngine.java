@@ -1,5 +1,11 @@
 package vooga.shooter.graphics;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.List;
+import vooga.shooter.gameObjects.Sprite;
+
 /**
  * This class enables the game creators to create, draw, and update a particle
  * engine that maintains many different sprites and randomly animates them so
@@ -31,7 +37,7 @@ public class ParticleEngine {
      * @param particleImage the image to use as the particle
      */
     public ParticleEngine (Image particleImage) {
-        ParticleEngine(DEFAULT_COUNT, particleImage, DEFAULT_DIRECTION,
+        this(DEFAULT_COUNT, particleImage, DEFAULT_DIRECTION,
                 DEFAULT_VARIANCE, DEFAULT_DURATION);
     }
 
