@@ -131,6 +131,8 @@ public abstract class GameObject {
         Rectangle2D rect = cam.getBounds();
         double xOffset = rect.getX();
         double yOffset = rect.getY();
+        System.out.printf("x: %f, y: %f, xoff: %f, yoff: %f\n", x, y, xOffset, yOffset);
+
         if (getShape().intersects(rect)) {
             pen.drawImage(getCurrentImage(), (int) (x - xOffset),
                     (int) (y - yOffset), null);
