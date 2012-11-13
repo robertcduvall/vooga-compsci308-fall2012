@@ -14,6 +14,7 @@ public class TestLevel extends Level {
 
     public TestLevel(Dimension dim) {
         super(dim);
+        System.out.println("debug2");
         numEnemies = 0;
         myPlayer = null;
     }
@@ -31,7 +32,9 @@ public class TestLevel extends Level {
 
     @Override
     public void paintBackground(Graphics pen) {
+        System.out.println("debug2");
         pen.setColor(Color.WHITE);
+        pen.drawRect(0, 0, (int)getDimension().getWidth(), (int)getDimension().getHeight());
     }
 
     @Override
