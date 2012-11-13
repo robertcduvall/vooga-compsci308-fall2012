@@ -23,7 +23,7 @@ public interface ISpritePlacementManager {
      *        LevelBoard.
      * @return
      */
-    boolean isValidPosition(Sprite sprite);
+    boolean isValidPosition (Sprite sprite);
 
     /**
      * Places a sprite on a LevelBoard, if
@@ -34,7 +34,7 @@ public interface ISpritePlacementManager {
      * @param toPosition The sprite to be
      *        placed on the LevelBoard.
      */
-    void positionSprite(Sprite toPosition);
+    void positionSprite (Sprite toPosition);
 
     /**
      * Selects a sprite which can now be
@@ -43,7 +43,7 @@ public interface ISpritePlacementManager {
      * @param toSelect The sprite that the
      *        user has selected.
      */
-    void selectSprite(Sprite toSelect);
+    void selectSprite (Sprite toSelect);
 
     /**
      * Selects the sprite(s) occupying the
@@ -60,19 +60,19 @@ public interface ISpritePlacementManager {
      * @return true if a sprite was successfully
      *         selected.
      */
-    boolean selectSprite(Point2D point);
+    boolean selectSprite (Point2D point);
 
     /**
      * Clears the current selection of sprites.
      */
-    void clearSelection();
+    void clearSelection ();
 
     /**
      * Removes a sprite from the LevelBoard.
      * 
      * @param toRemove The sprite to be removed.
      */
-    void removeSprite(Sprite toRemove);
+    void removeSprite (Sprite toRemove);
 
     /**
      * Selects any sprites whose outlines
@@ -84,5 +84,17 @@ public interface ISpritePlacementManager {
      *        sprite will be selected and can be
      *        controlled by user input.
      */
-    void selectRegion(Rectangle region);
+    void selectRegion (Rectangle region);
+
+    /**
+     * Causes all SELECTED sprites to move to the
+     * coordinates described by x and y
+     * regardless of whether or not they are
+     * 'valid' placement positions.
+     * 
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
+    void follow (int x, int y);
+
 }

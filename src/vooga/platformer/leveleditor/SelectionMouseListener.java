@@ -67,10 +67,9 @@ import java.awt.geom.Point2D;
  * @author Paul Dannenberg
  * 
  */
-public class SelectionMouseListener implements MouseListener,
-        MouseMotionListener {
+public class SelectionMouseListener implements MouseListener, MouseMotionListener {
 
-    private ISpritePlacementManager myManager;
+    private ISpritePlacementManager myPlacementManager;
     private Point2D myDragStart, myDragEnd;
 
     /**
@@ -79,8 +78,8 @@ public class SelectionMouseListener implements MouseListener,
      * @param manager The ISpritePlacementManager that this listener will
      *        coordinate with.
      */
-    public SelectionMouseListener(ISpritePlacementManager manager) {
-        myManager = manager;
+    public SelectionMouseListener (ISpritePlacementManager manager) {
+        myPlacementManager = manager;
     }
 
     /**
@@ -89,30 +88,30 @@ public class SelectionMouseListener implements MouseListener,
      * selected by the SpritePlacementManager.
      */
     @Override
-    public void mouseClicked(MouseEvent e) {
-        if (!myManager.selectSprite(new Point(e.getX(), e.getY()))) {
-            myManager.clearSelection();
+    public void mouseClicked (MouseEvent e) {
+        if (!myPlacementManager.selectSprite(new Point(e.getX(), e.getY()))) {
+            myPlacementManager.clearSelection();
         }
 
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered (MouseEvent e) {
 
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited (MouseEvent e) {
 
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed (MouseEvent e) {
 
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased (MouseEvent e) {
         myDragStart = null;
     }
 
@@ -122,22 +121,22 @@ public class SelectionMouseListener implements MouseListener,
      * all sprites defined within this rectangle.
      */
     @Override
-    public void mouseDragged(MouseEvent e) {
+    public void mouseDragged (MouseEvent e) {
         if (myDragStart == null) {
             myDragStart = new Point(e.getX(), e.getY());
         }
         myDragEnd = new Point(e.getX(), e.getY());
-        Rectangle selectionRectangle = new Rectangle((int) myDragStart.getX(),
-                (int) myDragStart.getY(),
-                (int) (myDragEnd.getX() - myDragStart.getX()),
-                (int) (myDragEnd.getY() - myDragStart.getY()));
-        myManager.selectRegion(selectionRectangle);
+        Rectangle selectionRectangle =
+                new Rectangle((int) myDragStart.getX(), (int) myDragStart.getY(),
+                              (int) (myDragEnd.getX() - myDragStart.getX()),
+                              (int) (myDragEnd.getY() - myDragStart.getY()));
+        myPlacementManager.selectRegion(selectionRectangle);
 
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-
+    public void mouseMoved (MouseEvent e) {
+        myPlacementManager.follow(e.getX(), e.getY());
     }
 
 }
