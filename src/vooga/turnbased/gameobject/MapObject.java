@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
-import vooga.turnbased.gui.GameWindow;
 
 public class MapObject extends GameObject {
     private Point myCoordinate;
@@ -48,5 +47,9 @@ public class MapObject extends GameObject {
     public void moveTo (Point dest) {
         myCoordinate.x = dest.x;
         myCoordinate.y = dest.y;
+    }
+    
+    public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
+    	g.drawImage(myImage, xOffset, yOffset, width, height, null);
     }
 }

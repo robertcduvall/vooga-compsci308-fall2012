@@ -46,6 +46,8 @@ public abstract class GameMode extends Observable {
         // TODO Auto-generated method stub
 
     }
+    
+    public abstract void update();
 
     protected GameManager getGM () {
         return myGameManager;

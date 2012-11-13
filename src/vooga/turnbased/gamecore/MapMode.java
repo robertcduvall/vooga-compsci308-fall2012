@@ -83,11 +83,15 @@ public class MapMode extends GameMode {
                 g.drawImage(background, xOffset, yOffset, tileWidth, tileHeight, null);
                 if (spriteList != null) {
                     for (MapObject s : spriteList) {
-                        g.drawImage(s.getImage(), xOffset, yOffset, tileWidth, tileHeight, null);
+                        s.paint(g, xOffset, yOffset, tileWidth, tileHeight);
                     }
                 }
             }
         }
+    }
+    
+    public void update() {
+    	
     }
     
     public void moveSprite(MapObject s, Point dest) {

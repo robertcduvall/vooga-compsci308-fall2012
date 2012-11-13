@@ -39,9 +39,9 @@ public class GameManager implements Observer {
     }
 
     public void update () {
-
+        myCurrentGameMode.update();
     }
-    
+
     /**
      * paint the images to the buffer
      * @param g the Graphics object of the offScreenImage
@@ -66,7 +66,7 @@ public class GameManager implements Observer {
     public void backToMap() {
         myCurrentGameMode = myPausedMapMode;
     }
-    
+
     @Override
     public void update (Observable arg0, Object arg1) {
         

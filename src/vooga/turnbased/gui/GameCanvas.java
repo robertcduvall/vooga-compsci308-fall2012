@@ -63,6 +63,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     	Graphics offScreenGraphics = offScreenImage.getGraphics();
     	paint(offScreenGraphics);
     	g.drawImage(offScreenImage, 0, 0, null);
+    	myGameManager.update();
     }
     
     /**
