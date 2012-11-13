@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject.map;
+package vooga.turnbased.gameobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -6,20 +6,21 @@ import java.awt.Point;
 import javax.swing.ImageIcon;
 import vooga.turnbased.gui.GameWindow;
 
-public class MapSprite {
+public class MapObject extends GameObject {
     private Point myCoordinate;
     private boolean myIsVisible;
     private boolean myIsMoving;
     private int mySpeed;
     private Image myImage;
     
-    public MapSprite (Point coord) {
+    public MapObject (Point coord) {
         myCoordinate = coord;
         myIsVisible = true;
         myImage = new ImageIcon("src/vooga/turnbased/resources/image/grass.png").getImage();
     }
     
     public void animateMove() {
+        myIsMoving = true;
         myIsMoving = true;
     }
     
