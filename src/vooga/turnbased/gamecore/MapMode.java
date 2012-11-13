@@ -33,6 +33,7 @@ public class MapMode extends GameMode {
     private int myNumDisplayRows;
     private int myNumDisplayCols;
     private MapObject myPlayer;
+    private Point myDimension;
     //private Point myScreenOrigin;
 
     public MapMode (GameManager gm) {
@@ -40,6 +41,7 @@ public class MapMode extends GameMode {
         mySprites = new HashMap<Point, List<MapObject>>();
         myNumDisplayRows = 5;
         myNumDisplayCols = 7;
+        myDimension = new Point (20, 30);
         //myScreenOrigin = new Point(0, 0);
         addSpriteToAll();
         Point center = new Point(7, 5);
@@ -49,9 +51,9 @@ public class MapMode extends GameMode {
 
     // only for testing purposes
     public void addSpriteToAll () {
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 30; j++) {
-                Point p = new Point(j, i);
+        for (int i = 0; i < myDimension.x; i++) {
+            for (int j = 0; j < myDimension.y; j++) {
+                Point p = new Point(i, j);
                 addSprite(p, new MapObject(ID, p));
             }
         }
@@ -91,12 +93,14 @@ public class MapMode extends GameMode {
     }
     
     public void moveSprite(MapObject s, Point dest) {
-        Point oldCoord = s.getCoord();
-        
-        if (mySprites.get(oldCoord).contains(s)) {
-            mySprites.get(oldCoord).remove(s);
-            addSprite(dest, s);
-            s.moveTo(dest);
+        if (dest.x >= 0 && dest.x < myDimension.x && dest.y >= 0 && dest.y < myDimension.y) {
+            Point oldCoord = s.getCoord();
+            
+            if (mySprites.get(oldCoord).contains(s)) {
+                mySprites.get(oldCoord).remove(s);
+                addSprite(dest, s);
+                s.moveTo(dest);
+            }
         }
     }
 
