@@ -9,16 +9,19 @@ public abstract class BattleObject extends GameObject {
 
     private int myDefense;
     private int myAttack;
+    private int myHealth;
 
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
-     * @param defense The amount of health that must be destroyed for the sprite/monster to die.
+     * @param defense The amount of defense that mitigates losses to health.
      * @param attack The amount of damage the sprite/monster does with each attack.
+     * @param health The amount of health that must be destroyed for the sprite/monster to die.
      */
-    public BattleObject(int defense, int attack){
+    public BattleObject(int defense, int attack, int health) {
         setMyDefense(defense);
         setMyAttack(attack);
+        setMyHealth(health);
     }
 
     /**
@@ -27,6 +30,19 @@ public abstract class BattleObject extends GameObject {
      * @param damageDone The raw damage done by the other monster's attack.
      */
     public abstract void takeDamage(int damageDone);
+
+    /**
+     * Implement this method to determine how to attack the other enemy, depending on 
+     * which stats for input. Can call <enemy>.takeDamage(damageDone) once the total 
+     * amount of damage is called.
+     * @param enemy The other BattleObject which this BattleObject is fighting.
+     */
+    public abstract void attackEnemy(BattleObject enemy);
+
+
+
+
+
 
     /**
      * Set defense to the input parameter.
@@ -58,6 +74,22 @@ public abstract class BattleObject extends GameObject {
      */
     public int getMyAttack () {
         return myAttack;
+    }
+
+    /**
+     * Set the health to be a new value.
+     * @param health The new value for health.
+     */
+    public void setMyHealth (int health) {
+        this.myHealth = health;
+    }
+
+    /**
+     * Returns the current health stat of the BattleObjet/monster.
+     * @return The value of the health that is returned.
+     */
+    public int getMyHealth () {
+        return myHealth;
     }
 
 }
