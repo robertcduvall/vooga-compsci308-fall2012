@@ -17,7 +17,7 @@ public class MapObject extends GameObject {
         super(id);
         myCoordinate = coord;
         myIsVisible = true;
-        myImage = new ImageIcon("src/vooga/turnbased/resources/image/grass.png").getImage();
+        myImage = GameWindow.importImage("GrassImage");
     }
     
     public void animateMove() {
