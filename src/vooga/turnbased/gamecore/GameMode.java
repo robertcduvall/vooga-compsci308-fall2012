@@ -59,6 +59,8 @@ public abstract class GameMode extends Observable {
      */
     public abstract void paint(Graphics g, int canvasWidth, int canvasHeight);
 
-    public abstract void handleKeyEvent (KeyEvent e);
+    public abstract void handleKeyPressed (KeyEvent e);
+
+    public abstract void handleKeyReleased (KeyEvent e);
     
 }

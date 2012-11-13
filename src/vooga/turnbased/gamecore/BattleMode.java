@@ -30,7 +30,14 @@ public class BattleMode extends GameMode {
     }
 
     @Override
-    public void handleKeyEvent (KeyEvent e) {
+    public void handleKeyPressed (KeyEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void handleKeyReleased (KeyEvent e) {
+        // TODO Auto-generated method stub
         
     }
 }

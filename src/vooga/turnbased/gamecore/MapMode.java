@@ -105,7 +105,7 @@ public class MapMode extends GameMode {
     }
 
     @Override
-    public void handleKeyEvent (KeyEvent e) {
+    public void handleKeyPressed (KeyEvent e) {
         //internal testing for now...use Input team's stuff later
         int keyCode = e.getKeyCode();
         switch(keyCode) {
@@ -122,5 +122,11 @@ public class MapMode extends GameMode {
                 moveSprite(myPlayer, myPlayer.getCoord(DOWN));
                 break;
         }
+    }
+
+    @Override
+    public void handleKeyReleased (KeyEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 }

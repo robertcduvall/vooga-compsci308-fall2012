@@ -106,7 +106,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     @Override
     public void keyPressed (KeyEvent e) {
         System.out.println("Pressed " + e.getKeyCode());
-        myGameManager.notifyKeyEvent(e);
+        myGameManager.handleKeyPressed(e);
     }
 
     /**
@@ -115,6 +115,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
     @Override
     public void keyReleased (KeyEvent e) {
         System.out.println("Released " + e.getKeyCode());
+        myGameManager.handleKeyReleased(e);
     }
 
 }

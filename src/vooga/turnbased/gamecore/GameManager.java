@@ -72,7 +72,11 @@ public class GameManager implements Observer {
         
     }
 
-    public void notifyKeyEvent (KeyEvent e) {
-        myCurrentGameMode.handleKeyEvent(e);
+    public void handleKeyPressed (KeyEvent e) {
+        myCurrentGameMode.handleKeyPressed(e);
+    }
+
+    public void handleKeyReleased (KeyEvent e) {
+        myCurrentGameMode.handleKeyReleased(e);
     }
 }
