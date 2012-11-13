@@ -54,20 +54,13 @@ public class FollowingCamera extends SizedCamera implements Camera {
         myTarget = go;
     }
 
-    public void update() {
-        double x = myTarget.getShape().getCenterX() - size().getWidth() / 2;
-        x = Math.max(x, outerBounds().getX());
-        x = Math.min(x, outerBounds().getX() + outerBounds().getWidth()
-                - size().getHeight());
-
-        double y = myTarget.getShape().getCenterY() - size().getHeight() / 2;
-        y = Math.max(y, outerBounds().getY());
-        y = Math.min(y, outerBounds().getY() + outerBounds().getHeight()
-                - size().getHeight());
-
-        double w = size().getWidth();
-        double h = size().getHeight();
-
-        getBounds().setRect(x, y, w, h);
+    /**
+     * Updates the <code>FollowingCamera</code>. Will update the bounds.
+     */
+    public void update () {
+        double x = myTarget.getShape().getCenterX() - getSize().getWidth() / 2;
+        double y = myTarget.getShape().getCenterY() - getSize().getHeight() / 2;
+        getBounds().setRect(x, y, getSize().getWidth(), getSize().getHeight());
+        obeyOuterBounds();
     }
 }
