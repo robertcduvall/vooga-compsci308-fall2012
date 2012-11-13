@@ -2,14 +2,13 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import vooga.turnbased.gameobject.battle.Enemy;
 
 public class BattleMode extends GameMode {
-    private Enemy myEnemy;
+//    private Enemy myEnemy;
 
-    public BattleMode (GameManager gm, Enemy e) {
+    public BattleMode (GameManager gm) {
         super(gm);
-        setEnemy(e);
+        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -18,9 +17,9 @@ public class BattleMode extends GameMode {
         
     }
 
-    public void setEnemy (Enemy e) {
-        
-    }
+//    public void setEnemy (Enemy e) {
+//        
+//    }
 
     @Override
     public void handleKeyEvent (KeyEvent e) {

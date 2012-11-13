@@ -9,8 +9,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
-import vooga.turnbased.gameobject.battle.Enemy;
-import vooga.turnbased.gameobject.map.MapSprite;
+import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gui.GameCanvas;
 
 public class GameManager implements Observer {
@@ -19,7 +18,7 @@ public class GameManager implements Observer {
     private GameMode myCurrentGameMode;
     private GameMode myPausedMapMode;
     private Factory myFactory;
-    private MapSprite myPlayer;
+    private MapObject myPlayer;
     private final boolean isOver;
 
     /**
@@ -57,11 +56,11 @@ public class GameManager implements Observer {
                 myGameCanvas.getHeight());
     }
 
-    public void startBattle(Enemy e) {
-        // "pause" the current MapMode and switch to BattleMode with the given enemy
-        myPausedMapMode = myCurrentGameMode;
-        myCurrentGameMode = new BattleMode(this, e);
-    }
+//    public void startBattle(Enemy e) {
+//        // "pause" the current MapMode and switch to BattleMode with the given enemy
+//        myPausedMapMode = myCurrentGameMode;
+//        myCurrentGameMode = new BattleMode(this, e);
+//    }
     
     public void backToMap() {
         myCurrentGameMode = myPausedMapMode;

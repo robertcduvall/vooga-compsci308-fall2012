@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import vooga.turnbased.gameobject.map.MapPlayer;
-import vooga.turnbased.gameobject.map.MapSprite;
+import vooga.turnbased.gameobject.MapPlayerObject;
+import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gui.GameWindow;
 
 
@@ -28,21 +28,21 @@ public class MapMode extends GameMode {
     private final Point RIGHT = new Point(1, 0);
     private final Point DOWN = new Point(0, 1);
     private final Point LEFT = new Point(-1, 0);
-    private Map<Point, List<MapSprite>> mySprites;
+    private Map<Point, List<MapObject>> mySprites;
     private int myNumDisplayRows;
     private int myNumDisplayCols;
-    private MapSprite myPlayer;
+    private MapObject myPlayer;
     private Point myScreenOrigin;
 
     public MapMode (GameManager gm) {
         super(gm);
-        mySprites = new HashMap<Point, List<MapSprite>>();
+        mySprites = new HashMap<Point, List<MapObject>>();
         myNumDisplayRows = 11;
         myNumDisplayCols = 15;
         myScreenOrigin = new Point(0, 0);
         addSpriteToAll();
         Point center = new Point(7, 5);
-        myPlayer = new MapPlayer(center);
+        myPlayer = new MapPlayerObject(center);
         addSprite(center, myPlayer);
     }
 
@@ -51,17 +51,17 @@ public class MapMode extends GameMode {
         for (int i = 0; i < myNumDisplayRows; i++) {
             for (int j = 0; j < myNumDisplayCols; j++) {
                 Point p = new Point(j, i);
-                addSprite(p, new MapSprite(p));
+                addSprite(p, new MapObject(p));
             }
         }
     }
 
-    public void addSprite (Point p, MapSprite s) {
+    public void addSprite (Point p, MapObject s) {
         if (mySprites.keySet().contains(p)) {
             mySprites.get(p).add(s);
         }
         else {
-            ArrayList<MapSprite> spriteList = new ArrayList<MapSprite>();
+            ArrayList<MapObject> spriteList = new ArrayList<MapObject>();
             spriteList.add(s);
             mySprites.put(p, spriteList);
         }
@@ -74,13 +74,13 @@ public class MapMode extends GameMode {
         for (int i = myScreenOrigin.x; i < myScreenOrigin.x + myNumDisplayCols; i++) {
             for (int j = myScreenOrigin.y; j < myScreenOrigin.x + myNumDisplayRows; j++) {
 
-                List<MapSprite> spriteList = mySprites.get(new Point(i, j));
+                List<MapObject> spriteList = mySprites.get(new Point(i, j));
                 int xOffset = (i - myScreenOrigin.x) * tileWidth;
                 int yOffset = (j - myScreenOrigin.y) * tileHeight;
                 Image background = GameWindow.importImage("TileBackground");
                 g.drawImage(background, xOffset, yOffset, tileWidth, tileHeight, null);
                 if (spriteList != null) {
-                    for (MapSprite s : spriteList) {
+                    for (MapObject s : spriteList) {
                         g.drawImage(s.getImage(), xOffset, yOffset, tileWidth, tileHeight, null);
                     }
                 }
@@ -88,7 +88,7 @@ public class MapMode extends GameMode {
         }
     }
     
-    public void moveSprite(MapSprite s, Point dest) {
+    public void moveSprite(MapObject s, Point dest) {
         for (Point p : mySprites.keySet()) {
             if (mySprites.get(p).contains(s)) {
                 addSprite(dest, s);
