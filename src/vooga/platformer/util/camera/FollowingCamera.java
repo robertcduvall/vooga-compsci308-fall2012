@@ -54,7 +54,6 @@ public class FollowingCamera extends SizedCamera implements Camera {
         myTarget = go;
     }
 
-    @Override
     public void update() {
         double x = myTarget.getShape().getCenterX() - size().getWidth() / 2;
         x = Math.max(x, outerBounds().getX());

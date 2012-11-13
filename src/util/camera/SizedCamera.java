@@ -33,9 +33,6 @@ public abstract class SizedCamera implements Camera {
     }
 
     @Override
-    public abstract void update();
-
-    @Override
     public Rectangle2D getBounds() {
         return myBounds;
     }

@@ -29,11 +29,6 @@ public class DriftingCamera extends SizedCamera implements Camera {
         setBounds(new Rectangle2D.Double());
     }
 
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException();
-    }
-
     public void update(long elapsedTime) {
         Rectangle2D rect = getBounds();
         rect.setRect(rect.getX() + mySpeed.getWidth() * elapsedTime / 1000,
