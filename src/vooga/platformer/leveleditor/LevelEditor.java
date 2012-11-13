@@ -40,7 +40,7 @@ import vooga.platformer.gui.menu.GameButton;
 import vooga.platformer.gui.menu.GameListener;
 
 /**
- * 
+ * Frame containing all the elements needed to build and save a level
  * 
  * @author Sam Rang
  *
@@ -49,7 +49,6 @@ public class LevelEditor extends JFrame{
     private static final int RIGHT_CLICK = 3;
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
-    private static final String DEFAULT_BACKGROUND = IMAGE_PATH + "mario.background.jpg";
     private Map<String,List<String>> mySpriteTypes;
     private JFrame myContainer;
     private JPanel myViewPane;
@@ -77,6 +76,7 @@ public class LevelEditor extends JFrame{
         createEditPane();
         createButtonPanel();
         createTopMenu();
+        background = null;
         pack();
         setVisible(true);
         editLoop();
@@ -92,25 +92,12 @@ public class LevelEditor extends JFrame{
     private void update() {
         g2d.drawImage(background, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
         for (Sprite sprite : mySprites) {
-            g2d.drawImage(getImage(sprite.getImagePath()), 
-                    sprite.getX(), sprite.getY(), sprite.getWidth(), sprite.getHeight(), null);
+            sprite.paint(g2d);
         }
         if (follow) {
             currentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
             currentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
         }
-    }
-
-    private Image getImage(String filename) {
-        Image ret = null;
-        try {
-            ret = ImageIO.read(new File(filename));
-        } catch (IOException e) {
-            System.out.println("file was not found");
-            e.printStackTrace();
-        }
-        return ret;
-
     }
 
     private void frameBuild() {
@@ -119,15 +106,18 @@ public class LevelEditor extends JFrame{
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
-            UIManager.setLookAndFeel(UIManager
-                    .getCrossPlatformLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        }
+        catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (InstantiationException e) {
+        }
+        catch (InstantiationException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
+        }
+        catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
     }
@@ -157,6 +147,7 @@ public class LevelEditor extends JFrame{
                                 }
                                 catch (IOException io) {
                                     System.out.println("File not found. Try again");
+                                    background = null;
                                 }
                             }
                         }
