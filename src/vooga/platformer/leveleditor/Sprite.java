@@ -60,7 +60,7 @@ public class Sprite {
         myAttributes = new HashMap<String, String>();
     }
 
-    private Image getImage(String filename) {
+    private Image getImage (String filename) {
         Image ret = null;
         try {
             ret = ImageIO.read(new File(filename));
@@ -88,9 +88,10 @@ public class Sprite {
      * @param g Graphics of a Component, Image, or Canvas
      */
     public void paint (Graphics g) {
-        g.drawImage(getImage(myImagePath), myX, myY, myX + myWidth, myY + myHeight,
-                0, 0, myWidth, myHeight, null);
+        g.drawImage(getImage(myImagePath), myX, myY, myX + myWidth, myY + myHeight, 0, 0, myWidth,
+                    myHeight, null);
     }
+
     /**
      * Gets the x location of the sprite at level load.
      * 
@@ -157,19 +158,42 @@ public class Sprite {
     /**
      * Sets the height of the sprite.
      * 
-     * @param width new height of the sprite in pixels
+     * @param height new height of the sprite in pixels
      */
     public void setHeight (int height) {
         myHeight = height;
     }
 
-    // TODO support animations
+    /**
+     * Returns the image that represents the Sprite during level editing.
+     * 
+     * @return Image rendered using the file path specified in the Sprite's
+     *         constructor
+     */
+    public Image getImage () {
+        return getImage(myImagePath);
+    }
+
+    /**
+     * Gets the path to file that is the image to represent the Sprite during
+     * level editing.
+     * 
+     * @return path to the Sprite's image as a String
+     */
     public String getImagePath () {
+        // TODO support animations
         return myImagePath;
     }
 
-    // TODO consider type parameter
+    /**
+     * Adds update strategy to the Sprite. This is added as Map.
+     * 
+     * @param strategy Map representing the update strategy. Each key is a
+     *        String representing a parameter name for the update strategy. This
+     *        should map to the value of this parameter, also a String.
+     */
     public void addUpdateStrategy (Map<String, String> strategy) {
+        // TODO consider type parameter. Rewrite signature
         myUpdateStrategies.add(strategy);
     }
 
@@ -213,7 +237,7 @@ public class Sprite {
      * 
      * @param region Rectangle being checked for intersection
      * @return Returns true if the rectangle intersects, and false if there is
-     * no intersection
+     *         no intersection
      */
     public boolean isIntersecting (Rectangle region) {
         Rectangle boundingBox = getOutline();
