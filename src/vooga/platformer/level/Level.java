@@ -35,6 +35,7 @@ public abstract class Level {
 
     public Level(Dimension dim) {
         objectList = new ArrayList<GameObject>();
+        myDimension = dim;
     }
 
     /**
