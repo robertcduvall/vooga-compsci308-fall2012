@@ -2,6 +2,7 @@ package vooga.platformer.leveleditor;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -205,5 +206,26 @@ public class Sprite {
      */
     public Map<String, String> getAttributes () {
         return myAttributes;
+    }
+
+    /**
+     * Determines if sprite is intersecting with a given rectangular region.
+     * 
+     * @param region Rectangle being checked for intersection
+     * @return Returns true if the rectangle intersects, and false if there is
+     * no intersection
+     */
+    public boolean isIntersecting (Rectangle region) {
+        Rectangle boundingBox = getOutline();
+        return boundingBox.intersects(region);
+    }
+
+    /**
+     * Gives the bounding box of a sprite.
+     * 
+     * @return Returns a Rectangle representing the bounding region of a sprite.
+     */
+    public Rectangle getOutline () {
+        return new Rectangle(myX, myY, myWidth, myHeight);
     }
 }
