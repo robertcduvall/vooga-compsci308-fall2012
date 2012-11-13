@@ -137,18 +137,7 @@ public class LevelFileReader {
                     Node strategyNode = strategyNodeList.item(j);
                     if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element strategyElement = (Element) strategyNode;
-                        NodeList paramNodeList = strategyElement.getChildNodes();
-                        Map<String, String> strategyMap = new HashMap<String, String>();
-
-                        for (int k = 0; k < paramNodeList.getLength(); k++) {
-                            Node paramNode = paramNodeList.item(k);
-                            if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
-                                Element paramElement = (Element) paramNode;
-                                strategyMap.put(paramElement.getTagName(),
-                                                XMLUtils.getTagValue(paramElement));
-                            }
-                        }
-                        builtSprite.addUpdateStrategy(strategyMap);
+                        builtSprite.addUpdateStrategy(extractMapFromXML(strategyElement));
                     }
                 }
             }
@@ -156,7 +145,31 @@ public class LevelFileReader {
     }
 
     private void addSpriteAttributes (Element spriteElement, Sprite builtSprite) {
-        // TODO add attributes
+        NodeList attrNodeList = spriteElement.getElementsByTagName("attr");
+
+        for (int i = 0; i < attrNodeList.getLength(); i++) {
+            Node attrNode = attrNodeList.item(i);
+            if (attrNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element attrElement = (Element) attrNode;
+                Map<String, String> attrMap = extractMapFromXML(attrElement);
+                for (String str : attrMap.keySet()) {
+                    builtSprite.addAttribute(str, attrMap.get(str));
+                }
+            }
+        }
     }
 
+    private Map<String, String> extractMapFromXML (Element parentElement) {
+        NodeList paramNodeList = parentElement.getChildNodes();
+        Map<String, String> strategyMap = new HashMap<String, String>();
+
+        for (int k = 0; k < paramNodeList.getLength(); k++) {
+            Node paramNode = paramNodeList.item(k);
+            if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element paramElement = (Element) paramNode;
+                strategyMap.put(paramElement.getTagName(), XMLUtils.getTagValue(paramElement));
+            }
+        }
+        return strategyMap;
+    }
 }
