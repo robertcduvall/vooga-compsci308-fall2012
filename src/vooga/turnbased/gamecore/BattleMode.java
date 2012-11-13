@@ -6,29 +6,31 @@ import java.util.List;
 import vooga.turnbased.gameobject.BattleObject;
 
 public class BattleMode extends GameMode {
-    private List<BattleObject> myBattleObjects;
+    private List<BattleObject> myTeam1BattleObjects;
+    private List<BattleObject> myTeam2BattleObjects;
 
-    public BattleMode (GameManager gm) {
+    public BattleMode (GameManager gm, List<BattleObject> team1BattleObjects, List<BattleObject> team2BattleObjects) {
         super(gm);
+        myTeam1BattleObjects = team1BattleObjects;
+        myTeam2BattleObjects = team2BattleObjects;
+        start();
     }
 
     @Override
     public void paint (Graphics g, int canvasWidth, int canvasHeight) {
-        // TODO Auto-generated method stub
         
     }
-
-    public void start(List<BattleObject> battleObjects) {
-        myBattleObjects = battleObjects; 
+    
+    public void start() {
+        //initialize things, start game loop
     }
     
     public void updateLoop() {
-    
+        //update the loop after each turn
     }
 
     @Override
     public void handleKeyEvent (KeyEvent e) {
-        // TODO Auto-generated method stub
         
     }
 }
