@@ -28,6 +28,7 @@ public class MapMode extends GameMode {
     private final Point RIGHT = new Point(1, 0);
     private final Point DOWN = new Point(0, 1);
     private final Point LEFT = new Point(-1, 0);
+    private final int ID = 0;
     private Map<Point, List<MapObject>> mySprites;
     private int myNumDisplayRows;
     private int myNumDisplayCols;
@@ -42,7 +43,7 @@ public class MapMode extends GameMode {
         myScreenOrigin = new Point(0, 0);
         addSpriteToAll();
         Point center = new Point(7, 5);
-        myPlayer = new MapPlayerObject(center);
+        myPlayer = new MapPlayerObject(ID, center);
         addSprite(center, myPlayer);
     }
 
@@ -51,7 +52,7 @@ public class MapMode extends GameMode {
         for (int i = 0; i < myNumDisplayRows*2; i++) {
             for (int j = 0; j < myNumDisplayCols*2; j++) {
                 Point p = new Point(j, i);
-                addSprite(p, new MapObject(p));
+                addSprite(p, new MapObject(ID, p));
             }
         }
     }
@@ -89,12 +90,12 @@ public class MapMode extends GameMode {
     }
     
     public void moveSprite(MapObject s, Point dest) {
-        for (Point p : mySprites.keySet()) {
-            if (mySprites.get(p).contains(s)) {
-                addSprite(dest, s);
-                s.moveTo(dest);
-                mySprites.get(p).remove(s);
-            }
+        Point spriteCoord = s.getCoord();
+       
+        if (mySprites.get(spriteCoord).contains(s)) {
+            addSprite(dest, s);
+            s.moveTo(dest);
+            mySprites.get(spriteCoord).remove(s);
         }
     }
 

@@ -13,7 +13,8 @@ public class MapObject extends GameObject {
     private int mySpeed;
     private Image myImage;
     
-    public MapObject (Point coord) {
+    public MapObject (int id, Point coord) {
+        super(id);
         myCoordinate = coord;
         myIsVisible = true;
         myImage = new ImageIcon("src/vooga/turnbased/resources/image/grass.png").getImage();

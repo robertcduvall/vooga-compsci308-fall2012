@@ -5,8 +5,8 @@ import javax.swing.ImageIcon;
 
 public class MapPlayerObject extends MapObject {
 
-    public MapPlayerObject (Point coord) {
-        super(coord);
+    public MapPlayerObject (int id, Point coord) {
+        super(id, coord);
         setImage(new ImageIcon("src/vooga/turnbased/resources/image/player.png").getImage());
     }
 }
