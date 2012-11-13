@@ -84,6 +84,7 @@ public class MapMode extends GameMode {
 
     @Override
     public void paint (Graphics g) {
+        update();
         for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
             for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
                 List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
