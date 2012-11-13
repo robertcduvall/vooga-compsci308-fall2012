@@ -9,5 +9,14 @@
 <width>1</width>
 <height>1</height>
 <imagePath>something.jpg</imagePath>
+<strategies>
+<strategy>
+<distance>10</distance>
+<type>movement</type>
+</strategy>
+</strategies>
+<attr>
+<hp>10</hp>
+</attr>
 </gameObject>
 </level>
