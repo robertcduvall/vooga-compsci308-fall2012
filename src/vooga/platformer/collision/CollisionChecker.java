@@ -41,7 +41,7 @@ public abstract class CollisionChecker {
         String className;
 
         if (a.getClass().getCanonicalName()
-                .compareTo(b.getClass().getCanonicalName()) == 1) {
+                .compareTo(b.getClass().getCanonicalName()) < 0) {
             className = collisionEventsMap.get(a.getClass().getCanonicalName())
                     .get(b.getClass().getCanonicalName());
         } else {
