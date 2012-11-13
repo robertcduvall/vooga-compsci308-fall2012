@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import vooga.platformer.util.xml.XMLUtils;
-
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class LevelFileReader {
      * 
      * @param levelFilePath path to the level data file (XML format)
      */
-    public LevelFileReader(String levelFilePath) {
+    public LevelFileReader (String levelFilePath) {
         this(new File(levelFilePath));
     }
 
@@ -80,7 +79,7 @@ public class LevelFileReader {
     /**
      * Gets the image that is to be the background scenery of the level. This
      * will be rendered behind the Sprites.
-     *
+     * 
      * @return Image representing the background of the level
      */
     public Image getBackgroundImage () {
@@ -92,12 +91,12 @@ public class LevelFileReader {
      * Gets all the elements in the level data file tagged as gameObjects. The
      * Sprite objects are built using the parameters specified in level data
      * file.
-     *
+     * 
      * @return a collection of Sprite objects representing the level's
      *         gameObjects
      */
     public Collection<Sprite> getSprites () {
-        NodeList spritesNode = myDocument.getElementsByTagName("gameobject");
+        NodeList spritesNode = myDocument.getElementsByTagName("gameObject");
         Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
 
         for (int i = 0; i < spritesNode.getLength(); i++) {
@@ -114,7 +113,7 @@ public class LevelFileReader {
         return spritesList;
     }
 
-    private Sprite buildSprite(Element spriteElement) {
+    private Sprite buildSprite (Element spriteElement) {
         String tag = spriteElement.getAttribute("type");
         int x = XMLUtils.getTagInt("x", spriteElement);
         int y = XMLUtils.getTagInt("y", spriteElement);
@@ -156,7 +155,7 @@ public class LevelFileReader {
         }
     }
 
-    private void addSpriteAttributes(Element spriteElement, Sprite builtSprite) {
+    private void addSpriteAttributes (Element spriteElement, Sprite builtSprite) {
         // TODO add attributes
     }
 
