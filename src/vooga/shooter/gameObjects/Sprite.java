@@ -1,5 +1,10 @@
 package vooga.shooter.gameObjects;
 
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.List;
+
 /**
  * This class encompasses the basic layout for any sprites that appear in the
  * game. Any specific type of sprite (e.g. player, enemy, boss, etc.) will
@@ -11,14 +16,14 @@ package vooga.shooter.gameObjects;
  * 
  */
 public abstract class Sprite {
-    public void draw(Graphics g);
-    public void update();
-    public void delete();
-    public Point getPosition();
-    public void setPosition(Point position);
-    public Point getDirection();
-    public void setDirection(Point direction);
-    public Image getImage();
-    public void setImage(Image image);
-    public List<Sprite> collisions();
+    public abstract void draw(Graphics g);
+    public abstract void update();
+    public abstract void delete();
+    public abstract Point getPosition();
+    public abstract void setPosition(Point position);
+    public abstract Point getDirection();
+    public abstract void setDirection(Point direction);
+    public abstract Image getImage();
+    public abstract void setImage(Image image);
+    public abstract List<Sprite> collisions();
 }

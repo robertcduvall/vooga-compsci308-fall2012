@@ -16,12 +16,12 @@ import org.xml.sax.SAXException;
  * Reads in user data from an XML file and creates User objects
  * 
  * @author Howard
- * 
+ * minor modification by difan
  */
 public class UserXMLReader {
-    private Document dom;
+    private static Document dom;
 
-    private void parseXmlFile (String path) {
+    private   void parseXmlFile (String filePath) {
         // get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -29,7 +29,8 @@ public class UserXMLReader {
             DocumentBuilder db = dbf.newDocumentBuilder();
 
             // parse using builder to get DOM representation of the XML file
-            dom = db.parse(path);
+
+            dom = db.parse(filePath);
 
         }
         catch (ParserConfigurationException pce) {
@@ -84,7 +85,7 @@ public class UserXMLReader {
             }
         }
 
-        return new User(name, password, picture, credits, messageList, gameDataList);
+       return new User(name, password, picture, credits, messageList, gameDataList);
 
     }
 
@@ -99,7 +100,7 @@ public class UserXMLReader {
      * @param tagName
      * @return
      */
-    private String getTextValue (Element ele, String tagName) {
+    private   String getTextValue (Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
@@ -117,24 +118,17 @@ public class UserXMLReader {
      * @param tagName
      * @return
      */
-    private int getIntValue (Element ele, String tagName) {
+    private   int getIntValue (Element ele, String tagName) {
         // in production application you would catch the exception
         return Integer.parseInt(getTextValue(ele, tagName));
-    }
-
-    public void runExample () {
-        // parse the xml file and get the dom object
-        parseXmlFile("src/arcade/database/Howard.xml");
-
-        // get each employee element and create a Employee object
-        getUser();
     }
 
     public static void main (String[] args) {
         // create an instance
         UserXMLReader dpe = new UserXMLReader();
         // call run example
-        dpe.runExample();
+        dpe.parseXmlFile("src/arcade/database/Howard.xml");
+        dpe.getUser();
     }
 
 }
