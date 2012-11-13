@@ -14,13 +14,17 @@ public class Controller extends JPanel implements Runnable {
 
     private LevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
+    
+    private Thread animator;
 
     public Controller(LevelFactory lf, GameInitializer gi) {
         myLevelFactory = lf;
         myGameInitializer = gi;
 
-        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer
-                .getFirstLevelName());
+        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer.getFirstLevelName());
+        
+        animator = new Thread(this);
+        animator.start();
     }
 
     /**

@@ -15,13 +15,14 @@ import vooga.platformer.gameobject.GameObject;
 public class MovingObject extends GameObject {
 
     private Image myImg;
-    private Point2D myVelocity = new Point2D.Double(0, 0);
+    private Point2D myVelocity;
     /**
      * @param configString String to parse parameters of this player
      * @param type of this object starting with lower case, eg. player, brick.
      */
     public MovingObject (String configString, String type) {
         super(configString);
+        myVelocity = new Point2D.Double(0, 0);
         try {
             myImg = ImageIO.read(new File("src/games/platformerdemo/" + type
                     + ".png"));
