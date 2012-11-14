@@ -10,7 +10,7 @@ package util.input.core;
  */
 
 import util.input.android.events.AndroidButtonEvent;
-import util.input.input_utils.UKeyCode;
+import util.input.inputhelpers.UKeyCode;
 import util.input.interfaces.listeners.AndroidListener;
 
 

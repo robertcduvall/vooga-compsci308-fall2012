@@ -1,6 +1,8 @@
 package util.input.factories;
 
 import java.awt.Component;
+import util.input.android.bluetoothserver.AndroidBluetoothServer;
+import util.input.core.AndroidController;
 import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
@@ -45,7 +47,9 @@ public class ControllerFactory {
 
     public static Controller createAndroidController(Object androidControl) {
         // Create android controller
-        return null;
+        AndroidBluetoothServer bserver = new AndroidBluetoothServer(0);
+        bserver.startServer();
+        return new AndroidController();
     }
 
 }

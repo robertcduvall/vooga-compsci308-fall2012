@@ -3,7 +3,7 @@ package util.input.core;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
-import util.input.input_utils.UKeyCode;
+import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class allows users to enter input through the mouse
