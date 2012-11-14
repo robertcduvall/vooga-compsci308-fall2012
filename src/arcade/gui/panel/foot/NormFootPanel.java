@@ -1,18 +1,18 @@
-package arcade.gui.panel.search;
+package arcade.gui.panel.foot;
 
-import javax.swing.JPanel;
 import arcade.gui.Arcade;
+import arcade.gui.panel.ArcadePanel;
 
 
-public class BlankPanel extends ASearchPanel {
+public class NormFootPanel extends AFootPanel {
 
-    public BlankPanel (Arcade a) {
+    public NormFootPanel (Arcade a) {
         super(a);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    public JPanel createPanel () {
+    public ArcadePanel createPanel () {
         // TODO Auto-generated method stub
         return null;
     }

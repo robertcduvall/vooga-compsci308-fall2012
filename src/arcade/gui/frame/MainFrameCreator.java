@@ -1,6 +1,5 @@
 package arcade.gui.frame;
 
-import javax.swing.JFrame;
 import arcade.gui.Arcade;
 
 
@@ -12,25 +11,31 @@ import arcade.gui.Arcade;
  */
 public class MainFrameCreator {
 
+    private static final String ARCADE_NAME = "CS 308 Arcade";
     private Arcade myArcade;
 
     public MainFrameCreator (Arcade a) {
         myArcade = a;
     }
 
-    
     /**
      * this method is the main method that will
      * set up the jframe.. and get it read to add
+     * 
      * @return
      */
-    public JFrame createFrame(){
-        
-        
-        return null;
+    public ArcadeFrame createFrame () {
+        ArcadeFrame myFrame = new ArcadeFrame(myArcade, ARCADE_NAME);
+
+        // set size
+
+        // set layout
+
+        // set other things
+
+        return myFrame;
     }
-    
-    
+
     /*
      * Creating new/different frames will allow users to implement different
      * layouts. And give each of the frames different properties.
