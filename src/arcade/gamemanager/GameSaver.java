@@ -1,5 +1,6 @@
-package arcade;
+package arcade.gamemanager;
 
+import arcade.IArcadeGame;
 import arcade.usermanager.GameData;
 import arcade.usermanager.User;
 

@@ -1,5 +1,6 @@
 package arcade.gui.panel.search;
 
+import javax.swing.JPanel;
 import arcade.gui.Arcade;
 
 public class SearchPanel extends ASearchPanel {
@@ -9,23 +10,12 @@ public class SearchPanel extends ASearchPanel {
     }
 
     @Override
-    protected void makeListeners () {
+    public JPanel createPanel () {
         // TODO Auto-generated method stub
-        
+        return null;
     }
 
-    @Override
-    protected void addComponents () {
-        // TODO Auto-generated method stub
-        
-    }
 
-    @Override
-    public void refresh () {
-        // TODO Auto-generated method stub
-        
-    }
-    
     
 
 }

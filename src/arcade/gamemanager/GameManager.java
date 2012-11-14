@@ -1,8 +1,9 @@
-package arcade;
+package arcade.gamemanager;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import arcade.IArcadeGame;
 import arcade.utility.ReadWriter;
 
 
