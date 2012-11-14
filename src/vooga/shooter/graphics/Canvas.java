@@ -59,7 +59,7 @@ public class Canvas extends JApplet {
                 public void actionPerformed (ActionEvent e)
                 {
                     // myGame doesn't exist! please fix
-                     myGame.update();
+                    // myGame.update();
                     
                     // indirectly causes paint to be called
                     repaint();
