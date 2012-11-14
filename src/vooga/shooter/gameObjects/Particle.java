@@ -2,9 +2,11 @@ package vooga.shooter.gameObjects;
 
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 
 
 /**
@@ -23,14 +25,19 @@ public class Particle extends Sprite {
     private int durationLimit;
     private int durationExisted;
 
-    public void draw(Graphics2D g) {
-        Composite originalComposite = g.getComposite();
-        g.setPaint(Color.blue);
-        g.fill(blueSquare);
-        g.setComposite(makeComposite(alpha));
-        g.setPaint(Color.red);
-        g.fill(redSquare);
-        g.setComposite(originalComposite);
+    public void draw (Graphics2D g) {
+        // This code has errors. Idk what you were even
+        // trying to do so I commented it out.
+        // please remove or fix.
+        // - Alex
+        
+//        Composite originalComposite = g.getComposite();
+//        g.setPaint(Color.blue);
+//        g.fill(blueSquare);
+//        g.setComposite(makeComposite(alpha));
+//        g.setPaint(Color.red);
+//        g.fill(redSquare);
+//        g.setComposite(originalComposite);
     }
 
     @Override
@@ -43,35 +50,49 @@ public class Particle extends Sprite {
 
     }
 
-    @Override
-    public Point getPosition() {
+    public Point getPosition () {
+        // TODO: fill in method details
+        return null;
 
     }
 
-    public void setPosition(Point position) {
+    public Point getDirection () {
+        // TODO: fill in method details
+        return null;
 
     }
 
-    @Override
-    public Point getDirection() {
-
+    public Image getImage () {
+        // TODO: fill in method details
+        return null;
     }
 
-    public void setDirection(Point direction) {
-
-    }
-
-    @Override
-    public Image getImage() {
-
-    }
-
-    public void setImage(Image image) {
-
+    public List<Sprite> collisions () {
+        // TODO: fill in method details
+        return null;
     }
 
     @Override
-    public List<Sprite> collisions() {
+    public void draw (Graphics g) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setPosition (Point position) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setDirection (Point direction) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setImage (Image image) {
+        // TODO Auto-generated method stub
 
     }
 }

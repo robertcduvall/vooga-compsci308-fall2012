@@ -4,11 +4,10 @@ import util.input.input_utils.UKeyCode;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: lance
- * Date: 11/3/12
- * Time: 8:02 PM
- * To change this template use File | Settings | File Templates.
+ * This class allows users to enter input through the Wiimote
+ * 
+ * @author Amay
+ *
  */
 public class WiiController extends Controller<WiimoteListener> implements
         WiimoteListener {
@@ -27,7 +26,12 @@ public class WiiController extends Controller<WiimoteListener> implements
     public static final int WIIMOTE_BUTTON_DOWN = 1024;
     public static final int WIIMOTE_BUTTON_LEFT = 256;
     public static final int WIIMOTE_BUTTON_RIGHT = 512;
-
+    
+    /**
+     * Create a new Wii controller
+     * 
+     * @param wii - The Wiimote object to which we add the event listeners
+     */
     public WiiController(Wiimote wii) {
         wii.addWiiMoteEventListeners(this);
     }

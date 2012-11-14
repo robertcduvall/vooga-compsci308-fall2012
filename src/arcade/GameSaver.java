@@ -1,5 +1,6 @@
 package arcade;
 
+import arcade.usermanager.GameData;
 import arcade.usermanager.User;
 
 
@@ -28,20 +29,19 @@ public class GameSaver {
      * 
      * @param userGameInfo preferences
      */
-    public void saveGameInfo(String userGameInfo) {
-        /*
-         * for (GameData gameData : myUser.getGameData()) {
-         * if (gameData.getGameName() == myGame.getName()) {
-         * gameData.setGameInfo(userGameInfo);
-         * return;
-         * }
-         * }
-         * 
-         * // gameData does not exist in the user: create a new GameData
-         * GameData gameData = new GameData(myGame.getName(), userGameInfo, 0,
-         * 0);
-         * myUser.getGameData().add(gameData);
-         */
+    public void saveGameInfo (String userGameInfo) {
+//        /*
+        for (GameData gameData : myUser.getGameData()) {
+            if (gameData.getMyGameName() == myGame.getName()) {
+                gameData.setMyGameInfo(userGameInfo);
+                return;
+            }
+        }
+        
+        // gameData does not exist in the user: create a new GameData
+        GameData gameData = new GameData(myGame.getName(), userGameInfo, 0, 0);
+        myUser.getGameData().add(gameData);
+//        */
 
     }
 
@@ -51,18 +51,18 @@ public class GameSaver {
      * 
      * @param score score to be saved
      */
-    public void saveHighScore(int score) {
-        /*
-         * for (GameData gameData : myUser.getGameData()) {
-         * if (gameData.getGameName() == myGame.getName()) {
-         * gameData.setHighScore(score);
-         * return;
-         * }
-         * }
-         * 
-         * // gameData does not exist in the user: create a new GameData
-         * GameData gameData = new GameData(myGame.getName(), "", score, 0);
-         * myUser.getGameData().add(gameData);
-         */
+    public void saveHighScore (int score) {
+//        /*
+        for (GameData gameData : myUser.getGameData()) {
+            if (gameData.getMyGameName() == myGame.getName()) {
+                gameData.setMyHighScore(score);
+                return;
+            }
+        }
+        
+        // gameData does not exist in the user: create a new GameData
+        GameData gameData = new GameData(myGame.getName(), "", score, 0);
+        myUser.getGameData().add(gameData);
+//        */
     }
 }

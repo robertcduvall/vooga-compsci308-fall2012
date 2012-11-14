@@ -11,7 +11,6 @@ import util.input.exceptions.InvalidControllerActionException;
 import util.input.input_utils.BoolTuple;
 import util.input.input_utils.UKeyCode;
 
-
 /**
  * This class represents an abstract controller to provide input.
  * 
@@ -148,9 +147,9 @@ public abstract class Controller<T> {
     private void broadcastToSubscribers(String methodName, Object inputEvent)
             throws IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
-        Method method = this.getClass().getMethod(methodName,
-                inputEvent.getClass());
         for (T subscribedElement : subscribedElements) {
+            Method method = subscribedElement.getClass().getMethod(methodName, inputEvent.getClass());
+            System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
     }

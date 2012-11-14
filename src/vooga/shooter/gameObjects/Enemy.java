@@ -1,5 +1,10 @@
 package vooga.shooter.gameObjects;
 
-public class Enemy extends Sprite {
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
+import java.util.List;
+
+public class Enemy extends Sprite{
 
 }
