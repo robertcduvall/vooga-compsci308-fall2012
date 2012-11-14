@@ -207,7 +207,6 @@ public class LevelEditor extends JFrame{
                 newLevel();
             }
         });
-//        spriteMenu.addMouseListener(myMouseListener);
         bar.add(fileMenu);
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);

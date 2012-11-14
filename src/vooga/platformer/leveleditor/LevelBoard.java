@@ -1,6 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -98,16 +99,17 @@ public class LevelBoard extends Canvas implements ISavable {
     }
 
     public void update() {
-        myBufferGraphics.drawImage(
-                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
-        if (myCurrentSprite != null) {
-            myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
-            myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-        }
-        for (Sprite s : mySprites) {
-            s.paint(myBufferGraphics);
-        }
-
+//        myBufferGraphics.drawImage(
+//                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+//        if (myCurrentSprite != null) {
+//            myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
+//            myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
+//        }
+//        for (Sprite s : mySprites) {
+//            s.paint(myBufferGraphics);
+//        }
+        myBufferGraphics.setColor(Color.BLACK);
+        myBufferGraphics.fillRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
     }
 
     @Override
