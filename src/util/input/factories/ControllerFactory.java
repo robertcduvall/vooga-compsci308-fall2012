@@ -5,6 +5,7 @@ import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.core.WiiController;
+import wiiusej.Wiimote;
 
 
 /**
