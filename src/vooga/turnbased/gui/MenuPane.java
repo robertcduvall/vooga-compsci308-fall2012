@@ -9,21 +9,22 @@ package vooga.turnbased.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 
-public class MenuCanvas extends Canvas {
-
-    private GameWindow myGameWindow;
+@SuppressWarnings("serial")
+public class MenuPane extends DisplayPane {
 
     /**
      * Constructor
      * 
-     * @param frame GameWindow on which its components will be displayed
+     * @param gameWindow GameWindow on which its components will be displayed
      */
-    public MenuCanvas (GameWindow frame) {
-        myGameWindow = frame;
+    public MenuPane (GameWindow gameWindow) {
+        super(gameWindow);
+        createButtons();
     }
 
     /**
@@ -34,7 +35,7 @@ public class MenuCanvas extends Canvas {
         JButton startButton = new JButton(gameIcon);
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                myGameWindow.changeCurrentCanvas(GameWindow.GAME);
+                getGameWindow().changeActivePane(GameWindow.GAME);
             }
         });
         add(startButton);
@@ -43,18 +44,21 @@ public class MenuCanvas extends Canvas {
         JButton editorButton = new JButton(editorIcon);
         editorButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                myGameWindow.changeCurrentCanvas(GameWindow.EDITOR);
+                getGameWindow().changeActivePane(GameWindow.EDITOR);
             }
         });
         add(editorButton);
     }
 
-    @Override
-    /**
-     * initialize the canvas when user switch to Menu
-     */
-    public void initialize () {
-        createButtons();
-        myGameWindow.refreshScreen();
-    }
+	@Override
+	public void keyPressed(KeyEvent e) {		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {		
+	}
 }

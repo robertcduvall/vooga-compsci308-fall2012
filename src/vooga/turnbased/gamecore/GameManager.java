@@ -14,16 +14,15 @@ import java.util.Observable;
 import java.util.Observer;
 import vooga.turnbased.gamecreation.Factory;
 import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gui.GameCanvas;
+import vooga.turnbased.gui.GamePane;
 
 
 public class GameManager implements Observer {
 
-    private final GameCanvas myGameCanvas;
+    private final GamePane myGamePane;
     private GameMode myCurrentGameMode;
-    private GameMode myPausedMapMode;
-    private Factory myFactory;
-    private MapObject myPlayer;
+//    private Factory myFactory;
+//    private MapObject myPlayer;
     private final boolean isOver;
 
     /**
@@ -31,8 +30,8 @@ public class GameManager implements Observer {
      * 
      * @param gameCanvas The GameCanvas it paints to
      */
-    public GameManager (GameCanvas gameCanvas) {
-        myGameCanvas = gameCanvas;
+    public GameManager (GamePane gameCanvas) {
+        myGamePane = gameCanvas;
         isOver = false;
         // mySprites =
         // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
@@ -71,11 +70,11 @@ public class GameManager implements Observer {
         myCurrentGameMode.handleKeyReleased(e);
     }
 
-    public Dimension getCanvasDimension () {
-        return myGameCanvas.getSize();
+    public Dimension getPaneDimension () {
+        return myGamePane.getSize();
     }
     
     public int getDelayTime() {
-    	return myGameCanvas.getDelayTime();
+    	return myGamePane.getDelayTime();
     }
 }

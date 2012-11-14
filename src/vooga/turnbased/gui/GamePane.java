@@ -9,15 +9,14 @@ package vooga.turnbased.gui;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ResourceBundle;
+
 import vooga.turnbased.gamecore.GameManager;
 
-public class GameCanvas extends Canvas implements Runnable, KeyListener {
+@SuppressWarnings("serial")
+public class GamePane extends DisplayPane implements Runnable {
 
-    private GameWindow myGameWindow;
     private GameManager myGameManager;
-    private Thread myGameThread;
+    //private Thread myGameThread;
     private int myDelayTime;
 
     // InfoPanel infoPanel;
@@ -26,32 +25,13 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
      * Constructor of the canvas which displays the game
      * @param gameWindow The GameWindow it belongs to
      */
-    public GameCanvas (GameWindow gameWindow) {
-        myGameWindow = gameWindow;
-        myGameThread = new Thread(this);
+    public GamePane (GameWindow gameWindow) {
+        super(gameWindow);
+        //myGameThread = new Thread(this);
         myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
-    }
-
-    /**
-     * initialize properties when user switch to game
-     */
-    public void initialize () {
         addKeyListener(this);
         myGameManager = new GameManager(this);
-        repaint();
-        setFocusable(true);
-        requestFocusInWindow();
-        myGameThread.start();
-    }
-
-    /**
-     * paint components of the Canvas
-     */
-    @Override
-    public void paintComponent (Graphics g) {
-        super.paintComponent(g);
-        Image background = GameWindow.importImage("BackgroundImage");
-        //g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
+        enableFocus();
     }
 
     /**
@@ -101,7 +81,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
      */
     @Override
     public void keyTyped (KeyEvent e) {
-        System.out.println("Typed " + e.getKeyCode());
+        //System.out.println("Typed " + e.getKeyCode());
     }
 
     /**
@@ -109,7 +89,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
      */
     @Override
     public void keyPressed (KeyEvent e) {
-        System.out.println("Pressed " + e.getKeyCode());
+        //System.out.println("Pressed " + e.getKeyCode());
         myGameManager.handleKeyPressed(e);
     }
 
@@ -118,11 +98,12 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
      */
     @Override
     public void keyReleased (KeyEvent e) {
-        System.out.println("Released " + e.getKeyCode());
+        //System.out.println("Released " + e.getKeyCode());
         myGameManager.handleKeyReleased(e);
     }
 
     public int getDelayTime() {
     	return myDelayTime;
     }
+    
 }

@@ -5,34 +5,23 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 
-public class EditorCanvas extends Canvas implements KeyListener {
+@SuppressWarnings("serial")
+public class EditorPane extends DisplayPane {
 
-    private GameWindow myGameWindow;
-
-    public EditorCanvas (GameWindow gameWindow) {
-        myGameWindow = gameWindow;
-    }
-
-    @Override
-    public void initialize () {
+    public EditorPane (GameWindow gameWindow) {
+        super(gameWindow);
         addButtons();
         addKeyListener(this);
-        repaint();
-        setFocusable(true);
-        requestFocusInWindow();
-        myGameWindow.refreshScreen();
     }
-    
+
     private void addButtons () {
         JButton menuButton = new JButton("Back to menu");
         menuButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                myGameWindow.changeCurrentCanvas(GameWindow.MENU);
+                getGameWindow().changeActivePane(GameWindow.MENU);
             }
         });
         add(menuButton);
@@ -71,5 +60,4 @@ public class EditorCanvas extends Canvas implements KeyListener {
     public void keyReleased (KeyEvent e) {
         System.out.println("Released " + e.getKeyCode());
     }
-
 }

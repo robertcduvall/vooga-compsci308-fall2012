@@ -5,15 +5,16 @@
  */
 package vooga.turnbased.gui;
 
+import java.awt.CardLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import javax.swing.Timer;
 
 /**
  * contains a Canvas, and menu that respond to change in games
@@ -23,22 +24,16 @@ import javax.swing.JMenuBar;
 public class GameWindow extends JFrame {
 
     //denotes the index of the prototype in myCanvases
-    public static int MENU = 0;
-    public static int EDITOR = 1;
-    public static int GAME = 2;
+    public static final String MENU = "Menu";
+    public static final String EDITOR = "Editor";
+    public static final String GAME = "Game";
 
-    private int myInfoHeight = 100;
-    private int myWidth;
-    private int myHeight;
     private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
-
-    private GameCanvas myCanvas;
     private static ResourceBundle myResources;
 
-    private JMenuBar myMenuBar;
-    private Canvas myCurrentCanvas;
-    //contains MenuCanvas, EditorCanvas and GameCanvas
-    private List<Canvas> myCanvases = new ArrayList<Canvas>();
+    private Container myContentPane;
+    private CardLayout myLayout;
+    private Timer myGameTimer;
 
     /**
      * Constructor construct a game window given the size of the window
@@ -46,14 +41,15 @@ public class GameWindow extends JFrame {
      * @param height Height of the window
      * @param title The title of the game
      */
-    public GameWindow (int width, int height, String title) {
-        myWidth = width;
-        myHeight = height;
+    public GameWindow (String title, String settingsResource, int width, int height) {
         setTitle(title);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width, height);
         setVisible(true);
         setResizable(true);
+        addResourceBundle(settingsResource);
+        initializeGamePanes();
+        startGameTimer();
     }
 
     /**
@@ -68,26 +64,22 @@ public class GameWindow extends JFrame {
     /**
      * initialize the Canvases as prototypes
      */
-    public void initializeCanvas() {
-        myCanvases.add(new MenuCanvas(this));
-        myCanvases.add(new EditorCanvas(this));
-        myCanvases.add(new GameCanvas(this));
-        myCurrentCanvas = myCanvases.get(MENU);
-        //default: start with MenuCanvas
-        changeCurrentCanvas(MENU);
+    private void initializeGamePanes() {
+    	myContentPane = getContentPane();
+    	myLayout = new CardLayout();
+    	myContentPane.setLayout(myLayout);
+    	myContentPane.add(new MenuPane(this), MENU);
+    	myContentPane.add(new EditorPane(this), EDITOR);
+    	myContentPane.add(new GamePane(this), GAME);
+        changeActivePane(MENU);
     }
 
     /**
      * change the current Canvas to a specific canvas specified by canvasIndex
-     * @param canvasIndex MENU=0; EDITOR=1; GAME=2
+     * @param paneName MENU="Menu"; EDITOR="Editor"; GAME="Game"
      */
-    public void changeCurrentCanvas (int canvasIndex) {
-        myCurrentCanvas.removeAll();
-        remove(myCurrentCanvas);
-        myCurrentCanvas = myCanvases.get(canvasIndex);
-        add(myCurrentCanvas);
-        myCurrentCanvas.initialize();
-        refreshScreen();
+    public void changeActivePane (String paneName) {
+    	myLayout.show(myContentPane, paneName);
     }
 
     /**
@@ -116,14 +108,21 @@ public class GameWindow extends JFrame {
      * add the ResourceBundle to the canvas
      * @param resource Path to the resource bundle
      */
-    public void addResourceBundle (String resource) {
+    private void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
     }
     
-    /*
-     * public void startFirstGame() {
-     * myCanvas = new Canvas(myResources, myWidth, myHeight-myInfoHeight, this);
-     * add(myCanvas, BorderLayout.NORTH);
-     * }
-     */
+	private void startGameTimer() {
+		// create a timer to animate the canvas
+		int ONE_SECOND = 1000;
+		int FRAMES_PER_SECOND = 10;
+		myGameTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND,
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						repaint();
+					}
+				});
+		myGameTimer.start();
+	}
 }
