@@ -21,6 +21,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
+import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.factories.ControllerFactory;
 import vooga.platformer.leveleditor.Sprite;
@@ -42,6 +43,8 @@ public class InputTester extends Applet implements MouseInputListener {
     boolean focussed = false;   // True when this applet has input focus.
 
     private MouseController myMouseController;
+    
+    private KeyboardController myKeyController;
 
     SpriteTestingInput mainPlayer = new SpriteTestingInput();
 
@@ -75,7 +78,8 @@ public class InputTester extends Applet implements MouseInputListener {
         // System.out.println(wiiObj);
         myMouseController = (MouseController) ControllerFactory
                 .createMouseController(this);
-        myMouseController.subscribe(this);
+        //myMouseController.subscribe(this);
+        myKeyController = (KeyboardController) ControllerFactory.createKeyboardController(this);
     }
 
     private Wiimote connectWii () {
@@ -89,9 +93,10 @@ public class InputTester extends Applet implements MouseInputListener {
         try {
             System.out.println("configureActions");
             myMouseController.setControl(MouseEvent.BUTTON1,
-                    MouseController.PRESSED, Sprite.class, "move");
+                    MouseController.PRESSED, mainPlayer, "move");
             // myMouseController.setControl(WiiController.WIIMOTE_BUTTON_LEFT,
             // WiiController.BUTTON_PRESSED, mainPlayer, "jump");
+            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, mainPlayer, "jump");
         }
         catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
