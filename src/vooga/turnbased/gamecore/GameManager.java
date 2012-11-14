@@ -57,16 +57,6 @@ public class GameManager implements Observer {
         myCurrentGameMode.paint(g);
     }
 
-    // public void startBattle(Enemy e) {
-    // // "pause" the current MapMode and switch to BattleMode with the given
-    // enemy
-    // myPausedMapMode = myCurrentGameMode;
-    // myCurrentGameMode = new BattleMode(this, e);
-    // }
-
-    public void backToMap () {
-        myCurrentGameMode = myPausedMapMode;
-    }
 
     @Override
     public void update (Observable arg0, Object arg1) {

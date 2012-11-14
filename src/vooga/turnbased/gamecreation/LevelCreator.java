@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.util.List;
-import vooga.turnbased.sprites.CharacterSprite;
+import vooga.turnbased.sprites.Sprite;
 
 /**
  * This class is designed to parse Xml data and create a level of
@@ -48,31 +48,7 @@ public class LevelCreator {
      *
      * @return
      */
-    public List<CharacterSprite> parseCharacterSprites () {
-        return null;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<?> parseInteractableSprites () {
-        return null;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<?> parsePickupSprites () {
-        return null;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<?> parseStaticSprites () {
+    public List<Sprite> parseSprites () {
         return null;
     }
 
