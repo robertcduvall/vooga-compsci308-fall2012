@@ -1,5 +1,6 @@
 package arcade.gui;
 
+import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -70,7 +71,8 @@ public class Arcade {
     private void updatePanelinFrame (ArcadePanel newPanel) {
         ArcadePanel panelHolder = myFrame.getPanel(newPanel.getPanelType());
         panelHolder.removeAll();
-        panelHolder.add(newPanel);
+        panelHolder.setLayout(new BorderLayout());
+        panelHolder.add(newPanel, BorderLayout.CENTER);
     }
 
     /**
