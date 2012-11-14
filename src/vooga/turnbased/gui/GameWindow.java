@@ -121,6 +121,7 @@ public class GameWindow extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						repaint();
+						
 					}
 				});
 		myGameTimer.start();

@@ -16,7 +16,7 @@ import vooga.turnbased.gamecore.GameManager;
 public class GamePane extends DisplayPane implements Runnable {
 
     private GameManager myGameManager;
-    //private Thread myGameThread;
+    private Thread myGameThread;
     private int myDelayTime;
 
     // InfoPanel infoPanel;
@@ -51,7 +51,7 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void paint(Graphics g) {
-        myGameManager.paint(g);
+    	myGameManager.paint(g);
     }
     
     /**

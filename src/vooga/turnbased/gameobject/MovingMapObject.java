@@ -22,6 +22,7 @@ public class MovingMapObject extends MapObject{
 	private int myXOriginInTile;
 	private int myYOriginInTile;
 	private Point myDirection;
+	private Point myPreviousLocation;
 	
     public MovingMapObject (int id, Point coord, Image mapImage, Rectangle camera) {
         super(id, coord, mapImage, camera);
@@ -31,11 +32,12 @@ public class MovingMapObject extends MapObject{
         myYOriginInTile = 0;
         myTimePassed = 0;
         myDirection = new Point(0, 0);
+        myPreviousLocation = getLocation();
     }
     
     public Point calcScreenDisplacement(int tileWidth, int tileHeight, int delayTime) {
     	myXOriginInTile = (int)(-tileWidth * myXProportion);
-    	myYOriginInTile = (int)(-tileWidth * myYProportion);
+    	myYOriginInTile = (int)(-tileHeight * myYProportion);
     	return new Point(myXOriginInTile, myYOriginInTile);
     }
 
@@ -53,7 +55,7 @@ public class MovingMapObject extends MapObject{
     
     public void setDirection(Point dir) {
     	myDirection = dir;
-    	//this.setMoving(true);
+    	this.setMoving(true);
     }
     
     @Override
@@ -69,5 +71,11 @@ public class MovingMapObject extends MapObject{
     @Override
     public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
     	g.drawImage(getMapImage(), xOffset - myXOriginInTile, yOffset - myYOriginInTile, width, height, null);
+    }
+    
+    @Override
+    public void setLocation(Point p) {
+    	myPreviousLocation = getLocation();
+    	super.setLocation(p);
     }
 }
