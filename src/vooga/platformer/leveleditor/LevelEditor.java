@@ -1,6 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -46,20 +47,17 @@ import vooga.platformer.gui.menu.GameListener;
  *
  */
 public class LevelEditor extends JFrame{
-    private static final int RIGHT_CLICK = 3;
+    private static final long serialVersionUID = 1154878631980426338L;
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
-    private Map<String,List<String>> mySpriteTypes;
+    private Map<String, List<String>> mySpriteTypes;
     private JFrame myContainer;
     private JPanel myViewPane;
-    private BufferedImage backbuffer;
-    private Image background;
-    private Graphics2D g2d;
-    private boolean isRunning;
+    private boolean myGameIsRunning;
+    private LevelBoard myBoard;
     private MouseListener myMouseListener;
     private List<Sprite> mySprites;
-    private boolean follow;
-    private Sprite currentSprite;
+    private Sprite myCurrentSprite;
     private KeyListener myKeyListener;
     private GameListener myGameListener;
     public static void main (String[] args) {
@@ -68,38 +66,27 @@ public class LevelEditor extends JFrame{
 
     public LevelEditor() {
         super("LevelEditor");
-        isRunning = true;
-        follow = false;
+        myGameIsRunning = true;
         frameBuild();
         fillMap();
         createListeners();
         createEditPane();
         createButtonPanel();
         createTopMenu();
-        background = null;
         pack();
         setVisible(true);
         editLoop();
     }
 
     private void editLoop () {
-        while (isRunning) {
+        while (myGameIsRunning) {
             update();
             repaint();
         }
     }
-
     private void update() {
-        g2d.drawImage(background, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
-        for (Sprite sprite : mySprites) {
-            sprite.paint(g2d);
-        }
-        if (follow) {
-            currentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
-            currentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-        }
+        myBoard.update();
     }
-
     private void frameBuild() {
         myContainer = this;
         setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -123,39 +110,6 @@ public class LevelEditor extends JFrame{
     }
 
     private void createListeners () {
-        myMouseListener = new MouseAdapter() {
-            @Override 
-            public void mousePressed(MouseEvent e) {
-                if (follow && e.getComponent() == myViewPane) {
-                    follow = false;
-                }
-                else if (e.getButton() == RIGHT_CLICK) {
-                    for (Sprite s : mySprites) {
-                        if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
-                                e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
-                            //Something with sprites (Popup maybe?)
-                        }
-                        else {
-                            JFileChooser chooser = new JFileChooser();
-                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                    "JPG & GIF Images", "jpg", "gif");
-                            chooser.setFileFilter(filter);
-                            int returnVal = chooser.showOpenDialog(myContainer);
-                            if (returnVal == JFileChooser.APPROVE_OPTION)  {
-                                try {
-                                    background = ImageIO.read(chooser.getSelectedFile());
-                                }
-                                catch (IOException io) {
-                                    System.out.println("File not found. Try again");
-                                    background = null;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        };
         myKeyListener = new KeyAdapter() {
 
         };
@@ -166,29 +120,27 @@ public class LevelEditor extends JFrame{
             }
         };
     }
+    private void createEditPane() {
+        LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
+        myBoard = board;
+        JPanel panel = new JPanel() {
+            @Override 
+            public void paintComponent(Graphics pen) {
+                myBoard.paint(pen);
+                paintComponents(pen);
+            }
+        };
+        panel.setLayout(new BorderLayout());
+        myViewPane = panel;
+        panel.add(board);
+        panel.addKeyListener(myKeyListener);
+        myContainer.add(panel);
+    }
     private GameButton createButton (String spritename) {
         GameButton gb = new GameButton(spritename);
         gb.setGameListener(myGameListener);
         return gb;
     }
-    private void createEditPane() {
-        backbuffer = new BufferedImage(DEFAULT_FRAME_SIZE.width,
-                DEFAULT_FRAME_SIZE.height, BufferedImage.TYPE_INT_RGB);
-        g2d = backbuffer.createGraphics();
-        JPanel panel = new JPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                g.drawImage(backbuffer, 0, 0, DEFAULT_FRAME_SIZE.width,
-                        DEFAULT_FRAME_SIZE.height, myContainer);
-            }
-        };
-        panel.setLayout(new BorderLayout());
-        myViewPane = panel;
-        panel.addMouseListener(myMouseListener);
-        panel.addKeyListener(myKeyListener);
-        myContainer.add(panel);
-    }
-
     private void createButtonPanel() {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
@@ -211,11 +163,9 @@ public class LevelEditor extends JFrame{
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
-                    Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40, 
+                    Sprite s = new Sprite(event.getActionCommand(), x, y, 20, 20, 
                             IMAGE_PATH + event.getActionCommand() + ".png");
-                    mySprites.add(s);
-                    follow = true;
-                    currentSprite = s;
+                    myBoard.add(s);
                 }
             });
             pop.add(j);
@@ -257,7 +207,7 @@ public class LevelEditor extends JFrame{
                 newLevel();
             }
         });
-        spriteMenu.addMouseListener(myMouseListener);
+//        spriteMenu.addMouseListener(myMouseListener);
         bar.add(fileMenu);
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);

@@ -1,4 +1,4 @@
-package vooga.platformer.leveleditor.test;
+package vooga.platformer.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,11 +18,11 @@ import vooga.platformer.leveleditor.Sprite;
  */
 public class LevelFileIOTest {
 
-    private static final String XML_FILE_PATH = "src/vooga/platformer/leveleditor/test/testIO.xml";
+    private static final String XML_FILE_PATH = "src/vooga/platformer/test/testIO.xml";
     private static final String LEVEL_ID = "Level Name";
     private static final int LEVEL_WIDTH = 20;
     private static final int LEVEL_HEIGHT = 20;
-    private static final String TEST_IMAGE = "src/vooga/platformer/leveleditor/test/testImage.jpg";
+    private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.jpg";
 
     private static final String TYPE = "enemy";
     private static final int X_POS = 1;
