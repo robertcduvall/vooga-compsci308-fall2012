@@ -9,9 +9,8 @@ import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.camera.FollowingCamera;
 
-public class DemoLevelFactory extends LevelFactory {
+public class DemoLevelFactory {
 
-    @Override
     public Level loadLevel (String levelName) {
         /*
          * The level name "level1" corresponds to an instance of TestLevel with the listed GameObjects added to it. Multiple
