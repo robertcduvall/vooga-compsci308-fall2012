@@ -6,6 +6,14 @@ import util.input.core.KeyboardController;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.level_editor.Level;
 
+
+/**
+ * Initializes the top-down shooter game and owns all sprites and levels
+ * initiated throughout the course of the game.  
+ * 
+ * @author Tommy Petrilak
+ * 
+ */
 public class Game {
     private List<Sprite> mySprites;
     private Level myCurrentLevel;
