@@ -14,7 +14,7 @@ public class Brick extends GameObject {
         super(configString);
         try {
             myImg = ImageIO
-                    .read(new File("src/games/platformerdemo/brick.png"));
+                    .read(new File("src/games/platformerdemo/brick-small.png"));
         } catch (IOException e) {
             System.out.println("no file find");
             e.printStackTrace();

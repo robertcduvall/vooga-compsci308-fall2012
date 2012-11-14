@@ -32,6 +32,7 @@ public class TestLevel extends Level {
     @Override
     public void paintBackground(Graphics pen) {
         pen.setColor(Color.WHITE);
+        pen.fillRect(0, 0, (int)getDimension().getWidth(), (int)getDimension().getHeight());
     }
 
     @Override

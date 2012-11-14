@@ -17,7 +17,8 @@ public class Canvas extends JApplet {
     private static final Dimension defaultSize = new Dimension(800, 800);
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 30;
-
+    private Timer myTimer;
+    
     /**
      * Initializes the applet --- called by the browser.
      */
@@ -36,7 +37,10 @@ public class Canvas extends JApplet {
         setSize(size);
         setPreferredSize(size);
         // set applet to receive user input
-        setInputListeners();
+        
+        // this method doesn't exist. please fix this!
+        // setInputListeners();
+        
         setFocusable(true);
         requestFocus();
     }
@@ -48,15 +52,19 @@ public class Canvas extends JApplet {
     public void start() {
 
         // create a timer to animate the canvas
-        myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND,
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        myGame.update();
-                        // indirectly causes paint to be called
-                        repaint();
-                    }
-                });
+        myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
+            new ActionListener()
+            {
+                @Override
+                public void actionPerformed (ActionEvent e)
+                {
+                    // myGame doesn't exist! please fix
+                    // myGame.update();
+                    
+                    // indirectly causes paint to be called
+                    repaint();
+                }
+            });
         myTimer.start();
     }
 
