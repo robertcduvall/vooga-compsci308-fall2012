@@ -52,7 +52,7 @@ public class UserXMLWriter {
           Element message=XmlWriter.appendElement(doc,rootElement,"message_box","");
           XmlWriter.appendElementWithAttribute(doc,message,"message","", "wula", "wula");
           
-          XmlWriter.writeXML(doc, myUserFilePath);
+          XmlWriter.writeXML(doc, myUserFilePath+userName+".xml");
           
          
           

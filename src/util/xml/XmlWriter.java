@@ -63,7 +63,7 @@ public class XmlWriter {
     /**
      * write document into a xml file
      * @param doc 
-     * @param filePath
+     * @param filePath(including filename.xml)
      * @author difan zhao
      */
     

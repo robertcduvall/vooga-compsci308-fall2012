@@ -59,18 +59,25 @@ public class SocialCenter {
         myAllUser.add(newUser);
         
     }
+    
+   
+    
 
     /*
      * return log on status
      */
     public String logOnUser (String username, String password) {
-
+        //set current user
     }
 
     /*
      * return log on status
      */
     public String registerUser (String username, String password, String picture) {
+      //write file
+        //initiate class
+        //add the the available list
+        //set current user
 
     }
 
@@ -78,6 +85,9 @@ public class SocialCenter {
      * return operation status
      */
     public String deleteUser (String username, String password) {
+        //delete from file
+        //delete from available list
+        //set current user to null
 
     }
 
@@ -114,14 +124,14 @@ public class SocialCenter {
     /*
      * return game history for certain game
      */
-    public String readGameHistory (String gameName) {
+    public String readGameHistory (String gameName, String tagName) {
 
     }
 
     /*
      * return whether the operation is successful
      */
-    public boolean writeGameHistory (String gameName) {
+    public boolean writeGameHistory (String gameName, String tagName, String content) {
 
     }
 
