@@ -10,7 +10,9 @@ public class EnemyMoveStrategy extends SimpleMoveStrategy {
     
     @Override
     public void applyAction() {
-        myEnemy.setVelocity(1, 0);
+        if (myEnemy.isOnGround()) {
+            myEnemy.setVelocity(1, myEnemy.getVelocity().getY());
+        }
         super.applyAction();
     }
 

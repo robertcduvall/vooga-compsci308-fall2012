@@ -6,7 +6,7 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.CollisionDirection;
 
-public class BrickEnemy extends CollisionEvent{
+public class BrickEnemy extends BrickMovingObject{
     private Brick myBrick;
     private Enemy myEnemy;
 
@@ -18,29 +18,14 @@ public class BrickEnemy extends CollisionEvent{
     
     public BrickEnemy (Enemy a, Brick b) {
         super(b, a);
-        myBrick = (Brick) this.b();
-        myEnemy = (Enemy) this.a();
+        myBrick = (Brick) this.a();
+        myEnemy = (Enemy) this.b();
     }
 
     @Override
     public void applyCollision (Level level) {
-        Rectangle2D intersection = myBrick.getShape()
-                .createIntersection(myEnemy.getShape());
-        double dy = intersection.getHeight();
-        double dx = intersection.getWidth();
-        
-        if (this.direction() == CollisionDirection.DOWN) {
-            myEnemy.setY(myEnemy.getY() - dy);
-        }
-        else if (this.direction() == CollisionDirection.UP) {
-            myEnemy.setY(myEnemy.getY() + dy);
-        }
-        else if (this.direction() == CollisionDirection.RIGHT) {
-            myEnemy.setX(myEnemy.getX() - dx);
-        }
-        else if (this.direction() == CollisionDirection.LEFT) {
-            myEnemy.setX(myEnemy.getX() + dx);
-        }
+        super.applyCollision(level);
+        myEnemy.notifyOnGround();
     }
 
 }

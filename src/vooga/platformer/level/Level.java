@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import util.camera.Camera;
 import vooga.platformer.collision.CollisionChecker;
+import vooga.platformer.collision.CollisionEvent;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
 
@@ -91,8 +92,6 @@ public abstract class Level {
      * @param elapsedTime time since last update cycle
      */
     public void update(long elapsedTime) {
-        myCollisionChecker.checkCollisions(this);
-        
         List<GameObject> removalList = new ArrayList<GameObject>();
         for (GameObject go : objectList) {
             go.update(this, elapsedTime);
@@ -104,6 +103,14 @@ public abstract class Level {
         for (GameObject removeObj : removalList) {
             objectList.remove(removeObj);
         }
+        
+        Iterable<CollisionEvent> collisionList = myCollisionChecker.checkCollisions(this);
+        for (CollisionEvent ce : collisionList) {
+            if (ce != null) {
+                ce.applyCollision(this);
+            }
+        }
+        
     }
 
     /**

@@ -14,7 +14,7 @@ public class DemoLevelFactory extends LevelFactory {
     @Override
     public Level loadLevel (String levelName) {
         if (levelName.equals("level1")) {
-            CollisionChecker checker = new BasicCollisionChecker();
+            CollisionChecker checker = new SloppyCollisionChecker();
             FollowingCamera cam = new FollowingCamera(new Dimension(800, 600), new Rectangle(3200, 2400));
             Level currLevel = new TestLevel(new Dimension(3200, 2400), checker, cam);
             Player player1 = new Player("x=4,y=5,width=50,height=50");
