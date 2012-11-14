@@ -65,7 +65,7 @@ public abstract class AbstractServer {
 
         while (true) {
             input = myClientInput.readLine().trim();
-            if (input.equals("STOP")) {
+            if ("STOP".equals(input)) {
                 break;
             }
             interpretClientInput();
@@ -74,4 +74,6 @@ public abstract class AbstractServer {
     }
 
     public abstract void interpretClientInput ();
+    
+    public abstract void createGameWithClients(ClientReference c1, ClientReference c2);
 }
