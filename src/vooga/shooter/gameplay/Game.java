@@ -36,7 +36,7 @@ public class Game {
     private void update () {
         // will work when Levels contain winning conditions
         // if (myCurrentLevel.winningConditionsMet(this)) {
-        // startLevel(myCurrentLevel.nextLevel());
+        //      startLevel(myCurrentLevel.nextLevel());
         // }
         
         for (Sprite s : getSprites()) {

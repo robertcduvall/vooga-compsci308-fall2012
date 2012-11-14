@@ -11,21 +11,31 @@ import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameplay.Game;
 
 
+/**
+ * First level (initializes enemies, sets winning conditions)
+ * 
+ * @author Tommy Petrilak
+ * 
+ */
 public class Level1 extends Level {
 
     private Game myGame;
-    
-    public Level1(Game myGame) {
+
+    private final int NUMBER_OF_ENEMIES = 3;
+
+    public Level1 (Game myGame) {
         super();
     }
-    
+
     private Image enemyImage;
     private ImageIcon imageIcon;
 
     public void startLevel () {
         imageIcon = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
         enemyImage = imageIcon.getImage();
-
-        myGame.getSprites().add(new Enemy(new Point(100, 100), new Dimension(20, 20), enemyImage, new Point(0, 5), 10));
+        for (int i = 0; i < NUMBER_OF_ENEMIES; i++) {
+            myGame.getSprites().add(new Enemy(new Point(100 + (10 * i), 100), new Dimension(20, 20),
+                                              enemyImage, new Point(0, 5), 10));
+        }
     }
 }
