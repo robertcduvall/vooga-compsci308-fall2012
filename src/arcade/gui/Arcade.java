@@ -1,10 +1,9 @@
 package arcade.gui;
 
+import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import arcade.datatransfer.GameLink;
 import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
@@ -31,7 +30,6 @@ public class Arcade {
     private static String myUser = "";
 
     private static ArcadeFrame myFrame;
-    private static Map<String, ArcadePanel> myPanels;
 
     private static GameLink myGameManager;
     private static UserLink myUserManager;
@@ -39,13 +37,12 @@ public class Arcade {
     private static ResourceBundle myResources;
 
     public Arcade () {
-         System.out.println("got it!");
+        System.out.println("got it!");
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
         myGameManager = new GameLink();
         myUserManager = new UserLink();
-        myPanels = new HashMap<String, ArcadePanel>();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
 
         // set up frame
@@ -71,14 +68,11 @@ public class Arcade {
         return myFactory.createPanelCreator(panelCreatorName).createPanel();
     }
 
-    private void updateFrame () {
-        // clear frame
-        myFrame.removeAll();
-
-        // reload everything in into the frame from the map
-        // based on the panel's location
-        // TODO
-
+    private void updatePanelinFrame (ArcadePanel newPanel) {
+        ArcadePanel panelHolder = myFrame.getPanel(newPanel.getPanelType());
+        panelHolder.removeAll();
+        panelHolder.setLayout(new BorderLayout());
+        panelHolder.add(newPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -91,8 +85,7 @@ public class Arcade {
     public void replacePanel (String panelCreatorName) {
         myFrame.setVisible(false);
         ArcadePanel newPanel = createPanel(panelCreatorName);
-        myPanels.put(newPanel.getPanelType(), newPanel);
-        updateFrame();
+        updatePanelinFrame(newPanel);
         myFrame.setVisible(true);
     }
 

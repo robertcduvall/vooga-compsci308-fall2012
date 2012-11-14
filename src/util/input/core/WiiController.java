@@ -1,6 +1,6 @@
 package util.input.core;
 
-import util.input.input_utils.UKeyCode;
+import util.input.inputhelpers.UKeyCode;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;

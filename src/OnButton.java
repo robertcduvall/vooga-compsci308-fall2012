@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,11 +22,11 @@ public class OnButton {
     private static JFrame startFrame;
     private static JPanel startPanel;
 
-    private static final int frameHeight = 400;
-    private static final int frameWidth = 400;
+    private static final int FRAME_HEIGHT = 500;
+    private static final int FRAME_WIDTH = 500;
 
-    private static final int buttonHeight = 400;
-    private static final int buttonWidth = 400;
+    private static final int BUTTON_HEIGHT = 310;
+    private static final int BUTTON_WIDTH = 310;
 
     /**
      * This code starts it all!
@@ -36,16 +37,21 @@ public class OnButton {
 
         // sets up the jframe and jpanel
         startFrame = new JFrame("Are you ready?");
-        startFrame.setSize(new Dimension(frameWidth, frameHeight));
+        startFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        startFrame.setResizable(false);
         startPanel = new JPanel();
-        startPanel.setLayout(new BorderLayout());
+//        startPanel.setLayout(new BorderLayout());
+        startPanel.setBackground(Color.BLACK);
 
         addPowerButton();
 
-        startFrame.getContentPane().add(startPanel, BorderLayout.CENTER);
+//        startFrame.getContentPane().add(startPanel, BorderLayout.CENTER);
+        startFrame.getContentPane().add(startPanel);
 
         // starts the jframe
         startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        startFrame.setLocationRelativeTo(null);
+
         startFrame.pack();
         startFrame.setVisible(true);
     }
@@ -54,7 +60,7 @@ public class OnButton {
         ImageIcon icon =
                 new ImageIcon(ImageReader.loadImage("src/arcade/gui/images", "powerbutton.png"));
         JButton powerButton = new JButton(icon);
-        powerButton.setPreferredSize(new Dimension(buttonWidth, buttonHeight));
+        powerButton.setPreferredSize(new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT));
         powerButton.addActionListener(new ActionListener() {
 
             @Override

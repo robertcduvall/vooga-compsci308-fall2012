@@ -21,7 +21,7 @@ public class NormLogoPanel extends ALogoPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.BLUE);
+        myPanel.setBackground(Color.GREEN);
         System.out.println("NormLogoPanel");
         
         return myPanel;

@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import util.input.exceptions.InvalidControllerActionException;
-import util.input.input_utils.BoolTuple;
-import util.input.input_utils.UKeyCode;
+import util.input.inputhelpers.BoolTuple;
+import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class represents an abstract controller to provide input.
