@@ -12,9 +12,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class NormNavPanel extends ANavPanel {
 
-    public NormNavPanel (Arcade a) {
-        super(a);
-    }
+//    public NormNavPanel (Arcade a) {
+//        super(a);
+//    }
 
     @Override
     public ArcadePanel createPanel () {

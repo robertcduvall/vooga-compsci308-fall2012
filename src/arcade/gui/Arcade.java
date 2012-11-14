@@ -34,14 +34,14 @@ public class Arcade {
 
     private static GameManager myGameManager;
     private static UserManager myUserManager;
-    private static GUIFactory myFactory;
+    private static PanelCreatorFactory myFactory;
     private static ResourceBundle myResources;
 
     public Arcade () {
         // System.out.println("got it!");
 
         // initialize things
-        myFactory = new GUIFactory(this);
+        myFactory = new PanelCreatorFactory(this);
         myGameManager = new GameManager();
         myUserManager = new UserManager();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");

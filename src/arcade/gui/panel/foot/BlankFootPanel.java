@@ -6,10 +6,9 @@ import arcade.gui.panel.ArcadePanel;
 
 public class BlankFootPanel extends AFootPanel {
 
-    public BlankFootPanel (Arcade a) {
-        super(a);
-        // TODO Auto-generated constructor stub
-    }
+//    public BlankFootPanel (Arcade a) {
+//        super(a);
+//    }
 
     @Override
     public ArcadePanel createPanel () {

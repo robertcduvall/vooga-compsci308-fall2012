@@ -14,7 +14,16 @@ public abstract class AbstractPanelCreator {
     private String myPanelType;
     private Arcade myArcade;
 
-    public AbstractPanelCreator (Arcade a) {
+    // public AbstractPanelCreator (Arcade a) {
+    // myArcade = a;
+    // }
+
+    /**
+     * Initializes the PanelCreator
+     * 
+     * @param a Arcade
+     */
+    public void creatorSetup (Arcade a) {
         myArcade = a;
     }
 
