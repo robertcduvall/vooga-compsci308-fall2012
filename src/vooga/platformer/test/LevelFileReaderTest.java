@@ -15,7 +15,7 @@ public class LevelFileReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        lfr = new LevelFileReader("src/vooga/platformer/leveleditor/test/test.xml");
+        lfr = new LevelFileReader("src/vooga/platformer/test/test.xml");
         Assert.assertNotNull(lfr);
     }
 
