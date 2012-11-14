@@ -27,11 +27,23 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
-        //myGameThread = new Thread(this);
+        myGameThread = new Thread(this);
         myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
         addKeyListener(this);
         myGameManager = new GameManager(this);
         enableFocus();
+    }
+    
+    /**
+     * initialize properties when user switch to game
+     */
+    public void initialize () {
+        //addKeyListener(this);
+        //myGameManager = new GameManager(this);
+        repaint();
+        //setFocusable(true);
+        //requestFocusInWindow();
+        myGameThread.start();
     }
 
     /**
@@ -39,17 +51,17 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void update(Graphics g) {
+    	myGameManager.update();
     	Image offScreenImage = createImage(getSize().width, getSize().height);
     	Graphics offScreenGraphics = offScreenImage.getGraphics();
     	paint(offScreenGraphics);
     	g.drawImage(offScreenImage, 0, 0, null);
-    	myGameManager.update();
     }
     
     /**
      * Paint gameobjects and background to the canvas
      */
-    @Override
+    //@Override
     public void paint(Graphics g) {
     	myGameManager.paint(g);
     }
@@ -60,8 +72,8 @@ public class GamePane extends DisplayPane implements Runnable {
     @Override
     public void run () {
     	long beforeTime, timeDiff, sleep;
-	    beforeTime = System.currentTimeMillis();
         while (!myGameManager.isOver()) {
+        	beforeTime = System.currentTimeMillis();
             myGameManager.update();
             repaint();
             

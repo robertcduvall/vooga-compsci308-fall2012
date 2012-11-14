@@ -21,6 +21,7 @@ import vooga.turnbased.gui.GameWindow;
  * @author Tony, Rex
  **/
 public class MapMode extends GameMode {
+
 	public static final Point UP = new Point(0, -1);
 	public static final Point RIGHT = new Point(1, 0);
 	public static final Point DOWN = new Point(0, 1);
@@ -76,8 +77,8 @@ public class MapMode extends GameMode {
 
 	@Override
 	public void paint(Graphics g) {
-		updateTileInfo();
-		updateCameraPosition();
+		//updateTileInfo();
+		//updateCameraPosition();
 		// foreach sprite: s.paint(g);
 		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
 			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
@@ -176,7 +177,7 @@ public class MapMode extends GameMode {
 
 	@Override
 	public void update() {
-		//updateTileInfo();
-		//updateCameraPosition();
+		updateTileInfo();
+		updateCameraPosition();
 	}
 }

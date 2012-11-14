@@ -25,9 +25,9 @@ public class BattleMode extends GameMode {
     @Override
     public void update () {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     @Override
     public void paint (Graphics g) {
     }
@@ -58,7 +58,7 @@ public class BattleMode extends GameMode {
     private boolean isBattleOver () {
         boolean allDead = false;
         for (Team t: myTeams) {
-            if (!t.stillAlive()) allDead = true;
+            if (!t.stillAlive()) { allDead = true; }
         }
         return allDead;
     }
@@ -66,7 +66,6 @@ public class BattleMode extends GameMode {
     @Override
     public void handleKeyPressed (KeyEvent e) {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -95,7 +94,11 @@ public class BattleMode extends GameMode {
         }
 
         public boolean stillAlive () {
-            // TODO: check each member to see if any are still alive
+            for (BattleObject teamMember: myBattleObjects) {
+                if (teamMember.isAlive()) {
+                    return true;
+                }
+            }
             return false;
         }
 

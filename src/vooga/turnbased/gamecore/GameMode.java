@@ -64,5 +64,4 @@ public abstract class GameMode extends Observable {
     public abstract void handleKeyPressed (KeyEvent e);
 
     public abstract void handleKeyReleased (KeyEvent e);
-    
 }
