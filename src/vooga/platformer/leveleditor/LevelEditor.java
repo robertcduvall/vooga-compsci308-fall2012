@@ -47,20 +47,16 @@ import vooga.platformer.gui.menu.GameListener;
  *
  */
 public class LevelEditor extends JFrame{
-    private static final int RIGHT_CLICK = 3;
+    private static final long serialVersionUID = 1154878631980426338L;
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
-    private Map<String,List<String>> mySpriteTypes;
+    private Map<String, List<String>> mySpriteTypes;
     private JFrame myContainer;
     private JPanel myViewPane;
-    private Image myBackground;
-    private BufferedImage myBuffer;
-    private Graphics2D myBufferGraphics;
     private boolean myGameIsRunning;
     private LevelBoard myBoard;
     private MouseListener myMouseListener;
     private List<Sprite> mySprites;
-    private boolean myHoldingSprite;
     private Sprite myCurrentSprite;
     private KeyListener myKeyListener;
     private GameListener myGameListener;
@@ -77,7 +73,6 @@ public class LevelEditor extends JFrame{
         createEditPane();
         createButtonPanel();
         createTopMenu();
-        myBackground = null;
         pack();
         setVisible(true);
         editLoop();
@@ -89,16 +84,9 @@ public class LevelEditor extends JFrame{
             repaint();
         }
     }
-
     private void update() {
-        myBufferGraphics.drawImage(myBackground, 0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height, null);
-        myBoard.paint(myBufferGraphics);
-        if (myCurrentSprite != null) {
-            myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
-            myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-        }
+        myBoard.update();
     }
-
     private void frameBuild() {
         myContainer = this;
         setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -122,40 +110,6 @@ public class LevelEditor extends JFrame{
     }
 
     private void createListeners () {
-        myMouseListener = new MouseAdapter() {
-            @Override 
-            public void mousePressed(MouseEvent e) {
-                if (myCurrentSprite != null && e.getComponent() == myViewPane) {
-                    myBoard.add(myCurrentSprite);
-                    myCurrentSprite = null;
-                }
-                else if (e.getButton() == RIGHT_CLICK) {
-                    for (Sprite s : mySprites) {
-                        if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
-                                e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
-                            //Something with sprites (Popup maybe?)
-                        }
-                        else {
-                            JFileChooser chooser = new JFileChooser();
-                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                    "JPG & GIF Images", "jpg", "gif");
-                            chooser.setFileFilter(filter);
-                            int returnVal = chooser.showOpenDialog(myContainer);
-                            if (returnVal == JFileChooser.APPROVE_OPTION)  {
-                                try {
-                                    myBackground = ImageIO.read(chooser.getSelectedFile());
-                                }
-                                catch (IOException io) {
-                                    System.out.println("File not found. Try again");
-                                    myBackground = null;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        };
         myKeyListener = new KeyAdapter() {
 
         };
@@ -167,22 +121,18 @@ public class LevelEditor extends JFrame{
         };
     }
     private void createEditPane() {
-        myBuffer = new BufferedImage(DEFAULT_FRAME_SIZE.width,
-                DEFAULT_FRAME_SIZE.height, BufferedImage.TYPE_INT_RGB);
-        myBufferGraphics = myBuffer.createGraphics();
-        LevelBoard board = new LevelBoard();
+        LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
         myBoard = board;
         JPanel panel = new JPanel() {
-            @Override
-            public void paintComponent(Graphics g) {
-                g.drawImage(myBuffer, 0, 0, DEFAULT_FRAME_SIZE.width,
-                        DEFAULT_FRAME_SIZE.height, myContainer);
+            @Override 
+            public void paintComponent(Graphics pen) {
+                myBoard.paint(pen);
+                paintComponents(pen);
             }
         };
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
         panel.add(board);
-        panel.addMouseListener(myMouseListener);
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
@@ -213,11 +163,9 @@ public class LevelEditor extends JFrame{
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
-                    Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40, 
+                    Sprite s = new Sprite(event.getActionCommand(), x, y, 20, 20, 
                             IMAGE_PATH + event.getActionCommand() + ".png");
-                    mySprites.add(s);
-                    myHoldingSprite = true;
-                    myCurrentSprite = s;
+                    myBoard.add(s);
                 }
             });
             pop.add(j);
@@ -259,7 +207,7 @@ public class LevelEditor extends JFrame{
                 newLevel();
             }
         });
-        spriteMenu.addMouseListener(myMouseListener);
+//        spriteMenu.addMouseListener(myMouseListener);
         bar.add(fileMenu);
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);
