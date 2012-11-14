@@ -43,9 +43,24 @@ public class BattleMode extends GameMode {
     }
 
     public void updateLoop () {
+        if (isBattleOver()) {
+            endBattle();
+        }
         // TODO: figure out how this should work. Right now we just give it the previous team
         // TODO: Take into account animating, requesting user input for player team, etc.
         nextTeam().makeMove(myTeams.get(myTurnCount-1 % myTeams.size()));
+    }
+
+    private void endBattle () {
+        // TODO: let myGameManager know the battle has ended
+    }
+
+    private boolean isBattleOver () {
+        boolean allDead = false;
+        for (Team t: myTeams) {
+            if (!t.stillAlive()) allDead = true;
+        }
+        return allDead;
     }
 
     @Override
@@ -77,6 +92,11 @@ public class BattleMode extends GameMode {
 
         public Team (List<BattleObject> battleObjs) {
             myBattleObjects = battleObjs;
+        }
+
+        public boolean stillAlive () {
+            // TODO: check each member to see if any are still alive
+            return false;
         }
 
         public void makeMove(Team enemy) {
