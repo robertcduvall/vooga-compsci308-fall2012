@@ -2,6 +2,7 @@ package vooga.shooter.gameObjects;
 
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -19,17 +20,32 @@ import java.util.List;
  * 
  */
 public class Particle extends Sprite {
-    private Image image;
-    private Point velocity;
-    private Point position;
     private int durationLimit;
     private int durationExisted;
+
+    /**
+     * Creates a particle to use in the particle effect implemented by
+     * the graphics package.
+     * @param position the center position of the image
+     * @param size the size of the image to use
+     * @param image the image to use
+     * @param velocity the velocity of the particle
+     */
+    public Particle (Point position, Dimension size, Image image, Point velocity) {
+        super(position, size, image, velocity);
+    }
 
     public void draw (Graphics2D g) {
         // This code has errors. Idk what you were even
         // trying to do so I commented it out.
         // please remove or fix.
         // - Alex
+        
+        //i also don't know what this class is supposed
+        //to do, but i changed the constructor and
+        //some methods (that didn't do anything yet anyway)
+        //so that it would work with the Sprite.java class
+        // - Jesse
         
 //        Composite originalComposite = g.getComposite();
 //        g.setPaint(Color.blue);
@@ -40,59 +56,12 @@ public class Particle extends Sprite {
 //        g.setComposite(originalComposite);
     }
 
-    @Override
-    public void update() {
+    public void continueUpdate() {
 
-    }
-
-    @Override
-    public void delete() {
-
-    }
-
-    public Point getPosition () {
-        // TODO: fill in method details
-        return null;
-
-    }
-
-    public Point getDirection () {
-        // TODO: fill in method details
-        return null;
-
-    }
-
-    public Image getImage () {
-        // TODO: fill in method details
-        return null;
     }
 
     public List<Sprite> collisions () {
         // TODO: fill in method details
         return null;
-    }
-
-    @Override
-    public void draw (Graphics g) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void setPosition (Point position) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void setDirection (Point direction) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void setImage (Image image) {
-        // TODO Auto-generated method stub
-
     }
 }
