@@ -1,4 +1,4 @@
-package arcade.gui.panel.logo;
+package arcade.gui.panel.foot;
 
 import arcade.gui.Arcade;
 import arcade.gui.panel.AbstractPanelCreator;
@@ -9,11 +9,11 @@ import arcade.gui.panel.AbstractPanelCreator;
  * @author Michael Deng
  * 
  */
-abstract public class ALogoPanel extends AbstractPanelCreator {
+abstract public class AFootPanel extends AbstractPanelCreator {
 
-    private static final String PANEL_TYPE = "logo";
+    private static final String PANEL_TYPE = "foot";
 
-    public ALogoPanel (Arcade a) {
+    public AFootPanel (Arcade a) {
         super(a);
         super.setPanelType(PANEL_TYPE);
 

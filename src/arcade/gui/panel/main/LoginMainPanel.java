@@ -1,21 +1,21 @@
-package arcade.gui.panel.search;
+package arcade.gui.panel.main;
 
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
 
-public class SearchPanel extends ASearchPanel {
 
-    public SearchPanel (Arcade a) {
+public class LoginMainPanel extends AMainPanel {
+
+    public LoginMainPanel (Arcade a) {
         super(a);
+
     }
 
     @Override
     public JPanel createPanel () {
-        // TODO Auto-generated method stub
+        // TODO
+
         return null;
     }
-
-
-    
 
 }

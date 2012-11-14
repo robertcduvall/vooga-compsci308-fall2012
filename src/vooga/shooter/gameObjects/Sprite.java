@@ -24,36 +24,45 @@ public abstract class Sprite {
 
     /**
      * Construct a sprite initializing only position, size, and image.
-     * (something stationary).
+     * Initial health is set to -1 to symbolize a sprite that does not
+     * have health.
+     * (something stationary with no health, e.g. barrier).
+     *
      * @param position the center of the sprite image
      * @param size the size of the image to display
      * @param image the image of the sprite
      */
-    public Sprite(Point position, Dimension size, Image image){
+    public Sprite (Point position, Dimension size, Image image) {
         myPosition = position;
         mySize = size;
         myImage = image;
+        myHealth = -1;
     }
 
     /**
      * Constructs a sprite with position, size, image, and starting velocity.
-     * (something with starting velocity but no health).
+     * Initial health is set to -1 to symbolize a sprite that does not
+     * have health.
+     * (something with starting velocity but no health, e.g. moving asteroid).
+     *
      * @param position the center of the sprite image
      * @param size the size of the image to display
      * @param image the image of the sprite
      * @param velocity the starting velocity of the sprite
      */
-    public Sprite(Point position, Dimension size, Image image, 
-            Point velocity){
+    public Sprite (Point position, Dimension size, Image image, 
+            Point velocity) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myVelocity = velocity;
+        myHealth = -1;
     }
 
     /**
      * Constructs a sprite with position, size, image, and health.
-     * (something with starting health but no starting velocity).
+     * (something with starting health but no starting velocity, e.g. player).
+     *
      * @param position the center of the sprite image
      * @param size the size of the image to display
      * @param image the image of the sprite
@@ -69,7 +78,8 @@ public abstract class Sprite {
 
     /**
      * Constructs a sprite with position, size, image, velocity, and health.
-     * (something with both starting velocity and health).
+     * (something with both starting velocity and health, e.g. enemy).
+     *
      * @param position the center of the sprite image
      * @param size the size of the image to display
      * @param image the image of the sprite
@@ -89,7 +99,7 @@ public abstract class Sprite {
      * Returns this sprite's position.
      * @return myPosition
      */
-    public Point getPosition(){
+    public Point getPosition() {
         return myPosition;
     }
 
@@ -98,7 +108,7 @@ public abstract class Sprite {
      * point.
      * @param position the new position
      */
-    public void setPosition(Point position){
+    public void setPosition(Point position) {
         myPosition = position;
     }
 
@@ -108,7 +118,7 @@ public abstract class Sprite {
      * y parts.
      * @return myVelocity
      */
-    public Point getVelocity(){
+    public Point getVelocity() {
         return myVelocity;
     }
 
@@ -116,7 +126,7 @@ public abstract class Sprite {
      * Sets this sprite's velocity to a new one.
      * @param velocity the new velocity to set to 
      */
-    public void setVelocity(Point velocity){
+    public void setVelocity(Point velocity) {
         myVelocity = velocity;
     }
 
@@ -124,7 +134,7 @@ public abstract class Sprite {
      * Returns the image representing this sprite.
      * @return myImage
      */
-    public Image getImage(){
+    public Image getImage() {
         return myImage;
     }
 
@@ -132,7 +142,7 @@ public abstract class Sprite {
      * Sets this sprite's image to something else.
      * @param image the new image to use
      */
-    public void setImage(Image image){
+    public void setImage(Image image) {
         myImage = image;
     }
 
@@ -145,16 +155,66 @@ public abstract class Sprite {
     }
 
     /**
+     * Sets the sprite's health to
+     * a new number (e.g. after being damaged).
+     * @param h the new health of the sprite
+     */
+    public void setHealth(int h) {
+        myHealth = h;
+    }
+
+    /**
+     * Decreases the health of this sprite by the
+     * amount specified (e.g. after being hit by a bullet).
+     * @param damage the amount to decrease health by
+     */
+    public void decreaseHealth(int damage) {
+        myHealth -= damage;
+    }
+
+    /**
+     * Returns the leftmost x coordinate for the sprite.
+     * @return the left coordinate of the image
+     */
+    public int getLeft() {
+        return myPosition.x - mySize.width / 2;
+    }
+
+    /**
+     * Returns the topmost y coordinate for the sprite.
+     * @return the top coordinate of the image
+     */
+    public int getTop() {
+        return myPosition.y - mySize.height / 2;
+    }
+
+    /**
+     * Returns the rightmost y coordinate for the sprite.
+     * @return the right coordinate of the image
+     */
+    public int getRight() {
+        return myPosition.x + mySize.width / 2;
+    }
+
+    /**
+     * Returns the bottommost y coordinate for the sprite.
+     * @return the bottom coordinate of the image
+     */
+    public int getBottom() {
+        return myPosition.y + mySize.height / 2;
+    }
+
+    /**
      * This method draws the image at the sprite's
      * current position.
      * @param g used for drawing the image
      */
-    public void draw(Graphics g){
+    public void paint(Graphics pen) {
         Point topLeft = new Point();
         topLeft.x = myPosition.x - mySize.width / 2;
         topLeft.y = myPosition.y - mySize.height / 2;
         
-        g.drawImage(myImage, topLeft.x, topLeft.y, mySize.width, mySize.height, null);
+        pen.drawImage(myImage, topLeft.x, topLeft.y, mySize.width, mySize.height, null);
     }
 
     /**
@@ -165,11 +225,19 @@ public abstract class Sprite {
      * This allows for easy implementation of new results specific
      * to each sprite when calling the update method.
      */
-    public void update(){
+    public void update() {
         myPosition.x += myVelocity.x;
         myPosition.y += myVelocity.y;
         continueUpdate();
     }
 
     public abstract void continueUpdate();
+
+    /**
+     * Called when this sprite collides with another
+     * sprite.
+     */
+    public void collide() {
+        
+    }
 }
