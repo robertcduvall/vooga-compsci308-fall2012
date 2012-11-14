@@ -1,16 +1,19 @@
 /**
- * Manage Game Sprites, and change the game modes when certain events are triggered
+ * Manage Game Sprites, and change the game modes when certain events are
+ * triggered
  * Check gameover conditions and goals of games
+ * 
  * @author rex, Vo
  */
 package vooga.turnbased.gamecore;
 
-import vooga.turnbased.gameobject.Sprite;
-import vooga.turnbased.gui.GameCanvas;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import vooga.turnbased.gameobject.Sprite;
+import vooga.turnbased.gui.GameCanvas;
+
 
 public class GameManager implements Observer {
 
@@ -23,30 +26,32 @@ public class GameManager implements Observer {
 
     /**
      * Constructor of GameManager
+     * 
      * @param gameCanvas The GameCanvas it paints to
      */
-    public GameManager (GameCanvas gameCanvas) {
+    public GameManager(GameCanvas gameCanvas) {
         myGameCanvas = gameCanvas;
         isOver = false;
-        //mySprites = myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
+        // mySprites =
+        // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         myCurrentGameMode = new MapMode(this);
-        //myCurrentGameMode.initializeMap();
+        // myCurrentGameMode.initializeMap();
     }
 
-    public boolean isOver () {
+    public boolean isOver() {
         return isOver;
     }
 
-    public void update () {
+    public void update() {
 
     }
 
-    public void paint () {
+    public void paint() {
 
     }
 
     @Override
-    public void update (Observable arg0, Object arg1) {
+    public void update(Observable arg0, Object arg1) {
         // TODO: Receive notifications from GameModes.
     }
 }

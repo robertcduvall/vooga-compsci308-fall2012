@@ -85,4 +85,16 @@ public interface ISpritePlacementManager {
      *        controlled by user input.
      */
     void selectRegion (Rectangle region);
+
+    /**
+     * Causes all SELECTED sprites to move to the
+     * coordinates described by x and y
+     * regardless of whether or not they are
+     * 'valid' placement positions.
+     * 
+     * @param x x coordinate.
+     * @param y y coordinate.
+     */
+    void follow (int x, int y);
+
 }

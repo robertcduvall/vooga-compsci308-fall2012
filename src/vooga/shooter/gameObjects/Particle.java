@@ -40,11 +40,13 @@ public class Particle extends Sprite {
 //        g.setComposite(originalComposite);
     }
 
-    public void update () {
+    @Override
+    public void update() {
 
     }
 
-    public void delete () {
+    @Override
+    public void delete() {
 
     }
 

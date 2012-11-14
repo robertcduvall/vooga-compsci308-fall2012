@@ -8,15 +8,34 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 
 
+/**
+ * This class listens to mouse input. It allows the SpritePlacementManager to
+ * select sprites through user mouse movement. This class may later be replaced
+ * by user input classes written by the other group.
+ * 
+ * @author Paul Dannenberg
+ * 
+ */
 public class LevelEditorMouseListener implements MouseListener, MouseMotionListener {
 
     private ISpritePlacementManager myManager;
     private Point2D myDragStart, myDragEnd;
 
+    /**
+     * Creates the mouse listener.
+     * 
+     * @param manager The ISpritePlacementManager that this listener will
+     *        coordinate with.
+     */
     public LevelEditorMouseListener (ISpritePlacementManager manager) {
         myManager = manager;
     }
 
+    /**
+     * If the mouse click is on a region that does not fails to select a 
+     * sprite, the current selection is cleared. Otherwise a sprite is
+     * selected by the SpritePlacementManager.
+     */
     @Override
     public void mouseClicked (MouseEvent e) {
         if (!myManager.selectSprite(new Point(e.getX(), e.getY()))) {
@@ -45,6 +64,11 @@ public class LevelEditorMouseListener implements MouseListener, MouseMotionListe
         myDragStart = null;
     }
 
+    /**
+     * Defines a selection rectangle based on a mouse drag event.
+     * This method then asks the SpritePlacementManager to select
+     * all sprites defined within this rectangle.
+     */
     @Override
     public void mouseDragged (MouseEvent e) {
         if (myDragStart == null) {

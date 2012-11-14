@@ -29,19 +29,19 @@ public class MouseController extends Controller<MouseInputListener> implements M
         comp.addMouseListener(this);
         comp.addMouseMotionListener(this);
     }
-    
+
     @Override
-    public void mouseClicked (MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
         try {
-            performReflections(e, "mouseClicked", UKeyCode.codify(MouseEvent.MOUSE_CLICKED, e.getButton()));
-        }
-        catch (Exception e1) {
+            performReflections(e, "mouseClicked",
+                    UKeyCode.codify(MouseEvent.MOUSE_CLICKED, e.getButton()));
+        } catch (Exception e1) {
             e1.printStackTrace();
         }
     }
 
     @Override
-    public void mousePressed (MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         try {
             performReflections(e, "mousePressed", UKeyCode.codify(MouseEvent.MOUSE_PRESSED, e.getButton()));
             System.out.println(e.getButton());
@@ -53,28 +53,28 @@ public class MouseController extends Controller<MouseInputListener> implements M
 
     
     @Override
-    public void mouseReleased (MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         try {
-            performReflections(e, "mouseReleased", UKeyCode.codify(MouseEvent.MOUSE_RELEASED, e.getButton()));
-        }
-        catch (Exception e1) {
+            performReflections(e, "mouseReleased",
+                    UKeyCode.codify(MouseEvent.MOUSE_RELEASED, e.getButton()));
+        } catch (Exception e1) {
             e1.printStackTrace();
         }
-        
+
     }
 
     @Override
-    public void mouseEntered (MouseEvent e) {
+    public void mouseEntered(MouseEvent e) {
         try {
             performReflections(e, "mouseEntered", UKeyCode.codify(MouseEvent.MOUSE_ENTERED, NO_BUTTON));
         }
         catch (Exception e1) {
             e1.printStackTrace();
-        }       
+        }
     }
 
     @Override
-    public void mouseExited (MouseEvent e) {
+    public void mouseExited(MouseEvent e) {
         try {
             performReflections(e, "mouseExited", UKeyCode.codify(MouseEvent.MOUSE_EXITED, NO_BUTTON));
         }

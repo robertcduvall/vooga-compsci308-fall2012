@@ -1,9 +1,9 @@
 package arcade.usermanager;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * social center accommodate all the requests concerning user
@@ -94,7 +94,7 @@ public class SocialCenter {
     /*
      * return current user
      */
-    public User getCurrentUser () {
+    public User getCurrentUser() {
 
         return myCurrentUser;
 
@@ -103,21 +103,21 @@ public class SocialCenter {
     /*
      * edit user info
      */
-    public void editCurrentUser () {
+    public void editCurrentUser() {
 
     }
 
     /*
      * return operation status
      */
-    public String sendMessage (String sender, String receiver, String content) {
+    public String sendMessage(String sender, String receiver, String content) {
 
     }
 
     /*
      * return operation status
      */
-    public String receiveMessage (String sender, String receiver, String content) {
+    public String receiveMessage(String sender, String receiver, String content) {
 
     }
 

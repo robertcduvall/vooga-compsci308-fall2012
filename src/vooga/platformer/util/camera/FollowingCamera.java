@@ -26,51 +26,41 @@ public class FollowingCamera extends SizedCamera implements Camera {
      * @param outerBounds The larger region that limits the range of the
      *        camera's bounds.
      */
-    public FollowingCamera (Dimension2D cameraSize, Rectangle2D outerBounds) {
+    public FollowingCamera(Dimension2D cameraSize, Rectangle2D outerBounds) {
         super(cameraSize, outerBounds);
     }
 
     /**
-     * Creates a <code>FollowingCamera</code>. It will follow the inputted target.
+     * Creates a <code>FollowingCamera</code>. It will follow the inputted
+     * target.
      * 
      * @param cameraSize The size of the camera.
      * @param outerBounds The larger region that limits the range of the
      *        camera's bounds.
      * @param target The <code>GameObject</code> for the camera to follow.
      */
-    public FollowingCamera (Dimension2D cameraSize, Rectangle2D outerBounds,
-                            GameObject target) {
+    public FollowingCamera(Dimension2D cameraSize, Rectangle2D outerBounds,
+            GameObject target) {
         super(cameraSize, outerBounds);
         myTarget = target;
     }
 
     /**
      * Sets the target that the camera will follow.
+     * 
      * @param go <code>GameObject</code> for the camera to follow.
      */
-    public void setTarget (GameObject go) {
+    public void setTarget(GameObject go) {
         myTarget = go;
     }
 
-    @Override
+    /**
+     * Updates the <code>FollowingCamera</code>. Will update the bounds.
+     */
     public void update () {
-        double x = myTarget.getShape().getCenterX() -
-                   this.size().getWidth() / 2;
-        x = Math.max(x, this.outerBounds().getX());
-        x = Math.min(x, this.outerBounds().getX() +
-                        this.outerBounds().getWidth() -
-                        this.size().getHeight());
-
-        double y = myTarget.getShape().getCenterY() -
-                   this.size().getHeight() / 2;
-        y = Math.max(y, this.outerBounds().getY());
-        y = Math.min(y, this.outerBounds().getY() +
-                        this.outerBounds().getHeight() -
-                        this.size().getHeight());
-
-        double w = size().getWidth();
-        double h = size().getHeight();
-
-        this.getBounds().setRect(x, y, w, h);
+        double x = myTarget.getShape().getCenterX() - getSize().getWidth() / 2;
+        double y = myTarget.getShape().getCenterY() - getSize().getHeight() / 2;
+        getBounds().setRect(x, y, getSize().getWidth(), getSize().getHeight());
+        obeyOuterBounds();
     }
 }

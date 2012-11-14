@@ -1,7 +1,6 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -82,6 +81,15 @@ public class SpritePlacementManager implements ISpritePlacementManager {
             if (sprite.isIntersecting(currentlyPlacedSprites.getOutline())) { return false; }
         }
         return true;
+
+    }
+
+    @Override
+    public void follow (int x, int y) {
+        for (Sprite s : mySelectedSprites) {
+            s.setX(x);
+            s.setY(y);
+        }
 
     }
 

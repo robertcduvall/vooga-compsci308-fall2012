@@ -25,19 +25,19 @@ public abstract class SizedCamera implements Camera {
      * @param outerBounds The larger region that limits the range of the
      *        camera's bounds.
      */
-    public SizedCamera (Dimension2D cameraSize, Rectangle2D outerBounds) {
+    public SizedCamera(Dimension2D cameraSize, Rectangle2D outerBounds) {
         mySize = (Dimension2D) cameraSize.clone();
         myOuterBounds = (Rectangle2D) outerBounds.clone();
-        myBounds =
-                new Rectangle(0, 0, (int) mySize.getWidth(),
-                              (int) mySize.getHeight());
+        myBounds = new Rectangle(0, 0, (int) mySize.getWidth(),
+                (int) mySize.getHeight());
     }
 
     @Override
-    public abstract void update ();
-
-    @Override
-    public Rectangle2D getBounds () {
+    public Rectangle2D getBounds() {
+        if (myOuterBounds.contains(myBounds)) {
+            return myBounds;
+        }
+        obeyOuterBounds();
         return myBounds;
     }
 
@@ -46,7 +46,7 @@ public abstract class SizedCamera implements Camera {
      * 
      * @param bounds Rectangle used to set bounds.
      */
-    protected void setBounds (Rectangle2D bounds) {
+    protected void setBounds(Rectangle2D bounds) {
         myBounds = bounds;
     }
 
@@ -64,7 +64,29 @@ public abstract class SizedCamera implements Camera {
      * 
      * @return The <code>SizedCamera</code>'s size.
      */
-    protected Dimension2D size () {
+    protected Dimension2D getSize () {
         return mySize;
+    }
+
+    /**
+     * Ensures that the <code>SizedCamera</code>'s bounds are inside its outer
+     * bounds.</br>If the outer bounds are smaller than the camera bounds,
+     * the camera's top-left corner will be set to the outer bounds' top-left
+     * corner.
+     */
+    protected void obeyOuterBounds () {
+        double x = Math.min(getBounds().getX(),
+                            outerBounds().getX() +
+                            outerBounds().getWidth() -
+                            getSize().getHeight());
+        x = Math.max(x, outerBounds().getX());
+
+        double y = Math.min(getBounds().getY(),
+                            outerBounds().getY() +
+                            outerBounds().getHeight() -
+                            getSize().getHeight());
+        y = Math.max(y, outerBounds().getY());
+
+        getBounds().setRect(x, y, getSize().getWidth(), getSize().getHeight());
     }
 }
