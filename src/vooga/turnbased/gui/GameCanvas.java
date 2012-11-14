@@ -71,7 +71,6 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
      */
     @Override
     public void paint(Graphics g) {
-    	super.paint(g);
         myGameManager.paint(g);
     }
     
@@ -80,11 +79,16 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
      */
     @Override
     public void run () {
+    	long beforeTime, timeDiff, sleep;
+	    beforeTime = System.currentTimeMillis();
         while (!myGameManager.isOver()) {
             myGameManager.update();
             repaint();
+            
+            timeDiff = System.currentTimeMillis() - beforeTime;
+	        sleep = myDelayTime - timeDiff;
             try {
-                Thread.sleep(myDelayTime);
+                Thread.sleep(sleep);
             }
             catch (InterruptedException e) {
                 System.out.println(e.getMessage());
