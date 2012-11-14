@@ -20,7 +20,7 @@ public class BlankNavPanel extends ANavPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.BLUE);
+        myPanel.setBackground(Color.ORANGE);
         System.out.println("BlankNavPanel");
         
         return myPanel;
