@@ -20,6 +20,6 @@ public class Level1 extends Level {
         imageIcon = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
         enemyImage = imageIcon.getImage();
 
-        mySprites.add(new Enemy(new Point(100, 100), new Dimension(20, 20), enemyImage, 10));
+        mySprites.add(new Enemy(new Point(100, 100), new Dimension(20, 20), enemyImage, new Point(0, 5), 10));
     }
 }
