@@ -6,6 +6,6 @@ package arcade.datatransfer;
  * @author Michael Deng
  *
  */
-public class UserManager {
+public class UserLink {
 
 }
