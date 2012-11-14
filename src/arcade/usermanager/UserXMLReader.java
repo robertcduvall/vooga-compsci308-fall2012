@@ -32,14 +32,11 @@ public class UserXMLReader {
 
             dom = db.parse(filePath);
 
-        }
-        catch (ParserConfigurationException pce) {
+        } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        }
-        catch (SAXException se) {
+        } catch (SAXException se) {
             se.printStackTrace();
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }

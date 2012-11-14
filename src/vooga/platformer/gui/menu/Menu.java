@@ -27,18 +27,18 @@ public class Menu extends JComponent {
     /**
      * @param gameCanvas JComponent where the game painted
      */
-    public Menu (JComponent gameCanvas) {
+    public Menu(JComponent gameCanvas) {
         Dimension gameSize = gameCanvas.getSize();
         Dimension size = new Dimension((int) (gameSize.width * myRatio),
                 (int) (gameSize.height * myRatio));
         setPreferredSize(size);
         gameCanvas.setLayout(new GridBagLayout());
         gameCanvas.add(this, new GridBagConstraints());
-        this.setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout());
     }
 
     @Override
-    protected void paintComponent (Graphics pen) {
+    protected void paintComponent(Graphics pen) {
         pen.setColor(Color.WHITE);
         pen.fillRect(1, 1, getSize().width - 2, getSize().height - 2);
         pen.setColor(Color.BLACK);
@@ -50,7 +50,7 @@ public class Menu extends JComponent {
      * @param command name of this button
      * @param gl GameListener to listen to this button.
      */
-    public void addButtons (String fileName, String command, GameListener gl) {
+    public void addButtons(String fileName, String command, GameListener gl) {
         GameButton gb = new GameButton(fileName, command, gl);
         myButtonMap.put(command, gb);
         add(gb, new GridBagConstraints());
@@ -59,14 +59,14 @@ public class Menu extends JComponent {
     /**
      * @param button to add
      */
-    public void addButtons (GameButton button) {
+    public void addButtons(GameButton button) {
         add(button, new GridBagConstraints());
     }
 
     /**
      * @param ratio of the size of the menu to that of game canvas.
      */
-    public void setRatio (double ratio) {
+    public void setRatio(double ratio) {
         myRatio = ratio;
     }
 
@@ -75,7 +75,7 @@ public class Menu extends JComponent {
      *        the int number of key N.
      * @param button will be counted as pressed when player pressing this key
      */
-    public void addHotKey (int keyValue, Button button) {
+    public void addHotKey(int keyValue, Button button) {
 
     }
 

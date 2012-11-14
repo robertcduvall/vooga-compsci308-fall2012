@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import vooga.platformer.leveleditor.LevelFileReader;
 
+
 /**
  * @author Zach Michaelov
  */
@@ -14,13 +15,13 @@ public class LevelFileReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        lfr = new LevelFileReader("src/vooga/platformer/data/test.xml");
+        lfr = new LevelFileReader("src/vooga/platformer/leveleditor/test/test.xml");
         Assert.assertNotNull(lfr);
     }
 
     @Test
     public void testGetLevelID() throws Exception {
-        Assert.assertEquals(1234, lfr.getLevelID());
+        Assert.assertEquals("1234", lfr.getLevelID());
     }
 
     @Test

@@ -46,16 +46,6 @@ public final class LevelFileWriter {
          */
     }
 
-    // Simple (temporary) test method
-    public static void main (String[] args) {
-        ArrayList<Sprite> sprites = new ArrayList<Sprite>();
-        sprites.add(new Sprite("enemy", 0, 0, 0, 0, "somepath.jpg"));
-        sprites.add(new Sprite("enemy", 0, 0, 0, 0, "somepath.jpg"));
-        sprites.get(0).addAttribute("hp", String.valueOf(10));
-        sprites.get(0).addAttribute("jumpHeight", String.valueOf(5));
-        writeLevel("src/vooga/platformer/data/test.xml", "level 1", 3, 3, "something.jpg", sprites);
-    }
-
     /**
      * Method that writes the data describing a platformer level to an XML file
      * so that it can be reconstructed by a level factory.

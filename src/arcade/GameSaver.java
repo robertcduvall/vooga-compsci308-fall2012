@@ -15,7 +15,7 @@ public class GameSaver {
 
     private User myUser;
     private IArcadeGame myGame;
-    
+
     /**
      * Constructor for GameSaver.
      */
@@ -25,7 +25,7 @@ public class GameSaver {
     }
 
     /**
-     * Used by the game, this method updates gameInfo in User's GameData 
+     * Used by the game, this method updates gameInfo in User's GameData
      * 
      * @param userGameInfo preferences
      */
@@ -46,7 +46,8 @@ public class GameSaver {
     }
 
     /**
-     * Used by the game, this method updates high score for a game in User's GameData.
+     * Used by the game, this method updates high score for a game in User's
+     * GameData.
      * 
      * @param score score to be saved
      */

@@ -21,15 +21,16 @@ public class Reflection {
      * class using default constructor. Returns null if string
      * does not name a valid class.
      */
-    public static Object createInstance (String className) throws ReflectionException {
+    public static Object createInstance(String className)
+            throws ReflectionException {
         try {
             return Class.forName(className).newInstance();
-        }
-        catch (ClassNotFoundException e) {
-            throw new ReflectionException("Incorrectly named class " + className);
-        }
-        catch (Exception e) {
-            throw new ReflectionException("No public default constructor for " + className);
+        } catch (ClassNotFoundException e) {
+            throw new ReflectionException("Incorrectly named class "
+                    + className);
+        } catch (Exception e) {
+            throw new ReflectionException("No public default constructor for "
+                    + className);
         }
     }
 
@@ -38,21 +39,23 @@ public class Reflection {
      * actual parameters, returns initialized instance of the corresponding
      * class using matching constructor.
      */
-    public static Object createInstance (String name, Object ... args) throws ReflectionException {
+    public static Object createInstance(String name, Object ... args)
+            throws ReflectionException {
         try {
             Class<?> c = Class.forName(name);
             for (Constructor<?> current : c.getDeclaredConstructors()) {
                 Class<?>[] formals = current.getParameterTypes();
                 if (typesMatch(current, formals, args))
-                    return current.newInstance(convertArgs(current, formals, args));
+                    return current.newInstance(convertArgs(current, formals,
+                            args));
             }
-            throw new ReflectionException("No matching public constructor for " + name);
-        }
-        catch (ClassNotFoundException e) {
+            throw new ReflectionException("No matching public constructor for "
+                    + name);
+        } catch (ClassNotFoundException e) {
             throw new ReflectionException("Incorrectly named class " + name);
-        }
-        catch (Exception e) {
-            throw new ReflectionException("No matching public constructor for " + name);
+        } catch (Exception e) {
+            throw new ReflectionException("No matching public constructor for "
+                    + name);
         }
     }
 
@@ -62,14 +65,15 @@ public class Reflection {
      * 
      * If the method's return type is void, null in returned.
      */
-    public static Object callMethod (Object target, String name) throws ReflectionException {
+    public static Object callMethod(Object target, String name)
+            throws ReflectionException {
         try {
-            Method toCall = target.getClass().getDeclaredMethod(name, new Class[0]);
+            Method toCall = target.getClass().getDeclaredMethod(name,
+                    new Class[0]);
             return toCall.invoke(target, new Object[0]);
-        }
-        catch (Exception e) {
-            throw new ReflectionException("No matching public method " + name + " for " +
-                                          target.getClass().getName());
+        } catch (Exception e) {
+            throw new ReflectionException("No matching public method " + name
+                    + " for " + target.getClass().getName());
         }
     }
 
@@ -80,22 +84,22 @@ public class Reflection {
      * 
      * If the method's return type is void, null in returned.
      */
-    public static Object callMethod (Object target, String name, Object ... args)
-                                                                                 throws ReflectionException {
+    public static Object callMethod(Object target, String name, Object ... args)
+            throws ReflectionException {
         try {
             for (Method current : target.getClass().getDeclaredMethods()) {
                 if (name.equals(current.getName())) {
                     Class<?>[] formals = current.getParameterTypes();
                     if (typesMatch(current, formals, args))
-                        return current.invoke(target, convertArgs(current, formals, args));
+                        return current.invoke(target,
+                                convertArgs(current, formals, args));
                 }
             }
-            throw new ReflectionException("No matching public method " + name + " for " +
-                                          target.getClass().getName());
-        }
-        catch (Exception e) {
-            throw new ReflectionException("No matching public method " + name + " for " +
-                                          target.getClass().getName());
+            throw new ReflectionException("No matching public method " + name
+                    + " for " + target.getClass().getName());
+        } catch (Exception e) {
+            throw new ReflectionException("No matching public method " + name
+                    + " for " + target.getClass().getName());
         }
     }
 
@@ -103,20 +107,21 @@ public class Reflection {
      * Given a target object with an instance variable with the given name,
      * get the value of the named variable on that object and return it.
      */
-    public static Object getFieldValue (Object target, String name) throws ReflectionException {
+    public static Object getFieldValue(Object target, String name)
+            throws ReflectionException {
         try {
             return target.getClass().getDeclaredField(name).get(target);
-        }
-        catch (Exception e) {
-            throw new ReflectionException("No matching public instance variable for " +
-                                          target.getClass().getName());
+        } catch (Exception e) {
+            throw new ReflectionException(
+                    "No matching public instance variable for "
+                            + target.getClass().getName());
         }
     }
 
     /**
      * Given an array of Objects, returns their corresponding Classes.
      */
-    public static Class<?>[] toClasses (Object[] args) {
+    public static Class<?>[] toClasses(Object[] args) {
         Class<?>[] results = new Class[args.length];
         for (int k = 0; k < args.length; k++) {
             results[k] = args[k].getClass();
@@ -125,9 +130,10 @@ public class Reflection {
     }
 
     // are parameters of compatible types and in same order?
-    private static boolean typesMatch (Member function, Class<?>[] formals, Object[] actuals) {
-        if ((actuals.length == formals.length) ||
-            (actuals.length >= formals.length && isVarArgs(function))) {
+    private static boolean typesMatch(Member function, Class<?>[] formals,
+            Object[] actuals) {
+        if ((actuals.length == formals.length)
+                || (actuals.length >= formals.length && isVarArgs(function))) {
             int idx = 0;
             // check each parameter individually
             for (; idx < formals.length - 1; idx++) {
@@ -135,8 +141,8 @@ public class Reflection {
             }
             // check each of the last actual args to see if they can be one of
             // varargs
-            Class<?> type =
-                    (formals[idx].isArray()) ? formals[idx].getComponentType() : formals[idx];
+            Class<?> type = (formals[idx].isArray()) ? formals[idx]
+                    .getComponentType() : formals[idx];
             for (; idx < actuals.length; idx++) {
                 if (!isInstance(type, actuals[idx])) return false;
             }
@@ -148,7 +154,8 @@ public class Reflection {
     }
 
     // if necessary, convert parameters into varArg array that Java expects
-    private static Object[] convertArgs (Member function, Class<?>[] formals, Object[] actuals) {
+    private static Object[] convertArgs(Member function, Class<?>[] formals,
+            Object[] actuals) {
         Object[] results = actuals;
         if (isVarArgs(function)) {
             results = new Object[formals.length];
@@ -158,7 +165,8 @@ public class Reflection {
                 results[idx] = actuals[idx];
             }
             Class<?> type = formals[idx].getComponentType();
-            Object varArgs = Array.newInstance(type, actuals.length - formals.length + 1);
+            Object varArgs = Array.newInstance(type, actuals.length
+                    - formals.length + 1);
             for (; idx < actuals.length; idx++) {
                 // fill the varArg array with the remaining parameters
                 Array.set(varArgs, idx - formals.length + 1, actuals[idx]);
@@ -169,7 +177,7 @@ public class Reflection {
     }
 
     // Java should implement this correctly, but alas ...
-    private static boolean isInstance (Class<?> clss, Object instance) {
+    private static boolean isInstance(Class<?> clss, Object instance) {
         final String TYPE = "TYPE";
 
         try {
@@ -179,13 +187,12 @@ public class Reflection {
                 if (!isAssignableFrom(clss, thePrimitive)) // primitives are not
                                                            // exactly the same
                     return false;
-            }
-            else if (!clss.isInstance(instance)) // not an instance of class or
-                                                 // its sub-classes
+            } else if (!clss.isInstance(instance)) // not an instance of class
+                                                   // or
+                                                   // its sub-classes
                 return false;
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // tried to compare primitive to non-primitive
             return false;
         }
@@ -194,14 +201,14 @@ public class Reflection {
     // Java should implement this correctly, but alas ...
     // isVarArgs is a method of both constructors and methods,
     // but not to any of their common super-types
-    private static boolean isVarArgs (Member function) {
+    private static boolean isVarArgs(Member function) {
         // BUGBUG: should call isVarArgs directly
         return Modifier.isTransient(function.getModifiers());
     }
 
     // Java should implement this correctly, but alas ...
     // right now, no added functionality, because of potential ambiguities
-    private static boolean isAssignableFrom (Class<?> formal, Class<?> arg) {
+    private static boolean isAssignableFrom(Class<?> formal, Class<?> arg) {
         return formal.isAssignableFrom(arg);
     }
 }

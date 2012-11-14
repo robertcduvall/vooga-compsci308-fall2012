@@ -1,70 +1,61 @@
 package vooga.shooter.gameObjects;
 
-import java.awt.Graphics;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.List;
 
 public class Bullet extends Sprite{
+    private int myDamage;
+    private Sprite myOwner;
 
+    /**
+     * Constructs a bullet to be shown on the screen.
+     * @param position the starting position of the bullet
+     * @param size the size of the image to use
+     * @param image the image of the bullet
+     * @param velocity the starting velocity of the bullet
+     * @param damage the damage that the bullet will do (to enemy or player)
+     */
+    public Bullet (Point position, Dimension size, Image image, Point velocity,
+            int damage) {
+        super(position, size, image, velocity);
+        myDamage = damage;
+    }
+
+    /**
+     * This will be called after the bullet is done moving.
+     * Will make the bullet do something extra after motion
+     * (e.g. maybe some particle effects, or other graphical
+     * stuff, or something else cool).
+     */
     @Override
-    public void draw (Graphics g) {
-        // TODO Auto-generated method stub
+    public void continueUpdate () {
         
     }
 
-    @Override
-    public void update () {
-        // TODO Auto-generated method stub
-        
+    /**
+     * Returns the damage this bullet will do to another sprite.
+     * @return myDamage
+     */
+    public int getDamage() {
+        return myDamage;
     }
 
-    @Override
-    public void delete () {
-        // TODO Auto-generated method stub
-        
+    /**
+     * Sets the owner of this bullet (e.g. the player or
+     * an enemy sprite).
+     * @param s the owner of this bullet
+     */
+    public void setOwner(Sprite s) {
+        myOwner = s;
     }
 
-    @Override
-    public Point getPosition () {
-        // TODO Auto-generated method stub
-        return null;
+    /**
+     * Returns the owner of this bullet.
+     * (could be player or enemy).
+     * @return myOwner
+     */
+    public Sprite getOwner() {
+        return myOwner;
     }
-
-    @Override
-    public void setPosition (Point position) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Point getDirection () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setDirection (Point direction) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Image getImage () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setImage (Image image) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public List<Sprite> collisions () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

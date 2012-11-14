@@ -52,6 +52,8 @@ public class EditorLauncher extends JFrame {
     private ResourceBundle myResources;
 
     private static final long serialVersionUID = 1L;
+    
+    //TODO All this could probably go into a config file.
     private static final String FONT_TYPE = "Times New Roman";
     private static final int FONT_SIZE = 12;
     private static final int FONT_STYLE = 1;
@@ -62,13 +64,7 @@ public class EditorLauncher extends JFrame {
     private static final int FRAME_HEIGHT = 300;
     private static final int LIST_WIDTH = 200;
     private static final int LIST_HEIGHT = 200;
-
-    private static final String SEARCH_BOX_LABEL = "searchBoxLabel";
-    private static final String DEFAULT_SEARCH_ENTRY = "defaultSearchEntry";
-    private static final String BUTTON_BOX_TITLE = "buttonBoxTitle";
-    private static final String SPRITE_CREATOR_BUTTON_LABEL = "spriteCreatorButtonLabel";
-    private static final String SPRITE_EDIT_BUTTON_LABEL = "spriteEditButtonLabel";
-
+    
     /**
      * Creates the EditorLauncher, a window that is used to select which
      * sprites (if any) should be changed.
@@ -94,7 +90,7 @@ public class EditorLauncher extends JFrame {
         mySpriteEditLauncher = new JButton();
         myScrollPane = new JScrollPane();
         mySearchBox =
-                new JListSearcher(myResources.getString(DEFAULT_SEARCH_ENTRY), mySpriteOptions);
+                new JListSearcher(myResources.getString("defaultSearchEntry"), mySpriteOptions);
         mySearchBoxLabel = new JLabel();
 
     }
@@ -211,7 +207,7 @@ public class EditorLauncher extends JFrame {
     private void createTextLabel () {
         mySearchBoxLabel.setFont(FONT);
         mySearchBoxLabel.setLabelFor(mySearchBox);
-        mySearchBoxLabel.setText(myResources.getString(SEARCH_BOX_LABEL));
+        mySearchBoxLabel.setText(myResources.getString("searchBoxLabel"));
     }
 
     /**
@@ -220,17 +216,16 @@ public class EditorLauncher extends JFrame {
     private void createLayout () {
 
         setFrameLayout();
-        setPanelBorder(myRight, BUTTON_BOX_TITLE);
+        setPanelBorder(myRight, "buttonBoxTitle");
         setButtonLabel(mySpriteCreatorLauncher, FONT,
-                       myResources.getString(SPRITE_CREATOR_BUTTON_LABEL));
-        setButtonLabel(mySpriteEditLauncher, FONT, myResources.getString(SPRITE_EDIT_BUTTON_LABEL));
+                       myResources.getString("spriteCreatorButtonLabel"));
+        setButtonLabel(mySpriteEditLauncher, FONT, myResources.getString("spriteEditButtonLabel"));
         addPanelsToFrame();
         addButtonsToPanel(myRight);
         setupScrollingList();
         setupSearchBox();
 
         pack();
-        setVisible(true);
     }
 
 }

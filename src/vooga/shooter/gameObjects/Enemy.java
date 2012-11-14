@@ -1,70 +1,29 @@
 package vooga.shooter.gameObjects;
 
-import java.awt.Graphics;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.List;
 
 public class Enemy extends Sprite{
 
+    /**
+     * Constructs an enemy character for the game.
+     * @param position the center of the image
+     * @param size the size of the image
+     * @param image the image to use
+     * @param health the starting health of the enemy
+     */
+    public Enemy (Point position, Dimension size, Image image, int health) {
+        super(position, size, image, health);
+    }
+
+    /**
+     * This method is called after the enemy's position is updated.
+     * Makes the enemy do something else after moving (e.g. fire a
+     * shot).
+     */
     @Override
-    public void draw (Graphics g) {
-        // TODO Auto-generated method stub
+    public void continueUpdate () {
         
     }
-
-    @Override
-    public void update () {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void delete () {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Point getPosition () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setPosition (Point position) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Point getDirection () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setDirection (Point direction) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Image getImage () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setImage (Image image) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public List<Sprite> collisions () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
 }

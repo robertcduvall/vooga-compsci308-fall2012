@@ -1,56 +1,51 @@
 package games.platformerdemo;
 
-import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.UpdateStrategy;
 
 
 /**
  * @author Yaqi Zhang
- *
+ * 
  */
-public class PlayerMoveStrategy implements UpdateStrategy {
-    private static final double VELOCITY = 3;
-    private GameObject myPlayer;
-    private double myVelocityX;
-    private double myVelocityY;
+public class PlayerMoveStrategy extends SimpleMoveStrategy {
+    private static final double VELOCITY = 10;
+    private Player myPlayer;
 
     /**
      * @param player GameObject
      */
-    public PlayerMoveStrategy (GameObject player) {
+    public PlayerMoveStrategy (Player player) {
+        super(player);
         myPlayer = player;
-    }
-
-    public void applyAction () {
-        myPlayer.setX(myVelocityX + myPlayer.getX());
-        myPlayer.setY(myVelocityY + myPlayer.getY());
     }
 
     /**
      * 
      */
     public void jump () {
-        myVelocityY = -VELOCITY;
+        myPlayer.setVelocity(myPlayer.getVelocity().getX(), -VELOCITY);
+        // TODO: need to make sure this jump() will only be called once even if
+        // the player keeps pressing jump button.
     }
 
     /**
      * 
      */
     public void goLeft () {
-        myVelocityX = -VELOCITY;
+        myPlayer.setVelocity(-VELOCITY, myPlayer.getVelocity().getY());
     }
 
     /**
      * 
      */
     public void goRight () {
-        myVelocityX = VELOCITY;
+        myPlayer.setVelocity(VELOCITY, myPlayer.getVelocity().getY());
     }
 
     /**
      * This method needs to be called by input when there is no button pressed.
      */
     public void stop () {
-        myVelocityX = 0;
+        myPlayer.setVelocity(0, myPlayer.getVelocity().getY());
     }
 }

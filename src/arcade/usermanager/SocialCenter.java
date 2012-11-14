@@ -1,9 +1,9 @@
 package arcade.usermanager;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * social center accommodate all the requests concerning user
@@ -59,18 +59,25 @@ public class SocialCenter {
         myAllUser.add(newUser);
         
     }
+    
+   
+    
 
     /*
      * return log on status
      */
     public String logOnUser (String username, String password) {
-
+        //set current user
     }
 
     /*
      * return log on status
      */
     public String registerUser (String username, String password, String picture) {
+      //write file
+        //initiate class
+        //add the the available list
+        //set current user
 
     }
 
@@ -78,13 +85,16 @@ public class SocialCenter {
      * return operation status
      */
     public String deleteUser (String username, String password) {
+        //delete from file
+        //delete from available list
+        //set current user to null
 
     }
 
     /*
      * return current user
      */
-    public User getCurrentUser () {
+    public User getCurrentUser() {
 
         return myCurrentUser;
 
@@ -93,35 +103,35 @@ public class SocialCenter {
     /*
      * edit user info
      */
-    public void editCurrentUser () {
+    public void editCurrentUser() {
 
     }
 
     /*
      * return operation status
      */
-    public String sendMessage (String sender, String receiver, String content) {
+    public String sendMessage(String sender, String receiver, String content) {
 
     }
 
     /*
      * return operation status
      */
-    public String receiveMessage (String sender, String receiver, String content) {
+    public String receiveMessage(String sender, String receiver, String content) {
 
     }
 
     /*
      * return game history for certain game
      */
-    public String readGameHistory (String gameName) {
+    public String readGameHistory (String gameName, String tagName) {
 
     }
 
     /*
      * return whether the operation is successful
      */
-    public boolean writeGameHistory (String gameName) {
+    public boolean writeGameHistory (String gameName, String tagName, String content) {
 
     }
 
