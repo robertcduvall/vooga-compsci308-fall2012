@@ -13,10 +13,15 @@ public class DemoLevelFactory extends LevelFactory {
 
     @Override
     public Level loadLevel (String levelName) {
+        /*
+         * The level name "level1" corresponds to an instance of TestLevel with the listed GameObjects added to it. Multiple
+         * level names can be instances of the same level class--they would just have different GameObjects added. The factory
+         * should handle making this connection between level name and Level class instance somehow.
+         */
         if (levelName.equals("level1")) {
             /*
              * Set up the CollisionChecker and Camera objects for this level--eventually we will want this to be
-             * customizable via config file, but for now, we could move this code to the Level subclass's constructor.
+             * customizable via config file, but for now, we could handle this code in the Level subclass's constructor.
              */
             CollisionChecker checker = new SloppyCollisionChecker();
             FollowingCamera cam = new FollowingCamera(new Dimension(800, 600), new Rectangle(3200, 2400));
