@@ -20,9 +20,11 @@ public abstract class Sprite {
     private Dimension mySize;
     private Image myImage;
     private List<Bullet> myShotsFired;
+    private int myHealth;
 
     /**
      * Construct a sprite initializing only position, size, and image.
+     * (something stationary).
      * @param position the center of the sprite image
      * @param size the size of the image to display
      * @param image the image of the sprite
@@ -35,10 +37,11 @@ public abstract class Sprite {
 
     /**
      * Constructs a sprite with position, size, image, and starting velocity.
-     * @param position
-     * @param size
-     * @param image
-     * @param velocity
+     * (something with starting velocity but no health).
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param image the image of the sprite
+     * @param velocity the starting velocity of the sprite
      */
     public Sprite(Point position, Dimension size, Image image, 
             Point velocity){
@@ -46,6 +49,40 @@ public abstract class Sprite {
         mySize = size;
         myImage = image;
         myVelocity = velocity;
+    }
+
+    /**
+     * Constructs a sprite with position, size, image, and health.
+     * (something with starting health but no starting velocity).
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param image the image of the sprite
+     * @param health the starting health of the sprite
+     */
+    public Sprite (Point position, Dimension size, Image image,
+            int health) {
+        myPosition = position;
+        mySize = size;
+        myImage = image;
+        myHealth = health;
+    }
+
+    /**
+     * Constructs a sprite with position, size, image, velocity, and health.
+     * (something with both starting velocity and health).
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param image the image of the sprite
+     * @param velocity the starting velocity of the sprite
+     * @param health the starting health of the sprite
+     */
+    public Sprite (Point position, Dimension size, Image image,
+            Point velocity, int health) {
+        myPosition = position;
+        mySize = size;
+        myImage = image;
+        myVelocity = velocity;
+        myHealth = health;
     }
 
     /**
@@ -97,6 +134,14 @@ public abstract class Sprite {
      */
     public void setImage(Image image){
         myImage = image;
+    }
+
+    /**
+     * Returns the health of the player.
+     * @return myHealth
+     */
+    public int getHealth() {
+        return myHealth;
     }
 
     /**

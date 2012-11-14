@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.util.List;
 
 public class Player extends Sprite{
-    private int myHealth;
 
     /**
      * Constructs a player for the user to control.
@@ -17,8 +16,7 @@ public class Player extends Sprite{
      * @param health the starting health
      */
     public Player (Point position, Dimension size, Image image, int health) {
-        super(position, size, image);
-        setHealth(health);
+        super(position, size, image, health);
     }
 
     /**
@@ -29,17 +27,5 @@ public class Player extends Sprite{
     @Override
     public void continueUpdate () {
         
-    }
-
-    private void setHealth(int h) {
-        myHealth = h;
-    }
-
-    /**
-     * Returns the health of the player.
-     * @return myHealth
-     */
-    public int getHealth() {
-        return myHealth;
     }
 }
