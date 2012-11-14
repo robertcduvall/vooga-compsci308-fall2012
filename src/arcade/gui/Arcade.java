@@ -1,6 +1,7 @@
 package arcade.gui;
 
 import java.awt.BorderLayout;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ public class Arcade {
 
     // username (unique key) of the user who is logged in
     private static String myUser = "";
+    private static Map<String, Serializable> mySharedVariables;
 
     private static ArcadeFrame myFrame;
 
@@ -44,6 +46,7 @@ public class Arcade {
         myGameManager = new GameLink();
         myUserManager = new UserLink();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
+        mySharedVariables = new HashMap<String, Serializable>();
 
         // set up frame
         frameSetup();
@@ -93,6 +96,15 @@ public class Arcade {
         return myUser;
     }
 
+    /**
+     * Sets the username
+     * 
+     * @param u
+     */
+    public void setUsername (String u) {
+        myUser = u;
+    }
+
     public GameLink getGameManager () {
         return myGameManager;
     }
@@ -101,4 +113,11 @@ public class Arcade {
         return myUserManager;
     }
 
+    public void setVariable (String varName, Serializable var) {
+        mySharedVariables.put(varName, var);
+    }
+
+    public Serializable getVariable (String varName) {
+        return mySharedVariables.get(varName);
+    }
 }
