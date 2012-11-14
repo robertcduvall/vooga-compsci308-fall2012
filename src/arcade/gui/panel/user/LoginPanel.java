@@ -13,7 +13,6 @@ public class LoginPanel extends AUserPanel {
 
     public LoginPanel (Arcade a) {
         super(a);
-
     }
 
     @Override

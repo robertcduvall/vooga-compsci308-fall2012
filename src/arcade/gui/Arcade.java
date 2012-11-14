@@ -75,6 +75,10 @@ public class Arcade {
     public void refreshAll () {
         myFrame.refreshAll();
     }
+
+    public String getUsername () {
+        return myUser;
+    }
     
     
     // user properties file to list the default components.
