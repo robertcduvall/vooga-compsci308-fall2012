@@ -8,72 +8,70 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
 public abstract class AbstractServer {
-    
-    private final int DEFAULT_PORT = 1235;
+
+    private static final int DEFAULT_PORT = 1235;
     private ServerSocket myServerSocket;
     private Socket myClientSocket;
     private PrintWriter myClientOutput;
     private BufferedReader myClientInput;
     private BufferedReader myServerInput;
-    
-    public void openServerSocket(){
+
+    public void openServerSocket () {
         openServerSocket(DEFAULT_PORT);
     }
-    
-    public void openServerSocket(int port){
+
+    public void openServerSocket (int port) {
         myServerSocket = null;
         try {
             InetAddress addr = InetAddress.getLocalHost();
             String hostname = addr.getHostName();
             System.out.println(hostname);
             myServerSocket = new ServerSocket(port);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("Could not listen on port: " + port);
             System.exit(1);
         }
     }
-    
-    public void initializeClientSocket(){
+
+    public void initializeClientSocket () {
         myClientSocket = null;
         try {
             myClientSocket = myServerSocket.accept();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("Accept failed.");
             System.exit(1);
         }
     }
-    
-    private void shutDownServer() throws IOException{
+
+    private void shutDownServer () throws IOException {
         myClientOutput.println("server: closing connection");
         myClientOutput.close();
         myClientInput.close();
         myClientSocket.close();
         myServerSocket.close();
     }
-    
-    public void run() throws IOException{
+
+    public void run () throws IOException {
         myClientOutput = new PrintWriter(myClientSocket.getOutputStream(), true);
         myClientInput = new BufferedReader(new InputStreamReader(myClientSocket.getInputStream()));
-        String input, output = "";
-        
+        String input;
+
         myClientOutput.println("server: Connected");
         myServerInput = new BufferedReader(new InputStreamReader(System.in));
-        
-        while(true){
+
+        while (true) {
             input = myClientInput.readLine().trim();
-            if(input.equals("STOP"))
+            if (input.equals("STOP")) {
                 break;
+            }
             interpretClientInput();
-            output = myServerInput.readLine();
-            interpretClientOutput();
-            if(output.equals("STOP"))
-                break;
         }
         shutDownServer();
     }
-    
-    public abstract void interpretClientInput();
-    public abstract void interpretClientOutput();
-    
+
+    public abstract void interpretClientInput ();
 }
