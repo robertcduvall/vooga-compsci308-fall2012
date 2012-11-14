@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import util.camera.Camera;
+import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
 
@@ -20,6 +21,7 @@ public abstract class Level {
     private Camera cam;
     private Dimension myDimension;
     private String myNextLevelName;
+    private CollisionChecker myCollisionChecker;
 
     /**
      * Paint the level, including all its GameObjects.
@@ -33,9 +35,11 @@ public abstract class Level {
         }
     }
 
-    public Level(Dimension dim) {
+    public Level(Dimension dim, CollisionChecker inChecker, Camera inCam) {
         objectList = new ArrayList<GameObject>();
         myDimension = dim;
+        myCollisionChecker = inChecker;
+        cam = inCam;
     }
 
     /**
@@ -87,6 +91,8 @@ public abstract class Level {
      * @param elapsedTime time since last update cycle
      */
     public void update(long elapsedTime) {
+        myCollisionChecker.checkCollisions(this);
+        
         List<GameObject> removalList = new ArrayList<GameObject>();
         for (GameObject go : objectList) {
             go.update(this, elapsedTime);
@@ -94,6 +100,7 @@ public abstract class Level {
                 removalList.add(go);
             }
         }
+        
         for (GameObject removeObj : removalList) {
             objectList.remove(removeObj);
         }
