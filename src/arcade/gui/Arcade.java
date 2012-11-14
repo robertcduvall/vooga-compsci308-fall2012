@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import arcade.datatransfer.GameManager;
-import arcade.datatransfer.UserManager;
+import arcade.datatransfer.GameLink;
+import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
@@ -33,8 +33,8 @@ public class Arcade {
     private static ArcadeFrame myFrame;
     private static Map<String, ArcadePanel> myPanels;
 
-    private static GameManager myGameManager;
-    private static UserManager myUserManager;
+    private static GameLink myGameManager;
+    private static UserLink myUserManager;
     private static PanelCreatorFactory myFactory;
     private static ResourceBundle myResources;
 
@@ -43,8 +43,8 @@ public class Arcade {
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
-        myGameManager = new GameManager();
-        myUserManager = new UserManager();
+        myGameManager = new GameLink();
+        myUserManager = new UserLink();
         myPanels = new HashMap<String, ArcadePanel>();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
 
@@ -100,11 +100,11 @@ public class Arcade {
         return myUser;
     }
 
-    public GameManager getGameManager () {
+    public GameLink getGameManager () {
         return myGameManager;
     }
 
-    public UserManager getUserManager () {
+    public UserLink getUserManager () {
         return myUserManager;
     }
 

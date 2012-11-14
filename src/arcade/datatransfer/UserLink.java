@@ -9,7 +9,7 @@ import java.util.List;
  * @author Michael Deng
  *
  */
-public class UserManager {
+public class UserLink {
 
     public String getUserName() {
         // TODO Auto-generated method stub
