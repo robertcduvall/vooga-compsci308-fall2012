@@ -1,6 +1,7 @@
-package arcade;
+package arcade.gamemanager;
 
 import java.util.List;
+import arcade.IArcadeGame;
 
 
 public class GameManagerManager {

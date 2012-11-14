@@ -1,5 +1,6 @@
 package arcade.gui.panel.user;
 
+import javax.swing.JPanel;
 import arcade.gui.Arcade;
 
 /**
@@ -13,25 +14,12 @@ public class LoginPanel extends AUserPanel {
 
     public LoginPanel (Arcade a) {
         super(a);
-
     }
 
     @Override
-    protected void makeListeners () {
+    public JPanel createPanel () {
         // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    protected void addComponents () {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void refresh () {
-        // TODO Auto-generated method stub
-
+        return null;
     }
 
 }

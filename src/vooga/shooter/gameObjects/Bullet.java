@@ -6,6 +6,7 @@ import java.awt.Point;
 
 public class Bullet extends Sprite{
     private int myDamage;
+    private Sprite myOwner;
 
     /**
      * Constructs a bullet to be shown on the screen.
@@ -38,5 +39,23 @@ public class Bullet extends Sprite{
      */
     public int getDamage() {
         return myDamage;
+    }
+
+    /**
+     * Sets the owner of this bullet (e.g. the player or
+     * an enemy sprite).
+     * @param s the owner of this bullet
+     */
+    public void setOwner(Sprite s) {
+        myOwner = s;
+    }
+
+    /**
+     * Returns the owner of this bullet.
+     * (could be player or enemy).
+     * @return myOwner
+     */
+    public Sprite getOwner() {
+        return myOwner;
     }
 }

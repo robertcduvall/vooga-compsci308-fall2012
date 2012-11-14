@@ -1,5 +1,6 @@
 package vooga.platformer.core;
 
+import games.platformerdemo.DemoLevelFactory;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
@@ -14,12 +15,13 @@ public class Controller extends JPanel implements Runnable {
 
     private Level myCurrentLevel;
 
-    private LevelFactory myLevelFactory;
+    //TODO: Make this variable hold a LevelFactory
+    private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
     
     private Thread animator;
 
-    public Controller(LevelFactory lf, GameInitializer gi) {
+    public Controller(DemoLevelFactory lf, GameInitializer gi) {
         myLevelFactory = lf;
         myGameInitializer = gi;
 
