@@ -75,5 +75,5 @@ public abstract class AbstractServer {
 
     public abstract void interpretClientInput ();
     
-    public abstract void createGameWithClients(ClientReference c1, ClientReference c2);
+//    public abstract void createGameWithClients(ClientReference c1, ClientReference c2);
 }

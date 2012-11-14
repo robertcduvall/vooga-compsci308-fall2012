@@ -68,6 +68,7 @@ public class SocialCenter {
      */
     public String logOnUser (String username, String password) {
         //set current user
+        return null;
     }
 
     /*
@@ -78,7 +79,7 @@ public class SocialCenter {
         //initiate class
         //add the the available list
         //set current user
-
+        return null;
     }
 
     /*
@@ -88,7 +89,7 @@ public class SocialCenter {
         //delete from file
         //delete from available list
         //set current user to null
-
+        return null;
     }
 
     /*
@@ -111,13 +112,14 @@ public class SocialCenter {
      * return operation status
      */
     public String sendMessage(String sender, String receiver, String content) {
-
+        return null;
     }
 
     /*
      * return operation status
      */
     public String receiveMessage(String sender, String receiver, String content) {
+        return null;
 
     }
 
@@ -125,14 +127,14 @@ public class SocialCenter {
      * return game history for certain game
      */
     public String readGameHistory (String gameName, String tagName) {
-
+        return null;
     }
 
     /*
      * return whether the operation is successful
      */
     public boolean writeGameHistory (String gameName, String tagName, String content) {
-
+        return false;
     }
 
 }
