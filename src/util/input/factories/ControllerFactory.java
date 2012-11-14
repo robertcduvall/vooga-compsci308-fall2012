@@ -22,7 +22,7 @@ public class ControllerFactory {
      * @param c - The component to which this controller will be added to
      * @return - The Controller object
      */
-    public static Controller createKeyBoardController(Component c) {
+    public static Controller createKeyboardController(Component c) {
         // Create keyboard controller
         return new KeyboardController(c);
     }
