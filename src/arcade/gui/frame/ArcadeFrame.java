@@ -4,8 +4,9 @@ import javax.swing.JFrame;
 import arcade.gui.Arcade;
 
 /**
+ * The arcades implementation of a JFrame
  * 
- * @author Michael
+ * @author Michael Deng
  *
  */
 public class ArcadeFrame extends JFrame {

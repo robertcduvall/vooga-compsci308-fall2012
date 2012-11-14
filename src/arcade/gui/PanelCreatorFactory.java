@@ -1,5 +1,6 @@
 package arcade.gui;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import arcade.gui.panel.AbstractPanelCreator;
@@ -22,11 +23,12 @@ public class PanelCreatorFactory {
     public PanelCreatorFactory (Arcade a) {
         myArcade = a;
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Factory");
-
+        myPanelCreatorMap = new HashMap<String, AbstractPanelCreator>();
     }
 
     public AbstractPanelCreator createPanelCreator (String panelCreatorName) {
 
+        System.out.println(panelCreatorName);
         if (!myPanelCreatorMap.containsKey(panelCreatorName)) {
             myPanelCreatorMap.put(panelCreatorName, createObject(panelCreatorName));
         }

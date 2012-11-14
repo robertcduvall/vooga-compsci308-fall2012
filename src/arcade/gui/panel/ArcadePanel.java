@@ -5,8 +5,9 @@ import arcade.gui.Arcade;
 
 
 /**
+ * The arcades implementation of JPanel
  * 
- * @author Michael
+ * @author Michael Deng
  * 
  */
 public class ArcadePanel extends JPanel {

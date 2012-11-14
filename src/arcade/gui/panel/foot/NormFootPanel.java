@@ -3,7 +3,11 @@ package arcade.gui.panel.foot;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
-
+/**
+ * 
+ * @author Michael Deng
+ *
+ */
 public class NormFootPanel extends AFootPanel {
 
 //    public NormFootPanel (Arcade a) {

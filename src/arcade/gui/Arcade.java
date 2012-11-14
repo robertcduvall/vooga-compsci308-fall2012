@@ -1,5 +1,6 @@
 package arcade.gui;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javax.swing.JFrame;
@@ -30,7 +31,7 @@ public class Arcade {
     private static String myUser = "";
 
     private static ArcadeFrame myFrame;
-    private static Map<String, JPanel> myPanels;
+    private static Map<String, ArcadePanel> myPanels;
 
     private static GameManager myGameManager;
     private static UserManager myUserManager;
@@ -38,12 +39,13 @@ public class Arcade {
     private static ResourceBundle myResources;
 
     public Arcade () {
-        // System.out.println("got it!");
+         System.out.println("got it!");
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
         myGameManager = new GameManager();
         myUserManager = new UserManager();
+        myPanels = new HashMap<String, ArcadePanel>();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
 
         // set up frame

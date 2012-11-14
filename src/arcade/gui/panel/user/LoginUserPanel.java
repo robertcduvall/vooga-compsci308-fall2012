@@ -1,5 +1,6 @@
 package arcade.gui.panel.user;
 
+import java.awt.Color;
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -19,8 +20,11 @@ public class LoginUserPanel extends AUserPanel {
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+        ArcadePanel myPanel = initializeNewPanel();
+        myPanel.setBackground(Color.BLUE);
+        System.out.println("LoginUserPanel");
+        
+        return myPanel;
     }
 
 }

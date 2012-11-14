@@ -1,13 +1,14 @@
 package arcade.gui.panel.nav;
 
+import java.awt.Color;
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
 /**
  * 
- * @author Michael
- *
+ * @author Michael Deng
+ * 
  */
 public class BlankNavPanel extends ANavPanel {
 
@@ -18,8 +19,11 @@ public class BlankNavPanel extends ANavPanel {
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+        ArcadePanel myPanel = initializeNewPanel();
+        myPanel.setBackground(Color.BLUE);
+        System.out.println("BlankNavPanel");
+        
+        return myPanel;
     }
 
 }

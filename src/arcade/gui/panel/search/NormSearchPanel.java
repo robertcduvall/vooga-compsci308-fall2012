@@ -4,6 +4,11 @@ import javax.swing.JPanel;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+/**
+ * 
+ * @author Michael Deng
+ * 
+ */
 public class NormSearchPanel extends ASearchPanel {
 
 //    public NormSearchPanel (Arcade a) {

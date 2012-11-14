@@ -1,9 +1,14 @@
 package arcade.gui.panel.foot;
 
+import java.awt.Color;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
-
+/**
+ * 
+ * @author Michael Deng
+ *
+ */
 public class BlankFootPanel extends AFootPanel {
 
 //    public BlankFootPanel (Arcade a) {
@@ -12,8 +17,12 @@ public class BlankFootPanel extends AFootPanel {
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+
+        ArcadePanel myPanel = initializeNewPanel();
+        myPanel.setBackground(Color.RED);
+        System.out.println("BlackFootPanel");
+        
+        return myPanel;
     }
 
 }
