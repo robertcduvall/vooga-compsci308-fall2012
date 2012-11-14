@@ -39,5 +39,5 @@ public abstract class GameObject {
 
     public abstract void paint (Graphics g, int x, int y, int width, int height);
 
-    public abstract void update ();
+    public abstract void update (int delayTime);
 }

@@ -74,4 +74,8 @@ public class GameManager implements Observer {
     public Dimension getCanvasDimension () {
         return myGameCanvas.getSize();
     }
+    
+    public int getDelayTime() {
+    	return myGameCanvas.getDelayTime();
+    }
 }

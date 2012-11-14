@@ -1,8 +1,3 @@
-/**
- * Map Mode on which players move around and interact with other game objects
- * 
- * @author Rex, Volodymyr
- */
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
@@ -21,21 +16,23 @@ import vooga.turnbased.gui.GameWindow;
 
 
 /**
+ * Map Mode on which players move around and interact with other game objects
  * for now, the mastermind behind map mode...does just about everything
  * 
  * @author Tony, Rex
  **/
 public class MapMode extends GameMode {
-    private final Point UP = new Point(0, -1);
-    private final Point RIGHT = new Point(1, 0);
-    private final Point DOWN = new Point(0, 1);
-    private final Point LEFT = new Point(-1, 0);
+    public static final Point UP = new Point(0, -1);
+    public static final Point RIGHT = new Point(1, 0);
+    public static final Point DOWN = new Point(0, 1);
+    public static final Point LEFT = new Point(-1, 0);
     private final int ID = 0;
     private Map<Point, List<MapObject>> mySprites;
     private int myNumDisplayRows;
     private int myNumDisplayCols;
-    private MapObject myPlayer;
+    private MapPlayerObject myPlayer;
     private Point myBottomRightCorner;
+    private Point myOrigin;
     private int myCurrentTileWidth;
     private int myCurrentTileHeight;
     private Rectangle myCurrentCamera;
@@ -78,10 +75,20 @@ public class MapMode extends GameMode {
         myCurrentTileWidth = getGM().getCanvasDimension().width / myNumDisplayCols;
         myCurrentTileHeight = getGM().getCanvasDimension().height / myNumDisplayRows;
         Point playerCoord = myPlayer.getLocation();
-        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1) / 2,
-                                        playerCoord.y - (myNumDisplayRows - 1) / 2,
-                                        myNumDisplayCols, myNumDisplayRows);
-      //foreach sprite: s.update();
+        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1) / 2 - 1,
+                                        playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
+                                        myNumDisplayCols + 1, myNumDisplayRows + 1);
+        myOrigin = new Point (-myCurrentTileWidth, -myCurrentTileHeight);
+        /*
+        Point displacement = myPlayer.calcScreenDisplacement(
+        		myCurrentTileWidth, myCurrentTileHeight, getGM().getDelayTime());
+        myOrigin.x += displacement.x;
+        myOrigin.y += displacement.y;
+        for (Point p: mySprites.keySet()) {
+        	for (MapObject s: getSpritesOnTile(p.x, p.y)) {
+        		s.update(getGM().getDelayTime());
+        	}
+        }*/
     }
 
     @Override
@@ -90,8 +97,8 @@ public class MapMode extends GameMode {
         for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
             for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
                 List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
-                int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth;
-                int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight;
+                int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth + myOrigin.x;
+                int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight + myOrigin.y;
                 Image background = GameWindow.importImage("TileBackground");
                 g.drawImage(background, xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
                 if (spritesOnTile != null) {
@@ -116,7 +123,6 @@ public class MapMode extends GameMode {
                 mySprites.get(oldCoord).remove(s);
                 addSprite(dest, s);
                 s.setLocation(dest);
-                System.out.println(s.getClass() + " " + dest);
             }
         }
         update();
@@ -126,25 +132,31 @@ public class MapMode extends GameMode {
     public void handleKeyPressed (KeyEvent e) {
         //foreach sprite: s.handleKeyPressed(e); s.update();
         int keyCode = e.getKeyCode();
+        if (myPlayer.isMoving()) {
+        	return;
+        }
         switch(keyCode) {
             case KeyEvent.VK_LEFT:
                 moveSprite(myPlayer, myPlayer.getLocation(LEFT));
+                myPlayer.setDirection(LEFT);
                 break;
             case KeyEvent.VK_UP:
                 moveSprite(myPlayer, myPlayer.getLocation(UP));
+                myPlayer.setDirection(UP);
                 break;
             case KeyEvent.VK_RIGHT:
                 moveSprite(myPlayer, myPlayer.getLocation(RIGHT));
+                myPlayer.setDirection(RIGHT);
                 break;
             case KeyEvent.VK_DOWN:
                 moveSprite(myPlayer, myPlayer.getLocation(DOWN));
+                myPlayer.setDirection(DOWN);
                 break;
         }
     }
 
     @Override
     public void handleKeyReleased (KeyEvent e) {
-        // TODO Auto-generated method stub
-        
+
     }
 }

@@ -118,4 +118,7 @@ public class GameCanvas extends Canvas implements Runnable, KeyListener {
         myGameManager.handleKeyReleased(e);
     }
 
+    public int getDelayTime() {
+    	return myDelayTime;
+    }
 }

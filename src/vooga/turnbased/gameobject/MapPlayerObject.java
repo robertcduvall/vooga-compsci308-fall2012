@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-public class MapPlayerObject extends MapObject {
+public class MapPlayerObject extends MovingMapObject {
 
     public MapPlayerObject (int id, Point coord, Image mapImage, Rectangle camera) {
         super(id, coord, mapImage, camera);
@@ -24,8 +24,7 @@ public class MapPlayerObject extends MapObject {
     }
 
     @Override
-    public void update () {
-        // TODO Auto-generated method stub
-        
+    public void update (int delayTime) {
+        super.update(delayTime);
     }
 }
