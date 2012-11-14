@@ -1,4 +1,4 @@
-package vooga.platformer.leveleditor.test;
+package vooga.platformer.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;

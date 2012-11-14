@@ -1,4 +1,4 @@
-package vooga.platformer.leveleditor.test;
+package vooga.platformer.test;
 
 import junit.framework.Assert;
 import org.junit.Before;
