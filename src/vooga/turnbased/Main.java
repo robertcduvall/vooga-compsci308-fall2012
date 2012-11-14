@@ -19,8 +19,6 @@ public class Main {
      * @param args arguments
      */
     public static void main (String[] args) {
-        GameWindow myGameWindow = new GameWindow(WIDTH, HEIGHT, "Turn-Based RPG");
-        myGameWindow.addResourceBundle("GameSetting");
-        myGameWindow.initializeCanvas();
+        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT);
     }
 }

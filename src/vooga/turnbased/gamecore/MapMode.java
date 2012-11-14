@@ -69,31 +69,12 @@ public class MapMode extends GameMode {
             mySprites.put(p, spriteList);
         }
     }
-    
-    @Override
-    public void update () {
-        myCurrentTileWidth = getGM().getCanvasDimension().width / myNumDisplayCols;
-        myCurrentTileHeight = getGM().getCanvasDimension().height / myNumDisplayRows;
-        Point playerCoord = myPlayer.getLocation();
-        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1) / 2 - 1,
-                                        playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
-                                        myNumDisplayCols + 1, myNumDisplayRows + 1);
-        myOrigin = new Point (-myCurrentTileWidth, -myCurrentTileHeight);
-        /*
-        Point displacement = myPlayer.calcScreenDisplacement(
-        		myCurrentTileWidth, myCurrentTileHeight, getGM().getDelayTime());
-        myOrigin.x += displacement.x;
-        myOrigin.y += displacement.y;
-        for (Point p: mySprites.keySet()) {
-        	for (MapObject s: getSpritesOnTile(p.x, p.y)) {
-        		s.update(getGM().getDelayTime());
-        	}
-        }*/
-    }
 
     @Override
     public void paint (Graphics g) {
-      //foreach sprite: s.paint(g);
+    	updateTileInfo();
+    	updateCameraPosition();
+//    	foreach sprite: s.paint(g);
         for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
             for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
                 List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
@@ -110,6 +91,19 @@ public class MapMode extends GameMode {
             }
         }
     }
+    
+    public void updateTileInfo () {
+        myCurrentTileWidth = getGM().getPaneDimension().width / myNumDisplayCols;
+        myCurrentTileHeight = getGM().getPaneDimension().height / myNumDisplayRows;
+        myOrigin = new Point (-myCurrentTileWidth, -myCurrentTileHeight);
+    }
+    
+    private void updateCameraPosition() {
+    	Point playerCoord = myPlayer.getLocation();
+        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1) / 2 - 1,
+                playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
+                myNumDisplayCols + 1, myNumDisplayRows + 1);
+    }
 
     private List<MapObject> getSpritesOnTile (int i, int j) {
         return mySprites.get(new Point(i, j));
@@ -125,7 +119,6 @@ public class MapMode extends GameMode {
                 s.setLocation(dest);
             }
         }
-        update();
     }
 
     @Override
@@ -159,4 +152,10 @@ public class MapMode extends GameMode {
     public void handleKeyReleased (KeyEvent e) {
 
     }
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
 }
