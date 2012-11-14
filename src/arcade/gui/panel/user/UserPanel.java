@@ -21,13 +21,6 @@ public class UserPanel extends AUserPanel {
 
     public UserPanel (Arcade a) {
         super(a);
-        
-        Map<K, V> m = a.getDataMap("getAvatar");
-        m.put("username", a.getUsername());
-        Map <String, Serializable> response = a.getUserManager().request(m);
-        ImageIcon avatarIcon = (ImageIcon) response.get("avatar");
-        Image avatarImage = avatarIcon.getImage();
-        
         // TODO Auto-generated constructor stub
     }
 
