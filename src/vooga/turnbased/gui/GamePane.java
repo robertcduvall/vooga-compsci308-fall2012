@@ -39,18 +39,19 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void update(Graphics g) {
+    	myGameManager.update();
     	Image offScreenImage = createImage(getSize().width, getSize().height);
     	Graphics offScreenGraphics = offScreenImage.getGraphics();
     	paint(offScreenGraphics);
     	g.drawImage(offScreenImage, 0, 0, null);
-    	myGameManager.update();
     }
     
     /**
      * Paint gameobjects and background to the canvas
      */
-    @Override
+    //@Override
     public void paint(Graphics g) {
+    	myGameManager.update();
         myGameManager.paint(g);
     }
     

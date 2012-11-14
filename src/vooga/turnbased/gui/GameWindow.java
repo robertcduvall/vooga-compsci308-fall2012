@@ -51,15 +51,6 @@ public class GameWindow extends JFrame {
         initializeGamePanes();
         startGameTimer();
     }
-
-    /**
-     * refresh the screen to update new changes to its components
-     */
-    public void refreshScreen () {
-        Dimension mySize = getSize();
-        setSize(new Dimension(mySize.width, mySize.height - 1));
-        setSize(mySize);
-    }
     
     /**
      * initialize the Canvases as prototypes

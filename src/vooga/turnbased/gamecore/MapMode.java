@@ -69,11 +69,15 @@ public class MapMode extends GameMode {
             mySprites.put(p, spriteList);
         }
     }
+    
+	@Override
+	public void update() {
+    	updateTileInfo();
+    	updateCameraPosition();		
+	}
 
     @Override
     public void paint (Graphics g) {
-    	updateTileInfo();
-    	updateCameraPosition();
 //    	foreach sprite: s.paint(g);
         for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
             for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
@@ -152,10 +156,4 @@ public class MapMode extends GameMode {
     public void handleKeyReleased (KeyEvent e) {
 
     }
-
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
 }

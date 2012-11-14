@@ -13,6 +13,7 @@ public abstract class DisplayPane extends JPanel implements KeyListener {
     
 	public DisplayPane(GameWindow gameWindow){
 		myGameWindow = gameWindow;
+		setSize(myGameWindow.getSize());
 		enableFocus();
 	}
 	
