@@ -13,10 +13,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class NormLogoPanel extends ALogoPanel {
 
-//    public NormLogoPanel (Arcade a) {
-//        super(a);
-//        // TODO Auto-generated constructor stub
-//    }
+    public NormLogoPanel (Arcade a) {
+        super(a);
+        // TODO Auto-generated constructor stub
+    }
 
     @Override
     public ArcadePanel createPanel () {

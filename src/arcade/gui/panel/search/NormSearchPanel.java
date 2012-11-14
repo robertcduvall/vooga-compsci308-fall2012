@@ -11,9 +11,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class NormSearchPanel extends ASearchPanel {
 
-//    public NormSearchPanel (Arcade a) {
-//        super(a);
-//    }
+    public NormSearchPanel (Arcade a) {
+        super(a);
+    }
 
     @Override
     public ArcadePanel createPanel () {

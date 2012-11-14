@@ -14,9 +14,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class LoginUserPanel extends AUserPanel {
 
-//    public LoginUserPanel (Arcade a) {
-//        super(a);
-//    }
+    public LoginUserPanel (Arcade a) {
+        super(a);
+    }
 
     @Override
     public ArcadePanel createPanel () {

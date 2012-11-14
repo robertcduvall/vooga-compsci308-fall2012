@@ -11,10 +11,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class LoginMainPanel extends AMainPanel {
 
-//    public LoginMainPanel (Arcade a) {
-//        super(a);
-//
-//    }
+    public LoginMainPanel (Arcade a) {
+        super(a);
+
+    }
 
     @Override
     public ArcadePanel createPanel () {

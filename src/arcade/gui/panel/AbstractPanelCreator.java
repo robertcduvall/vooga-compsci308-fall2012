@@ -14,18 +14,18 @@ public abstract class AbstractPanelCreator {
     private String myPanelType;
     private Arcade myArcade;
 
-    // public AbstractPanelCreator (Arcade a) {
-    // myArcade = a;
-    // }
+     public AbstractPanelCreator (Arcade a) {
+     myArcade = a;
+     }
 
-    /**
-     * Initializes the PanelCreator
-     * 
-     * @param a Arcade
-     */
-    public void creatorSetup (Arcade a) {
-        myArcade = a;
-    }
+//    /**
+//     * Initializes the PanelCreator
+//     * 
+//     * @param a Arcade
+//     */
+//    public void creatorSetup (Arcade a) {
+//        myArcade = a;
+//    }
 
     /**
      * Used by subclasses as the first step in creating a new ArcadePanel

@@ -3,6 +3,7 @@ package arcade.gui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import util.reflection.Reflection;
 import arcade.gui.panel.AbstractPanelCreator;
 
 
@@ -30,11 +31,11 @@ public class PanelCreatorFactory {
 
         System.out.println(panelCreatorName);
         if (!myPanelCreatorMap.containsKey(panelCreatorName)) {
-            myPanelCreatorMap.put(panelCreatorName, createObject(panelCreatorName));
+            myPanelCreatorMap.put(panelCreatorName, createInstance(panelCreatorName));
         }
 
         AbstractPanelCreator myCreator = myPanelCreatorMap.get(panelCreatorName);
-        myCreator.creatorSetup(myArcade);
+//        myCreator.creatorSetup(myArcade);
 
         return myCreator;
     }
@@ -50,37 +51,39 @@ public class PanelCreatorFactory {
      * @param className name of the class to create
      * @return
      */
-    private AbstractPanelCreator createObject (String panelCreatorName) {
+    private AbstractPanelCreator createInstance (String panelCreatorName) {
         AbstractPanelCreator newPanelCreator = null;
 
-        try {
-            newPanelCreator =
-                    (AbstractPanelCreator) Class.forName(retrieveFullClassPath(panelCreatorName))
-                            .newInstance();
-        }
-        catch (InstantiationException e) {
-            throwRuntimeException();
-        }
-        catch (IllegalAccessException e) {
-            throwRuntimeException();
-        }
-        catch (ClassNotFoundException e) {
-            throwRuntimeException();
-        }
-        catch (IllegalArgumentException e) {
-            throwRuntimeException();
-        }
-        catch (SecurityException e) {
-            throwRuntimeException();
-        }
+        newPanelCreator = (AbstractPanelCreator) Reflection.createInstance(retrieveFullClassPath(panelCreatorName), myArcade);
+        
+//        try {
+//            newPanelCreator =
+//                    (AbstractPanelCreator) Class.forName(retrieveFullClassPath(panelCreatorName))
+//                            .newInstance();
+//        }
+//        catch (InstantiationException e) {
+//            throwRuntimeException();
+//        }
+//        catch (IllegalAccessException e) {
+//            throwRuntimeException();
+//        }
+//        catch (ClassNotFoundException e) {
+//            throwRuntimeException();
+//        }
+//        catch (IllegalArgumentException e) {
+//            throwRuntimeException();
+//        }
+//        catch (SecurityException e) {
+//            throwRuntimeException();
+//        }
         return newPanelCreator;
     }
 
-    /**
-     * This method will execute to handle all the exceptions thrown during class
-     * creation.
-     */
-    private void throwRuntimeException () {
-        throw new RuntimeException("Error in Factory");
-    }
+//    /**
+//     * This method will execute to handle all the exceptions thrown during class
+//     * creation.
+//     */
+//    private void throwRuntimeException () {
+//        throw new RuntimeException("Error in Factory");
+//    }
 }

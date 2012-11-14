@@ -11,9 +11,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class BlankFootPanel extends AFootPanel {
 
-//    public BlankFootPanel (Arcade a) {
-//        super(a);
-//    }
+    public BlankFootPanel (Arcade a) {
+        super(a);
+    }
 
     @Override
     public ArcadePanel createPanel () {
