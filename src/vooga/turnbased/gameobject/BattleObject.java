@@ -41,6 +41,14 @@ public abstract class BattleObject extends GameObject {
      */
     public abstract void attackEnemy(BattleObject enemy);
 
+    /**
+     * Checks to see if this BattleObject has any health left.
+     * @return True if health > 0.
+     */
+    public boolean isAlive() {
+        return myHealth > 0;
+    }
+
 
 
 
