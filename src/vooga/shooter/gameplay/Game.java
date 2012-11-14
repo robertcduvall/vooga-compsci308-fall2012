@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.List;
 import util.input.core.KeyboardController;
 import vooga.shooter.gameObjects.Sprite;
+import vooga.shooter.graphics.Canvas;
+import vooga.shooter.implementation.Level1;
 import vooga.shooter.level_editor.Level;
 
 
@@ -18,10 +20,11 @@ public class Game {
     private List<Sprite> mySprites;
     private Level myCurrentLevel;
     private KeyboardController myController;
+    private Canvas myCanvas;
 
     private void initializeGame () {
         myController = new KeyboardController(null);
-        Level firstLevel = null;
+        Level firstLevel = new Level1(this);
         startLevel(firstLevel);
     }
 
@@ -31,19 +34,20 @@ public class Game {
     }
 
     private void update () {
-        for (Sprite s : mySprites) {
-            s.update();
-        }
-
         // will work when Levels contain winning conditions
-
         // if (myCurrentLevel.winningConditionsMet(this)) {
         // startLevel(myCurrentLevel.nextLevel());
         // }
+        
+        for (Sprite s : getSprites()) {
+            s.update();
+        }
+
+       
     }
 
     private void paint (Graphics pen) {
-        for (Sprite s : mySprites) {
+        for (Sprite s : getSprites()) {
             s.paint(pen);
         }
 
@@ -55,7 +59,21 @@ public class Game {
      * @param sprite to be added to list of existing sprites
      */
     public void addSprite (Sprite sprite) {
-        mySprites.add(sprite);
+        getSprites().add(sprite);
+    }
+
+    /**
+     * @return the mySprites
+     */
+    public List<Sprite> getSprites () {
+        return mySprites;
+    }
+
+    /**
+     * @param mySprites the mySprites to set
+     */
+    public void setSprites (List<Sprite> mySprites) {
+        this.mySprites = mySprites;
     }
 
 }
