@@ -10,10 +10,14 @@ package vooga.turnbased.gamecore;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import com.sun.tools.javac.util.List;
 import vooga.turnbased.gamecreation.Factory;
+import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
 
 
@@ -54,6 +58,21 @@ public class GameManager implements Observer {
      */
     public void paint (Graphics g) {
         myCurrentGameMode.paint(g);
+    }
+
+    /**
+     * Creates a new Battle by constructing a new BattleMode.
+     * Currently the monsters used are hardcoded.
+     */
+    public void newBattle() {
+        //changes these from being hardcoded later.
+        ArrayList<BattleObject> team1 = new ArrayList<BattleObject>();
+        BattleObject playerChar = new TestMonster(0, 1, 1, 3);
+        team1.add(playerChar);
+        ArrayList<BattleObject> team2 = new ArrayList<BattleObject>();
+        BattleObject otherChar = new TestMonster(1, 1, 1, 3);
+        team2.add(otherChar);
+        new BattleMode(this, team1, team2);
     }
 
 
