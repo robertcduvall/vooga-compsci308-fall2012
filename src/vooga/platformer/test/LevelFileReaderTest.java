@@ -1,4 +1,4 @@
-package vooga.platformer.leveleditor.test;
+package vooga.platformer.test;
 
 import junit.framework.Assert;
 import org.junit.Before;
@@ -15,7 +15,7 @@ public class LevelFileReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        lfr = new LevelFileReader("src/vooga/platformer/leveleditor/test/test.xml");
+        lfr = new LevelFileReader("src/vooga/platformer/test/test.xml");
         Assert.assertNotNull(lfr);
     }
 

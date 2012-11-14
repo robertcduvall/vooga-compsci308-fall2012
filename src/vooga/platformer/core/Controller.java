@@ -1,6 +1,8 @@
 package vooga.platformer.core;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
@@ -21,7 +23,7 @@ public class Controller extends JPanel implements Runnable {
         myLevelFactory = lf;
         myGameInitializer = gi;
 
-        myCurrentLevel = myLevelFactory.loadLevel(myGameInitializer.getFirstLevelName());
+       setupLevel(myGameInitializer.getFirstLevelName());
         
         animator = new Thread(this);
         animator.start();
@@ -38,8 +40,14 @@ public class Controller extends JPanel implements Runnable {
 
         if (currentState == PlayState.NEXT_LEVEL) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
-            myCurrentLevel = myLevelFactory.loadLevel(nextLevelName);
+            setupLevel(nextLevelName);
         }
+    }
+    
+    private void setupLevel(String lvlName) {
+        myCurrentLevel = myLevelFactory.loadLevel(lvlName);
+        Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
+        setPreferredSize(new Dimension((int)cameraBounds.getWidth(), (int)cameraBounds.getHeight()));
     }
 
     @Override
