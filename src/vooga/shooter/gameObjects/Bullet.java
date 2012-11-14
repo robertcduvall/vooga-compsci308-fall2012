@@ -4,6 +4,15 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
+/**
+ * Bullet class will have all the info needed to
+ * represent a bullet shot by either a player or enemy.
+ * Each bullet will have its own owner Sprite and a damage
+ * parameter.
+ *
+ * @author Jesse Starr
+ * (add your own name as you edit)
+ */
 public class Bullet extends Sprite{
     private int myDamage;
     private Sprite myOwner;

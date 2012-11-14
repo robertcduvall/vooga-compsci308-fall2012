@@ -4,6 +4,15 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 
+/**
+ * Represents the player(s) to be used in the game.
+ * Each player will start with health.
+ * The player(s) can also be controlled using keys
+ * that will direct their movement.
+ *
+ * @author Jesse Starr
+ * (add your own name as you edit)
+ */
 public class Player extends Sprite{
 
     /**
