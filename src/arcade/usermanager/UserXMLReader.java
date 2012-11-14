@@ -128,4 +128,9 @@ public class UserXMLReader {
         dpe.getUser();
     }
 
+    public User initiateUser (String string) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
