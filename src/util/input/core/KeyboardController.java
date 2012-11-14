@@ -15,6 +15,9 @@ import util.input.inputhelpers.UKeyCode;
 public class KeyboardController extends Controller<KeyListener> implements
         KeyListener {
 
+    public final static int PRESSED = KeyEvent.KEY_PRESSED;
+    public final static int RELEASED = KeyEvent.KEY_RELEASED;
+    
     /**
      * Create a new keyboard controller
      * 
