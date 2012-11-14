@@ -13,10 +13,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class BlankMainPanel extends AMainPanel {
 
-//    public BlankMainPanel (Arcade a) {
-//        super(a);
-//        // TODO Auto-generated constructor stub
-//    }
+    public BlankMainPanel (Arcade a) {
+        super(a);
+        // TODO Auto-generated constructor stub
+    }
 
     @Override
     public ArcadePanel createPanel () {

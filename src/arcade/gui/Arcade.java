@@ -59,12 +59,12 @@ public class Arcade {
         myFrame = frameCreator.createFrame();
 
         // fill it with default panels
+        replacePanel(myResources.getString("DefaultFoot"));
         replacePanel(myResources.getString("DefaultMain"));
         replacePanel(myResources.getString("DefaultLogo"));
         replacePanel(myResources.getString("DefaultNav"));
         replacePanel(myResources.getString("DefaultSearch"));
         replacePanel(myResources.getString("DefaultUser"));
-        replacePanel(myResources.getString("DefaultFoot"));
     }
 
     private ArcadePanel createPanel (String panelCreatorName) {

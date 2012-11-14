@@ -12,10 +12,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class BlankNavPanel extends ANavPanel {
 
-//    public BlankNavPanel (Arcade a) {
-//        super(a);
-//        // TODO Auto-generated constructor stub
-//    }
+    public BlankNavPanel (Arcade a) {
+        super(a);
+        // TODO Auto-generated constructor stub
+    }
 
     @Override
     public ArcadePanel createPanel () {
