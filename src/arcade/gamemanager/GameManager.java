@@ -29,7 +29,7 @@ public class GameManager {
      * @param gameObject the game to be managed
      */
     public GameManager(IArcadeGame gameObject) {
-        mySaver = new GameSaver();
+        mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
         // TODO
     }
@@ -45,7 +45,7 @@ public class GameManager {
      * @param gameName name of the game to be managed
      */
     public GameManager(String gameName) {
-        mySaver = new GameSaver();
+        mySaver = new GameSaver(gameName, myGame);
         // TODO
     }
 
@@ -143,7 +143,7 @@ public class GameManager {
         if (ReadWriter.loadData(f, tags) == null) {
             addReview(review);
         } else {
-            editReview(review);
+            editReview(review, null);
         }
     }
 
