@@ -1,9 +1,7 @@
 
 package vooga.turnbased;
-<<<<<<< HEAD
 import vooga.turnbased.gui.GameWindow;
-=======
->>>>>>> master
+
 
 /**
  * Main entrance of the game
@@ -11,12 +9,9 @@ import vooga.turnbased.gui.GameWindow;
  * @author Rex
  */
 
-<<<<<<< HEAD
-public class Main {
-=======
 
-class Main {
->>>>>>> master
+public class Main {
+
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
@@ -26,15 +21,8 @@ class Main {
      * 
      * @param args arguments
      */
-<<<<<<< HEAD
     public static void main (String[] args) {
         GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT);
-=======
-    public static void main(String[] args) {
-        GameWindow myGameWindow = new GameWindow(WIDTH, HEIGHT,
-                "Scrolling Games");
-        myGameWindow.addResourceBundle("GameSetting");
-        myGameWindow.initializeCanvas();
->>>>>>> master
+
     }
 }

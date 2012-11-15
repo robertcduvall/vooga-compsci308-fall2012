@@ -14,13 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-<<<<<<< HEAD
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
-=======
-
-public abstract class GameMode extends Observable {
->>>>>>> master
 
 
 //public abstract class GameMode extends Observable {
@@ -37,12 +32,9 @@ public abstract class GameMode {
      */
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
-<<<<<<< HEAD
         myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
         //this.addObserver(myGameManager);
-=======
-        addObserver(myGameManager);
->>>>>>> master
+
     }
 
     /**
@@ -55,7 +47,7 @@ public abstract class GameMode {
 //        notifyObservers(event);
 //    }
 
-<<<<<<< HEAD
+
 //    public static void main (String[] args) {
 //        // TODO Auto-generated method stub
 //
@@ -81,17 +73,6 @@ public abstract class GameMode {
     public abstract void processGameEvents();
 
     public abstract void handleKeyPressed (KeyEvent e);
-=======
-    /**
-     * Test Test Test
-     * 
-     * @param args
-     */
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-
-    }
->>>>>>> master
 
     public abstract void handleKeyReleased (KeyEvent e);
     
