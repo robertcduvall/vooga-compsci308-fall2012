@@ -121,22 +121,34 @@ public class MapMode extends GameMode {
 	/**
 	 * move the camera according to player's movement
 	 * do not move when player reaches the edge
+	 * There are 2 rows and columns of margin for smooth movement 
 	 */
 	private void updateCameraPosition() {
 		Point displacement = myPlayer
 				.calcScreenDisplacement(myCurrentTileWidth,	myCurrentTileHeight);
 		Point topLeftCoord = calculateTopLeftCoordinate();
 		if (topLeftCoord.x <= 0) {
-			topLeftCoord.x = 0;  //player near the left/right boundary
+			topLeftCoord.x = 0;  //player near the left boundary
 			displacement.x = 0;  //screen fixed when player moves to the edge
 		}
+		else if (topLeftCoord.x >= myBottomRightCorner.x - myNumDisplayCols) {
+			topLeftCoord.x = myBottomRightCorner.x - myNumDisplayCols;
+			displacement.x = 0;
+		}
 		if (topLeftCoord.y <= 0) {
-			topLeftCoord.y = 0;  //player near the top/bottom boundary
+			topLeftCoord.y = 0;  //player near the top boundary
+			displacement.y = 0;
+		}
+		else if (topLeftCoord.y >= myBottomRightCorner.y - myNumDisplayRows) {
+			topLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows; 
 			displacement.y = 0;
 		}
 		myCurrentCamera = new Rectangle(topLeftCoord.x - 1, topLeftCoord.y - 1,
-				myNumDisplayCols + 2, myNumDisplayRows + 2);
+				myNumDisplayCols + 2, myNumDisplayRows + 2);  
 		myOrigin = changeOriginForPlayer(displacement);
+	}
+	
+	public void updateMapObjects() {
 		for (Point p : mySprites.keySet()) {
 			for (MapObject s : getSpritesOnTile(p.x, p.y)) {
 				s.update(getGM().getDelayTime());
@@ -158,8 +170,9 @@ public class MapMode extends GameMode {
 	}
 	
 	/**
-	 * calculate top left corner coordinate
-	 * @return
+	 * calculate top left corner coordinate of the grid
+	 * 
+	 * @return top-left coordinate
 	 */
 	private Point calculateTopLeftCoordinate() {
 		myIsFixedPlayer = true;
@@ -223,6 +236,7 @@ public class MapMode extends GameMode {
 	public void update() {
 		updateTileInfo();
 		updateCameraPosition();
+		updateMapObjects();
 	}
 	
 	private Point initializeOrigin() {
