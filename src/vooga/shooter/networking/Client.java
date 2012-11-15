@@ -55,7 +55,7 @@ public class Client extends Thread {
         writeBuffer = ByteBuffer.allocateDirect(BUFFER_SIZE);
         readBuffer = ByteBuffer.allocateDirect(BUFFER_SIZE);
         asciiDecoder = Charset.forName("US-ASCII").newDecoder();
-        ;
+        
     }
 
     @Override

@@ -2,6 +2,7 @@ package arcade.gui.panel.user;
 
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
+import arcade.gui.panel.ArcadePanel;
 
 /**
  * This is the normal user panel post-login.
@@ -11,15 +12,15 @@ import arcade.gui.Arcade;
  * @author Michael Deng
  *
  */
-public class UserPanel extends AUserPanel {
+public class NormUserPanel extends AUserPanel {
 
-    public UserPanel (Arcade a) {
+    public NormUserPanel (Arcade a) {
         super(a);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    public JPanel createPanel () {
+    public ArcadePanel createPanel () {
         // TODO Auto-generated method stub
         return null;
     }

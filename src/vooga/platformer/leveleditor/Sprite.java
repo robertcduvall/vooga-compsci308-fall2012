@@ -191,15 +191,18 @@ public class Sprite {
         return myImagePath;
     }
 
+    // TODO clarify type declaration
     /**
      * Adds update strategy to the Sprite. This is added as Map.
      * 
+     * @param strategyType Name of the update strategy type to use. Must be
+     *        subclass of Strategy.
      * @param strategy Map representing the update strategy. Each key is a
      *        String representing a parameter name for the update strategy. This
      *        should map to the value of this parameter, also a String.
      */
-    public void addUpdateStrategy (Map<String, String> strategy) {
-        // TODO consider type parameter. Rewrite signature
+    public void addUpdateStrategy (String strategyType, Map<String, String> strategy) {
+        strategy.put("type", strategyType);
         myUpdateStrategies.add(strategy);
     }
 

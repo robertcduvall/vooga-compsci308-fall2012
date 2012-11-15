@@ -1,4 +1,4 @@
-package util.input.input_utils;
+package util.input.inputhelpers;
 
 /**
  * @author Amay

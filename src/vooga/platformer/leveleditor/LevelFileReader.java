@@ -137,7 +137,8 @@ public class LevelFileReader {
                     Node strategyNode = strategyNodeList.item(j);
                     if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element strategyElement = (Element) strategyNode;
-                        builtSprite.addUpdateStrategy(extractMapFromXML(strategyElement));
+                        Map<String, String> strategyMap = extractMapFromXML(strategyElement);
+                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"), strategyMap);
                     }
                 }
             }

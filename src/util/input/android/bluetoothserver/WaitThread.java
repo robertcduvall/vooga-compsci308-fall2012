@@ -1,7 +1,13 @@
 package util.input.android.bluetoothserver;
 
 import java.io.IOException;
-import java.util.UUID;
+import javax.bluetooth.UUID;
+import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.DiscoveryAgent;
+import javax.bluetooth.LocalDevice;
+import javax.microedition.io.Connector;
+import javax.microedition.io.StreamConnection;
+import javax.microedition.io.StreamConnectionNotifier;
 
 
 /**

@@ -2,6 +2,8 @@ package util.input.core;
 
 import java.awt.Component;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import util.input.inputhelpers.UKeyCode;
 
 
 /**
@@ -13,6 +15,9 @@ import java.awt.event.KeyEvent;
 public class KeyboardController extends Controller<KeyListener> implements
         KeyListener {
 
+    public final static int PRESSED = KeyEvent.KEY_PRESSED;
+    public final static int RELEASED = KeyEvent.KEY_RELEASED;
+    
     /**
      * Create a new keyboard controller
      * 
