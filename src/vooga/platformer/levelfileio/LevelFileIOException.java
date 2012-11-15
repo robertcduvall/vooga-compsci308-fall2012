@@ -10,7 +10,7 @@ package vooga.platformer.levelfileio;
 @SuppressWarnings("serial")
 public class LevelFileIOException extends RuntimeException {
     /**
-     * Creats a new LevelFileIOException with the specified error message.
+     * Creates a new LevelFileIOException with the specified error message.
      * 
      * @param s error message
      */
