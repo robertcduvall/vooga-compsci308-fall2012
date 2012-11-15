@@ -9,6 +9,7 @@ package util.input.core;
  * To change this template use File | Settings | File Templates.
  */
 
+import util.input.android.bluetoothserver.AndroidBluetoothServer;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.inputhelpers.UKeyCode;
 import util.input.interfaces.listeners.AndroidListener;
@@ -23,6 +24,10 @@ public class AndroidController extends Controller<AndroidListener> implements
 
     public AndroidController() {
         super();
+        AndroidBluetoothServer server = new AndroidBluetoothServer(0);
+        server.subscribe(this);
+        server.startServer();
+        System.out.println("not hanging");
     }
 
     @Override

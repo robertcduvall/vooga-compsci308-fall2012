@@ -84,6 +84,7 @@ public class ProcessConnectionThread implements Runnable{
             AndroidButtonEvent b = (AndroidButtonEvent) androidEvent;
             myServer.notify(b);
             System.out.println( b.getEventCode());
+            System.out.println("called notify");
         }
 
     }

@@ -47,8 +47,6 @@ public class ControllerFactory {
 
     public static AndroidController createAndroidController() {
         // Create android controller
-        AndroidBluetoothServer bserver = new AndroidBluetoothServer(0);
-        bserver.startServer();
         return new AndroidController();
     }
 
