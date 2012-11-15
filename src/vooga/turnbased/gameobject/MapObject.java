@@ -5,14 +5,16 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import vooga.turnbased.gamecore.GameManager;
+
 public abstract class MapObject extends GameObject {
     private Point myLocation;
     private boolean myIsVisible;
     private boolean myIsMoving;
     private Image myImage;
     
-    public MapObject (int id, Point location, Image mapImage) {
-        super(id);
+    public MapObject (int id, GameManager.GameEvent event, Point location, Image mapImage) {
+        super(id, event);
         setLocation(location);
         setVisible(true);
         setMapImage(mapImage);

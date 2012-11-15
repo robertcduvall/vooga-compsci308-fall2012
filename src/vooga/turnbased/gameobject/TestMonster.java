@@ -3,6 +3,8 @@ package vooga.turnbased.gameobject;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
+import vooga.turnbased.gamecore.GameManager;
+
 /**
  * This is a test battle monster that will be used to see if the BattleMode functions.
  * Extends the abstract class BattleObject.
@@ -11,8 +13,8 @@ import java.awt.event.KeyEvent;
  */
 public class TestMonster extends BattleObject {
 
-    public TestMonster (int id, int defense, int attack, int health) {
-        super(id, defense, attack, health);
+    public TestMonster (int id, GameManager.GameEvent event, int defense, int attack, int health) {
+        super(id, event, defense, attack, health);
     }
 
     @Override

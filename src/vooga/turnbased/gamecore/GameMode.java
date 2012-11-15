@@ -13,14 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
+import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
 
 
-public abstract class GameMode extends Observable {
-
+//public abstract class GameMode extends Observable {
+public abstract class GameMode {
     private final GameManager myGameManager;
 
-    private ArrayList<MapObject> myObjects;
+    private ArrayList<GameObject> myObjects;
     
     /**
      * Constructor
@@ -28,11 +29,10 @@ public abstract class GameMode extends Observable {
      * @param gm The GameManager which receive information about how sprites
      *        interact
      */
-    public GameMode (GameManager gm) {
+    public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
-        //myGameManager.getModesSprites(MapObject.class);
-        myObjects = new ArrayList<MapObject>();
-        this.addObserver(myGameManager);
+        myObjects = new ArrayList<GameObject>(myGameManager.getModesSprites(modeObjectType));
+        //this.addObserver(myGameManager);
     }
 
     /**
@@ -40,26 +40,21 @@ public abstract class GameMode extends Observable {
      * 
      * @param event Event to be handled by the GameManager
      */
-    private void notifyGameManager (Object event) {
-        setChanged();
-        notifyObservers(event);
-    }
+//    private void notifyGameManager (Object event) {
+//        setChanged();
+//        notifyObservers(event);
+//    }
 
-    /**
-     * Test Test Test
-     * 
-     * @param args
-     */
-    public static void main (String[] args) {
-        // TODO Auto-generated method stub
-
-    }
+//    public static void main (String[] args) {
+//        // TODO Auto-generated method stub
+//
+//    }
 
     protected GameManager getGM () {
         return myGameManager;
     }
     
-    public List<MapObject> getObjects() {
+    public ArrayList<GameObject> getObjects() {
     	return myObjects;
     }
     /**
@@ -71,6 +66,8 @@ public abstract class GameMode extends Observable {
     public abstract void paint(Graphics g);
     
     public abstract void update ();
+    
+    public abstract void processGameEvents();
 
     public abstract void handleKeyPressed (KeyEvent e);
 

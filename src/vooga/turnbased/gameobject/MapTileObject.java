@@ -5,13 +5,15 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import vooga.turnbased.gamecore.GameManager;
+
 /**
  * This class is a bit stupid
  */
 public class MapTileObject extends MapObject {
 
-    public MapTileObject(int id, Point location, Image mapImage) {
-        super(id, location, mapImage);
+    public MapTileObject(int id, GameManager.GameEvent event, Point location, Image mapImage) {
+        super(id, event, location, mapImage);
     }
     
     @Override 

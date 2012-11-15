@@ -4,10 +4,12 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 
+import vooga.turnbased.gamecore.GameManager;
+
 public class MapItemObject extends MapObject{
 
-	public MapItemObject(int id, Point location, Image mapImage) {
-		super(id, location, mapImage);
+	public MapItemObject(int id, GameManager.GameEvent event, Point location, Image mapImage) {
+		super(id, event, location, mapImage);
 		
 	}
 

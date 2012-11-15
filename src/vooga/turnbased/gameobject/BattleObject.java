@@ -3,6 +3,8 @@ package vooga.turnbased.gameobject;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import vooga.turnbased.gamecore.GameManager;
+
 /**
  * Abstract class that is extended to create monsters/sprites in the BattleMode.
  * @author Michael Elgart
@@ -25,8 +27,8 @@ public abstract class BattleObject extends GameObject {
      * @param attack The amount of damage the sprite/monster does with each attack.
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      */
-    public BattleObject(int id, int defense, int attack, int health) {
-        super(id);
+    public BattleObject(int id, GameManager.GameEvent event, int defense, int attack, int health) {
+        super(id, event);
         setMyDefense(defense);
         setMyAttack(attack);
         setMyHealth(health);
@@ -95,7 +97,7 @@ public abstract class BattleObject extends GameObject {
      * @param attack The new value for attack.
      */
     public void setMyAttack (int attack) {
-        this.myAttack = attack;
+        myAttack = attack;
     }
 
     /**
@@ -111,7 +113,7 @@ public abstract class BattleObject extends GameObject {
      * @param health The new value for health.
      */
     public void setMyHealth (int health) {
-        this.myHealth = health;
+        myHealth = health;
     }
 
     /**
@@ -127,7 +129,7 @@ public abstract class BattleObject extends GameObject {
      * @param healthDiff amount to change health by.
      */
     public void changeHealth(int healthDiff) {
-        this.myHealth += healthDiff;
+        myHealth += healthDiff;
     }
 
 }
