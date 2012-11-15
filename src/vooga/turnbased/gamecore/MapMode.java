@@ -330,10 +330,10 @@ public class MapMode extends GameMode {
 		// right click
 		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
 			if (myPathFinder != null) {
-				
+				myPathFinder.stop();
 			}
-			Point target = new Point(e.getX() / myCurrentTileWidth,
-					e.getY() / myCurrentTileHeight);
+			Point target = new Point((e.getX() + myOrigin.x) / myCurrentTileWidth,
+					(e.getY() + myOrigin.y) / myCurrentTileHeight);
 			myPathFinder = new PathFinder(this, myPlayer, target, 
 					myBottomRightCorner);
 		}

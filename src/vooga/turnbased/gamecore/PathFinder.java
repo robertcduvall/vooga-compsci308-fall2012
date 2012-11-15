@@ -12,34 +12,51 @@ import java.util.PriorityQueue;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MovingMapObject;
 
+/**
+ * path finding for a MovingMapObject to go to a target position
+ * @author rex
+ *
+ */
 public class PathFinder implements Runnable {
 
-	private List<Point> myDirections;
+	private static final int ATTEMPT_INTERVAL = 30;
+	private List<Point> myPath;
 	private MapMode myMap;
 	private boolean[][] myVisited;
+	private boolean myCancelMovement;
 	private Point myStart;
 	private Point myEnd;
 	private Dimension mySize;
 	private Thread myMovementThread;
 	private MovingMapObject myMovingObject;
 
+	/**
+	 * constructor
+	 * @param map MapMode on which the path finding is applied
+	 * @param object MapObject to be moved
+	 * @param target target position
+	 * @param myBottomRightCorner bottom right corner of the entire map
+	 */
 	public PathFinder(MapMode map, MovingMapObject object, Point target,
 			Point myBottomRightCorner) {
 		myMap = map;
 		myMovingObject = object;
 		myStart = object.getLocation();
 		myEnd = target;
-		myDirections = new ArrayList<Point>();
+		myPath = new ArrayList<Point>();
 		mySize = new Dimension(myBottomRightCorner.x, myBottomRightCorner.y);
 		myVisited = new boolean[mySize.width][mySize.height];
+		myCancelMovement = false;
 		depthFirstSearch(myStart);
-		for (int i = 0; i < myDirections.size(); i++) {
-			System.out.println(myDirections.get(i));
-		}
 		myMovementThread = new Thread(this);
 		myMovementThread.start();
 	}
 
+	/**
+	 * depth first search using heuristics
+	 * @param current current position
+	 * @return if the path finding is successful
+	 */
 	public boolean depthFirstSearch(Point current) {
 		if (myVisited[current.x][current.y]) {
 			return false;
@@ -72,20 +89,32 @@ public class PathFinder implements Runnable {
 		}
 		while (!myOptions.isEmpty()) {
 			Point p = new Point(myOptions.poll());
-			myDirections.add(p);
+			myPath.add(p);
 			if (depthFirstSearch(p)) {
 				return true;
 			} else {
-				myDirections.remove(myDirections.size() - 1);
+				myPath.remove(myPath.size() - 1);
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * find distance between two points in grid system
+	 * @param a first point
+	 * @param b second point
+	 * @return distance in grid system
+	 */
 	private int distance(Point a, Point b) {
 		return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 	}
 
+	/**
+	 * check if a movement is possible, or will get out of boundaries
+	 * @param position original position of the object
+	 * @param direction direction it takes
+	 * @return if a movement is possible
+	 */
 	public boolean validateMove(Point position, Point direction) {
 		if ((position.x + direction.x >= mySize.width)
 				|| (position.x + direction.x < 0)) {
@@ -97,19 +126,35 @@ public class PathFinder implements Runnable {
 		}
 		return true;
 	}
+	
+	/**
+	 * stop the moving process
+	 */
+	public void stop() {
+		myCancelMovement = true;
+	}
 
+	/**
+	 * loop that moves the object
+	 */
 	@Override
 	public void run() {
-		Point previousPoint = myDirections.get(0);
+		Point previousPoint = myPath.get(0);
 		Point currentPoint;
-		for (int i = 1; i < myDirections.size(); i++) {
-			currentPoint = myDirections.get(i);
+		if (myPath.isEmpty()) {
+			return;
+		}
+		for (int i = 1; i < myPath.size(); i++) {
+			if (myCancelMovement) {
+				break;
+			}
+			currentPoint = myPath.get(i);
 			Point direction = new Point(currentPoint.x - previousPoint.x,
 					currentPoint.y - previousPoint.y);
 			previousPoint = currentPoint;
 			while (myMovingObject.isMoving()) {
 				try {
-					Thread.sleep(30);
+					Thread.sleep(ATTEMPT_INTERVAL);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
