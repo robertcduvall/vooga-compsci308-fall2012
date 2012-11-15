@@ -1,9 +1,6 @@
 package games.platformerdemo;
 
-import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
-import util.input.core.Controller;
-import util.input.core.KeyboardController;
 import vooga.platformer.core.PlatformerController;
 
 /**
@@ -18,9 +15,12 @@ public class Main {
         JFrame f = new JFrame("Demo Game");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController pc = new PlatformerController(new DemoLevelFactory(), new DemoInitializer());
-        KeyboardController testController = new KeyboardController(pc);
-        pc.setInputController(testController);
-        f.add(pc);
+        //pc.setTemporaryInputListener();
+        //TODO:Should use follow eventually
+        //KeyboardController testController = new KeyboardController(pc);
+        //pc.setInputController(testController);
+        f.getContentPane().add(pc);
+        f.addKeyListener(pc.setTemporaryInputListener());
         f.pack();
         f.setVisible(true);
     }

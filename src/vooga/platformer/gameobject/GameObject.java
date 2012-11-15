@@ -168,4 +168,5 @@ public abstract class GameObject {
     public Rectangle2D getShape() {
         return new Rectangle2D.Double(x, y, width, height);
     }
+    
 }

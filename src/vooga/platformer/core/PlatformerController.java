@@ -1,9 +1,17 @@
 package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
+import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.input.core.Controller;
 import util.input.core.KeyboardController;
@@ -12,7 +20,8 @@ import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 
-public class PlatformerController extends JPanel implements Runnable {
+@SuppressWarnings("serial")
+public class PlatformerController extends JComponent implements Runnable {
     private final int SLEEP_DELAY = 25;
 
     private Level myCurrentLevel;
@@ -21,6 +30,7 @@ public class PlatformerController extends JPanel implements Runnable {
     private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
     private KeyboardController myInputController;
+    private Player myPlayer;
     
     private Thread animator;
 
@@ -29,10 +39,10 @@ public class PlatformerController extends JPanel implements Runnable {
         myGameInitializer = gi;
         myInputController = null;
         
-       setupLevel(myGameInitializer.getFirstLevelName());
-        
+        setupLevel(myGameInitializer.getFirstLevelName());
+        myPlayer = myCurrentLevel.getPlayer();
         animator = new Thread(this);
-        animator.start();
+        animator.start();        
     }
 
     /**
@@ -98,5 +108,41 @@ public class PlatformerController extends JPanel implements Runnable {
             }
             beforeTime = System.currentTimeMillis();
         }
+    }
+    
+    /**
+     * This is used to test sample implemented game before registered with input team.
+     * should be //TODO: removed
+     */
+    public KeyListener setTemporaryInputListener(){
+        System.out.println("--");
+        KeyListener kl = new KeyAdapter() {
+            @Override
+            public void keyPressed (KeyEvent e) {
+                System.out.println("--");
+                if(e.getKeyCode()==KeyEvent.VK_LEFT){
+                    myPlayer.getMovingStragety().goLeft();
+                    
+                }
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                    myPlayer.getMovingStragety().goRight();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_UP){
+                    myPlayer.getMovingStragety().fly();
+                }
+            }
+
+            public void keyReleased (KeyEvent e) {
+                myPlayer.getMovingStragety().stop();
+            }
+        };
+        MouseMotionListener mml = new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                //not used so far
+                System.out.println("--");
+            }
+        };
+        return kl;
     }
 }
