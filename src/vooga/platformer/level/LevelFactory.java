@@ -6,11 +6,13 @@ import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import util.camera.Camera;
+import util.reflection.Reflection;
+import util.reflection.ReflectionException;
 import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.leveleditor.LevelFileReader;
 import vooga.platformer.leveleditor.Sprite;
+import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.util.camera.FollowingCamera;
 
 
@@ -49,8 +51,8 @@ public final class LevelFactory {
         for (Sprite s : levelSprites) {
             levelGameObjects.add(spriteToGameObject(s));
         }
-        // TODO Using FollowingCamera by default. Should be specified in level
-        // data or in method call
+        // TODO Using FollowingCamera by default. This is due to complications
+        // with differences in constructors between camera types.
         Camera followCam =
                 new FollowingCamera(DEFAULT_CAMERA_SIZE, new Rectangle(levelDimension.width,
                                                                        levelDimension.width),
