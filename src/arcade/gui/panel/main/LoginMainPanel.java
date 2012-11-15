@@ -30,6 +30,11 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     
     private static String LOGIN_ACTION = "login";
     private static String NEW_USER_ACTION = "newuser";
+
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JLabel wrongPassword;
+    private GridBagConstraints c;
     
     public LoginMainPanel (Arcade a) {
         super(a);
@@ -42,13 +47,14 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         
         myPanel.setBackground(Color.GREEN);
         myPanel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        myPanel = addLoginButton(myPanel, c);
-        myPanel = addNewUserButton(myPanel, c);
-        myPanel = addUserNameField(myPanel, c);
-        myPanel = addPasswordField(myPanel, c);
+        myPanel = addLoginButton(myPanel);
+        myPanel = addNewUserButton(myPanel);
+        myPanel = addUserNameField(myPanel);
+        myPanel = addPasswordField(myPanel);
+        myPanel = addWrongPasswordLabel(myPanel);
         
 
         System.out.println("LoginMainPanel");
@@ -56,7 +62,18 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
     
-    private ArcadePanel addLoginButton (ArcadePanel myPanel, GridBagConstraints c) {
+    private ArcadePanel addWrongPasswordLabel (ArcadePanel myPanel) {
+        wrongPassword = new JLabel("Wrong Username or Password.");
+        wrongPassword.setVisible(false);
+        //label.setLabelFor(passwordField);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 2;
+        c.gridy = 4;
+        myPanel.add(wrongPassword, c);
+        return myPanel;
+    }
+
+    private ArcadePanel addLoginButton (ArcadePanel myPanel) {
         JButton loginButton = new JButton("Login");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
@@ -70,7 +87,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
     
-    private ArcadePanel addNewUserButton (ArcadePanel myPanel, GridBagConstraints c) {
+    private ArcadePanel addNewUserButton (ArcadePanel myPanel) {
         JButton newUserButton = new JButton("New User");
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
@@ -84,15 +101,15 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
     
-    private ArcadePanel addUserNameField (ArcadePanel myPanel, GridBagConstraints c) {
-        JTextField userNameField = new JTextField(17);
+    private ArcadePanel addUserNameField (ArcadePanel myPanel) {
+        usernameField = new JTextField(17);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
         c.gridy = 1;
-        myPanel.add(userNameField, c);
+        myPanel.add(usernameField, c);
         
         JLabel label = new JLabel("Username: ");
-        label.setLabelFor(userNameField);
+        label.setLabelFor(usernameField);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
         c.gridy = 1;
@@ -101,8 +118,8 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
 
-    private ArcadePanel addPasswordField (ArcadePanel myPanel, GridBagConstraints c) {
-        JPasswordField passwordField = new JPasswordField(17);
+    private ArcadePanel addPasswordField (ArcadePanel myPanel) {
+        passwordField = new JPasswordField(17);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
         c.gridy = 3;
@@ -139,8 +156,13 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
 
     private void login () {
         System.out.println("Attempt Login");
-        // TODO Auto-generated method stub
-        
+        String username = usernameField.getText();
+        char[] password = passwordField.getPassword();
+        if (this.getArcade().getUserManager().loginUser(username, password)) {
+            this.getArcade().replacePanel("");
+        }
+        else {
+            wrongPassword.setVisible(true);
+        }
     }
-
 }
