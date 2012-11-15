@@ -5,10 +5,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import vooga.turnbased.gamecore.GameManager;
+
 public class MapPlayerObject extends MovingMapObject {
 
-    public MapPlayerObject (int id, Point coord, Image mapImage) {
-        super(id, coord, mapImage);
+    public MapPlayerObject (int id, GameManager.GameEvent event, Point coord, Image mapImage) {
+        super(id, event, coord, mapImage);
     }
 
     @Override

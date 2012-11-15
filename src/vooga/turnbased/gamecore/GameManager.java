@@ -20,11 +20,13 @@ import javax.swing.JComponent;
 
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.sprites.Sprite;
 
-public class GameManager implements Observer {
+//public class GameManager implements Observer {
+public class GameManager {
 
 	private final GamePane myGamePane;
 	private GameMode myCurrentGameMode;
@@ -46,12 +48,21 @@ public class GameManager implements Observer {
 		// myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
 		mySprites = new HashMap<Integer, Sprite>();
 		generateHardcodedSprites();
-		myCurrentGameMode = new MapMode(this);
+		myCurrentGameMode = new MapMode(this, MapObject.class);
 		// myCurrentGameMode.initializeMap();
 	}
 
-	private void generateHardcodedSprites() {
+	private void generateHardcodedSprites() { // factory will do this job
+												// eventually...
 		Sprite s = new Sprite();
+		s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 1, 3));
+
+		mySprites.put(s.getID(), s);
+
+		s = new Sprite();
+		s.addGameObject(new TestMonster(1, GameEvent.NO_ACTION, 1, 1, 3));
+
+		mySprites.put(s.getID(), s);
 
 	}
 
@@ -81,24 +92,21 @@ public class GameManager implements Observer {
 		myCurrentGameMode.paint(g);
 	}
 
-	/**
-	 * Creates a new Battle by constructing a new BattleMode. Currently the
-	 * monsters used are hardcoded.
-	 */
-	public void newBattle() {
-		// changes these from being hardcoded later.
-		ArrayList<BattleObject> team1 = new ArrayList<BattleObject>();
-		BattleObject playerChar = new TestMonster(0, 1, 1, 3);
-		team1.add(playerChar);
-		ArrayList<BattleObject> team2 = new ArrayList<BattleObject>();
-		BattleObject otherChar = new TestMonster(1, 1, 1, 3);
-		team2.add(otherChar);
-		new BattleMode(this, team1, team2);
+	public void handleEvent(GameEvent eventName, ArrayList<Integer> myInvolvedIDs) {
+		switch (eventName) {
+		case NO_ACTION:
+			break;
+		case MAP_COLLISION:
+			if(myInvolvedIDs.size() >= 2) {
+				new BattleMode(this, BattleObject.class);
+			}
+			break;
+		}
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-	}
+	// @Override
+	// public void update(Observable arg0, Object arg1) {
+	// }
 
 	public void handleKeyPressed(KeyEvent e) {
 		myCurrentGameMode.handleKeyPressed(e);
@@ -118,5 +126,9 @@ public class GameManager implements Observer {
 
 	public int getDelayTime() {
 		return myGamePane.getDelayTime();
+	}
+
+	public enum GameEvent {
+		MAP_COLLISION, NO_ACTION
 	}
 }

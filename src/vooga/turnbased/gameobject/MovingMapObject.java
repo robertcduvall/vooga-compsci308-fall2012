@@ -12,6 +12,8 @@ import java.awt.geom.Point2D.Double;
 
 import javax.swing.ImageIcon;
 
+import vooga.turnbased.gamecore.GameManager;
+
 /**
  * Map objects that can moves smoothly, but nevertheless restricted to tiles
  * @author rex
@@ -28,8 +30,8 @@ public class MovingMapObject extends MapObject{
 	private Point myDirection;
 	private Point myPreviousLocation;
 	
-    public MovingMapObject (int id, Point coord, Image mapImage) {
-        super(id, coord, mapImage);
+    public MovingMapObject (int id, GameManager.GameEvent event, Point coord, Image mapImage) {
+        super(id, event, coord, mapImage);
         //need to be read in
         myMovementTimePerTile = 900;
         myXOriginInTile = 0;
