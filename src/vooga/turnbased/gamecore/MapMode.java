@@ -77,6 +77,8 @@ public class MapMode extends GameMode {
 
 	@Override
 	public void paint(Graphics g) {
+		int playerX = 0;
+		int playerY = 0;
 		// foreach sprite: s.paint(g);
 		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
 			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
@@ -92,10 +94,16 @@ public class MapMode extends GameMode {
 					for (MapObject s : spritesOnTile) {
 						s.paint(g, xOffset, yOffset, myCurrentTileWidth,
 								myCurrentTileHeight);
+						if (s.equals(myPlayer)) {
+							playerX = xOffset;
+							playerY = yOffset;
+						}
 					}
 				}
 			}
 		}
+		myPlayer.paint(g, playerX, playerY, myCurrentTileWidth,
+				myCurrentTileHeight);
 	}
 
 	public void updateTileInfo() {

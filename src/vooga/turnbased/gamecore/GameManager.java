@@ -13,9 +13,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import vooga.turnbased.gamecreation.Factory;
 import vooga.turnbased.gameobject.BattleObject;
-import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
 

@@ -52,9 +52,6 @@ public class GamePane extends DisplayPane implements Runnable {
     @Override
     public void update(Graphics g) {
     	myGameManager.update();
-    	Image offScreenImage = createImage(getSize().width, getSize().height);
-    	Graphics offScreenGraphics = offScreenImage.getGraphics();
-    	g.drawImage(offScreenImage, 0, 0, null);
     }
     
     /**
@@ -62,7 +59,10 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     //@Override
     public void paint(Graphics g) {
-    	myGameManager.paint(g);
+    	Image nextFrameImage = createImage(getSize().width, getSize().height);
+    	Graphics nextFrameGraphics = nextFrameImage.getGraphics();
+    	myGameManager.paint(nextFrameGraphics);
+    	g.drawImage(nextFrameImage, 0, 0, null);
     }
     
     /**
