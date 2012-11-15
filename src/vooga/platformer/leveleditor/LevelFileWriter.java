@@ -51,6 +51,7 @@ public final class LevelFileWriter {
      * so that it can be reconstructed by a level factory.
      * 
      * @param filePath where the XML should be saved
+     * @param levelType specifies which Level subclass to use
      * @param levelID name of the level
      * @param width overall width of the level in pixels
      * @param height overall height of the level in pixels
@@ -60,8 +61,9 @@ public final class LevelFileWriter {
      * @return an integer constant representing whether the file was written
      *         successfully or not
      */
-    public static int writeLevel (String filePath, String levelID, int width, int height,
-                                  String backgroundImage, Collection<Sprite> levelObjects) {
+    public static int writeLevel (String filePath, String levelType, String levelID, int width,
+                                  int height, String backgroundImage,
+                                  Collection<Sprite> levelObjects) {
         try {
             DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -71,6 +73,7 @@ public final class LevelFileWriter {
             Element level = doc.createElement("level");
             doc.appendChild(level);
 
+            level.setAttribute("type", levelType);
             appendChildTextNode(doc, level, "id", levelID);
             appendChildTextNode(doc, level, "width", String.valueOf(width));
             appendChildTextNode(doc, level, "height", String.valueOf(height));

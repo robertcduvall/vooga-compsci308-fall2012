@@ -1,4 +1,4 @@
-<level>
+<level type="someLevelType">
 <id>Level Name</id>
 <width>20</width>
 <height>20</height>

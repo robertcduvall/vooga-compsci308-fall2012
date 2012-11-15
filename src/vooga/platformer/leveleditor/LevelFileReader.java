@@ -50,6 +50,16 @@ public class LevelFileReader {
     }
 
     /**
+     * Gets the level's type. This specifies what subclass of Level to use to
+     * build the Level in LevelFactory.
+     * 
+     * @return the level's type
+     */
+    public String getLevelType () {
+        return myRoot.getAttribute("type");
+    }
+
+    /**
      * Gets the name of the level.
      * 
      * @return name of the level as a String
@@ -138,7 +148,8 @@ public class LevelFileReader {
                     if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element strategyElement = (Element) strategyNode;
                         Map<String, String> strategyMap = extractMapFromXML(strategyElement);
-                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"), strategyMap);
+                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"),
+                                                      strategyMap);
                     }
                 }
             }
