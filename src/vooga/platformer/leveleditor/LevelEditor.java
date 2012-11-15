@@ -39,8 +39,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import vooga.platformer.gui.menu.GameButton;
-import vooga.platformer.gui.menu.GameListener;
+import util.ingamemenu.GameButton;
+import util.ingamemenu.GameListener;
 
 /**
  * Frame containing all the elements needed to build and save a level

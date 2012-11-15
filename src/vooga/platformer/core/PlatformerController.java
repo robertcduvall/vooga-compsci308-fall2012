@@ -2,6 +2,7 @@ package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
 import games.platformerdemo.Player;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
@@ -21,7 +22,7 @@ import vooga.platformer.util.enums.PlayState;
 
 
 @SuppressWarnings("serial")
-public class PlatformerController extends JComponent implements Runnable {
+public class PlatformerController extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
 
     private Level myCurrentLevel;
@@ -77,6 +78,9 @@ public class PlatformerController extends JComponent implements Runnable {
     @Override
     public void paint(Graphics pen) {
         myCurrentLevel.paint(pen);
+        for(Component c: getComponents()){
+            c.paint(pen);
+        }
     }
 
     /**
