@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 
 public class MapPlayerObject extends MovingMapObject {
 
-    public MapPlayerObject (int id, Point coord, Image mapImage, Rectangle camera) {
-        super(id, coord, mapImage, camera);
+    public MapPlayerObject (int id, Point coord, Image mapImage) {
+        super(id, coord, mapImage);
     }
 
     @Override

@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 
 public class MapTileObject extends MapObject {
 
-    public MapTileObject(int id, Point location, Image mapImage, Rectangle camera) {
-        super(id, location, mapImage, camera);
+    public MapTileObject(int id, Point location, Image mapImage) {
+        super(id, location, mapImage);
     }
     
     @Override 

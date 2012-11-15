@@ -23,8 +23,8 @@ public class MovingMapObject extends MapObject{
 	private int myYOriginInTile;
 	private Point myDirection;
 	
-    public MovingMapObject (int id, Point coord, Image mapImage, Rectangle camera) {
-        super(id, coord, mapImage, camera);
+    public MovingMapObject (int id, Point coord, Image mapImage) {
+        super(id, coord, mapImage);
         ourSmoothMovingOn = true;
         myMovementTimePerTile = 900;
         myXOriginInTile = 0;

@@ -39,9 +39,11 @@ public class MapMode extends GameMode {
 
     public MapMode (GameManager gm) {
         super(gm);
-        myNumDisplayRows = Integer.parseInt(GameWindow.importString("CameraHeight"));
-        myNumDisplayCols = Integer.parseInt(GameWindow.importString("CameraWidth"));
-        myBottomRightCorner = new Point (20, 30);
+        myNumDisplayRows = Integer.parseInt(GameWindow
+                .importString("CameraHeight"));
+        myNumDisplayCols = Integer.parseInt(GameWindow
+                .importString("CameraWidth"));
+        myBottomRightCorner = new Point(20, 30);
         addHardcodedSprites();
     }
 
@@ -51,11 +53,15 @@ public class MapMode extends GameMode {
         for (int i = 0; i < myBottomRightCorner.x; i++) {
             for (int j = 0; j < myBottomRightCorner.y; j++) {
                 Point p = new Point(i, j);
-                addSprite(p, new MapTileObject(ID, p, GameWindow.importImage("GrassImage"), myCurrentCamera));
+                addSprite(
+                        p,
+                        new MapTileObject(ID, p, GameWindow
+                                .importImage("GrassImage")));
             }
         }
         Point center = new Point(7, 5);
-        myPlayer = new MapPlayerObject(ID, center, GameWindow.importImage("PlayerImage"), myCurrentCamera);
+        myPlayer = new MapPlayerObject(ID, center,
+                GameWindow.importImage("PlayerImage"));
         addSprite(center, myPlayer);
     }
 
@@ -69,54 +75,62 @@ public class MapMode extends GameMode {
             mySprites.put(p, spriteList);
         }
     }
-    
-	@Override
-	public void update() {
-    	updateTileInfo();
-    	updateCameraPosition();		
-	}
+
+    @Override
+    public void update () {
+        updateTileInfo();
+        updateCameraPosition();
+    }
 
     @Override
     public void paint (Graphics g) {
-//    	foreach sprite: s.paint(g);
+        // foreach sprite: s.paint(g);
         for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
             for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
                 List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
-                int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth + myOrigin.x;
-                int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight + myOrigin.y;
+                int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth
+                        + myOrigin.x;
+                int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight
+                        + myOrigin.y;
                 Image background = GameWindow.importImage("TileBackground");
-                g.drawImage(background, xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
+                g.drawImage(background, xOffset, yOffset, myCurrentTileWidth,
+                        myCurrentTileHeight, null);
                 if (spritesOnTile != null) {
                     for (MapObject s : spritesOnTile) {
-                        //g.drawImage(s.getMapImage(), xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight, null);
-                        s.paint(g, xOffset, yOffset, myCurrentTileWidth, myCurrentTileHeight);
+                        // g.drawImage(s.getMapImage(), xOffset, yOffset,
+                        // myCurrentTileWidth, myCurrentTileHeight, null);
+                        s.paint(g, xOffset, yOffset, myCurrentTileWidth,
+                                myCurrentTileHeight);
                     }
                 }
             }
         }
     }
-    
+
     public void updateTileInfo () {
-        myCurrentTileWidth = getGM().getPaneDimension().width / myNumDisplayCols;
-        myCurrentTileHeight = getGM().getPaneDimension().height / myNumDisplayRows;
-        myOrigin = new Point (-myCurrentTileWidth, -myCurrentTileHeight);
+        myCurrentTileWidth = getGM().getPaneDimension().width
+                / myNumDisplayCols;
+        myCurrentTileHeight = getGM().getPaneDimension().height
+                / myNumDisplayRows;
+        myOrigin = new Point(-myCurrentTileWidth, -myCurrentTileHeight);
     }
-    
-    private void updateCameraPosition() {
-    	Point playerCoord = myPlayer.getLocation();
-        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1) / 2 - 1,
-                playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
+
+    private void updateCameraPosition () {
+        Point playerCoord = myPlayer.getLocation();
+        myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1)
+                / 2 - 1, playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
                 myNumDisplayCols + 1, myNumDisplayRows + 1);
     }
 
     private List<MapObject> getSpritesOnTile (int i, int j) {
         return mySprites.get(new Point(i, j));
     }
-    
-    public void moveSprite(MapObject s, Point dest) {
-        if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0 && dest.y < myBottomRightCorner.y) {
+
+    public void moveSprite (MapObject s, Point dest) {
+        if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
+                && dest.y < myBottomRightCorner.y) {
             Point oldCoord = s.getLocation();
-            
+
             if (mySprites.get(oldCoord).contains(s)) {
                 mySprites.get(oldCoord).remove(s);
                 addSprite(dest, s);
@@ -127,12 +141,10 @@ public class MapMode extends GameMode {
 
     @Override
     public void handleKeyPressed (KeyEvent e) {
-        //foreach sprite: s.handleKeyPressed(e); s.update();
+        // foreach sprite: s.handleKeyPressed(e); s.update();
         int keyCode = e.getKeyCode();
-        if (myPlayer.isMoving()) {
-        	return;
-        }
-        switch(keyCode) {
+        if (myPlayer.isMoving()) { return; }
+        switch (keyCode) {
             case KeyEvent.VK_LEFT:
                 moveSprite(myPlayer, myPlayer.getLocation(LEFT));
                 myPlayer.setDirection(LEFT);

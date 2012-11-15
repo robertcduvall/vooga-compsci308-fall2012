@@ -10,14 +10,12 @@ public abstract class MapObject extends GameObject {
     private boolean myIsVisible;
     private boolean myIsMoving;
     private Image myImage;
-    private Rectangle myCamera;
     
-    public MapObject (int id, Point location, Image mapImage, Rectangle camera) {
+    public MapObject (int id, Point location, Image mapImage) {
         super(id);
         setLocation(location);
         setVisible(true);
         setMapImage(mapImage);
-        myCamera = camera;
     }
 
     public void setLocation (Point location) {
