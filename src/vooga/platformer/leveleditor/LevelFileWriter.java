@@ -83,9 +83,6 @@ public final class LevelFileWriter {
             FileWriter writer = new FileWriter(filePath);
             writer.write(xmlString);
             writer.close();
-
-            // print xml to console
-            System.out.println("What was written in " + filePath + "\n\n" + xmlString);
         }
         catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -117,7 +114,16 @@ public final class LevelFileWriter {
             if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
                 Element strategiesElement = doc.createElement("strategies");
                 for (Map<String, String> strategy : s.getUpdateStrategies()) {
-                    appendMapContents(doc, strategiesElement, "strategy", strategy);
+
+                    String strategyType = "";
+                    if (strategy.containsKey("type")) {
+                        strategyType = strategy.get("type");
+                        strategy.remove("type");
+                    }
+
+                    Element strategyElement = makeElementFromMap(doc, "strategy", strategy);
+                    strategyElement.setAttribute("type", strategyType);
+                    strategiesElement.appendChild(strategyElement);
                 }
                 spriteElement.appendChild(strategiesElement);
             }
@@ -132,11 +138,17 @@ public final class LevelFileWriter {
 
     private static void appendMapContents (Document doc, Element parentElement,
                                            String childElementName, Map<String, String> map) {
-        Element strategyElement = doc.createElement(childElementName);
+        Element childElement = makeElementFromMap(doc, childElementName, map);
+        parentElement.appendChild(childElement);
+    }
+
+    private static Element makeElementFromMap (Document doc, String childElementName,
+                                               Map<String, String> map) {
+        Element childElement = doc.createElement(childElementName);
         for (String param : map.keySet()) {
-            appendChildTextNode(doc, strategyElement, param, map.get(param));
+            appendChildTextNode(doc, childElement, param, map.get(param));
         }
-        parentElement.appendChild(strategyElement);
+        return childElement;
     }
 
     private static String getXMLAsString (Document doc) throws TransformerException {

@@ -45,11 +45,10 @@ public class LevelFileIOTest {
 
     @Before
     public void setUp () throws Exception {
-        strategy.put(STRATEGY_TYPE_TAG, STRATEGY_TYPE_VALUE);
         strategy.put(STRATEGY_PARAM_TAG, STRATEGY_PARAM_VALUE);
 
         sprite = new Sprite(TYPE, X_POS, Y_POS, SPRITE_WIDTH, SPRITE_HEIGHT, TEST_IMAGE);
-        sprite.addUpdateStrategy(strategy);
+        sprite.addUpdateStrategy(STRATEGY_TYPE_VALUE, strategy);
         sprite.addAttribute(SPRITE_ATTR_TAG, SPRITE_ATTR_VALUE);
         sprites.add(sprite);
         LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
