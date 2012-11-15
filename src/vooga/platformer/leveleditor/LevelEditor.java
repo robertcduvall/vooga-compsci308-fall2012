@@ -46,8 +46,8 @@ import vooga.platformer.gui.menu.GameListener;
  * @author Sam Rang
  *
  */
+@SuppressWarnings("serial")
 public class LevelEditor extends JFrame{
-    private static final long serialVersionUID = 1154878631980426338L;
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> mySpriteTypes;
@@ -80,13 +80,10 @@ public class LevelEditor extends JFrame{
 
     private void editLoop () {
         while (myGameIsRunning) {
-            update();
             repaint();
         }
     }
-    private void update() {
-        myBoard.update();
-    }
+
     private void frameBuild() {
         myContainer = this;
         setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -125,9 +122,18 @@ public class LevelEditor extends JFrame{
         myBoard = board;
         JPanel panel = new JPanel() {
             @Override 
-            public void paintComponent(Graphics pen) {
-                myBoard.paint(pen);
-                paintComponents(pen);
+            public void paint(Graphics g) {
+                g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
+                super.paintComponent(g);
+                myBoard.paint(g);
+                for (Component c : getComponents()) {
+                    if (c != myBoard) {
+                        c.paint(g);
+                    }
+                }
+//                System.out.println("boardPaint");
+                super.paintComponents(g);
+
             }
         };
         panel.setLayout(new BorderLayout());
@@ -153,6 +159,11 @@ public class LevelEditor extends JFrame{
         panel.add(subpanel, BorderLayout.CENTER);
         panel.setOpaque(false);
         myViewPane.add(panel, BorderLayout.WEST);
+    }
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        myBoard.update();
     }
 
     protected void createPopupMenu(final Component comp, final int x,
@@ -207,7 +218,6 @@ public class LevelEditor extends JFrame{
                 newLevel();
             }
         });
-//        spriteMenu.addMouseListener(myMouseListener);
         bar.add(fileMenu);
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);
@@ -226,12 +236,12 @@ public class LevelEditor extends JFrame{
         List<String> list = new ArrayList<String>();
         list.add("Yoshi");
         list.add("Pink Yoshi"); // list.add("Yoshi Egg");
-                                // list.add("Flying Yoshi");
+        // list.add("Flying Yoshi");
         mySpriteTypes.put("Yoshi", list);
         list = new ArrayList<String>();
         list.add("Mario"); // list.add("Fireflower Mario");
-                           // list.add("Mario on Yoshi");
-                           // list.add("Baby Mario");
+        // list.add("Mario on Yoshi");
+        // list.add("Baby Mario");
         mySpriteTypes.put("Mario", list);
         list = new ArrayList<String>();
         // list.add("Squished Goomba"); list.add("Giant Goomba");

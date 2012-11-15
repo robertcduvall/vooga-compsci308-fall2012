@@ -1,6 +1,8 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.File;
@@ -88,8 +90,12 @@ public class Sprite {
      * @param g Graphics of a Component, Image, or Canvas
      */
     public void paint (Graphics g) {
-        g.drawImage(getImage(myImagePath), myX, myY, myX + myWidth, myY + myHeight, 0, 0, myWidth,
-                    myHeight, null);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 
+                0, 0, myWidth, myHeight, null);
+        g2d.setColor(Color.WHITE);
+//        g2d.drawString("Here I am", myX, myY);
+//        System.out.println(this);
     }
 
     /**
