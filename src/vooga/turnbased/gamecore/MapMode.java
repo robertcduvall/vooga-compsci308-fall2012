@@ -39,6 +39,7 @@ public class MapMode extends GameMode {
 	private int myCurrentTileWidth;
 	private int myCurrentTileHeight;
 	private Rectangle myCurrentCamera;
+	private PathFinder myPathFinder;
 
 	/**
 	 * Constructor of MapMode
@@ -328,7 +329,13 @@ public class MapMode extends GameMode {
 	public void handleMouseClicked(MouseEvent e) {
 		// right click
 		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-			new PathFinder(mySprites, myPlayer.getLocation(), new Point(0, 0), myBottomRightCorner);
+			if (myPathFinder != null) {
+				
+			}
+			Point target = new Point(e.getX() / myCurrentTileWidth,
+					e.getY() / myCurrentTileHeight);
+			myPathFinder = new PathFinder(this, myPlayer, target, 
+					myBottomRightCorner);
 		}
 	}
 }
