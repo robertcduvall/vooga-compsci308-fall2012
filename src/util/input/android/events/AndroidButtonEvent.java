@@ -10,7 +10,7 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
     
     /**
      * 
-     * A data wrapper for the components found on an Android playstaiton controller.
+     * A data wrapper for the components found on an Android playstation controller.
      *
      */
     public static final class Playstation{
