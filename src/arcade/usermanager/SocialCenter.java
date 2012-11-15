@@ -2,7 +2,10 @@ package arcade.usermanager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import arcade.utility.FileOperation;
 
 
 /**
@@ -17,46 +20,66 @@ import java.util.List;
 
 public class SocialCenter {
     private User myCurrentUser;
-    private List<String> availableUserName;
-    private List<User> myAllUser;
-    private final String myUserFilePath="src/arcade/database/";
+    private static SocialCenter mySocialCenter;
+    private Map<String,User> myAllUser;
+    private final String myUserBasicFilePath="src/arcade/database/user";
+    private final String myUserMessageFilePath="src/arcade/database/userMessage";
+    private final String myUserGameFilePath="src/arcade/database/userGame";
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
+    private final String successString="Successful";
+    
+    
+    public static  SocialCenter getInstance()
+    {
+            if (mySocialCenter == null)
+                    mySocialCenter = new SocialCenter();
+
+            return mySocialCenter;
+    }
     
 
     /*
      * initiate user list
      */
-    public void initiateUser () {
+    public SocialCenter () {
         myXMLReader=new UserXMLReader();
         myXMLWriter=new UserXMLWriter();
         
-        availableUserName=new ArrayList<String>();
-        myAllUser=new ArrayList<User>();
+       // availableUserName=new ArrayList<String>();
+        myAllUser=new HashMap<String,User>();
         
-        File folder = new File(myUserFilePath);
+        File folder = new File(myUserBasicFilePath);
         File[] listOfFiles = folder.listFiles();
 
-        for (int i = 0; i < listOfFiles.length; i++) {
+        for (int i = 0; i < listOfFiles.length; i++) { 
         if (listOfFiles[i].isFile()) {
-        availableUserName.add(listOfFiles[i].getName());
-      }
+            String name=listOfFiles[i].getName();
+            User newUser= myXMLReader.initiateUser(name);//user reader to do
+            myAllUser.put(name,newUser);
         
-        for(String name:availableUserName){
-            User newUser= myXMLReader.initiateUser(myUserFilePath+name+".xml");
-            myAllUser.add(newUser);
-        }
     }
+        }
         
 
     }
     
-    private void addNewUser(String userName, String password, String picture){
+    private  User addNewUser(String userName, String password, String picture){
         //write an xml file
         UserXMLWriter.makeUserXML(userName, password, picture);
-        availableUserName.add(userName);
-        User newUser= myXMLReader.initiateUser(myUserFilePath+userName+".xml");
-        myAllUser.add(newUser);
+        //make new user class
+        User newUser= myXMLReader.initiateUser(userName);
+        myAllUser.put(userName,newUser);
+        return newUser;
+       
+        
+       
+    }
+    
+    private String validateUser(String userName, String password){
+        if(!myAllUser.containsKey(userName)) return "Such user does not exist";
+        if(!myAllUser.get(userName).getPassword().equals(password)) return "Password is incorrect";
+        return successString;
         
     }
     
@@ -64,32 +87,49 @@ public class SocialCenter {
     
 
     /*
+     * 
      * return log on status
      */
-    public String logOnUser (String username, String password) {
+    public String logOnUser (String userName, String password) {
+        String status=validateUser(userName,password);
+        if(!status.equals(successString)) return status;
         //set current user
-        return null;
+        myCurrentUser=myAllUser.get(userName);
+        
+       
+        return successString;
     }
 
     /*
      * return log on status
      */
-    public String registerUser (String username, String password, String picture) {
-      //write file
-        //initiate class
-        //add the the available list
-        //set current user
-        return null;
+    public String registerUser (String userName, String password, String picture) {
+        //check validity
+        if(myAllUser.containsKey(userName)) return "This user already exists";
+        
+        
+      //valid registration
+        addNewUser(userName,password,picture);
+        myCurrentUser=myAllUser.get(userName);
+       
+        return successString;
     }
 
     /*
      * return operation status
      */
-    public String deleteUser (String username, String password) {
-        //delete from file
-        //delete from available list
-        //set current user to null
-        return null;
+    public String deleteUser (String userName, String password) {
+      //check validity
+        String status=validateUser(userName,password);
+        if(!status.equals(successString)) return status;
+        
+        
+        //valid file
+        FileOperation.deleteFile(myUserBasicFilePath+userName+".xml");
+        FileOperation.deleteFile(myUserMessageFilePath+userName+".xml");
+        FileOperation.deleteFile(myUserGameFilePath+userName+".xml");
+        myAllUser.remove(userName);
+        return successString;
     }
 
     /*

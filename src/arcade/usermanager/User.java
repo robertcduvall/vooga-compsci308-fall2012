@@ -8,11 +8,8 @@ import java.util.List;
  * Represents a User of the arcade.
  * 
  * @author Howard
-<<<<<<< HEAD
- *         modified by Difan Zhao
-=======
- *         modified by Difan Zhao, Jei Min Yoo
->>>>>>> master
+        modified by Difan Zhao, Jei Min Yoo
+
  * 
  */
 public class User {
@@ -38,8 +35,10 @@ public class User {
         myMessages = messages;
         myGameData = gameData;
     }
-
-    public String getName() {
+    protected String getPassword(){
+        return myPicture;
+    }
+    protected String getName() {
         return myName;
     }
 
