@@ -54,7 +54,6 @@ public class GamePane extends DisplayPane implements Runnable {
     	myGameManager.update();
     	Image offScreenImage = createImage(getSize().width, getSize().height);
     	Graphics offScreenGraphics = offScreenImage.getGraphics();
-    	paint(offScreenGraphics);
     	g.drawImage(offScreenImage, 0, 0, null);
     }
     

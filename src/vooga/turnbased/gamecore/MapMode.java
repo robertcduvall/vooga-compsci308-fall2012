@@ -77,8 +77,6 @@ public class MapMode extends GameMode {
 
 	@Override
 	public void paint(Graphics g) {
-		//updateTileInfo();
-		//updateCameraPosition();
 		// foreach sprite: s.paint(g);
 		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
 			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
@@ -109,7 +107,7 @@ public class MapMode extends GameMode {
 	}
 
 	private void updateCameraPosition() {
-		Point playerCoord = myPlayer.getLocation();
+		Point playerCoord = myPlayer.getPreviousLocation();
 		myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1)
 				/ 2 - 1, playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
 				myNumDisplayCols + 2, myNumDisplayRows + 2);

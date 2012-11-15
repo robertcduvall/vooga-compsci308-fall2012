@@ -36,20 +36,25 @@ public class MovingMapObject extends MapObject{
     }
     
     public Point calcScreenDisplacement(int tileWidth, int tileHeight, int delayTime) {
-    	myXOriginInTile = (int)(-tileWidth * myXProportion);
-    	myYOriginInTile = (int)(-tileHeight * myYProportion);
-    	return new Point(myXOriginInTile, myYOriginInTile);
+    	myXOriginInTile = (int)(tileWidth * myXProportion);
+    	myYOriginInTile = (int)(tileHeight * myYProportion);
+    	return new Point(-myXOriginInTile, -myYOriginInTile);
     }
 
     @Override
     public void update(int delayTime) {
-    	myTimePassed += delayTime;
+    	if (isMoving()) {
+    		myTimePassed += delayTime;
+    	}
     	myXProportion = myDirection.x * ((double)myTimePassed / myMovementTimePerTile);
     	myYProportion = myDirection.y * ((double)myTimePassed / myMovementTimePerTile);
-    	if (myTimePassed == myMovementTimePerTile) {
+    	if (myTimePassed == myMovementTimePerTile) { //stop movements
     		setMoving(false);
     		myTimePassed = 0;
+    		myXOriginInTile = 0;
+    		myYOriginInTile = 0;
     		myDirection = new Point(0, 0);
+    		myPreviousLocation = getLocation();
     	}
     }
     
@@ -70,12 +75,21 @@ public class MovingMapObject extends MapObject{
     
     @Override
     public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
-    	g.drawImage(getMapImage(), xOffset - myXOriginInTile, yOffset - myYOriginInTile, width, height, null);
+    	g.drawImage(getMapImage(), xOffset - myDirection.x * width + myXOriginInTile,
+    			yOffset - myDirection.y * height + myYOriginInTile, width, height, null);
     }
     
     @Override
     public void setLocation(Point p) {
     	myPreviousLocation = getLocation();
     	super.setLocation(p);
+    }
+    
+    /**
+     * only for painting this MovingMapObject at the centre
+     * @return previous location before the most recent movement
+     */
+    public Point getPreviousLocation() {
+    	return myPreviousLocation;
     }
 }
