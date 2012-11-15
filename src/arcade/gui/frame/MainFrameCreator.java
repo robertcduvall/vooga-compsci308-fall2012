@@ -20,8 +20,8 @@ import arcade.gui.panel.ArcadePanel;
 public class MainFrameCreator {
 
     private static final String ARCADE_NAME = "CS 308 Arcade";
-    private static final int FRAME_HEIGHT = 500;
-    private static final int FRAME_WIDTH = 800;
+    private static final int FRAME_HEIGHT = 600;
+    private static final int FRAME_WIDTH = 900;
     private static final boolean FRAME_RESIZABLE = true;
 
     private Arcade myArcade;
@@ -50,7 +50,7 @@ public class MainFrameCreator {
 
         // set size
         myFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        myFrame.setMaximumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        myFrame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         myFrame.setResizable(FRAME_RESIZABLE);
 
         // add myContentPanel

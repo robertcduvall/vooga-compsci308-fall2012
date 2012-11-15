@@ -25,8 +25,8 @@ public class OnButton {
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_WIDTH = 500;
 
-    private static final int BUTTON_HEIGHT = 310;
-    private static final int BUTTON_WIDTH = 310;
+    private static final int BUTTON_HEIGHT = 190;
+    private static final int BUTTON_WIDTH = 190;
 
     /**
      * This code starts it all!

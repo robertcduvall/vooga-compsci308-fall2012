@@ -113,7 +113,7 @@ public class Arcade {
         return myUserManager;
     }
 
-    public void setVariable (String varName, Serializable var) {
+    public void saveVariable (String varName, Serializable var) {
         mySharedVariables.put(varName, var);
     }
 
