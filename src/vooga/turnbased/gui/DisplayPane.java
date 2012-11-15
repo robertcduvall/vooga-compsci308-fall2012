@@ -30,4 +30,7 @@ public abstract class DisplayPane extends JPanel implements KeyListener {
             }
         });
     }
+    
+    public void initialize() {
+    }
 }

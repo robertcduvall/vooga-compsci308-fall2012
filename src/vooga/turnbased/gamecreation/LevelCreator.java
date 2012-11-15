@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.util.List;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import util.xml.XmlParser;
 import vooga.turnbased.sprites.Sprite;
 
 /**
@@ -17,6 +20,7 @@ import vooga.turnbased.sprites.Sprite;
 public class LevelCreator {
 
     private XmlParser myXmlParser;
+    private Element myDocumentElement;
 
     /**
      *
@@ -26,22 +30,29 @@ public class LevelCreator {
     public LevelCreator (File file) {
         myXmlParser = new XmlParser(file);
         validateXml();
+        myDocumentElement = myXmlParser.getDocumentElement();
     }
 
     /**
      *
-     * @return
+     * @return The Dimension of the Level
      */
     public Dimension parseDimension () {
-        return null;
+        NodeList dimensionList = myXmlParser.getElementsByName(
+                myDocumentElement, "dimension");
+        Element dimension = (Element) dimensionList.item(0);
+        int width = myXmlParser.getIntContent(dimension, "width");
+        int height = myXmlParser.getIntContent(dimension, "height");
+        return new Dimension(width, height);
     }
 
     /**
      *
-     * @return
+     * @return Background Image of the Level
      */
     public Image parseBackgroundImage () {
-        return null;
+        return myXmlParser.getImageContent(
+                myDocumentElement, "backgroundImage");
     }
 
     /**
@@ -56,6 +67,8 @@ public class LevelCreator {
      * Used to check for all required elements of the XML file.
      */
     private void validateXml () {
-        // TODO: check if all required elements of a level are available in Xml
+        // Check if all required elements of a level are available in Xml
+        // Do we need this? Are there any specific elements that must be
+        // included?
     }
 }

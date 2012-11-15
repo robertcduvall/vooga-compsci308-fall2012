@@ -7,14 +7,10 @@ package vooga.turnbased.gui;
 
 import java.awt.CardLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 /**
  * contains a Canvas, and menu that respond to change in games
@@ -24,16 +20,15 @@ import javax.swing.Timer;
 public class GameWindow extends JFrame {
 
     //denotes the index of the prototype in myCanvases
-    public static final String MENU = "Menu";
-    public static final String EDITOR = "Editor";
-    public static final String GAME = "Game";
+    public static final String MENU = "0";
+    public static final String EDITOR = "1";
+    public static final String GAME = "2";
 
     private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
     private static ResourceBundle myResources;
 
     private Container myContentPane;
     private CardLayout myLayout;
-    private Timer myGameTimer;
 
     /**
      * Constructor construct a game window given the size of the window
@@ -49,7 +44,6 @@ public class GameWindow extends JFrame {
         setResizable(true);
         addResourceBundle(settingsResource);
         initializeGamePanes();
-        startGameTimer();
     }
     
     /**
@@ -71,6 +65,9 @@ public class GameWindow extends JFrame {
      */
     public void changeActivePane (String paneName) {
     	myLayout.show(myContentPane, paneName);
+    	DisplayPane myCurrentPane = (DisplayPane) myContentPane.getComponent(
+    			Integer.parseInt(paneName));
+    	myCurrentPane.initialize();
     }
 
     /**
@@ -102,18 +99,4 @@ public class GameWindow extends JFrame {
     private void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
     }
-    
-	private void startGameTimer() {
-		// create a timer to animate the canvas
-		int ONE_SECOND = 1000;
-		int FRAMES_PER_SECOND = 10;
-		myGameTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND,
-				new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						repaint();
-					}
-				});
-		myGameTimer.start();
-	}
 }

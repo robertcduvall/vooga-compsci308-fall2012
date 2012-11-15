@@ -16,7 +16,7 @@ import vooga.turnbased.gamecore.GameManager;
 public class GamePane extends DisplayPane implements Runnable {
 
     private GameManager myGameManager;
-    //private Thread myGameThread;
+    private Thread myGameThread;
     private int myDelayTime;
 
     // InfoPanel infoPanel;
@@ -27,11 +27,23 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
-        //myGameThread = new Thread(this);
+        myGameThread = new Thread(this);
         myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
         addKeyListener(this);
         myGameManager = new GameManager(this);
         enableFocus();
+    }
+    
+    /**
+     * initialize properties when user switch to game
+     */
+    public void initialize () {
+        //addKeyListener(this);
+        //myGameManager = new GameManager(this);
+        repaint();
+        //setFocusable(true);
+        //requestFocusInWindow();
+        myGameThread.start();
     }
 
     /**
@@ -40,10 +52,6 @@ public class GamePane extends DisplayPane implements Runnable {
     @Override
     public void update(Graphics g) {
     	myGameManager.update();
-    	Image offScreenImage = createImage(getSize().width, getSize().height);
-    	Graphics offScreenGraphics = offScreenImage.getGraphics();
-    	paint(offScreenGraphics);
-    	g.drawImage(offScreenImage, 0, 0, null);
     }
     
     /**
@@ -51,8 +59,10 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     //@Override
     public void paint(Graphics g) {
-    	myGameManager.update();
-        myGameManager.paint(g);
+    	Image nextFrameImage = createImage(getSize().width, getSize().height);
+    	Graphics nextFrameGraphics = nextFrameImage.getGraphics();
+    	myGameManager.paint(nextFrameGraphics);
+    	g.drawImage(nextFrameImage, 0, 0, null);
     }
     
     /**
@@ -61,8 +71,8 @@ public class GamePane extends DisplayPane implements Runnable {
     @Override
     public void run () {
     	long beforeTime, timeDiff, sleep;
-	    beforeTime = System.currentTimeMillis();
         while (!myGameManager.isOver()) {
+        	beforeTime = System.currentTimeMillis();
             myGameManager.update();
             repaint();
             

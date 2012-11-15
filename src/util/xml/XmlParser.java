@@ -1,10 +1,9 @@
-package vooga.turnbased.gamecreation;
+package util.xml;
+
 
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,9 +15,9 @@ import org.xml.sax.SAXException;
 
 /**
  * Parses Xml to get data from the file.
- *
+ * 
  * @author Mark Hoffman
- *
+ * 
  */
 public class XmlParser {
 
@@ -36,7 +35,7 @@ public class XmlParser {
     }
 
     /**
-     * Enables parsing of the Xml file. myXmlDocument is then the basis
+     * Enables parsing of the Xml file.  myXmlDocument is then the basis
      * for the rest of the parsing.
      */
     private void makeDocument () {
@@ -57,7 +56,15 @@ public class XmlParser {
     }
 
     /**
-     *
+     * 
+     * @return Document (Root) Element
+     */
+    public Element getDocumentElement () {
+        return myXmlDocument.getDocumentElement();
+    }
+
+    /**
+     * 
      * @param element The tag that contains a section of XML to look through
      * @param name The string name of the desired elements
      * @return A node list containing the desired elements and their
@@ -69,7 +76,7 @@ public class XmlParser {
     }
 
     /**
-     *
+     * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired text
      * @return The text contained in these desired tag
@@ -80,46 +87,42 @@ public class XmlParser {
     }
 
     /**
-     *
+     * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired image
      * @return The image in the desired tag
      */
-    public Image getImageContent (Element element, String tagName) {
+    public Image getImageContent(Element element, String tagName) {
         String pathName = getTextContent(element, tagName);
         Image image = null;
-        URL path = getClass().getResource(pathName);
         try {
-            image = ImageIO.read(new File(path.toURI()));
+            image = ImageIO.read(new File(pathName));
         }
         catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return image;
     }
 
     /**
-     *
+     * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired int
      * @return The int value of the desired tag
      */
     public int getIntContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        return Integer.parseInt(list.item(0).toString());
+        return Integer.parseInt(list.item(0).getTextContent());
     }
 
     /**
-     *
+     * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired double
      * @return the double value of the desired tag
      */
     public double getDoubleContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        return Double.parseDouble(list.item(0).toString());
+        return Double.parseDouble(list.item(0).getTextContent());
     }
 }

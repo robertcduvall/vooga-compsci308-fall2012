@@ -9,13 +9,19 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+
+import vooga.turnbased.gameobject.MapObject;
 
 
 public abstract class GameMode extends Observable {
 
     private final GameManager myGameManager;
 
+    private ArrayList<MapObject> myObjects;
+    
     /**
      * Constructor
      * 
@@ -24,6 +30,8 @@ public abstract class GameMode extends Observable {
      */
     public GameMode (GameManager gm) {
         myGameManager = gm;
+        //myGameManager.getModesSprites(MapObject.class);
+        myObjects = new ArrayList<MapObject>();
         this.addObserver(myGameManager);
     }
 
@@ -51,6 +59,9 @@ public abstract class GameMode extends Observable {
         return myGameManager;
     }
     
+    public List<MapObject> getObjects() {
+    	return myObjects;
+    }
     /**
      * Each game mode should paint everything that should be currently displayed
      * @param g
@@ -64,5 +75,4 @@ public abstract class GameMode extends Observable {
     public abstract void handleKeyPressed (KeyEvent e);
 
     public abstract void handleKeyReleased (KeyEvent e);
-    
 }
