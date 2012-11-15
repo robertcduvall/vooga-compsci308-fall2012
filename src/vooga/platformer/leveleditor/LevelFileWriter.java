@@ -57,12 +57,16 @@ public final class LevelFileWriter {
      * @param backgroundImage path to the image that should be painted to the
      *        level's background
      * @param levelObjects Sprites that populate the level
+     * @param collisionCheckerType class name of the CollisionChecker to use for
+     *        this level
+     * @param cameraType class name of the Camera to use for this level
      * @return an integer constant representing whether the file was written
      *         successfully or not
      */
     public static int writeLevel (String filePath, String levelType, String levelName, int width,
                                   int height, String backgroundImage,
-                                  Collection<Sprite> levelObjects) {
+                                  Collection<Sprite> levelObjects, String collisionCheckerType,
+                                  String cameraType) {
         try {
             DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -77,6 +81,8 @@ public final class LevelFileWriter {
             appendChildTextNode(doc, level, "width", String.valueOf(width));
             appendChildTextNode(doc, level, "height", String.valueOf(height));
             appendChildTextNode(doc, level, "backgroundImage", backgroundImage);
+            appendChildTextNode(doc, level, "collisionChecker", collisionCheckerType);
+            appendChildTextNode(doc, level, "camera", cameraType);
 
             addLevelObjects(levelObjects, doc, level);
 

@@ -23,6 +23,7 @@ import vooga.platformer.util.camera.FollowingCamera;
  */
 public final class LevelFactory {
 
+    // TODO collision factory with reflection
     private static final CollisionChecker DEFAULT_COLLISION_CHECKER = new BasicCollisionChecker();
     private static final Dimension2D DEFAULT_CAMERA_SIZE = new Dimension(50, 50);
 
@@ -48,12 +49,13 @@ public final class LevelFactory {
         for (Sprite s : levelSprites) {
             levelGameObjects.add(spriteToGameObject(s));
         }
+        // TODO Using FollowingCamera by default. Should be specified in level
+        // data or in method call
         Camera followCam =
                 new FollowingCamera(DEFAULT_CAMERA_SIZE, new Rectangle(levelDimension.width,
                                                                        levelDimension.width),
                                     findHeroGameObject(levelGameObjects));
         // TODO
-//        Level level = new Level(levelDimension, DEFAULT_COLLISION_CHECKER, followCam);
         return null;
     }
 

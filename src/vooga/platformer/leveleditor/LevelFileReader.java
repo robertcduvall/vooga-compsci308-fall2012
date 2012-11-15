@@ -98,6 +98,25 @@ public class LevelFileReader {
     }
 
     /**
+     * Gets the class name of the CollisionChecker to use for this particular
+     * level.
+     * 
+     * @return class name of this level's CollisionChecker subclass
+     */
+    public String getCollisionCheckerType () {
+        return XMLUtils.getTagValue("collisionChecker", myRoot);
+    }
+
+    /**
+     * Gets the class name of the Camera to use for this particular level.
+     * 
+     * @return class name of this level's Camera subclass
+     */
+    public String getCameraType () {
+        return XMLUtils.getTagValue("camera", myRoot);
+    }
+
+    /**
      * Gets all the elements in the level data file tagged as gameObjects. The
      * Sprite objects are built using the parameters specified in level data
      * file.

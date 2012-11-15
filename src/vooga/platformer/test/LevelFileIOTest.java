@@ -24,6 +24,8 @@ public class LevelFileIOTest {
     private static final int LEVEL_WIDTH = 20;
     private static final int LEVEL_HEIGHT = 20;
     private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.jpg";
+    private static final String COLLISION_CHECKER_TYPE = "someCollisionChecker";
+    private static final String CAMERA_TYPE = "someCamera";
 
     private static final String TYPE = "enemy";
     private static final int X_POS = 1;
@@ -53,7 +55,7 @@ public class LevelFileIOTest {
         sprite.addAttribute(SPRITE_ATTR_TAG, SPRITE_ATTR_VALUE);
         sprites.add(sprite);
         LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_TYPE, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT,
-                                   TEST_IMAGE, sprites);
+                                   TEST_IMAGE, sprites, COLLISION_CHECKER_TYPE, CAMERA_TYPE);
         lfr = new LevelFileReader(XML_FILE_PATH);
         Assert.assertNotNull(lfr);
     }
@@ -81,6 +83,16 @@ public class LevelFileIOTest {
     @Test
     public void testGetBackgroundImage () throws Exception {
         Assert.assertNotNull(lfr.getBackgroundImage());
+    }
+
+    @Test
+    public void testGetCollisionChecker () throws Exception {
+        // TODO
+    }
+
+    @Test
+    public void testGetCamera () throws Exception {
+        // TODO
     }
 
     @Test
