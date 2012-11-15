@@ -8,11 +8,9 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 
 import vooga.turnbased.gameobject.MapObject;
@@ -22,7 +20,7 @@ public abstract class GameMode extends Observable {
 
     private final GameManager myGameManager;
 
-    private Map<Point, List<MapObject>> myObjects;
+    private ArrayList<MapObject> myObjects;
     
     /**
      * Constructor
@@ -33,7 +31,7 @@ public abstract class GameMode extends Observable {
     public GameMode (GameManager gm) {
         myGameManager = gm;
         //myGameManager.getModesSprites(MapObject.class);
-        myObjects = new HashMap<Point, List<MapObject>>();
+        myObjects = new ArrayList<MapObject>();
         this.addObserver(myGameManager);
     }
 
@@ -61,7 +59,7 @@ public abstract class GameMode extends Observable {
         return myGameManager;
     }
     
-    public Map<Point, List<MapObject>> getObjects() {
+    public List<MapObject> getObjects() {
     	return myObjects;
     }
     /**
