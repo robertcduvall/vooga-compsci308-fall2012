@@ -47,13 +47,15 @@ public class LevelBoard extends Canvas implements ISavable {
     private ISpritePlacementManager myPlacementManager;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
-    private MouseListener myMouseListener;
+    private SelectionMouseListener myMouseListener;
     private Image myBackground;
     private Sprite myCurrentSprite;
     private int myWidth;
     private int myHeight;
     private String myLevelName;
     private String myLevelType;
+    private int mouseX;
+    private int mouseY;
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
@@ -75,35 +77,48 @@ public class LevelBoard extends Canvas implements ISavable {
                 if (myCurrentSprite != null) {
                     myCurrentSprite = null;
                 }
-                else if (e.getButton() == MouseEvent.BUTTON3) {
+                else {
                     for (Sprite s : mySprites) {
                         if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
                                 e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
-                            myCurrentSprite = s;
+                            if (e.getButton() == MouseEvent.BUTTON3) {
+                                s.flipImage();
+                            }
+                            else if (e.getButton() == MouseEvent.BUTTON1) {
+                                myCurrentSprite = s;
+                            }
+                            return;
                         }
-                        else {
-                            JFileChooser chooser = new JFileChooser();
-                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                                    "JPG & GIF Images", "jpg", "gif");
-                            chooser.setFileFilter(filter);
-                            int returnVal = chooser.showOpenDialog(chooser);
-                            if (returnVal == JFileChooser.APPROVE_OPTION)  {
-                                try {
-                                    myBackground = ImageIO.read(chooser.getSelectedFile());
-                                }
-                                catch (IOException io) {
-                                    System.out.println("File not found. Try again");
-                                    myBackground = null;
-                                }
+                    }
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        JFileChooser chooser = new JFileChooser();
+                        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                                "JPG & GIF Images", "jpg", "gif");
+                        chooser.setFileFilter(filter);
+                        int returnVal = chooser.showOpenDialog(chooser);
+                        if (returnVal == JFileChooser.APPROVE_OPTION)  {
+                            try {
+                                myBackground = ImageIO.read(chooser.getSelectedFile());
+                            }
+                            catch (IOException io) {
+                                System.out.println("File not found. Try again");
+                                myBackground = null;
                             }
                         }
                     }
+
                 }
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
             }
         };
         addMouseListener(mouseListener);
-        myMouseListener = mouseListener;
         addMouseMotionListener(mouseListener);
+        myMouseListener = mouseListener;
+
     }
 
     /**
@@ -111,7 +126,7 @@ public class LevelBoard extends Canvas implements ISavable {
      * 
      * @return MouseListener attached to component
      */
-    public MouseListener getMouseListener() {
+    public SelectionMouseListener getMouseListener() {
         return myMouseListener;
     }
 
@@ -121,17 +136,15 @@ public class LevelBoard extends Canvas implements ISavable {
     public void update() {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(
-                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
-        if (myCurrentSprite != null) {
-            myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
-            myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-        }
+                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         for (Sprite s : mySprites) {
-            s.paint(myBufferGraphics);
+            s.paint(myBufferGraphics, this);
             myBufferGraphics.setColor(Color.WHITE);
-            myBufferGraphics.drawString("(" + s.getX() + ", " + s.getY()+ ")", s.getX(), s.getY()-10);
         }
-        myBufferGraphics.drawString("Mouse Location : (" + MouseInfo.getPointerInfo().getLocation().x + ", " + MouseInfo.getPointerInfo().getLocation().y + ")", myBuffer.getWidth()/2, 50);
+        if(myCurrentSprite != null) {
+            myCurrentSprite.setX(mouseX);
+            myCurrentSprite.setY(mouseY);
+        }
     }
 
     /**
@@ -140,19 +153,20 @@ public class LevelBoard extends Canvas implements ISavable {
      * @param g Graphics attached to level.
      */
     public void paint(Graphics g) {
-        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
     }
 
     @Override
     public void save() {
-//        LevelFileWriter.writeLevel(filePath, levelType, levelName, width, height, myBackgroud, mySprites, collisionCheckerType, cameraType);
+        //        LevelFileWriter.writeLevel(filePath, levelType, levelName, width, height,
+        //        myBackgroud, mySprites, collisionCheckerType, cameraType);
     }
 
     @Override
     public void load(URL path) {
         new LevelFileReader(path.getPath());
     }
-    
+
     public void clear() {
         mySprites.clear();
     }

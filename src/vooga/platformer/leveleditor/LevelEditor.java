@@ -133,7 +133,6 @@ public class LevelEditor extends JFrame{
             @Override 
             public void paint(Graphics g) {
                 g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
-                g.setColor(Color.GREEN);
                 myBoard.paint(g);
                 super.paintComponents(g);
             }
@@ -141,6 +140,7 @@ public class LevelEditor extends JFrame{
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
         panel.addMouseListener(myBoard.getMouseListener());
+        panel.addMouseMotionListener(myBoard.getMouseListener());
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
@@ -160,6 +160,7 @@ public class LevelEditor extends JFrame{
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         panel.add(subpanel, BorderLayout.CENTER);
         panel.setOpaque(false);
+        panel.addMouseMotionListener(myBoard.getMouseListener());
         myViewPane.add(panel, BorderLayout.WEST);
     }
     @Override
@@ -239,6 +240,7 @@ public class LevelEditor extends JFrame{
         // root elements
         myBoard = new LevelBoard(DEFAULT_FRAME_SIZE);
         myViewPane.addMouseListener(myBoard.getMouseListener());
+        myViewPane.addMouseMotionListener(myBoard.getMouseListener());
     }
     protected void clear () {
         myBoard.clear();
