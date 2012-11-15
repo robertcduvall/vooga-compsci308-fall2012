@@ -11,23 +11,36 @@ import java.util.Random;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gui.GameWindow;
 
+/**
+ * This is gamemode that will run a battle given two lists of BattleObjects that 
+ * will fight each other.
+ * @author David Howdyshell, Michael Elgart, others (who?)
+ *
+ */
 public class BattleMode extends GameMode {
-	private List<Team> myTeams;
-	private BattleState myState;
-	private int myTurnCount;
-	private int myTeamStartRandomizer;
+    private List<Team> myTeams;
+    private BattleState myState;
+    private int myTurnCount;
+    private int myTeamStartRandomizer;
 
-	public BattleMode(GameManager gm, Class modeObjectType) {
-		super(gm, modeObjectType);
-		makeTeams();
-		initialize();
-		System.out.println("BattleStarting!");
-		try {
-			System.in.read(); // stall the game
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    /**
+     * Constructor for a Battle. 
+     * @param gm The parent GameManager that is creating this battle. Will be alerted 
+     * when battle ends.
+     * @param modeObjectType The object type this mode uses, i.e. BattleObject.java
+     */
+    public BattleMode(GameManager gm, Class modeObjectType) {
+        super(gm, modeObjectType);
+        makeTeams();
+        initialize();
+        System.out.println("BattleStarting!");
+        try {
+	    System.in.read(); // stall the game
+	    } 
+	catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	    }
 	}
 
 	private void makeTeams() {
