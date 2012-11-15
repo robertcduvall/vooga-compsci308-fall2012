@@ -16,7 +16,12 @@ public class GameLink {
         return null;
     }
     
-    public Image getGameProfilePicture() {
+    public Image getGameProfilePicture(String gameName) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    public List<String> getListOfGames() {
         // TODO Auto-generated method stub
         return null;
     }

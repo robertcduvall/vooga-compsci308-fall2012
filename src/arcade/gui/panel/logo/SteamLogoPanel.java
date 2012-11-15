@@ -9,9 +9,9 @@ import arcade.gui.panel.ArcadePanel;
  * @author Michael Deng
  * 
  */
-public class NormLogoPanel extends ALogoPanel {
+public class SteamLogoPanel extends ALogoPanel {
 
-    public NormLogoPanel (Arcade a) {
+    public SteamLogoPanel (Arcade a) {
         super(a);
 
     }
@@ -19,7 +19,7 @@ public class NormLogoPanel extends ALogoPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        super.addLogo("Arcade_logo.png", myPanel);
+        super.addLogo("Arcade_logo2.png", myPanel);
         return myPanel;
     }
 
