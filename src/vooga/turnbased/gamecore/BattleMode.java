@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import vooga.turnbased.gameobject.BattleObject;
 
 
@@ -38,7 +40,7 @@ public class BattleMode extends GameMode {
         // Initialize myTeamStartRandomizer to 0 to number of teams (exclusive)
         // the seed value is going to determine which team starts where 0 =
         // "team 1"
-        java.util.Random generator = new java.util.Random();
+        Random generator = new Random();
         myTeamStartRandomizer = generator.nextInt(myTeams.size());
     }
 

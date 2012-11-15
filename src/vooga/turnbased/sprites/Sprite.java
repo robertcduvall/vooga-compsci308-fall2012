@@ -28,4 +28,13 @@ public class Sprite {
     public int getID() {
     	return myID;
     }
+
+	public GameObject getObject(Class<GameObject> c) {
+		for(GameObject go : myGameObjects) {
+			if(c.isAssignableFrom(go.getClass())){
+				return go;
+			}
+		}
+		return null;
+	}
 }

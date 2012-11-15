@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gameobject.MapTileObject;
@@ -27,9 +26,9 @@ public class MapMode extends GameMode {
 	public static final Point DOWN = new Point(0, 1);
 	public static final Point LEFT = new Point(-1, 0);
 	private final int ID = 0;
-	private Map<Point, List<MapObject>> mySprites;
 	private int myNumDisplayRows;
 	private int myNumDisplayCols;
+	private HashMap<Point, List<MapObject>> mySprites;
 	private MapPlayerObject myPlayer;
 	private Point myBottomRightCorner;
 	private Point myOrigin;
@@ -53,7 +52,7 @@ public class MapMode extends GameMode {
 		for (int i = 0; i < myBottomRightCorner.x; i++) {
 			for (int j = 0; j < myBottomRightCorner.y; j++) {
 				Point p = new Point(i, j);
-				addSprite(
+				addGameObject(
 						p,
 						new MapTileObject(ID, p, GameWindow
 								.importImage("GrassImage"), myCurrentCamera));
@@ -62,10 +61,10 @@ public class MapMode extends GameMode {
 		Point center = new Point(7, 5);
 		myPlayer = new MapPlayerObject(ID, center,
 				GameWindow.importImage("PlayerImage"), myCurrentCamera);
-		addSprite(center, myPlayer);
+		addGameObject(center, myPlayer);
 	}
 
-	public void addSprite(Point p, MapObject s) {
+	public void addGameObject(Point p, MapObject s) {
 		if (mySprites.keySet().contains(p)) {
 			mySprites.get(p).add(s);
 		} else {
@@ -143,7 +142,7 @@ public class MapMode extends GameMode {
 
 			if (mySprites.get(oldCoord).contains(s)) {
 				mySprites.get(oldCoord).remove(s);
-				addSprite(dest, s);
+				addGameObject(dest, s);
 				s.setLocation(dest);
 			}
 		}
