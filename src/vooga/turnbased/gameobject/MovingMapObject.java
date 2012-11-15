@@ -63,6 +63,10 @@ public class MovingMapObject extends MapObject{
     	this.setMoving(true);
     }
     
+    public Point getDirection() {
+    	return myDirection;
+    }
+    
     @Override
     public void handleKeyPressed(KeyEvent e) {
         

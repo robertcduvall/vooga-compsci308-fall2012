@@ -127,19 +127,21 @@ public class MapMode extends GameMode {
 		Point displacement = myPlayer
 				.calcScreenDisplacement(myCurrentTileWidth,	myCurrentTileHeight);
 		Point topLeftCoord = calculateTopLeftCoordinate();
-		if (topLeftCoord.x <= 0) {
+		if (topLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
 			topLeftCoord.x = 0;  //player near the left boundary
 			displacement.x = 0;  //screen fixed when player moves to the edge
 		}
-		else if (topLeftCoord.x >= myBottomRightCorner.x - myNumDisplayCols) {
+		else if ((topLeftCoord.x + myNumDisplayCols) * myCurrentTileWidth +
+				myPlayer.getDirection().x > myBottomRightCorner.x * myCurrentTileWidth) {
 			topLeftCoord.x = myBottomRightCorner.x - myNumDisplayCols;
 			displacement.x = 0;
 		}
-		if (topLeftCoord.y <= 0) {
+		if (topLeftCoord.y * myCurrentTileHeight + myPlayer.getDirection().y < 0) {
 			topLeftCoord.y = 0;  //player near the top boundary
 			displacement.y = 0;
 		}
-		else if (topLeftCoord.y >= myBottomRightCorner.y - myNumDisplayRows) {
+		else if ((topLeftCoord.y + myNumDisplayRows) * myCurrentTileHeight +
+				myPlayer.getDirection().y > myBottomRightCorner.y * myCurrentTileHeight) {
 			topLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows; 
 			displacement.y = 0;
 		}
@@ -148,6 +150,9 @@ public class MapMode extends GameMode {
 		myOrigin = changeOriginForPlayer(displacement);
 	}
 	
+	/**
+	 * iterate through the map and update MapObjects at each position
+	 */
 	public void updateMapObjects() {
 		for (Point p : mySprites.keySet()) {
 			for (MapObject s : getSpritesOnTile(p.x, p.y)) {
@@ -155,7 +160,7 @@ public class MapMode extends GameMode {
 			}
 		}
 	}
-	
+
 	/**
 	 * change the top left corner of the screen when the player moves
 	 * @param displacement the displacement of the screen
@@ -168,7 +173,7 @@ public class MapMode extends GameMode {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * calculate top left corner coordinate of the grid
 	 * 
@@ -187,7 +192,8 @@ public class MapMode extends GameMode {
 		return mySprites.get(new Point(i, j));
 	}
 
-	public void moveSprite(MapObject s, Point dest) {
+	public void moveSprite(MovingMapObject s, Point dir) {
+		Point dest = myPlayer.getLocation(dir);
 		if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
 				&& dest.y < myBottomRightCorner.y) {
 			Point oldCoord = s.getLocation();
@@ -196,6 +202,7 @@ public class MapMode extends GameMode {
 				mySprites.get(oldCoord).remove(s);
 				addGameObject(dest, s);
 				s.setLocation(dest);
+				s.setDirection(dir); //start moving in update() when direction is set
 			}
 		}
 	}
@@ -209,20 +216,16 @@ public class MapMode extends GameMode {
 		}
 		switch (keyCode) {
 		case KeyEvent.VK_LEFT:
-			moveSprite(myPlayer, myPlayer.getLocation(LEFT));
-			myPlayer.setDirection(LEFT);
+			moveSprite(myPlayer, LEFT);
 			break;
 		case KeyEvent.VK_UP:
-			moveSprite(myPlayer, myPlayer.getLocation(UP));
-			myPlayer.setDirection(UP);
+			moveSprite(myPlayer, UP);
 			break;
 		case KeyEvent.VK_RIGHT:
-			moveSprite(myPlayer, myPlayer.getLocation(RIGHT));
-			myPlayer.setDirection(RIGHT);
+			moveSprite(myPlayer, RIGHT);
 			break;
 		case KeyEvent.VK_DOWN:
-			moveSprite(myPlayer, myPlayer.getLocation(DOWN));
-			myPlayer.setDirection(DOWN);
+			moveSprite(myPlayer, DOWN);
 			break;
 		}
 	}
