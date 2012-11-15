@@ -2,11 +2,8 @@ package games.platformerdemo;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import util.camera.Camera;
-import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.level.Level;
-import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.camera.FollowingCamera;
 
 public class DemoLevelFactory {
