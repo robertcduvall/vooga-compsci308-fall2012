@@ -32,6 +32,8 @@ public class BattleMode extends GameMode {
 
     @Override
     public void paint (Graphics g) {
+        // has to actually call paint method in JPanel or JComponent
+        // calling it here won't do much
     }
 
     public void initialize () {
@@ -55,6 +57,8 @@ public class BattleMode extends GameMode {
 
     private void endBattle () {
         // TODO: let myGameManager know the battle has ended
+        // need to save game state (sprite health, status, etc)
+        // then transition back to mapmode
     }
 
     private boolean isBattleOver () {
@@ -106,6 +110,8 @@ public class BattleMode extends GameMode {
 
         public void makeMove(Team enemy) {
             // TODO: fill in behavior here
+            // get user input to choose active enemy sprite
+            // currentEnemyBattleObject.attackEnemy(currentPlayerBattleObject);
         }
 
         // TODO: Add more methods here to aid team behavior

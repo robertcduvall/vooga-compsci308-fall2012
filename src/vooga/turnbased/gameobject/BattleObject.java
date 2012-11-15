@@ -1,5 +1,8 @@
 package vooga.turnbased.gameobject;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  * Abstract class that is extended to create monsters/sprites in the BattleMode.
  * @author Michael Elgart
@@ -10,6 +13,9 @@ public abstract class BattleObject extends GameObject {
     private int myDefense;
     private int myAttack;
     private int myHealth;
+    
+    private Image myImage;
+    
 
     /**
      * Create the BattleObject for this sprite which will be used in
@@ -47,6 +53,20 @@ public abstract class BattleObject extends GameObject {
      */
     public boolean isAlive() {
         return myHealth > 0;
+    }
+    
+    public Image getImage() {
+        return myImage;
+    }
+    
+    //need these for painting
+    public void setImage(Image image) {
+        myImage = image;
+    }
+    
+    public void setImage(String imageLocation) {
+        ImageIcon ii = new ImageIcon(this.getClass().getResource(imageLocation));
+        myImage = ii.getImage();
     }
 
 
