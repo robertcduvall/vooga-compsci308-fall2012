@@ -159,7 +159,7 @@ public class LoginUserPanel extends AUserPanel {
 
         @Override
         public void actionPerformed (ActionEvent arg0) {
-            getArcade().replacePanel("LoginMainPanel");
+            getArcade().replacePanel("MainDefault");
         }
           
       });
@@ -168,7 +168,7 @@ public class LoginUserPanel extends AUserPanel {
 
         @Override
         public void actionPerformed (ActionEvent e) {
-            getArcade().replacePanel("NewUserMainPanel");
+            getArcade().replacePanel("NewUser");
         }
           
       });
