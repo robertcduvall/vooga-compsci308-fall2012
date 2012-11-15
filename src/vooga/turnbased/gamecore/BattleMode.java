@@ -23,7 +23,7 @@ public class BattleMode extends GameMode {
 		initialize();
 		System.out.println("BattleStarting!");
 		try {
-			System.in.read();
+			System.in.read(); // stall the game
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

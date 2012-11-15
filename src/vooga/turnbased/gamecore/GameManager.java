@@ -10,6 +10,7 @@ package vooga.turnbased.gamecore;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -113,6 +114,10 @@ public class GameManager {
 
 	public void handleKeyReleased(KeyEvent e) {
 		myCurrentGameMode.handleKeyReleased(e);
+	}
+	
+	public void handleMouseClicked(MouseEvent e) {
+		myCurrentGameMode.handleMouseClicked(e);
 	}
 
 	public Dimension getPaneDimension() {

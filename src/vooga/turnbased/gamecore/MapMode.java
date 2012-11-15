@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class MapMode extends GameMode {
 		for (int i = 0; i < myBottomRightCorner.x; i++) {
 			for (int j = 0; j < myBottomRightCorner.y; j++) {
 				Point p = new Point(i, j);
-				addGameObject(p,
+				addMapObject(p,
 						new MapTileObject(ID, GameManager.GameEvent.NO_ACTION,
 								p, GameWindow.importImage("GrassImage")));
 			}
@@ -69,13 +70,13 @@ public class MapMode extends GameMode {
 		Point center = new Point(7, 5);
 		myPlayer = new MapPlayerObject(ID, GameManager.GameEvent.MAP_COLLISION,
 				center, GameWindow.importImage("PlayerImage"));
-		addGameObject(center, myPlayer);
+		addMapObject(center, myPlayer);
 
 		center = new Point(1, 1);
 		MovingMapObject test1 = new MovingMapObject(ID,
 				GameManager.GameEvent.MAP_COLLISION, center,
 				GameWindow.importImage("something"));
-		addGameObject(center, test1);
+		addMapObject(center, test1);
 	}
 
 	/**
@@ -86,7 +87,7 @@ public class MapMode extends GameMode {
 	 * @param s
 	 *            MapObject to be added
 	 */
-	public void addGameObject(Point p, MapObject s) {
+	public void addMapObject(Point p, MapObject s) {
 		if (mySprites.keySet().contains(p)) {
 			mySprites.get(p).add(s);
 		} else {
@@ -199,16 +200,16 @@ public class MapMode extends GameMode {
 		}
 	}
 
-	public void processGameEvents() {
+	public void processGameEvents() { //this can be optimized A LOT, only check mapobjects that did something last turn
 		for (Point p : mySprites.keySet()) {
 			HashMap<GameManager.GameEvent, ArrayList<Integer>> myEventHash = new HashMap<GameManager.GameEvent, ArrayList<Integer>>();
 			for (MapObject s : getSpritesOnTile(p.x, p.y)) {
-				if(!myEventHash.containsKey(s.getEvent())){
+				if (!myEventHash.containsKey(s.getEvent())) {
 					myEventHash.put(s.getEvent(), new ArrayList<Integer>());
 				}
 				myEventHash.get(s.getEvent()).add(s.getID());
 			}
-			for(GameManager.GameEvent ge : myEventHash.keySet()){
+			for (GameManager.GameEvent ge : myEventHash.keySet()) {
 				getGM().handleEvent(ge, myEventHash.get(ge));
 			}
 		}
@@ -273,7 +274,7 @@ public class MapMode extends GameMode {
 
 			if (mySprites.get(oldCoord).contains(s)) {
 				mySprites.get(oldCoord).remove(s);
-				addGameObject(dest, s);
+				addMapObject(dest, s);
 				s.setLocation(dest);
 				s.setDirection(dir); // start moving in update() when direction
 										// is set
@@ -322,5 +323,12 @@ public class MapMode extends GameMode {
 	 */
 	private Point initializeOrigin() {
 		return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
+	}
+
+	public void handleMouseClicked(MouseEvent e) {
+		// right click
+		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+
+		}
 	}
 }
