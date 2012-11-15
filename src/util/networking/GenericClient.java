@@ -20,7 +20,7 @@ import java.net.*;
 public class GenericClient {
     public static void main(String[] args) throws IOException {
         try {
-            // Check the number of arguments
+            /*// Check the number of arguments
             if (args.length != 2) 
                 throw new IllegalArgumentException("Wrong number of args");
 	    
@@ -30,7 +30,10 @@ public class GenericClient {
             
             // Connect to the specified host and port
             Socket s = new Socket(host, port);
-	    
+	    */
+            
+            Socket s = new Socket("10.190.44.93", 1236);
+            
             // Set up streams for reading from and writing to the server.
             // The from_server stream is final for use in the inner class below
             final Reader from_server=new InputStreamReader(s.getInputStream());

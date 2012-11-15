@@ -71,10 +71,10 @@ public class Canvas extends JApplet {
                 @Override
                 public void actionPerformed (ActionEvent e)
                 {
-                    // myGame doesn't exist! please fix
-                    // myGame.update();
+//                     myGame doesn't exist! please fix
+//                     myGame.paint();
                     
-                    // indirectly causes paint to be called
+//                     indirectly causes paint to be called
                     repaint();
                 }
             });
