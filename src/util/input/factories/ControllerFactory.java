@@ -45,7 +45,7 @@ public class ControllerFactory {
         return new WiiController(wiiControl);
     }
 
-    public static Controller createAndroidController(Object androidControl) {
+    public static AndroidController createAndroidController() {
         // Create android controller
         AndroidBluetoothServer bserver = new AndroidBluetoothServer(0);
         bserver.startServer();
