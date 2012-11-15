@@ -115,11 +115,9 @@ public class PlatformerController extends JComponent implements Runnable {
      * should be //TODO: removed
      */
     public KeyListener setTemporaryInputListener(){
-        System.out.println("--");
         KeyListener kl = new KeyAdapter() {
             @Override
             public void keyPressed (KeyEvent e) {
-                System.out.println("--");
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
                     myPlayer.getMovingStragety().goLeft();
                     
@@ -128,7 +126,7 @@ public class PlatformerController extends JComponent implements Runnable {
                     myPlayer.getMovingStragety().goRight();
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.getMovingStragety().fly();
+                    myPlayer.getMovingStragety().jump();
                 }
             }
 
@@ -140,7 +138,6 @@ public class PlatformerController extends JComponent implements Runnable {
             @Override
             public void mouseClicked (MouseEvent e) {
                 //not used so far
-                System.out.println("--");
             }
         };
         return kl;
