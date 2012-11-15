@@ -152,15 +152,9 @@ public class BattleMode extends GameMode {
 		// TODO: Add more methods here to aid team behavior
 	}
 
-<<<<<<< HEAD
 	private enum BattleState {
 		WAITING_FOR_MOVE, MESSAGE, ANIMATING
 	}
-=======
-    public BattleMode(GameManager gm) {
-        super(gm);
-    }
->>>>>>> master
 
 	@Override
 	public void processGameEvents() {
