@@ -30,12 +30,13 @@ public class Sprite {
 		return myID;
 	}
 
-	public GameObject getObject(Class<GameObject> c) {
+	public ArrayList<GameObject> getObject(Class<GameObject> c) {
+	    ArrayList<GameObject> relevantObjects = new ArrayList<GameObject>();
 		for (GameObject go : myGameObjects) {
 			if (c.isAssignableFrom(go.getClass())) {
-				return go;
+				relevantObjects.add(go);
 			}
 		}
-		return null;
+		return relevantObjects;
 	}
 }
