@@ -59,12 +59,12 @@ public class Arcade {
         myFrame = frameCreator.createFrame();
 
         // fill it with default panels
-        replacePanel("DefaultFoot");
-        replacePanel("DefaultMain");
-        replacePanel("DefaultLogo");
-        replacePanel("DefaultNav");
-        replacePanel("DefaultSearch");
-        replacePanel("DefaultUser");
+        replacePanel("FootDefault");
+        replacePanel("MainDefault");
+        replacePanel("LogoDefault");
+        replacePanel("NavDefault");
+        replacePanel("SearchDefault");
+        replacePanel("UserDefault");
     }
 
     private ArcadePanel createPanel (String panelCreatorName) {
