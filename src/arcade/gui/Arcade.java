@@ -1,12 +1,15 @@
 package arcade.gui;
 
+import java.awt.BorderLayout;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import arcade.datatransfer.GameManager;
-import arcade.datatransfer.UserManager;
+import java.util.ResourceBundle;
+import arcade.datatransfer.GameLink;
+import arcade.datatransfer.UserLink;
+import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.frame.MainFrameCreator;
-import arcade.gui.panel.AbstractPanelCreator;
+import arcade.gui.panel.ArcadePanel;
 
 
 /**
@@ -24,24 +27,26 @@ import arcade.gui.panel.AbstractPanelCreator;
  */
 public class Arcade {
 
-    /**
-     * username (unique key) of the user who is logged in
-     */
+    // username (unique key) of the user who is logged in
     private static String myUser = "";
-    private static JFrame myFrame;
-    private static Map<String, JPanel> myPanels;
+    private static Map<String, Serializable> mySharedVariables;
 
-    private static GameManager myGameManager;
-    private static UserManager myUserManager;
-    private static GUIFactory myFactory;
+    private static ArcadeFrame myFrame;
+
+    private static GameLink myGameManager;
+    private static UserLink myUserManager;
+    private static PanelCreatorFactory myFactory;
+    private static ResourceBundle myResources;
 
     public Arcade () {
         System.out.println("got it!");
 
         // initialize things
-        myFactory = new GUIFactory(this);
-        myGameManager = new GameManager();
-        myUserManager = new UserManager();
+        myFactory = new PanelCreatorFactory(this);
+        myGameManager = new GameLink();
+        myUserManager = new UserLink();
+        myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
+        mySharedVariables = new HashMap<String, Serializable>();
 
         // set up frame
         frameSetup();
@@ -52,43 +57,26 @@ public class Arcade {
         // create the frame
         MainFrameCreator frameCreator = new MainFrameCreator(this);
         myFrame = frameCreator.createFrame();
-        
-        // fill it with default panels - read from properties file, create panel, add panel to map
-        // TODO
-        // read in the properties file
-        
-        
-        // use GUIFactory (give it panel type, and panel name) -> it will return the panel
-            // or use the replacePanel() method... this method should be implemented to replace a panel
+
+        // fill it with default panels
+        replacePanel(myResources.getString("DefaultFoot"));
+        replacePanel(myResources.getString("DefaultMain"));
+        replacePanel(myResources.getString("DefaultLogo"));
+        replacePanel(myResources.getString("DefaultNav"));
+        replacePanel(myResources.getString("DefaultSearch"));
+        replacePanel(myResources.getString("DefaultUser"));
     }
 
-    private JPanel createPanel(String panelType, String panelCreatorName){
-        return myFactory.createPanelCreator(panelType, panelCreatorName).createPanel();
+    private ArcadePanel createPanel (String panelCreatorName) {
+        return myFactory.createPanelCreator(panelCreatorName).createPanel();
     }
-    
-    
-    private void updateFrame(){
-        // clear frame
-        myFrame.removeAll();
-        
-        // reload everything in into the frame from the map
-        // based on the panel's location
-        // TODO
-        
+
+    private void updatePanelinFrame (ArcadePanel newPanel) {
+        ArcadePanel panelHolder = myFrame.getPanel(newPanel.getPanelType());
+        panelHolder.removeAll();
+        panelHolder.setLayout(new BorderLayout());
+        panelHolder.add(newPanel, BorderLayout.CENTER);
     }
-    
-    // this is the jframe manager
-
-    // creates a jframe
-
-    // methods that manage the various panels in the arcade
-
-    // at first, the jframe must set up default panels
-
-    // responsible for setting up the frame.. and keeping it running
-
-    // DOES NOT SUPPORT THE GETFRAME FUNCTION. this class is responsible
-    // for managing the frame.. no one else touches it.
 
     /**
      * This method replaces and old panel with a new panel.
@@ -97,25 +85,39 @@ public class Arcade {
      * @param newPanel the replacement panel
      * @return this returns the old panel
      */
-    public void replacePanel (String panelType, String panelCreatorName) {
-        
-        // do i need to set frame visibility on off?
-        myPanels.put(panelType, createPanel(panelType, panelCreatorName));
-        updateFrame();
+    public void replacePanel (String panelCreatorName) {
+        myFrame.setVisible(false);
+        ArcadePanel newPanel = createPanel(panelCreatorName);
+        updatePanelinFrame(newPanel);
+        myFrame.setVisible(true);
     }
 
     public String getUsername () {
         return myUser;
     }
 
-    public GameManager getGameManager () {
+    /**
+     * Sets the username
+     * 
+     * @param u
+     */
+    public void setUsername (String u) {
+        myUser = u;
+    }
+
+    public GameLink getGameManager () {
         return myGameManager;
     }
 
-    public UserManager getUserManager () {
+    public UserLink getUserManager () {
         return myUserManager;
     }
 
-    // user properties file to list the default components.
+    public void setVariable (String varName, Serializable var) {
+        mySharedVariables.put(varName, var);
+    }
 
+    public Serializable getVariable (String varName) {
+        return mySharedVariables.get(varName);
+    }
 }

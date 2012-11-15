@@ -1,10 +1,13 @@
 package util.input.factories;
 
 import java.awt.Component;
+import util.input.android.bluetoothserver.AndroidBluetoothServer;
+import util.input.core.AndroidController;
 import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.core.WiiController;
+import wiiusej.Wiimote;
 
 
 /**
@@ -21,7 +24,7 @@ public class ControllerFactory {
      * @param c - The component to which this controller will be added to
      * @return - The Controller object
      */
-    public static Controller createKeyBoardController(Component c) {
+    public static Controller createKeyboardController(Component c) {
         // Create keyboard controller
         return new KeyboardController(c);
     }
@@ -44,7 +47,9 @@ public class ControllerFactory {
 
     public static Controller createAndroidController(Object androidControl) {
         // Create android controller
-        return null;
+        AndroidBluetoothServer bserver = new AndroidBluetoothServer(0);
+        bserver.startServer();
+        return new AndroidController();
     }
 
 }

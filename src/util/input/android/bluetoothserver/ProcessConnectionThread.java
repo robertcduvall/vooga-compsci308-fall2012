@@ -1,6 +1,7 @@
 package util.input.android.bluetoothserver;
 
 import java.io.InputStream;
+import javax.microedition.io.StreamConnection;
 
 
 /**

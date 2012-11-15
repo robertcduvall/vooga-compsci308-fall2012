@@ -19,4 +19,10 @@ abstract public class ASearchPanel extends AbstractPanelCreator {
 
     }
 
+    
+//    @Override
+//    public void creatorSetup (Arcade a) {
+//        super.creatorSetup(a);
+//        super.setPanelType(PANEL_TYPE);
+//    }
 }

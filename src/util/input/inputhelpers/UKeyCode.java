@@ -1,4 +1,4 @@
-package util.input.input_utils;
+package util.input.inputhelpers;
 
 /**
  * Created with IntelliJ IDEA.

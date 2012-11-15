@@ -2,8 +2,13 @@ package arcade.gui.panel.main;
 
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
+import arcade.gui.panel.ArcadePanel;
 
-
+/**
+ * 
+ * @author Michael Deng
+ * 
+ */
 public class LoginMainPanel extends AMainPanel {
 
     public LoginMainPanel (Arcade a) {
@@ -12,7 +17,7 @@ public class LoginMainPanel extends AMainPanel {
     }
 
     @Override
-    public JPanel createPanel () {
+    public ArcadePanel createPanel () {
         // TODO
 
         return null;

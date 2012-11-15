@@ -2,9 +2,11 @@ package vooga.shooter.level_editor;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
 import java.io.*;
 
@@ -15,28 +17,58 @@ import java.io.*;
  *
  */
 public class LevelEditor implements ActionListener, ChangeListener, KeyListener {
+    
+    private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
     boolean compactToolbars = true;
     boolean borderedButtons = true;
     
-    JFrame       mainFrame; // The main window
-    JFileChooser chooser; // For saving and loading levels
-    JSplitPane   split;  // provides the movable divider next to Sprite chooser
-    JPanel       chooserPanel; //panel for the Sprite chooser 
+    private JFrame       mainFrame; // The main window   
+    private JFileChooser chooser; // For saving and loading levels
+    private JSplitPane   split;  // provides the movable divider next to Sprite chooser
+    private JPanel       chooserPanel; //panel for the Sprite chooser 
+    private JPanel      leftPanel;
+    private JPanel      rightPanel;
+    private Canvas      myCanvas; //drawing canvas
     
-    File openFile; //currently open file
-    Level myLevel; //level object for editing
+    private File openFile; //currently open file
+    private Level myLevel; //level object for editing
     
     /* Toolbar buttons, self-explanatory */
-    JToolBar myToolBar;
-    JButton newBtn;
-    JButton openBtn;
-    JButton saveBtn;
-    JButton undoBtn;
-    JButton redoBtn;
-    JButton clearBtn;
+    private JToolBar myToolBar;
+    private JButton newBtn;
+    private JButton openBtn;
+    private JButton saveBtn;
+    private JButton undoBtn;
+    private JButton redoBtn;
+    private JButton clearBtn;
     
     public LevelEditor() {
         //TODO initialize all variables and load a level to edit/make a new level
+        mainFrame = new JFrame("Level Editor");
+        mainFrame.setPreferredSize(FRAME_SIZE);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setBackground(Color.WHITE);
+        
+        makeMenu();       
+        
+        split = new JSplitPane();
+        split.setDividerLocation(200);
+        
+        //myCanvas = new Canvas();
+        leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBorder(new TitledBorder("Left Panel"));
+        
+        rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setBorder(new TitledBorder("Right Panel"));
+        
+        split.setLeftComponent(leftPanel);
+        split.setRightComponent(rightPanel);
+
+        
+        mainFrame.add(split, BorderLayout.CENTER);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+
     }
     
     @Override
@@ -94,5 +126,32 @@ public class LevelEditor implements ActionListener, ChangeListener, KeyListener 
             //newBtn.setBorderPainted(false);
             return newBtn;
     }
+    
+    private JMenuBar makeMenu() {
+        JMenuBar bar = new JMenuBar();
+        bar.add(makeFileMenu());
+        mainFrame.setJMenuBar(bar);
+        return bar;
+    }
 
+    @SuppressWarnings("serial")
+    private JMenu makeFileMenu () {
+        JMenu result = new JMenu("File");
+        result.add(new AbstractAction("New") { //this needs to come from language resources folder
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                // go to start page
+            }
+        });
+        result.add(new JSeparator());
+        result.add(new AbstractAction("Quit") {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                // end program
+                // System.exit(0);
+            }
+        });
+        return result;
+    }
+   
 }

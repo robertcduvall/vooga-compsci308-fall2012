@@ -2,15 +2,21 @@ package arcade.gui.panel.search;
 
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
+import arcade.gui.panel.ArcadePanel;
 
-public class SearchPanel extends ASearchPanel {
+/**
+ * 
+ * @author Michael Deng
+ * 
+ */
+public class NormSearchPanel extends ASearchPanel {
 
-    public SearchPanel (Arcade a) {
+    public NormSearchPanel (Arcade a) {
         super(a);
     }
 
     @Override
-    public JPanel createPanel () {
+    public ArcadePanel createPanel () {
         // TODO Auto-generated method stub
         return null;
     }

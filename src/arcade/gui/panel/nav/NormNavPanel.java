@@ -2,7 +2,7 @@ package arcade.gui.panel.nav;
 
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
-
+import arcade.gui.panel.ArcadePanel;
 
 /**
  * This will be the top navigation panel. This needs to be implemented.
@@ -10,14 +10,14 @@ import arcade.gui.Arcade;
  * @author Michael Deng
  * 
  */
-public class NavPanel extends ANavPanel {
+public class NormNavPanel extends ANavPanel {
 
-    public NavPanel (Arcade a) {
+    public NormNavPanel (Arcade a) {
         super(a);
     }
 
     @Override
-    public JPanel createPanel () {
+    public ArcadePanel createPanel () {
         // TODO Auto-generated method stub
         return null;
     }

@@ -2,6 +2,7 @@ package arcade.gamemanager;
 
 import arcade.IArcadeGame;
 import arcade.usermanager.GameData;
+import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
 
 
@@ -14,15 +15,17 @@ import arcade.usermanager.User;
  */
 public class GameSaver {
 
-    private User myUser;
+    private String myUserName;
     private IArcadeGame myGame;
+    private SocialCenter socialCenter;
 
     /**
      * Constructor for GameSaver.
      */
-    public GameSaver(User user, IArcadeGame game) {
-        myUser = user;
+    public GameSaver(String userName, IArcadeGame game) {
+        myUserName = userName;
         myGame = game;
+        socialCenter = new SocialCenter();
     }
 
     /**
@@ -31,18 +34,9 @@ public class GameSaver {
      * @param userGameInfo preferences
      */
     public void saveGameInfo (String userGameInfo) {
-//        /*
-        for (GameData gameData : myUser.getGameData()) {
-            if (gameData.getMyGameName() == myGame.getName()) {
-                gameData.setMyGameInfo(userGameInfo);
-                return;
-            }
-        }
-        
-        // gameData does not exist in the user: create a new GameData
-        GameData gameData = new GameData(myGame.getName(), userGameInfo, 0, 0);
-        myUser.getGameData().add(gameData);
-//        */
+
+        socialCenter.writeGameHistory(myGame.getName(), "gameInfo", userGameInfo);
+        // what happens if saving a new game? handled in SocialCenter?
 
     }
 
@@ -53,17 +47,8 @@ public class GameSaver {
      * @param score score to be saved
      */
     public void saveHighScore (int score) {
-//        /*
-        for (GameData gameData : myUser.getGameData()) {
-            if (gameData.getMyGameName() == myGame.getName()) {
-                gameData.setMyHighScore(score);
-                return;
-            }
-        }
+        // method to be implemented in SocialCenter?
+        //socialCenter.writeGameScore(myGame.getName(),"gameScore",score);
         
-        // gameData does not exist in the user: create a new GameData
-        GameData gameData = new GameData(myGame.getName(), "", score, 0);
-        myUser.getGameData().add(gameData);
-//        */
     }
 }

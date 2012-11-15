@@ -46,6 +46,14 @@ public class Canvas extends JApplet {
     }
 
     /**
+     * Sets up input listeners/controllers.
+     */
+    private void setInputListeners() {
+    	addMouseMotionListener(new MouseController());
+    	addKeyListener(new KeyboardController());
+    }
+    
+    /**
      * Starts the applet's action, i.e., starts the animation.
      */
     @Override
