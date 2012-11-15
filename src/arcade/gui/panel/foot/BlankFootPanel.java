@@ -20,7 +20,7 @@ public class BlankFootPanel extends AFootPanel {
 
         ArcadePanel myPanel = initializeNewPanel();
         myPanel.setBackground(Color.RED);
-        System.out.println("BlackFootPanel");
+        System.out.println("BlankFootPanel");
         
         return myPanel;
     }
