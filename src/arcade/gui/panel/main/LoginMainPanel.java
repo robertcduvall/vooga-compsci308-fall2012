@@ -4,6 +4,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import edu.cmu.relativelayout.Binding;
 import edu.cmu.relativelayout.BindingFactory;
@@ -32,19 +33,26 @@ public class LoginMainPanel extends AMainPanel {
         myPanel.setLayout(new RelativeLayout());
         BindingFactory bf = new BindingFactory();
 
-        Binding leftEdge = bf.leftEdge();
-        Binding topEdge = bf.topEdge();
-        Binding bottomEdge = bf.bottomEdge();
-        Binding rightEdge = bf.rightEdge();
-        RelativeConstraints imageConstraints = new RelativeConstraints();
-        imageConstraints.addBindings(leftEdge, topEdge, bottomEdge, rightEdge);
-        JTextField textField = new JTextField(20);
-        ImageIcon icon = new ImageIcon(ImageReader.loadImage("src/arcade/gui/images", "Arcade_logo2.png"));
-        JLabel picLabel = new JLabel(icon);
+        Binding userLeftEdge = bf.leftEdge();
+        Binding userTopEdge = bf.topEdge();
+        Binding userBottomEdge = bf.bottomEdge();
+        Binding userRightEdge = bf.rightEdge();
+        RelativeConstraints userConstraints = new RelativeConstraints();
+        userConstraints.addBindings(userLeftEdge, userTopEdge, userBottomEdge, userRightEdge);
         
-        myPanel.add(textField, imageConstraints);
 
-        myPanel.add(picLabel, imageConstraints);
+        JTextField userNameField = new JTextField(17);
+        myPanel.add(userNameField, userConstraints);
+
+        RelativeConstraints passwordConstraints = new RelativeConstraints();
+        Binding passLeftEdge = bf.leftEdge();
+        Binding passTopEdge = bf.below(userNameField);
+        Binding passBottomEdge = bf.bottomEdge();
+        Binding passRightEdge = bf.rightEdge();
+        passwordConstraints.addBindings(passLeftEdge, passTopEdge, passBottomEdge, passRightEdge);
+        JPasswordField passwordNameField = new JPasswordField(17);
+        myPanel.add(passwordNameField, passwordConstraints);
+
         return myPanel;
     }
 
