@@ -37,6 +37,10 @@ public class MapMode extends GameMode {
 	private int myCurrentTileHeight;
 	private Rectangle myCurrentCamera;
 
+	/**
+	 * Constructor of MapMode
+	 * @param gm the GameManager which manages the mode
+	 */
 	public MapMode(GameManager gm) {
 		super(gm);
 		myNumDisplayRows = Integer.parseInt(GameWindow
@@ -69,6 +73,11 @@ public class MapMode extends GameMode {
 		addGameObject(center, test1);
 	}
 
+	/**
+	 * add MapObject to the MapMode
+	 * @param p coordinate the MapObject shoulld be placed
+	 * @param s MapObject to be added
+	 */
 	public void addGameObject(Point p, MapObject s) {
 		if (mySprites.keySet().contains(p)) {
 			mySprites.get(p).add(s);
@@ -79,6 +88,10 @@ public class MapMode extends GameMode {
 		}
 	}
 
+	/**
+	 * paint the map
+	 * @param g Graphics onto which the map is drawn
+	 */
 	@Override
 	public void paint(Graphics g) {
 		int playerX = 0;
@@ -110,6 +123,9 @@ public class MapMode extends GameMode {
 				myCurrentTileHeight);
 	}
 
+	/**
+	 * update tile's width and height, which will change when the window is resized
+	 */
 	public void updateTileInfo() {
 		myCurrentTileWidth = getGM().getPaneDimension().width
 				/ myNumDisplayCols;
@@ -188,10 +204,21 @@ public class MapMode extends GameMode {
 		return new Point(x, y);
 	}
 
+	/**
+	 * get a list of MapObjects on the tile
+	 * @param i x-coordinate on the grid
+	 * @param j y-coordinate on the grid
+	 * @return a list of MapObjects on the tile
+	 */
 	private List<MapObject> getSpritesOnTile(int i, int j) {
 		return mySprites.get(new Point(i, j));
 	}
 
+	/**
+	 * move a MovingMapObject to a nearby tile in a specific direction
+	 * @param s MovingMapObject
+	 * @param dir direction it moves towards
+	 */
 	public void moveSprite(MovingMapObject s, Point dir) {
 		Point dest = myPlayer.getLocation(dir);
 		if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
@@ -208,6 +235,9 @@ public class MapMode extends GameMode {
 	}
 
 	@Override
+	/**
+	 * handle key pressed events specific to MapMode
+	 */
 	public void handleKeyPressed(KeyEvent e) {
 		// foreach sprite: s.handleKeyPressed(e); s.update();
 		int keyCode = e.getKeyCode();
@@ -231,17 +261,27 @@ public class MapMode extends GameMode {
 	}
 
 	@Override
+	/**
+	 * handle key released event specific to MapMode
+	 */
 	public void handleKeyReleased(KeyEvent e) {
 
 	}
 
 	@Override
+	/**
+	 * update the map
+	 */
 	public void update() {
 		updateTileInfo();
 		updateCameraPosition();
 		updateMapObjects();
 	}
 	
+	/**
+	 * initialize the origin point
+	 * @return origin point
+	 */
 	private Point initializeOrigin() {
 		return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
 	}
