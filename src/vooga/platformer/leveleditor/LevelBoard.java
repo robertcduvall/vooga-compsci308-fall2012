@@ -99,15 +99,23 @@ public class LevelBoard extends Canvas implements ISavable {
         myMouseListener = mouseListener;
         addMouseMotionListener(mouseListener);
     }
-    
+
+    /**
+     * Passes the MouseListener to any components that need it.
+     * 
+     * @return MouseListener attached to component
+     */
     public MouseListener getMouseListener() {
         return myMouseListener;
     }
 
+    /**
+     * Updates the buffer preparing for the next paint call.
+     */
     public void update() {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-                myBufferGraphics.drawImage(
-                        myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+        myBufferGraphics.drawImage(
+                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
             myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
@@ -115,12 +123,13 @@ public class LevelBoard extends Canvas implements ISavable {
         for (Sprite s : mySprites) {
             s.paint(myBufferGraphics);
         }
-        myBufferGraphics.setColor(Color.WHITE);
-        for (int i = 0; i < 100; i++) {
-
-        }
     }
 
+    /**
+     * Paints the most recent iteration of the buffer to the Canvas.
+     * 
+     * @param g Graphics attached to level.
+     */
     public void paint(Graphics g) {
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
     }
@@ -133,8 +142,11 @@ public class LevelBoard extends Canvas implements ISavable {
 
     @Override
     public void load(URL path) {
-        // TODO Auto-generated method stub
-
+System.out.println("you've done enough for today");
+    }
+    
+    public void clear() {
+        mySprites.clear();
     }
 
     /**

@@ -20,6 +20,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ import vooga.platformer.gui.menu.GameListener;
  */
 @SuppressWarnings("serial")
 public class LevelEditor extends JFrame{
+    private static final Dimension BUTTON_BAR_SIZE = new Dimension(50, 150);
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> mySpriteTypes;
@@ -62,6 +64,11 @@ public class LevelEditor extends JFrame{
         new LevelEditor();
     }
 
+    /**
+     * Frame containing all the elements needed to save, load, and create 
+     * levels. Allows users to drag and drop sprites onto a level as well
+     * as set the background image.
+     */
     public LevelEditor() {
         super("LevelEditor");
         myGameIsRunning = true;
@@ -142,7 +149,7 @@ public class LevelEditor extends JFrame{
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
         subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
-        subpanel.setPreferredSize(new Dimension(50, 150));
+        subpanel.setPreferredSize(BUTTON_BAR_SIZE);
         for (String sprite : mySpriteTypes.keySet()) {
             subpanel.add(createButton(sprite));
         }
@@ -213,13 +220,26 @@ public class LevelEditor extends JFrame{
         myViewPane.add(bar, BorderLayout.NORTH);
     }
     protected void newLevel () {
-        System.out.println("New Level");
+        myBoard = new LevelBoard(DEFAULT_FRAME_SIZE);
+        myViewPane.addMouseListener(myBoard.getMouseListener());
     }
     protected void clear () {
-        System.out.println("Clear pallet");
+        myBoard.clear();
     }
     protected void load () {
-        System.out.println("Load existing level");
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "XML Level files", "xml");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(chooser);
+        if (returnVal == JFileChooser.APPROVE_OPTION)  {
+            try {
+                myBoard.load(new URL(chooser.getSelectedFile().getPath()));
+            }
+            catch (IOException io) {
+                System.out.println("File not found. Try again");
+            }
+        }
     }
     private void fillMap() {
         mySpriteTypes = new HashMap<String, List<String>>();
