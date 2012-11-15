@@ -1,7 +1,6 @@
 package util.input.core;
 
-
-import util.input.input_utils.UKeyCode;
+import util.input.inputhelpers.UKeyCode;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -17,13 +16,15 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
+
 /**
  * This class allows users to enter input through the Wiimote
  * 
  * @author Amay
  *
  */
-public class WiiController extends Controller<WiimoteListener> implements WiimoteListener {
+public class WiiController extends Controller<WiimoteListener> implements
+        WiimoteListener {
 
     public static final int BUTTON_PRESSED = 51;
     public static final int BUTTON_HELD = 53;
@@ -48,94 +49,97 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     public WiiController(Wiimote wii) {
         wii.addWiiMoteEventListeners(this);
     }
-    
+
     @Override
-    public void onButtonsEvent (WiimoteButtonsEvent arg0) {
-        // Look up the table of acitons and if arg0 is there then invoke specific action
+    public void onButtonsEvent(WiimoteButtonsEvent arg0) {
+        // Look up the table of acitons and if arg0 is there then invoke
+        // specific action
         try {
             if (arg0.getButtonsJustPressed() > 0) {
-                performReflections(arg0, "onButtonsEvent", UKeyCode.codify(BUTTON_PRESSED,
-                        arg0.getButtonsJustPressed()));
+                performReflections(
+                        arg0,
+                        "onButtonsEvent",
+                        UKeyCode.codify(BUTTON_PRESSED,
+                                arg0.getButtonsJustPressed()));
             }
             if (arg0.getButtonsJustReleased() > 0) {
-                performReflections(arg0, "onButtonsEvent", UKeyCode.codify(BUTTON_RELEASED,
-                        arg0.getButtonsJustReleased()));
+                performReflections(
+                        arg0,
+                        "onButtonsEvent",
+                        UKeyCode.codify(BUTTON_RELEASED,
+                                arg0.getButtonsJustReleased()));
             }
             if (arg0.getButtonsHeld() > 0) {
-                performReflections(arg0, "onButtonsEvent", UKeyCode.codify(BUTTON_HELD,
-                        arg0.getButtonsHeld()));
+                performReflections(arg0, "onButtonsEvent",
+                        UKeyCode.codify(BUTTON_HELD, arg0.getButtonsHeld()));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    @Override
-    public void onMotionSensingEvent (MotionSensingEvent arg0) {
-        // Based on the data invoke up motion, down motion, left motion or right motion
-    }
-     
 
     @Override
-    public void onClassicControllerInsertedEvent (
+    public void onMotionSensingEvent(MotionSensingEvent arg0) {
+        // Based on the data invoke up motion, down motion, left motion or right
+        // motion
+    }
+
+    @Override
+    public void onClassicControllerInsertedEvent(
             ClassicControllerInsertedEvent arg0) {
-        // TODO Auto-generated method stub
-        
+
     }
 
     @Override
-    public void onClassicControllerRemovedEvent (
+    public void onClassicControllerRemovedEvent(
             ClassicControllerRemovedEvent arg0) {
-        // TODO Auto-generated method stub
-        
+
+
     }
 
     @Override
-    public void onDisconnectionEvent (DisconnectionEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onDisconnectionEvent(DisconnectionEvent arg0) {
+
+
     }
 
     @Override
-    public void onExpansionEvent (ExpansionEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onExpansionEvent(ExpansionEvent arg0) {
+
+
     }
 
     @Override
-    public void onGuitarHeroInsertedEvent (GuitarHeroInsertedEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
+
+
     }
 
     @Override
-    public void onGuitarHeroRemovedEvent (GuitarHeroRemovedEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
+
+
     }
 
     @Override
-    public void onIrEvent (IREvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onIrEvent(IREvent arg0) {
+
+
     }
 
     @Override
-    public void onNunchukInsertedEvent (NunchukInsertedEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
+
+
     }
 
     @Override
-    public void onNunchukRemovedEvent (NunchukRemovedEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
+
     }
 
     @Override
-    public void onStatusEvent (StatusEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    public void onStatusEvent(StatusEvent arg0) {
+
     }
 }

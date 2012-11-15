@@ -20,9 +20,11 @@ import javax.microedition.io.StreamConnectionNotifier;
 public class WaitThread implements Runnable{
     
     private UUID myServerID;
+    private AndroidBluetoothServer myServer;
     
     /** Constructor */
-    public WaitThread(int controllerNumber) {
+    public WaitThread(int controllerNumber, AndroidBluetoothServer server) {
+        myServer = server;
         determineServerID(controllerNumber);
     }
 
@@ -81,7 +83,7 @@ public class WaitThread implements Runnable{
             try {
                 System.out.println("waiting for connection...");
                 connection = notifier.acceptAndOpen();
-                Thread processThread = new Thread(new ProcessConnectionThread(connection));
+                Thread processThread = new Thread(new ProcessConnectionThread(connection, myServer));
                 processThread.start();
 
             } catch (Exception e) {

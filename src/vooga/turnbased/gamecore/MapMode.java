@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+/**
+ * Map Mode on which players move around and interact with other game objects
+ * 
+ * @author Rex, Volodymyr
+ */
+>>>>>>> master
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
@@ -317,6 +325,7 @@ public class MapMode extends GameMode {
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * initialize the origin point
 	 * 
@@ -325,6 +334,11 @@ public class MapMode extends GameMode {
 	private Point initializeOrigin() {
 		return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
 	}
+=======
+    public MapMode(GameManager gm) {
+        super(gm);
+    }
+>>>>>>> master
 
 	public void handleMouseClicked(MouseEvent e) {
 		// right click

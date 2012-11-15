@@ -26,6 +26,11 @@ public class AndroidGameBoyCommandProcessor implements AndroidCommandProcessor {
                     // release the key after it is pressed. Otherwise the event just keeps getting trigged                      
                     robot.keyRelease(KeyEvent.VK_LEFT);
                     break;
+                default:
+                    System.out.println(command);
+                    break;
+                
+                        
             }
         } catch (Exception e) {
             e.printStackTrace();

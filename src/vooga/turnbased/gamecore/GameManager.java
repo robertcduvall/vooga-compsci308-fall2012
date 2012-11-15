@@ -7,6 +7,7 @@
  */
 package vooga.turnbased.gamecore;
 
+<<<<<<< HEAD
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -133,4 +134,53 @@ public class GameManager {
 	public enum GameEvent {
 		MAP_COLLISION, NO_ACTION
 	}
+=======
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
+import vooga.turnbased.gameobject.Sprite;
+import vooga.turnbased.gui.GameCanvas;
+
+
+public class GameManager implements Observer {
+
+    private final GameCanvas myGameCanvas;
+    private HashMap<Sprite, Point> mySprites;
+    private final GameMode myCurrentGameMode;
+    private Factory myFactory;
+    private Sprite myPlayer;
+    private final boolean isOver;
+
+    /**
+     * Constructor of GameManager
+     * 
+     * @param gameCanvas The GameCanvas it paints to
+     */
+    public GameManager(GameCanvas gameCanvas) {
+        myGameCanvas = gameCanvas;
+        isOver = false;
+        // mySprites =
+        // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
+        myCurrentGameMode = new MapMode(this);
+        // myCurrentGameMode.initializeMap();
+    }
+
+    public boolean isOver() {
+        return isOver;
+    }
+
+    public void update() {
+
+    }
+
+    public void paint() {
+
+    }
+
+    @Override
+    public void update(Observable arg0, Object arg1) {
+        // TODO: Receive notifications from GameModes.
+    }
+>>>>>>> master
 }
