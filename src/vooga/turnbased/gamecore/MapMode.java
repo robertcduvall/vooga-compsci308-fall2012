@@ -11,6 +11,7 @@ import java.util.List;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gameobject.MapTileObject;
+import vooga.turnbased.gameobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
 /**
@@ -25,6 +26,7 @@ public class MapMode extends GameMode {
 	public static final Point DOWN = new Point(0, 1);
 	public static final Point LEFT = new Point(-1, 0);
 	private final int ID = 0;
+	private boolean myIsFixedPlayer;
 	private int myNumDisplayRows;
 	private int myNumDisplayCols;
 	private HashMap<Point, List<MapObject>> mySprites;
@@ -52,8 +54,7 @@ public class MapMode extends GameMode {
 			for (int j = 0; j < myBottomRightCorner.y; j++) {
 				Point p = new Point(i, j);
 				addGameObject(
-						p,
-						new MapTileObject(ID, p, GameWindow
+						p, new MapTileObject(ID, p, GameWindow
 								.importImage("GrassImage")));
 			}
 		}
@@ -61,6 +62,11 @@ public class MapMode extends GameMode {
 		myPlayer = new MapPlayerObject(ID, center,
 				GameWindow.importImage("PlayerImage"));
 		addGameObject(center, myPlayer);
+		
+		center = new Point(1, 1);
+		MovingMapObject test1 = new MovingMapObject(ID, center,
+				GameWindow.importImage("something"));
+		addGameObject(center, test1);
 	}
 
 	public void addGameObject(Point p, MapObject s) {
@@ -81,7 +87,7 @@ public class MapMode extends GameMode {
 		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
 			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
 				List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
-				int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth
+				int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth 
 						+ myOrigin.x;
 				int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight
 						+ myOrigin.y;
@@ -112,26 +118,56 @@ public class MapMode extends GameMode {
 		myOrigin = initializeOrigin();
 	}
 
+	/**
+	 * move the camera according to player's movement
+	 * do not move when player reaches the edge
+	 */
 	private void updateCameraPosition() {
-		
-		Point playerCoord = myPlayer.getPreviousLocation();
-		myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1)
-				/ 2 - 1, playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
-				myNumDisplayCols + 2, myNumDisplayRows + 2);
-		
 		Point displacement = myPlayer
-				.calcScreenDisplacement(myCurrentTileWidth,
-						myCurrentTileHeight, getGM().getDelayTime());
-		myOrigin.x += displacement.x;
-		myOrigin.y += displacement.y;
-		if (myOrigin.x == 0) {
-			myOrigin = initializeOrigin();
+				.calcScreenDisplacement(myCurrentTileWidth,	myCurrentTileHeight);
+		Point topLeftCoord = calculateTopLeftCoordinate();
+		if (topLeftCoord.x <= 0) {
+			topLeftCoord.x = 0;  //player near the left/right boundary
+			displacement.x = 0;  //screen fixed when player moves to the edge
 		}
+		if (topLeftCoord.y <= 0) {
+			topLeftCoord.y = 0;  //player near the top/bottom boundary
+			displacement.y = 0;
+		}
+		myCurrentCamera = new Rectangle(topLeftCoord.x - 1, topLeftCoord.y - 1,
+				myNumDisplayCols + 2, myNumDisplayRows + 2);
+		myOrigin = changeOriginForPlayer(displacement);
 		for (Point p : mySprites.keySet()) {
 			for (MapObject s : getSpritesOnTile(p.x, p.y)) {
 				s.update(getGM().getDelayTime());
 			}
 		}
+	}
+	
+	/**
+	 * change the top left corner of the screen when the player moves
+	 * @param displacement the displacement of the screen
+	 * @return new origin point
+	 */
+	private Point changeOriginForPlayer(Point displacement) {
+		Point result = new Point( myOrigin.x + displacement.x, myOrigin.y + displacement.y);
+		if (result.x == 0) { //screen movement done!
+			result = initializeOrigin();
+		}
+		return result;
+	}
+	
+	/**
+	 * calculate top left corner coordinate
+	 * @return
+	 */
+	private Point calculateTopLeftCoordinate() {
+		myIsFixedPlayer = true;
+		int x = myPlayer.getPreviousLocation().x;
+		int y = myPlayer.getPreviousLocation().y;
+		x -= (myNumDisplayCols - 1) / 2;
+		y -= (myNumDisplayRows - 1) / 2;
+		return new Point(x, y);
 	}
 
 	private List<MapObject> getSpritesOnTile(int i, int j) {

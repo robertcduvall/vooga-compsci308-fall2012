@@ -39,7 +39,7 @@ public class MovingMapObject extends MapObject{
         myPreviousLocation = getLocation();
     }
     
-    public Point calcScreenDisplacement(int tileWidth, int tileHeight, int delayTime) {
+    public Point calcScreenDisplacement(int tileWidth, int tileHeight) {
     	myXOriginInTile = (int)(tileWidth * myXProportion);
     	myYOriginInTile = (int)(tileHeight * myYProportion);
     	//System.out.println(-myXOriginInTile + " " + -myYOriginInTile);
@@ -53,7 +53,7 @@ public class MovingMapObject extends MapObject{
     	}
     	myXProportion = myDirection.x * ((double)myTimePassed / myMovementTimePerTile);
     	myYProportion = myDirection.y * ((double)myTimePassed / myMovementTimePerTile);
-    	if (myTimePassed == myMovementTimePerTile) { //stop movements
+    	if (myTimePassed >= myMovementTimePerTile) { //stop movements
     		finishMovement();
     	}
     }
@@ -75,6 +75,7 @@ public class MovingMapObject extends MapObject{
     
     @Override
     public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
+    	calcScreenDisplacement(width, height);
     	g.drawImage(getMapImage(), xOffset - myDirection.x * width + myXOriginInTile,
     			yOffset - myDirection.y * height + myYOriginInTile, width, height, null);
     }

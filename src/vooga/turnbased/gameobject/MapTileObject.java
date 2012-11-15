@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+/**
+ * This class is a bit stupid
+ */
 public class MapTileObject extends MapObject {
 
     public MapTileObject(int id, Point location, Image mapImage) {

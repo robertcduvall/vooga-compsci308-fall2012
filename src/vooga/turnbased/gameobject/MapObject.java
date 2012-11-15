@@ -56,8 +56,7 @@ public abstract class MapObject extends GameObject {
         return myImage;
     }
     
-    public void interact() {
-        
+    public void interact(MapObject target) {
     }
     
     @Override

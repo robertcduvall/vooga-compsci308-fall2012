@@ -47,7 +47,7 @@ public class GamePane extends DisplayPane implements Runnable {
     }
 
     /**
-     * override to implement buffer for painting objects
+     * update game
      */
     @Override
     public void update(Graphics g) {
@@ -55,7 +55,7 @@ public class GamePane extends DisplayPane implements Runnable {
     }
     
     /**
-     * Paint gameobjects and background to the canvas
+     * Paint gameobjects and background to the canvas using double buffering
      */
     //@Override
     public void paint(Graphics g) {
