@@ -1,5 +1,6 @@
 package vooga.platformer.collision;
 
+import java.awt.geom.Rectangle2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +13,14 @@ import vooga.platformer.level.Level;
  * CollisionEvents
  * for each collision detected on the screen
  * 
- * @author Bruce
+ * @author Bruce, revised by Yaqi
+ * 
  * 
  */
 public abstract class CollisionChecker {
     private Map<String, HashMap<String, String>> collisionEventsMap = new HashMap<String, HashMap<String, String>>();
+    private GameObject myObjA;
+    private GameObject myObjB;
 
     /**
      * This method detects collisions for all the GameObjects within the Level
@@ -26,7 +30,7 @@ public abstract class CollisionChecker {
      * @param level
      * @return
      */
-    public abstract Iterable<CollisionEvent> checkCollisions(Level level);
+    public abstract void checkCollisions (Level level);
 
     /**
      * This method takes two colliding objects and return the corresponding
@@ -37,14 +41,17 @@ public abstract class CollisionChecker {
      * @param b
      * @return
      */
-    public CollisionEvent buildCollisionEvent(GameObject a, GameObject b) {
+    public CollisionEvent buildCollisionEvent (GameObject a, GameObject b) {
         String className;
+        myObjA = a;
+        myObjB = b;
 
         if (a.getClass().getCanonicalName()
                 .compareTo(b.getClass().getCanonicalName()) < 0) {
             className = collisionEventsMap.get(a.getClass().getCanonicalName())
                     .get(b.getClass().getCanonicalName());
-        } else {
+        }
+        else {
             className = collisionEventsMap.get(b.getClass().getCanonicalName())
                     .get(a.getClass().getCanonicalName());
         }
@@ -54,29 +61,44 @@ public abstract class CollisionChecker {
         try {
             c = (CollisionEvent) Class.forName(className).getConstructor()
                     .newInstance(a, b);
-        } catch (NoSuchMethodException e) {
+        }
+        catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (SecurityException e) {
+        }
+        catch (SecurityException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (InstantiationException e) {
+        }
+        catch (InstantiationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         return c;
+    }
+
+    /**
+     * @author Yaqi Zhang
+     */
+    public boolean isCollide () {
+        if (myObjB.getShape().intersects(myObjA.getShape())) { return true; }
+        return false;
     }
 }

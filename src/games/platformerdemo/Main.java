@@ -2,6 +2,7 @@ package games.platformerdemo;
 
 import javax.swing.JFrame;
 import vooga.platformer.core.Controller;
+import vooga.platformer.core.GameInitializer;
 
 /**
  * A class that creates a JFrame to hold the Game object

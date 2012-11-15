@@ -104,12 +104,7 @@ public abstract class Level {
             objectList.remove(removeObj);
         }
         
-        Iterable<CollisionEvent> collisionList = myCollisionChecker.checkCollisions(this);
-        for (CollisionEvent ce : collisionList) {
-            if (ce != null) {
-                ce.applyCollision(this);
-            }
-        }
+        myCollisionChecker.checkCollisions(this);
         
     }
 

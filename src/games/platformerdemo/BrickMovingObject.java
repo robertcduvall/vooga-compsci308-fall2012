@@ -1,37 +1,35 @@
 package games.platformerdemo;
 
-import java.awt.geom.Rectangle2D;
 import vooga.platformer.collision.CollisionEvent;
-import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.CollisionDirection;
 
-public class BrickMovingObject extends CollisionEvent{
-    
-    private Brick myBrick;
+
+/**
+ * @author Niel, modified by Yaqi
+ */
+public class BrickMovingObject extends CollisionEvent {
+
     private MovingObject myMovingObject;
 
     public BrickMovingObject (Brick a, MovingObject b) {
         super(a, b);
-        myBrick = (Brick) this.a();
         myMovingObject = (MovingObject) this.b();
     }
-    
+
     public BrickMovingObject (MovingObject a, Brick b) {
         super(b, a);
-        myBrick = (Brick) this.a();
         myMovingObject = (MovingObject) this.b();
     }
 
     @Override
     public void applyCollision (Level level) {
-        Rectangle2D intersection = myBrick.getShape()
-                .createIntersection(myMovingObject.getShape());
-        double dy = intersection.getHeight();
-        double dx = intersection.getWidth();
-        
+        double dy = getIntersectSize().getHeight();
+        double dx = getIntersectSize().getWidth();
+
         if (this.direction() == CollisionDirection.DOWN) {
             myMovingObject.setY(myMovingObject.getY() - dy);
+            myMovingObject.setVelocity(myMovingObject.getVelocity().getX(), 0);
         }
         else if (this.direction() == CollisionDirection.UP) {
             myMovingObject.setY(myMovingObject.getY() + dy);
@@ -42,6 +40,11 @@ public class BrickMovingObject extends CollisionEvent{
         else if (this.direction() == CollisionDirection.LEFT) {
             myMovingObject.setX(myMovingObject.getX() + dx);
         }
+
+        // Over here I print out the direction. You can see the problem is that
+        // when player and enemy first hit the ground, it detects the direction
+        // to be left instead of down.
+        System.out.println(direction());
     }
 
 }
