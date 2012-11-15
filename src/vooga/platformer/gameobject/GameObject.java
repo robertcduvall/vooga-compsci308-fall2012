@@ -1,6 +1,7 @@
 package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public abstract class GameObject {
     private double width;
     private double height;
 
-    private GameObject() {
+    private GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
     }
 
@@ -34,7 +35,7 @@ public abstract class GameObject {
      * @param inX starting x position
      * @param inY starting y position
      */
-    public GameObject(double inX, double inY, double inWidth, double inHeight) {
+    public GameObject (double inX, double inY, double inWidth, double inHeight) {
         this();
         x = inX;
         y = inY;
@@ -43,11 +44,14 @@ public abstract class GameObject {
     }
 
     /**
-     * @param configString containing key-value pairs for the GameObject's parameters. The
-     * config string should contain a sequence of these pairs separated by commas (','), and within
-     * each pair, the key should be separated from the value by an '=' character.
+     * @param configString containing key-value pairs for the GameObject's
+     *        parameters. The
+     *        config string should contain a sequence of these pairs separated
+     *        by commas (','), and within
+     *        each pair, the key should be separated from the value by an '='
+     *        character.
      */
-    public GameObject(String configString) {
+    public GameObject (String configString) {
         this();
         Map<String, String> configMap = parseConfigString(configString);
         x = Double.parseDouble(configMap.get("x"));
@@ -56,7 +60,7 @@ public abstract class GameObject {
         height = Double.parseDouble(configMap.get("height"));
     }
 
-    protected Map<String, String> parseConfigString(String configString) {
+    protected Map<String, String> parseConfigString (String configString) {
         Map<String, String> configMap = new HashMap<String, String>();
         String[] pairs = configString.split(",");
         for (String entry : pairs) {
@@ -66,19 +70,19 @@ public abstract class GameObject {
         return configMap;
     }
 
-    public double getX() {
+    public double getX () {
         return x;
     }
 
-    public double getY() {
+    public double getY () {
         return y;
     }
 
-    public void setX(double inX) {
+    public void setX (double inX) {
         x = inX;
     }
 
-    public void setY(double inY) {
+    public void setY (double inY) {
         y = inY;
     }
 
@@ -87,7 +91,7 @@ public abstract class GameObject {
      * 
      * @param strat
      */
-    public void addStrategy(UpdateStrategy strat) {
+    public void addStrategy (UpdateStrategy strat) {
         strategyList.add(strat);
     }
 
@@ -96,7 +100,7 @@ public abstract class GameObject {
      * 
      * @param strat
      */
-    public void removeStrategy(UpdateStrategy strat) {
+    public void removeStrategy (UpdateStrategy strat) {
         strategyList.remove(strat);
     }
 
@@ -105,7 +109,7 @@ public abstract class GameObject {
      * 
      * @return the strategy list
      */
-    protected Iterable<UpdateStrategy> getStrategyList() {
+    protected Iterable<UpdateStrategy> getStrategyList () {
         return strategyList;
     }
 
@@ -114,7 +118,7 @@ public abstract class GameObject {
      * 
      * @param elapsedTime time duration of the update cycle
      */
-    public void update(Level level, long elapsedTime) {
+    public void update (Level level, long elapsedTime) {
         for (UpdateStrategy us : strategyList) {
             us.applyAction();
         }
@@ -125,7 +129,7 @@ public abstract class GameObject {
      * 
      * @param pen Graphics object to paint on
      */
-    public void paint(Graphics pen, Camera cam) {
+    public void paint (Graphics pen, Camera cam) {
         double x = getX();
         double y = getY();
         Rectangle2D rect = cam.getBounds();
@@ -133,21 +137,23 @@ public abstract class GameObject {
         double yOffset = rect.getY();
 
         if (getShape().intersects(rect)) {
-            pen.drawImage(getCurrentImage(), (int) (x - xOffset),
-                    (int) (y - yOffset), null);
+            pen.drawImage(
+                    getCurrentImage().getScaledInstance((int) width,
+                            (int) height, Image.SCALE_DEFAULT),
+                    (int) (x - xOffset), (int) (y - yOffset), null);
         }
     }
 
     /**
      * @return the current Image of this GameObject
      */
-    public abstract Image getCurrentImage();
+    public abstract Image getCurrentImage ();
 
     /**
      * Mark the GameObject for removal by the Level. The level should delete
      * all marked GameObjects at the end of the update cycle.
      */
-    public void markForRemoval() {
+    public void markForRemoval () {
         removeFlag = true;
     }
 
@@ -156,7 +162,7 @@ public abstract class GameObject {
      * 
      * @return true if the GameObject is marked for removal
      */
-    public boolean checkForRemoval() {
+    public boolean checkForRemoval () {
         return removeFlag;
     }
 
@@ -165,7 +171,8 @@ public abstract class GameObject {
      * 
      * @return GameObject's bounds.
      */
-    public Rectangle2D getShape() {
+    public Rectangle2D getShape () {
         return new Rectangle2D.Double(x, y, width, height);
     }
+
 }

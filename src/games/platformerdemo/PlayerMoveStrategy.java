@@ -1,9 +1,8 @@
 package games.platformerdemo;
 
-import vooga.platformer.gameobject.UpdateStrategy;
-
 
 /**
+ * Any Player Move Strategy Should extends this Strategy.
  * @author Yaqi Zhang
  * 
  */
@@ -22,8 +21,9 @@ public class PlayerMoveStrategy extends SimpleMoveStrategy {
     /**
      * 
      */
-    public void jump () {
-        myPlayer.setVelocity(myPlayer.getVelocity().getX(), -VELOCITY);
+    public void fly () {
+        myPlayer.setVelocity(myPlayer.getVelocity().getX(), -1);
+        // This behave more like a fly than a jump
         // TODO: need to make sure this jump() will only be called once even if
         // the player keeps pressing jump button.
     }
