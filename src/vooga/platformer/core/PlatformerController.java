@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 import util.input.core.Controller;
+import util.input.core.KeyboardController;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
@@ -19,7 +20,7 @@ public class PlatformerController extends JPanel implements Runnable {
     //TODO: Make this variable hold a LevelFactory
     private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
-    private Controller myInputController;
+    private KeyboardController myInputController;
     
     private Thread animator;
 
@@ -49,7 +50,7 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
     
-    public void setInputController(Controller ic) {
+    public void setInputController(KeyboardController ic) {
         myInputController = ic;
         myCurrentLevel.setInputController(myInputController);
     }

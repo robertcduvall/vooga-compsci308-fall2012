@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import util.camera.Camera;
 import util.input.core.Controller;
+import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
@@ -149,5 +150,5 @@ public abstract class Level {
      * can set up the InputController correctly.
      * @param myInputController
      */
-    public abstract void setInputController (Controller myInputController);
+    public abstract void setInputController (KeyboardController myInputController);
 }

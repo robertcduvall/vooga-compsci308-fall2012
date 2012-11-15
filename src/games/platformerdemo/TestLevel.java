@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import util.camera.Camera;
 import util.input.core.Controller;
+import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
@@ -47,11 +48,12 @@ public class TestLevel extends Level {
     }
 
     @Override
-    public void setInputController (Controller ic) {
+    public void setInputController (KeyboardController ic) {
         try {
-            ic.setControl(KeyEvent.VK_LEFT, 0, myPlayer, "moveLeft()");
+            ic.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myPlayer, "moveLeft()");
         }
         catch (NoSuchMethodException e) {
+            System.out.println("Error setting up input");
         }
     }
 }

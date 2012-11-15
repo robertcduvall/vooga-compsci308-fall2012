@@ -18,7 +18,7 @@ public class Main {
         JFrame f = new JFrame("Demo Game");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController pc = new PlatformerController(new DemoLevelFactory(), new DemoInitializer());
-        Controller testController = new KeyboardController(pc);
+        KeyboardController testController = new KeyboardController(pc);
         pc.setInputController(testController);
         f.add(pc);
         f.pack();
