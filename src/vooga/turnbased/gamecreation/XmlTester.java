@@ -22,7 +22,7 @@ public class XmlTester {
         NodeList dimensionList = parser.getElementsByName(root, "dimension");
         Element dimension = (Element) dimensionList.item(0);
         System.out.println("  " + dimension.getNodeName());
-        String width = parser.getTextContent(dimension, "width");
+        int width = parser.getIntContent(dimension, "width");
         String height = parser.getTextContent(dimension, "height");
         System.out.println("    width: " + width);
         System.out.println("    height: " + height);

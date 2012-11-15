@@ -113,7 +113,7 @@ public class XmlParser {
      */
     public int getIntContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        return Integer.parseInt(list.item(0).toString());
+        return Integer.parseInt(list.item(0).getTextContent());
     }
 
     /**
@@ -124,6 +124,6 @@ public class XmlParser {
      */
     public double getDoubleContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        return Double.parseDouble(list.item(0).toString());
+        return Double.parseDouble(list.item(0).getTextContent());
     }
 }
