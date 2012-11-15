@@ -1,9 +1,14 @@
 package vooga.shooter.gameplay;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
 import java.util.List;
+import javax.swing.ImageIcon;
 import util.input.core.KeyboardController;
 import vooga.shooter.gameObjects.Enemy;
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.implementation.Level1;
@@ -12,18 +17,25 @@ import vooga.shooter.level_editor.Level;
 
 /**
  * Initializes the top-down shooter game and owns all sprites and levels
- * initiated throughout the course of the game.  
+ * initiated throughout the course of the game.
  * 
  * @author Tommy Petrilak
  * 
  */
 public class Game {
     private List<Sprite> mySprites;
+    private Player myPlayer;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
+    private Image playerImage;
+    private ImageIcon imageIcon;
 
     private void initializeGame (Canvas c) {
+        imageIcon = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
+        playerImage = imageIcon.getImage();
+        myPlayer = new Player(new Point(400, 300), new Dimension(20, 20), playerImage, 10);
+        addSprite(myPlayer);
         Level firstLevel = new Level1(this);
         myCanvas = c;
         startLevel(firstLevel);
@@ -34,20 +46,19 @@ public class Game {
         update();
     }
 
-    private void update () {
+    public void update () {
         // will work when Levels contain winning conditions
         // if (myCurrentLevel.winningConditionsMet(this)) {
-        //      startLevel(myCurrentLevel.myNextLevel());
+        // startLevel(myCurrentLevel.myNextLevel());
         // }
-        
+
         for (Sprite s : getSprites()) {
             s.update(myCanvas);
         }
 
-       
     }
 
-    private void paint (Graphics pen) {
+    public void paint (Graphics pen) {
         for (Sprite s : getSprites()) {
             s.paint(pen);
         }
@@ -62,7 +73,7 @@ public class Game {
     public void addSprite (Sprite sprite) {
         getSprites().add(sprite);
     }
-    
+
     /**
      * Add a sprite to the list of sprites currently existing in the Game.
      * 
