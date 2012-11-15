@@ -56,7 +56,6 @@ public class LevelEditor extends JFrame{
     private JPanel myViewPane;
     private boolean myGameIsRunning;
     private LevelBoard myBoard;
-    private MouseListener myMouseListener;
     private KeyListener myKeyListener;
     private GameListener myGameListener;
     public static void main (String[] args) {
@@ -130,6 +129,7 @@ public class LevelEditor extends JFrame{
         };
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
+        panel.addMouseListener(myBoard.getMouseListener());
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
@@ -165,7 +165,7 @@ public class LevelEditor extends JFrame{
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
-                    Sprite s = new Sprite(event.getActionCommand(), x, y, 20, 20, 
+                    Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40, 
                             IMAGE_PATH + event.getActionCommand() + ".png");
                     myBoard.add(s);
                 }
@@ -176,26 +176,25 @@ public class LevelEditor extends JFrame{
     }
     private void createTopMenu () {
         JMenuBar bar = new JMenuBar();
-        JMenu fileMenu = new JMenu("Level");
-        fileMenu.add(new AbstractAction("Load") {
+        JMenu levelMenu = new JMenu("Level");
+        levelMenu.add(new AbstractAction("Load") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 load();
             }
         });
-        fileMenu.add(new AbstractAction("Clear") {
+        levelMenu.add(new AbstractAction("Clear") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 clear();
             }
         });
-        fileMenu.add(new AbstractAction("New") {
+        levelMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 newLevel();
             }
         });
-        fileMenu.addMouseListener(myMouseListener);
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("Load") {
             @Override
@@ -209,7 +208,7 @@ public class LevelEditor extends JFrame{
                 newLevel();
             }
         });
-        bar.add(fileMenu);
+        bar.add(levelMenu);
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);
     }

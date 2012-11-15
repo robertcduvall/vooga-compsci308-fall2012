@@ -92,8 +92,7 @@ public class Sprite {
     public void paint (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 
-                0, 0, myWidth, myHeight, null);
-        g2d.setColor(Color.WHITE);
+                0, 0, myImage.getWidth(null), myImage.getHeight(null), null);
     }
 
     /**

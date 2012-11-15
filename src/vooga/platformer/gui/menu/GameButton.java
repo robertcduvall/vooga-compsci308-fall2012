@@ -113,7 +113,9 @@ public class GameButton extends JComponent {
                 changeImage("pressed");
                 try {
                     myGameListener.actionPerformed(arg0);
-                } catch (NullPointerException e) {
+                } 
+                catch (NullPointerException e) {
+                    System.out.println("no pressed button image");
                 }
             }
 
