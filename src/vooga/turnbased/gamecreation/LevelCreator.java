@@ -38,7 +38,8 @@ public class LevelCreator {
      * @return The Dimension of the Level
      */
     public Dimension parseDimension () {
-        NodeList dimensionList = myXmlParser.getElementsByName(myDocumentElement, "dimension");
+        NodeList dimensionList = myXmlParser.getElementsByName(
+                myDocumentElement, "dimension");
         Element dimension = (Element) dimensionList.item(0);
         int width = myXmlParser.getIntContent(dimension, "width");
         int height = myXmlParser.getIntContent(dimension, "height");
@@ -50,7 +51,8 @@ public class LevelCreator {
      * @return Background Image of the Level
      */
     public Image parseBackgroundImage () {
-        return myXmlParser.getImageContent(myDocumentElement, "backgroundImage");
+        return myXmlParser.getImageContent(
+                myDocumentElement, "backgroundImage");
     }
 
     /**
@@ -65,6 +67,8 @@ public class LevelCreator {
      * Used to check for all required elements of the XML file.
      */
     private void validateXml () {
-        // TODO: check if all required elements of a level are available in Xml
+        // Check if all required elements of a level are available in Xml
+        // Do we need this? Are there any specific elements that must be
+        // included?
     }
 }

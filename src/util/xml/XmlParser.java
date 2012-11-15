@@ -4,7 +4,6 @@ package util.xml;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -63,7 +62,7 @@ public class XmlParser {
     public Element getDocumentElement () {
         return myXmlDocument.getDocumentElement();
     }
-    
+
     /**
      * 
      * @param element The tag that contains a section of XML to look through
@@ -99,7 +98,7 @@ public class XmlParser {
         try {
             image = ImageIO.read(new File(pathName));
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return image;
