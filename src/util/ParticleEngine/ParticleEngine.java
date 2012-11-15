@@ -1,4 +1,4 @@
-package vooga.shooter.graphics;
+package util.ParticleEngine;
 
 import java.awt.Graphics;
 import java.awt.Image;

@@ -1,4 +1,4 @@
-package vooga.shooter.gameObjects;
+package util.ParticleEngine;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
