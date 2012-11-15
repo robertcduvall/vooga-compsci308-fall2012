@@ -77,6 +77,9 @@ public class GamePane extends DisplayPane implements Runnable {
             
             timeDiff = System.currentTimeMillis() - beforeTime;
 	        sleep = myDelayTime - timeDiff;
+	        if (sleep < 0) {
+	        	sleep = 0;
+	        }
             try {
                 Thread.sleep(sleep);
             }
