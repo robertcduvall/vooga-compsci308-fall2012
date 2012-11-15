@@ -14,7 +14,7 @@ import vooga.platformer.level.Level;
 
 /**
  * 
- * @author Niel Lebeck
+ * @author Niel Lebeck, revised by Yaqi
  * 
  */
 
