@@ -18,27 +18,29 @@ import java.io.*;
  */
 public class LevelEditor implements ActionListener, ChangeListener, KeyListener {
     
-    private static final Dimension FRAME_SIZE = new Dimension(500, 600);
+    private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
     boolean compactToolbars = true;
     boolean borderedButtons = true;
     
-    JFrame       mainFrame; // The main window   
-    JFileChooser chooser; // For saving and loading levels
-    JSplitPane   split;  // provides the movable divider next to Sprite chooser
-    JPanel       chooserPanel; //panel for the Sprite chooser 
-    Canvas      myCanvas; //drawing canvas
+    private JFrame       mainFrame; // The main window   
+    private JFileChooser chooser; // For saving and loading levels
+    private JSplitPane   split;  // provides the movable divider next to Sprite chooser
+    private JPanel       chooserPanel; //panel for the Sprite chooser 
+    private JPanel      leftPanel;
+    private JPanel      rightPanel;
+    private Canvas      myCanvas; //drawing canvas
     
-    File openFile; //currently open file
-    Level myLevel; //level object for editing
+    private File openFile; //currently open file
+    private Level myLevel; //level object for editing
     
     /* Toolbar buttons, self-explanatory */
-    JToolBar myToolBar;
-    JButton newBtn;
-    JButton openBtn;
-    JButton saveBtn;
-    JButton undoBtn;
-    JButton redoBtn;
-    JButton clearBtn;
+    private JToolBar myToolBar;
+    private JButton newBtn;
+    private JButton openBtn;
+    private JButton saveBtn;
+    private JButton undoBtn;
+    private JButton redoBtn;
+    private JButton clearBtn;
     
     public LevelEditor() {
         //TODO initialize all variables and load a level to edit/make a new level
@@ -46,11 +48,27 @@ public class LevelEditor implements ActionListener, ChangeListener, KeyListener 
         mainFrame.setPreferredSize(FRAME_SIZE);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setBackground(Color.WHITE);
+        
         makeMenu();       
+        
+        split = new JSplitPane();
+        split.setDividerLocation(200);
+        
+        //myCanvas = new Canvas();
+        leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBorder(new TitledBorder("Left Panel"));
+        
+        rightPanel = new JPanel(new BorderLayout());
+        rightPanel.setBorder(new TitledBorder("Right Panel"));
+        
+        split.setLeftComponent(leftPanel);
+        split.setRightComponent(rightPanel);
+
+        
+        mainFrame.add(split, BorderLayout.CENTER);
         mainFrame.pack();
         mainFrame.setVisible(true);
-        
-        
+
     }
     
     @Override
@@ -135,5 +153,5 @@ public class LevelEditor implements ActionListener, ChangeListener, KeyListener 
         });
         return result;
     }
-
+   
 }
