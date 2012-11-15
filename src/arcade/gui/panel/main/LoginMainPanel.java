@@ -16,7 +16,7 @@ import arcade.utility.ImageReader;
 
 /**
  * 
- * @author Michael Deng
+ * @author Michael Deng, Robert Bruce
  * 
  */
 public class LoginMainPanel extends AMainPanel {
@@ -29,6 +29,7 @@ public class LoginMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        
         myPanel.setBackground(Color.GRAY);
         myPanel.setLayout(new RelativeLayout());
         BindingFactory bf = new BindingFactory();
@@ -52,6 +53,8 @@ public class LoginMainPanel extends AMainPanel {
         passwordConstraints.addBindings(passLeftEdge, passTopEdge, passBottomEdge, passRightEdge);
         JPasswordField passwordNameField = new JPasswordField(17);
         myPanel.add(passwordNameField, passwordConstraints);
+
+        System.out.println("LoginMainPanel");
 
         return myPanel;
     }

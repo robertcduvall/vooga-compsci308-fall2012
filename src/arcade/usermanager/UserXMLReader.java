@@ -16,12 +16,12 @@ import org.xml.sax.SAXException;
  * Reads in user data from an XML file and creates User objects
  * 
  * @author Howard
- * minor modification by difan
+ *         minor modification by difan
  */
 public class UserXMLReader {
-    private static Document dom;
+    private Document myDom;
 
-    private   void parseXmlFile (String filePath) {
+    private void parseXmlFile (String filePath) {
         // get the factory
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -29,14 +29,16 @@ public class UserXMLReader {
             DocumentBuilder db = dbf.newDocumentBuilder();
 
             // parse using builder to get DOM representation of the XML file
+            myDom = db.parse(filePath);
 
-            dom = db.parse(filePath);
-
-        } catch (ParserConfigurationException pce) {
+        }
+        catch (ParserConfigurationException pce) {
             pce.printStackTrace();
-        } catch (SAXException se) {
+        }
+        catch (SAXException se) {
             se.printStackTrace();
-        } catch (IOException ioe) {
+        }
+        catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
@@ -47,11 +49,11 @@ public class UserXMLReader {
      * @return
      */
     private User getUser () {
-        Element el = dom.getDocumentElement();
+        Element el = myDom.getDocumentElement();
         String name = getTextValue(el, "name");
         String password = getTextValue(el, "password");
         String picture = getTextValue(el, "picture");
-        
+
         // provide hashed version in separate file for credits?
         int credits = getIntValue(el, "credits");
         List<Message> messageList = new ArrayList<Message>();
@@ -82,7 +84,7 @@ public class UserXMLReader {
             }
         }
 
-       return new User(name, password, picture, credits, messageList, gameDataList);
+        return new User(name, password, picture, credits, messageList, gameDataList);
 
     }
 
@@ -97,7 +99,7 @@ public class UserXMLReader {
      * @param tagName
      * @return
      */
-    private   String getTextValue (Element ele, String tagName) {
+    private String getTextValue (Element ele, String tagName) {
         String textVal = null;
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
@@ -115,22 +117,14 @@ public class UserXMLReader {
      * @param tagName
      * @return
      */
-    private   int getIntValue (Element ele, String tagName) {
+    private int getIntValue (Element ele, String tagName) {
         // in production application you would catch the exception
         return Integer.parseInt(getTextValue(ele, tagName));
     }
 
-    public static void main (String[] args) {
-        // create an instance
-        UserXMLReader dpe = new UserXMLReader();
-        // call run example
-        dpe.parseXmlFile("src/arcade/database/Howard.xml");
-        dpe.getUser();
-    }
-
-    public User initiateUser (String string) {
-        // TODO Auto-generated method stub
-        return null;
+    public User parseMakeUser (String filePath) {
+        parseXmlFile(filePath);
+        return getUser();
     }
 
 }

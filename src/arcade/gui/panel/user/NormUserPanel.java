@@ -1,5 +1,9 @@
 package arcade.gui.panel.user;
 
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -16,27 +20,46 @@ public class NormUserPanel extends AUserPanel {
 
     public NormUserPanel (Arcade a) {
         super(a);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+
+        ArcadePanel myPanel = initializeNewPanel();
+        System.out.println("NormUserPanel");
+
+        myPanel.setBackground(Color.BLACK);
+    
+        JLabel welcomeLabel = new JLabel("Welcome, REALLYLONGNAME!", JLabel.CENTER);
+        welcomeLabel.setForeground(Color.WHITE);
+        JButton button1 = new JButton("Logout");
+          
+          
+          GroupLayout layout = new GroupLayout(myPanel);
+           myPanel.setLayout(layout);
+           layout.setAutoCreateGaps(true);
+           layout.setAutoCreateContainerGaps(true);
+          
+           layout.setHorizontalGroup(layout.createSequentialGroup()
+                                     .addContainerGap(20, 20)
+                                     .addComponent(welcomeLabel)
+                                     .addComponent(button1));
+           
+           layout.setVerticalGroup(layout.createSequentialGroup()
+                                   .addContainerGap(30, 30)
+                                   .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                             .addComponent(welcomeLabel)
+                                             .addComponent(button1)));
+           
+          
+          
+          return myPanel;
+    
+    
+    
     }
 
 
     
-//    public static void main(String [] args){
-//        Arcade testArcade = new Arcade();
-//        JFrame testFrame = new JFrame();
-//        UserPanel testMe = new UserPanel(testArcade);
-//        testFrame.getContentPane().add(testMe);
-//        testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        testFrame.pack();
-//        testFrame.setSize(new Dimension(500, 500));
-//        testFrame.setVisible(true);
-//        
-//    }
 
 }

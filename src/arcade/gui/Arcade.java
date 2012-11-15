@@ -86,10 +86,11 @@ public class Arcade {
      * @return this returns the old panel
      */
     public void replacePanel (String panelCreatorName) {
-        myFrame.setVisible(false);
+//        myFrame.setVisible(false);
         ArcadePanel newPanel = createPanel(panelCreatorName);
         updatePanelinFrame(newPanel);
-        myFrame.setVisible(true);
+//        myFrame.setVisible(true);
+        myFrame.pack();
     }
 
     public String getUsername () {

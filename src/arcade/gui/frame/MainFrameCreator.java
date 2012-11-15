@@ -19,10 +19,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class MainFrameCreator {
 
-    private static final String ARCADE_NAME = "CS 308 Arcade";
-    private static final int FRAME_HEIGHT = 600;
-    private static final int FRAME_WIDTH = 900;
-    private static final boolean FRAME_RESIZABLE = true;
+    private static final String ARCADE_NAME = "Duke CS 308 Arcade";
+    private static final int FRAME_HEIGHT = 650;
+    private static final int FRAME_WIDTH = 1100;
+    private static final boolean FRAME_RESIZABLE = false;
 
     private Arcade myArcade;
     private ArcadePanel myContentPanel;
@@ -83,6 +83,7 @@ public class MainFrameCreator {
         // position all sub panels in content panel (use layout)
         ArcadePanel logoHolder = new ArcadePanel(myArcade, "logoholder");
         logoHolder.setBackground(Color.BLUE);
+        logoHolder.setPreferredSize(new Dimension(300, 100));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
@@ -96,7 +97,8 @@ public class MainFrameCreator {
         myContentPanel.add(logoHolder, c);
 
         ArcadePanel blankHolder = new ArcadePanel(myArcade, "blankholder");
-        blankHolder.setBackground(Color.WHITE);
+        blankHolder.setBackground(Color.BLACK);
+        blankHolder.setPreferredSize(new Dimension(500, 100));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = GridBagConstraints.RELATIVE;
@@ -111,13 +113,14 @@ public class MainFrameCreator {
 
         ArcadePanel userHolder = new ArcadePanel(myArcade, "userholder");
         userHolder.setBackground(Color.GREEN);
+        userHolder.setPreferredSize(new Dimension(300, 100));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = GridBagConstraints.RELATIVE;
         c.gridy = 0;
         c.gridwidth = 2;
         c.gridheight = 1;
-        c.weightx = 0.5;
+        c.weightx = 0.3;
         c.weighty = .15;
         // c.ipadx = ;
         // c.ipady = ;
@@ -125,6 +128,7 @@ public class MainFrameCreator {
 
         ArcadePanel navHolder = new ArcadePanel(myArcade, "navholder");
         navHolder.setBackground(Color.ORANGE);
+        navHolder.setPreferredSize(new Dimension(1100, 100));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
@@ -139,6 +143,7 @@ public class MainFrameCreator {
 
         ArcadePanel mainHolder = new ArcadePanel(myArcade, "mainholder");
         mainHolder.setBackground(Color.RED);
+        mainHolder.setPreferredSize(new Dimension(800, 350));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
@@ -153,6 +158,7 @@ public class MainFrameCreator {
 
         ArcadePanel searchHolder = new ArcadePanel(myArcade, "searchholder");
         searchHolder.setBackground(Color.PINK);
+        searchHolder.setPreferredSize(new Dimension(300, 350));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = GridBagConstraints.RELATIVE;
@@ -167,6 +173,7 @@ public class MainFrameCreator {
 
         ArcadePanel footHolder = new ArcadePanel(myArcade, "footholder");
         footHolder.setBackground(Color.GRAY);
+        footHolder.setPreferredSize(new Dimension(1100, 100));
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
