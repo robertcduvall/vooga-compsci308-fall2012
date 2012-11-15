@@ -3,7 +3,6 @@ package vooga.platformer.leveleditor;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -52,7 +51,7 @@ public final class LevelFileWriter {
      * 
      * @param filePath where the XML should be saved
      * @param levelType specifies which Level subclass to use
-     * @param levelID name of the level
+     * @param levelName name of the level
      * @param width overall width of the level in pixels
      * @param height overall height of the level in pixels
      * @param backgroundImage path to the image that should be painted to the
@@ -61,7 +60,7 @@ public final class LevelFileWriter {
      * @return an integer constant representing whether the file was written
      *         successfully or not
      */
-    public static int writeLevel (String filePath, String levelType, String levelID, int width,
+    public static int writeLevel (String filePath, String levelType, String levelName, int width,
                                   int height, String backgroundImage,
                                   Collection<Sprite> levelObjects) {
         try {
@@ -74,7 +73,7 @@ public final class LevelFileWriter {
             doc.appendChild(level);
 
             level.setAttribute("type", levelType);
-            appendChildTextNode(doc, level, "id", levelID);
+            appendChildTextNode(doc, level, "id", levelName);
             appendChildTextNode(doc, level, "width", String.valueOf(width));
             appendChildTextNode(doc, level, "height", String.valueOf(height));
             appendChildTextNode(doc, level, "backgroundImage", backgroundImage);
