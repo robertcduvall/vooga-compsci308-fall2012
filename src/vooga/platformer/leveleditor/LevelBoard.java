@@ -100,14 +100,11 @@ public class LevelBoard extends Canvas implements ISavable {
 
     public void update() {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-        //                myBufferGraphics.setColor(Color.BLACK);
-        //                myBufferGraphics.fillRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-        //        myBufferGraphics.drawImage(
-        //                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+                myBufferGraphics.drawImage(
+                        myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
             myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-            myCurrentSprite.paint(myBufferGraphics);
         }
         for (Sprite s : mySprites) {
             s.paint(myBufferGraphics);
@@ -119,7 +116,6 @@ public class LevelBoard extends Canvas implements ISavable {
     }
 
     public void paint(Graphics g) {
-//        System.out.println("paint");
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
     }
 

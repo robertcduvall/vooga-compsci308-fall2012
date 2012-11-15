@@ -94,8 +94,6 @@ public class Sprite {
         g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 
                 0, 0, myWidth, myHeight, null);
         g2d.setColor(Color.WHITE);
-//        g2d.drawString("Here I am", myX, myY);
-//        System.out.println(this);
     }
 
     /**
