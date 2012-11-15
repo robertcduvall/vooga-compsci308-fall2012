@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-bin/
-*.class
-*.checkstyle
-=======
 bin/
 
 *.class
@@ -13,4 +8,3 @@ bin/
 .project
 .settings
 .DS_Store
->>>>>>> master
