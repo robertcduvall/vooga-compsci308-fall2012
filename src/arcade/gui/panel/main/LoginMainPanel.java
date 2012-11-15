@@ -1,30 +1,23 @@
 package arcade.gui.panel.main;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import edu.cmu.relativelayout.Binding;
-import edu.cmu.relativelayout.BindingFactory;
-import edu.cmu.relativelayout.RelativeConstraints;
-import edu.cmu.relativelayout.RelativeLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
-import arcade.utility.ImageReader;
 
 /**
  * 
- * @author Michael Deng, Robert Bruce
- * 
+ * @author Robert Bruce
+ * This is pretty much 100% implemented.
+ * The pane it loads could be a bit prettier though.
+ * Saving that for when everything works well.
  */
 public class LoginMainPanel extends AMainPanel implements ActionListener {
     
@@ -65,7 +58,6 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     private ArcadePanel addWrongPasswordLabel (ArcadePanel myPanel) {
         wrongPassword = new JLabel("Wrong Username or Password.");
         wrongPassword.setVisible(false);
-        //label.setLabelFor(passwordField);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
         c.gridy = 4;
@@ -150,8 +142,6 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     private void newUser () {
         System.out.println("Attempt New User");
         this.getArcade().replacePanel("NewUser");
-        // TODO Auto-generated method stub
-        
     }
 
     private void login () {
@@ -159,7 +149,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         String username = usernameField.getText();
         char[] password = passwordField.getPassword();
         if (this.getArcade().getUserManager().loginUser(username, password)) {
-            this.getArcade().replacePanel("");
+            this.getArcade().replacePanel("MainHome");
         }
         else {
             wrongPassword.setVisible(true);
