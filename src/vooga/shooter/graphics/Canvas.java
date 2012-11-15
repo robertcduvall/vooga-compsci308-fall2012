@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
+
 
 /**
  * 
@@ -49,8 +52,8 @@ public class Canvas extends JApplet {
      * Sets up input listeners/controllers.
      */
     private void setInputListeners() {
-    	addMouseMotionListener(new MouseController());
-    	addKeyListener(new KeyboardController());
+    	addMouseMotionListener(new MouseController(this));
+    	addKeyListener(new KeyboardController(this));
     }
     
     /**
