@@ -328,7 +328,7 @@ public class MapMode extends GameMode {
 	public void handleMouseClicked(MouseEvent e) {
 		// right click
 		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-
+			new PathFinder(mySprites, myPlayer.getLocation(), new Point(0, 0), myBottomRightCorner);
 		}
 	}
 }
