@@ -1,6 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -43,6 +44,7 @@ public class LevelBoard extends Canvas implements ISavable {
     private ISpritePlacementManager myPlacementManager;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
+    private Graphics myFrameGraphics;
     private Image myBackground;
     private Sprite myCurrentSprite;
 
@@ -65,7 +67,6 @@ public class LevelBoard extends Canvas implements ISavable {
             public void mousePressed(MouseEvent e) {
                 if (myCurrentSprite != null) {
                     myCurrentSprite = null;
-                    System.out.println("null");
                 }
                 else if (e.getButton() == MouseEvent.BUTTON3) {
                     for (Sprite s : mySprites) {
@@ -98,8 +99,9 @@ public class LevelBoard extends Canvas implements ISavable {
     }
 
     public void update() {
-        myBufferGraphics.drawImage(
-                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+        myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
+                myBufferGraphics.drawImage(
+                        myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
             myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
@@ -107,12 +109,14 @@ public class LevelBoard extends Canvas implements ISavable {
         for (Sprite s : mySprites) {
             s.paint(myBufferGraphics);
         }
+        myBufferGraphics.setColor(Color.WHITE);
+        for (int i = 0; i < 100; i++) {
 
+        }
     }
 
-    @Override
-    public void paint(Graphics pen) {
-        pen.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+    public void paint(Graphics g) {
+        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
     }
 
     @Override
