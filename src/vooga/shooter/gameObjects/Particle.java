@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
+import vooga.shooter.graphics.Canvas;
 
 
 /**
@@ -56,12 +57,35 @@ public class Particle extends Sprite {
 //        g.setComposite(originalComposite);
     }
 
-    public void continueUpdate() {
+    public void continueUpdate(Canvas c) {
 
     }
 
     public List<Sprite> collisions () {
-        // TODO: fill in method details
         return null;
+    }
+
+    public void collide (Bullet b) {
+        
+    }
+
+    public void collide (Player p) {
+        
+    }
+
+    public void collide (Enemy e) {
+        
+    }
+
+    /**
+     * Returns the type of this sprite.
+     * @return "particle"
+     */
+    public String getType () {
+        return "particle";
+    }
+
+    public void continuePaint (Graphics pen) {
+        
     }
 }

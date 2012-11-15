@@ -1,8 +1,10 @@
 package vooga.shooter.gameObjects;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import vooga.shooter.graphics.Canvas;
 
 /**
  * Represents an enemy sprite to be used in the game.
@@ -30,8 +32,53 @@ public class Enemy extends Sprite{
      * Makes the enemy do something else after moving (e.g. fire a
      * shot).
      */
-    @Override
-    public void continueUpdate () {
+    public void continueUpdate(Canvas c) {
+        
+    }
+
+    /**
+     * Describes what happens when the enemy
+     * collides with a bullet.
+     * @param b the bullet that the enemy is
+     * colliding with
+     */
+    public void collide (Bullet b) {
+        
+    }
+
+    /**
+     * Describes what happens when the enemy
+     * collides with a player (will only
+     * happen in multiplayer).
+     * @param p the player that this enemy
+     * is colliding with
+     */
+    public void collide (Player p) {
+        
+    }
+
+    /**
+     * Describes what happens when this enemy
+     * collides with another enemy.
+     * @param e the enemy that this enemy is
+     * colliding with
+     */
+    public void collide (Enemy e) {
+        
+    }
+
+    /**
+     * Returns the type of the sprite.
+     * @return "enemy"
+     */
+    public String getType() {
+        return "enemy";
+    }
+
+    /**
+     * Paints bullets of enemy.
+     */
+    public void continuePaint (Graphics pen) {
         
     }
 }

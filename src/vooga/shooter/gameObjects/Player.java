@@ -1,8 +1,10 @@
 package vooga.shooter.gameObjects;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import vooga.shooter.graphics.Canvas;
 
 /**
  * Represents the player(s) to be used in the game.
@@ -31,9 +33,15 @@ public class Player extends Sprite{
      * is updated and will include anything extra that the player
      * needs to do when being updated (e.g. stop when at a wall).
      */
-    @Override
-    public void continueUpdate () {
-        
+    public void continueUpdate(Canvas c) {
+        //don't go past right or left wall
+        if(getRight() >= c.getWidth() || getLeft() <= 0) {
+            setVelocity(0, getVelocity().y);
+        }
+        //don't go past top or bottom wall
+        if(getTop() <= 0 || getBottom() >= c.getHeight()) {
+            setVelocity(getVelocity().x, 0);
+        }
     }
 
     /**
@@ -41,10 +49,10 @@ public class Player extends Sprite{
      * while keeping the current y velocity.
      * (This makes the player's sprite go left on the screen).
      */
-    public void goLeft() {
+    public void goLeft(Canvas c) {
         Point v = new Point(-10, getVelocity().y);
         setVelocity(v);
-        update();
+        update(c);
     }
 
     /**
@@ -52,10 +60,10 @@ public class Player extends Sprite{
      * while keeping the current y velocity.
      * (This makes the player's sprite go right on the screen).
      */
-    public void goRight() {
+    public void goRight(Canvas c) {
         Point v = new Point(10, getVelocity().y);
         setVelocity(v);
-        update();
+        update(c);
     }
 
     /**
@@ -63,10 +71,10 @@ public class Player extends Sprite{
      * while keeping the current x velocity.
      * (This makes the player's sprite go up on the screen).
      */
-    public void goUp() {
+    public void goUp(Canvas c) {
         Point v = new Point(getVelocity().x, -10);
         setVelocity(v);
-        update();
+        update(c);
     }
 
     /**
@@ -74,19 +82,65 @@ public class Player extends Sprite{
      * while keeping the current x velocity.
      * (This makes the player's sprite go down on the screen).
      */
-    public void goDown() {
+    public void goDown(Canvas c) {
         Point v = new Point(getVelocity().x, 10);
         setVelocity(v);
-        update();
+        update(c);
     }
 
     /**
      * Called if none of the keys that move the player are
      * pressed. (Makes the player sprite stop moving).
      */
-    public void stopMove() {
+    public void stopMove(Canvas c) {
         Point v = new Point(0, 0);
         setVelocity(v);
-        update();
+        update(c);
+    }
+
+    /**
+     * Describes what happens when the player
+     * collides with a bullet.
+     * @param b the bullet that the player is
+     * colliding with
+     */
+    public void collide (Bullet b) {
+        
+    }
+
+    /**
+     * Describes what happens when the player
+     * collides with another player (will only
+     * happen in multiplayer).
+     * @param p the other player that this player
+     * is colliding with
+     */
+    public void collide (Player p) {
+        
+    }
+
+    /**
+     * Describes what happens when the player
+     * collides with an enemy.
+     * @param e the enemy that this player is
+     * colliding with
+     */
+    public void collide (Enemy e) {
+        
+    }
+
+    /**
+     * Returns the type of the sprite.
+     * @return player
+     */
+    public String getType() {
+        return "player";
+    }
+
+    /**
+     * Paints bullets of player.
+     */
+    public void continuePaint (Graphics pen) {
+        
     }
 }

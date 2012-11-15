@@ -21,12 +21,11 @@ public class Game {
     private List<Sprite> mySprites;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
-    private KeyboardController myController;
     private Canvas myCanvas;
 
-    private void initializeGame () {
-        myController = new KeyboardController(null);
+    private void initializeGame (Canvas c) {
         Level firstLevel = new Level1(this);
+        myCanvas = c;
         startLevel(firstLevel);
     }
 
@@ -42,7 +41,7 @@ public class Game {
         // }
         
         for (Sprite s : getSprites()) {
-            s.update();
+            s.update(myCanvas);
         }
 
        
