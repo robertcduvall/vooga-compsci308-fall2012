@@ -9,6 +9,8 @@ package vooga.turnbased.gui;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import vooga.turnbased.gamecore.GameManager;
 
@@ -30,6 +32,7 @@ public class GamePane extends DisplayPane implements Runnable {
         myGameThread = new Thread(this);
         myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
         addKeyListener(this);
+        addMouseListener(new GameMouseListener());
         myGameManager = new GameManager(this);
         enableFocus();
     }
@@ -38,11 +41,7 @@ public class GamePane extends DisplayPane implements Runnable {
      * initialize properties when user switch to game
      */
     public void initialize () {
-        //addKeyListener(this);
-        //myGameManager = new GameManager(this);
         repaint();
-        //setFocusable(true);
-        //requestFocusInWindow();
         myGameThread.start();
     }
 
@@ -117,4 +116,10 @@ public class GamePane extends DisplayPane implements Runnable {
     	return myDelayTime;
     }
     
+    private class GameMouseListener extends MouseAdapter {
+    	@Override
+    	public void mouseClicked(MouseEvent e) {
+    		myGameManager.handleMouseClicked(e);
+    	}
+    }
 }

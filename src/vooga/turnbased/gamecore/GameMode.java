@@ -9,6 +9,7 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -75,4 +76,9 @@ public abstract class GameMode extends Observable {
     public abstract void handleKeyPressed (KeyEvent e);
 
     public abstract void handleKeyReleased (KeyEvent e);
+    
+    /**
+     * Override if any sub-mode needs to handle MouseClicked events
+     */
+    public void handleMouseClicked(MouseEvent e) {}
 }
