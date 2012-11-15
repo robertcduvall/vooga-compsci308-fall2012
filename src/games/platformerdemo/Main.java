@@ -3,11 +3,12 @@ package games.platformerdemo;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import util.ingamemenu.GameButton;
-import util.ingamemenu.GameListener;
 import util.ingamemenu.Menu;
 import vooga.platformer.core.PlatformerController;
 
@@ -46,14 +47,14 @@ public class Main {
                 if (e.getKeyCode() == KeyEvent.VK_M) {
                     final Menu menu = new Menu(myController);
                     GameButton gb1 = new GameButton("greenbutton", "Back");
-                    GameListener gl = new GameListener() {
+                    MouseListener gl = new MouseAdapter() {
                         @Override
-                        public void actionPerformed(MouseEvent arg0) {
+                        public void mouseClicked(MouseEvent arg0) {
                             myController.remove(menu);
                             myFrame.repaint();
                         }
                     };
-                    gb1.setGameListener(gl);
+                    gb1.addMouseListener(gl);
                     GameButton gb2 = new GameButton("button", "Do nothing");
                     gb2.setSize(new Dimension(130, 130));
                     menu.addButtons(gb1);
