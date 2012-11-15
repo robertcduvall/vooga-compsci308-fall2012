@@ -2,6 +2,7 @@ package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -55,9 +56,6 @@ public class LevelEditor extends JFrame{
     private JPanel myViewPane;
     private boolean myGameIsRunning;
     private LevelBoard myBoard;
-    private MouseListener myMouseListener;
-    private List<Sprite> mySprites;
-    private Sprite myCurrentSprite;
     private KeyListener myKeyListener;
     private GameListener myGameListener;
     public static void main (String[] args) {
@@ -124,21 +122,14 @@ public class LevelEditor extends JFrame{
             @Override 
             public void paint(Graphics g) {
                 g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
-                super.paintComponent(g);
+                g.setColor(Color.GREEN);
                 myBoard.paint(g);
-                for (Component c : getComponents()) {
-                    if (c != myBoard) {
-                        c.paint(g);
-                    }
-                }
-//                System.out.println("boardPaint");
                 super.paintComponents(g);
-
             }
         };
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
-        panel.add(board);
+        panel.addMouseListener(myBoard.getMouseListener());
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
@@ -174,7 +165,7 @@ public class LevelEditor extends JFrame{
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
-                    Sprite s = new Sprite(event.getActionCommand(), x, y, 20, 20, 
+                    Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40, 
                             IMAGE_PATH + event.getActionCommand() + ".png");
                     myBoard.add(s);
                 }
@@ -185,26 +176,25 @@ public class LevelEditor extends JFrame{
     }
     private void createTopMenu () {
         JMenuBar bar = new JMenuBar();
-        JMenu fileMenu = new JMenu("Level");
-        fileMenu.add(new AbstractAction("Load") {
+        JMenu levelMenu = new JMenu("Level");
+        levelMenu.add(new AbstractAction("Load") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 load();
             }
         });
-        fileMenu.add(new AbstractAction("Clear") {
+        levelMenu.add(new AbstractAction("Clear") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 clear();
             }
         });
-        fileMenu.add(new AbstractAction("New"){
+        levelMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 newLevel();
             }
         });
-        fileMenu.addMouseListener(myMouseListener);
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("Load") {
             @Override
@@ -212,13 +202,13 @@ public class LevelEditor extends JFrame{
                 load();
             }
         });
-        spriteMenu.add(new AbstractAction("New"){
+        spriteMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed (ActionEvent e) {
                 newLevel();
             }
         });
-        bar.add(fileMenu);
+        bar.add(levelMenu);
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);
     }
@@ -235,21 +225,14 @@ public class LevelEditor extends JFrame{
         mySpriteTypes = new HashMap<String, List<String>>();
         List<String> list = new ArrayList<String>();
         list.add("Yoshi");
-        list.add("Pink Yoshi"); // list.add("Yoshi Egg");
-        // list.add("Flying Yoshi");
+        list.add("Pink Yoshi"); 
         mySpriteTypes.put("Yoshi", list);
         list = new ArrayList<String>();
-        list.add("Mario"); // list.add("Fireflower Mario");
-        // list.add("Mario on Yoshi");
-        // list.add("Baby Mario");
+        list.add("Mario");
         mySpriteTypes.put("Mario", list);
         list = new ArrayList<String>();
-        // list.add("Squished Goomba"); list.add("Giant Goomba");
-        // list.add("Tiny Goomba");
-        // mySpriteTypes.put("Goomba", list); list = new ArrayList<String>();
         list.add("Bowser");
         list.add("Baby Bowser");
         mySpriteTypes.put("Bowser", list);
-        mySprites = new ArrayList<Sprite>();
     }
 }

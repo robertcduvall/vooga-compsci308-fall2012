@@ -13,4 +13,8 @@ public class Player extends MovingObject {
         addStrategy(new PlayerMoveStrategy(this));
         addStrategy(new GravityStrategy(this));
     }
+    
+    public void moveLeft() {
+        System.out.println("detected left input");
+    }
 }

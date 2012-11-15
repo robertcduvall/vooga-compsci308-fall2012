@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -44,7 +45,7 @@ public class LevelBoard extends Canvas implements ISavable {
     private ISpritePlacementManager myPlacementManager;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
-    private Graphics myFrameGraphics;
+    private MouseListener myMouseListener;
     private Image myBackground;
     private Sprite myCurrentSprite;
 
@@ -74,40 +75,42 @@ public class LevelBoard extends Canvas implements ISavable {
                                 e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
                             //Something with sprites (Popup maybe?)
                         }
-                        //                        else {
-                        //                            JFileChooser chooser = new JFileChooser();
-                        //                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        //                                    "JPG & GIF Images", "jpg", "gif");
-                        //                            chooser.setFileFilter(filter);
-                        //                            int returnVal = chooser.showOpenDialog(myContainer);
-                        //                            if (returnVal == JFileChooser.APPROVE_OPTION)  {
-                        //                                try {
-                        //                                    myBackground = ImageIO.read(chooser.getSelectedFile());
-                        //                                }
-                        //                                catch (IOException io) {
-                        //                                    System.out.println("File not found. Try again");
-                        //                                    myBackground = null;
-                        //                                }
-                        //                            }
-                        //                        }
+                        else {
+                            JFileChooser chooser = new JFileChooser();
+                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                                    "JPG & GIF Images", "jpg", "gif");
+                            chooser.setFileFilter(filter);
+                            int returnVal = chooser.showOpenDialog(chooser);
+                            if (returnVal == JFileChooser.APPROVE_OPTION)  {
+                                try {
+                                    myBackground = ImageIO.read(chooser.getSelectedFile());
+                                }
+                                catch (IOException io) {
+                                    System.out.println("File not found. Try again");
+                                    myBackground = null;
+                                }
+                            }
+                        }
                     }
                 }
             }
         };
         addMouseListener(mouseListener);
+        myMouseListener = mouseListener;
         addMouseMotionListener(mouseListener);
+    }
+    
+    public MouseListener getMouseListener() {
+        return myMouseListener;
     }
 
     public void update() {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-        //                myBufferGraphics.setColor(Color.BLACK);
-        //                myBufferGraphics.fillRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-        //        myBufferGraphics.drawImage(
-        //                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+                myBufferGraphics.drawImage(
+                        myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
             myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-            myCurrentSprite.paint(myBufferGraphics);
         }
         for (Sprite s : mySprites) {
             s.paint(myBufferGraphics);
@@ -119,7 +122,6 @@ public class LevelBoard extends Canvas implements ISavable {
     }
 
     public void paint(Graphics g) {
-//        System.out.println("paint");
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
     }
 
