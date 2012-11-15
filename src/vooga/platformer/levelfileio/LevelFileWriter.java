@@ -1,4 +1,4 @@
-package vooga.platformer.leveleditor;
+package vooga.platformer.levelfileio;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import vooga.platformer.leveleditor.Sprite;
 
 
 /**

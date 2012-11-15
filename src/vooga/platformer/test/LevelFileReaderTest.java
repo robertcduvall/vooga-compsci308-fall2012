@@ -3,7 +3,7 @@ package vooga.platformer.test;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import vooga.platformer.leveleditor.LevelFileReader;
+import vooga.platformer.levelfileio.LevelFileReader;
 
 
 /**

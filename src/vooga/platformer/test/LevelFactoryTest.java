@@ -4,9 +4,9 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import vooga.platformer.level.LevelFactory;
-import vooga.platformer.leveleditor.LevelFileReader;
-import vooga.platformer.leveleditor.LevelFileWriter;
 import vooga.platformer.leveleditor.Sprite;
+import vooga.platformer.levelfileio.LevelFileReader;
+import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /**

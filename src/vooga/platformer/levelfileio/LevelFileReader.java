@@ -1,9 +1,10 @@
-package vooga.platformer.leveleditor;
+package vooga.platformer.levelfileio;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.util.xml.XMLUtils;
 import java.awt.*;
 import java.io.File;
