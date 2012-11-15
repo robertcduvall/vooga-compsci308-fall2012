@@ -57,18 +57,24 @@ public class LevelCreator {
 
     /**
      *
-     * @return
+     * @return List of Sprites in the Level
      */
     public List<Sprite> parseSprites () {
         return null;
     }
 
     /**
+     * 
+     * @return The Document Element from the Xml file
+     */
+    public Element getDocumentElement () {
+        return myDocumentElement;
+    }
+
+    /**
      * Used to check for all required elements of the XML file.
      */
     private void validateXml () {
-        // Check if all required elements of a level are available in Xml
-        // Do we need this? Are there any specific elements that must be
-        // included?
+        // Empty until decided what is required of Xml
     }
 }
