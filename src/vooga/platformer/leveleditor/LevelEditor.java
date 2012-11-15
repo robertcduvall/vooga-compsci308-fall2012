@@ -39,6 +39,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
 import vooga.platformer.gui.menu.GameButton;
 import vooga.platformer.gui.menu.GameListener;
 
@@ -220,6 +224,19 @@ public class LevelEditor extends JFrame{
         myViewPane.add(bar, BorderLayout.NORTH);
     }
     protected void newLevel () {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder;
+        try {
+            docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+
+        }
+        catch (ParserConfigurationException e) {
+            System.out.println("Directory does not exist, try again");
+            newLevel();
+        }
+
+        // root elements
         myBoard = new LevelBoard(DEFAULT_FRAME_SIZE);
         myViewPane.addMouseListener(myBoard.getMouseListener());
     }

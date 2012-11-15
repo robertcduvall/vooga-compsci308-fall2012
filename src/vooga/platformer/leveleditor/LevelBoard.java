@@ -18,6 +18,8 @@ import java.util.Collections;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.levelfileio.LevelFileReader;
+import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /*
@@ -48,6 +50,10 @@ public class LevelBoard extends Canvas implements ISavable {
     private MouseListener myMouseListener;
     private Image myBackground;
     private Sprite myCurrentSprite;
+    private int myWidth;
+    private int myHeight;
+    private String myLevelName;
+    private String myLevelType;
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
@@ -73,7 +79,7 @@ public class LevelBoard extends Canvas implements ISavable {
                     for (Sprite s : mySprites) {
                         if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
                                 e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
-                            //Something with sprites (Popup maybe?)
+                            myCurrentSprite = s;
                         }
                         else {
                             JFileChooser chooser = new JFileChooser();
@@ -122,7 +128,10 @@ public class LevelBoard extends Canvas implements ISavable {
         }
         for (Sprite s : mySprites) {
             s.paint(myBufferGraphics);
+            myBufferGraphics.setColor(Color.WHITE);
+            myBufferGraphics.drawString("(" + s.getX() + ", " + s.getY()+ ")", s.getX(), s.getY()-10);
         }
+        myBufferGraphics.drawString("Mouse Location : (" + MouseInfo.getPointerInfo().getLocation().x + ", " + MouseInfo.getPointerInfo().getLocation().y + ")", myBuffer.getWidth()/2, 50);
     }
 
     /**
@@ -136,13 +145,12 @@ public class LevelBoard extends Canvas implements ISavable {
 
     @Override
     public void save() {
-        // TODO Auto-generated method stub
-
+//        LevelFileWriter.writeLevel(filePath, levelType, levelName, width, height, myBackgroud, mySprites, collisionCheckerType, cameraType);
     }
 
     @Override
     public void load(URL path) {
-System.out.println("you've done enough for today");
+        new LevelFileReader(path.getPath());
     }
     
     public void clear() {
