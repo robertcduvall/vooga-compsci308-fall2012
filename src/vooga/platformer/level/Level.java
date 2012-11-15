@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import util.camera.Camera;
+import util.input.core.Controller;
+import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
@@ -140,4 +142,13 @@ public abstract class Level {
     public String getNextLevelName() {
         return myNextLevelName;
     }
+
+    /**
+     * Set up the given InputController to manage input for this level. For instance,
+     * associate keyboard presses with actions directing the player object to move. The
+     * Level subclass should have references to objects controlled by input, so that it
+     * can set up the InputController correctly.
+     * @param myInputController
+     */
+    public abstract void setInputController (KeyboardController myInputController);
 }

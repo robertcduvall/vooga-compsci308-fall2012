@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
+import util.input.core.Controller;
+import util.input.core.KeyboardController;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
@@ -18,13 +20,15 @@ public class PlatformerController extends JPanel implements Runnable {
     //TODO: Make this variable hold a LevelFactory
     private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
+    private KeyboardController myInputController;
     
     private Thread animator;
 
     public PlatformerController(DemoLevelFactory lf, GameInitializer gi) {
         myLevelFactory = lf;
         myGameInitializer = gi;
-
+        myInputController = null;
+        
        setupLevel(myGameInitializer.getFirstLevelName());
         
         animator = new Thread(this);
@@ -46,10 +50,18 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
     
+    public void setInputController(KeyboardController ic) {
+        myInputController = ic;
+        myCurrentLevel.setInputController(myInputController);
+    }
+    
     private void setupLevel(String lvlName) {
         myCurrentLevel = myLevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
         setPreferredSize(new Dimension((int)cameraBounds.getWidth(), (int)cameraBounds.getHeight()));
+        if (myInputController != null) {
+            myCurrentLevel.setInputController(myInputController);
+        }
     }
 
     @Override
