@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,7 +26,10 @@ import arcade.utility.ImageReader;
  * @author Michael Deng, Robert Bruce
  * 
  */
-public class LoginMainPanel extends AMainPanel {
+public class LoginMainPanel extends AMainPanel implements ActionListener {
+    
+    private static String LOGIN_ACTION = "login";
+    private static String NEW_USER_ACTION = "newuser";
     
     public LoginMainPanel (Arcade a) {
         super(a);
@@ -34,7 +40,7 @@ public class LoginMainPanel extends AMainPanel {
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         
-        myPanel.setBackground(Color.GRAY);
+        myPanel.setBackground(Color.GREEN);
         myPanel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -55,6 +61,10 @@ public class LoginMainPanel extends AMainPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
         c.gridy = 3;
+        
+        loginButton.setActionCommand(LOGIN_ACTION);
+        loginButton.addActionListener(this);
+        
         myPanel.add(loginButton, c);
         
         return myPanel;
@@ -65,6 +75,10 @@ public class LoginMainPanel extends AMainPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
         c.gridy = 4;
+        
+        newUserButton.setActionCommand(NEW_USER_ACTION);
+        newUserButton.addActionListener(this);
+        
         myPanel.add(newUserButton, c);
         
         return myPanel;
@@ -102,6 +116,31 @@ public class LoginMainPanel extends AMainPanel {
         myPanel.add(label, c);
 
         return myPanel;
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        String cmd = e.getActionCommand();
+        
+        if (LOGIN_ACTION.equals(cmd)){
+            login();
+        }
+        else if (NEW_USER_ACTION.equals(cmd)){
+            newUser();
+        }
+        
+    }
+
+    private void newUser () {
+        System.out.println("Attempt New User");
+        this.getArcade().replacePanel("NewUser");
+        // TODO Auto-generated method stub
+        
+    }
+
+    private void login () {
+        System.out.println("Attempt Login");
+        // TODO Auto-generated method stub
+        
     }
 
 }

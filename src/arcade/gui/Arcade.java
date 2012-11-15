@@ -59,12 +59,12 @@ public class Arcade {
         myFrame = frameCreator.createFrame();
 
         // fill it with default panels
-        replacePanel(myResources.getString("DefaultFoot"));
-        replacePanel(myResources.getString("DefaultMain"));
-        replacePanel(myResources.getString("DefaultLogo"));
-        replacePanel(myResources.getString("DefaultNav"));
-        replacePanel(myResources.getString("DefaultSearch"));
-        replacePanel(myResources.getString("DefaultUser"));
+        replacePanel("DefaultFoot");
+        replacePanel("DefaultMain");
+        replacePanel("DefaultLogo");
+        replacePanel("DefaultNav");
+        replacePanel("DefaultSearch");
+        replacePanel("DefaultUser");
     }
 
     private ArcadePanel createPanel (String panelCreatorName) {
@@ -86,8 +86,9 @@ public class Arcade {
      * @return this returns the old panel
      */
     public void replacePanel (String panelCreatorName) {
+        String panelRealName = myResources.getString(panelCreatorName);
 //        myFrame.setVisible(false);
-        ArcadePanel newPanel = createPanel(panelCreatorName);
+        ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
 //        myFrame.setVisible(true);
         myFrame.pack();
