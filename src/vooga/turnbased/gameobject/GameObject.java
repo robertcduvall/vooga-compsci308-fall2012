@@ -29,6 +29,10 @@ public abstract class GameObject {
         myGameEvent = gameEvent;
     }
     
+    public void setID(int newID) {
+        myID = newID;
+    }
+    
     public int getID() {
         return myID;
     }

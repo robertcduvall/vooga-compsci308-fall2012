@@ -32,7 +32,7 @@ public abstract class GameMode {
      */
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
-        myObjects = new ArrayList<GameObject>(myGameManager.getModesSprites(modeObjectType));
+        myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
         //this.addObserver(myGameManager);
     }
 

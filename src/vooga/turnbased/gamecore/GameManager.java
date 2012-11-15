@@ -13,8 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JComponent;
 
@@ -66,7 +64,7 @@ public class GameManager {
 
 	}
 
-	public ArrayList<GameObject> getModesSprites(Class c) {
+	public ArrayList<GameObject> getModesObjects(Class c) {
 		ArrayList<GameObject> modeObjects = new ArrayList<GameObject>();
 		for (Sprite s : mySprites.values()) {
 			modeObjects.add(s.getObject(c));

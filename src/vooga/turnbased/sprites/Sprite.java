@@ -22,6 +22,7 @@ public class Sprite {
 	}
 
 	public void addGameObject(GameObject obj) {
+	        obj.setID(myID);
 		myGameObjects.add(obj);
 	}
 
