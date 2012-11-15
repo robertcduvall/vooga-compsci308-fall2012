@@ -73,6 +73,10 @@ public class GameManager {
 		}
 		return modeObjects;
 	}
+	
+	public void deleteSprite(int spriteID){
+		mySprites.remove(spriteID);
+	}
 
 	public boolean isOver() {
 		return isOver;
