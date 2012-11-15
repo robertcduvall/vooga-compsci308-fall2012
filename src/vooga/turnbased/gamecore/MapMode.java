@@ -109,20 +109,24 @@ public class MapMode extends GameMode {
 				/ myNumDisplayCols;
 		myCurrentTileHeight = getGM().getPaneDimension().height
 				/ myNumDisplayRows;
-		myOrigin = new Point(-myCurrentTileWidth, -myCurrentTileHeight);
+		myOrigin = initializeOrigin();
 	}
 
 	private void updateCameraPosition() {
+		
 		Point playerCoord = myPlayer.getPreviousLocation();
 		myCurrentCamera = new Rectangle(playerCoord.x - (myNumDisplayCols - 1)
 				/ 2 - 1, playerCoord.y - (myNumDisplayRows - 1) / 2 - 1,
 				myNumDisplayCols + 2, myNumDisplayRows + 2);
-
+		
 		Point displacement = myPlayer
 				.calcScreenDisplacement(myCurrentTileWidth,
 						myCurrentTileHeight, getGM().getDelayTime());
 		myOrigin.x += displacement.x;
 		myOrigin.y += displacement.y;
+		if (myOrigin.x == 0) {
+			myOrigin = initializeOrigin();
+		}
 		for (Point p : mySprites.keySet()) {
 			for (MapObject s : getSpritesOnTile(p.x, p.y)) {
 				s.update(getGM().getDelayTime());
@@ -183,5 +187,9 @@ public class MapMode extends GameMode {
 	public void update() {
 		updateTileInfo();
 		updateCameraPosition();
+	}
+	
+	private Point initializeOrigin() {
+		return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
 	}
 }

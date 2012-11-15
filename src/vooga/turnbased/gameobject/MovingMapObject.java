@@ -12,9 +12,13 @@ import java.awt.geom.Point2D.Double;
 
 import javax.swing.ImageIcon;
 
+/**
+ * Map objects that can moves smoothly, but nevertheless restricted to tiles
+ * @author rex
+ *
+ */
 public class MovingMapObject extends MapObject{
-	
-	static private boolean ourSmoothMovingOn;
+
 	private int myMovementTimePerTile;
 	private int myTimePassed;
 	private double myXProportion;
@@ -26,7 +30,7 @@ public class MovingMapObject extends MapObject{
 	
     public MovingMapObject (int id, Point coord, Image mapImage) {
         super(id, coord, mapImage);
-        ourSmoothMovingOn = true;
+        //need to be read in
         myMovementTimePerTile = 900;
         myXOriginInTile = 0;
         myYOriginInTile = 0;
@@ -38,6 +42,7 @@ public class MovingMapObject extends MapObject{
     public Point calcScreenDisplacement(int tileWidth, int tileHeight, int delayTime) {
     	myXOriginInTile = (int)(tileWidth * myXProportion);
     	myYOriginInTile = (int)(tileHeight * myYProportion);
+    	//System.out.println(-myXOriginInTile + " " + -myYOriginInTile);
     	return new Point(-myXOriginInTile, -myYOriginInTile);
     }
 
@@ -49,12 +54,7 @@ public class MovingMapObject extends MapObject{
     	myXProportion = myDirection.x * ((double)myTimePassed / myMovementTimePerTile);
     	myYProportion = myDirection.y * ((double)myTimePassed / myMovementTimePerTile);
     	if (myTimePassed == myMovementTimePerTile) { //stop movements
-    		setMoving(false);
-    		myTimePassed = 0;
-    		myXOriginInTile = 0;
-    		myYOriginInTile = 0;
-    		myDirection = new Point(0, 0);
-    		myPreviousLocation = getLocation();
+    		finishMovement();
     	}
     }
     
@@ -91,5 +91,16 @@ public class MovingMapObject extends MapObject{
      */
     public Point getPreviousLocation() {
     	return myPreviousLocation;
+    }
+    
+    private void finishMovement() {
+    	setMoving(false);
+		myTimePassed = 0;
+		myXProportion = 0;
+		myYProportion = 0;
+		myXOriginInTile = 0;
+		myYOriginInTile = 0;
+		myDirection = new Point(0, 0);
+		myPreviousLocation = getLocation();
     }
 }
