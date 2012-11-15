@@ -3,6 +3,13 @@ package vooga.platformer.core;
 import games.platformerdemo.DemoLevelFactory;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 import vooga.platformer.level.Level;
@@ -10,6 +17,10 @@ import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 
+/**
+ * @author Probably Niel,revised by Yaqi
+ *
+ */
 public class Controller extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
 
@@ -87,4 +98,39 @@ public class Controller extends JPanel implements Runnable {
             beforeTime = System.currentTimeMillis();
         }
     }
+    
+    private void setTestInputListner () {
+        KeyListener kl = new KeyAdapter() {
+            @Override
+            public void keyPressed (KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                    //TODO: setup after getting access of player
+                    //player.goRight();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_LEFT){
+                    //TODO: setup after getting access of player
+                    //player.goLeft();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_UP){
+                    //TODO: setup after getting access of player
+                    //player.goUp();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_DOWN){
+                    //TODO: setup after getting access of player
+                    //player.goDown();
+                }
+            }
+
+            public void keyReleased (KeyEvent e) {
+                //player.stop();
+            }
+        };
+        MouseMotionListener mml = new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                //not been used yet.
+            }
+        };
+    }
+
 }
