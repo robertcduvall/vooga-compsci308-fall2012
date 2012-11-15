@@ -119,7 +119,7 @@ public class LevelBoard extends Canvas implements ISavable {
     }
 
     public void paint(Graphics g) {
-        System.out.println("paint");
+//        System.out.println("paint");
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
     }
 

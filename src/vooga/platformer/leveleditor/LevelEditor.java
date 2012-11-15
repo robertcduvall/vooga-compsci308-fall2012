@@ -131,7 +131,7 @@ public class LevelEditor extends JFrame{
                         c.paint(g);
                     }
                 }
-                System.out.println("boardPaint");
+//                System.out.println("boardPaint");
                 super.paintComponents(g);
 
             }
