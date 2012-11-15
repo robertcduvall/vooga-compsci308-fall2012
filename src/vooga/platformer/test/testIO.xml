@@ -3,6 +3,8 @@
 <width>20</width>
 <height>20</height>
 <backgroundImage>src/vooga/platformer/test/testImage.jpg</backgroundImage>
+<collisionChecker>someCollisionChecker</collisionChecker>
+<camera>someCamera</camera>
 <gameObject type="enemy">
 <x>1</x>
 <y>1</y>
