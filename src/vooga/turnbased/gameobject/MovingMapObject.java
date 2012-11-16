@@ -3,16 +3,9 @@ package vooga.turnbased.gameobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-
-import javax.swing.ImageIcon;
 
 import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gamecore.MapMode;
 
 /**
  * Map objects that can moves smoothly, but nevertheless restricted to tiles
@@ -30,8 +23,8 @@ public class MovingMapObject extends MapObject{
 	private Point myDirection;
 	private Point myPreviousLocation;
 	
-    public MovingMapObject (int id, GameManager.GameEvent event, Point coord, Image mapImage) {
-        super(id, event, coord, mapImage);
+    public MovingMapObject (int id, GameManager.GameEvent event, Point coord, Image mapImage, MapMode mapMode) {
+        super(id, event, coord, mapImage, mapMode);
         //need to be read in
         myMovementTimePerTile = 900;
         myXOriginInTile = 0;
@@ -50,6 +43,7 @@ public class MovingMapObject extends MapObject{
 
     @Override
     public void update(int delayTime) {
+    	super.update(delayTime);
     	if (isMoving()) {
     		myTimePassed += delayTime;
     	}
@@ -58,6 +52,7 @@ public class MovingMapObject extends MapObject{
     	if (myTimePassed >= myMovementTimePerTile) { //stop movements
     		finishMovement();
     	}
+    	calcScreenDisplacement(myTileDimensions.width, myTileDimensions.height);
     }
     
     public void setDirection(Point dir) {
@@ -70,10 +65,11 @@ public class MovingMapObject extends MapObject{
     }
     
     @Override
-    public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
-    	calcScreenDisplacement(width, height);
-    	g.drawImage(getImage(), xOffset - myDirection.x * width + myXOriginInTile,
-    			yOffset - myDirection.y * height + myYOriginInTile, width, height, null);
+    public void paint(Graphics g) {
+    	g.drawImage(getImage(), myOffset.x - myDirection.x
+				* myTileDimensions.width + myXOriginInTile, myOffset.y
+				- myDirection.y * myTileDimensions.height + myYOriginInTile,
+				myTileDimensions.width, myTileDimensions.height, null);
     }
     
     @Override
