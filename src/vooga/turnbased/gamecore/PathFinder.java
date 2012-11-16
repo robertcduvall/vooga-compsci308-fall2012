@@ -142,9 +142,9 @@ public class PathFinder implements Runnable {
 		if (myPath.isEmpty()) {
 			return;
 		}
-		Point previousPoint = myPath.get(0);
+		Point previousPoint = myStart;
 		Point currentPoint;
-		for (int i = 1; i < myPath.size(); i++) {
+		for (int i = 0; i < myPath.size(); i++) {
 			if (myCancelMovement) {
 				break;
 			}

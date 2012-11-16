@@ -43,6 +43,7 @@ public class MapMode extends GameMode {
     private int myCurrentTileHeight;
     private Rectangle myCurrentCamera;
     private PathFinder myPathFinder;
+    private Point topLeftCoord;
 
     /**
      * Constructor of MapMode
@@ -177,7 +178,7 @@ public class MapMode extends GameMode {
     private void updateCameraPosition () {
         Point displacement = myPlayer.calcScreenDisplacement(
                 myCurrentTileWidth, myCurrentTileHeight);
-        Point topLeftCoord = calculateTopLeftCoordinate();
+        topLeftCoord = calculateTopLeftCoordinate();
         if (topLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
             topLeftCoord.x = 0; // player near the left boundary
             displacement.x = 0; // screen fixed when player moves to the edge
@@ -347,9 +348,8 @@ public class MapMode extends GameMode {
             if (myPathFinder != null) {
                 myPathFinder.stop();
             }
-            Point target = new Point((e.getX() + myOrigin.x)
-                    / myCurrentTileWidth, (e.getY() + myOrigin.y)
-                    / myCurrentTileHeight);
+            Point target = new Point(e.getX() / myCurrentTileWidth + topLeftCoord.x, 
+            		e.getY() / myCurrentTileHeight + topLeftCoord.y);
             myPathFinder = new PathFinder(this, myPlayer, target,
                     myBottomRightCorner);
         }
