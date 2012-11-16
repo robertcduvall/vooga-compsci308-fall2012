@@ -4,6 +4,11 @@ import util.input.android.events.AndroidButtonEvent;
 import util.input.core.AndroidController;
 import util.input.factories.ControllerFactory;
 
+/**
+ * A class to test the android controller code.
+ * @author Ben Schwab
+ *
+ */
 public class TestAndroidController {
     
     public static void main(String [] args){
