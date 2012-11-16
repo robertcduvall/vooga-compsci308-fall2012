@@ -27,6 +27,8 @@ import vooga.shooter.level_editor.Level;
  * @author Stephen Hunt
  */
 public class Game {
+    private static final String HIT_BY = "hitby";
+
     private List<Sprite> mySprites;
     private Player myPlayer;
     private Player myPlayer2;
@@ -41,16 +43,17 @@ public class Game {
     private final Point myPlayerTwoStart = new Point(400, 500);
 
     private void initializeGame (Canvas c, boolean multiplayer) {
-        myImageIcon = new ImageIcon(this.getClass().
-                getResource("../vooga/shooter/images/alien.png"));
+        myImageIcon =
+                new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
         myPlayerImage = myImageIcon.getImage();
-        myPlayer = new Player(myPlayerOneStart, myPlayerDimension,
-                new Dimension(myCanvas.getWidth(), myCanvas.getHeight()),
-                myPlayerImage, myPlayerHealth);
+        myPlayer =
+                new Player(myPlayerOneStart, myPlayerDimension,
+                           new Dimension(myCanvas.getWidth(), myCanvas.getHeight()), myPlayerImage,
+                           myPlayerHealth);
         addSprite(myPlayer);
         if (multiplayer) {
-            myPlayer2 = new Player(myPlayerOneStart, myPlayerDimension,
-                       new Dimension(myCanvas.getWidth(), myCanvas.getHeight()),
+            new Player(myPlayerOneStart, myPlayerDimension, new Dimension(myCanvas.getWidth(),
+                                                                          myCanvas.getHeight()),
                        myPlayerImage, myPlayerHealth);
             addSprite(myPlayer2);
         }
@@ -89,10 +92,10 @@ public class Game {
                 // either enemy/player, enemy/enemy, or bullet/sprite
                 List<Sprite> collides = collisionCheck(s1, s2);
                 if (collides.size() > 0) {
-                    String key = "hitby" + collides.get(1).getType();
+                    String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
 
-                    key = "hitby" + collides.get(0).getType();
+                    key = HIT_BY + collides.get(0).getType();
                     collides.get(1).doEvent(key, collides.get(0));
                 }
             }
