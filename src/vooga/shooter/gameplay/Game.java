@@ -35,7 +35,7 @@ public class Game {
     private void initializeGame (Canvas c) {
         imageIcon = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
         playerImage = imageIcon.getImage();
-        myPlayer = new Player(new Point(400, 300), new Dimension(20, 20), playerImage, 10);
+        myPlayer = new Player(new Point(400, 300), new Dimension(20, 20),new Dimension(100,100), playerImage, 10);
         addSprite(myPlayer);
         Level firstLevel = new Level1(this);
         myCanvas = c;
@@ -54,7 +54,7 @@ public class Game {
         // }
 
         for (Sprite s : getSprites()) {
-            s.update(myCanvas);
+            s.update();
         }
         for (Sprite s1 : getSprites()) {
             for (Sprite s2 : getSprites()) {

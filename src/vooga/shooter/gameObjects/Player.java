@@ -16,7 +16,6 @@ import vooga.shooter.graphics.Canvas;
  * (add your own name as you edit)
  */
 public class Player extends Sprite{
-
     /**
      * Constructs a player for the user to control.
      * @param position the center of the sprite image
@@ -24,8 +23,50 @@ public class Player extends Sprite{
      * @param image the image to use
      * @param health the starting health
      */
-    public Player (Point position, Dimension size, Image image, int health) {
-        super(position, size, image, health);
+    public Player (Point position, Dimension size, Dimension bounds, Image image, int health) {
+        super(position, size, bounds, image, health);
+        setMapper(new MethodMapper());
+        setMethods();
+    }
+
+    /**
+     * This will set the methods for the player that will be called
+     * when a certain key is pressed or a collision happens. The methods
+     * are mapped to a string that describes the type of action happening,
+     * e.g. "37" is used for the left arrow key because that is the int value
+     * returned by the keyListener when pressing the left arrow key.
+     */
+    void setMethods() {
+        //37 is the int value for left arrow key
+        getMapper().addPair("37", new MethodWrapper() {
+                                public void doAction(Object...o) {
+                                    getPosition().translate(-10, getVelocity().y);
+                                }
+        });
+
+        //38 is the int value for up arrow key
+        getMapper().addPair("38", new MethodWrapper() {
+                                public void doAction(Object...o) {
+                                    getPosition().translate(getVelocity().x, -10);
+                                }
+        });
+
+        //39 is the int value for right arrow key
+        getMapper().addPair("39", new MethodWrapper() {
+                                public void doAction(Object...o) {
+                                    getPosition().translate(10, getVelocity().y);
+                                }
+        });
+
+        //40 is the int value for down arrow key
+        getMapper().addPair("40", new MethodWrapper() {
+                                public void doAction(Object...o) {
+                                    getPosition().translate(getVelocity().x, 10);
+                                }
+        });
+
+        //-1 is the int value for no key pressed
+        getMapper().addPair("-1", this);
     }
 
     /**
@@ -33,69 +74,15 @@ public class Player extends Sprite{
      * is updated and will include anything extra that the player
      * needs to do when being updated (e.g. stop when at a wall).
      */
-    public void continueUpdate(Canvas c) {
+    protected void continueUpdate() {
         //don't go past right or left wall
-        if(getRight() >= c.getWidth() || getLeft() <= 0) {
+        if(getRight() >= getBounds().width || getLeft() <= 0) {
             setVelocity(0, getVelocity().y);
         }
         //don't go past top or bottom wall
-        if(getTop() <= 0 || getBottom() >= c.getHeight()) {
+        if(getTop() <= 0 || getBottom() >= getBounds().height) {
             setVelocity(getVelocity().x, 0);
         }
-    }
-
-    /**
-     * Changes the player's velocity to add a -x component,
-     * while keeping the current y velocity.
-     * (This makes the player's sprite go left on the screen).
-     */
-    public void goLeft(Canvas c) {
-        Point v = new Point(-10, getVelocity().y);
-        setVelocity(v);
-        update(c);
-    }
-
-    /**
-     * Changes the player's velocity to add a +x component,
-     * while keeping the current y velocity.
-     * (This makes the player's sprite go right on the screen).
-     */
-    public void goRight(Canvas c) {
-        Point v = new Point(10, getVelocity().y);
-        setVelocity(v);
-        update(c);
-    }
-
-    /**
-     * Changes the player's velocity to add a -y component,
-     * while keeping the current x velocity.
-     * (This makes the player's sprite go up on the screen).
-     */
-    public void goUp(Canvas c) {
-        Point v = new Point(getVelocity().x, -10);
-        setVelocity(v);
-        update(c);
-    }
-
-    /**
-     * Changes the player's velocity to add a +y component,
-     * while keeping the current x velocity.
-     * (This makes the player's sprite go down on the screen).
-     */
-    public void goDown(Canvas c) {
-        Point v = new Point(getVelocity().x, 10);
-        setVelocity(v);
-        update(c);
-    }
-
-    /**
-     * Called if none of the keys that move the player are
-     * pressed. (Makes the player sprite stop moving).
-     */
-    public void stopMove(Canvas c) {
-        Point v = new Point(0, 0);
-        setVelocity(v);
-        update(c);
     }
 
     /**
@@ -140,7 +127,7 @@ public class Player extends Sprite{
     /**
      * Paints bullets of player.
      */
-    public void continuePaint (Graphics pen) {
+    protected void continuePaint (Graphics pen) {
         
     }
 }

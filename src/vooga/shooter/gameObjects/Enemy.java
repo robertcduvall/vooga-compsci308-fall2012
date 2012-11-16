@@ -23,8 +23,8 @@ public class Enemy extends Sprite{
      * @param velocity the starting velocity for the enemy
      * @param health the starting health of the enemy
      */
-    public Enemy (Point position, Dimension size, Image image, Point velocity, int health) {
-        super(position, size, image, velocity, health);
+    public Enemy (Point position, Dimension size, Dimension bounds, Image image, Point velocity, int health) {
+        super(position, size, bounds, image, velocity, health);
     }
 
     /**
@@ -32,7 +32,7 @@ public class Enemy extends Sprite{
      * Makes the enemy do something else after moving (e.g. fire a
      * shot).
      */
-    public void continueUpdate(Canvas c) {
+    protected void continueUpdate() {
         
     }
 
@@ -78,7 +78,12 @@ public class Enemy extends Sprite{
     /**
      * Paints bullets of enemy.
      */
-    public void continuePaint (Graphics pen) {
+    protected void continuePaint (Graphics pen) {
+        
+    }
+
+    @Override
+    void setMethods () {
         
     }
 }
