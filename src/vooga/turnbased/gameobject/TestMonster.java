@@ -41,18 +41,6 @@ public class TestMonster extends BattleObject {
     }
 
     @Override
-    public void handleKeyReleased (KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void handleKeyPressed (KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void update (int delayTime) {
         // TODO Auto-generated method stub
 

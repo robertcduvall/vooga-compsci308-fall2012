@@ -45,10 +45,6 @@ public abstract class GameObject {
     	return myGameEvent;
     }
 
-    public abstract void handleKeyReleased (KeyEvent e);
-
-    public abstract void handleKeyPressed (KeyEvent e);
-
     public void paint (Graphics g, int x, int y, int width, int height) {
         g.drawImage(myImage, x, y, width, height, null);
     }

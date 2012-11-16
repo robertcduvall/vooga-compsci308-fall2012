@@ -14,14 +14,6 @@ public class MapItemObject extends MapObject{
 	}
 
 	@Override
-	public void handleKeyReleased(KeyEvent e) {
-	}
-
-	@Override
-	public void handleKeyPressed(KeyEvent e) {
-	}
-
-	@Override
 	public void update(int delayTime) {
 	}
 	

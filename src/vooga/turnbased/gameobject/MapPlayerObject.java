@@ -14,18 +14,6 @@ public class MapPlayerObject extends MovingMapObject {
     }
 
     @Override
-    public void handleKeyReleased (KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void handleKeyPressed (KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void update (int delayTime) {
         super.update(delayTime);
     }
