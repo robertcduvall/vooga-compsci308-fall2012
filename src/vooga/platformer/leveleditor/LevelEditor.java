@@ -225,6 +225,7 @@ public class LevelEditor extends JFrame{
         bar.add(spriteMenu);
         myViewPane.add(bar, BorderLayout.NORTH);
     }
+    
     protected void newLevel () {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
@@ -237,7 +238,6 @@ public class LevelEditor extends JFrame{
             System.out.println("Directory does not exist, try again");
             newLevel();
         }
-
         // root elements
         myBoard = new LevelBoard(DEFAULT_FRAME_SIZE);
         myViewPane.addMouseListener(myBoard.getMouseListener());

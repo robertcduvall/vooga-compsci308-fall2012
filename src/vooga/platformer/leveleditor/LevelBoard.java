@@ -22,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.levelfileio.LevelFileReader;
+import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /*
@@ -39,7 +40,7 @@ import vooga.platformer.levelfileio.LevelFileReader;
  * Represents the main window for the level editor. Will display a collection
  * of Sprites and will oversee the results of all user actions.
  * 
- * @author Paul Dannenberg
+ * @author Paul Dannenberg, Sam Rang
  * 
  */
 public class LevelBoard extends Canvas implements ISavable {
@@ -56,6 +57,7 @@ public class LevelBoard extends Canvas implements ISavable {
     private int myHeight;
     private String myLevelName;
     private String myLevelType;
+    private String myBackgroundPath;
     private int mouseX;
     private int mouseY;
 
@@ -84,7 +86,7 @@ public class LevelBoard extends Canvas implements ISavable {
                         if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
                                 e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
                             if (e.getButton() == MouseEvent.BUTTON3) {
-                                spritePopupMenu(e, s);
+                                spritePopupMenu(s, e);
                             }
                             else if (e.getButton() == MouseEvent.BUTTON1) {
                                 myCurrentSprite = s;
@@ -101,6 +103,7 @@ public class LevelBoard extends Canvas implements ISavable {
                         if (returnVal == JFileChooser.APPROVE_OPTION)  {
                             try {
                                 myBackground = ImageIO.read(chooser.getSelectedFile());
+                                myBackgroundPath = chooser.getSelectedFile().getPath();
                             }
                             catch (IOException io) {
                                 System.out.println("File not found. Try again");
@@ -162,8 +165,8 @@ public class LevelBoard extends Canvas implements ISavable {
 
     @Override
     public void save() {
-        //        LevelFileWriter.writeLevel(filePath, levelType, levelName, width, height,
-        //        myBackgroud, mySprites, collisionCheckerType, cameraType);
+//                LevelFileWriter.writeLevel(filePath, levelType, levelName, width, height,
+//                myBackgroud, mySprites, collisionCheckerType, cameraType);
     }
 
     @Override
@@ -175,12 +178,13 @@ public class LevelBoard extends Canvas implements ISavable {
         mySprites.clear();
     }
 
-    protected JPopupMenu spritePopupMenu (MouseEvent e, Sprite s) {
+    protected void spritePopupMenu (Sprite s, MouseEvent e) {
         JPopupMenu pop = new JPopupMenu();
-        JMenuItem j = new JMenuItem();
+        JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(new SelectionHelper(s));
+        pop.add(j);
+        this.setVisible(true);
         pop.show(this, e.getX(), e.getY());
-        return pop;
     }
     /**
      * @return An unmodifiable Collection of the sprites
