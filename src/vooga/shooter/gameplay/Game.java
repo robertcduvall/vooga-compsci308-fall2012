@@ -154,7 +154,7 @@ public class Game {
          */
         @Override
         public void keyPressed (KeyEvent e) {
-            myPlayer.doEvent(Integer.toString(e.getKeyCode()), 0, null);
+            myPlayer.doEvent(Integer.toString(e.getKeyCode()), null);
             numKeysPressed++;
         }
 
@@ -166,7 +166,7 @@ public class Game {
         public void keyReleased (KeyEvent e) {
             numKeysPressed--;
             if (numKeysPressed == 0) {
-                myPlayer.doEvent("-1", 0, null);
+                myPlayer.doEvent("-1", null);
             }
         }
 

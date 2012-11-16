@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-import vooga.shooter.graphics.Canvas;
 
 /**
  * Represents an enemy sprite to be used in the game.
@@ -13,12 +12,13 @@ import vooga.shooter.graphics.Canvas;
  * @author Jesse Starr
  * (add your own name as you edit)
  */
-public class Enemy extends Sprite{
+public class Enemy extends Sprite {
 
     /**
      * Constructs an enemy character for the game.
      * @param position the center of the image
      * @param size the size of the image
+     * @param bounds the size of the canvas
      * @param image the image to use
      * @param velocity the starting velocity for the enemy
      * @param health the starting health of the enemy
@@ -34,7 +34,7 @@ public class Enemy extends Sprite{
      * shot).
      */
     protected void continueUpdate() {
-        
+
     }
 
     /**
@@ -56,6 +56,6 @@ public class Enemy extends Sprite{
 
     @Override
     void setMethods () {
-        
+
     }
 }

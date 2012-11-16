@@ -17,5 +17,5 @@ public interface SpriteActionInterface {
      *
      * @param o a (possibly empty) list of parameters
      */
-    public void doAction(Object...o);
+    void doAction(Object...o);
 }

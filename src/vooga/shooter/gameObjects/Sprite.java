@@ -14,7 +14,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  * extend this class and contain any additional information or behaviors
  * particular to that new type of sprite (e.g. the player could have a health
  * limit).
- * 
+ *
  */
 public abstract class Sprite implements SpriteActionInterface {
     private Point myPosition;
@@ -34,9 +34,11 @@ public abstract class Sprite implements SpriteActionInterface {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      */
-    public Sprite (Point position, Dimension size, Dimension bounds, Image image) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image) {
         myPosition = position;
         mySize = size;
         myImage = image;
@@ -54,11 +56,12 @@ public abstract class Sprite implements SpriteActionInterface {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      * @param velocity the starting velocity of the sprite
      */
-    public Sprite (Point position, Dimension size, Dimension bounds, Image image, 
-            Point velocity) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image, Point velocity) {
         myPosition = position;
         mySize = size;
         myImage = image;
@@ -75,11 +78,12 @@ public abstract class Sprite implements SpriteActionInterface {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      * @param health the starting health of the sprite
      */
-    public Sprite (Point position, Dimension size, Dimension bounds, Image image,
-            int health) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image, int health) {
         myPosition = position;
         mySize = size;
         myImage = image;
@@ -95,12 +99,13 @@ public abstract class Sprite implements SpriteActionInterface {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      * @param velocity the starting velocity of the sprite
      * @param health the starting health of the sprite
      */
-    public Sprite (Point position, Dimension size, Dimension bounds, Image image,
-            Point velocity, int health) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image, Point velocity, int health) {
         myPosition = position;
         mySize = size;
         myImage = image;
@@ -142,7 +147,7 @@ public abstract class Sprite implements SpriteActionInterface {
 
     /**
      * Sets this sprite's velocity to a new one.
-     * @param velocity the new velocity to set to 
+     * @param velocity the new velocity to set to
      */
     public void setVelocity(Point velocity) {
         myVelocity = velocity;
@@ -240,7 +245,7 @@ public abstract class Sprite implements SpriteActionInterface {
     public int getBottom() {
         return myPosition.y + mySize.height / 2;
     }
-    
+
     /**
      * Returns the dimensions of the sprite.
      * @return the dimensions of the sprite.
@@ -259,10 +264,11 @@ public abstract class Sprite implements SpriteActionInterface {
      * current position. If a sprite needs to draw anything
      * else (e.g. its bullets) then it can implement the
      * continuePaint method, if not, just leave it blank.
-     * @param g used for drawing the image
+     * @param pen used for drawing the image
      */
     public void paint(Graphics pen) {
-        pen.drawImage(myImage, getLeft(), getTop(), mySize.width, mySize.height, null);
+        pen.drawImage(myImage, getLeft(), getTop(),
+                mySize.width, mySize.height, null);
         continuePaint(pen);
     }
 
@@ -287,9 +293,11 @@ public abstract class Sprite implements SpriteActionInterface {
      * Called when this sprite collides with another
      * sprite. Which one is called depends on the type
      * of sprite it is colliding with.
+     *
+     * @param s the sprite that collides with this one
      */
     public void collide(Sprite s) {
-        
+
     }
 
     protected void setMapper (SpriteMethodMap mapper) {
@@ -307,17 +315,22 @@ public abstract class Sprite implements SpriteActionInterface {
     /**
      * Tells the method mapper (class that holds strings to methods)
      * which key to use (which method to choose).
+     * If parameters are added here, they should also be added to
+     * SpriteMethodMap -> doEvent method. Also, newly added parameters
+     * should be added at the end (after all other previous parameters).
      *
      * @param key the string (key) that maps to the right method to do
-     * @param damage any damage this sprite will take
      * @param s the sprite that this one collides with
      */
-    public void doEvent(String key, int damage, Sprite s) {
-        myMapper.doEvent(key, damage, s);
+    public void doEvent(String key, Sprite s) {
+        myMapper.doEvent(key, s);
     }
 
     /**
      * Sets the sprite's velocity to 0.
+     *
+     * @param o a (possibly empty) list of
+     * parameters to be used in the action
      */
     @Override
     public void doAction (Object ... o) {

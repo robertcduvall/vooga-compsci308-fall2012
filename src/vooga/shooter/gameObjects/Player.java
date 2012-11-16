@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
-import vooga.shooter.graphics.Canvas;
 
 /**
  * Represents the player(s) to be used in the game.
@@ -17,15 +16,18 @@ import vooga.shooter.graphics.Canvas;
  * @author Jesse Starr
  * (add your own name as you edit)
  */
-public class Player extends Sprite{
+public class Player extends Sprite {
+    private static final int SPRITE_MOVEMENT = 10;
     /**
      * Constructs a player for the user to control.
      * @param position the center of the sprite image
      * @param size the size of the sprite image
+     * @param bounds the bounds of the canvas
      * @param image the image to use
      * @param health the starting health
      */
-    public Player (Point position, Dimension size, Dimension bounds, Image image, int health) {
+    public Player (Point position, Dimension size,
+            Dimension bounds, Image image, int health) {
         super(position, size, bounds, image, health);
     }
 
@@ -39,37 +41,37 @@ public class Player extends Sprite{
     void setMethods() {
         //37 is the int value for left arrow key
         getMapper().addPair("37", new SpriteActionInterface() {
-                                public void doAction(Object...o) {
-                                    setVelocity(-10, getVelocity().y);
-                                }
+            public void doAction(Object...o) {
+                setVelocity(-SPRITE_MOVEMENT, getVelocity().y);
+            }
         });
 
         //38 is the int value for up arrow key
         getMapper().addPair("38", new SpriteActionInterface() {
-                                public void doAction(Object...o) {
-                                    setVelocity(getVelocity().x, -10);
-                                }
+            public void doAction(Object...o) {
+                setVelocity(getVelocity().x, -SPRITE_MOVEMENT);
+            }
         });
 
         //39 is the int value for right arrow key
         getMapper().addPair("39", new SpriteActionInterface() {
-                                public void doAction(Object...o) {
-                                    setVelocity(10, getVelocity().y);
-                                }
+            public void doAction(Object...o) {
+                setVelocity(SPRITE_MOVEMENT, getVelocity().y);
+            }
         });
 
         //40 is the int value for down arrow key
         getMapper().addPair("40", new SpriteActionInterface() {
-                                public void doAction(Object...o) {
-                                    setVelocity(getVelocity().x, 10);
-                                }
+            public void doAction(Object...o) {
+                setVelocity(getVelocity().x, SPRITE_MOVEMENT);
+            }
         });
 
         //32 is the int value for spacebar key
         getMapper().addPair("32", new SpriteActionInterface() {
-                                public void doAction(Object...o) {
-                                    fireBullet();
-                                }
+            public void doAction(Object...o) {
+                fireBullet();
+            }
         });
 
         //-1 is the int value for no key pressed
@@ -78,10 +80,10 @@ public class Player extends Sprite{
         //the player is hit with a bullet (decreases health)
         //also the bullet that hit the player goes away
         getMapper().addPair("hitbybullet", new SpriteActionInterface() {
-                                public void doAction(Object...o) {
-                                    decreaseHealth((Integer) o[0]);
-                                    ((Bullet) o[1]).die();
-                                }
+            public void doAction(Object...o) {
+                decreaseHealth(((Bullet) o[0]).getDamage());
+                ((Bullet) o[0]).die();
+            }
         });
     }
 
@@ -92,11 +94,11 @@ public class Player extends Sprite{
      */
     protected void continueUpdate() {
         //don't go past right or left wall
-        if(getRight() >= getBounds().width || getLeft() <= 0) {
+        if (getRight() >= getBounds().width || getLeft() <= 0) {
             setVelocity(0, getVelocity().y);
         }
         //don't go past top or bottom wall
-        if(getTop() <= 0 || getBottom() >= getBounds().height) {
+        if (getTop() <= 0 || getBottom() >= getBounds().height) {
             setVelocity(getVelocity().x, 0);
         }
     }
@@ -113,7 +115,7 @@ public class Player extends Sprite{
      * Paints bullets of player.
      */
     protected void continuePaint (Graphics pen) {
-        for(Bullet b : getMyBulletsFired()) {
+        for (Bullet b : getMyBulletsFired()) {
             b.paint(pen);
         }
     }
@@ -124,7 +126,8 @@ public class Player extends Sprite{
      * and will be painted during the player's paint method.
      */
     public void fireBullet() {
-        ImageIcon iib = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/playerbullet.png"));
+        ImageIcon iib = new ImageIcon(this.getClass().getResource(
+                "../vooga/shooter/images/playerbullet.png"));
         Image bulletImage = iib.getImage();
 
         Bullet b = new Bullet(getPosition(), new Dimension(5, 5), getBounds(),

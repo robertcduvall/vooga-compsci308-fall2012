@@ -2,8 +2,8 @@ package vooga.shooter.gameObjects.spriteUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import vooga.shooter.gameObjects.Sprite;
 
 /**
@@ -19,14 +19,14 @@ import vooga.shooter.gameObjects.Sprite;
  *
  */
 public class SpriteMethodMap {
-    Map<String, List<SpriteActionInterface>> myMap;
+    private Map<String, List<SpriteActionInterface>> myMap;
 
     /**
      * Constructs a new method mapping (one for each sprite).
-     * Begins with an empty map. 
+     * Begins with an empty map.
      */
-    public SpriteMethodMap(){
-        myMap = new HashMap<String,List<SpriteActionInterface>>();
+    public SpriteMethodMap() {
+        myMap = new HashMap<String, List<SpriteActionInterface>>();
     }
 
     /**
@@ -36,9 +36,10 @@ public class SpriteMethodMap {
      * @param m the list of actions to which the string is
      * mapped
      */
-    public void addPair(String key, SpriteActionInterface...m){
-        List<SpriteActionInterface> methodList = new ArrayList<SpriteActionInterface>();
-        for(SpriteActionInterface eachm : m){
+    public void addPair(String key, SpriteActionInterface...m) {
+        List<SpriteActionInterface> methodList =
+            new ArrayList<SpriteActionInterface>();
+        for (SpriteActionInterface eachm : m) {
             methodList.add(eachm);
         }
         myMap.put(key, methodList);
@@ -49,14 +50,12 @@ public class SpriteMethodMap {
      * string.
      *
      * @param key the string that describes which actions to do
-     * @param any damage done to the sprite doing the action
      * @param s any sprite that this sprite collides with
      */
-    public void doEvent(String key, int damage, Sprite s)
-    {
-        if(myMap.containsKey(key)){
-            for(SpriteActionInterface m : myMap.get(key)){
-                m.doAction(damage, s);
+    public void doEvent(String key, Sprite s) {
+        if (myMap.containsKey(key)) {
+            for (SpriteActionInterface m : myMap.get(key)) {
+                m.doAction(s);
             }
         }
     }
