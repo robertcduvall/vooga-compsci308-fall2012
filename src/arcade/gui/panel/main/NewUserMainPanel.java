@@ -1,6 +1,5 @@
 package arcade.gui.panel.main;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,10 +21,8 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
     private static final String SOUTH = "s";
     private static final String EAST = "e";
     private static final String WEST = "w";
+    private static final String SUBMIT = "Submit";
 
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JLabel wrongPassword;
     private GridBagConstraints c;
     ArcadePanel myPanel;
 
@@ -40,15 +37,35 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
         myPanel = initializeNewPanel();
         myPanel.setBackground(Color.YELLOW);
         System.out.println("NewUserMainPanel");
-        
+
         myPanel.setLayout(new GridBagLayout());
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        myPanel = addField("Username", 17, 0, 0, SOUTH);
-        myPanel = addLoginButton();
+        myPanel = addField("Username", 17, 1, 1, NORTH);
+        myPanel = addField("Password", 17, 1, 3, NORTH);
+        myPanel = addField("Confirm Password", 17, 1, 5, NORTH);
+        myPanel = addSubmitButton();
+        myPanel = addLabel("The passwords don't match or " +
+        		"are shorter than 4 characters.",
+                        "warning", 5, 5, false);
+        
 
         System.out.println("LoginMainPanel");
+
+        return myPanel;
+    }
+
+    private ArcadePanel addLabel (String text, String name, int x, int y, boolean visible) {
+        JLabel label = new JLabel(text);
+        label.setName(name);
+        System.out.println(label.getName());
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = x;
+        c.gridy = y;
+        label.setVisible(visible);
+        myPanel.add(label, c);
+
 
         return myPanel;
     }
@@ -61,6 +78,7 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
         c.gridy = y;
         myPanel.add(textField, c);
         JLabel label = new JLabel(name);
+        label.setName(name+" :");
         label.setLabelFor(textField);
         c.fill = GridBagConstraints.HORIZONTAL;
         if (NORTH.equals(direction)) {
@@ -88,23 +106,13 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
 
-    private ArcadePanel addWrongPasswordLabel () {
-        wrongPassword = new JLabel("Wrong Username or Password.");
-        wrongPassword.setVisible(false);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 4;
-        myPanel.add(wrongPassword, c);
-        return myPanel;
-    }
-
-    private ArcadePanel addLoginButton () {
-        JButton loginButton = new JButton("Login");
+    private ArcadePanel addSubmitButton () {
+        JButton loginButton = new JButton(SUBMIT);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
-        c.gridy = 3;
+        c.gridy = 5;
 
-        loginButton.setActionCommand("test");
+        loginButton.setActionCommand(SUBMIT);
         loginButton.addActionListener(this);
 
         myPanel.add(loginButton, c);
@@ -112,81 +120,27 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
 
-    private ArcadePanel addNewUserButton () {
-        JButton newUserButton = new JButton("New User");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
-        c.gridy = 4;
-
-        newUserButton.setActionCommand("");
-        newUserButton.addActionListener(this);
-
-        myPanel.add(newUserButton, c);
-
-        return myPanel;
-    }
-
-    private ArcadePanel addUserNameField () {
-        usernameField = new JTextField(17);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 1;
-        myPanel.add(usernameField, c);
-
-        JLabel label = new JLabel("Username: ");
-        label.setLabelFor(usernameField);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
-        myPanel.add(label, c);
-
-        return myPanel;
-    }
-
-    private ArcadePanel addPasswordField () {
-        passwordField = new JPasswordField(17);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 3;
-        myPanel.add(passwordField, c);
-
-        JLabel label = new JLabel("Password: ");
-        label.setLabelFor(passwordField);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 3;
-        myPanel.add(label, c);
-
-        return myPanel;
-    }
-
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
 
-        if ("test".equals(cmd)){
-            JTextField textF = (JTextField) myPanel.getComponent("Username");
-            System.out.println(textF.getText());
+        if (SUBMIT.equals(cmd)){           
+            if (validatePasswords()) {
+                //                this.getArcade().getSocialCenter().registerUser(((JTextField) myPanel.getComponent("Password")).getText(),
+                //                        ((JTextField) myPanel.getComponent("Password")).getText(), "");
+                //TODO add picture stuff...
+                //Kinda waiting for other people to get stuff done so we can do more work on this...
+            }
+            else {
+                ((JLabel) myPanel.getComponent("warning")).setVisible(true);
+            }
         }
-        else if ("".equals(cmd)){
-            newUser();
-        }
-
     }
 
-    private void newUser () {
-        System.out.println("Attempt New User");
-        this.getArcade().replacePanel("NewUser");
-    }
-
-    private void login () {
-        System.out.println("Attempt Login");
-        String username = usernameField.getText();
-        char[] password = passwordField.getPassword();
-        if (this.getArcade().getUserManager().loginUser(username, password)) {
-            this.getArcade().replacePanel("MainHome");
-        }
-        else {
-            wrongPassword.setVisible(true);
-        }
+    private boolean validatePasswords () {
+        return ((((JTextField) myPanel.getComponent("Password")).getText() != null) && 
+                (((JTextField) myPanel.getComponent("Confirm Password")).getText() != null) &&
+                (((JTextField) myPanel.getComponent("Password")).getText().equals(
+                        ((JTextField) myPanel.getComponent("Confirm Password")).getText())) &&
+                        ((((JTextField) myPanel.getComponent("Password")).getText().length()) > 4));
     }
 }

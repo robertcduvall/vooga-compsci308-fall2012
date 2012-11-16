@@ -1,4 +1,4 @@
-package vooga.platformer.gui.menu;
+package util.ingamemenu;
 
 import java.awt.Button;
 import java.awt.Color;
@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
@@ -23,26 +24,34 @@ public class Menu extends JComponent {
     private static final double MENU_SIZE_RATIO = 0.66;
     private double myRatio = MENU_SIZE_RATIO;
     private Map<String, GameButton> myButtonMap = new HashMap<String, GameButton>();
+    private Dimension myGameCanvasSize;
 
     /**
      * @param gameCanvas JComponent where the game painted
      */
-    public Menu(JComponent gameCanvas) {
-        Dimension gameSize = gameCanvas.getSize();
-        Dimension size = new Dimension((int) (gameSize.width * myRatio),
-                (int) (gameSize.height * myRatio));
+    public Menu (JComponent gameCanvas) {
+        myGameCanvasSize = gameCanvas.getSize();
+        Dimension size = new Dimension((int) (myGameCanvasSize.width),
+                (int) (myGameCanvasSize.height));
         setPreferredSize(size);
         gameCanvas.setLayout(new GridBagLayout());
         gameCanvas.add(this, new GridBagConstraints());
         setLayout(new GridBagLayout());
+        gameCanvas.repaint();
     }
 
     @Override
-    protected void paintComponent(Graphics pen) {
+    protected void paintComponent (Graphics pen) {
         pen.setColor(Color.WHITE);
-        pen.fillRect(1, 1, getSize().width - 2, getSize().height - 2);
+        double myWidth = (myGameCanvasSize.width * myRatio);
+        double myHeight = (myGameCanvasSize.height * myRatio);
+        pen.fillRect((int) ((myGameCanvasSize.width / 2) - (myWidth / 2)),
+                (int) ((myGameCanvasSize.height / 2) - (myHeight / 2)),
+                (int) (myWidth - 2), (int) (myHeight - 2));
         pen.setColor(Color.BLACK);
-        pen.drawRect(1, 1, getSize().width - 2, getSize().height - 2);
+        pen.drawRect((int) ((myGameCanvasSize.width / 2) - (myWidth / 2)),
+                (int) ((myGameCanvasSize.height / 2) - (myHeight / 2)),
+                (int) (myWidth - 2), (int) (myHeight - 2));
     }
 
     /**
@@ -50,8 +59,8 @@ public class Menu extends JComponent {
      * @param command name of this button
      * @param gl GameListener to listen to this button.
      */
-    public void addButtons(String fileName, String command, GameListener gl) {
-        GameButton gb = new GameButton(fileName, command, gl);
+    public void addButtons (String fileName, String command, MouseListener ml) {
+        GameButton gb = new GameButton(fileName, command, ml);
         myButtonMap.put(command, gb);
         add(gb, new GridBagConstraints());
     }
@@ -59,14 +68,14 @@ public class Menu extends JComponent {
     /**
      * @param button to add
      */
-    public void addButtons(GameButton button) {
+    public void addButtons (GameButton button) {
         add(button, new GridBagConstraints());
     }
 
     /**
      * @param ratio of the size of the menu to that of game canvas.
      */
-    public void setRatio(double ratio) {
+    public void setRatio (double ratio) {
         myRatio = ratio;
     }
 
@@ -75,7 +84,7 @@ public class Menu extends JComponent {
      *        the int number of key N.
      * @param button will be counted as pressed when player pressing this key
      */
-    public void addHotKey(int keyValue, Button button) {
+    public void addHotKey (int keyValue, Button button) {
 
     }
 

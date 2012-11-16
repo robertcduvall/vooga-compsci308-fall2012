@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
-import vooga.shooter.graphics.Canvas;
 
 /**
  * This class encompasses the basic layout for any sprites that appear in the
@@ -15,13 +14,15 @@ import vooga.shooter.graphics.Canvas;
  * limit).
  * 
  */
-public abstract class Sprite {
+public abstract class Sprite implements MethodWrapper {
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
+    private Dimension myBounds;
     private Image myImage;
     private List<Bullet> myShotsFired;
     private int myHealth;
+    private MethodMapper myMapper;
 
     /**
      * Construct a sprite initializing only position, size, and image.
@@ -33,11 +34,14 @@ public abstract class Sprite {
      * @param size the size of the image to display
      * @param image the image of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image) {
+    public Sprite (Point position, Dimension size, Dimension bounds, Image image) {
         myPosition = position;
         mySize = size;
         myImage = image;
-        myHealth = -1;
+        myHealth = Integer.MAX_VALUE;
+        myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     /**
@@ -51,13 +55,16 @@ public abstract class Sprite {
      * @param image the image of the sprite
      * @param velocity the starting velocity of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image, 
+    public Sprite (Point position, Dimension size, Dimension bounds, Image image, 
             Point velocity) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myVelocity = velocity;
-        myHealth = -1;
+        myHealth = Integer.MAX_VALUE;
+        myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     /**
@@ -69,12 +76,15 @@ public abstract class Sprite {
      * @param image the image of the sprite
      * @param health the starting health of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image,
+    public Sprite (Point position, Dimension size, Dimension bounds, Image image,
             int health) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myHealth = health;
+        myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     /**
@@ -87,14 +97,19 @@ public abstract class Sprite {
      * @param velocity the starting velocity of the sprite
      * @param health the starting health of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image,
+    public Sprite (Point position, Dimension size, Dimension bounds, Image image,
             Point velocity, int health) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myVelocity = velocity;
         myHealth = health;
+        myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
+
+    abstract void setMethods();
 
     /**
      * Returns this sprite's position.
@@ -142,6 +157,14 @@ public abstract class Sprite {
         setVelocity(v);
     }
 
+    /**
+     * Returns the bullets fired by this sprite.
+     * @return a list of the bullets that this sprite
+     * has fired.
+     */
+    public List<Bullet> getMyBulletsFired() {
+        return myShotsFired;
+    }
     /**
      * Returns the image representing this sprite.
      * @return myImage
@@ -224,6 +247,9 @@ public abstract class Sprite {
         return mySize;
     }
 
+    /**
+     * @return lowercase string representing type of this sprite
+     */
     public abstract String getType();
 
     /**
@@ -238,7 +264,7 @@ public abstract class Sprite {
         continuePaint(pen);
     }
 
-    public abstract void continuePaint(Graphics pen);
+    protected abstract void continuePaint(Graphics pen);
 
     /**
      * This method will update the position for every
@@ -248,13 +274,12 @@ public abstract class Sprite {
      * This allows for easy implementation of new results specific
      * to each sprite when calling the update method.
      */
-    public void update(Canvas c) {
-        myPosition.x += myVelocity.x;
-        myPosition.y += myVelocity.y;
-        continueUpdate(c);
+    public void update() {
+        myPosition.translate(myVelocity.x, myVelocity.y);
+        continueUpdate();
     }
 
-    protected abstract void continueUpdate(Canvas c);
+    protected abstract void continueUpdate();
 
     /**
      * Called when this sprite collides with another
@@ -262,21 +287,38 @@ public abstract class Sprite {
      * of sprite it is colliding with.
      */
     public void collide(Sprite s) {
-        String type = s.getType();
-        if(type.equals("bullet"))
-            collide((Bullet) s);
-        if(type.equals("enemy"))
-            collide((Enemy) s);
-        if(type.equals("player"))
-            collide((Player) s);
-            
-    }
-    
-    public abstract void collide(Bullet b);
-    public abstract void collide(Player p);
-    public abstract void collide(Enemy e);
-
-    public void die() {
         
+    }
+
+    protected void setMapper (MethodMapper mapper) {
+        this.myMapper = mapper;
+    }
+
+    protected MethodMapper getMapper () {
+        return myMapper;
+    }
+
+    protected Dimension getBounds() {
+        return myBounds;
+    }
+
+    /**
+     * Tells the method mapper (class that holds strings to methods)
+     * which key to use (which method to choose).
+     *
+     * @param key the string (key) that maps to the right method to do
+     * @param damage any damage this sprite will take
+     * @param s the sprite that this one collides with
+     */
+    public void doEvent(String key, int damage, Sprite s) {
+        myMapper.doEvent(key, damage, s);
+    }
+
+    /**
+     * Sets the sprite's velocity to 0.
+     */
+    @Override
+    public void doAction (Object ... o) {
+        setVelocity(0, 0);
     }
 }

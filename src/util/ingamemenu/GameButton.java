@@ -1,4 +1,4 @@
-package vooga.platformer.gui.menu;
+package util.ingamemenu;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,7 +24,6 @@ public class GameButton extends JComponent {
     private Image myImg;
     private String myImgName;
     private String myCommand = "";
-    private GameListener myGameListener;
     private MouseListener myMouseListener;
 
     /**
@@ -36,6 +35,7 @@ public class GameButton extends JComponent {
         setName(fileName);
         setImage(fileName);
         setSize(new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT));
+        setMouseListener();
     }
 
     /**
@@ -47,7 +47,6 @@ public class GameButton extends JComponent {
     public GameButton(String fileName, String command) {
         this(fileName);
         setString(command);
-        setGameListener(null);
     }
 
     /**
@@ -55,11 +54,11 @@ public class GameButton extends JComponent {
      * 
      * @param fileName of the button image
      * @param command String appears on the button.
-     * @param gl GameListener
+     * @param ml MouseListener
      */
-    public GameButton(String fileName, String command, GameListener gl) {
+    public GameButton(String fileName, String command, MouseListener ml) {
         this(fileName);
-        setGameListener(gl);
+        addMouseListener(ml);
     }
 
     /**
@@ -100,21 +99,12 @@ public class GameButton extends JComponent {
         setImage(myImgName, state);
     }
 
-    /**
-     * User define what will happen once this button being clicked in the
-     * actionPerformed() of a GameListener.
-     * 
-     */
-    public void setGameListener() {
+    private void setMouseListener() {
         removeMouseListener(myMouseListener);
         myMouseListener = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent arg0) {
                 changeImage("pressed");
-                try {
-                    myGameListener.actionPerformed(arg0);
-                } catch (NullPointerException e) {
-                }
             }
 
             @Override
@@ -123,14 +113,6 @@ public class GameButton extends JComponent {
             }
         };
         addMouseListener(myMouseListener);
-    }
-
-    /**
-     * @param gl GameListener
-     */
-    public void setGameListener(GameListener gl) {
-        myGameListener = gl;
-        setGameListener();
     }
 
     /**
@@ -144,7 +126,7 @@ public class GameButton extends JComponent {
     private void setImage(String fileName, String state) {
         try {
             myImg = ImageIO.read(new File(
-                    "src/vooga/platformer/gui/menu/buttonimg/" + fileName + "."
+                    "src/util/ingamemenu/buttonimg/" + fileName + "."
                             + state + ".png"));
         } catch (IOException e) {
             System.out.println("src/vooga/platformer/gui/menu/buttonimg/"

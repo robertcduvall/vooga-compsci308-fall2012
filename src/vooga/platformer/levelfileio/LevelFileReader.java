@@ -1,9 +1,10 @@
-package vooga.platformer.leveleditor;
+package vooga.platformer.levelfileio;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.util.xml.XMLUtils;
 import java.awt.*;
 import java.io.File;
@@ -50,6 +51,16 @@ public class LevelFileReader {
     }
 
     /**
+     * Gets the level's type. This specifies what subclass of Level to use to
+     * build the Level in LevelFactory.
+     * 
+     * @return the level's type
+     */
+    public String getLevelType () {
+        return myRoot.getAttribute("type");
+    }
+
+    /**
      * Gets the name of the level.
      * 
      * @return name of the level as a String
@@ -85,6 +96,25 @@ public class LevelFileReader {
     public Image getBackgroundImage () {
         return XMLUtils.fileNameToImage(myLevelFile,
                                         XMLUtils.getTagValue("backgroundImage", myRoot));
+    }
+
+    /**
+     * Gets the class name of the CollisionChecker to use for this particular
+     * level.
+     * 
+     * @return class name of this level's CollisionChecker subclass
+     */
+    public String getCollisionCheckerType () {
+        return XMLUtils.getTagValue("collisionChecker", myRoot);
+    }
+
+    /**
+     * Gets the class name of the Camera to use for this particular level.
+     * 
+     * @return class name of this level's Camera subclass
+     */
+    public String getCameraType () {
+        return XMLUtils.getTagValue("camera", myRoot);
     }
 
     /**
@@ -137,7 +167,9 @@ public class LevelFileReader {
                     Node strategyNode = strategyNodeList.item(j);
                     if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element strategyElement = (Element) strategyNode;
-                        builtSprite.addUpdateStrategy(extractMapFromXML(strategyElement));
+                        Map<String, String> strategyMap = extractMapFromXML(strategyElement);
+                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"),
+                                                      strategyMap);
                     }
                 }
             }
