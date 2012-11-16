@@ -1,9 +1,9 @@
-package vooga.platformer.leveleditor;
+package vooga.platformer.levelfileio;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,6 +18,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import vooga.platformer.leveleditor.Sprite;
 
 
 /**
@@ -51,17 +52,23 @@ public final class LevelFileWriter {
      * so that it can be reconstructed by a level factory.
      * 
      * @param filePath where the XML should be saved
-     * @param levelID name of the level
+     * @param levelType specifies which Level subclass to use
+     * @param levelName name of the level
      * @param width overall width of the level in pixels
      * @param height overall height of the level in pixels
      * @param backgroundImage path to the image that should be painted to the
      *        level's background
      * @param levelObjects Sprites that populate the level
+     * @param collisionCheckerType class name of the CollisionChecker to use for
+     *        this level
+     * @param cameraType class name of the Camera to use for this level
      * @return an integer constant representing whether the file was written
      *         successfully or not
      */
-    public static int writeLevel (String filePath, String levelID, int width, int height,
-                                  String backgroundImage, Collection<Sprite> levelObjects) {
+    public static int writeLevel (String filePath, String levelType, String levelName, int width,
+                                  int height, String backgroundImage,
+                                  Collection<Sprite> levelObjects, String collisionCheckerType,
+                                  String cameraType) {
         try {
             DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -71,21 +78,21 @@ public final class LevelFileWriter {
             Element level = doc.createElement("level");
             doc.appendChild(level);
 
-            appendChildTextNode(doc, level, "id", levelID);
+            level.setAttribute("type", levelType);
+            appendChildTextNode(doc, level, "id", levelName);
             appendChildTextNode(doc, level, "width", String.valueOf(width));
             appendChildTextNode(doc, level, "height", String.valueOf(height));
             appendChildTextNode(doc, level, "backgroundImage", backgroundImage);
+            appendChildTextNode(doc, level, "collisionChecker", collisionCheckerType);
+            appendChildTextNode(doc, level, "camera", cameraType);
 
             addLevelObjects(levelObjects, doc, level);
 
             String xmlString = getXMLAsString(doc);
-
-            FileWriter writer = new FileWriter(filePath);
+            File toWrite = new File(filePath, levelName);
+            FileWriter writer = new FileWriter(toWrite);
             writer.write(xmlString);
             writer.close();
-
-            // print xml to console
-            System.out.println("What was written in " + filePath + "\n\n" + xmlString);
         }
         catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -117,7 +124,16 @@ public final class LevelFileWriter {
             if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
                 Element strategiesElement = doc.createElement("strategies");
                 for (Map<String, String> strategy : s.getUpdateStrategies()) {
-                    appendMapContents(doc, strategiesElement, "strategy", strategy);
+
+                    String strategyType = "";
+                    if (strategy.containsKey("type")) {
+                        strategyType = strategy.get("type");
+                        strategy.remove("type");
+                    }
+
+                    Element strategyElement = makeElementFromMap(doc, "strategy", strategy);
+                    strategyElement.setAttribute("type", strategyType);
+                    strategiesElement.appendChild(strategyElement);
                 }
                 spriteElement.appendChild(strategiesElement);
             }
@@ -132,11 +148,17 @@ public final class LevelFileWriter {
 
     private static void appendMapContents (Document doc, Element parentElement,
                                            String childElementName, Map<String, String> map) {
-        Element strategyElement = doc.createElement(childElementName);
+        Element childElement = makeElementFromMap(doc, childElementName, map);
+        parentElement.appendChild(childElement);
+    }
+
+    private static Element makeElementFromMap (Document doc, String childElementName,
+                                               Map<String, String> map) {
+        Element childElement = doc.createElement(childElementName);
         for (String param : map.keySet()) {
-            appendChildTextNode(doc, strategyElement, param, map.get(param));
+            appendChildTextNode(doc, childElement, param, map.get(param));
         }
-        parentElement.appendChild(strategyElement);
+        return childElement;
     }
 
     private static String getXMLAsString (Document doc) throws TransformerException {

@@ -1,8 +1,14 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,10 +92,23 @@ public class Sprite {
      * paints it to whatever component Graphics g is connected to.
      * 
      * @param g Graphics of a Component, Image, or Canvas
+     * @param c Compnent containing sprite so the sprite knows where it is in the window. 
      */
-    public void paint (Graphics g) {
-        g.drawImage(getImage(myImagePath), myX, myY, myX + myWidth, myY + myHeight, 0, 0, myWidth,
-                    myHeight, null);
+    public void paint (Graphics g, Component c) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 
+                0, 0, myImage.getWidth(null), myImage.getHeight(null), c);
+    }
+
+    /**
+     * Flips the sprites image across it's vertical axis.
+     * 
+     */
+    public void flipImage() {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-myImage.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        myImage = op.filter((BufferedImage)myImage, null);
     }
 
     /**
@@ -185,15 +204,18 @@ public class Sprite {
         return myImagePath;
     }
 
+    // TODO clarify type declaration
     /**
      * Adds update strategy to the Sprite. This is added as Map.
      * 
+     * @param strategyType Name of the update strategy type to use. Must be
+     *        subclass of Strategy.
      * @param strategy Map representing the update strategy. Each key is a
      *        String representing a parameter name for the update strategy. This
      *        should map to the value of this parameter, also a String.
      */
-    public void addUpdateStrategy (Map<String, String> strategy) {
-        // TODO consider type parameter. Rewrite signature
+    public void addUpdateStrategy (String strategyType, Map<String, String> strategy) {
+        strategy.put("type", strategyType);
         myUpdateStrategies.add(strategy);
     }
 
