@@ -79,11 +79,15 @@ public class GameCenter {
     public Image getGameProfilePicture(String gameName) {
         for (IArcadeGame game : myGames) {
             if (game.getName().equals(gameName)) {
-                return game.getScreenshots().get(0);
+                return game.getMainImage();
             }
         }
         return null;
         
     }
     
+    public static void main(String args[]) {
+        System.out.println("haha");
+        GameCenter gc = new GameCenter();
+    }
 }
