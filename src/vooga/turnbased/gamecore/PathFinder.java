@@ -138,7 +138,7 @@ public class PathFinder implements Runnable {
 	 * loop that moves the object
 	 */
 	@Override
-	public void run() {
+	public synchronized void run() {
 		if (myPath.isEmpty()) {
 			return;
 		}
