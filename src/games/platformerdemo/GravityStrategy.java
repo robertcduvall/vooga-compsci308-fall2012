@@ -8,7 +8,7 @@ import vooga.platformer.gameobject.UpdateStrategy;
  *
  */
 public class GravityStrategy implements UpdateStrategy{
-    private static final double GRAVITY = 0.02;
+    private static final double GRAVITY = 0.05;
     private MovingObject myMoveObj;
     /**
      * @param moveObj

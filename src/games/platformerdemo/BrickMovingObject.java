@@ -38,12 +38,21 @@ public class BrickMovingObject extends CollisionEvent {
         else if (this.direction() == CollisionDirection.UP) {
             myMovingObject.setY(myMovingObject.getY() + dy);
         }
-        else if (this.direction() == CollisionDirection.RIGHT) {
-            myMovingObject.setX(myMovingObject.getX() - dx);
+        if (this.direction() == CollisionDirection.RIGHT) {
+            resetCenterRight(dx);
         }
         else if (this.direction() == CollisionDirection.LEFT) {
-            myMovingObject.setX(myMovingObject.getX() + dx);
+            resetCenterLeft(dx);
         }
+        myMovingObject.setOnGround();
+    }
+
+    protected void resetCenterLeft (double dx) {
+        myMovingObject.setX(myMovingObject.getX() + dx);
+    }
+
+    protected void resetCenterRight (double dx) {
+        myMovingObject.setX(myMovingObject.getX() - dx);
     }
 
 }

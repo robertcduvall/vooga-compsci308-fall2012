@@ -6,7 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.MouseInfo;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -17,9 +18,10 @@ import java.util.Collection;
 import java.util.Collections;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.levelfileio.LevelFileReader;
-import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /*
@@ -82,7 +84,7 @@ public class LevelBoard extends Canvas implements ISavable {
                         if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
                                 e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
                             if (e.getButton() == MouseEvent.BUTTON3) {
-                                s.flipImage();
+                                spritePopupMenu(e, s);
                             }
                             else if (e.getButton() == MouseEvent.BUTTON1) {
                                 myCurrentSprite = s;
@@ -121,6 +123,8 @@ public class LevelBoard extends Canvas implements ISavable {
 
     }
 
+
+
     /**
      * Passes the MouseListener to any components that need it.
      * 
@@ -141,9 +145,9 @@ public class LevelBoard extends Canvas implements ISavable {
             s.paint(myBufferGraphics, this);
             myBufferGraphics.setColor(Color.WHITE);
         }
-        if(myCurrentSprite != null) {
-            myCurrentSprite.setX(mouseX);
-            myCurrentSprite.setY(mouseY);
+        if (myCurrentSprite != null) {
+            myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
+            myCurrentSprite.setY(mouseY - myCurrentSprite.getHeight() / 2);
         }
     }
 
@@ -171,6 +175,13 @@ public class LevelBoard extends Canvas implements ISavable {
         mySprites.clear();
     }
 
+    protected JPopupMenu spritePopupMenu (MouseEvent e, Sprite s) {
+        JPopupMenu pop = new JPopupMenu();
+        JMenuItem j = new JMenuItem();
+        j.addActionListener(new SelectionHelper(s));
+        pop.show(this, e.getX(), e.getY());
+        return pop;
+    }
     /**
      * @return An unmodifiable Collection of the sprites
      *         currently positioned on the board.
@@ -201,4 +212,21 @@ public class LevelBoard extends Canvas implements ISavable {
         mySprites.remove(sprite);
     }
 
+    private class SelectionHelper implements ActionListener{
+        private Sprite mySprite;
+        public SelectionHelper(Sprite s) {
+            mySprite = s;
+        }
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            if ("Flip".equals(event.getActionCommand())) {
+                mySprite.flipImage();
+            }
+            else if ("Duplicate".equals(event.getActionCommand())) {
+                Sprite ns = new Sprite(mySprite.getType(), mySprite.getX(), mySprite.getY(),
+                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getImagePath());
+                LevelBoard.this.add(ns);
+            }
+        }
+    }
 }

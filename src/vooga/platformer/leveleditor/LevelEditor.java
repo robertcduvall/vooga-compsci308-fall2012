@@ -43,8 +43,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
-import vooga.platformer.gui.menu.GameButton;
-import vooga.platformer.gui.menu.GameListener;
+import util.ingamemenu.GameButton;
 
 /**
  * Frame containing all the elements needed to build and save a level
@@ -63,7 +62,8 @@ public class LevelEditor extends JFrame{
     private boolean myGameIsRunning;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
-    private GameListener myGameListener;
+    private SelectionMouseListener myMouseListener;
+    private MouseListener myButtonListener;
     public static void main (String[] args) {
         new LevelEditor();
     }
@@ -116,19 +116,20 @@ public class LevelEditor extends JFrame{
     }
 
     private void createListeners () {
+        LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
+        myBoard = board;
+        myMouseListener = myBoard.getMouseListener();
         myKeyListener = new KeyAdapter() {
 
         };
-        myGameListener = new GameListener() {
-            @Override 
-            public void actionPerformed(MouseEvent arg0) {
+        myButtonListener = new MouseAdapter() {
+            @Override
+            public void mousePressed (MouseEvent arg0) {
                 createPopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
             }
         };
     }
     private void createEditPane() {
-        LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
-        myBoard = board;
         JPanel panel = new JPanel() {
             @Override 
             public void paint(Graphics g) {
@@ -139,14 +140,14 @@ public class LevelEditor extends JFrame{
         };
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
-        panel.addMouseListener(myBoard.getMouseListener());
-        panel.addMouseMotionListener(myBoard.getMouseListener());
+        panel.addMouseListener(myMouseListener);
+        panel.addMouseMotionListener(myMouseListener);
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
     }
     private GameButton createButton (String spritename) {
         GameButton gb = new GameButton(spritename);
-        gb.setGameListener(myGameListener);
+        gb.addMouseListener(myButtonListener);
         return gb;
     }
     private void createButtonPanel() {
@@ -169,7 +170,7 @@ public class LevelEditor extends JFrame{
         myBoard.update();
     }
 
-    protected void createPopupMenu(final Component comp, final int x,
+    void createPopupMenu(final Component comp, final int x,
             final int y) {
         JPopupMenu pop = new JPopupMenu();
         for (String subsprite : mySpriteTypes.get(comp.getName())) {

@@ -105,13 +105,10 @@ public class Sprite {
      * 
      */
     public void flipImage() {
-        BufferedImage bufferedImage = new BufferedImage(
-                myImage.getWidth(null), myImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-myImage.getWidth(null), 0);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        bufferedImage = op.filter(bufferedImage, null);
-        myImage = bufferedImage;
+        myImage = op.filter((BufferedImage)myImage, null);
     }
 
     /**
