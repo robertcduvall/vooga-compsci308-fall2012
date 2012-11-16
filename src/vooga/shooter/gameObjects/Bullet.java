@@ -40,7 +40,7 @@ public class Bullet extends Sprite {
      * stuff, or something else cool).
      */
     protected void continueUpdate() {
-        
+
     }
 
     /**
@@ -85,12 +85,5 @@ public class Bullet extends Sprite {
     @Override
     void setMethods () {
 
-    }
-
-    /**
-     * Removes this bullet from the game.
-     */
-    public void die() {
-        myOwner.getMyBulletsFired().remove(this);
     }
 }

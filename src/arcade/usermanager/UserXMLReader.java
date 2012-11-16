@@ -1,5 +1,6 @@
 package arcade.usermanager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class UserXMLReader {
     private Document myDom;
-    private ResourceBundle myResource;
+    private static ResourceBundle myResource;
     private String myUserBasicFilePath;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
@@ -30,7 +31,7 @@ public class UserXMLReader {
      * Constructs a UserXMLReader.
      */
     public UserXMLReader () {
-        myResource = ResourceBundle.getBundle("resources.filePath");
+        myResource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = myResource.getString("BasicFilePath");
         myUserMessageFilePath = myResource.getString("MessageFilePath");
         myUserGameFilePath = myResource.getString("GameFilePath");
@@ -70,7 +71,7 @@ public class UserXMLReader {
      */
     public User getUser (String name) {
 
-        parseXmlFile(myUserBasicFilePath + name + ".xml");
+        parseXmlFile(myUserBasicFilePath + name);
         Element el = myDom.getDocumentElement();
         String username = getTextValue(el, "name");
         String password = getTextValue(el, "password");
@@ -91,7 +92,7 @@ public class UserXMLReader {
      * @return
      */
     public List<GameData> getGameDataList (String name) {
-        parseXmlFile(myUserGameFilePath + name + ".xml");
+        parseXmlFile(myUserGameFilePath + name);
         Element el = myDom.getDocumentElement();
         List<GameData> gameDataList = new ArrayList<GameData>();
         NodeList nl = el.getElementsByTagName("game");
@@ -116,7 +117,7 @@ public class UserXMLReader {
      * @return
      */
     public List<Message> getMessageList (String name) {
-        parseXmlFile(myUserMessageFilePath + name + ".xml");
+        parseXmlFile(myUserMessageFilePath + name);
         Element el = myDom.getDocumentElement();
         List<Message> messageList = new ArrayList<Message>();
         NodeList nl = el.getElementsByTagName("message");

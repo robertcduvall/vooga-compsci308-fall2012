@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents an enemy sprite to be used in the game.
@@ -34,7 +36,9 @@ public class Enemy extends Sprite {
      * shot).
      */
     protected void continueUpdate() {
-
+        for (Bullet b : getBulletsFired()) {
+            b.update();
+        }
     }
 
     /**
@@ -49,9 +53,18 @@ public class Enemy extends Sprite {
      * Paints bullets of enemy.
      */
     protected void continuePaint (Graphics pen) {
-        for (Bullet b : getMyBulletsFired()) {
-            b.paint(pen);
+        List<Bullet> deadBullets = new ArrayList<Bullet>();
+
+        for (Bullet b : getBulletsFired()) {
+            if (b.getImage() == null) {
+                deadBullets.add(b);
+            }
+            else {
+                b.paint(pen);
+            }
         }
+
+        getBulletsFired().removeAll(deadBullets);
     }
 
     @Override
