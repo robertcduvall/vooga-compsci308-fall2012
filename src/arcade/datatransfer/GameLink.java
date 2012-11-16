@@ -9,7 +9,7 @@ import java.util.List;
  * @author Michael Deng
  *
  */
-public class GameCenter {
+public class GameLink {
 
     public String getGameName() {
         // TODO Auto-generated method stub

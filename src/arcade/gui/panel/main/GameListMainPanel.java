@@ -40,8 +40,8 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     
     public GameListMainPanel (Arcade a) {
         super(a);
-         /*myGameList = a.getGameManager().getListOfGames();
-         myGameProfilePictures = new ArrayList<Image>();
+         //myGameList = a.getGameManager().getListOfGames();
+         /*myGameProfilePictures = new ArrayList<Image>();
          for (int i = 0; i < myGameList.size(); i++) {
              myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
          }*/
