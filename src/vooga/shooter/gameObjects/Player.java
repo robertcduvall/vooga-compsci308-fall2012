@@ -134,20 +134,4 @@ public class Player extends Sprite {
 
         getBulletsFired().removeAll(deadBullets);
     }
-
-    /**
-     * Has the player fire a bullet.
-     * The bullet is added to the player's list of fired bullets
-     * and will be painted during the player's paint method.
-     */
-    public void fireBullet() {
-        ImageIcon iib = new ImageIcon(this.getClass().getResource(
-                "../vooga/shooter/images/playerbullet.png"));
-        Image bulletImage = iib.getImage();
-
-        Bullet b = new Bullet(getPosition(), new Dimension(5, 5), getBounds(),
-                bulletImage, new Point(0, getVelocity().y - 5), 0);
-
-        getBulletsFired().add(b);
-    }
 }

@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
 
@@ -17,6 +19,8 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  *
  */
 public abstract class Sprite implements SpriteActionInterface {
+    private static final int BULLET_SIZE = 10;
+    private static final double BULLET_VELOCITY_SCALE = 1.5;
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
@@ -45,6 +49,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -69,6 +74,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -90,6 +96,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = health;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -113,6 +120,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = health;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -285,6 +293,13 @@ public abstract class Sprite implements SpriteActionInterface {
      * to each sprite when calling the update method.
      */
     public void update() {
+        // if this sprite is out of bounds (top or bottom) then
+        // it is out of the game
+        if (getHealth() < 0 || myPosition.y > myBounds.height
+                || myPosition.y < 0) {
+            this.die();
+        }
+
         myPosition.translate(myVelocity.x, myVelocity.y);
         continueUpdate();
     }
@@ -329,7 +344,8 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * Sets the sprite's velocity to 0.
+     * Sets the sprite's velocity to 0 as the
+     * default action. Can be overridden in subclasses.
      *
      * @param o a (possibly empty) list of
      * parameters to be used in the action
@@ -346,5 +362,23 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void die() {
         this.setImage(null);
+    }
+
+    /**
+     * Has the player fire a bullet.
+     * The bullet is added to the player's list of fired bullets
+     * and will be painted during the player's paint method.
+     */
+    public void fireBullet() {
+        ImageIcon iib = new ImageIcon(this.getClass().getResource(
+                "../vooga/shooter/images/playerbullet.png"));
+        Image bulletImage = iib.getImage();
+
+        Bullet b = new Bullet(getPosition(), new Dimension(
+                BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
+                new Point(0,
+                        (int)(getVelocity().y * BULLET_VELOCITY_SCALE)), 0);
+
+        getBulletsFired().add(b);
     }
 }

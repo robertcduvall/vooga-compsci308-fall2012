@@ -86,4 +86,24 @@ public class Bullet extends Sprite {
     void setMethods () {
 
     }
+
+    /**
+     * Bullets cannot fire other bullets, so this
+     * method is overridden to do nothing for bullets.
+     */
+    @Override
+    public void fireBullet() {
+        return;
+    }
+
+    /**
+     * Bullets don't lose health, so override
+     * this to do nothing.
+     *
+     * @param damage nothing
+     */
+    @Override
+    public void decreaseHealth(int damage) {
+        return;
+    }
 }
