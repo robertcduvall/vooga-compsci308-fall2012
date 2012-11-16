@@ -17,6 +17,6 @@ public class MapTileObject extends MapObject {
     
     @Override 
     public void update(int delayTime) {
-        // tile behavior on update
+        super.update(delayTime);
     }
 }
