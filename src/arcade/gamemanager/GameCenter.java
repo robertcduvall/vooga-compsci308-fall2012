@@ -34,12 +34,12 @@ public class GameCenter {
         socialCenter = SocialCenter.getInstance();
         File f = new File("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
         myXmlParser = new XmlParser(f);
-        gameNodeList = myXmlParser.getElementsByName(myXmlParser.getRootElement(), "game");
+        gameNodeList = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "game");
     }
     
     public List<String> getListOfGames() {
         List<String> gameList = new ArrayList<String>();
-        NodeList nList = myXmlParser.getElementsByName(myXmlParser.getRootElement(), "name");
+        NodeList nList = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "name");
         for (int i = 0; i < nList.getLength(); i++) {
             gameList.add(nList.item(i).getTextContent());
         }
