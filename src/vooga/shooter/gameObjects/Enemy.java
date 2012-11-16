@@ -23,7 +23,8 @@ public class Enemy extends Sprite{
      * @param velocity the starting velocity for the enemy
      * @param health the starting health of the enemy
      */
-    public Enemy (Point position, Dimension size, Dimension bounds, Image image, Point velocity, int health) {
+    public Enemy (Point position, Dimension size, Dimension bounds,
+            Image image, Point velocity, int health) {
         super(position, size, bounds, image, velocity, health);
     }
 
@@ -33,37 +34,6 @@ public class Enemy extends Sprite{
      * shot).
      */
     protected void continueUpdate() {
-        
-    }
-
-    /**
-     * Describes what happens when the enemy
-     * collides with a bullet.
-     * @param b the bullet that the enemy is
-     * colliding with
-     */
-    public void collide (Bullet b) {
-        
-    }
-
-    /**
-     * Describes what happens when the enemy
-     * collides with a player (will only
-     * happen in multiplayer).
-     * @param p the player that this enemy
-     * is colliding with
-     */
-    public void collide (Player p) {
-        
-    }
-
-    /**
-     * Describes what happens when this enemy
-     * collides with another enemy.
-     * @param e the enemy that this enemy is
-     * colliding with
-     */
-    public void collide (Enemy e) {
         
     }
 
@@ -79,7 +49,9 @@ public class Enemy extends Sprite{
      * Paints bullets of enemy.
      */
     protected void continuePaint (Graphics pen) {
-        
+        for (Bullet b : getMyBulletsFired()) {
+            b.paint(pen);
+        }
     }
 
     @Override

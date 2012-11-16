@@ -40,6 +40,8 @@ public abstract class Sprite implements MethodWrapper {
         myImage = image;
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     /**
@@ -61,6 +63,8 @@ public abstract class Sprite implements MethodWrapper {
         myVelocity = velocity;
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     /**
@@ -79,6 +83,8 @@ public abstract class Sprite implements MethodWrapper {
         myImage = image;
         myHealth = health;
         myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     /**
@@ -99,6 +105,8 @@ public abstract class Sprite implements MethodWrapper {
         myVelocity = velocity;
         myHealth = health;
         myBounds = bounds;
+        myMapper = new MethodMapper();
+        setMethods();
     }
 
     abstract void setMethods();
@@ -149,6 +157,14 @@ public abstract class Sprite implements MethodWrapper {
         setVelocity(v);
     }
 
+    /**
+     * Returns the bullets fired by this sprite.
+     * @return a list of the bullets that this sprite
+     * has fired.
+     */
+    public List<Bullet> getMyBulletsFired() {
+        return myShotsFired;
+    }
     /**
      * Returns the image representing this sprite.
      * @return myImage
@@ -299,8 +315,10 @@ public abstract class Sprite implements MethodWrapper {
     }
 
     /**
-     * Do nothing.
+     * Sets the sprite's velocity to 0.
      */
     @Override
-    public void doAction (Object ... o) {}
+    public void doAction (Object ... o) {
+        setVelocity(0, 0);
+    }
 }

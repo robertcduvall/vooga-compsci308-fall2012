@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import javax.swing.ImageIcon;
 import vooga.shooter.graphics.Canvas;
 
 /**
@@ -25,8 +26,6 @@ public class Player extends Sprite{
      */
     public Player (Point position, Dimension size, Dimension bounds, Image image, int health) {
         super(position, size, bounds, image, health);
-        setMapper(new MethodMapper());
-        setMethods();
     }
 
     /**
@@ -40,28 +39,35 @@ public class Player extends Sprite{
         //37 is the int value for left arrow key
         getMapper().addPair("37", new MethodWrapper() {
                                 public void doAction(Object...o) {
-                                    getPosition().translate(-10, getVelocity().y);
+                                    setVelocity(-10, getVelocity().y);
                                 }
         });
 
         //38 is the int value for up arrow key
         getMapper().addPair("38", new MethodWrapper() {
                                 public void doAction(Object...o) {
-                                    getPosition().translate(getVelocity().x, -10);
+                                    setVelocity(getVelocity().x, -10);
                                 }
         });
 
         //39 is the int value for right arrow key
         getMapper().addPair("39", new MethodWrapper() {
                                 public void doAction(Object...o) {
-                                    getPosition().translate(10, getVelocity().y);
+                                    setVelocity(10, getVelocity().y);
                                 }
         });
 
         //40 is the int value for down arrow key
         getMapper().addPair("40", new MethodWrapper() {
                                 public void doAction(Object...o) {
-                                    getPosition().translate(getVelocity().x, 10);
+                                    setVelocity(getVelocity().x, 10);
+                                }
+        });
+
+        //32 is the int value for spacebar key
+        getMapper().addPair("32", new MethodWrapper() {
+                                public void doAction(Object...o) {
+                                    fireBullet();
                                 }
         });
 
@@ -104,6 +110,23 @@ public class Player extends Sprite{
      * Paints bullets of player.
      */
     protected void continuePaint (Graphics pen) {
-        
+        for(Bullet b : getMyBulletsFired()) {
+            b.paint(pen);
+        }
+    }
+
+    /**
+     * Has the player fire a bullet.
+     * The bullet is added to the player's list of fired bullets
+     * and will be painted during the player's paint method.
+     */
+    public void fireBullet() {
+        ImageIcon iib = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/playerbullet.png"));
+        Image bulletImage = iib.getImage();
+
+        Bullet b = new Bullet(getPosition(), new Dimension(5, 5), getBounds(),
+                bulletImage, new Point(0, getVelocity().y - 5), 0);
+
+        getMyBulletsFired().add(b);
     }
 }

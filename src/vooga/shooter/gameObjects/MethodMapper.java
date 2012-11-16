@@ -36,11 +36,11 @@ public class MethodMapper {
      * mapped
      */
     public void addPair(String key, MethodWrapper...m){
-        List<MethodWrapper> mw = new ArrayList<MethodWrapper>();
-        for(MethodWrapper me : m){
-            mw.add(me);
+        List<MethodWrapper> methodList = new ArrayList<MethodWrapper>();
+        for(MethodWrapper eachm : m){
+            methodList.add(eachm);
         }
-        myMap.put(key, mw);
+        myMap.put(key, methodList);
     }
 
     /**
@@ -53,8 +53,10 @@ public class MethodMapper {
      */
     public void doEvent(String key, int damage, Sprite s)
     {
-        for(MethodWrapper m : myMap.get(key)){
-            m.doAction(damage, s);
+        if(myMap.containsKey(key)){
+            for(MethodWrapper m : myMap.get(key)){
+                m.doAction(damage, s);
+            }
         }
     }
 }
