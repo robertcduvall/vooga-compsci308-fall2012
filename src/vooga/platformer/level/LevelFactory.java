@@ -1,5 +1,6 @@
 package vooga.platformer.level;
 
+import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
@@ -25,7 +26,7 @@ import vooga.platformer.util.camera.FollowingCamera;
  */
 public final class LevelFactory {
 
-    private static final Dimension2D DEFAULT_CAMERA_SIZE = new Dimension(50, 50);
+    private static final Dimension2D DEFAULT_CAMERA_SIZE = new Dimension(800, 600);
 
     private LevelFactory () {
         /*
@@ -59,13 +60,16 @@ public final class LevelFactory {
                 levelGameObjects.add(spriteToGameObject(s));
             }
 
+            GameObject player = findPlayerGameObject(levelGameObjects, playerClass);
+
             // TODO Using FollowingCamera by default. This is due to
             // complications with differences in constructors between camera
             // types.
             Camera followCam =
                     new FollowingCamera(DEFAULT_CAMERA_SIZE, new Rectangle(levelDimension.width,
                                                                            levelDimension.width),
-                                        findPlayerGameObject(levelGameObjects, playerClass));
+                                        player);
+
             // TODO configure with proper config string rather than assume
             // params
             Level level =
@@ -75,6 +79,9 @@ public final class LevelFactory {
             for (GameObject g : levelGameObjects) {
                 level.addGameObject(g);
             }
+
+            // TODO set to a permanent data type
+            level.setPlayer((Player) player);
 
             return level;
         }
