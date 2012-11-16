@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import arcade.datatransfer.GameLink;
+import arcade.datatransfer.GameCenter;
 import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.frame.MainFrameCreator;
@@ -35,7 +35,7 @@ public class Arcade {
     private static ArcadeFrame myFrame;
 
     private static SocialCenter mySocialCenter;
-    private static GameLink myGameManager;
+    private static GameCenter myGameManager;
     private static UserLink myUserManager;
     private static PanelCreatorFactory myFactory;
     private static ResourceBundle myResources;
@@ -46,7 +46,7 @@ public class Arcade {
         // initialize things
         myFactory = new PanelCreatorFactory(this);
         //mySocialCenter = new SocialCenter();
-        myGameManager = new GameLink();
+        myGameManager = new GameCenter();
         myUserManager = new UserLink();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
         mySharedVariables = new HashMap<String, Serializable>();
@@ -110,7 +110,7 @@ public class Arcade {
         myUser = u;
     }
 
-    public GameLink getGameManager () {
+    public GameCenter getGameManager () {
         return myGameManager;
     }
 
