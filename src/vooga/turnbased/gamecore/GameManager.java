@@ -13,6 +13,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JComponent;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
@@ -97,13 +99,22 @@ public class GameManager {
         myCurrentGameMode.paint(g);
     }
 
-    public void handleEvent (GameEvent eventName,
-            ArrayList<Integer> myInvolvedIDs) {
+    public void handleEvents (List<Map<GameEvent, List<Integer>>> events) {
+        for (Map<GameEvent, List<Integer>> e : events) {
+            for (GameEvent ge : e.keySet()) {
+                handleEvent(ge, e.get(ge));
+            }
+        }
+    }
+
+    public void handleEvent (GameEvent eventName, List<Integer> myInvolvedIDs) {
         switch (eventName) {
             case NO_ACTION:
                 break;
             case MAP_COLLISION:
-                changeCurrentMode(myBattleMode);
+                if (myInvolvedIDs.size() >= 2) {
+                    changeCurrentMode(myBattleMode);
+                }
                 break;
         }
     }

@@ -39,6 +39,7 @@ public class BattleMode extends GameMode {
 
     private void makeTeams () {
         // BAD BAD TEST CODE
+        setObjects();
         myTeams = new ArrayList<Team>();
         List<BattleObject> team1BattleObjects = new ArrayList<BattleObject>();
         team1BattleObjects.add((BattleObject) getObjects().get(0));

@@ -9,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import vooga.turnbased.gamecore.GameManager.GameEvent;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
@@ -82,7 +84,7 @@ public class MapMode extends GameMode {
                 center, GameWindow.importImage("PlayerImage"));
         addMapObject(center, myPlayer);
 
-        center = new Point(1, 1);
+        center = new Point(5, 5);
         MovingMapObject test1 = new MovingMapObject(ID,
                 GameManager.GameEvent.MAP_COLLISION, center, GameWindow
                         .importImage("something"));
@@ -214,22 +216,22 @@ public class MapMode extends GameMode {
     }
 
     public void processGameEvents () { // this can be optimized A LOT, only
-                                       // check mapobjects that did something
-                                       // last turn
+        // check mapobjects that did something
+        // last turn
+        List<Map<GameEvent, List<Integer>>> myEvents = new ArrayList<Map<GameEvent, List<Integer>>>();
         for (Point p : myMapObjects.keySet()) {
-            HashMap<GameManager.GameEvent, ArrayList<Integer>> myEventHash = new HashMap<GameManager.GameEvent, ArrayList<Integer>>();
+            Map<GameEvent, List<Integer>> myTileEvents = new HashMap<GameEvent, List<Integer>>();
             for (MapObject s : getSpritesOnTile(p.x, p.y)) {
-                if (!myEventHash.containsKey(s.getEvent())) {
-                    myEventHash.put(s.getEvent(), new ArrayList<Integer>());
+                if (!myTileEvents.containsKey(s.getEvent())) {
+                    myTileEvents.put(s.getEvent(), new ArrayList<Integer>());
                 }
-                myEventHash.get(s.getEvent()).add(s.getID());
+                myTileEvents.get(s.getEvent()).add(s.getID());
             }
-            for (GameManager.GameEvent ge : myEventHash.keySet()) {
-                if (myEventHash.get(ge).size() >= 2) {
-                    getGM().handleEvent(ge, myEventHash.get(ge));
-                }
+            if (myTileEvents.keySet().size() > 0) {
+                myEvents.add(myTileEvents);
             }
         }
+        getGM().handleEvents(myEvents);
     }
 
     /**

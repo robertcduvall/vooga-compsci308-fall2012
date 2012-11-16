@@ -42,6 +42,10 @@ public abstract class GameMode {
         return myGameManager;
     }
     
+    public void setObjects() { //to be deleted later
+        myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(myObjectType));
+    }    
+    
     public ArrayList<GameObject> getObjects() {
     	return myObjects;
     }
