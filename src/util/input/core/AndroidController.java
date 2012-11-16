@@ -1,27 +1,23 @@
 package util.input.core;
 
-/**
- * Created with IntelliJ IDEA.
- * 
- * User: lance
- * Date: 11/3/12
- * Time: 8:18 PM
- * To change this template use File | Settings | File Templates.
- */
+
 
 import util.input.android.bluetoothserver.AndroidBluetoothServer;
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.JoyStickEvent;
 import util.input.inputhelpers.UKeyCode;
 import util.input.interfaces.listeners.AndroidListener;
 
-
 /**
- * Contains the implementation of pre-configured actions for the Android
- * controller
+ * 
+ * @author Ben Schwab Lance
+ *
  */
 public class AndroidController extends Controller<AndroidListener> implements
         AndroidListener {
-
+    /**
+     * Create a new android controller.
+     */
     public AndroidController() {
         super();
         AndroidBluetoothServer server = new AndroidBluetoothServer(0);
@@ -35,6 +31,16 @@ public class AndroidController extends Controller<AndroidListener> implements
         try {
             performReflections(b, "onScreenPress",
                     UKeyCode.codify(b.getPressType(), b.getID()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onJoyStickMove (JoyStickEvent j) {
+        
+        try {
+            performReflections(j, "onJoyStickMove",j.getID());
         } catch (Exception e) {
             e.printStackTrace();
         }

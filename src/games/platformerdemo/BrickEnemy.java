@@ -1,11 +1,12 @@
 package games.platformerdemo;
 
-import java.awt.geom.Rectangle2D;
-import vooga.platformer.collision.CollisionEvent;
-import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
 
+/**
+ * @author Probably Niel
+ * @author Yaqi
+ *
+ */
 public class BrickEnemy extends BrickMovingObject{
     private Brick myBrick;
     private Enemy myEnemy;
@@ -21,11 +22,19 @@ public class BrickEnemy extends BrickMovingObject{
         myBrick = (Brick) this.a();
         myEnemy = (Enemy) this.b();
     }
-
+    
     @Override
-    public void applyCollision (Level level) {
-        super.applyCollision(level);
-        myEnemy.notifyOnGround();
+    protected void resetCenterLeft (double dx) {
+        super.resetCenterLeft(dx);
+        flipHorizontalVelocity();
     }
-
+    
+    protected void resetCenterRight (double dx) {
+        super.resetCenterRight(dx);
+        flipHorizontalVelocity();
+    }
+    
+    private void flipHorizontalVelocity(){
+        myEnemy.setVelocity(-myEnemy.getVelocity().getX(), myEnemy.getVelocity().getY());
+    }
 }

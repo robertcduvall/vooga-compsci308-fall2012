@@ -6,9 +6,9 @@ import java.util.Map;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import vooga.platformer.leveleditor.LevelFileReader;
-import vooga.platformer.leveleditor.LevelFileWriter;
 import vooga.platformer.leveleditor.Sprite;
+import vooga.platformer.levelfileio.LevelFileReader;
+import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /**
@@ -19,10 +19,13 @@ import vooga.platformer.leveleditor.Sprite;
 public class LevelFileIOTest {
 
     private static final String XML_FILE_PATH = "src/vooga/platformer/test/testIO.xml";
+    private static final String LEVEL_TYPE = "someLevelType";
     private static final String LEVEL_ID = "Level Name";
     private static final int LEVEL_WIDTH = 20;
     private static final int LEVEL_HEIGHT = 20;
     private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.jpg";
+    private static final String COLLISION_CHECKER_TYPE = "someCollisionChecker";
+    private static final String CAMERA_TYPE = "someCamera";
 
     private static final String TYPE = "enemy";
     private static final int X_POS = 1;
@@ -45,17 +48,21 @@ public class LevelFileIOTest {
 
     @Before
     public void setUp () throws Exception {
-        strategy.put(STRATEGY_TYPE_TAG, STRATEGY_TYPE_VALUE);
         strategy.put(STRATEGY_PARAM_TAG, STRATEGY_PARAM_VALUE);
 
         sprite = new Sprite(TYPE, X_POS, Y_POS, SPRITE_WIDTH, SPRITE_HEIGHT, TEST_IMAGE);
-        sprite.addUpdateStrategy(strategy);
+        sprite.addUpdateStrategy(STRATEGY_TYPE_VALUE, strategy);
         sprite.addAttribute(SPRITE_ATTR_TAG, SPRITE_ATTR_VALUE);
         sprites.add(sprite);
-        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
-                                   sprites);
+        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_TYPE, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT,
+                                   TEST_IMAGE, sprites, COLLISION_CHECKER_TYPE, CAMERA_TYPE);
         lfr = new LevelFileReader(XML_FILE_PATH);
         Assert.assertNotNull(lfr);
+    }
+
+    @Test
+    public void testGetLevelType () throws Exception {
+        Assert.assertEquals(LEVEL_TYPE, lfr.getLevelType());
     }
 
     @Test
@@ -76,6 +83,16 @@ public class LevelFileIOTest {
     @Test
     public void testGetBackgroundImage () throws Exception {
         Assert.assertNotNull(lfr.getBackgroundImage());
+    }
+
+    @Test
+    public void testGetCollisionChecker () throws Exception {
+        Assert.assertEquals(COLLISION_CHECKER_TYPE, lfr.getCollisionCheckerType());
+    }
+
+    @Test
+    public void testGetCamera () throws Exception {
+        Assert.assertEquals(CAMERA_TYPE, lfr.getCameraType());
     }
 
     @Test

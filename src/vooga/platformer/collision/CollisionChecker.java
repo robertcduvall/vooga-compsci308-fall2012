@@ -26,7 +26,7 @@ public abstract class CollisionChecker {
      * @param level
      * @return
      */
-    public abstract Iterable<CollisionEvent> checkCollisions(Level level);
+    public abstract void checkCollisions(Level level);
 
     /**
      * This method takes two colliding objects and return the corresponding
@@ -79,4 +79,5 @@ public abstract class CollisionChecker {
 
         return c;
     }
+    
 }

@@ -1,4 +1,4 @@
-package vooga.platformer.gui.menu;
+package util.ingamemenu;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
