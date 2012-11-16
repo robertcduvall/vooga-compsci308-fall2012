@@ -28,10 +28,18 @@ public class DemoLevelFactory {
             Level currLevel = new TestLevel(new Dimension(3200, 2400), checker, cam);
             Player player1 = new Player("x=4,y=5,width=33,height=50");
             currLevel.addGameObject(player1);
+            currLevel.setPlayer(player1);
             currLevel.addGameObject(new Enemy("x=400,y=5,width=40,height=37"));
             currLevel.addGameObject(new Brick("x=4,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=54,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=105,y=300,width=50,height=50"));
             currLevel.addGameObject(new Brick("x=400,y=300,width=50,height=50"));
-            
+            currLevel.addGameObject(new Brick("x=450,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=500,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=550,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=600,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=650,y=300,width=50,height=50"));
+            currLevel.addGameObject(new Brick("x=650,y=250,width=50,height=50"));
             /*
              * This code tells the camera to follow the player object. This code would be tricky for you guys to do.
              * We could just have the Level be responsible for keeping track of its Player and setting up the Camera appropriately.

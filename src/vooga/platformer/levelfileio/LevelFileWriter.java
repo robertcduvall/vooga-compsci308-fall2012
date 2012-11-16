@@ -1,5 +1,6 @@
 package vooga.platformer.levelfileio;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -88,8 +89,8 @@ public final class LevelFileWriter {
             addLevelObjects(levelObjects, doc, level);
 
             String xmlString = getXMLAsString(doc);
-
-            FileWriter writer = new FileWriter(filePath);
+            File toWrite = new File(filePath, levelName);
+            FileWriter writer = new FileWriter(toWrite);
             writer.write(xmlString);
             writer.close();
         }
