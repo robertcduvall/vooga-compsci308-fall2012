@@ -20,7 +20,7 @@ import vooga.shooter.level_editor.Level;
 /**
  * Initializes the top-down shooter game and owns all sprites and levels
  * initiated throughout the course of the game.
- * 
+ *
  * @author Tommy Petrilak
  * @author Stephen Hunt
  */
@@ -34,9 +34,11 @@ public class Game {
     private ImageIcon imageIcon;
 
     private void initializeGame (Canvas c) {
-        imageIcon = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
+        imageIcon = new ImageIcon(this.getClass().
+                getResource("../vooga/shooter/images/alien.png"));
         playerImage = imageIcon.getImage();
-        myPlayer = new Player(new Point(400, 300), new Dimension(20, 20),new Dimension(100,100), playerImage, 10);
+        myPlayer = new Player(new Point(400, 300), new Dimension(20, 20),
+                new Dimension(100, 100), playerImage, 10);
         addSprite(myPlayer);
         Level firstLevel = new Level1(this);
         myCanvas = c;
@@ -60,15 +62,21 @@ public class Game {
         }
         for (Sprite s1 : getSprites()) {
             for (Sprite s2 : getSprites()) {
-                if (collisionCheck(s1,s2)) {
+                if (collisionCheck(s1, s2)) {
                     s1.collide(s2);
                     s2.collide(s1);
                 }
             }
         }
     }
-    
-    public boolean collisionCheck(Sprite s1, Sprite s2) {
+
+    /**
+     * Checks if two sprites are colliding with each other.
+     * @param s1 The first sprite to check.
+     * @param s2 The second sprite to check.
+     * @return Returns true if sprites are colliding.
+     */
+    boolean collisionCheck(Sprite s1, Sprite s2) {
         Rectangle r1 = new Rectangle(s1.getPosition(), s1.getDimension());
         Rectangle r2 = new Rectangle(s2.getPosition(), s2.getDimension());
         return r1.intersects(r2);
@@ -78,12 +86,11 @@ public class Game {
         for (Sprite s : getSprites()) {
             s.paint(pen);
         }
-
     }
 
     /**
      * Add a sprite to the list of sprites currently existing in the Game.
-     * 
+     *
      * @param sprite to be added to list of existing sprites
      */
     public void addSprite (Sprite sprite) {
@@ -91,9 +98,9 @@ public class Game {
     }
 
     /**
-     * Add a sprite to the list of sprites currently existing in the Game.
-     * 
-     * @param sprite to be added to list of existing sprites
+     * Add an enemy to the list of enemies currently existing in the Game.
+     *
+     * @param enemy to be added to list of existing enemies
      */
     public void addEnemy (Enemy enemy) {
         getEnemies().add(enemy);
@@ -128,31 +135,43 @@ public class Game {
         this.myEnemies = myEnemies;
     }
 
+    /**
+     * Listens for input and sends input to the method mapper.
+     * @author Stephen Hunt
+     *
+     */
     private class KeyboardListener implements KeyListener {
-        
-        private int numKeysPressed; 
-        
+
+        private int numKeysPressed;
+
         public KeyboardListener () {
             super();
             numKeysPressed = 0;
         }
 
+        /**
+         * Sends info about keys pressed to method mapper.
+         */
         @Override
         public void keyPressed (KeyEvent e) {
             myPlayer.doEvent(Integer.toString(e.getKeyCode()), 0, null);
             numKeysPressed++;
         }
 
+        /**
+         * Checks if any keys are being pressed. If not, sends to key mapper
+         * that no keys are currently pressed.
+         */
         @Override
         public void keyReleased (KeyEvent e) {
             numKeysPressed--;
-            if (numKeysPressed == 0)
+            if (numKeysPressed == 0) {
                 myPlayer.doEvent("-1", 0, null);
-            
+            }
         }
 
         @Override
-        public void keyTyped (KeyEvent e) {            
+        public void keyTyped (KeyEvent e) {
         }
 
     }
