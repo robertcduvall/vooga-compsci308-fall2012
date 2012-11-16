@@ -60,6 +60,7 @@ public class BattleMode extends GameMode {
         makeTeams();
         initialize();
         System.out.println("BattleStarting!");
+        getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new ArrayList<Integer>());
     }
 
     @Override

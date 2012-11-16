@@ -38,7 +38,7 @@ public abstract class GameMode {
         //myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
     }
 
-    protected GameManager getGM () {
+    protected GameManager getGameManager () {
         return myGameManager;
     }
     

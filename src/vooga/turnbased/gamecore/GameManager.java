@@ -116,6 +116,9 @@ public class GameManager {
                     changeCurrentMode(myBattleMode);
                 }
                 break;
+            case BATTLE_OVER:
+                changeCurrentMode(myMapMode);
+                break;
         }
     }
 
@@ -146,7 +149,7 @@ public class GameManager {
     }
 
     public enum GameEvent {
-        MAP_COLLISION, NO_ACTION
+        MAP_COLLISION, BATTLE_OVER, NO_ACTION
     }
 
 }

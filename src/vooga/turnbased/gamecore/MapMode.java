@@ -76,7 +76,7 @@ public class MapMode extends GameMode {
                 Point p = new Point(i, j);
                 addMapObject(p, new MapTileObject(ID,
                         GameManager.GameEvent.NO_ACTION, p, GameWindow
-                                .importImage("GrassImage")));
+                                .importImage("EditorBackgroundImage")));
             }
         }
         Point center = new Point(7, 5);
@@ -163,9 +163,9 @@ public class MapMode extends GameMode {
      * resized
      */
     public void updateTileInfo () {
-        myCurrentTileWidth = getGM().getPaneDimension().width
+        myCurrentTileWidth = getGameManager().getPaneDimension().width
                 / myNumDisplayCols;
-        myCurrentTileHeight = getGM().getPaneDimension().height
+        myCurrentTileHeight = getGameManager().getPaneDimension().height
                 / myNumDisplayRows;
         myOrigin = initializeOrigin();
     }
@@ -210,7 +210,7 @@ public class MapMode extends GameMode {
     private void updateMapObjects () {
         for (Point p : myMapObjects.keySet()) {
             for (MapObject s : getSpritesOnTile(p.x, p.y)) {
-                s.update(getGM().getDelayTime());
+                s.update(getGameManager().getDelayTime());
             }
         }
     }
@@ -231,7 +231,7 @@ public class MapMode extends GameMode {
                 myEvents.add(myTileEvents);
             }
         }
-        getGM().handleEvents(myEvents);
+        getGameManager().handleEvents(myEvents);
     }
 
     /**
