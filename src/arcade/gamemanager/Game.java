@@ -4,10 +4,14 @@ import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import util.xml.XmlParser;
 import arcade.IArcadeGame;
 import arcade.utility.ReadWriter;
-//TODO Replace readwriter with other xml reader
+
+
+// TODO Replace readwriter with other xml reader
 
 /**
  * Class of the arcade used to start, end, and maintain
@@ -20,6 +24,7 @@ public class Game {
 
     private GameSaver mySaver;
     private IArcadeGame myGame;
+    private Node myGameNode;
 
     /**
      * Constructor for Game Manager takes in a specific game, so there is a
@@ -33,7 +38,14 @@ public class Game {
     public Game (IArcadeGame gameObject) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
-        // TODO
+        File f = new File(
+                "../vooga-compsci308-fall2012/src/arcade/database/game.xml");
+        XmlParser x = new XmlParser(f);
+        NodeList allGames = x.getElementsByName(x.getDocumentElement(), "game");
+        for (int i = 0; i < allGames.getLength(); i++) {
+            if (allGames.item(i).getTextContent().equals(myGame.getName()))
+                myGameNode = allGames.item(i);
+        }
     }
 
     /**
@@ -55,8 +67,7 @@ public class Game {
      * easy access
      */
     public List<Integer> getUserScores () {
-        File f = new File("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
-        XmlParser myXmlParser = new XmlParser(f);
+        // TODO
         return null;
     }
 
@@ -156,16 +167,16 @@ public class Game {
         tags.add("rating");
         ReadWriter.storeData(f, tags, Integer.toString(rating));
     }
-    
-    public Image getImage() {
+
+    public Image getImage () {
         return myGame.getMainImage();
     }
-    
-    public String getGameName() {
+
+    public String getGameName () {
         return myGame.getName();
     }
-    
-    public List<String> getGenre() {
+
+    public List<String> getGenre () {
         // TODO
         return null;
     }
