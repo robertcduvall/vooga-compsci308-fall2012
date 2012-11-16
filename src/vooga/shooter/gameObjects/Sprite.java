@@ -38,7 +38,7 @@ public abstract class Sprite implements MethodWrapper {
         myPosition = position;
         mySize = size;
         myImage = image;
-        myHealth = -1;
+        myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
     }
 
@@ -59,7 +59,7 @@ public abstract class Sprite implements MethodWrapper {
         mySize = size;
         myImage = image;
         myVelocity = velocity;
-        myHealth = -1;
+        myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
     }
 
@@ -231,6 +231,9 @@ public abstract class Sprite implements MethodWrapper {
         return mySize;
     }
 
+    /**
+     * @return lowercase string representing type of this sprite
+     */
     public abstract String getType();
 
     /**
@@ -281,6 +284,18 @@ public abstract class Sprite implements MethodWrapper {
 
     protected Dimension getBounds() {
         return myBounds;
+    }
+
+    /**
+     * Tells the method mapper (class that holds strings to methods)
+     * which key to use (which method to choose).
+     *
+     * @param key the string (key) that maps to the right method to do
+     * @param damage any damage this sprite will take
+     * @param s the sprite that this one collides with
+     */
+    public void doEvent(String key, int damage, Sprite s) {
+        myMapper.doEvent(key, damage, s);
     }
 
     /**
