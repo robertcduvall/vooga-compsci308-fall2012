@@ -119,7 +119,8 @@ public abstract class Sprite implements SpriteActionInterface {
     abstract void setMethods();
 
     /**
-     * Returns this sprite's position.
+     * Returns this sprite's position of the
+     * center of its image.
      * @return myPosition
      */
     public Point getPosition() {
@@ -165,11 +166,10 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * Returns the bullets fired by this sprite.
-     * @return a list of the bullets that this sprite
-     * has fired.
+     * Returns a list of the bullets fired by this sprite.
+     * @return myShotsFired
      */
-    public List<Bullet> getMyBulletsFired() {
+    public List<Bullet> getBulletsFired() {
         return myShotsFired;
     }
     /**
@@ -250,11 +250,13 @@ public abstract class Sprite implements SpriteActionInterface {
      * Returns the dimensions of the sprite.
      * @return the dimensions of the sprite.
      */
-    public Dimension getDimension() {
+    public Dimension getSize() {
         return mySize;
     }
 
     /**
+     * Returns a string representing this sprite's type.
+     *
      * @return lowercase string representing type of this sprite
      */
     public abstract String getType();
@@ -335,5 +337,14 @@ public abstract class Sprite implements SpriteActionInterface {
     @Override
     public void doAction (Object ... o) {
         setVelocity(0, 0);
+    }
+
+    /**
+     * Erases the sprite's image, which will be
+     * checked for during paint methods and erased
+     * from the game if null.
+     */
+    public void die() {
+        this.setImage(null);
     }
 }
