@@ -40,6 +40,10 @@ public class LevelEditor implements ActionListener, KeyListener {
     private JButton saveBtn;
     private JButton clearBtn;
     
+    public static void main(String args[]) {
+        new LevelEditor();
+    }
+    
     public LevelEditor() {
         //TODO initialize all variables and load a level to edit/make a new level
         mainFrame = new JFrame("Level Editor");
@@ -170,8 +174,8 @@ public class LevelEditor implements ActionListener, KeyListener {
         result.add(new AbstractAction("Quit") {
             @Override
             public void actionPerformed (ActionEvent e) {
-                // end program
-                // System.exit(0);
+                 //end program
+                 System.exit(0);
             }
         });
         return result;
