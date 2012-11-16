@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 import javax.swing.ImageIcon;
 import util.input.core.KeyboardController;
@@ -55,7 +56,20 @@ public class Game {
         for (Sprite s : getSprites()) {
             s.update(myCanvas);
         }
-
+        for (Sprite s1 : getSprites()) {
+            for (Sprite s2 : getSprites()) {
+                if (collisionCheck(s1,s2)) {
+                    s1.collide(s2);
+                    s2.collide(s1);
+                }
+            }
+        }
+    }
+    
+    public boolean collisionCheck(Sprite s1, Sprite s2) {
+        Rectangle r1 = new Rectangle(s1.getPosition(), s1.getDimension());
+        Rectangle r2 = new Rectangle(s2.getPosition(), s2.getDimension());
+        return r1.intersects(r2);
     }
 
     public void paint (Graphics pen) {
