@@ -7,20 +7,20 @@ import util.input.inputhelpers.UKeyCode;
 
 
 /**
- * This class allows users to enter input through the keyboard
- * 
+ * This class allows users to enter input through the keyboard.
+ *
  * @author Amay
- * 
+ *
  */
 public class KeyboardController extends Controller<KeyListener> implements
         KeyListener {
 
     public final static int PRESSED = KeyEvent.KEY_PRESSED;
     public final static int RELEASED = KeyEvent.KEY_RELEASED;
-    
+
     /**
-     * Create a new keyboard controller
-     * 
+     * Create a new keyboard controller.
+     *
      * @param comp - The component to which we add the KeyListener
      */
     public KeyboardController(Component comp) {

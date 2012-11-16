@@ -9,7 +9,8 @@ import util.input.inputhelpers.UKeyCode;
 import util.input.interfaces.listeners.AndroidListener;
 
 /**
- * 
+ * This class allows users to enter input through an Android app.
+ *
  * @author Ben Schwab Lance
  *
  */
@@ -38,9 +39,8 @@ public class AndroidController extends Controller<AndroidListener> implements
 
     @Override
     public void onJoyStickMove (JoyStickEvent j) {
-        
         try {
-            performReflections(j, "onJoyStickMove",j.getID());
+            performReflections(j, "onJoyStickMove", j.getID());
         } catch (Exception e) {
             e.printStackTrace();
         }
