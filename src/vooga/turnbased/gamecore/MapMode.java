@@ -43,7 +43,7 @@ public class MapMode extends GameMode {
     private int myCurrentTileHeight;
     private Rectangle myCurrentCamera;
     private PathFinder myPathFinder;
-    private Point topLeftCoord;
+    private Point myTopLeftCoord;
 
     /**
      * Constructor of MapMode
@@ -178,28 +178,28 @@ public class MapMode extends GameMode {
     private void updateCameraPosition () {
         Point displacement = myPlayer.calcScreenDisplacement(
                 myCurrentTileWidth, myCurrentTileHeight);
-        topLeftCoord = calculateTopLeftCoordinate();
-        if (topLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
-            topLeftCoord.x = 0; // player near the left boundary
+        myTopLeftCoord = calculateTopLeftCoordinate();
+        if (myTopLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
+            myTopLeftCoord.x = 0; // player near the left boundary
             displacement.x = 0; // screen fixed when player moves to the edge
         }
-        else if ((topLeftCoord.x + myNumDisplayCols) * myCurrentTileWidth
+        else if ((myTopLeftCoord.x + myNumDisplayCols) * myCurrentTileWidth
                 + myPlayer.getDirection().x > myBottomRightCorner.x
                 * myCurrentTileWidth) {
-            topLeftCoord.x = myBottomRightCorner.x - myNumDisplayCols;
+            myTopLeftCoord.x = myBottomRightCorner.x - myNumDisplayCols;
             displacement.x = 0;
         }
-        if (topLeftCoord.y * myCurrentTileHeight + myPlayer.getDirection().y < 0) {
-            topLeftCoord.y = 0; // player near the top boundary
+        if (myTopLeftCoord.y * myCurrentTileHeight + myPlayer.getDirection().y < 0) {
+            myTopLeftCoord.y = 0; // player near the top boundary
             displacement.y = 0;
         }
-        else if ((topLeftCoord.y + myNumDisplayRows) * myCurrentTileHeight
+        else if ((myTopLeftCoord.y + myNumDisplayRows) * myCurrentTileHeight
                 + myPlayer.getDirection().y > myBottomRightCorner.y
                 * myCurrentTileHeight) {
-            topLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows;
+            myTopLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows;
             displacement.y = 0;
         }
-        myCurrentCamera = new Rectangle(topLeftCoord.x - 1, topLeftCoord.y - 1,
+        myCurrentCamera = new Rectangle(myTopLeftCoord.x - 1, myTopLeftCoord.y - 1,
                 myNumDisplayCols + 2, myNumDisplayRows + 2);
         myOrigin = changeOriginForPlayer(displacement);
     }
@@ -209,15 +209,24 @@ public class MapMode extends GameMode {
      */
     private void updateMapObjects () {
         for (Point p : myMapObjects.keySet()) {
-            for (MapObject s : getSpritesOnTile(p.x, p.y)) {
+        	List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
+            for (MapObject s : objectsOnTile) {
+            	if (!s.isVisible()) {
+            		objectsOnTile.remove(s);
+            	}
                 s.update(getGameManager().getDelayTime());
             }
         }
     }
 
     public void processGameEvents () { // this can be optimized A LOT, only
-        // check mapobjects that did something
-        // last turn
+        // check mapobjects that did something last turn
+    	for (MapObject m: getSpritesOnTile(myPlayer.getLocation().x, myPlayer.getLocation().y)) {
+    		if (m != myPlayer) {
+    			m.interact(myPlayer);
+    		}
+    	}
+    	
         List<Map<GameEvent, List<Integer>>> myEvents = new ArrayList<Map<GameEvent, List<Integer>>>();
         for (Point p : myMapObjects.keySet()) {
             Map<GameEvent, List<Integer>> myTileEvents = new HashMap<GameEvent, List<Integer>>();
@@ -295,8 +304,7 @@ public class MapMode extends GameMode {
                 myMapObjects.get(oldCoord).remove(s);
                 addMapObject(dest, s);
                 s.setLocation(dest);
-                s.setDirection(dir); // start moving in update() when direction
-                // is set
+                s.setDirection(dir); // start moving in update() when direction is set
             }
         }
     }
@@ -348,8 +356,8 @@ public class MapMode extends GameMode {
             if (myPathFinder != null) {
                 myPathFinder.stop();
             }
-            Point target = new Point(e.getX() / myCurrentTileWidth + topLeftCoord.x, 
-            		e.getY() / myCurrentTileHeight + topLeftCoord.y);
+            Point target = new Point(e.getX() / myCurrentTileWidth + myTopLeftCoord.x, 
+            		e.getY() / myCurrentTileHeight + myTopLeftCoord.y);
             myPathFinder = new PathFinder(this, myPlayer, target,
                     myBottomRightCorner);
         }

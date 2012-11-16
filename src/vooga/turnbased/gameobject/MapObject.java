@@ -78,7 +78,8 @@ public abstract class MapObject extends GameObject {
     }
     
     public void paint(Graphics g) {
-    	if (getImage() == null) {
+    	if (getImage() == null || myOffset == null || myTileDimensions == null) {
+    		//System.out.println(getImage() + " " + myOffset + " " + myTileDimensions);
     		return;
     	}
     	g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width, myTileDimensions.height, null);
