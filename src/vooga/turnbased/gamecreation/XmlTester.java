@@ -1,10 +1,10 @@
 package vooga.turnbased.gamecreation;
 
+import util.xml.*;
 import java.awt.Image;
 import java.io.File;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import util.xml.XmlParser;
 
 public class XmlTester {
 
