@@ -5,9 +5,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.List;
 import javax.swing.ImageIcon;
-import util.input.core.KeyboardController;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
@@ -21,7 +22,7 @@ import vooga.shooter.level_editor.Level;
  * initiated throughout the course of the game.
  * 
  * @author Tommy Petrilak
- * 
+ * @author Stephen Hunt
  */
 public class Game {
     private List<Sprite> mySprites;
@@ -39,6 +40,7 @@ public class Game {
         addSprite(myPlayer);
         Level firstLevel = new Level1(this);
         myCanvas = c;
+        myCanvas.addKeyListener(new KeyboardListener());
         startLevel(firstLevel);
     }
 
@@ -126,4 +128,32 @@ public class Game {
         this.myEnemies = myEnemies;
     }
 
+    private class KeyboardListener implements KeyListener {
+        
+        private int numKeysPressed; 
+        
+        public KeyboardListener () {
+            super();
+            numKeysPressed = 0;
+        }
+
+        @Override
+        public void keyPressed (KeyEvent e) {
+            myPlayer.doEvent(Integer.toString(e.getKeyCode()), 0, null);
+            numKeysPressed++;
+        }
+
+        @Override
+        public void keyReleased (KeyEvent e) {
+            numKeysPressed--;
+            if (numKeysPressed == 0)
+                myPlayer.doEvent("-1", 0, null);
+            
+        }
+
+        @Override
+        public void keyTyped (KeyEvent e) {            
+        }
+
+    }
 }
