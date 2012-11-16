@@ -8,12 +8,10 @@ import javax.swing.ImageIcon;
 import vooga.turnbased.gamecore.GameManager;
 
 /**
- * This class is a bucket. It has no functionality. We are looking into possible ways
- * around this class having no functionality, but because MapObject and BattleObject
- * are also abstract, any actual objects in the game could not inherit anything from
- * GameObject, as that would be multiple inheritance. Thus, there is no point to add 
- * functionality to this class as multiple inheritance assures that functionality 
- * would never be used.
+ * GameObject is the parent class of all important objects in this game. Each object will 
+ * actually be only some sort of Object associated with that game mode where the object exists.
+ * Thus there will not be any actual classes that implement GameObject directly, but rather
+ * BattleObject or MapObject, etc.
  * @author Michael Elgart
  *
  */
