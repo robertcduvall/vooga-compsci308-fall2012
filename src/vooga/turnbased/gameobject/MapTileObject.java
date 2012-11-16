@@ -8,6 +8,7 @@ import vooga.turnbased.gamecore.MapMode;
 
 /**
  * This class is a bit stupid
+ * Agreed.
  */
 public class MapTileObject extends MapObject {
 
