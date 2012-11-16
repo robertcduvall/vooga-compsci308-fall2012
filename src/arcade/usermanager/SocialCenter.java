@@ -155,7 +155,7 @@ public class SocialCenter {
         File f = new File(filePath);
         XmlParser parser = new XmlParser(f);
         Document doc = parser.getDocument();
-        Element root = (Element) parser.getRootElement();
+        Element root = (Element) parser.getDocumentElement();
         Element message = XmlWriter.appendElement(doc, root, "Message", "");
         XmlWriter.appendElement(doc, message, "receiver", receiver);
         XmlWriter.appendElement(doc, message, "content", content);
@@ -184,7 +184,7 @@ public class SocialCenter {
         File f = new File(filePath);
         XmlParser parser = new XmlParser(f);
         Document doc = parser.getDocument();
-        Element root = (Element) parser.getRootElement();
+        Element root = (Element) parser.getDocumentElement();
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Element child = (Element) children.item(i);
@@ -206,7 +206,7 @@ public class SocialCenter {
         File f = new File(filePath);
         XmlParser parser = new XmlParser(f);
         Document doc = parser.getDocument();
-        Element root = (Element) parser.getRootElement();
+        Element root = (Element) parser.getDocumentElement();
         NodeList children = root.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Element child = (Element) children.item(i);
