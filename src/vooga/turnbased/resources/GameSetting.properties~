@@ -1,6 +1,16 @@
 Width=800
-Height=800
-ImageFolder=src/resources/image/
-StartButton=start-button.png
-Background=morte1.jpg
+Height=600
+Delay=30
+CameraWidth=15
+CameraHeight=11
+
+ImageFolder=src/vooga/turnbased/resources/image/
+GrassImage=grass.png
+PlayerImage=player.png
+StartButtonImage=start-button.png
+EditorButtonImage=edit.png
+BackgroundImage=morte1.jpg
+EditorBackgroundImage=editorbg.jpg
+TileBackground=background.png
+something=something.png
 

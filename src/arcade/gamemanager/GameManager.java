@@ -28,7 +28,7 @@ public class GameManager {
      * 
      * @param gameObject the game to be managed
      */
-    public GameManager(IArcadeGame gameObject) {
+    public GameManager (IArcadeGame gameObject) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
         // TODO
@@ -44,7 +44,7 @@ public class GameManager {
      * 
      * @param gameName name of the game to be managed
      */
-    public GameManager(String gameName) {
+    public GameManager (String gameName) {
         mySaver = new GameSaver(gameName, myGame);
         // TODO
     }
@@ -57,7 +57,7 @@ public class GameManager {
      * The Game Saver allows the game to save user preferences and high scores
      * without accessing the rest of the game manager.
      */
-    public void runGame() {
+    public void runGame () {
         myGame.runGame(getUserPreferences(), mySaver);
         // TODO
     }
@@ -67,7 +67,7 @@ public class GameManager {
      * User.xml. The highest score is always the first item on the list, for
      * easy access
      */
-    public List<Integer> getUserScores() {
+    public List<Integer> getUserScores () {
         // TODO
         return null;
     }
@@ -75,7 +75,7 @@ public class GameManager {
     /**
      * Loads the user's preferences for that particular game from User.xml.
      */
-    public String getUserPreferences() {
+    public String getUserPreferences () {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
@@ -87,7 +87,7 @@ public class GameManager {
      * Returns all reviews for the given game, displaying the current user's
      * review first (if it exists).
      */
-    public List<String> getReviews() {
+    public List<String> getReviews () {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
@@ -96,9 +96,9 @@ public class GameManager {
     }
 
     /**
-     * Returns the average of all the rations for the game.
+     * Returns the average of all the ratings for the game.
      */
-    public Integer getAverageRatings() {
+    public Integer getAverageRatings () {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
@@ -116,7 +116,7 @@ public class GameManager {
      * Returns all ratings for the given game, displaying the current user's
      * rating first (if it exists).
      */
-    public List<Integer> getRatings() {
+    public List<Integer> getRatings () {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
@@ -130,53 +130,29 @@ public class GameManager {
     }
 
     /**
-     * Checks if the game has a review on file for the given user. If not, it
-     * then calls addReview. If so, it then calls editReview.
+     * Allows the user to input a new review for the game, overwriting the
+     * previous review (if applicable).
      * 
      * @param review text for the review
      */
-    public void setReview(String review) {
+    public void setReview (String review) {
         File f = new File("arcade.database/game.xml");
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
         tags.add("review");
-        if (ReadWriter.loadData(f, tags) == null) {
-            addReview(review);
-        } else {
-            editReview(review, null);
-        }
+        ReadWriter.storeData(f, tags, review);
     }
 
     /**
-     * Lets the user input a new review, and then adds it to the review list for
-     * that game.
-     * void editReview(String tag).
-     * 
-     * @param review text for the review
+     * Returns the review for the game, if it exists.
      */
-    public void addReview(String review) {
-        // TODO
-    }
-
-    /**
-     * Gets the user's review for the game, lets the user modify it, and then
-     * replaces it in the review list for that game.
-     * 
-     * @param tag location of the previous review in the xml file
-     * @param review text for the review
-     */
-    public void editReview(String tag, String review) {
-        // TODO
-    }
-
-    /**
-     * Checks if the game has a rating on file for the given user. If not, it
-     * then calls addRating. If so, it then calls editRating.
-     * 
-     * @param rating rating to be added
-     */
-    public void setRating(int rating) {
-        // TODO
+    public String getReview () {
+        File f = new File("arcade.database/game.xml");
+        List<String> tags = new ArrayList<String>();
+        tags.add(myGame.getName());
+        tags.add("review");
+        if (ReadWriter.search(f, tags).size() == 0) return "";
+        return ReadWriter.loadData(f, tags);
     }
 
     /**
@@ -185,18 +161,11 @@ public class GameManager {
      * 
      * @param rating rating to be added
      */
-    public void addRating(int rating) {
-        // TODO
-    }
-
-    /**
-     * Gets the user's rating for the game, lets the user modify it, and then
-     * replaces it in the ratings list for that game.
-     * 
-     * @param tag location of the previous rating
-     * @param rating rating to be added
-     */
-    public void setRating(String tag, int rating) {
-        // TODO
+    public void setRating (int rating) {
+        File f = new File("arcade.database/game.xml");
+        List<String> tags = new ArrayList<String>();
+        tags.add(myGame.getName());
+        tags.add("rating");
+        ReadWriter.storeData(f, tags, Integer.toString(rating));
     }
 }

@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
 
 /**
  * This class encompasses the basic layout for any sprites that appear in the
@@ -12,15 +14,17 @@ import java.util.List;
  * extend this class and contain any additional information or behaviors
  * particular to that new type of sprite (e.g. the player could have a health
  * limit).
- * 
+ *
  */
-public abstract class Sprite {
+public abstract class Sprite implements SpriteActionInterface {
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
+    private Dimension myBounds;
     private Image myImage;
     private List<Bullet> myShotsFired;
     private int myHealth;
+    private SpriteMethodMap myMapper;
 
     /**
      * Construct a sprite initializing only position, size, and image.
@@ -30,13 +34,18 @@ public abstract class Sprite {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image) {
         myPosition = position;
         mySize = size;
         myImage = image;
-        myHealth = -1;
+        myHealth = Integer.MAX_VALUE;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     /**
@@ -47,16 +56,20 @@ public abstract class Sprite {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      * @param velocity the starting velocity of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image, 
-            Point velocity) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image, Point velocity) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myVelocity = velocity;
-        myHealth = -1;
+        myHealth = Integer.MAX_VALUE;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     /**
@@ -65,15 +78,19 @@ public abstract class Sprite {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      * @param health the starting health of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image,
-            int health) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image, int health) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myHealth = health;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     /**
@@ -82,18 +99,24 @@ public abstract class Sprite {
      *
      * @param position the center of the sprite image
      * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
      * @param image the image of the sprite
      * @param velocity the starting velocity of the sprite
      * @param health the starting health of the sprite
      */
-    public Sprite (Point position, Dimension size, Image image,
-            Point velocity, int health) {
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, Image image, Point velocity, int health) {
         myPosition = position;
         mySize = size;
         myImage = image;
         myVelocity = velocity;
         myHealth = health;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
+
+    abstract void setMethods();
 
     /**
      * Returns this sprite's position.
@@ -124,12 +147,31 @@ public abstract class Sprite {
 
     /**
      * Sets this sprite's velocity to a new one.
-     * @param velocity the new velocity to set to 
+     * @param velocity the new velocity to set to
      */
     public void setVelocity(Point velocity) {
         myVelocity = velocity;
     }
 
+    /**
+     * Can set a new velocity with x and y values
+     * instead of a new point.
+     * @param x the x value of the new velocity
+     * @param y the y value of the new velocity
+     */
+    public void setVelocity(int x, int y) {
+        Point v = new Point(x, y);
+        setVelocity(v);
+    }
+
+    /**
+     * Returns the bullets fired by this sprite.
+     * @return a list of the bullets that this sprite
+     * has fired.
+     */
+    public List<Bullet> getMyBulletsFired() {
+        return myShotsFired;
+    }
     /**
      * Returns the image representing this sprite.
      * @return myImage
@@ -205,17 +247,32 @@ public abstract class Sprite {
     }
 
     /**
+     * Returns the dimensions of the sprite.
+     * @return the dimensions of the sprite.
+     */
+    public Dimension getDimension() {
+        return mySize;
+    }
+
+    /**
+     * @return lowercase string representing type of this sprite
+     */
+    public abstract String getType();
+
+    /**
      * This method draws the image at the sprite's
-     * current position.
-     * @param g used for drawing the image
+     * current position. If a sprite needs to draw anything
+     * else (e.g. its bullets) then it can implement the
+     * continuePaint method, if not, just leave it blank.
+     * @param pen used for drawing the image
      */
     public void paint(Graphics pen) {
-        Point topLeft = new Point();
-        topLeft.x = myPosition.x - mySize.width / 2;
-        topLeft.y = myPosition.y - mySize.height / 2;
-        
-        pen.drawImage(myImage, topLeft.x, topLeft.y, mySize.width, mySize.height, null);
+        pen.drawImage(myImage, getLeft(), getTop(),
+                mySize.width, mySize.height, null);
+        continuePaint(pen);
     }
+
+    protected abstract void continuePaint(Graphics pen);
 
     /**
      * This method will update the position for every
@@ -226,18 +283,57 @@ public abstract class Sprite {
      * to each sprite when calling the update method.
      */
     public void update() {
-        myPosition.x += myVelocity.x;
-        myPosition.y += myVelocity.y;
+        myPosition.translate(myVelocity.x, myVelocity.y);
         continueUpdate();
     }
 
-    public abstract void continueUpdate();
+    protected abstract void continueUpdate();
 
     /**
      * Called when this sprite collides with another
-     * sprite.
+     * sprite. Which one is called depends on the type
+     * of sprite it is colliding with.
+     *
+     * @param s the sprite that collides with this one
      */
-    public void collide() {
-        
+    public void collide(Sprite s) {
+
+    }
+
+    protected void setMapper (SpriteMethodMap mapper) {
+        this.myMapper = mapper;
+    }
+
+    protected SpriteMethodMap getMapper () {
+        return myMapper;
+    }
+
+    protected Dimension getBounds() {
+        return myBounds;
+    }
+
+    /**
+     * Tells the method mapper (class that holds strings to methods)
+     * which key to use (which method to choose).
+     * If parameters are added here, they should also be added to
+     * SpriteMethodMap -> doEvent method. Also, newly added parameters
+     * should be added at the end (after all other previous parameters).
+     *
+     * @param key the string (key) that maps to the right method to do
+     * @param s the sprite that this one collides with
+     */
+    public void doEvent(String key, Sprite s) {
+        myMapper.doEvent(key, s);
+    }
+
+    /**
+     * Sets the sprite's velocity to 0.
+     *
+     * @param o a (possibly empty) list of
+     * parameters to be used in the action
+     */
+    @Override
+    public void doAction (Object ... o) {
+        setVelocity(0, 0);
     }
 }
