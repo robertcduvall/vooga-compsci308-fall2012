@@ -22,6 +22,7 @@ import vooga.turnbased.gameobject.MapObject;
 //public abstract class GameMode extends Observable {
 public abstract class GameMode {
     private final GameManager myGameManager;
+    private final Class myObjectType;
 
     private ArrayList<GameObject> myObjects;
     
@@ -33,26 +34,9 @@ public abstract class GameMode {
      */
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
-        myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
-        //this.addObserver(myGameManager);
-
+        myObjectType = modeObjectType;
+        //myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
     }
-
-    /**
-     * Notify GameManager about the events that happened
-     * 
-     * @param event Event to be handled by the GameManager
-     */
-//    private void notifyGameManager (Object event) {
-//        setChanged();
-//        notifyObservers(event);
-//    }
-
-
-//    public static void main (String[] args) {
-//        // TODO Auto-generated method stub
-//
-//    }
 
     protected GameManager getGM () {
         return myGameManager;
@@ -61,12 +45,20 @@ public abstract class GameMode {
     public ArrayList<GameObject> getObjects() {
     	return myObjects;
     }
+    
+    public Class getObjectType() {
+        return myObjectType;
+    }
     /**
      * Each game mode should paint everything that should be currently displayed
      * @param g
      * @param canvasWidth
      * @param canvasHeight
      */
+    public abstract void pause();
+    
+    public abstract void resume();
+    
     public abstract void paint(Graphics g);
     
     public abstract void update ();
