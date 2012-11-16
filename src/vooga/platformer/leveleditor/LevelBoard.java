@@ -165,16 +165,22 @@ public class LevelBoard extends Canvas implements ISavable {
     @Override
     public void save() {
         JFileChooser fc = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("XML file", "xml");
+        fc.addChoosableFileFilter(filter);
+
         int returnVal = fc.showSaveDialog(this);
+        String levelName = "";
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
+            levelName = file.getName();
             //This is where a real application would save the file.
 
 //            log.append("Saving: " + file.getName() + "." + newline);
         } else {
+            levelName = "myLevelName.xml";
 //            log.append("Save command cancelled by user." + newline);
         }
-        LevelFileWriter.writeLevel(System.getProperty("user.dir"), "mylevelType", "myLevelName", myWidth, myHeight,
+        LevelFileWriter.writeLevel(System.getProperty("user.dir"), "mylevelType", levelName, myWidth, myHeight,
                 "mybackground.jpg", mySprites, "myCollision", "myCamera");
     }
 
