@@ -96,6 +96,7 @@ public final class LevelFactory {
         configString = configString.concat("y=" + s.getY() + deliminator);
         configString = configString.concat("width=" + s.getWidth() + deliminator);
         configString = configString.concat("height=" + s.getHeight());
+        // TODO add strategies and attr
         return (GameObject) Reflection.createInstance(s.getType(), configString);
     }
 
