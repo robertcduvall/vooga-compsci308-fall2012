@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.graphics.Canvas;
 
 /**
@@ -37,35 +38,35 @@ public class Player extends Sprite{
      */
     void setMethods() {
         //37 is the int value for left arrow key
-        getMapper().addPair("37", new MethodWrapper() {
+        getMapper().addPair("37", new SpriteActionInterface() {
                                 public void doAction(Object...o) {
                                     setVelocity(-10, getVelocity().y);
                                 }
         });
 
         //38 is the int value for up arrow key
-        getMapper().addPair("38", new MethodWrapper() {
+        getMapper().addPair("38", new SpriteActionInterface() {
                                 public void doAction(Object...o) {
                                     setVelocity(getVelocity().x, -10);
                                 }
         });
 
         //39 is the int value for right arrow key
-        getMapper().addPair("39", new MethodWrapper() {
+        getMapper().addPair("39", new SpriteActionInterface() {
                                 public void doAction(Object...o) {
                                     setVelocity(10, getVelocity().y);
                                 }
         });
 
         //40 is the int value for down arrow key
-        getMapper().addPair("40", new MethodWrapper() {
+        getMapper().addPair("40", new SpriteActionInterface() {
                                 public void doAction(Object...o) {
                                     setVelocity(getVelocity().x, 10);
                                 }
         });
 
         //32 is the int value for spacebar key
-        getMapper().addPair("32", new MethodWrapper() {
+        getMapper().addPair("32", new SpriteActionInterface() {
                                 public void doAction(Object...o) {
                                     fireBullet();
                                 }
@@ -75,9 +76,11 @@ public class Player extends Sprite{
         getMapper().addPair("-1", this);
 
         //the player is hit with a bullet (decreases health)
-        getMapper().addPair("hitbullet", new MethodWrapper() {
+        //also the bullet that hit the player goes away
+        getMapper().addPair("hitbybullet", new SpriteActionInterface() {
                                 public void doAction(Object...o) {
                                     decreaseHealth((Integer) o[0]);
+                                    ((Bullet) o[1]).die();
                                 }
         });
     }
