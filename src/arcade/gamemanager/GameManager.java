@@ -1,11 +1,12 @@
 package arcade.gamemanager;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import arcade.IArcadeGame;
 import arcade.utility.ReadWriter;
-
+//TODO Replace readwriter with other xml reader
 
 /**
  * Class of the arcade used to start, end, and maintain
@@ -167,5 +168,15 @@ public class GameManager {
         tags.add(myGame.getName());
         tags.add("rating");
         ReadWriter.storeData(f, tags, Integer.toString(rating));
+    }
+    
+    public Image getImage() {
+        // TODO
+        return null;
+    }
+    
+    public String getGameName() {
+        // TODO
+        return null;
     }
 }
