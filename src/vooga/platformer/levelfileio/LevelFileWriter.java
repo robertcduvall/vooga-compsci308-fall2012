@@ -89,8 +89,7 @@ public final class LevelFileWriter {
             addLevelObjects(levelObjects, doc, level);
 
             String xmlString = getXMLAsString(doc);
-            File toWrite = new File(filePath, levelName);
-            FileWriter writer = new FileWriter(toWrite);
+            FileWriter writer = new FileWriter(filePath);
             writer.write(xmlString);
             writer.close();
         }
