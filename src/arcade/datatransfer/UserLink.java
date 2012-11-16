@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * List of get and set methods for GUI to interface with User model
  * 
- * @author Michael Deng, Robert Bruce
+ * @author Michael Deng, Robert Bruce, Kannan Raju
  *
  */
 public class UserLink {
