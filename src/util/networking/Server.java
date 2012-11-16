@@ -31,9 +31,15 @@ public class Server {
      * should be followed by a password and port, and will start special
      * server control service running on the specified port, protected by the
      * specified password.
+     * @throws UnknownHostException 
      **/
-    public static void main(String[] args) {
-        try {
+    public static void main(String[] args) throws UnknownHostException {
+        //Print host name - to make sure we have correct address
+        InetAddress addr = InetAddress.getLocalHost();
+        String hostname = addr.getHostName();
+        System.out.println(hostname);
+        
+        /*try {
             if (args.length < 2)  // Check number of arguments
                 throw new IllegalArgumentException("Must specify a service");
           
@@ -70,7 +76,18 @@ public class Server {
 			       "[-control <password> <port>] " +
 			       "[<servicename> <port> ... ]");
             System.exit(1);
+        }*/
+        
+        Server s = new Server(Logger.getLogger(Server.class.getName()),
+                              Level.INFO, 10);
+        int port = 1236;
+        try {
+            s.addService(new Reverse(), port);
         }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     // This is the state for the server
@@ -449,9 +466,10 @@ public class Server {
     public static class HTTPMirror implements Service {
         public void serve(InputStream i, OutputStream o) throws IOException {
             BufferedReader in = new BufferedReader(new InputStreamReader(i));
-            PrintWriter out = new PrintWriter(o);
+            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(o)));
             out.print("HTTP/1.0 200\r\n");
             out.print("Content-Type: text/plain\r\n\r\n");
+            out.flush();
             String line;
             while((line = in.readLine()) != null) {
                 if (line.length() == 0) break;

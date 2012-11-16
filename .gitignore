@@ -6,3 +6,5 @@ bin/
 .checkstyle
 
 .project
+.settings
+.DS_Store

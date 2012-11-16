@@ -35,7 +35,7 @@ public class GameSaver {
      */
     public void saveGameInfo (String userGameInfo) {
 
-        socialCenter.writeGameHistory(myGame.getName(), "gameInfo", userGameInfo);
+        socialCenter.writeGameHistory(myGame.getName(), "gameinfo", userGameInfo);
         // what happens if saving a new game? handled in SocialCenter?
 
     }
@@ -48,7 +48,7 @@ public class GameSaver {
      */
     public void saveHighScore (int score) {
         // method to be implemented in SocialCenter?
-        //socialCenter.writeGameScore(myGame.getName(),"gameScore",score);
+        socialCenter.writeGameHistory(myGame.getName(),"highscore",Integer.toString(score));
         
     }
 }

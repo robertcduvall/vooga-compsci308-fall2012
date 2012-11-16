@@ -7,51 +7,130 @@
  */
 package vooga.turnbased.gamecore;
 
-import java.awt.Point;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
-import vooga.turnbased.gameobject.Sprite;
-import vooga.turnbased.gui.GameCanvas;
 
+import javax.swing.JComponent;
 
-public class GameManager implements Observer {
+import vooga.turnbased.gameobject.BattleObject;
+import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.TestMonster;
+import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.sprites.Sprite;
 
-    private final GameCanvas myGameCanvas;
-    private HashMap<Sprite, Point> mySprites;
-    private final GameMode myCurrentGameMode;
-    private Factory myFactory;
-    private Sprite myPlayer;
-    private final boolean isOver;
+//public class GameManager implements Observer {
+public class GameManager {
 
-    /**
-     * Constructor of GameManager
-     * 
-     * @param gameCanvas The GameCanvas it paints to
-     */
-    public GameManager(GameCanvas gameCanvas) {
-        myGameCanvas = gameCanvas;
-        isOver = false;
-        // mySprites =
-        // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
-        myCurrentGameMode = new MapMode(this);
-        // myCurrentGameMode.initializeMap();
-    }
+	private final GamePane myGamePane;
+	private GameMode myCurrentGameMode;
+	// private Factory myFactory;
+	// private MapObject myPlayer;
+	private final boolean isOver;
+	private HashMap<Integer, Sprite> mySprites;
 
-    public boolean isOver() {
-        return isOver;
-    }
+	/**
+	 * Constructor of GameManager
+	 * 
+	 * @param gameCanvas
+	 *            The GameCanvas it paints to
+	 */
+	public GameManager(GamePane gameCanvas) {
+		myGamePane = gameCanvas;
+		isOver = false;
+		// mySprites =
+		// myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
+		mySprites = new HashMap<Integer, Sprite>();
+		generateHardcodedSprites();
+		myCurrentGameMode = new MapMode(this, MapObject.class);
+		// myCurrentGameMode.initializeMap();
+	}
 
-    public void update() {
+	private void generateHardcodedSprites() { // factory will do this job
+												// eventually...
+		Sprite s = new Sprite();
+		s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 1, 3));
 
-    }
+		mySprites.put(s.getID(), s);
 
-    public void paint() {
+		s = new Sprite();
+		s.addGameObject(new TestMonster(1, GameEvent.NO_ACTION, 1, 1, 3));
 
-    }
+		mySprites.put(s.getID(), s);
 
-    @Override
-    public void update(Observable arg0, Object arg1) {
-        // TODO: Receive notifications from GameModes.
-    }
+	}
+
+	public ArrayList<GameObject> getModesObjects(Class c) {
+		ArrayList<GameObject> modeObjects = new ArrayList<GameObject>();
+		for (Sprite s : mySprites.values()) {
+			modeObjects.addAll(s.getObject(c));
+		}
+		return modeObjects;
+	}
+	
+	public void deleteSprite(int spriteID){
+		mySprites.remove(spriteID);
+	}
+
+	public boolean isOver() {
+		return isOver;
+	}
+
+	public void update() {
+		myCurrentGameMode.update();
+	}
+
+	/**
+	 * paint the images to the buffer
+	 * 
+	 * @param g
+	 *            the Graphics object of the offScreenImage
+	 */
+	public void paint(Graphics g) {
+		myCurrentGameMode.paint(g);
+	}
+
+	public void handleEvent(GameEvent eventName, ArrayList<Integer> myInvolvedIDs) {
+		switch (eventName) {
+		case NO_ACTION:
+			break;
+		case MAP_COLLISION:
+			if(myInvolvedIDs.size() >= 2) {
+				new BattleMode(this, BattleObject.class);
+			}
+			break;
+		}
+	}
+
+	// @Override
+	// public void update(Observable arg0, Object arg1) {
+	// }
+
+	public void handleKeyPressed(KeyEvent e) {
+		myCurrentGameMode.handleKeyPressed(e);
+	}
+
+	public void handleKeyReleased(KeyEvent e) {
+		myCurrentGameMode.handleKeyReleased(e);
+	}
+	
+	public void handleMouseClicked(MouseEvent e) {
+		myCurrentGameMode.handleMouseClicked(e);
+	}
+
+	public Dimension getPaneDimension() {
+		return myGamePane.getSize();
+	}
+
+	public int getDelayTime() {
+		return myGamePane.getDelayTime();
+	}
+
+	public enum GameEvent {
+		MAP_COLLISION, NO_ACTION
+	}
 }

@@ -12,13 +12,11 @@ import util.input.inputhelpers.UKeyCode;
  */
 
 public class MouseController extends Controller<MouseInputListener> implements MouseInputListener {
-    
     public final static int PRESSED = MouseEvent.MOUSE_PRESSED;
     public final static int RELEASED = MouseEvent.MOUSE_RELEASED;
     public final static int CLICKED = MouseEvent.MOUSE_CLICKED;
     public final static int NO_BUTTON = 0;
-    
-    
+
     /**
      * Create a new mouse controller
      * 

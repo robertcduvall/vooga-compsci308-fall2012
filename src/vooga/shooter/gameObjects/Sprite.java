@@ -215,6 +215,14 @@ public abstract class Sprite {
     public int getBottom() {
         return myPosition.y + mySize.height / 2;
     }
+    
+    /**
+     * Returns the dimensions of the sprite.
+     * @return the dimensions of the sprite.
+     */
+    public Dimension getDimension() {
+        return mySize;
+    }
 
     public abstract String getType();
 
@@ -253,6 +261,17 @@ public abstract class Sprite {
      * sprite. Which one is called depends on the type
      * of sprite it is colliding with.
      */
+    public void collide(Sprite s) {
+        String type = s.getType();
+        if(type.equals("bullet"))
+            collide((Bullet) s);
+        if(type.equals("enemy"))
+            collide((Enemy) s);
+        if(type.equals("player"))
+            collide((Player) s);
+            
+    }
+    
     public abstract void collide(Bullet b);
     public abstract void collide(Player p);
     public abstract void collide(Enemy e);
