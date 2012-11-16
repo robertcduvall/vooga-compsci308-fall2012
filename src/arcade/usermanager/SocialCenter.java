@@ -160,7 +160,8 @@ public class SocialCenter {
         XmlWriter.appendElement(doc, message, "receiver", receiver);
         XmlWriter.appendElement(doc, message, "content", content);
         XmlWriter.writeXML(doc, filePath);
-        myCurrentUser.updateMyMessage();
+        myAllUser.get(receiver).updateMyMessage(sender, content);
+        
         return successString;
     }
 

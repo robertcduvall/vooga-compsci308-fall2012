@@ -78,7 +78,8 @@ public class User {
         return myMessage;
     }
     
-    protected void updateMyMessage(){
+    protected void updateMyMessage(String sender, String content){
+        myMessages.add(new Message(sender,content));
         
     }
     
