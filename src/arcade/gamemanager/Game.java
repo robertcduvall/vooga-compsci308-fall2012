@@ -176,8 +176,11 @@ public class Game {
         return myGame.getName();
     }
 
-    public List<String> getGenre () {
-        // TODO
+    public String getGenre () {
+        NodeList gameInfo = myGameNode.getChildNodes();
+        for(int i=0; i<gameInfo.getLength(); i++) {
+            if(gameInfo.item(i).equals("name")) return gameInfo.item(i).getTextContent();
+        }
         return null;
     }
 }
