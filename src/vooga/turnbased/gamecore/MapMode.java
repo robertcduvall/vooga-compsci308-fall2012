@@ -77,7 +77,7 @@ public class MapMode extends GameMode {
                 Point p = new Point(i, j);
                 addMapObject(p, new MapTileObject(ID,
                         GameManager.GameEvent.NO_ACTION, p, GameWindow
-                                .importImage("GrassImage")));
+                                .importImage("GrassImage"), this));
             }
         }
         Point center = new Point(7, 5);
