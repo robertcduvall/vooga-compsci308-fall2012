@@ -71,7 +71,7 @@ public class UserXMLReader {
      */
     public User getUser (String name) {
 
-        parseXmlFile(myUserBasicFilePath + name + ".xml");
+        parseXmlFile(myUserBasicFilePath + name);
         Element el = myDom.getDocumentElement();
         String username = getTextValue(el, "name");
         String password = getTextValue(el, "password");
@@ -92,7 +92,7 @@ public class UserXMLReader {
      * @return
      */
     public List<GameData> getGameDataList (String name) {
-        parseXmlFile(myUserGameFilePath + name + ".xml");
+        parseXmlFile(myUserGameFilePath + name);
         Element el = myDom.getDocumentElement();
         List<GameData> gameDataList = new ArrayList<GameData>();
         NodeList nl = el.getElementsByTagName("game");
@@ -117,7 +117,7 @@ public class UserXMLReader {
      * @return
      */
     public List<Message> getMessageList (String name) {
-        parseXmlFile(myUserMessageFilePath + name + ".xml");
+        parseXmlFile(myUserMessageFilePath + name);
         Element el = myDom.getDocumentElement();
         List<Message> messageList = new ArrayList<Message>();
         NodeList nl = el.getElementsByTagName("message");

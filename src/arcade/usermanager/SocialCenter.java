@@ -60,7 +60,6 @@ public class SocialCenter {
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 String name = listOfFiles[i].getName();
-
                 User newUser = myXMLReader.getUser(name);
                 myAllUser.put(name, newUser);
 
