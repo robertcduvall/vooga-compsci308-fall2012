@@ -49,7 +49,7 @@ public class PathFinder implements Runnable {
 		mySize = new Dimension(myBottomRightCorner.x, myBottomRightCorner.y);
 		myVisited = new boolean[mySize.width][mySize.height];
 		myCancelMovement = false;
-		depthFirstSearch(myStart);
+		findPossiblePath(myStart);
 		highlightPath();
 		myMovementThread = new Thread(this);
 		myMovementThread.start();
@@ -60,7 +60,7 @@ public class PathFinder implements Runnable {
 	 * @param current current position
 	 * @return if the path finding is successful
 	 */
-	public boolean depthFirstSearch(Point current) {
+	protected boolean findPossiblePath(Point current) {
 		if (checkVisited(current.x, current.y)) {
 			return false;
 		}
@@ -92,7 +92,7 @@ public class PathFinder implements Runnable {
 		while (!myOptions.isEmpty()) {
 			Point p = new Point(myOptions.poll());
 			myPath.add(p);
-			if (depthFirstSearch(p)) {
+			if (findPossiblePath(p)) {
 				return true;
 			} else {
 				myPath.remove(myPath.size() - 1);
