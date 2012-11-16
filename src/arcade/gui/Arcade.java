@@ -59,12 +59,12 @@ public class Arcade {
         myFrame = frameCreator.createFrame();
 
         // fill it with default panels
-        replacePanel(myResources.getString("DefaultFoot"));
-        replacePanel(myResources.getString("DefaultMain"));
-        replacePanel(myResources.getString("DefaultLogo"));
-        replacePanel(myResources.getString("DefaultNav"));
-        replacePanel(myResources.getString("DefaultSearch"));
-        replacePanel(myResources.getString("DefaultUser"));
+        replacePanel("FootDefault");
+        replacePanel("MainDefault");
+        replacePanel("LogoDefault");
+        replacePanel("NavDefault");
+        replacePanel("SearchDefault");
+        replacePanel("UserDefault");
     }
 
     private ArcadePanel createPanel (String panelCreatorName) {
@@ -86,10 +86,12 @@ public class Arcade {
      * @return this returns the old panel
      */
     public void replacePanel (String panelCreatorName) {
-        myFrame.setVisible(false);
-        ArcadePanel newPanel = createPanel(panelCreatorName);
+        String panelRealName = myResources.getString(panelCreatorName);
+//        myFrame.setVisible(false);
+        ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
-        myFrame.setVisible(true);
+//        myFrame.setVisible(true);
+        myFrame.pack();
     }
 
     public String getUsername () {
@@ -113,7 +115,7 @@ public class Arcade {
         return myUserManager;
     }
 
-    public void setVariable (String varName, Serializable var) {
+    public void saveVariable (String varName, Serializable var) {
         mySharedVariables.put(varName, var);
     }
 

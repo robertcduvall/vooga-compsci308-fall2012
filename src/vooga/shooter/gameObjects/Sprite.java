@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
+import vooga.shooter.graphics.Canvas;
 
 /**
  * This class encompasses the basic layout for any sprites that appear in the
@@ -131,6 +132,17 @@ public abstract class Sprite {
     }
 
     /**
+     * Can set a new velocity with x and y values
+     * instead of a new point.
+     * @param x the x value of the new velocity
+     * @param y the y value of the new velocity
+     */
+    public void setVelocity(int x, int y) {
+        Point v = new Point(x, y);
+        setVelocity(v);
+    }
+
+    /**
      * Returns the image representing this sprite.
      * @return myImage
      */
@@ -203,19 +215,30 @@ public abstract class Sprite {
     public int getBottom() {
         return myPosition.y + mySize.height / 2;
     }
+    
+    /**
+     * Returns the dimensions of the sprite.
+     * @return the dimensions of the sprite.
+     */
+    public Dimension getDimension() {
+        return mySize;
+    }
+
+    public abstract String getType();
 
     /**
      * This method draws the image at the sprite's
-     * current position.
+     * current position. If a sprite needs to draw anything
+     * else (e.g. its bullets) then it can implement the
+     * continuePaint method, if not, just leave it blank.
      * @param g used for drawing the image
      */
     public void paint(Graphics pen) {
-        Point topLeft = new Point();
-        topLeft.x = myPosition.x - mySize.width / 2;
-        topLeft.y = myPosition.y - mySize.height / 2;
-        
-        pen.drawImage(myImage, topLeft.x, topLeft.y, mySize.width, mySize.height, null);
+        pen.drawImage(myImage, getLeft(), getTop(), mySize.width, mySize.height, null);
+        continuePaint(pen);
     }
+
+    public abstract void continuePaint(Graphics pen);
 
     /**
      * This method will update the position for every
@@ -225,19 +248,35 @@ public abstract class Sprite {
      * This allows for easy implementation of new results specific
      * to each sprite when calling the update method.
      */
-    public void update() {
+    public void update(Canvas c) {
         myPosition.x += myVelocity.x;
         myPosition.y += myVelocity.y;
-        continueUpdate();
+        continueUpdate(c);
     }
 
-    public abstract void continueUpdate();
+    protected abstract void continueUpdate(Canvas c);
 
     /**
      * Called when this sprite collides with another
-     * sprite.
+     * sprite. Which one is called depends on the type
+     * of sprite it is colliding with.
      */
-    public void collide() {
+    public void collide(Sprite s) {
+        String type = s.getType();
+        if(type.equals("bullet"))
+            collide((Bullet) s);
+        if(type.equals("enemy"))
+            collide((Enemy) s);
+        if(type.equals("player"))
+            collide((Player) s);
+            
+    }
+    
+    public abstract void collide(Bullet b);
+    public abstract void collide(Player p);
+    public abstract void collide(Enemy e);
+
+    public void die() {
         
     }
 }

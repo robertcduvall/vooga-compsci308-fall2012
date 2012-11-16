@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
+import vooga.shooter.gameplay.Game;
+
 
 /**
  * 
@@ -18,6 +22,7 @@ public class Canvas extends JApplet {
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 30;
     private Timer myTimer;
+    private Game myGame;
     
     /**
      * Initializes the applet --- called by the browser.
@@ -49,8 +54,8 @@ public class Canvas extends JApplet {
      * Sets up input listeners/controllers.
      */
     private void setInputListeners() {
-    	addMouseMotionListener(new MouseController());
-    	addKeyListener(new KeyboardController());
+    	addMouseMotionListener(new MouseController(this));
+    	addKeyListener(new KeyboardController(this));
     }
     
     /**
@@ -66,10 +71,10 @@ public class Canvas extends JApplet {
                 @Override
                 public void actionPerformed (ActionEvent e)
                 {
-                    // myGame doesn't exist! please fix
-                    // myGame.update();
+//                     myGame doesn't exist! please fix
+//                     myGame.paint();
                     
-                    // indirectly causes paint to be called
+//                     indirectly causes paint to be called
                     repaint();
                 }
             });
@@ -91,7 +96,7 @@ public class Canvas extends JApplet {
      *        SpecialGraphics
      */
     public void paint(Graphics g) {
-
+    	//myGame.paint();
     }
 
     /**
@@ -100,5 +105,9 @@ public class Canvas extends JApplet {
      */
     public void update() {
 
+    }
+    
+    public void setGame(Game g) {
+    	myGame = g;
     }
 }

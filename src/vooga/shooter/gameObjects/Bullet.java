@@ -1,8 +1,10 @@
 package vooga.shooter.gameObjects;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import vooga.shooter.graphics.Canvas;
 
 /**
  * Bullet class will have all the info needed to
@@ -37,8 +39,7 @@ public class Bullet extends Sprite{
      * (e.g. maybe some particle effects, or other graphical
      * stuff, or something else cool).
      */
-    @Override
-    public void continueUpdate () {
+    public void continueUpdate(Canvas c) {
         
     }
 
@@ -67,4 +68,48 @@ public class Bullet extends Sprite{
     public Sprite getOwner() {
         return myOwner;
     }
+
+    /**
+     * Describes what happens when the bullet
+     * collides with a bullet.
+     * @param b the bullet that this bullet is
+     * colliding with
+     */
+    public void collide (Bullet b) {
+        
+    }
+
+    /**
+     * Describes what happens when the bullet
+     * collides with a player (will only
+     * happen in multiplayer).
+     * @param p the player that this bullet
+     * is colliding with
+     */
+    public void collide (Player p) {
+        
+    }
+
+    /**
+     * Describes what happens when this bullet
+     * collides with an enemy.
+     * @param e the enemy that this bullet is
+     * colliding with
+     */
+    public void collide (Enemy e) {
+        
+    }
+
+    /**
+     * Returns the type of this sprite.
+     * @return "bullet"
+     */
+    public String getType() {
+        return "bullet";
+    }
+
+    /**
+     * Bullet has nothing else to paint.
+     */
+    public void continuePaint (Graphics pen) {}
 }

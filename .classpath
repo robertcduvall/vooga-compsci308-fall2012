@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="src/lib/bluecove-2.1.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/bluecove-gpl-2.1.0.jar"/>
 	<classpathentry kind="lib" path="src/lib/wiiusej.jar"/>
+	<classpathentry kind="lib" path="src/lib/Jama-1.0.2.jar"/>
+	<classpathentry kind="lib" path="src/lib/RelativeLayout-v1.0-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
