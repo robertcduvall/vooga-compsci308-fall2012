@@ -1,5 +1,6 @@
 package vooga.turnbased.gameobject;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
@@ -14,10 +15,7 @@ public abstract class BattleObject extends GameObject {
 
     private int myDefense;
     private int myAttack;
-    private int myHealth;
-    
-    private Image myImage;
-    
+    private int myHealth;    
 
     /**
      * Create the BattleObject for this sprite which will be used in
@@ -27,8 +25,8 @@ public abstract class BattleObject extends GameObject {
      * @param attack The amount of damage the sprite/monster does with each attack.
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      */
-    public BattleObject(int id, GameManager.GameEvent event, int defense, int attack, int health) {
-        super(id, event);
+    public BattleObject(int id, GameManager.GameEvent event, int defense, int attack, int health, Image image) {
+        super(id, event, image);
         setMyDefense(defense);
         setMyAttack(attack);
         setMyHealth(health);
@@ -56,25 +54,6 @@ public abstract class BattleObject extends GameObject {
     public boolean isAlive() {
         return myHealth > 0;
     }
-    
-    public Image getImage() {
-        return myImage;
-    }
-    
-    //need these for painting
-    public void setImage(Image image) {
-        myImage = image;
-    }
-    
-    public void setImage(String imageLocation) {
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(imageLocation));
-        myImage = ii.getImage();
-    }
-
-
-
-
-
 
     /**
      * Set defense to the input parameter.
@@ -120,7 +99,7 @@ public abstract class BattleObject extends GameObject {
      * Returns the current health stat of the BattleObjet/monster.
      * @return The value of the health that is returned.
      */
-    public int getMyHealth () {
+    public int getHealth () {
         return myHealth;
     }
 
@@ -131,5 +110,4 @@ public abstract class BattleObject extends GameObject {
     public void changeHealth(int healthDiff) {
         myHealth += healthDiff;
     }
-
 }

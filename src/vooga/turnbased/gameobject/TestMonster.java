@@ -1,6 +1,7 @@
 package vooga.turnbased.gameobject;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 import vooga.turnbased.gamecore.GameManager;
@@ -13,14 +14,14 @@ import vooga.turnbased.gamecore.GameManager;
  */
 public class TestMonster extends BattleObject {
 
-    public TestMonster (int id, GameManager.GameEvent event, int defense, int attack, int health) {
-        super(id, event, defense, attack, health);
+    public TestMonster (int id, GameManager.GameEvent event, int defense, int attack, int health, Image image) {
+        super(id, event, defense, attack, health, image);
     }
 
     @Override
     public void takeDamage (int damageDone) {
         int healthLost =  (damageDone)-  getMyDefense();
-        setMyHealth(getMyHealth() - healthLost);
+        setMyHealth(getHealth() - healthLost);
     }
 
     @Override
@@ -36,12 +37,6 @@ public class TestMonster extends BattleObject {
 
     @Override
     public void handleKeyPressed (KeyEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void paint (Graphics g, int x, int y, int width, int height) {
         // TODO Auto-generated method stub
 
     }

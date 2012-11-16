@@ -82,7 +82,7 @@ public class MovingMapObject extends MapObject{
     @Override
     public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
     	calcScreenDisplacement(width, height);
-    	g.drawImage(getMapImage(), xOffset - myDirection.x * width + myXOriginInTile,
+    	g.drawImage(getImage(), xOffset - myDirection.x * width + myXOriginInTile,
     			yOffset - myDirection.y * height + myYOriginInTile, width, height, null);
     }
     

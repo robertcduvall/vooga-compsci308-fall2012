@@ -1,8 +1,10 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ import vooga.turnbased.gui.GameWindow;
 public class BattleMode extends GameMode {
     private List<Team> myTeams;
     private BattleState myState;
+    private BattleObject myPlayerObject;
+    private BattleObject myEnemy;
     private int myTurnCount;
     private int myTeamStartRandomizer;
 
@@ -37,6 +41,19 @@ public class BattleMode extends GameMode {
         super(gm, modeObjectType);
     }
 
+    @Override
+    public void pause () {
+        myTeams.clear();
+    }
+
+    @Override
+    public void resume () {
+        makeTeams();
+        initialize();
+        System.out.println("BattleStarting!");
+        //getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new ArrayList<Integer>());
+    }
+    
     private void makeTeams () {
         // BAD BAD TEST CODE
         setObjects();
@@ -51,30 +68,29 @@ public class BattleMode extends GameMode {
     }
 
     @Override
-    public void pause () {
-        myTeams.clear();
-    }
-
-    @Override
-    public void resume () {
-        makeTeams();
-        initialize();
-        System.out.println("BattleStarting!");
-        getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new ArrayList<Integer>());
-    }
-
-    @Override
     public void update () {
-        // TODO Auto-generated method stub
-
+        //while(myState != BattleState.WAITING_FOR_MOVE){
+            if (isBattleOver()) {
+                endBattle();
+            }
+            // TODO: figure out how this should work. Right now we just give it the
+            // previous team
+            // TODO: Take into account animating, requesting user input for player
+            // team, etc.
+            //nextTeam().makeMove(myTeams.get(myTurnCount - 1 % myTeams.size()));
+        //}
     }
 
 
     @Override
     public void paint (Graphics g) {
-        Image background = GameWindow.importImage("EditorBackgroundImage");
-        g.drawImage(background, 0, 0, background.getWidth(null), background
-               .getHeight(null), null);
+        int i = -300; //fix painting this stuff...
+        for(Team t : myTeams){
+            i += 300;
+            for(BattleObject b : t.getBattleObjects()){
+                b.paint(g, 0, 0 + i, 800, 300);
+            }
+        }
     }
 
     /**
@@ -88,26 +104,13 @@ public class BattleMode extends GameMode {
         // "team 1"
         Random generator = new Random();
         myTeamStartRandomizer = generator.nextInt(myTeams.size());
-    }
-
-    /**
-     * The loop that cycles for each turn.
-     */
-    public void updateLoop () {
-        if (isBattleOver()) {
-            endBattle();
-        }
-        // TODO: figure out how this should work. Right now we just give it the
-        // previous team
-        // TODO: Take into account animating, requesting user input for player
-        // team, etc.
-        nextTeam().makeMove(myTeams.get(myTurnCount - 1 % myTeams.size()));
+        myPlayerObject = nextTeam().nextPlayer();
+        myEnemy = nextTeam().nextPlayer();
     }
 
     private void endBattle () {
-        // TODO: let myGameManager know the battle has ended
-        // need to save game state (sprite health, status, etc)
-        // then transition back to mapmode
+        System.out.println("End battle!");
+        getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new ArrayList());
     }
 
     private boolean isBattleOver () {
@@ -115,6 +118,8 @@ public class BattleMode extends GameMode {
         for (Team t : myTeams) {
             if (!t.stillAlive()) {
                 allDead = true;
+                // delete dead sprites, this won't work yet because of map team :(
+                //getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
             }
         }
         return allDead;
@@ -127,7 +132,14 @@ public class BattleMode extends GameMode {
 
     @Override
     public void handleKeyReleased (KeyEvent e) {
-        // TODO Auto-generated method stub
+        int keyCode = e.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.VK_A:
+                myPlayerObject.attackEnemy(myEnemy);
+                System.out.println("My health: " + myPlayerObject.getHealth());
+                System.out.println("Enemy health: " + myEnemy.getHealth());
+                break;
+        }
     }
 
     /**
@@ -162,6 +174,14 @@ public class BattleMode extends GameMode {
             // currentEnemyBattleObject.attackEnemy(currentPlayerBattleObject);
         }
 
+        public List<BattleObject> getBattleObjects() {
+            return myBattleObjects;
+        }
+        
+        public BattleObject nextPlayer() {
+            myBattleObjects.add(myBattleObjects.remove(0));
+            return myBattleObjects.get(0);
+        }
         // TODO: Add more methods here to aid team behavior
     }
 

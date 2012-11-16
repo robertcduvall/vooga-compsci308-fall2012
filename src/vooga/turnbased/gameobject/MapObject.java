@@ -11,13 +11,11 @@ public abstract class MapObject extends GameObject {
     private Point myLocation;
     private boolean myIsVisible;
     private boolean myIsMoving;
-    private Image myImage;
     
     public MapObject (int id, GameManager.GameEvent event, Point location, Image mapImage) {
-        super(id, event);
+        super(id, event, mapImage);
         setLocation(location);
         setVisible(true);
-        setMapImage(mapImage);
     }
 
     public void setLocation (Point location) {
@@ -50,19 +48,6 @@ public abstract class MapObject extends GameObject {
         return myIsMoving;
     }
     
-    public void setMapImage(Image img) {
-        myImage = img;
-    }
-    
-    public Image getMapImage() {
-        return myImage;
-    }
-    
     public void interact(MapObject target) {
-    }
-    
-    @Override
-    public void paint(Graphics g, int xOffset, int yOffset, int width, int height) {
-    	g.drawImage(myImage, xOffset, yOffset, width, height, null);
     }
 }
