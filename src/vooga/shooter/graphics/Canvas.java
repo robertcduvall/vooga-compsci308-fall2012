@@ -16,7 +16,7 @@ import util.input.core.MouseController;
  *         Applet initialization code by Robert Duvall
  */
 public class Canvas extends JApplet {
-    private static final Dimension defaultSize = new Dimension(800, 800);
+    private static final Dimension DEFAULT_SIZE = new Dimension(800, 800);
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 30;
     private Timer myTimer;
@@ -36,7 +36,7 @@ public class Canvas extends JApplet {
      * Initializes the applet --- called by the browser.
      */
     public void init () {
-        init(defaultSize);
+        init(DEFAULT_SIZE);
     }
 
     /**
@@ -64,7 +64,6 @@ public class Canvas extends JApplet {
     private void setInputListeners () {
         addMouseMotionListener(new MouseController(this));
         addKeyListener(new KeyboardController(this));
-        
         myScreen.setKeyboardListener(getKeyListeners()[0]);
         myScreen.setMouseListener(getMouseMotionListeners()[0]);
     }
