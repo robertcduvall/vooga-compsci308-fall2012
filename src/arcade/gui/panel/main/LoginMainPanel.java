@@ -22,6 +22,7 @@ import arcade.gui.panel.ArcadePanel;
 public class LoginMainPanel extends AMainPanel implements ActionListener {
     
     private static String SUBMIT = "Submit";
+    private static String BYPASS = "Bypass";
 
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -46,6 +47,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel = addUserNameField(myPanel);
         myPanel = addPasswordField(myPanel);
         myPanel = addWrongPasswordLabel(myPanel);
+        myPanel = addBypassButton(myPanel);
         
 
         System.out.println("LoginMainPanel");
@@ -76,7 +78,20 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         
         return myPanel;
     }
-  
+    
+    private ArcadePanel addBypassButton (ArcadePanel myPanel) {
+        JButton loginButton = new JButton(BYPASS);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 4;
+        c.gridy = 3;
+        
+        loginButton.setActionCommand(BYPASS);
+        loginButton.addActionListener(this);
+        
+        myPanel.add(loginButton, c);
+        
+        return myPanel;
+    }
     private ArcadePanel addUserNameField (ArcadePanel myPanel) {
         usernameField = new JTextField(17);
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -117,6 +132,9 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         if (SUBMIT.equals(cmd)){
             login();
         }
+        else if (BYPASS.equals(cmd)){
+            bypass();
+        }
     }
 
     private void login () {
@@ -129,5 +147,8 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         else {
             wrongPassword.setVisible(true);
         }
+    }
+    private void bypass() {
+        this.getArcade().replacePanel("MainHome");
     }
 }
