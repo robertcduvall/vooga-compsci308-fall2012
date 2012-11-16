@@ -1,9 +1,10 @@
-package vooga.shooter.gameObjects;
+package vooga.shooter.gameObjects.spriteUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import vooga.shooter.gameObjects.Sprite;
 
 /**
  * This class provides a mapping of strings to
@@ -17,15 +18,15 @@ import java.util.List;
  * @author Jesse Starr
  *
  */
-public class MethodMapper {
-    Map<String, List<MethodWrapper>> myMap;
+public class SpriteMethodMap {
+    Map<String, List<SpriteActionInterface>> myMap;
 
     /**
      * Constructs a new method mapping (one for each sprite).
      * Begins with an empty map. 
      */
-    public MethodMapper(){
-        myMap = new HashMap<String,List<MethodWrapper>>();
+    public SpriteMethodMap(){
+        myMap = new HashMap<String,List<SpriteActionInterface>>();
     }
 
     /**
@@ -35,9 +36,9 @@ public class MethodMapper {
      * @param m the list of actions to which the string is
      * mapped
      */
-    public void addPair(String key, MethodWrapper...m){
-        List<MethodWrapper> methodList = new ArrayList<MethodWrapper>();
-        for(MethodWrapper eachm : m){
+    public void addPair(String key, SpriteActionInterface...m){
+        List<SpriteActionInterface> methodList = new ArrayList<SpriteActionInterface>();
+        for(SpriteActionInterface eachm : m){
             methodList.add(eachm);
         }
         myMap.put(key, methodList);
@@ -54,7 +55,7 @@ public class MethodMapper {
     public void doEvent(String key, int damage, Sprite s)
     {
         if(myMap.containsKey(key)){
-            for(MethodWrapper m : myMap.get(key)){
+            for(SpriteActionInterface m : myMap.get(key)){
                 m.doAction(damage, s);
             }
         }

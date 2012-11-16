@@ -70,37 +70,6 @@ public class Bullet extends Sprite{
     }
 
     /**
-     * Describes what happens when the bullet
-     * collides with a bullet.
-     * @param b the bullet that this bullet is
-     * colliding with
-     */
-    public void collide (Bullet b) {
-        
-    }
-
-    /**
-     * Describes what happens when the bullet
-     * collides with a player (will only
-     * happen in multiplayer).
-     * @param p the player that this bullet
-     * is colliding with
-     */
-    public void collide (Player p) {
-        
-    }
-
-    /**
-     * Describes what happens when this bullet
-     * collides with an enemy.
-     * @param e the enemy that this bullet is
-     * colliding with
-     */
-    public void collide (Enemy e) {
-        
-    }
-
-    /**
      * Returns the type of this sprite.
      * @return "bullet"
      */
@@ -116,5 +85,12 @@ public class Bullet extends Sprite{
     @Override
     void setMethods () {
         
+    }
+
+    /**
+     * Removes this bullet from the game.
+     */
+    public void die() {
+        myOwner.getMyBulletsFired().remove(this);
     }
 }

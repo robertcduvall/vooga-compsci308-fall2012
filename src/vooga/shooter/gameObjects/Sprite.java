@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
 
 /**
  * This class encompasses the basic layout for any sprites that appear in the
@@ -14,7 +16,7 @@ import java.util.List;
  * limit).
  * 
  */
-public abstract class Sprite implements MethodWrapper {
+public abstract class Sprite implements SpriteActionInterface {
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
@@ -22,7 +24,7 @@ public abstract class Sprite implements MethodWrapper {
     private Image myImage;
     private List<Bullet> myShotsFired;
     private int myHealth;
-    private MethodMapper myMapper;
+    private SpriteMethodMap myMapper;
 
     /**
      * Construct a sprite initializing only position, size, and image.
@@ -40,6 +42,8 @@ public abstract class Sprite implements MethodWrapper {
         myImage = image;
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     /**
@@ -61,6 +65,8 @@ public abstract class Sprite implements MethodWrapper {
         myVelocity = velocity;
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     /**
@@ -79,6 +85,8 @@ public abstract class Sprite implements MethodWrapper {
         myImage = image;
         myHealth = health;
         myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     /**
@@ -99,6 +107,8 @@ public abstract class Sprite implements MethodWrapper {
         myVelocity = velocity;
         myHealth = health;
         myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        setMethods();
     }
 
     abstract void setMethods();
@@ -149,6 +159,14 @@ public abstract class Sprite implements MethodWrapper {
         setVelocity(v);
     }
 
+    /**
+     * Returns the bullets fired by this sprite.
+     * @return a list of the bullets that this sprite
+     * has fired.
+     */
+    public List<Bullet> getMyBulletsFired() {
+        return myShotsFired;
+    }
     /**
      * Returns the image representing this sprite.
      * @return myImage
@@ -274,11 +292,11 @@ public abstract class Sprite implements MethodWrapper {
         
     }
 
-    protected void setMapper (MethodMapper mapper) {
+    protected void setMapper (SpriteMethodMap mapper) {
         this.myMapper = mapper;
     }
 
-    protected MethodMapper getMapper () {
+    protected SpriteMethodMap getMapper () {
         return myMapper;
     }
 
@@ -299,8 +317,10 @@ public abstract class Sprite implements MethodWrapper {
     }
 
     /**
-     * Do nothing.
+     * Sets the sprite's velocity to 0.
      */
     @Override
-    public void doAction (Object ... o) {}
+    public void doAction (Object ... o) {
+        setVelocity(0, 0);
+    }
 }
