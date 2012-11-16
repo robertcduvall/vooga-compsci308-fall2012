@@ -8,36 +8,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import util.input.exceptions.InvalidControllerActionException;
-import util.input.input_utils.BoolTuple;
-import util.input.input_utils.UKeyCode;
-
+import util.input.inputhelpers.BoolTuple;
+import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class represents an abstract controller to provide input.
- * 
+ *
  * @author Amay, Lance
- * 
+ *
  * @param <T>
  */
 public abstract class Controller<T> {
 
-    List<T> subscribedElements;
-    Map<String, String> objectMethodMap;
-    Map<Integer, BoolTuple<Object, Method>> menuPlate;
+    private List<T> mySubscribedElements;
+    private Map<Integer, BoolTuple<Object, Method>> myMenuPlate;
 
     /**
      * Create a new Controller.
      */
     Controller() {
-        objectMethodMap = new HashMap<String, String>();
-        subscribedElements = new ArrayList<T>();
-        menuPlate = new HashMap<Integer, BoolTuple<Object, Method>>();
+        mySubscribedElements = new ArrayList<T>();
+        myMenuPlate = new HashMap<Integer, BoolTuple<Object, Method>>();
     }
 
     /**
      * Create a new Controller with an elements that
      * subscribes to its raw data.
-     * 
+     *
      * @param element - The subscribing element
      */
     Controller(T element) {
@@ -46,17 +43,17 @@ public abstract class Controller<T> {
     }
 
     /**
-     * Subscribes a class to this controller's events
-     * 
+     * Subscribes a class to this controller's events.
+     *
      * @param element - The subscribing class
      */
     public void subscribe(T element) {
-        subscribedElements.add(element);
+        mySubscribedElements.add(element);
     }
 
     /**
-     * Object invokes a method every time action and type occur
-     * 
+     * Object invokes a method every time action and type occur.
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -69,13 +66,13 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(o, method);
         // actionValidate(action);//make sure to check for codify decodify
         // typeValidate(type);
-        menuPlate.put(UKeyCode.codify(type, action),
+        myMenuPlate.put(UKeyCode.codify(type, action),
                 new BoolTuple<Object, Method>(o, m));
     }
 
     /**
-     * Class invokes a static method every time action and type occur
-     * 
+     * Class invokes a static method every time action and type occur.
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -84,6 +81,7 @@ public abstract class Controller<T> {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
+    @SuppressWarnings("rawtypes")
     public void setControl(int action, int type, Class c, String method)
             throws NoSuchMethodException, IllegalAccessException,
             InstantiationException {
@@ -92,7 +90,7 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(c, method);
         // actionValidate(action);//make sure to check for codify decodify
         // typeValidate(type);
-        menuPlate.put(UKeyCode.codify(type, action),
+        myMenuPlate.put(UKeyCode.codify(type, action),
                 new BoolTuple<Object, Method>(c, m));
     }
 
@@ -103,8 +101,8 @@ public abstract class Controller<T> {
     // InvalidControllerActionException;
 
     /**
-     * Set the desired action on or off
-     * 
+     * Set the desired action on or off.
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param isActive - Whether the action should be active or not
@@ -114,9 +112,10 @@ public abstract class Controller<T> {
             throws InvalidControllerActionException {
         // actionValidate(action);
         if (isActive) {
-            menuPlate.get(UKeyCode.codify(type, action)).activate();
-        } else {
-            menuPlate.get(UKeyCode.codify(type, action)).deactivate();
+            myMenuPlate.get(UKeyCode.codify(type, action)).activate();
+        }
+        else {
+            myMenuPlate.get(UKeyCode.codify(type, action)).deactivate();
         }
     }
 
@@ -135,8 +134,8 @@ public abstract class Controller<T> {
 
     // PRIVATE METHODS
     /**
-     * broadcasts the method to all subscribed elements
-     * 
+     * broadcasts the method to all subscribed elements.
+     *
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
@@ -148,9 +147,10 @@ public abstract class Controller<T> {
     private void broadcastToSubscribers(String methodName, Object inputEvent)
             throws IllegalAccessException, IllegalArgumentException,
             InvocationTargetException, NoSuchMethodException, SecurityException {
-        Method method = this.getClass().getMethod(methodName,
-                inputEvent.getClass());
-        for (T subscribedElement : subscribedElements) {
+        for (T subscribedElement : mySubscribedElements) {
+            Method method = subscribedElement.getClass().getMethod(
+                    methodName, inputEvent.getClass());
+            System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
     }
@@ -163,30 +163,34 @@ public abstract class Controller<T> {
      */
     private void invokeMethod(int actionID) throws IllegalAccessException,
             IllegalArgumentException, InvocationTargetException {
-        BoolTuple<Object, Method> retrieveTuple = menuPlate.get(actionID);
+        BoolTuple<Object, Method> retrieveTuple = myMenuPlate.get(actionID);
         if (retrieveTuple != null && retrieveTuple.isActive()) {
             retrieveTuple.getLast().invoke(retrieveTuple.getFirst(),
                     new Object[0]);
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Object o, String method)
             throws NoSuchMethodException {
         Class oc = o.getClass();
         Method[] allMethods = oc.getDeclaredMethods();
         for (Method m : allMethods) {
-            if (m.getName().equals(method)) // ask TA return boolean or
-                                            // exception handle
+            if (m.getName().equals(method)) {
                 return m;
+            }
         }
         throw new NoSuchMethodException();
     }
 
+    @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Class c, String method)
             throws NoSuchMethodException {
         for (Method m : c.getMethods()) {
             if (m.getName().equals(method)
-                    && Modifier.isStatic(m.getModifiers())) return m;
+                    && Modifier.isStatic(m.getModifiers())) {
+                return m;
+            }
         }
         throw new NoSuchMethodException();
     }

@@ -1,30 +1,7 @@
 package games.platformerdemo;
 
-<<<<<<< HEAD
-import java.awt.Graphics;
-import java.awt.Image;
-import util.camera.Camera;
-import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.UpdateStrategy;
 
-
-public class Player extends GameObject {
-
-    public Player(String configString) {
-        super(configString);
-    }
-
-    @Override
-    public void paint(Graphics pen, Camera cam) {
-
-    }
-
-    @Override
-    public Image getCurrentImage() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-=======
 /**
  * @author Yaqi Zhang
  *
@@ -38,5 +15,17 @@ public class Player extends MovingObject {
         addStrategy(new PlayerMoveStrategy(this));
         addStrategy(new GravityStrategy(this));
     }
->>>>>>> f5741ba1b396d7e73c1993f7f217c5c9362159a8
+    
+//    public void moveLeft() {
+//        System.out.println("detected left input");
+//    }
+    
+    public PlayerMoveStrategy getMovingStragety(){
+        for (UpdateStrategy s: getStrategyList()){
+            if(s.getClass() == PlayerMoveStrategy.class){
+                return (PlayerMoveStrategy) s;
+            }
+        }
+        return null;
+    }
 }

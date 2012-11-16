@@ -1,3 +1,12 @@
-<?xml version="1.0"?>
-
-
+<gamelist>
+	<game id="1">
+		<name>Platform</name>
+		<picture></picture>
+		<rating>3</rating>
+</game>
+	<game id="2">
+		<name>Shooter</name>
+		<picture></picture>
+		<rating>4</rating>
+	</game>
+</gamelist>

@@ -1,14 +1,27 @@
 package util.input.core;
 
-import util.input.input_utils.UKeyCode;
+import util.input.inputhelpers.UKeyCode;
+import wiiusej.Wiimote;
+import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
+import wiiusej.wiiusejevents.physicalevents.IREvent;
+import wiiusej.wiiusejevents.physicalevents.MotionSensingEvent;
+import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
+import wiiusej.wiiusejevents.utils.WiimoteListener;
+import wiiusej.wiiusejevents.wiiuseapievents.ClassicControllerInsertedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.ClassicControllerRemovedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.DisconnectionEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.GuitarHeroInsertedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.GuitarHeroRemovedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: lance
- * Date: 11/3/12
- * Time: 8:02 PM
- * To change this template use File | Settings | File Templates.
+ * This class allows users to enter input through the Wiimote.
+ *
+ * @author Amay
+ *
  */
 public class WiiController extends Controller<WiimoteListener> implements
         WiimoteListener {
@@ -28,6 +41,11 @@ public class WiiController extends Controller<WiimoteListener> implements
     public static final int WIIMOTE_BUTTON_LEFT = 256;
     public static final int WIIMOTE_BUTTON_RIGHT = 512;
 
+    /**
+     * Create a new Wii controller.
+     *
+     * @param wii - The Wiimote object to which we add the event listeners
+     */
     public WiiController(Wiimote wii) {
         wii.addWiiMoteEventListeners(this);
     }
@@ -69,62 +87,59 @@ public class WiiController extends Controller<WiimoteListener> implements
     @Override
     public void onClassicControllerInsertedEvent(
             ClassicControllerInsertedEvent arg0) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onClassicControllerRemovedEvent(
             ClassicControllerRemovedEvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onDisconnectionEvent(DisconnectionEvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onExpansionEvent(ExpansionEvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onIrEvent(IREvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
     public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
-        // TODO Auto-generated method stub
+
 
     }
 
     @Override
-    public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) {
-        // TODO Auto-generated method stub
+    public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
 
     }
 
     @Override
     public void onStatusEvent(StatusEvent arg0) {
-        // TODO Auto-generated method stub
 
     }
 }

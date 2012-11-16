@@ -8,7 +8,7 @@ import vooga.platformer.gameobject.UpdateStrategy;
  *
  */
 public class GravityStrategy implements UpdateStrategy{
-    private static final double GRAVITY = 5;
+    private static final double GRAVITY = 0.05;
     private MovingObject myMoveObj;
     /**
      * @param moveObj
@@ -19,6 +19,6 @@ public class GravityStrategy implements UpdateStrategy{
     @Override
     public void applyAction () {
         Point2D velocity = myMoveObj.getVelocity();
-        myMoveObj.setVelocity(velocity.getX(), velocity.getY()-GRAVITY);
+        myMoveObj.setVelocity(velocity.getX(), velocity.getY()+GRAVITY);
     }
 }

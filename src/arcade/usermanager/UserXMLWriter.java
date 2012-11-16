@@ -1,7 +1,13 @@
 package arcade.usermanager;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import util.xml.XmlWriter;
+import java.io.File;
 import java.io.StringWriter;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -23,10 +29,19 @@ import arcade.utility.XMLWriter;
  * 
  */
 public class UserXMLWriter {
-
+    private   String myUserBasicFilePath ;
+    private  String myUserMessageFilePath ;
+    private   String myUserGameFilePath; 
+    private  ResourceBundle resource;
+    
+    public UserXMLWriter(){
+        resource = ResourceBundle.getBundle("resources.filePath");
+        myUserBasicFilePath=resource.getString("BasicFilePath");
+        myUserMessageFilePath=resource.getString("MessageFilePath");
+        myUserGameFilePath=resource.getString("GameFilePath");
+    }
     /**
-     * initiate a new xml for user (we should specify where to store these user
-     * xmls)
+     * initiate a new xml for user 
      * 
      * @param userName
      * @param password
@@ -34,72 +49,54 @@ public class UserXMLWriter {
      * @author difan
      */
 
-    public static void makeUserXML(String userName, String password,
-            String picture) {
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory
-                    .newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-            // root elements
-            Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("user");
-            doc.appendChild(rootElement);
+    public  void makeUserXML(String userName, String password, String picture) {
+          
+         makeBasicXml(userName,picture,picture);
+         makeMessageXml(userName);
+         makeGameXml(userName);
+}
 
-            XMLWriter.appendElement(doc, rootElement, "name", userName);
-            XMLWriter.appendElement(doc, rootElement, "password", password);
-            XMLWriter.appendElement(doc, rootElement, "picture", picture);
-            Element game = XMLWriter.appendElement(doc, rootElement,
-                    "game_history", "");
-            XMLWriter.appendElement(doc, game, "game", "");
-            Element message = XMLWriter.appendElement(doc, rootElement,
-                    "message_box", "");
-            XMLWriter.appendElementWithAttribute(doc, message, "message", "",
-                    "wula", "wula");
-
-            /*
-             * 
-             * // write the content into xml file
-             * TransformerFactory transformerFactory =
-             * TransformerFactory.newInstance();
-             * Transformer transformer = transformerFactory.newTransformer();
-             * DOMSource source = new DOMSource(doc);
-             * StreamResult result = new StreamResult(new
-             * File("C:\\Users\\difan\\workspace\\gediva-group8"));
-             * 
-             * // Output to console for testing
-             * // StreamResult result = new StreamResult(System.out);
-             * 
-             * transformer.transform(source, result);
-             * 
-             * System.out.println("File saved!");
-             * // System.out.println(serializeDoc(doc));
-             */
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        }
-
-        // catch (TransformerException tfe) {
-        // tfe.printStackTrace();
-        // }
-
+    private  void makeBasicXml(String userName, String password, String picture){
+        String basicInfoFilePath=myUserBasicFilePath+userName+".xml";
+        Document basicDoc=XmlWriter.makeNewDocument(basicInfoFilePath);
+        
+        Element rootElement = basicDoc.createElement("user");
+        basicDoc.appendChild(rootElement);
+        
+        XmlWriter.appendElement(basicDoc,rootElement,"name",userName);
+        XmlWriter.appendElement(basicDoc,rootElement,"password",password);
+        XmlWriter.appendElement(basicDoc,rootElement,"picture",picture);
+        XmlWriter.writeXML(basicDoc, basicInfoFilePath);
+        
+    }
+    
+    private  void makeMessageXml(String userName){
+        String messageFilePath=myUserMessageFilePath+userName+".xml";
+        Document doc=XmlWriter.makeNewDocument(messageFilePath);
+        
+        Element rootElement = doc.createElement("message");
+        doc.appendChild(rootElement);
+        
+       
+        XmlWriter.writeXML(doc, messageFilePath);
+        
+    }
+    
+    private  void makeGameXml(String userName){
+        String gameFilePath=myUserGameFilePath+userName+".xml";
+        Document doc=XmlWriter.makeNewDocument(gameFilePath);
+        
+        Element rootElement = doc.createElement("game");
+        doc.appendChild(rootElement);
+        
+       
+        XmlWriter.writeXML(doc, gameFilePath);
+        
     }
 
-    public static String serializeDoc(Node doc) {
-        StringWriter outText = new StringWriter();
-        StreamResult sr = new StreamResult(outText);
-        Properties oprops = new Properties();
-        oprops.put(OutputKeys.METHOD, "html");
-        oprops.put("indent-amount", "4");
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer t = null;
-        try {
-            t = tf.newTransformer();
-            t.setOutputProperties(oprops);
-            t.transform(new DOMSource(doc), sr);
-        } catch (Exception e) {
-        }
-        return outText.toString();
-    }
+    
+    
+      
+ 
 }

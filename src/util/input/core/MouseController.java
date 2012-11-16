@@ -2,75 +2,111 @@ package util.input.core;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import util.input.input_utils.UKeyCode;
+import javax.swing.event.MouseInputListener;
+import util.input.inputhelpers.UKeyCode;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: lance
- * Date: 11/4/12
- * Time: 9:48 AM
- * To change this template use File | Settings | File Templates.
+ * This class allows users to enter input through the mouse.
+ *
+ * @author Amay
  */
 
-public class MouseController extends Controller<MouseListener> implements
-        MouseListener {
+public class MouseController extends Controller<MouseInputListener> implements
+        MouseInputListener {
 
-    public MouseController(Component comp) {
+    public final static int PRESSED = MouseEvent.MOUSE_PRESSED;
+    public final static int RELEASED = MouseEvent.MOUSE_RELEASED;
+    public final static int CLICKED = MouseEvent.MOUSE_CLICKED;
+    public final static int NO_BUTTON = 0;
+
+    /**
+     * Create a new mouse controller.
+     *
+     * @param comp - The component to which we add the
+     *        MouseListener and MouseMotionListener
+     */
+    public MouseController (Component comp) {
         super();
         comp.addMouseListener(this);
+        comp.addMouseMotionListener(this);
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked (MouseEvent e) {
         try {
             performReflections(e, "mouseClicked",
                     UKeyCode.codify(MouseEvent.MOUSE_CLICKED, e.getButton()));
-        } catch (Exception e1) {
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed (MouseEvent e) {
         try {
             performReflections(e, "mousePressed",
                     UKeyCode.codify(MouseEvent.MOUSE_PRESSED, e.getButton()));
-        } catch (Exception e1) {
+            System.out.println(e.getButton());
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased (MouseEvent e) {
         try {
             performReflections(e, "mouseReleased",
                     UKeyCode.codify(MouseEvent.MOUSE_RELEASED, e.getButton()));
-        } catch (Exception e1) {
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
 
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered (MouseEvent e) {
         try {
-            // Clarify on the 0
             performReflections(e, "mouseEntered",
-                    UKeyCode.codify(MouseEvent.MOUSE_ENTERED, 0));
-        } catch (Exception e1) {
+                    UKeyCode.codify(MouseEvent.MOUSE_ENTERED, NO_BUTTON));
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited (MouseEvent e) {
         try {
-            // Clarify on the 0
             performReflections(e, "mouseExited",
-                    UKeyCode.codify(MouseEvent.MOUSE_EXITED, 0));
-        } catch (Exception e1) {
+                    UKeyCode.codify(MouseEvent.MOUSE_EXITED, NO_BUTTON));
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mouseDragged (MouseEvent e) {
+        try {
+            performReflections(e, "mouseDragged",
+                    UKeyCode.codify(MouseEvent.MOUSE_DRAGGED, e.getButton()));
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @Override
+    public void mouseMoved (MouseEvent e) {
+        try {
+            performReflections(e, "mouseMoved",
+                    UKeyCode.codify(MouseEvent.MOUSE_MOVED, NO_BUTTON));
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
     }

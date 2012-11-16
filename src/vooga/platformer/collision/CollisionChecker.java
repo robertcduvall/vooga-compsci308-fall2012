@@ -26,7 +26,7 @@ public abstract class CollisionChecker {
      * @param level
      * @return
      */
-    public abstract Iterable<CollisionEvent> checkCollisions(Level level);
+    public abstract void checkCollisions(Level level);
 
     /**
      * This method takes two colliding objects and return the corresponding
@@ -41,7 +41,7 @@ public abstract class CollisionChecker {
         String className;
 
         if (a.getClass().getCanonicalName()
-                .compareTo(b.getClass().getCanonicalName()) == 1) {
+                .compareTo(b.getClass().getCanonicalName()) < 0) {
             className = collisionEventsMap.get(a.getClass().getCanonicalName())
                     .get(b.getClass().getCanonicalName());
         } else {
@@ -79,4 +79,5 @@ public abstract class CollisionChecker {
 
         return c;
     }
+    
 }

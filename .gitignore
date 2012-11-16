@@ -1,3 +1,10 @@
 bin/
+
 *.class
+
 *.checkstyle
+.checkstyle
+
+.project
+.settings
+.DS_Store

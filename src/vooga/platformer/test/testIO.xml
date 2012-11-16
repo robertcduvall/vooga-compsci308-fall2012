@@ -1,0 +1,23 @@
+<level type="someLevelType">
+<id>Level Name</id>
+<width>20</width>
+<height>20</height>
+<backgroundImage>src/vooga/platformer/test/testImage.jpg</backgroundImage>
+<collisionChecker>someCollisionChecker</collisionChecker>
+<camera>someCamera</camera>
+<gameObject type="enemy">
+<x>1</x>
+<y>1</y>
+<width>1</width>
+<height>1</height>
+<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<strategies>
+<strategy type="movement">
+<distance>10</distance>
+</strategy>
+</strategies>
+<attr>
+<hp>10</hp>
+</attr>
+</gameObject>
+</level>

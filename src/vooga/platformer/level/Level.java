@@ -1,17 +1,22 @@
 package vooga.platformer.level;
 
+import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import util.camera.Camera;
+import util.input.core.Controller;
+import util.input.core.KeyboardController;
+import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
 
 
 /**
  * 
- * @author Niel Lebeck
+ * @author Niel Lebeck, modified by Yaqi
  * 
  */
 
@@ -20,6 +25,8 @@ public abstract class Level {
     private Camera cam;
     private Dimension myDimension;
     private String myNextLevelName;
+    private CollisionChecker myCollisionChecker;
+    private Player myPlayer;
 
     /**
      * Paint the level, including all its GameObjects.
@@ -33,8 +40,11 @@ public abstract class Level {
         }
     }
 
-    public Level(Dimension dim) {
+    public Level(Dimension dim, CollisionChecker inChecker, Camera inCam) {
         objectList = new ArrayList<GameObject>();
+        myDimension = dim;
+        myCollisionChecker = inChecker;
+        cam = inCam;
     }
 
     /**
@@ -93,9 +103,14 @@ public abstract class Level {
                 removalList.add(go);
             }
         }
+        
         for (GameObject removeObj : removalList) {
             objectList.remove(removeObj);
         }
+        
+        //modified here
+        myCollisionChecker.checkCollisions(this);
+        
     }
 
     /**
@@ -129,5 +144,28 @@ public abstract class Level {
      */
     public String getNextLevelName() {
         return myNextLevelName;
+    }
+
+    /**
+     * Set up the given InputController to manage input for this level. For instance,
+     * associate keyboard presses with actions directing the player object to move. The
+     * Level subclass should have references to objects controlled by input, so that it
+     * can set up the InputController correctly.
+     * @param myInputController
+     */
+    public abstract void setInputController (KeyboardController myInputController);
+    
+    /**
+     * @param pl
+     */
+    public void setPlayer(Player pl){
+        myPlayer = pl;
+    }
+    
+    /**
+     * @return Player of the game
+     */
+    public Player getPlayer(){
+        return myPlayer;
     }
 }

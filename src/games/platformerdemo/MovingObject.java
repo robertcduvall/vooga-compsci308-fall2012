@@ -15,13 +15,15 @@ import vooga.platformer.gameobject.GameObject;
 public class MovingObject extends GameObject {
 
     private Image myImg;
-    private Point2D myVelocity = new Point2D.Double(0, 0);
+    private Point2D myVelocity;
+    private boolean onGround = false;
     /**
      * @param configString String to parse parameters of this player
      * @param type of this object starting with lower case, eg. player, brick.
      */
     public MovingObject (String configString, String type) {
         super(configString);
+        myVelocity = new Point2D.Double(0, 0);
         try {
             myImg = ImageIO.read(new File("src/games/platformerdemo/" + type
                     + ".png"));
@@ -48,5 +50,26 @@ public class MovingObject extends GameObject {
     @Override
     public Image getCurrentImage () {
         return myImg;
+    }
+    
+    /**
+     * set status of this moving object to be on the ground
+     */
+    public void setOnGround() {
+        onGround = true;
+    }
+    
+    /**
+     * set status of this moving object to be not on the ground
+     */
+    public void setNotOnGround() {
+        onGround = false;
+    }
+    
+    /**
+     * @return whether this MovingObject is on a brick
+     */
+    public boolean isOnGround() {
+        return onGround;
     }
 }
