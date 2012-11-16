@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
@@ -165,8 +167,24 @@ public class LevelBoard extends Canvas implements ISavable {
 
     @Override
     public void save() {
-//                LevelFileWriter.writeLevel(filePath, levelType, levelName, width, height,
-//                myBackgroud, mySprites, collisionCheckerType, cameraType);
+        JFileChooser fc = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("XML file", "xml");
+        fc.addChoosableFileFilter(filter);
+
+        int returnVal = fc.showSaveDialog(this);
+        String levelName = "";
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            levelName = file.getName();
+            //This is where a real application would save the file.
+
+//            log.append("Saving: " + file.getName() + "." + newline);
+        } else {
+            levelName = "myLevelName.xml";
+//            log.append("Save command cancelled by user." + newline);
+        }
+        LevelFileWriter.writeLevel(System.getProperty("user.dir"), "mylevelType", levelName, myWidth, myHeight,
+                myBackgroundPath, mySprites, "myCollision", "myCamera");
     }
 
     @Override
