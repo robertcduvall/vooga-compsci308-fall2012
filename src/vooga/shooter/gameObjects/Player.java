@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
@@ -115,9 +117,18 @@ public class Player extends Sprite {
      * Paints bullets of player.
      */
     protected void continuePaint (Graphics pen) {
+        List<Bullet> deadBullets = new ArrayList<Bullet>();
+
         for (Bullet b : getMyBulletsFired()) {
-            b.paint(pen);
+            if (b.getImage() == null) {
+                deadBullets.add(b);
+            }
+            else {
+                b.paint(pen);
+            }
         }
+
+        getMyBulletsFired().removeAll(deadBullets);
     }
 
     /**

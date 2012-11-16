@@ -7,8 +7,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.Bullet;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
@@ -51,20 +53,32 @@ public class Game {
         update();
     }
 
+    /**
+     * Updates the sprites on the screen. Also checks
+     * for collisions between two sprites (only if
+     * both sprites are still alive (i.e. still visible
+     * in the game). If there is a collision, this method
+     * will tell each sprite that it was hit by a type of
+     * the other sprite. Each sprite will then invoke the
+     * correct method to deal with that type of collision.
+     */
     public void update () {
-        // will work when Levels contain winning conditions
-        // if (myCurrentLevel.winningConditionsMet(this)) {
-        // startLevel(myCurrentLevel.myNextLevel());
-        // }
-
         for (Sprite s : getSprites()) {
             s.update();
         }
+
         for (Sprite s1 : getSprites()) {
             for (Sprite s2 : getSprites()) {
+                if (s1.getImage() == null || s2.getImage() == null) {
+                    continue;
+                }
+
                 if (collisionCheck(s1, s2)) {
-                    s1.collide(s2);
-                    s2.collide(s1);
+                    String key = "hitby" + s2.getType();
+                    s1.doEvent(key, s2);
+
+                    key = "hitby" + s1.getType();
+                    s2.doEvent(key, s1);
                 }
             }
         }
@@ -77,15 +91,35 @@ public class Game {
      * @return Returns true if sprites are colliding.
      */
     boolean collisionCheck(Sprite s1, Sprite s2) {
-        Rectangle r1 = new Rectangle(s1.getPosition(), s1.getDimension());
-        Rectangle r2 = new Rectangle(s2.getPosition(), s2.getDimension());
+        Rectangle r1 = new Rectangle(new Point(
+                s1.getLeft(), s1.getTop()), s1.getDimension());
+
+        Rectangle r2 = new Rectangle(new Point(
+                s2.getLeft(), s2.getTop()), s2.getDimension());
+
         return r1.intersects(r2);
     }
 
+    /**
+     * Paints all still-alive sprites on the screen.
+     * Any sprites who have died (e.g. have health < 0)
+     * are removed from the game.
+     *
+     * @param pen used to draw the images
+     */
     public void paint (Graphics pen) {
+        List<Sprite> deadSprites = new ArrayList<Sprite>();
+
         for (Sprite s : getSprites()) {
-            s.paint(pen);
+            if (s.getImage() == null) {
+                deadSprites.add(s);
+            }
+            else {
+                s.paint(pen);
+            }
         }
+
+        getSprites().removeAll(deadSprites);
     }
 
     /**

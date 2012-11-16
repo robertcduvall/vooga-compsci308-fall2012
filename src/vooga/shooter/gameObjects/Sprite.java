@@ -119,7 +119,8 @@ public abstract class Sprite implements SpriteActionInterface {
     abstract void setMethods();
 
     /**
-     * Returns this sprite's position.
+     * Returns this sprite's position of the
+     * center of its image.
      * @return myPosition
      */
     public Point getPosition() {
@@ -297,7 +298,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param s the sprite that collides with this one
      */
     public void collide(Sprite s) {
-
+        
     }
 
     protected void setMapper (SpriteMethodMap mapper) {
@@ -335,5 +336,14 @@ public abstract class Sprite implements SpriteActionInterface {
     @Override
     public void doAction (Object ... o) {
         setVelocity(0, 0);
+    }
+
+    /**
+     * Erases the sprite's image, which will be
+     * checked for during paint methods and erased
+     * from the game if null.
+     */
+    public void die() {
+        this.setImage(null);
     }
 }

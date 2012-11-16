@@ -86,11 +86,4 @@ public class Bullet extends Sprite {
     void setMethods () {
 
     }
-
-    /**
-     * Removes this bullet from the game.
-     */
-    public void die() {
-        myOwner.getMyBulletsFired().remove(this);
-    }
 }
