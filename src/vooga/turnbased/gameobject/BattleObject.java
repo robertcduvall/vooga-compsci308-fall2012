@@ -15,21 +15,25 @@ public abstract class BattleObject extends GameObject {
 
     private int myDefense;
     private int myAttack;
-    private int myHealth;    
+    private int myHealth;
 
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
      * @param id the ID number of the object.
+     * @param event The action that this object can pass to the GameManager,
+     * can be GameEvent.NO_ACTION if no action needed
      * @param defense The amount of defense that mitigates losses to health.
      * @param attack The amount of damage the sprite/monster does with each attack.
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
+     * @param image The image of this BattleObject
      */
-    public BattleObject(int id, GameManager.GameEvent event, int defense, int attack, int health, Image image) {
+    public BattleObject(int id, GameManager.GameEvent event, int defense,
+            int attack, int health, Image image) {
         super(id, event, image);
-        setMyDefense(defense);
-        setMyAttack(attack);
-        setMyHealth(health);
+        setDefense(defense);
+        setAttack(attack);
+        setHealth(health);
     }
 
     /**
@@ -59,7 +63,7 @@ public abstract class BattleObject extends GameObject {
      * Set defense to the input parameter.
      * @param defense The value to set the defense at.
      */
-    public void setMyDefense (int defense) {
+    public void setDefense (int defense) {
         myDefense = defense;
     }
 
@@ -67,7 +71,7 @@ public abstract class BattleObject extends GameObject {
      * Returns the defense stat of the BattleObject/monster.
      * @return This the defense stat of the BattleObject/monster
      */
-    public int getMyDefense () {
+    public int getDefense () {
         return myDefense;
     }
 
@@ -75,7 +79,7 @@ public abstract class BattleObject extends GameObject {
      * Set the attack to be a new value.
      * @param attack The new value for attack.
      */
-    public void setMyAttack (int attack) {
+    public void setAttack (int attack) {
         myAttack = attack;
     }
 
@@ -83,7 +87,7 @@ public abstract class BattleObject extends GameObject {
      * Returns the attack stat of the BattleObjet/monster.
      * @return The value of the attack that is returned.
      */
-    public int getMyAttack () {
+    public int getAttack () {
         return myAttack;
     }
 
@@ -91,7 +95,7 @@ public abstract class BattleObject extends GameObject {
      * Set the health to be a new value.
      * @param health The new value for health.
      */
-    public void setMyHealth (int health) {
+    public void setHealth (int health) {
         myHealth = health;
     }
 
