@@ -106,7 +106,7 @@ public class Game {
      * Checks if two sprites are colliding with each other.
      * Or checks if any of the bullets from either collides with
      * the other sprite.
-     * 
+     *
      * @param s1 The first sprite to check.
      * @param s2 The second sprite to check.
      * @return Returns a list of 2 sprites: either (1) the two original
