@@ -8,7 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -29,15 +31,27 @@ public class GameListMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        String[] arrayOfGames = new String[myGameList.size()];
         for (int i = 0; i < myGameList.size(); i++) {
-            JButton button = new JButton(myGameList.get(i));
-            myPanel.add(button);
-            
+            arrayOfGames[i] = myGameList.get(i);
         }
-        JButton button = new JButton("Does this work I wonder");
-        button.setVerticalTextPosition(AbstractButton.CENTER);
-        button.setHorizontalTextPosition(AbstractButton.LEADING);
-        myPanel.add(button);
+        String[] theList = new String[2];
+        theList[0] = "sup";
+        theList[1] = "bro";
+        JList listOfGames = new JList(theList);
+        myPanel.add(listOfGames);
+        
+        final JButton setButton = new JButton("Set");
+        setButton.setActionCommand("Set");
+        setButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                getArcade().replacePanel("GameProfile");
+            }
+              
+          });
+        
         return myPanel;
     }
 
