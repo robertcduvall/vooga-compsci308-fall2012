@@ -37,6 +37,7 @@ public class XmlParser {
      * for the rest of the parsing.
      */
     private void makeDocument () {
+
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             myXmlDocument = dbFactory.newDocumentBuilder().parse(myXmlFile);
@@ -97,6 +98,7 @@ public class XmlParser {
      */
     public int getIntContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
+
         return Integer.parseInt(list.item(0).toString());
     }
 

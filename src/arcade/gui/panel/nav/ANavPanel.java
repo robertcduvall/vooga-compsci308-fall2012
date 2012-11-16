@@ -2,7 +2,10 @@ package arcade.gui.panel.nav;
 
 import arcade.gui.Arcade;
 import arcade.gui.panel.AbstractPanelCreator;
-
+import edu.cmu.relativelayout.Binding;
+import edu.cmu.relativelayout.BindingFactory;
+import edu.cmu.relativelayout.RelativeConstraints;
+import edu.cmu.relativelayout.RelativeLayout;
 
 /**
  * 

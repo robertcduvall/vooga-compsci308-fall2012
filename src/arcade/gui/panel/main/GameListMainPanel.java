@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,7 +16,6 @@ public class GameListMainPanel extends AMainPanel {
 
     private List<String> myGameList;
     private List<Image> myGameProfilePictures;
-    private ArcadePanel p;
     
     public GameListMainPanel (Arcade a) {
         super(a);
@@ -23,17 +24,21 @@ public class GameListMainPanel extends AMainPanel {
          for (int i = 0; i < myGameList.size(); i++) {
              myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
          }
-         p = new ArcadePanel(a, "Main");
     }
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
+        ArcadePanel myPanel = initializeNewPanel();
+        for (int i = 0; i < myGameList.size(); i++) {
+            JButton button = new JButton(myGameList.get(i));
+            myPanel.add(button);
+            
+        }
         JButton button = new JButton("Does this work I wonder");
         button.setVerticalTextPosition(AbstractButton.CENTER);
         button.setHorizontalTextPosition(AbstractButton.LEADING);
-        p.add(button);
-        return p;
+        myPanel.add(button);
+        return myPanel;
     }
 
 }
