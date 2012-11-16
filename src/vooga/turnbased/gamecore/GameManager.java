@@ -1,10 +1,3 @@
-/**
- * Manage Game Sprites, and change the game modes when certain events are
- * triggered
- * Check gameover conditions and goals of games
- * 
- * @author rex, Vo
- */
 package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
@@ -25,10 +18,17 @@ import vooga.turnbased.sprites.Sprite;
 
 
 // public class GameManager implements Observer {
+/**
+ * Manage Game Sprites, and change the game modes when certain events are
+ * triggered
+ * Check gameover conditions and goals of games
+ * 
+ * @author rex, Vo
+ */
 public class GameManager {
 
     private final GamePane myGamePane;
-    private GameMode myMapMode; // Fix me once the factory opens!s
+    private GameMode myMapMode; // Fix me once the factory opens!
     private GameMode myBattleMode;
     private GameMode myCurrentGameMode;
     // private Factory myFactory;
