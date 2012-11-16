@@ -21,8 +21,8 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class LoginMainPanel extends AMainPanel implements ActionListener {
     
-    private static String LOGIN_ACTION = "login";
-    private static String NEW_USER_ACTION = "newuser";
+    private static String SUBMIT = "Submit";
+    private static String BYPASS = "Bypass";
 
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -43,11 +43,11 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        myPanel = addLoginButton(myPanel);
-        myPanel = addNewUserButton(myPanel);
+        myPanel = addSubmitButton(myPanel);
         myPanel = addUserNameField(myPanel);
         myPanel = addPasswordField(myPanel);
         myPanel = addWrongPasswordLabel(myPanel);
+        myPanel = addBypassButton(myPanel);
         
 
         System.out.println("LoginMainPanel");
@@ -65,13 +65,13 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
 
-    private ArcadePanel addLoginButton (ArcadePanel myPanel) {
-        JButton loginButton = new JButton("Login");
+    private ArcadePanel addSubmitButton (ArcadePanel myPanel) {
+        JButton loginButton = new JButton(SUBMIT);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 3;
         c.gridy = 3;
         
-        loginButton.setActionCommand(LOGIN_ACTION);
+        loginButton.setActionCommand(SUBMIT);
         loginButton.addActionListener(this);
         
         myPanel.add(loginButton, c);
@@ -79,20 +79,19 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         return myPanel;
     }
     
-    private ArcadePanel addNewUserButton (ArcadePanel myPanel) {
-        JButton newUserButton = new JButton("New User");
+    private ArcadePanel addBypassButton (ArcadePanel myPanel) {
+        JButton loginButton = new JButton(BYPASS);
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 3;
-        c.gridy = 4;
+        c.gridx = 4;
+        c.gridy = 3;
         
-        newUserButton.setActionCommand(NEW_USER_ACTION);
-        newUserButton.addActionListener(this);
+        loginButton.setActionCommand(BYPASS);
+        loginButton.addActionListener(this);
         
-        myPanel.add(newUserButton, c);
+        myPanel.add(loginButton, c);
         
         return myPanel;
     }
-    
     private ArcadePanel addUserNameField (ArcadePanel myPanel) {
         usernameField = new JTextField(17);
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -130,18 +129,12 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
         
-        if (LOGIN_ACTION.equals(cmd)){
+        if (SUBMIT.equals(cmd)){
             login();
         }
-        else if (NEW_USER_ACTION.equals(cmd)){
-            newUser();
+        else if (BYPASS.equals(cmd)){
+            bypass();
         }
-        
-    }
-
-    private void newUser () {
-        System.out.println("Attempt New User");
-        this.getArcade().replacePanel("NewUser");
     }
 
     private void login () {
@@ -154,5 +147,8 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         else {
             wrongPassword.setVisible(true);
         }
+    }
+    private void bypass() {
+        this.getArcade().replacePanel("MainHome");
     }
 }
