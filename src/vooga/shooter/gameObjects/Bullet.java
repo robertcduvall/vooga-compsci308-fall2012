@@ -27,9 +27,9 @@ public class Bullet extends Sprite{
      * @param velocity the starting velocity of the bullet
      * @param damage the damage that the bullet will do (to enemy or player)
      */
-    public Bullet (Point position, Dimension size, Image image, Point velocity,
+    public Bullet (Point position, Dimension size, Dimension bounds, Image image, Point velocity,
             int damage) {
-        super(position, size, image, velocity);
+        super(position, size, bounds, image, velocity);
         myDamage = damage;
     }
 
@@ -39,7 +39,7 @@ public class Bullet extends Sprite{
      * (e.g. maybe some particle effects, or other graphical
      * stuff, or something else cool).
      */
-    public void continueUpdate(Canvas c) {
+    protected void continueUpdate() {
         
     }
 
@@ -111,5 +111,10 @@ public class Bullet extends Sprite{
     /**
      * Bullet has nothing else to paint.
      */
-    public void continuePaint (Graphics pen) {}
+    protected void continuePaint (Graphics pen) {}
+
+    @Override
+    void setMethods () {
+        
+    }
 }
