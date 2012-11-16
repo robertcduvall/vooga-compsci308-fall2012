@@ -43,21 +43,6 @@ public class Game {
      * instantiates a Game Saver that can be passed into the games as they run.
      * The Game Saver allows the game to save user preferences and high scores
      * without accessing the rest of the game manager.
-     * 
-     * @param gameName name of the game to be managed
-     */
-    public Game (String gameName) {
-        mySaver = new GameSaver(gameName, myGame);
-        // TODO
-    }
-
-    /**
-     * Constructor for Game Manager that takes in a game name as a string, then
-     * searches for that game. This allows the GUI to specify a string rather
-     * than an object, making searching for games easier. The Game Manager also
-     * instantiates a Game Saver that can be passed into the games as they run.
-     * The Game Saver allows the game to save user preferences and high scores
-     * without accessing the rest of the game manager.
      */
     public void runGame () {
         myGame.runGame(getUserPreferences(), mySaver);
@@ -178,5 +163,10 @@ public class Game {
     
     public String getGameName() {
         return myGame.getName();
+    }
+    
+    public List<String> getGenre() {
+        // TODO
+        return null;
     }
 }
