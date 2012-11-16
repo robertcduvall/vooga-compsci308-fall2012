@@ -15,7 +15,7 @@ import vooga.turnbased.gui.GameWindow;
  * This is gamemode that will run a battle given two lists of BattleObjects that
  * will fight each other.
  * 
- * @author David Howdyshell, Michael Elgart, others (who?)
+ * @author David Howdyshell, Michael Elgart, Kevin Gao, Jenni Mercado
  * 
  */
 public class BattleMode extends GameMode {
@@ -52,16 +52,16 @@ public class BattleMode extends GameMode {
 
     @Override
     public void pause () {
-        myTeams.clear();        
+        myTeams.clear();
     }
 
     @Override
     public void resume () {
         makeTeams();
         initialize();
-        System.out.println("BattleStarting!");        
+        System.out.println("BattleStarting!");
     }
-    
+
     @Override
     public void update () {
         // TODO Auto-generated method stub
@@ -73,9 +73,12 @@ public class BattleMode extends GameMode {
     public void paint (Graphics g) {
         Image background = GameWindow.importImage("EditorBackgroundImage");
         g.drawImage(background, 0, 0, background.getWidth(null), background
-                .getHeight(null), null);
+               .getHeight(null), null);
     }
 
+    /**
+     * Initializes a battle with the current lists of BattleObjects
+     */
     public void initialize () {
         myState = BattleState.WAITING_FOR_MOVE;
         myTurnCount = 0;
@@ -86,6 +89,9 @@ public class BattleMode extends GameMode {
         myTeamStartRandomizer = generator.nextInt(myTeams.size());
     }
 
+    /**
+     * The loop that cycles for each turn.
+     */
     public void updateLoop () {
         if (isBattleOver()) {
             endBattle();
