@@ -46,7 +46,7 @@ public class SocialCenter {
     public SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
-        resource = ResourceBundle.getBundle("resources.filePath");
+        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");

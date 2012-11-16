@@ -1,5 +1,6 @@
 package arcade.usermanager;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class UserXMLReader {
     private Document myDom;
-    private ResourceBundle myResource;
+    private static ResourceBundle myResource;
     private String myUserBasicFilePath;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
@@ -30,7 +31,7 @@ public class UserXMLReader {
      * Constructs a UserXMLReader.
      */
     public UserXMLReader () {
-        myResource = ResourceBundle.getBundle("resources.filePath");
+        myResource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = myResource.getString("BasicFilePath");
         myUserMessageFilePath = myResource.getString("MessageFilePath");
         myUserGameFilePath = myResource.getString("GameFilePath");
