@@ -103,6 +103,10 @@ public class Player extends Sprite {
         if (getTop() <= 0 || getBottom() >= getBounds().height) {
             setVelocity(getVelocity().x, 0);
         }
+
+        for (Bullet b : getBulletsFired()) {
+            b.update();
+        }
     }
 
     /**
@@ -119,7 +123,7 @@ public class Player extends Sprite {
     protected void continuePaint (Graphics pen) {
         List<Bullet> deadBullets = new ArrayList<Bullet>();
 
-        for (Bullet b : getMyBulletsFired()) {
+        for (Bullet b : getBulletsFired()) {
             if (b.getImage() == null) {
                 deadBullets.add(b);
             }
@@ -128,7 +132,7 @@ public class Player extends Sprite {
             }
         }
 
-        getMyBulletsFired().removeAll(deadBullets);
+        getBulletsFired().removeAll(deadBullets);
     }
 
     /**
@@ -144,6 +148,6 @@ public class Player extends Sprite {
         Bullet b = new Bullet(getPosition(), new Dimension(5, 5), getBounds(),
                 bulletImage, new Point(0, getVelocity().y - 5), 0);
 
-        getMyBulletsFired().add(b);
+        getBulletsFired().add(b);
     }
 }

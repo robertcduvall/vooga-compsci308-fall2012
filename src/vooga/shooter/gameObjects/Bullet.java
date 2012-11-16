@@ -40,7 +40,7 @@ public class Bullet extends Sprite {
      * stuff, or something else cool).
      */
     protected void continueUpdate() {
-        
+
     }
 
     /**

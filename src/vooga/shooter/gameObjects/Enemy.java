@@ -36,7 +36,9 @@ public class Enemy extends Sprite {
      * shot).
      */
     protected void continueUpdate() {
-
+        for (Bullet b : getBulletsFired()) {
+            b.update();
+        }
     }
 
     /**
@@ -53,7 +55,7 @@ public class Enemy extends Sprite {
     protected void continuePaint (Graphics pen) {
         List<Bullet> deadBullets = new ArrayList<Bullet>();
 
-        for (Bullet b : getMyBulletsFired()) {
+        for (Bullet b : getBulletsFired()) {
             if (b.getImage() == null) {
                 deadBullets.add(b);
             }
@@ -62,7 +64,7 @@ public class Enemy extends Sprite {
             }
         }
 
-        getMyBulletsFired().removeAll(deadBullets);
+        getBulletsFired().removeAll(deadBullets);
     }
 
     @Override

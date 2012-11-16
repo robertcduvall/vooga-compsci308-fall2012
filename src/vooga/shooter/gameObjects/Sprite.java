@@ -166,11 +166,10 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * Returns the bullets fired by this sprite.
-     * @return a list of the bullets that this sprite
-     * has fired.
+     * Returns a list of the bullets fired by this sprite.
+     * @return myShotsFired
      */
-    public List<Bullet> getMyBulletsFired() {
+    public List<Bullet> getBulletsFired() {
         return myShotsFired;
     }
     /**
@@ -251,11 +250,13 @@ public abstract class Sprite implements SpriteActionInterface {
      * Returns the dimensions of the sprite.
      * @return the dimensions of the sprite.
      */
-    public Dimension getDimension() {
+    public Dimension getSize() {
         return mySize;
     }
 
     /**
+     * Returns a string representing this sprite's type.
+     *
      * @return lowercase string representing type of this sprite
      */
     public abstract String getType();
@@ -298,7 +299,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param s the sprite that collides with this one
      */
     public void collide(Sprite s) {
-        
+
     }
 
     protected void setMapper (SpriteMethodMap mapper) {
