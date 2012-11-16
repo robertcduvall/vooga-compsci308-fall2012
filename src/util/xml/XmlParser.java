@@ -6,6 +6,7 @@ import java.io.File;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.soap.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -109,4 +110,27 @@ public class XmlParser {
         NodeList list = element.getElementsByTagName(tagName);
         return Double.parseDouble(list.item(0).toString());
     }
+    
+    /**
+     * 
+     * 
+     * @return get the root element of a document
+     * @author difan
+     */
+    
+    public Element getRootElement(){
+       return  myXmlDocument.getDocumentElement();
+        
+    }
+    
+    /**
+     * 
+     * @return document
+     * @author difan
+     */
+   public Document getDocument(){
+       return myXmlDocument;
+   }
+    
+   
 }
