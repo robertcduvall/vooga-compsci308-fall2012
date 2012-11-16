@@ -101,7 +101,7 @@ public class LevelEditor implements ActionListener, KeyListener {
                 //file has never ben saved, so we need to save as instead
                 
             } else {
-                savefile(openFile);
+                saveFile(openFile);
             }
         } else if (source == openBtn) {
             int success = chooser.showOpenDialog(mainFrame);
@@ -117,6 +117,10 @@ public class LevelEditor implements ActionListener, KeyListener {
     }
     
     private void saveFile(File file) {
+        //TODO implement
+    }
+    
+    public void newFile() {
         //TODO implement
     }
     
