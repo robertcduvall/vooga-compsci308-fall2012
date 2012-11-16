@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import util.xml.XmlParser;
 import arcade.IArcadeGame;
+import arcade.usermanager.SocialCenter;
 import arcade.utility.ReadWriter;
 
 /**
@@ -20,6 +21,7 @@ public class GameCenter {
     private XmlParser myXmlParser;
     private List<IArcadeGame> myGames;
     private NodeList gameNodeList;
+    private SocialCenter socialCenter;
     
     public GameCenter() {
         initialize();
@@ -29,6 +31,7 @@ public class GameCenter {
      * initializes the class by reading information from game.xml file.
      */
     public void initialize() {
+        socialCenter = SocialCenter.getInstance();
         File f = new File("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
         myXmlParser = new XmlParser(f);
         gameNodeList = myXmlParser.getElementsByName(myXmlParser.getRootElement(), "game");
@@ -72,9 +75,15 @@ public class GameCenter {
         List<Integer> userList = new ArrayList<Integer>();
         return userList;
     }
+    
     public Image getGameProfilePicture(String gameName) {
-        // TODO Auto-generated method stub
+        for (IArcadeGame game : myGames) {
+            if (game.getName().equals(gameName)) {
+                return game.getScreenshots().get(0);
+            }
+        }
         return null;
+        
     }
     
 }
