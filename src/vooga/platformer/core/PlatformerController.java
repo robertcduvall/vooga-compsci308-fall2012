@@ -2,6 +2,7 @@ package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
 import games.platformerdemo.Player;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -78,6 +79,11 @@ public class PlatformerController extends JPanel implements Runnable {
     @Override
     public void paint(Graphics pen) {
         myCurrentLevel.paint(pen);
+        pen.setColor(Color.BLACK);
+        pen.drawString("Press M to bring up the menu", getSize().width*3/5,getSize().height/4);
+        pen.drawString("If you touch the enemy, you die", getSize().width*3/5,getSize().height/4+10);
+        pen.drawString("If you step on the enemy, the enemy dies", getSize().width*3/5,getSize().height/4+20);
+        
         for(Component c: getComponents()){
             c.paint(pen);
         }
