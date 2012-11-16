@@ -67,6 +67,13 @@ public class Player extends Sprite{
 
         //-1 is the int value for no key pressed
         getMapper().addPair("-1", this);
+
+        //the player is hit with a bullet (decreases health)
+        getMapper().addPair("hitbullet", new MethodWrapper() {
+                                public void doAction(Object...o) {
+                                    decreaseHealth((Integer) o[0]);
+                                }
+        });
     }
 
     /**
@@ -83,37 +90,6 @@ public class Player extends Sprite{
         if(getTop() <= 0 || getBottom() >= getBounds().height) {
             setVelocity(getVelocity().x, 0);
         }
-    }
-
-    /**
-     * Describes what happens when the player
-     * collides with a bullet.
-     * @param b the bullet that the player is
-     * colliding with
-     */
-    public void collide (Bullet b) {
-        
-    }
-
-    /**
-     * Describes what happens when the player
-     * collides with another player (will only
-     * happen in multiplayer).
-     * @param p the other player that this player
-     * is colliding with
-     */
-    public void collide (Player p) {
-        
-    }
-
-    /**
-     * Describes what happens when the player
-     * collides with an enemy.
-     * @param e the enemy that this player is
-     * colliding with
-     */
-    public void collide (Enemy e) {
-        
     }
 
     /**

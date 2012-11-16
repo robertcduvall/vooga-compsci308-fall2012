@@ -31,28 +31,30 @@ public class MethodMapper {
     /**
      * Adds to the map a string and all its associated actions.
      *
-     * @param s the string (the key)
+     * @param key the string (the key)
      * @param m the list of actions to which the string is
      * mapped
      */
-    public void addPair(String s, MethodWrapper...m){
+    public void addPair(String key, MethodWrapper...m){
         List<MethodWrapper> mw = new ArrayList<MethodWrapper>();
         for(MethodWrapper me : m){
             mw.add(me);
         }
-        myMap.put(s, mw);
+        myMap.put(key, mw);
     }
 
     /**
      * Iterate through all actions associated with this
      * string.
      *
-     * @param s the string that describes which actions to do
+     * @param key the string that describes which actions to do
+     * @param any damage done to the sprite doing the action
+     * @param s any sprite that this sprite collides with
      */
-    public void doEvent(String s)
+    public void doEvent(String key, int damage, Sprite s)
     {
-        for(MethodWrapper m : myMap.get(s)){
-            m.doAction();
+        for(MethodWrapper m : myMap.get(key)){
+            m.doAction(damage, s);
         }
     }
 }
