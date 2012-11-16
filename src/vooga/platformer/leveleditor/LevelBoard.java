@@ -198,9 +198,13 @@ public class LevelBoard extends Canvas implements ISavable {
 
     protected void spritePopupMenu (Sprite s, MouseEvent e) {
         JPopupMenu pop = new JPopupMenu();
+        SelectionHelper sh = new SelectionHelper(s);
         JMenuItem j = new JMenuItem("Flip");
-        j.addActionListener(new SelectionHelper(s));
+        j.addActionListener(sh);
         pop.add(j);
+        JMenuItem j2 = new JMenuItem("Duplicate");
+        j2.addActionListener(sh);
+        pop.add(j2);
         pop.show(this.getParent(), e.getX(), e.getY());
     }
     /**
