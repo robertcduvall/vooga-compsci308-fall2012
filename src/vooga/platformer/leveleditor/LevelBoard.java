@@ -183,8 +183,7 @@ public class LevelBoard extends Canvas implements ISavable {
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(new SelectionHelper(s));
         pop.add(j);
-        this.setVisible(true);
-        pop.show(this, e.getX(), e.getY());
+        pop.show(this.getParent(), e.getX(), e.getY());
     }
     /**
      * @return An unmodifiable Collection of the sprites

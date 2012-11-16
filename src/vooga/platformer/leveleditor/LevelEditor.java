@@ -118,6 +118,7 @@ public class LevelEditor extends JFrame{
     private void createListeners () {
         LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
         myBoard = board;
+        myContainer.add(board);
         myMouseListener = myBoard.getMouseListener();
         myKeyListener = new KeyAdapter() {
 
@@ -170,7 +171,7 @@ public class LevelEditor extends JFrame{
         myBoard.update();
     }
 
-    void createPopupMenu(final Component comp, final int x,
+    private void createPopupMenu(final Component comp, final int x,
             final int y) {
         JPopupMenu pop = new JPopupMenu();
         for (String subsprite : mySpriteTypes.get(comp.getName())) {
