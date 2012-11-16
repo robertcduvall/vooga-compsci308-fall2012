@@ -25,7 +25,7 @@ public class GameSaver {
     public GameSaver(String userName, IArcadeGame game) {
         myUserName = userName;
         myGame = game;
-        socialCenter = new SocialCenter();
+        socialCenter = SocialCenter.getInstance();
     }
 
     /**

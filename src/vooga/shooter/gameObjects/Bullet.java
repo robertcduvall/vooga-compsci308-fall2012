@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-import vooga.shooter.graphics.Canvas;
 
 /**
  * Bullet class will have all the info needed to
@@ -15,7 +14,7 @@ import vooga.shooter.graphics.Canvas;
  * @author Jesse Starr
  * (add your own name as you edit)
  */
-public class Bullet extends Sprite{
+public class Bullet extends Sprite {
     private int myDamage;
     private Sprite myOwner;
 
@@ -23,13 +22,14 @@ public class Bullet extends Sprite{
      * Constructs a bullet to be shown on the screen.
      * @param position the starting position of the bullet
      * @param size the size of the image to use
+     * @param bounds the bounds of the canvas
      * @param image the image of the bullet
      * @param velocity the starting velocity of the bullet
      * @param damage the damage that the bullet will do (to enemy or player)
      */
-    public Bullet (Point position, Dimension size, Image image, Point velocity,
-            int damage) {
-        super(position, size, image, velocity);
+    public Bullet (Point position, Dimension size, Dimension bounds,
+            Image image, Point velocity, int damage) {
+        super(position, size, bounds, image, velocity);
         myDamage = damage;
     }
 
@@ -39,7 +39,7 @@ public class Bullet extends Sprite{
      * (e.g. maybe some particle effects, or other graphical
      * stuff, or something else cool).
      */
-    public void continueUpdate(Canvas c) {
+    protected void continueUpdate() {
         
     }
 
@@ -70,37 +70,6 @@ public class Bullet extends Sprite{
     }
 
     /**
-     * Describes what happens when the bullet
-     * collides with a bullet.
-     * @param b the bullet that this bullet is
-     * colliding with
-     */
-    public void collide (Bullet b) {
-        
-    }
-
-    /**
-     * Describes what happens when the bullet
-     * collides with a player (will only
-     * happen in multiplayer).
-     * @param p the player that this bullet
-     * is colliding with
-     */
-    public void collide (Player p) {
-        
-    }
-
-    /**
-     * Describes what happens when this bullet
-     * collides with an enemy.
-     * @param e the enemy that this bullet is
-     * colliding with
-     */
-    public void collide (Enemy e) {
-        
-    }
-
-    /**
      * Returns the type of this sprite.
      * @return "bullet"
      */
@@ -111,5 +80,17 @@ public class Bullet extends Sprite{
     /**
      * Bullet has nothing else to paint.
      */
-    public void continuePaint (Graphics pen) {}
+    protected void continuePaint (Graphics pen) { }
+
+    @Override
+    void setMethods () {
+
+    }
+
+    /**
+     * Removes this bullet from the game.
+     */
+    public void die() {
+        myOwner.getMyBulletsFired().remove(this);
+    }
 }

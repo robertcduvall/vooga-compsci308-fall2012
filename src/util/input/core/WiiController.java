@@ -18,8 +18,8 @@ import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 
 /**
- * This class allows users to enter input through the Wiimote
- * 
+ * This class allows users to enter input through the Wiimote.
+ *
  * @author Amay
  *
  */
@@ -40,10 +40,10 @@ public class WiiController extends Controller<WiimoteListener> implements
     public static final int WIIMOTE_BUTTON_DOWN = 1024;
     public static final int WIIMOTE_BUTTON_LEFT = 256;
     public static final int WIIMOTE_BUTTON_RIGHT = 512;
-    
+
     /**
-     * Create a new Wii controller
-     * 
+     * Create a new Wii controller.
+     *
      * @param wii - The Wiimote object to which we add the event listeners
      */
     public WiiController(Wiimote wii) {

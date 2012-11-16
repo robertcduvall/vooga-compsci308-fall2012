@@ -1,15 +1,4 @@
-<user>
-	<name>Howard</name>
-	<picture>images/howard.jpg</picture>
-	<credits>50</credits>
-	<message>
-		<sender>someOtherUser</sender>
-		<content>Hi There</content>
-	</message>
-	<message>
-		<sender>User 2</sender>
-		<content>Hi again</content>
-	</message>
+<gamelist>
 	<game>
 		<name>Shooter</name>
 		<highscore>50</highscore>
@@ -22,4 +11,4 @@
 		<timesplayed>4</timesplayed>
 		<gameinfo>level 1, health 900</gameinfo>
 	</game>
-</user>
+</gamelist>

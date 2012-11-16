@@ -96,7 +96,7 @@ public class GameManager {
     }
 
     /**
-     * Returns the average of all the rations for the game.
+     * Returns the average of all the ratings for the game.
      */
     public Integer getAverageRatings () {
         File f = new File("arcade.database/game.xml");

@@ -1,0 +1,10 @@
+<messagelist>
+<message>
+		<sender>someOtherUser</sender>
+		<content>Hi There</content>
+	</message>
+	<message>
+		<sender>User 2</sender>
+		<content>Hi again</content>
+	</message>
+</messagelist>

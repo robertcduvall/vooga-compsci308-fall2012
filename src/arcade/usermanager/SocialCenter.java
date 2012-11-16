@@ -1,12 +1,10 @@
 package arcade.usermanager;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -28,9 +26,9 @@ public class SocialCenter {
     private User myCurrentUser;
     private static SocialCenter mySocialCenter;
     private Map<String, User> myAllUser;
-    private  String myUserBasicFilePath ;
-    private  String myUserMessageFilePath ;
-    private  String myUserGameFilePath;
+    private String myUserBasicFilePath;
+    private String myUserMessageFilePath;
+    private String myUserGameFilePath;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
@@ -49,10 +47,9 @@ public class SocialCenter {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
         resource = ResourceBundle.getBundle("resources.filePath");
-        myUserBasicFilePath=resource.getString("BasicFilePath");
-        myUserMessageFilePath=resource.getString("MessageFilePath");
-        myUserGameFilePath=resource.getString("GameFilePath");
-        
+        myUserBasicFilePath = resource.getString("BasicFilePath");
+        myUserMessageFilePath = resource.getString("MessageFilePath");
+        myUserGameFilePath = resource.getString("GameFilePath");
 
         // availableUserName=new ArrayList<String>();
         myAllUser = new HashMap<String, User>();
@@ -64,7 +61,7 @@ public class SocialCenter {
             if (listOfFiles[i].isFile()) {
                 String name = listOfFiles[i].getName();
 
-                User newUser = myXMLReader.parseMakeUser(myUserBasicFilePath + name);
+                User newUser = myXMLReader.getUser(name);
                 myAllUser.put(name, newUser);
 
             }
@@ -76,7 +73,7 @@ public class SocialCenter {
         // write an xml file
         myXMLWriter.makeUserXML(userName, password, picture);
         // make new user class
-        User newUser = myXMLReader.parseMakeUser(myUserBasicFilePath + userName);
+        User newUser = myXMLReader.getUser(userName);
         myAllUser.put(userName, newUser);
         return newUser;
 
@@ -154,12 +151,12 @@ public class SocialCenter {
      * return operation status
      */
     public String sendMessage (String sender, String receiver, String content) {
-        String filePath="myUserMessageFilePath"+receiver+".xml";
-        File f=new File(filePath);
-        XmlParser parser=new XmlParser(f);
-        Document doc=parser.getDocument();
-        Element root=(Element) parser.getRootElement();
-        Element message=XmlWriter.appendElement(doc, root, "Message", "");
+        String filePath = "myUserMessageFilePath" + receiver + ".xml";
+        File f = new File(filePath);
+        XmlParser parser = new XmlParser(f);
+        Document doc = parser.getDocument();
+        Element root = (Element) parser.getDocumentElement();
+        Element message = XmlWriter.appendElement(doc, root, "Message", "");
         XmlWriter.appendElement(doc, message, "receiver", receiver);
         XmlWriter.appendElement(doc, message, "content", content);
         XmlWriter.writeXML(doc, filePath);
@@ -174,69 +171,68 @@ public class SocialCenter {
         return myCurrentUser.getMyMessage();
 
     }
-    
+
     /*
      * return whether the operation is successful
      */
 
-    
-    public boolean writeGameScore (String gameName,int score) {
+    public boolean writeGameScore (String gameName, int score) {
         myCurrentUser.getGameData(gameName).setMyHighScore(score);
-        
-        //write xml
-        String filePath="myUserGameFilePath"+myCurrentUser.getName()+".xml";
-        File f=new File(filePath);
-        XmlParser parser=new XmlParser(f);
-        Document doc=parser.getDocument();
-        Element root=(Element) parser.getRootElement();
-        NodeList children=root.getChildNodes();
-        for(int i=0;i<children.getLength();i++){
-            Element child=(Element)children.item(i);
-           if(parser.getTextContent(child, "name").equals(gameName)) {
-              XmlWriter.modifyTag(child, "highscore", Integer.toString(score));
-           }
+
+        // write xml
+        String filePath = "myUserGameFilePath" + myCurrentUser.getName() + ".xml";
+        File f = new File(filePath);
+        XmlParser parser = new XmlParser(f);
+        Document doc = parser.getDocument();
+        Element root = (Element) parser.getDocumentElement();
+        NodeList children = root.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Element child = (Element) children.item(i);
+            if (parser.getTextContent(child, "name").equals(gameName)) {
+                XmlWriter.modifyTag(child, "highscore", Integer.toString(score));
+            }
         }
-        
+
         XmlWriter.writeXML(doc, filePath);
-       
-        
+
         return true;
-        
+
     }
-    public boolean writeGameInfo (String gameName,String info) {
-          myCurrentUser.getGameData(gameName).setMyGameInfo(info);
-          
-          String filePath="myUserGameFilePath"+myCurrentUser.getName()+".xml";
-          File f=new File(filePath);
-          XmlParser parser=new XmlParser(f);
-          Document doc=parser.getDocument();
-          Element root=(Element) parser.getRootElement();
-          NodeList children=root.getChildNodes();
-          for(int i=0;i<children.getLength();i++){
-              Element child=(Element)children.item(i);
-             if(parser.getTextContent(child, "name").equals(gameName)) {
+
+    public boolean writeGameInfo (String gameName, String info) {
+        myCurrentUser.getGameData(gameName).setMyGameInfo(info);
+
+        String filePath = "myUserGameFilePath" + myCurrentUser.getName() + ".xml";
+        File f = new File(filePath);
+        XmlParser parser = new XmlParser(f);
+        Document doc = parser.getDocument();
+        Element root = (Element) parser.getDocumentElement();
+        NodeList children = root.getChildNodes();
+        for (int i = 0; i < children.getLength(); i++) {
+            Element child = (Element) children.item(i);
+            if (parser.getTextContent(child, "name").equals(gameName)) {
                 XmlWriter.modifyTag(child, "gameinfo", info);
-             }
-          }
-          
-          XmlWriter.writeXML(doc, filePath);
-         
-          
-          return true;
-          
-      }
+            }
+        }
+
+        XmlWriter.writeXML(doc, filePath);
+
+        return true;
+
+    }
 
     /*
      * return game history for certain game
      */
-    
+
     public int readGameScore (String gameName) {
-        return  myCurrentUser.getGameData(gameName).getMyHighScore();
-          
-      }
-      public String readGameInfo (String gameName) {
-          return  myCurrentUser.getGameData(gameName).getMyGameInfo();
-            
-        }
+        return myCurrentUser.getGameData(gameName).getMyHighScore();
+
+    }
+
+    public String readGameInfo (String gameName) {
+        return myCurrentUser.getGameData(gameName).getMyGameInfo();
+
+    }
 
 }

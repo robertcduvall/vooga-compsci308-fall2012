@@ -5,11 +5,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import arcade.gamemanager.GameCenter;
 import arcade.datatransfer.GameLink;
 import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
+import arcade.usermanager.SocialCenter;
 
 
 /**
@@ -33,6 +35,7 @@ public class Arcade {
 
     private static ArcadeFrame myFrame;
 
+    private static SocialCenter mySocialCenter;
     private static GameLink myGameManager;
     private static UserLink myUserManager;
     private static PanelCreatorFactory myFactory;
@@ -43,6 +46,7 @@ public class Arcade {
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
+        //mySocialCenter = new SocialCenter();
         myGameManager = new GameLink();
         myUserManager = new UserLink();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
@@ -106,7 +110,7 @@ public class Arcade {
     public void setUsername (String u) {
         myUser = u;
     }
-
+    
     public GameLink getGameManager () {
         return myGameManager;
     }
@@ -121,5 +125,12 @@ public class Arcade {
 
     public Serializable getVariable (String varName) {
         return mySharedVariables.get(varName);
+    }
+
+    /**
+     * @return the mySocialCenter
+     */
+    public SocialCenter getSocialCenter () {
+        return mySocialCenter;
     }
 }
