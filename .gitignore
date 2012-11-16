@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 bin/
 *.class
-*.checkstyle
-=======
-bin/
-
-*.class
-
 *.checkstyle
 .checkstyle
-
 .project
 .settings
-.DS_Store
->>>>>>> master
+*.DS_Store
+

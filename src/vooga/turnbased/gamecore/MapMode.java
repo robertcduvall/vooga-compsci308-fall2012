@@ -1,5 +1,6 @@
 package vooga.turnbased.gamecore;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import vooga.turnbased.gamecore.GameManager.GameEvent;
-import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gameobject.MapTileObject;
@@ -76,18 +77,18 @@ public class MapMode extends GameMode {
                 Point p = new Point(i, j);
                 addMapObject(p, new MapTileObject(ID,
                         GameManager.GameEvent.NO_ACTION, p, GameWindow
-                                .importImage("EditorBackgroundImage")));
+                                .importImage("GrassImage"), this));
             }
         }
         Point center = new Point(7, 5);
         myPlayer = new MapPlayerObject(ID, GameManager.GameEvent.MAP_COLLISION,
-                center, GameWindow.importImage("PlayerImage"));
+                center, GameWindow.importImage("PlayerImage"), this);
         addMapObject(center, myPlayer);
 
         center = new Point(5, 5);
         MovingMapObject test1 = new MovingMapObject(ID,
                 GameManager.GameEvent.MAP_COLLISION, center, GameWindow
-                        .importImage("something"));
+                        .importImage("something"), this);
         addMapObject(center, test1);
     }
 
@@ -117,35 +118,33 @@ public class MapMode extends GameMode {
      *        Graphics onto which the map is drawn
      */
     @Override
-    public void paint (Graphics g) {
-        int playerX = 0;
-        int playerY = 0;
-        // foreach sprite: s.paint(g);
-        for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
-            for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
-                List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
-                int xOffset = (i - (myCurrentCamera.x)) * myCurrentTileWidth
-                        + myOrigin.x;
-                int yOffset = (j - (myCurrentCamera.y)) * myCurrentTileHeight
-                        + myOrigin.y;
-                Image background = GameWindow.importImage("TileBackground");
-                g.drawImage(background, xOffset, yOffset, myCurrentTileWidth,
-                        myCurrentTileHeight, null);
-                if (spritesOnTile != null) {
-                    for (MapObject s : spritesOnTile) {
-                        s.paint(g, xOffset, yOffset, myCurrentTileWidth,
-                                myCurrentTileHeight);
-                        if (s.equals(myPlayer)) {
-                            playerX = xOffset;
-                            playerY = yOffset;
-                        }
-                    }
-                }
-            }
-        }
-        myPlayer.paint(g, playerX, playerY, myCurrentTileWidth,
-                myCurrentTileHeight);
-    }
+	public void paint(Graphics g) {
+		paintMapBackgroung(g);
+		List<MapObject> visibleSprites = getSpritesWithinCamera();
+		for(MapObject s : visibleSprites) {
+			s.paint(g);
+		}
+		myPlayer.paint(g);
+	}
+
+	private void paintMapBackgroung(Graphics g) {
+		Image background = GameWindow.importImage("TileBackground");
+		Dimension paneDim = getGameManager().getPaneDimension();
+		g.drawImage(background,0,0,paneDim.width,paneDim.width, null);
+	}
+
+	private List<MapObject> getSpritesWithinCamera() {
+		List<MapObject> visibleSprites = new ArrayList<MapObject>();
+		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
+			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
+				List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
+				if(spritesOnTile != null) {
+					visibleSprites.addAll(spritesOnTile);
+				}
+			}
+		}
+		return visibleSprites;
+	}
 
     @Override
     /**
@@ -355,4 +354,16 @@ public class MapMode extends GameMode {
                     myBottomRightCorner);
         }
     }
+    
+    public Rectangle getCamera() {
+		return myCurrentCamera;
+	}
+
+	public Dimension getTileDimensions() {
+		return new Dimension(myCurrentTileWidth, myCurrentTileHeight);
+	}
+
+	public Point getOrigin() {
+		return myOrigin;
+	}
 }

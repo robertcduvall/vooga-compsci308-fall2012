@@ -1,5 +1,6 @@
 package vooga.turnbased.gameobject;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
@@ -15,23 +16,24 @@ public abstract class BattleObject extends GameObject {
     private int myDefense;
     private int myAttack;
     private int myHealth;
-    
-    private Image myImage;
-    
 
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
      * @param id the ID number of the object.
+     * @param event The action that this object can pass to the GameManager,
+     * can be GameEvent.NO_ACTION if no action needed
      * @param defense The amount of defense that mitigates losses to health.
      * @param attack The amount of damage the sprite/monster does with each attack.
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
+     * @param image The image of this BattleObject
      */
-    public BattleObject(int id, GameManager.GameEvent event, int defense, int attack, int health) {
-        super(id, event);
-        setMyDefense(defense);
-        setMyAttack(attack);
-        setMyHealth(health);
+    public BattleObject(int id, GameManager.GameEvent event, int defense,
+            int attack, int health, Image image) {
+        super(id, event, image);
+        setDefense(defense);
+        setAttack(attack);
+        setHealth(health);
     }
 
     /**
@@ -56,31 +58,12 @@ public abstract class BattleObject extends GameObject {
     public boolean isAlive() {
         return myHealth > 0;
     }
-    
-    public Image getImage() {
-        return myImage;
-    }
-    
-    //need these for painting
-    public void setImage(Image image) {
-        myImage = image;
-    }
-    
-    public void setImage(String imageLocation) {
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(imageLocation));
-        myImage = ii.getImage();
-    }
-
-
-
-
-
 
     /**
      * Set defense to the input parameter.
      * @param defense The value to set the defense at.
      */
-    public void setMyDefense (int defense) {
+    public void setDefense (int defense) {
         myDefense = defense;
     }
 
@@ -88,7 +71,7 @@ public abstract class BattleObject extends GameObject {
      * Returns the defense stat of the BattleObject/monster.
      * @return This the defense stat of the BattleObject/monster
      */
-    public int getMyDefense () {
+    public int getDefense () {
         return myDefense;
     }
 
@@ -96,7 +79,7 @@ public abstract class BattleObject extends GameObject {
      * Set the attack to be a new value.
      * @param attack The new value for attack.
      */
-    public void setMyAttack (int attack) {
+    public void setAttack (int attack) {
         myAttack = attack;
     }
 
@@ -104,7 +87,7 @@ public abstract class BattleObject extends GameObject {
      * Returns the attack stat of the BattleObjet/monster.
      * @return The value of the attack that is returned.
      */
-    public int getMyAttack () {
+    public int getAttack () {
         return myAttack;
     }
 
@@ -112,7 +95,7 @@ public abstract class BattleObject extends GameObject {
      * Set the health to be a new value.
      * @param health The new value for health.
      */
-    public void setMyHealth (int health) {
+    public void setHealth (int health) {
         myHealth = health;
     }
 
@@ -120,7 +103,7 @@ public abstract class BattleObject extends GameObject {
      * Returns the current health stat of the BattleObjet/monster.
      * @return The value of the health that is returned.
      */
-    public int getMyHealth () {
+    public int getHealth () {
         return myHealth;
     }
 
@@ -131,5 +114,4 @@ public abstract class BattleObject extends GameObject {
     public void changeHealth(int healthDiff) {
         myHealth += healthDiff;
     }
-
 }

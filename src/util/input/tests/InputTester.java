@@ -24,7 +24,7 @@ import javax.swing.event.MouseInputListener;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.factories.ControllerFactory;
-import vooga.platformer.leveleditor.Sprite;
+//import vooga.platformer.leveleditor.Sprite;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 

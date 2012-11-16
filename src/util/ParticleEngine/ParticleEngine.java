@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
-import vooga.shooter.gameObjects.Sprite;
+//import vooga.shooter.gameObjects.Sprite;
 
 /**
  * This class enables the game creators to create, draw, and update a particle
@@ -29,7 +29,7 @@ public class ParticleEngine {
     private int variance;
     private int duration;
 
-    private List<Sprite> particles;
+    //private List<Sprite> particles;
 
     /**
      * Construct the ParticleEngine object using default values
