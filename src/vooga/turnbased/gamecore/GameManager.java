@@ -14,6 +14,7 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
 
 
@@ -58,12 +59,14 @@ public class GameManager {
     private void generateHardcodedSprites () { // factory will do this job
         // eventually...
         Sprite s = new Sprite();
-        s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 1, 3));
+        s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 2, 3, GameWindow
+                .importImage("something")));
 
         mySprites.put(s.getID(), s);
 
         s = new Sprite();
-        s.addGameObject(new TestMonster(1, GameEvent.NO_ACTION, 1, 1, 3));
+        s.addGameObject(new TestMonster(1, GameEvent.NO_ACTION, 1, 2, 3, GameWindow
+                .importImage("PlayerImage")));
 
         mySprites.put(s.getID(), s);
 
@@ -112,7 +115,7 @@ public class GameManager {
             case NO_ACTION:
                 break;
             case MAP_COLLISION:
-                if (myInvolvedIDs.size() >= 2) {
+                if (myInvolvedIDs.size() >= 2) {//this should be in map mode!
                     changeCurrentMode(myBattleMode);
                 }
                 break;

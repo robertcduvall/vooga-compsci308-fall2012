@@ -2,33 +2,21 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
 import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gamecore.MapMode;
 
 /**
  * This class is a bit stupid
  */
 public class MapTileObject extends MapObject {
 
-    public MapTileObject(int id, GameManager.GameEvent event, Point location, Image mapImage) {
-        super(id, event, location, mapImage);
+    public MapTileObject(int id, GameManager.GameEvent event, Point location, Image mapImage, MapMode mapMode) {
+        super(id, event, location, mapImage, mapMode);
     }
     
     @Override 
     public void update(int delayTime) {
-        // tile behaviour on update
+        // tile behavior on update
     }
-    
-    @Override
-    public void handleKeyPressed(KeyEvent e) {
-        // tile behaviour on keyPress
-    }
-    
-    @Override
-    public void handleKeyReleased(KeyEvent e) {
-        // tile behaviour on keyReleased
-    }
-
 }
