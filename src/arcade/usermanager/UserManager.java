@@ -21,7 +21,7 @@ public class UserManager {
         //TODO: Implement this.
         return null;
     }
-    public void addNewUser(String username, String password, String imageLocation, boolean gender, int age, String motto){
+    public void addNewUser(String username, String password){
         //TODO: Implement this.
     }
 }
