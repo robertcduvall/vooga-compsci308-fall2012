@@ -74,24 +74,15 @@ public class InputTester extends Applet implements MouseInputListener {
     }
 
     private void setControllers () {
-        // Wiimote wiiObj = connectWii();
-        // System.out.println(wiiObj);
         myMouseController = (MouseController) ControllerFactory
                 .createMouseController(this);
         //myMouseController.subscribe(this);
         myKeyController = (KeyboardController) ControllerFactory.createKeyboardController(this);
     }
 
-    private Wiimote connectWii () {
-        Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
-        Wiimote wiimote = wiimotes[0];
-        return wiimote;
-    }
-
     public void configureActions () throws IllegalAccessException,
             InstantiationException {
         try {
-            System.out.println("configureActions");
             myMouseController.setControl(MouseEvent.BUTTON1,
                     MouseController.PRESSED, mainPlayer, "move");
             // myMouseController.setControl(WiiController.WIIMOTE_BUTTON_LEFT,
@@ -243,7 +234,6 @@ public class InputTester extends Applet implements MouseInputListener {
     @Override
     public void mouseMoved (MouseEvent e) {
         System.out.println("Mouse Moved" + e);
-
     }
 
 }

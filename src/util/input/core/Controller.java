@@ -35,7 +35,7 @@ public abstract class Controller<T> {
     /**
      * Create a new Controller with an elements that
      * subscribes to its raw data.
-     * 
+     *
      * @param element - The subscribing element
      */
     Controller (T element) {
@@ -45,7 +45,7 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events.
-     * 
+     *
      * @param element - The subscribing class
      */
     public void subscribe (T element) {
@@ -54,7 +54,7 @@ public abstract class Controller<T> {
 
     /**
      * Object invokes a method every time action and type occur.
-     * 
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -72,7 +72,7 @@ public abstract class Controller<T> {
 
     /**
      * Class invokes a static method every time action and type occur.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -102,7 +102,7 @@ public abstract class Controller<T> {
 
     /**
      * Set the desired action on or off.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param isActive - Whether the action should be active or not

@@ -10,11 +10,12 @@ import util.input.interfaces.listeners.AndroidListener;
 
 /**
  * This class allows users to enter input through an Android app.
- * 
+ *
  * @author Ben, Lance
- * 
+ *
  */
 public class AndroidController extends Controller<AndroidListener> implements AndroidListener {
+
     /**
      * Create a new android controller.
      */
