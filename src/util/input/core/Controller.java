@@ -1,4 +1,5 @@
 package util.input.core;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -57,14 +58,18 @@ public abstract class Controller<T> {
      * @param type - Pressed or released
      * @param o - The invoking object
      * @param method - The method to be invoked
-     * @throws NoSuchMethodException - thrown if the string method passed in is not a method of Object o
-     * @throws IllegalAccessException -" thrown when an application tries to reflectively create an instance (other than an array), 
+     * @throws NoSuchMethodException - thrown if the 
+     * string method passed in is not a method of Object o
+     * @throws IllegalAccessException -" thrown when an 
+     * application tries to reflectively create an instance (other than an array), 
      * set or get a field, or invoke a method, but the currently executing method does not have access to the definition of 
      * the specified class, field, method or constructor"
      */
     public void setControl(int action, int type, Object o, String method)
-            throws NoSuchMethodException, IllegalAccessException {
-        Method m = retrieveMethod(o, method);
+            throws NoSuchMethodException,
+            IllegalAccessException{
+        Method m;
+        m = retrieveMethod(o, method);
         myMenuPlate.put(UKeyCode.codify(type, action),
                 new BoolTuple<Object, Method>(o, m));
     }
@@ -80,11 +85,13 @@ public abstract class Controller<T> {
      * @throws InstantiationException- "thrown when an application tries to create an instance of a class 
      * using the newInstance method in class Class, but the specified class object cannot be instantiated because it is an
      *  interface or is an abstract class."
+     * @throws IllegalAccessException -" thrown when an application tries to reflectively create an instance (other than an array), 
+     * set or get a field, or invoke a method, but the currently executing method does not have access to the definition of 
+     * the specified class, field, method or constructor"
      */
     @SuppressWarnings("rawtypes")
     public void setControl (int action, int type, Class c, String method)
-            throws NoSuchMethodException,
-            IllegalAccessException,
+            throws NoSuchMethodException, IllegalAccessException,
             InstantiationException {
         Method m = retrieveMethod(c, method);
         myMenuPlate.put(UKeyCode.codify(type, action),
@@ -181,7 +188,7 @@ public abstract class Controller<T> {
 
     @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Object o, String method)
-            throws NoSuchMethodException,IllegalAccessException {
+            throws NoSuchMethodException,IllegalAccessException{
         Class oc = o.getClass();
         Method[] allMethods = oc.getMethods();
         for (Method m : allMethods) {
@@ -194,24 +201,31 @@ public abstract class Controller<T> {
 
     @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Class c, String method)
-            throws NoSuchMethodException, IllegalAccessException {
+            throws NoSuchMethodException, IllegalAccessException,
+            InstantiationException{
         for (Method m : c.getMethods()) {
             if (m.getName().equals(method) && Modifier.isStatic(m.getModifiers())) { return m; }
         }
         accessLegalityCheck(c, method);
+        instantiationLegalityCheck(c, method);
         throw new NoSuchMethodException();
     }
 
-    private void accessLegalityCheck (Object o, String method) throws IllegalAccessException {
-        Class oc=o.getClass();
-        Method[] allMethods =oc.getDeclaredMethods();
+    private void accessLegalityCheck (Object o, String method) 
+            throws IllegalAccessException {
+        Class oc = o.getClass();
+        Method[] allMethods = oc.getDeclaredMethods();
         for (Method m : allMethods) {
             if (!m.isAccessible()) {
                 throw new IllegalAccessException();
             }
         }
-        
     }
     
-    
+    private void instantiationLegalityCheck (Class c, String method) 
+            throws InstantiationException{
+        if (Modifier.ABSTRACT==c.getModifiers()|| Modifier.ABSTRACT==Modifier.INTERFACE){
+            throw new InstantiationException();
+        }
+    }
 }
