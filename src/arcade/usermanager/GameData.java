@@ -1,10 +1,17 @@
 package arcade.usermanager;
 
+/**
+ * 
+ * @author Howard, modified by difan
+ *
+ */
+
 public class GameData {
     private String myGameName;
     private String myGameInfo;
     private int myHighScore;
     private int myTimesPlayed;
+    
 
     public GameData (String name, String gameInfo, int highScore, int timesPlayed) {
         setMyGameName(name);

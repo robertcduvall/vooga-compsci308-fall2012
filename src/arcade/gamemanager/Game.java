@@ -104,7 +104,9 @@ public class Game {
         tags.add("rating");
         Integer scores = 0;
         List<String> ratings = ReadWriter.search(f, tags);
-        if (ratings.size() == 0) return null;
+        if (ratings.size() == 0) {
+            return null;
+        }
         for (String s : ratings) {
             scores += Integer.parseInt(s);
         }
@@ -150,7 +152,9 @@ public class Game {
         List<String> tags = new ArrayList<String>();
         tags.add(myGame.getName());
         tags.add("review");
-        if (ReadWriter.search(f, tags).size() == 0) return "";
+        if (ReadWriter.search(f, tags).size() == 0) {
+            return "";
+        }
         return ReadWriter.loadData(f, tags);
     }
 
@@ -168,18 +172,29 @@ public class Game {
         ReadWriter.storeData(f, tags, Integer.toString(rating));
     }
 
+    /**
+     * Returns the thumbnail image associated with the game.
+     */
     public Image getImage () {
         return myGame.getMainImage();
     }
 
+    /**
+     * Returns the name of the game.
+     */
     public String getGameName () {
         return myGame.getName();
     }
 
+    /**
+     * Returns the genre of the game for the purposes of sorting.
+     */
     public String getGenre () {
         NodeList gameInfo = myGameNode.getChildNodes();
-        for(int i=0; i<gameInfo.getLength(); i++) {
-            if(gameInfo.item(i).equals("name")) return gameInfo.item(i).getTextContent();
+        for (int i = 0; i < gameInfo.getLength(); i++) {
+            if ("name".equals(gameInfo.item(i))) {
+                return gameInfo.item(i).getTextContent();
+            }
         }
         return null;
     }

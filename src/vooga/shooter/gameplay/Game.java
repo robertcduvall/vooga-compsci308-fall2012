@@ -25,24 +25,44 @@ import vooga.shooter.level_editor.Level;
  *
  * @author Tommy Petrilak
  * @author Stephen Hunt
+ * @author Jesse Starr
  */
 public class Game {
+    private static final String HIT_BY = "hitby";
+
     private List<Sprite> mySprites;
     private Player myPlayer;
+    private Player myPlayer2;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
     private Image myPlayerImage;
     private ImageIcon myImageIcon;
+    private final int myPlayerHealth = 10;
+    private final Dimension myPlayerSize = new Dimension(20, 20);
+    private final Point myPlayerOneStart = new Point(400, 300);
+    private final Point myPlayerTwoStart = new Point(400, 500);
 
-    private void initializeGame (Canvas c) {
-        myImageIcon = new ImageIcon(this.getClass().
-                getResource("../vooga/shooter/images/alien.png"));
+    private void initializeGame (Canvas c, boolean multiplayer) {
+        myImageIcon = new ImageIcon(this.getClass().getResource(
+                        "../vooga/shooter/images/alien.png"));
         myPlayerImage = myImageIcon.getImage();
-        myPlayer = new Player(new Point(400, 300), new Dimension(20, 20),
-                new Dimension(myCanvas.getWidth(), myCanvas.getHeight()),
-                myPlayerImage, 10);
+        myPlayer = new Player(myPlayerOneStart, myPlayerSize,
+                           new Dimension(myCanvas.getWidth(),
+                           myCanvas.getHeight()), myPlayerImage,
+                           myPlayerHealth);
+
         addSprite(myPlayer);
+
+        if (multiplayer) {
+            myPlayer2 = new Player(myPlayerOneStart, myPlayerSize,
+                    new Dimension(myCanvas.getWidth(),
+                    myCanvas.getHeight()),
+                    myPlayerImage, myPlayerHealth);
+
+            addSprite(myPlayer2);
+        }
+
         Level firstLevel = new Level1(this);
         myCanvas = c;
         myCanvas.addKeyListener(new KeyboardListener());
@@ -74,14 +94,18 @@ public class Game {
                     continue;
                 }
 
-                //list of the two sprites that collide
-                //either enemy/player, enemy/enemy, or bullet/sprite
+                // list of the two sprites that collide
+                // either enemy/player, enemy/enemy, or bullet/sprite
                 List<Sprite> collides = collisionCheck(s1, s2);
+
+                //if there is a collision
                 if (collides.size() > 0) {
-                    String key = "hitby" + collides.get(1).getType();
+                    String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
 
-                    key = "hitby" + collides.get(0).getType();
+                    //might not need this second one if going through
+                    //all combinations of sprites anyway
+                    key = HIT_BY + collides.get(0).getType();
                     collides.get(1).doEvent(key, collides.get(0));
                 }
             }
@@ -96,46 +120,46 @@ public class Game {
      * @param s1 The first sprite to check.
      * @param s2 The second sprite to check.
      * @return Returns a list of 2 sprites: either (1) the two original
-     * sprites if they are colliding, or (2) a bullet from one sprite,
-     * and the other sprite itself
+     *         sprites if they are colliding, or (2) a bullet from one sprite,
+     *         and the other sprite itself
      */
-    List<Sprite> collisionCheck(Sprite s1, Sprite s2) {
+    List<Sprite> collisionCheck (Sprite s1, Sprite s2) {
         List<Sprite> ret = new ArrayList<Sprite>();
 
-        //get bounds of both sprites
-        Rectangle r1 = new Rectangle(new Point(
-                s1.getLeft(), s1.getTop()), s1.getSize());
-        Rectangle r2 = new Rectangle(new Point(
-                s2.getLeft(), s2.getTop()), s2.getSize());
+        // get bounds of both sprites
+        Rectangle r1 = new Rectangle(new Point(s1.getLeft(),
+                s1.getTop()), s1.getSize());
+        Rectangle r2 = new Rectangle(new Point(s2.getLeft(),
+                s2.getTop()), s2.getSize());
 
-        //checks for collision between 1st and 2nd sprite
+        // checks for collision between 1st and 2nd sprite
         if (r1.intersects(r2)) {
             ret.add(s1);
             ret.add(s2);
             return ret;
         }
 
-        //will be bounds for the bullets from sprites
+        // will be bounds for the bullets from sprites
         Rectangle bulletR;
 
-        //checks for bullets from 1st sprite hitting 2nd sprite
+        // checks for bullets from 1st sprite hitting 2nd sprite
         for (Bullet b : s1.getBulletsFired()) {
-            bulletR = new Rectangle(new Point(
-                    b.getLeft(), b.getTop()), b.getSize());
+            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
+                    b.getSize());
             if (bulletR.intersects(r2)) {
-                ret.add(b);
                 ret.add(s2);
+                ret.add(b);
                 return ret;
             }
         }
 
-        //checks for bullets from 2nd sprite hitting 1st sprite
+        // checks for bullets from 2nd sprite hitting 1st sprite
         for (Bullet b : s2.getBulletsFired()) {
-            bulletR = new Rectangle(new Point(
-                    b.getLeft(), b.getTop()), b.getSize());
+            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
+                    b.getSize());
             if (bulletR.intersects(r1)) {
-                ret.add(b);
                 ret.add(s1);
+                ret.add(b);
                 return ret;
             }
         }
@@ -196,7 +220,7 @@ public class Game {
 
     /**
      * @param sprites the new list to set the
-     * current mySprites to
+     *        current mySprites to
      */
     public void setSprites (List<Sprite> sprites) {
         this.mySprites = sprites;
@@ -211,7 +235,7 @@ public class Game {
 
     /**
      * @param enemies the new list of enemies to set
-     * the current list to
+     *        the current list to
      */
     public void setEnemies (List<Enemy> enemies) {
         this.myEnemies = enemies;
@@ -219,8 +243,8 @@ public class Game {
 
     /**
      * Listens for input and sends input to the method mapper.
-     * @author Stephen Hunt
      *
+     * @author Stephen Hunt
      */
     private class KeyboardListener implements KeyListener {
         private int myNumKeysPressed;

@@ -3,6 +3,7 @@ package arcade.usermanager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import util.xml.XmlBuilder;
 import util.xml.XmlWriter;
 import java.io.File;
 import java.io.StringWriter;
@@ -59,21 +60,21 @@ public class UserXMLWriter {
 
     private  void makeBasicXml(String userName, String password, String picture){
         String basicInfoFilePath=myUserBasicFilePath+userName+".xml";
-        Document basicDoc=XmlWriter.makeNewDocument(basicInfoFilePath);
+        Document basicDoc=XmlBuilder.createDocument(basicInfoFilePath);
         
         Element rootElement = basicDoc.createElement("user");
         basicDoc.appendChild(rootElement);
         
-        XmlWriter.appendElement(basicDoc,rootElement,"name",userName);
-        XmlWriter.appendElement(basicDoc,rootElement,"password",password);
-        XmlWriter.appendElement(basicDoc,rootElement,"picture",picture);
+        XmlBuilder.appendElement(basicDoc,rootElement,"name",userName);
+        XmlBuilder.appendElement(basicDoc,rootElement,"password",password);
+        XmlBuilder.appendElement(basicDoc,rootElement,"picture",picture);
         XmlWriter.writeXML(basicDoc, basicInfoFilePath);
         
     }
     
     private  void makeMessageXml(String userName){
         String messageFilePath=myUserMessageFilePath+userName+".xml";
-        Document doc=XmlWriter.makeNewDocument(messageFilePath);
+        Document doc=XmlBuilder.createDocument(messageFilePath);
         
         Element rootElement = doc.createElement("message");
         doc.appendChild(rootElement);
@@ -85,7 +86,7 @@ public class UserXMLWriter {
     
     private  void makeGameXml(String userName){
         String gameFilePath=myUserGameFilePath+userName+".xml";
-        Document doc=XmlWriter.makeNewDocument(gameFilePath);
+        Document doc=XmlBuilder.createDocument(gameFilePath);
         
         Element rootElement = doc.createElement("game");
         doc.appendChild(rootElement);

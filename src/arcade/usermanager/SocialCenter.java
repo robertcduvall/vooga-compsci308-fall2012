@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import util.xml.XmlBuilder;
 import util.xml.XmlParser;
 import util.xml.XmlWriter;
 import arcade.utility.FileOperation;
@@ -25,7 +26,7 @@ import arcade.utility.FileOperation;
 public class SocialCenter {
     private User myCurrentUser;
     private static SocialCenter mySocialCenter;
-    private Map<String, User> myAllUser;
+    //private Map<String, User> myAllUser;
     private String myUserBasicFilePath;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
@@ -33,6 +34,7 @@ public class SocialCenter {
     private UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
     private static ResourceBundle resource;
+    private UserManager myUserManager;
 
     public static SocialCenter getInstance () {
         if (mySocialCenter == null) mySocialCenter = new SocialCenter();
@@ -43,124 +45,91 @@ public class SocialCenter {
     /*
      * initiate user list
      */
-    public SocialCenter () {
+    private SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
+        myUserManager=UserManager.getInstance();
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
 
-        // availableUserName=new ArrayList<String>();
-        myAllUser = new HashMap<String, User>();
-
-        File folder = new File(myUserBasicFilePath);
-        File[] listOfFiles = folder.listFiles();
-
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                String name = listOfFiles[i].getName();
-                User newUser = myXMLReader.getUser(name);
-                myAllUser.put(name, newUser);
-
-            }
-        }
-
+        
     }
 
-    private User addNewUser (String userName, String password, String picture) {
-        // write an xml file
-        myXMLWriter.makeUserXML(userName, password, picture);
-        // make new user class
-        User newUser = myXMLReader.getUser(userName);
-        myAllUser.put(userName, newUser);
-        return newUser;
+   
 
-    }
-
-    private String validateUser (String userName, String password) {
-        if (!myAllUser.containsKey(userName)) return "Such user does not exist";
-        if (!myAllUser.get(userName).getPassword().equals(password))
-            return "Password is incorrect";
-        return successString;
-
-    }
+   
 
     /*
      * 
      * return log on status
      */
-    public String logOnUser (String userName, String password) {
-        String status = validateUser(userName, password);
-        if (!status.equals(successString)) return status;
+    public boolean logOnUser (String userName, String password) throws Exception {
+     String status=myUserManager.validateUser(userName, password);
+      
+     
+        if (!status.equals(successString)){
+            
+            throw new Exception(status);
+        
+        
+        }
         // set current user
-        myCurrentUser = myAllUser.get(userName);
+        myCurrentUser = myUserManager.getUser(userName);
 
-        return successString;
+        return true;
     }
 
     /*
      * return log on status
      */
-    public String registerUser (String userName, String password, String picture) {
+    public boolean registerUser (String userName, String password, String picture) throws Exception {
         // check validity
-        if (myAllUser.containsKey(userName)) return "This user already exists";
+        if (myUserManager.validateUser(userName,"").equals("This user exists, however password is incorrect")){
+            throw new Exception("This user already exists");
+        } 
 
         // valid registration
-        addNewUser(userName, password, picture);
-        myCurrentUser = myAllUser.get(userName);
+        myCurrentUser = myUserManager.addNewUser(userName, password, picture);
+        
 
-        return successString;
+        return true;
     }
 
     /*
      * return operation status
      */
-    public String deleteUser (String userName, String password) {
+    public boolean deleteUser (String userName, String password)throws Exception {
         // check validity
-        String status = validateUser(userName, password);
-        if (!status.equals(successString)) return status;
+        String status = myUserManager.validateUser(userName, password);
+        if (!status.equals(successString)) throw new Exception(status);
 
         // valid file
         FileOperation.deleteFile(myUserBasicFilePath + userName + ".xml");
         FileOperation.deleteFile(myUserMessageFilePath + userName + ".xml");
         FileOperation.deleteFile(myUserGameFilePath + userName + ".xml");
-        myAllUser.remove(userName);
-        return successString;
+        myUserManager.deleteUser(userName);
+        return true;
     }
 
-    /*
-     * return current user name
-     */
-    public String getUserName () {
-
-        return myCurrentUser.getName();
-
-    }
-
-    /*
-     * edit user name
-     */
-    public void editUserName (String newName) {
-        myCurrentUser.setName(newName);
-
-    }
-
+    
     /*
      * return operation status
      */
-    public String sendMessage (String sender, String receiver, String content) {
+    public boolean sendMessage (String sender, String receiver, String content) {
         String filePath = "myUserMessageFilePath" + receiver + ".xml";
         File f = new File(filePath);
         XmlParser parser = new XmlParser(f);
         Document doc = parser.getDocument();
         Element root = (Element) parser.getDocumentElement();
-        Element message = XmlWriter.appendElement(doc, root, "Message", "");
-        XmlWriter.appendElement(doc, message, "receiver", receiver);
-        XmlWriter.appendElement(doc, message, "content", content);
+        Element message = XmlBuilder.appendElement(doc, root, "Message", "");
+        XmlBuilder.appendElement(doc, message, "receiver", receiver);
+        XmlBuilder.appendElement(doc, message, "content", content);
         XmlWriter.writeXML(doc, filePath);
-        myCurrentUser.updateMyMessage();
-        return successString;
+        myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        
+        return true;
     }
 
     /*
@@ -188,7 +157,7 @@ public class SocialCenter {
         for (int i = 0; i < children.getLength(); i++) {
             Element child = (Element) children.item(i);
             if (parser.getTextContent(child, "name").equals(gameName)) {
-                XmlWriter.modifyTag(child, "highscore", Integer.toString(score));
+                XmlBuilder.modifyTag(child, "highscore", Integer.toString(score));
             }
         }
 
@@ -210,7 +179,7 @@ public class SocialCenter {
         for (int i = 0; i < children.getLength(); i++) {
             Element child = (Element) children.item(i);
             if (parser.getTextContent(child, "name").equals(gameName)) {
-                XmlWriter.modifyTag(child, "gameinfo", info);
+                XmlBuilder.modifyTag(child, "gameinfo", info);
             }
         }
 
