@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import vooga.turnbased.gameobject.BattleObject;
@@ -38,8 +37,8 @@ public class GameManager {
     // private MapObject myPlayer;
     private final boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
-	private KeyboardController myKeyboardController;
-	private MouseController myMouseController;
+    private KeyboardController myKeyboardController;
+    private MouseController myMouseController;
 
     /**
      * Constructor of GameManager
@@ -63,7 +62,7 @@ public class GameManager {
         configureInputHandling();
     }
 
-	private void generateHardcodedSprites () { // factory will do this job
+    private void generateHardcodedSprites () { // factory will do this job
         // eventually...
         Sprite s = new Sprite();
         s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 2, 3, GameWindow
@@ -122,7 +121,7 @@ public class GameManager {
             case NO_ACTION:
                 break;
             case MAP_COLLISION:
-                if (myInvolvedIDs.size() >= 2) {//this should be in map mode!
+                if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
                     changeCurrentMode(myBattleMode);
                 }
                 break;
@@ -161,17 +160,18 @@ public class GameManager {
     public enum GameEvent {
         MAP_COLLISION, BATTLE_OVER, NO_ACTION
     }
-	
-	public KeyboardController getKeyboardController() {
-		return myKeyboardController;
-	}
-	
-	public MouseController getMouseController() {
-		return myMouseController;
-	}
-	
-    private void configureInputHandling() {
-		// handle actions that shouldn't be passed down to individual gamemodes, i.e. game pause
-	}
+
+    public KeyboardController getKeyboardController () {
+        return myKeyboardController;
+    }
+
+    public MouseController getMouseController () {
+        return myMouseController;
+    }
+
+    private void configureInputHandling () {
+        // handle actions that shouldn't be passed down to individual gamemodes,
+        // i.e. game pause
+    }
 
 }
