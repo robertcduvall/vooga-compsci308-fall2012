@@ -256,7 +256,7 @@ public class Game {
 	}
 
 	public String geProperty(String tag) {
-		return getGameElement(tag, (Element) myGameNode);
+		return getProperty(tag, (Element) myGameNode);
 	}
 	/**
 	 * General function for getting String lists by passing a string of the tag.
