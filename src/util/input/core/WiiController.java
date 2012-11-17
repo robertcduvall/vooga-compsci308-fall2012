@@ -1,6 +1,7 @@
 package util.input.core;
 
 import util.input.inputhelpers.UKeyCode;
+import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -44,10 +45,12 @@ public class WiiController extends Controller<WiimoteListener> implements
     /**
      * Create a new Wii controller.
      *
-     * @param wii - The Wiimote object to which we add the event listeners
      */
-    public WiiController(Wiimote wii) {
-        wii.addWiiMoteEventListeners(this);
+    public WiiController() {
+        super();
+        Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
+        Wiimote wiimote = wiimotes[0];
+        wiimote.addWiiMoteEventListeners(this);
     }
 
     @Override

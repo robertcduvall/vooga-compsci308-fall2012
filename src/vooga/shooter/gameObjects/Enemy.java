@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
  * Represents an enemy sprite to be used in the game.
@@ -69,6 +70,26 @@ public class Enemy extends Sprite {
 
     @Override
     void setMethods () {
+        //if the enemy is hit by a player's bullet then both
+        //bullet and enemy die
+        getMapper().addPair("hitbybullet", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
+                if ("player".equals(bulletOwnerType)) {
+                    die();
+                    ((Bullet) o[0]).die();
+                }
+            }
+        });
 
+        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
+                ((Player) o[0]).die();
+            }
+        });
+
+        //do nothing if an enemy intersects an enemy
+        getMapper().addPair("hitbyenemy", this);
     }
 }

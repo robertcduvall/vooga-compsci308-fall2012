@@ -9,11 +9,12 @@ import java.util.Map;
 import util.input.inputhelpers.BoolTuple;
 import util.input.inputhelpers.UKeyCode;
 
+
 /**
  * This class represents an abstract controller to provide input.
- *
+ * 
  * @author Amay, Lance
- *
+ * 
  * @param <T>
  */
 public abstract class Controller<T> {
@@ -45,7 +46,7 @@ public abstract class Controller<T> {
      *
      * @param element - The subscribing class
      */
-    public void subscribe(T element) {
+    public void subscribe (T element) {
         mySubscribedElements.add(element);
     }
 
@@ -81,8 +82,9 @@ public abstract class Controller<T> {
      *  interface or is an abstract class."
      */
     @SuppressWarnings("rawtypes")
-    public void setControl(int action, int type, Class c, String method)
-            throws NoSuchMethodException, IllegalAccessException,
+    public void setControl (int action, int type, Class c, String method)
+            throws NoSuchMethodException,
+            IllegalAccessException,
             InstantiationException {
         Method m = retrieveMethod(c, method);
         myMenuPlate.put(UKeyCode.codify(type, action),
@@ -111,17 +113,36 @@ public abstract class Controller<T> {
      * @throws InvocationTargetException
      * @throws NoSuchMethodException 
      */
-    protected void performReflections(Object inputEvent, String method,
-            int actionID) throws IllegalAccessException,
-            InvocationTargetException, NoSuchMethodException {
+    protected void performReflections (Object inputEvent, String method, int actionID)
+            throws IllegalAccessException,
+            InvocationTargetException,
+            NoSuchMethodException {
         broadcastToSubscribers(method, inputEvent);
         invokeMethod(actionID);
     }
 
+    /**
+     * Broadcast an event that does not need a description to your subscribers.
+     * @param e
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
+    protected void broadcast (String methodName) throws IllegalAccessException,
+    InvocationTargetException,
+    NoSuchMethodException {
+        for (T subscribedElement : mySubscribedElements) {
+            Method method = subscribedElement.getClass().getMethod(methodName);
+            System.out.println(method);
+            method.invoke(subscribedElement);
+        }
 
+    }
+
+    // PRIVATE METHODS
     /**
      * broadcasts the method to all subscribed elements.
-     *
+     * 
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
@@ -130,12 +151,15 @@ public abstract class Controller<T> {
      * @throws SecurityException
      * @throws NoSuchMethodException
      */
-    private void broadcastToSubscribers(String methodName, Object inputEvent)
-            throws IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+    private void broadcastToSubscribers (String methodName, Object inputEvent)
+            throws IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException,
+            NoSuchMethodException,
+            SecurityException {
         for (T subscribedElement : mySubscribedElements) {
-            Method method = subscribedElement.getClass().getMethod(
-                    methodName, inputEvent.getClass());
+            Method method =
+                    subscribedElement.getClass().getMethod(methodName, inputEvent.getClass());
             System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
@@ -147,12 +171,11 @@ public abstract class Controller<T> {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    private void invokeMethod(int actionID) throws IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
+    private void invokeMethod (int actionID) throws IllegalAccessException,
+    IllegalArgumentException, InvocationTargetException {
         BoolTuple<Object, Method> retrieveTuple = myMenuPlate.get(actionID);
         if (retrieveTuple != null && retrieveTuple.isActive()) {
-            retrieveTuple.getLast().invoke(retrieveTuple.getFirst(),
-                    new Object[0]);
+            retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
         }
     }
 
@@ -162,9 +185,7 @@ public abstract class Controller<T> {
         Class oc = o.getClass();
         Method[] allMethods = oc.getMethods();
         for (Method m : allMethods) {
-            if (m.getName().equals(method)) {
-                return m;
-            }
+            if (m.getName().equals(method)) { return m; }
         }
         accessLegalityCheck(o, method);
         throw new NoSuchMethodException();
@@ -175,10 +196,7 @@ public abstract class Controller<T> {
     private Method retrieveMethod(Class c, String method)
             throws NoSuchMethodException, IllegalAccessException {
         for (Method m : c.getMethods()) {
-            if (m.getName().equals(method)
-                    && Modifier.isStatic(m.getModifiers())) {
-                return m;
-            }
+            if (m.getName().equals(method) && Modifier.isStatic(m.getModifiers())) { return m; }
         }
         accessLegalityCheck(c, method);
         throw new NoSuchMethodException();
