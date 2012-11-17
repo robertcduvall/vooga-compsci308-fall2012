@@ -13,7 +13,7 @@ import arcade.utility.ReadWriter;
 
 /**
  * 
- * @author Jei Min Yoo
+ * @author Jei Min Yoo, Seon Kang
  *
  */
 public class GameCenter {
@@ -59,6 +59,8 @@ public class GameCenter {
     /**
      * Default element is the document.
      * 
+     * @auther Seon Kang
+     * 
      * @param tag
      * @return
      */
@@ -79,7 +81,7 @@ public class GameCenter {
     /**
      * A more general way to get game properties.
      * 
-     * @auther Seon Kang
+     * @author Seon Kang
      * @param gameName 
      * @param tag 
      * @return

@@ -69,4 +69,17 @@ public class GameData {
         return false;
 
     }
+    /**
+     * Added getters for use in Game model, hope that's okay. 
+     *
+     * @author Seon Kang
+     * @return
+     */
+    public String getGameInfoKeyString() {
+    	return myGameInfo;
+    }
+    
+    public String getHighScoreKeyString() {
+    	return myHighScore;
+    }
 }

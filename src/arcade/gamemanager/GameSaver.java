@@ -10,45 +10,59 @@ import arcade.usermanager.User;
  * Class that the games use to save preferences and score.
  * GameSaver will update User object.
  * 
- * @author Jei Min Yoo
+ * @author Jei Min Yoo, Seon Kang
  * 
  */
 public class GameSaver {
 
-    private String myUserName;
+    private User myUser;
     private IArcadeGame myGame;
-    private SocialCenter socialCenter;
+    private SocialCenter mySocialCenter;
 
     /**
      * Constructor for GameSaver.
      */
-    public GameSaver(String userName, IArcadeGame game) {
-        myUserName = userName;
+    public GameSaver(User user, IArcadeGame game) {
+    	setMyUser(user);
         myGame = game;
-        socialCenter = SocialCenter.getInstance();
+        mySocialCenter = SocialCenter.getInstance();
     }
 
+    protected void setMyUser(User user) {
+    	myUser = user;
+	}
+
     /**
+     * 
+     * @author Seon Kang
+     * @param property
+     * @param value
+     */
+    public void saveUserProperty(String property, String value) {
+    	myUser.getGameData(myGame.getName()).setGameInfo(property, value);
+    }
+    
+    public void saveUserProperty(String property, int i) {
+    	saveUserProperty(property, ((Integer) i).toString());
+    }
+    
+	/**
      * Used by the game, this method updates gameInfo in User's GameData
      * 
      * @param userGameInfo preferences
      */
     public void saveGameInfo (String userGameInfo) {
-
-        socialCenter.writeGameInfo(myGame.getName(), userGameInfo);
-        // what happens if saving a new game? handled in SocialCenter?
-
+    	saveUserProperty(myUser.getGameData(myGame.getName()).getGameInfoKeyString(),
+    			userGameInfo);
     }
 
     /**
      * Used by the game, this method updates high score for a game in User's
      * GameData.
-     * 
      * @param score score to be saved
      */
     public void saveHighScore (int score) {
-        // method to be implemented in SocialCenter?
-        socialCenter.writeGameScore(myGame.getName(),score);
-        
+    	saveUserProperty(myUser.getGameData(myGame.getName()).getHighScoreKeyString(), 
+    			score);
     }
 }
