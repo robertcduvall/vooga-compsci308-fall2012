@@ -1,8 +1,6 @@
 package arcade.gamemanager;
 
 import arcade.IArcadeGame;
-import arcade.usermanager.GameData;
-import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
 
 
@@ -10,14 +8,13 @@ import arcade.usermanager.User;
  * Class that the games use to save preferences and score.
  * GameSaver will update User object.
  * 
- * @author Jei Min Yoo, Seon Kang
+ * @author Seon Kang, Jei Min Yoo
  * 
  */
 public class GameSaver {
 
     private User myUser;
     private IArcadeGame myGame;
-    private SocialCenter mySocialCenter;
 
     /**
      * Constructor for GameSaver.
@@ -25,7 +22,6 @@ public class GameSaver {
     public GameSaver(User user, IArcadeGame game) {
     	setMyUser(user);
         myGame = game;
-        mySocialCenter = SocialCenter.getInstance();
     }
 
     protected void setMyUser(User user) {
@@ -33,8 +29,8 @@ public class GameSaver {
 	}
 
     /**
-     * 
      * @author Seon Kang
+     * 
      * @param property
      * @param value
      */
@@ -49,6 +45,7 @@ public class GameSaver {
 	/**
      * Used by the game, this method updates gameInfo in User's GameData
      * 
+     * @author Seon Kang
      * @param userGameInfo preferences
      */
     public void saveGameInfo (String userGameInfo) {
@@ -59,6 +56,7 @@ public class GameSaver {
     /**
      * Used by the game, this method updates high score for a game in User's
      * GameData.
+     * @author Seon Kang
      * @param score score to be saved
      */
     public void saveHighScore (int score) {
