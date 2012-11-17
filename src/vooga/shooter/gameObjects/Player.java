@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
@@ -77,14 +76,22 @@ public class Player extends Sprite {
         });
 
         //-1 is the int value for no key pressed
-        getMapper().addPair("-1", this);
+        getMapper().addPair("-1", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                setVelocity(0, 0);
+            }
+        });
 
-        //the player is hit with a bullet (decreases health)
-        //also the bullet that hit the player goes away
         getMapper().addPair("hitbybullet", new SpriteActionInterface() {
             public void doAction(Object...o) {
                 decreaseHealth(((Bullet) o[0]).getDamage());
                 ((Bullet) o[0]).die();
+            }
+        });
+
+        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
             }
         });
     }

@@ -98,10 +98,13 @@ public class Game {
                 // either enemy/player, enemy/enemy, or bullet/sprite
                 List<Sprite> collides = collisionCheck(s1, s2);
 
+                //if there is a collision
                 if (collides.size() > 0) {
                     String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
 
+                    //might not need this second one if going through
+                    //all combinations of sprites anyway
                     key = HIT_BY + collides.get(0).getType();
                     collides.get(1).doEvent(key, collides.get(0));
                 }
@@ -144,8 +147,8 @@ public class Game {
             bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
                     b.getSize());
             if (bulletR.intersects(r2)) {
-                ret.add(b);
                 ret.add(s2);
+                ret.add(b);
                 return ret;
             }
         }
@@ -155,8 +158,8 @@ public class Game {
             bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
                     b.getSize());
             if (bulletR.intersects(r1)) {
-                ret.add(b);
                 ret.add(s1);
+                ret.add(b);
                 return ret;
             }
         }

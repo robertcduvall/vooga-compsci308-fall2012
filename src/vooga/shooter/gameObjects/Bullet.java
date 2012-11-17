@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
  * Bullet class will have all the info needed to
@@ -84,7 +85,26 @@ public class Bullet extends Sprite {
 
     @Override
     void setMethods () {
+        //do nothing if it intersects another bullet
+        getMapper().addPair("hitbybullet", this);
 
+        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
+                ((Player) o[0]).die();
+            }
+        });
+
+        //only destroy enemy if a player shoots the enemy
+        //if an enemy shoots an enemy, nothing happens
+        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                if ("player".equals(myOwner.getType())) {
+                    die();
+                    ((Enemy) o[0]).die();
+                }
+            }
+        });
     }
 
     /**

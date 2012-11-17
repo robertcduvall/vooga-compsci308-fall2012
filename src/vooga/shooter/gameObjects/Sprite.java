@@ -344,15 +344,18 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * Sets the sprite's velocity to 0 as the
-     * default action. Can be overridden in subclasses.
+     * Sets the sprite's default action as
+     * doing nothing (continuing on its current
+     * velocity vector).
      *
      * @param o a (possibly empty) list of
      * parameters to be used in the action
+     * (only used if the sprite overrides the do
+     * action method itself)
      */
     @Override
     public void doAction (Object ... o) {
-        setVelocity(0, 0);
+
     }
 
     /**
