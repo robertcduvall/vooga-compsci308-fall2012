@@ -1,19 +1,57 @@
 package arcade.gui.panel.main;
 
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+/**
+ * Each individual game's profile page. Contains general assignments
+ * so that any game's information can be displayed using this class.
+ * @author Kannan
+ *
+ */
 public class GameProfileMainPanel extends AMainPanel {
 
+    private String gameName = (String) getArcade().getVariable("GameName");
+    private GridBagConstraints c;
+    
+    
     public GameProfileMainPanel (Arcade a) {
         super(a);
-        // TODO Auto-generated constructor stub
+        createPanel();
     }
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+        ArcadePanel myPanel = initializeNewPanel();
+        myPanel.setBackground(Color.WHITE);
+        
+        myPanel.setLayout(new GridBagLayout());
+        c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        
+        System.out.println(myPanel.getSize());
+        
+        JButton playButton = new JButton("Play");
+        
+        myPanel.add(playButton);
+        
+        playButton.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                // TODO:
+            }
+              
+          });
+        
+        
+        return myPanel;
     }
 
 }

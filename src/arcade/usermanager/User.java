@@ -8,11 +8,8 @@ import java.util.List;
  * Represents a User of the arcade.
  * 
  * @author Howard
-<<<<<<< HEAD
- *         modified by Difan Zhao
-=======
- *         modified by Difan Zhao, Jei Min Yoo
->>>>>>> master
+        modified by Difan Zhao, Jei Min Yoo
+
  * 
  */
 public class User {
@@ -22,6 +19,7 @@ public class User {
     private int myCredits;
     private List<Message> myMessages;
     private List<GameData> myGameData;
+    private SocialCenter mySocialCenter;
 
     /**
      * Constructs a new User
@@ -37,9 +35,12 @@ public class User {
         myCredits = credits;
         myMessages = messages;
         myGameData = gameData;
+        mySocialCenter=SocialCenter.getInstance();
     }
-
-    public String getName() {
+    protected String getPassword(){
+        return myPicture;
+    }
+    protected String getName() {
         return myName;
     }
 
@@ -47,7 +48,41 @@ public class User {
         return myPicture;
     }
     
-    public List<GameData> getGameData() {
-        return myGameData;
+    protected void setName(String newName) {
+        myName=newName;
+    }
+    
+    protected GameData getGameData(String gameName) {
+        for(GameData gd:myGameData){
+          if( gd.getMyGameName().equals(gameName)){
+              return gd;
+              
+          }
+            
+        }
+        return null;
+    }
+    
+    public void sendMessage(String receiver, String content){
+        mySocialCenter.sendMessage(myName, receiver, content);
+        
+    }
+    
+    protected List<String> getMyMessage(){
+        List<String> myMessage=new ArrayList<String>();
+        for(Message m:myMessages){
+            myMessage.add(m.getMessage());
+            
+        }
+        
+        return myMessage;
+    }
+    
+    protected void updateMyMessage(){
+        
+    }
+    
+    protected void updateMyGame(){
+        
     }
 }

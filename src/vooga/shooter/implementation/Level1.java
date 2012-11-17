@@ -36,14 +36,12 @@ public class Level1 extends Level {
         enemyImage = imageIcon.getImage();
         for (int i = 0; i < NUMBER_OF_ENEMIES; i++) {
             myGame.addEnemy(new Enemy(new Point(100 + (10 * i), 100), new Dimension(20, 20),
-                                      enemyImage, new Point(0, 5), 10));
+                                      new Dimension(100,100), enemyImage, new Point(0, 5), 1));
         }
     }
 
     public boolean winningConditionsMet () {
-        if (myGame.getEnemies().isEmpty()) { 
-            return true; 
-        }
+        if (myGame.getEnemies().isEmpty()) { return true; }
         return false;
     }
 }

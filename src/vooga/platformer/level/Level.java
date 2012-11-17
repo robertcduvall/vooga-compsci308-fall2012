@@ -1,7 +1,9 @@
 package vooga.platformer.level;
 
+import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import util.camera.Camera;
@@ -24,6 +26,7 @@ public abstract class Level {
     private Dimension myDimension;
     private String myNextLevelName;
     private CollisionChecker myCollisionChecker;
+    private Player myPlayer;
 
     /**
      * Paint the level, including all its GameObjects.
@@ -151,4 +154,18 @@ public abstract class Level {
      * @param myInputController
      */
     public abstract void setInputController (KeyboardController myInputController);
+    
+    /**
+     * @param pl
+     */
+    public void setPlayer(Player pl){
+        myPlayer = pl;
+    }
+    
+    /**
+     * @return Player of the game
+     */
+    public Player getPlayer(){
+        return myPlayer;
+    }
 }

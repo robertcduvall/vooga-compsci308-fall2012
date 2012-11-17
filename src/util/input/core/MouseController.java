@@ -5,24 +5,26 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 import util.input.inputhelpers.UKeyCode;
 
+
 /**
- * This class allows users to enter input through the mouse
- * 
+ * This class allows users to enter input through the mouse.
+ *
  * @author Amay
  */
 
-public class MouseController extends Controller<MouseInputListener> implements MouseInputListener {
-    
+public class MouseController extends Controller<MouseInputListener> implements
+        MouseInputListener {
+
     public final static int PRESSED = MouseEvent.MOUSE_PRESSED;
     public final static int RELEASED = MouseEvent.MOUSE_RELEASED;
     public final static int CLICKED = MouseEvent.MOUSE_CLICKED;
     public final static int NO_BUTTON = 0;
-    
-    
+
     /**
-     * Create a new mouse controller
-     * 
-     * @param comp - The component to which we add the MouseListener and MouseMotionListener 
+     * Create a new mouse controller.
+     *
+     * @param comp - The component to which we add the
+     *        MouseListener and MouseMotionListener
      */
     public MouseController (Component comp) {
         super();
@@ -31,19 +33,21 @@ public class MouseController extends Controller<MouseInputListener> implements M
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mouseClicked (MouseEvent e) {
         try {
             performReflections(e, "mouseClicked",
                     UKeyCode.codify(MouseEvent.MOUSE_CLICKED, e.getButton()));
-        } catch (Exception e1) {
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void mousePressed (MouseEvent e) {
         try {
-            performReflections(e, "mousePressed", UKeyCode.codify(MouseEvent.MOUSE_PRESSED, e.getButton()));
+            performReflections(e, "mousePressed",
+                    UKeyCode.codify(MouseEvent.MOUSE_PRESSED, e.getButton()));
             System.out.println(e.getButton());
         }
         catch (Exception e1) {
@@ -51,22 +55,23 @@ public class MouseController extends Controller<MouseInputListener> implements M
         }
     }
 
-    
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseReleased (MouseEvent e) {
         try {
             performReflections(e, "mouseReleased",
                     UKeyCode.codify(MouseEvent.MOUSE_RELEASED, e.getButton()));
-        } catch (Exception e1) {
+        }
+        catch (Exception e1) {
             e1.printStackTrace();
         }
 
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered (MouseEvent e) {
         try {
-            performReflections(e, "mouseEntered", UKeyCode.codify(MouseEvent.MOUSE_ENTERED, NO_BUTTON));
+            performReflections(e, "mouseEntered",
+                    UKeyCode.codify(MouseEvent.MOUSE_ENTERED, NO_BUTTON));
         }
         catch (Exception e1) {
             e1.printStackTrace();
@@ -74,9 +79,10 @@ public class MouseController extends Controller<MouseInputListener> implements M
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited (MouseEvent e) {
         try {
-            performReflections(e, "mouseExited", UKeyCode.codify(MouseEvent.MOUSE_EXITED, NO_BUTTON));
+            performReflections(e, "mouseExited",
+                    UKeyCode.codify(MouseEvent.MOUSE_EXITED, NO_BUTTON));
         }
         catch (Exception e1) {
             e1.printStackTrace();
@@ -86,21 +92,23 @@ public class MouseController extends Controller<MouseInputListener> implements M
     @Override
     public void mouseDragged (MouseEvent e) {
         try {
-            performReflections(e, "mouseDragged", UKeyCode.codify(MouseEvent.MOUSE_DRAGGED, e.getButton()));
-          }
-          catch (Exception e1) {
-              e1.printStackTrace();
-          }
+            performReflections(e, "mouseDragged",
+                    UKeyCode.codify(MouseEvent.MOUSE_DRAGGED, e.getButton()));
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 
     @Override
     public void mouseMoved (MouseEvent e) {
         try {
-            performReflections(e, "mouseMoved", UKeyCode.codify(MouseEvent.MOUSE_MOVED, NO_BUTTON));
-          }
-          catch (Exception e1) {
-              e1.printStackTrace();
-          }
+            performReflections(e, "mouseMoved",
+                    UKeyCode.codify(MouseEvent.MOUSE_MOVED, NO_BUTTON));
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 
 }

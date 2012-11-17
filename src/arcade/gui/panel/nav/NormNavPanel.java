@@ -1,5 +1,9 @@
 package arcade.gui.panel.nav;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -18,8 +22,33 @@ public class NormNavPanel extends ANavPanel {
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+        ArcadePanel myPanel = initializeNewPanel();
+        myPanel.setBackground(Color.ORANGE);
+        JButton button1 = new JButton("All Games");
+        JButton button2 = new JButton("My Profile Page");
+        
+        myPanel.add(button1);
+        myPanel.add(button2);
+        
+        button1.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                getArcade().replacePanel("GameList");
+            }
+              
+          });
+          
+          button2.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                getArcade().replacePanel("UserProfile");
+            }
+              
+          });
+        
+        return myPanel;
     }
 
 }

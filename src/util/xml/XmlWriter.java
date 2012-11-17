@@ -1,6 +1,9 @@
 package util.xml;
 
 import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -9,6 +12,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 /**
  * helper function in creating elements in xml
@@ -17,6 +21,28 @@ import org.w3c.dom.Element;
  */
 
 public class XmlWriter {
+    
+    public static Document makeNewDocument(String path){
+       
+      
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = null;
+            try {
+                docBuilder = docFactory.newDocumentBuilder();
+            }
+            catch (ParserConfigurationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+         
+            // root elements
+            Document doc = docBuilder.newDocument();
+            return doc;
+        }
+            
+         
+        
+   
     
     
     /**
@@ -89,5 +115,24 @@ public class XmlWriter {
         tfe.printStackTrace();
   }
     }
+    
+    /**
+     * 
+     * @param el :root element
+     * @param tagName :element whoes content should be modified
+     * @param content
+     */
+    
+    public static void modifyTag(Element el, String tagName,String content){
+       
+    
+    NodeList children=el.getChildNodes();
+    for(int i=0;i<children.getLength();i++){
+        Element child=(Element) children.item(i);
+      if(  child.getNodeName().equals(tagName)){
+          child.setNodeValue(content);
+      }
 
+}
+    }
 }

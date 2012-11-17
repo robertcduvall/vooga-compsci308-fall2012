@@ -1,6 +1,7 @@
 package vooga.shooter.gameObjects;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -13,7 +14,7 @@ import java.awt.Point;
  * @author Jesse Starr
  * (add your own name as you edit)
  */
-public class Bullet extends Sprite{
+public class Bullet extends Sprite {
     private int myDamage;
     private Sprite myOwner;
 
@@ -21,13 +22,14 @@ public class Bullet extends Sprite{
      * Constructs a bullet to be shown on the screen.
      * @param position the starting position of the bullet
      * @param size the size of the image to use
+     * @param bounds the bounds of the canvas
      * @param image the image of the bullet
      * @param velocity the starting velocity of the bullet
      * @param damage the damage that the bullet will do (to enemy or player)
      */
-    public Bullet (Point position, Dimension size, Image image, Point velocity,
-            int damage) {
-        super(position, size, image, velocity);
+    public Bullet (Point position, Dimension size, Dimension bounds,
+            Image image, Point velocity, int damage) {
+        super(position, size, bounds, image, velocity);
         myDamage = damage;
     }
 
@@ -37,9 +39,8 @@ public class Bullet extends Sprite{
      * (e.g. maybe some particle effects, or other graphical
      * stuff, or something else cool).
      */
-    @Override
-    public void continueUpdate () {
-        
+    protected void continueUpdate() {
+
     }
 
     /**
@@ -66,5 +67,23 @@ public class Bullet extends Sprite{
      */
     public Sprite getOwner() {
         return myOwner;
+    }
+
+    /**
+     * Returns the type of this sprite.
+     * @return "bullet"
+     */
+    public String getType() {
+        return "bullet";
+    }
+
+    /**
+     * Bullet has nothing else to paint.
+     */
+    protected void continuePaint (Graphics pen) { }
+
+    @Override
+    void setMethods () {
+
     }
 }

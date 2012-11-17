@@ -1,6 +1,9 @@
 package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
+import games.platformerdemo.Player;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
@@ -10,6 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.input.core.Controller;
 import util.input.core.KeyboardController;
@@ -18,6 +22,7 @@ import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 
+@SuppressWarnings("serial")
 public class PlatformerController extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
 
@@ -27,6 +32,7 @@ public class PlatformerController extends JPanel implements Runnable {
     private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
     private KeyboardController myInputController;
+    private Player myPlayer;
     
     private Thread animator;
 
@@ -34,13 +40,13 @@ public class PlatformerController extends JPanel implements Runnable {
         myLevelFactory = lf;
         myGameInitializer = gi;
         myInputController = null;
-        
-       setupLevel(myGameInitializer.getFirstLevelName());
        
-       this.setFocusable(true);
+       //this.setFocusable(true);
         
+        setupLevel(myGameInitializer.getFirstLevelName());
+        myPlayer = myCurrentLevel.getPlayer();
         animator = new Thread(this);
-        animator.start();
+        animator.start();        
     }
 
     /**
@@ -75,6 +81,14 @@ public class PlatformerController extends JPanel implements Runnable {
     @Override
     public void paint(Graphics pen) {
         myCurrentLevel.paint(pen);
+        pen.setColor(Color.BLACK);
+        pen.drawString("Press M to bring up the menu", getSize().width*3/5,getSize().height/4);
+        pen.drawString("If you touch the enemy, you die", getSize().width*3/5,getSize().height/4+10);
+        pen.drawString("If you step on the enemy, the enemy dies", getSize().width*3/5,getSize().height/4+20);
+        
+        for(Component c: getComponents()){
+            c.paint(pen);
+        }
     }
 
     /**
@@ -108,41 +122,36 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
     
-    /*
-     * This method will be used if we need to write our own input-handling code while
-     * we are debugging our interaction with the Input team's API.
+    /**
+     * This is used to test sample implemented game before registered with input team.
+     * should be //TODO: removed
      */
-    private void setTestInputListner () {
+    public KeyListener setTemporaryInputListener(){
         KeyListener kl = new KeyAdapter() {
             @Override
             public void keyPressed (KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    //TODO: setup after getting access of player
-                    //player.goRight();
-                }
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    //TODO: setup after getting access of player
-                    //player.goLeft();
+                    myPlayer.getMovingStragety().goLeft();
+                    
+                }
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                    myPlayer.getMovingStragety().goRight();
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    //TODO: setup after getting access of player
-                    //player.goUp();
-                }
-                if(e.getKeyCode()==KeyEvent.VK_DOWN){
-                    //TODO: setup after getting access of player
-                    //player.goDown();
+                    myPlayer.getMovingStragety().jump();
                 }
             }
 
             public void keyReleased (KeyEvent e) {
-                //player.stop();
+                myPlayer.getMovingStragety().stop();
             }
         };
         MouseMotionListener mml = new MouseAdapter() {
             @Override
             public void mouseClicked (MouseEvent e) {
-                //not been used yet.
+                //not used so far
             }
         };
+        return kl;
     }
 }

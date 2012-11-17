@@ -5,11 +5,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import arcade.gamemanager.GameCenter;
 import arcade.datatransfer.GameLink;
 import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
+import arcade.usermanager.SocialCenter;
 
 
 /**
@@ -33,6 +35,7 @@ public class Arcade {
 
     private static ArcadeFrame myFrame;
 
+    private static SocialCenter mySocialCenter;
     private static GameLink myGameManager;
     private static UserLink myUserManager;
     private static PanelCreatorFactory myFactory;
@@ -43,6 +46,7 @@ public class Arcade {
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
+        mySocialCenter = new SocialCenter();
         myGameManager = new GameLink();
         myUserManager = new UserLink();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
@@ -59,12 +63,12 @@ public class Arcade {
         myFrame = frameCreator.createFrame();
 
         // fill it with default panels
-        replacePanel(myResources.getString("DefaultFoot"));
-        replacePanel(myResources.getString("DefaultMain"));
-        replacePanel(myResources.getString("DefaultLogo"));
-        replacePanel(myResources.getString("DefaultNav"));
-        replacePanel(myResources.getString("DefaultSearch"));
-        replacePanel(myResources.getString("DefaultUser"));
+        replacePanel("FootDefault");
+        replacePanel("MainDefault");
+        replacePanel("LogoDefault");
+        replacePanel("NavDefault");
+        replacePanel("SearchDefault");
+        replacePanel("UserDefault");
     }
 
     private ArcadePanel createPanel (String panelCreatorName) {
@@ -86,10 +90,12 @@ public class Arcade {
      * @return this returns the old panel
      */
     public void replacePanel (String panelCreatorName) {
-        myFrame.setVisible(false);
-        ArcadePanel newPanel = createPanel(panelCreatorName);
+        String panelRealName = myResources.getString(panelCreatorName);
+//        myFrame.setVisible(false);
+        ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
-        myFrame.setVisible(true);
+//        myFrame.setVisible(true);
+        myFrame.pack();
     }
 
     public String getUsername () {
@@ -104,7 +110,7 @@ public class Arcade {
     public void setUsername (String u) {
         myUser = u;
     }
-
+    
     public GameLink getGameManager () {
         return myGameManager;
     }
@@ -113,11 +119,18 @@ public class Arcade {
         return myUserManager;
     }
 
-    public void setVariable (String varName, Serializable var) {
+    public void saveVariable (String varName, Serializable var) {
         mySharedVariables.put(varName, var);
     }
 
     public Serializable getVariable (String varName) {
         return mySharedVariables.get(varName);
+    }
+
+    /**
+     * @return the mySocialCenter
+     */
+    public SocialCenter getSocialCenter () {
+        return mySocialCenter;
     }
 }

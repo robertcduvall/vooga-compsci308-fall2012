@@ -16,7 +16,7 @@ import java.io.*;
  * @author Zachary Hopping
  *
  */
-public class LevelEditor implements ActionListener, ChangeListener, KeyListener {
+public class LevelEditor implements ActionListener, KeyListener {
     
     private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
     boolean compactToolbars = true;
@@ -38,9 +38,11 @@ public class LevelEditor implements ActionListener, ChangeListener, KeyListener 
     private JButton newBtn;
     private JButton openBtn;
     private JButton saveBtn;
-    private JButton undoBtn;
-    private JButton redoBtn;
     private JButton clearBtn;
+    
+    public static void main(String args[]) {
+        new LevelEditor();
+    }
     
     public LevelEditor() {
         //TODO initialize all variables and load a level to edit/make a new level
@@ -90,15 +92,40 @@ public class LevelEditor implements ActionListener, ChangeListener, KeyListener 
     }
 
     @Override
-    public void actionPerformed (ActionEvent arg0) {
-        // TODO Auto-generated method stub
+    public void actionPerformed (ActionEvent e) {
+        Object source = e.getSource();
+        
+        if (source == newBtn) {
+            newFile();
+            openFile = null;
+        } else if (source == clearBtn) {
+            //clear current wave
+        } else if (source == saveBtn) {
+            if (openFile == null) {
+                //file has never ben saved, so we need to save as instead
+                
+            } else {
+                saveFile(openFile);
+            }
+        } else if (source == openBtn) {
+            int success = chooser.showOpenDialog(mainFrame);
+            if (success == JFileChooser.APPROVE_OPTION){
+                openFile(chooser.getSelectedFile());
+            }
+        }
         
     }
-
-    @Override
-    public void stateChanged (ChangeEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    
+    private void openFile(File file) {
+        //TODO implement
+    }
+    
+    private void saveFile(File file) {
+        //TODO implement
+    }
+    
+    public void newFile() {
+        //TODO implement
     }
     
     /**
@@ -147,8 +174,8 @@ public class LevelEditor implements ActionListener, ChangeListener, KeyListener 
         result.add(new AbstractAction("Quit") {
             @Override
             public void actionPerformed (ActionEvent e) {
-                // end program
-                // System.exit(0);
+                 //end program
+                 System.exit(0);
             }
         });
         return result;

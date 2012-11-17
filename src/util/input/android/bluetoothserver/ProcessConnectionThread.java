@@ -1,61 +1,61 @@
 package util.input.android.bluetoothserver;
 
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import javax.microedition.io.StreamConnection;
+import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidControllerEvent;
 
 
 /**
+ * This thread will process information sent by an Android controller.
  * 
- * @author BlueCove opensource Android project
- *         Modified by Ben Schwab
+ * @author Ben Schwab using BlueCove API
+ * 
  * 
  */
 
 public class ProcessConnectionThread implements Runnable {
 
-    private AndroidCommandProcessor myProcessor;
-    private StreamConnection mConnection;
+    private StreamConnection myConnection;
+    private AndroidBluetoothServer myServer;
 
-    // Constant that indicate command from devices
-    private static final int EXIT_CMD = -1;
-    private static final int KEY_RIGHT = 1;
-    private static final int KEY_LEFT = 2;
-
-    public ProcessConnectionThread(StreamConnection connection) {
-        mConnection = connection;
-        myProcessor = new AndroidGameBoyCommandProcessor();
+    /**
+     * Create a new connection processor.
+     * 
+     * @param connection The active android connection.
+     * @param server The server that holds this thread.
+     */
+    public ProcessConnectionThread (StreamConnection connection, AndroidBluetoothServer server) {
+        myConnection = connection;
+        myServer = server;
     }
 
     @Override
-    public void run() {
+    public void run () {
         try {
 
-            // prepare to receive data
-            InputStream inputStream = mConnection.openInputStream();
-
-            System.out.println("waiting for input");
-
+            InputStream inputStream = myConnection.openInputStream();
             while (true) {
-                int command = inputStream.read();
+                ObjectInputStream objectStream = new ObjectInputStream(inputStream);
+                AndroidControllerEvent androidEvent =
+                        (AndroidControllerEvent) objectStream.readObject();
+                handleObject(androidEvent);
+                // System.out.println(androidEvent.getClass().toString()+"worked");
 
-                if (command == EXIT_CMD) {
-                    System.out.println("finish process");
-                    break;
-                }
-
-                processCommand(command);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Process the command from client
-     * 
-     * @param command the command code
-     */
-    private void processCommand(int command) {
-        myProcessor.processCommand(command);
+    private void handleObject (AndroidControllerEvent androidEvent) {
+        if (androidEvent.getClass() == AndroidButtonEvent.class) {
+            AndroidButtonEvent b = (AndroidButtonEvent) androidEvent;
+            myServer.notify(b);
+        }
+
     }
+
 }
