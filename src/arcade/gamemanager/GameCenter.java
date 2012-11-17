@@ -38,7 +38,7 @@ public class GameCenter {
     }
 
     /**
-     * More general use function for getting String lists by passing a string of
+     * General function for getting String lists by passing a string of
      * the tag.
      * 
      * @author Seon Kang
@@ -47,15 +47,26 @@ public class GameCenter {
      * 
      * @return A String ArrayList of elements matching tag
      */
-    public List<String> getListByTagName(String tag) {
+    public List<String> getListByTagName(String tag, Element element) {
     	List<String> stringListByTag = new ArrayList<String>();
-    	NodeList nodeList = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), tag);
+    	NodeList nodeList = myXmlParser.getElementsByName(element, tag);
     	for (int i = 0; i < nodeList.getLength(); i++) {
     		stringListByTag.add(nodeList.item(i).getTextContent());
     	}
     	return stringListByTag;
     }
 
+    /**
+     * Default element is the document.
+     * 
+     * @param tag
+     * @return
+     */
+    public List<String> getListByTagName(String tag) {
+    	return getListByTagName(tag, myXmlParser.getDocumentElement());
+    }
+    
+    
     public List<String> getListOfGames() {
         List<String> gameList = new ArrayList<String>();
         NodeList nList = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "name");
@@ -74,7 +85,7 @@ public class GameCenter {
      * @return
      */
     
-    public String getPropertyFromGame(String gameName, String tag) {
+    public String getAttributeFromGame(String gameName, String tag) {
     	for (int i = 0; i < gameNodeList.getLength(); i++) {
     		if (gameNodeList.item(i).getTextContent().equals(gameName)) {
     			NodeList attributeList = gameNodeList.item(i).getChildNodes();
@@ -99,6 +110,25 @@ public class GameCenter {
         }
         
         return "0";
+    }
+    
+    /**
+     * Find a list of attributes from gameName.
+     * 
+     * @auther Seon Kang
+     * 
+     * @param gameName
+     * @param tag 
+     * @return
+     */
+    public List<String> getListOfX(String gameName, String tag) {
+    	Element gameAsElement = myXmlParser.getDocumentElement();
+    	for (int i = 0; i < gameNodeList.getLength(); i++) {
+    		if (tag.equals(gameNodeList.item(i).getTextContent())) {
+    			gameAsElement = (Element) gameNodeList.item(i);
+    		}
+    	}
+    	return getListByTagName(tag, gameAsElement);
     }
     
     public List<String> getListOfReviews(String gameName) {
