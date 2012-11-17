@@ -66,10 +66,17 @@ public class MovingMapObject extends MapObject{
     
     @Override
     public void paint(Graphics g) {
+    	if(isMoving()) {
     	g.drawImage(getImage(), myOffset.x - myDirection.x
 				* myTileDimensions.width + myXOriginInTile, myOffset.y
 				- myDirection.y * myTileDimensions.height + myYOriginInTile,
 				myTileDimensions.width, myTileDimensions.height, null);
+    	}
+    	else {
+    		g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
+    				myTileDimensions.height, null);
+    	}
+    		
     }
     
     @Override
@@ -93,7 +100,7 @@ public class MovingMapObject extends MapObject{
 		myYProportion = 0;
 		myXOriginInTile = 0;
 		myYOriginInTile = 0;
-		myDirection = new Point(0, 0);
+		//myDirection = new Point(0, 0);
 		myPreviousLocation = getLocation();
     }
 }
