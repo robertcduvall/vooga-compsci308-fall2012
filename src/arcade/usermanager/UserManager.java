@@ -1,27 +1,93 @@
 package arcade.usermanager;
 
-import java.util.List;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
- * 
- * @author Robert Bruce
+ * manage a list of user
+ * @author difan
  *
  */
-public class UserManager {
 
-    public User login(String username, String password){
-        //TODO: Implement this.
+public class UserManager {
+    private Map<String, User> myAllUser;
+    private static UserManager myUserManager;
+    private static String myUserBasicFilePath;
+    private static String myUserMessageFilePath;
+    private static String myUserGameFilePath;
+    private static ResourceBundle resource;
+    private UserXMLReader myXMLReader;
+    private UserXMLWriter myXMLWriter;
+    private final String successString = "Successful";
+    
+    public static UserManager getInstance () {
+        if (myUserManager == null) myUserManager = new UserManager();
+
+        return myUserManager;
+    }
+
+    
+    private UserManager(){
+        
+        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
+        myUserBasicFilePath = resource.getString("BasicFilePath");
+        myUserMessageFilePath = resource.getString("MessageFilePath");
+        myUserGameFilePath = resource.getString("GameFilePath");
+        myXMLReader = new UserXMLReader();
+        myXMLWriter = new UserXMLWriter();
+        
+        myAllUser = new HashMap<String, User>();
+
+        File folder = new File(myUserBasicFilePath);
+        File[] listOfFiles = folder.listFiles();
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+                String name = listOfFiles[i].getName();
+                User newUser = myXMLReader.getUser(name);
+                myAllUser.put(name, newUser);
+
+            }
+        }
+        
+        
+    }
+    
+    protected User getUser(String userName){
+        if(myAllUser.containsKey(userName)){
+       return myAllUser.get(userName);
+        }
         return null;
+        
+        
+        
     }
-    public List<User> getAllUsers(){
-        //TODO: Implement this.
-        return null;
+    
+    protected String validateUser (String userName, String password) {
+        if (!myAllUser.containsKey(userName)) return "Such user does not exist";
+        if (myAllUser.get(userName).getPassword().equals(password))
+            return successString;
+       if(myAllUser.containsKey(userName)) return "This user exists, however password is incorrect";
+       return "";
+
     }
-    public User getUser(String username){
-        //TODO: Implement this.
-        return null;
+    protected User addNewUser(String userName, String password, String picture){
+     // write an xml file
+        myXMLWriter.makeUserXML(userName, password, picture);
+        // make new user class
+        User newUser = myXMLReader.getUser(userName);
+        myAllUser.put(userName, newUser);
+        return newUser;
+        
     }
-    public void addNewUser(String username, String password){
-        //TODO: Implement this.
+    
+    protected void deleteUser(String userName){
+        myAllUser.remove(userName);
+        
+        
     }
+    
+
 }

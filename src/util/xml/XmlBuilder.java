@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
@@ -96,6 +99,67 @@ public class XmlBuilder {
         File file = new File(filepath);
         return createDocument(file);
         
+    }
+    
+    /**
+     * create an element in xml
+     * @param document
+     * @param root element
+     * @param name of the element to be created
+     * @param content of the element to be created
+     * @return element created 
+     * @author difan zhao
+     */
+    public static Element appendElement(Document doc, Element root, String childElementName, String content){
+        Element childElement = doc.createElement(childElementName);
+        childElement.appendChild(doc.createTextNode(content));
+        root.appendChild(childElement);
+        return childElement;
+        
+    }
+    
+    
+    /**
+     * create an element with attribute in xml
+     * @param document
+     * @param root element
+     * @param name of the element to be created
+     * @param content of the element to be created
+     * @param attribute name
+     * @param attribute content
+     * @return element created 
+     * @author difan zhao
+     */
+    
+    public static Element appendElementWithAttribute(Document doc, Element root, String childElementName, String content, String attrName, String attrContent){
+        Element childElement = doc.createElement(childElementName);
+        childElement.appendChild(doc.createTextNode(content));
+        root.appendChild(childElement);
+        Attr attr = doc.createAttribute(attrName);
+        attr.setValue(attrContent);
+        childElement.setAttributeNode(attr);
+        return childElement;
+        
+    }
+    
+    /**
+     * 
+     * @param el :root element
+     * @param tagName :element whoes content should be modified
+     * @param content
+     */
+    
+    public static void modifyTag(Element el, String tagName,String content){
+       
+    
+    NodeList children=el.getChildNodes();
+    for(int i=0;i<children.getLength();i++){
+        Element child=(Element) children.item(i);
+      if(  child.getNodeName().equals(tagName)){
+          child.setNodeValue(content);
+      }
+
+}
     }
 
 }

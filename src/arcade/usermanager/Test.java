@@ -12,11 +12,11 @@ public class Test {
     private static ResourceBundle resource;
     
     public static void main(String[] args){
-        resource = ResourceBundle.getBundle("resources.properties");
+        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
-
+        System.out.println(myUserGameFilePath);
         
     }
 
