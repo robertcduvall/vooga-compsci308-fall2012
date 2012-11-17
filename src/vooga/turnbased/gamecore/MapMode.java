@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.imageprocessing.ImageLoop;
 import vooga.turnbased.gamecore.GameManager.GameEvent;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
@@ -82,8 +83,48 @@ public class MapMode extends GameMode {
             }
         }
         Point center = new Point(7, 5);
+        Map<String, Image> images = new HashMap<String, Image>();
+        images.put("left", GameWindow.importImage("PlayerLeft"));
+        images.put("right", GameWindow.importImage("PlayerRight"));
+        images.put("down", GameWindow.importImage("PlayerDown"));
+        images.put("up", GameWindow.importImage("PlayerUp"));
+        Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
+        Image left = GameWindow.importImage("PlayerLeft");
+        Image left1 = GameWindow.importImage("PlayerLeft1");
+        Image left2 = GameWindow.importImage("PlayerLeft2");
+        Image right = GameWindow.importImage("PlayerRight");
+        Image right1 = GameWindow.importImage("PlayerRight1");
+        Image right2 = GameWindow.importImage("PlayerRight2");
+        Image up = GameWindow.importImage("PlayerUp");
+        Image up1 = GameWindow.importImage("PlayerUp1");
+        Image up2 = GameWindow.importImage("PlayerUp2");
+        Image down = GameWindow.importImage("PlayerDown");
+        Image down1 = GameWindow.importImage("PlayerDown1");
+        Image down2 = GameWindow.importImage("PlayerDown2");
+        List<Image> leftList = new ArrayList<Image>();
+        leftList.add(left);
+        leftList.add(left1);
+        leftList.add(left2);
+        imageLoops.put("left", new ImageLoop(leftList));
+        List<Image> rightList = new ArrayList<Image>();
+        rightList.add(right);
+        rightList.add(right1);
+        rightList.add(right2);
+        imageLoops.put("right", new ImageLoop(rightList));
+        List<Image> upList = new ArrayList<Image>();
+        upList.add(up);
+        upList.add(up1);
+        upList.add(up2);
+        imageLoops.put("up", new ImageLoop(upList));
+        List<Image> downList = new ArrayList<Image>();
+        downList.add(down);
+        downList.add(down1);
+        downList.add(down2);
+        imageLoops.put("down", new ImageLoop(downList));
+        
         myPlayer = new MapPlayerObject(ID, GameManager.GameEvent.MAP_COLLISION,
-                center, GameWindow.importImage("PlayerImage"), this);
+                center, images, this);
+        myPlayer.setImageLoops(imageLoops);
         addMapObject(center, myPlayer);
 
         center = new Point(5, 5);
@@ -91,6 +132,7 @@ public class MapMode extends GameMode {
                 GameManager.GameEvent.MAP_COLLISION, center, GameWindow
                         .importImage("something"), this);
         addMapObject(center, test1);
+        
     }
 
     /**
