@@ -48,8 +48,8 @@ public class GameCenter {
             String filePath = nList.item(i).getTextContent();
             try {
                 IArcadeGame arcade = (IArcadeGame) Class.forName(filePath).newInstance();
-                Game game = new Game(arcade);
-                myGames.add(game);
+//                Game game = new Game(arcade);
+//                myGames.add(game);
             }
             catch (IllegalAccessException e) {
                 System.out.println("illegal access: " + filePath);
@@ -63,7 +63,7 @@ public class GameCenter {
         }
     }
     
-    public List<String> getListOfGames () {
+    public List<String> getGameList () {
         List<String> gameList = new ArrayList<String>();
         for (Game game : myGames) {
             gameList.add(game.getGameName());
@@ -78,7 +78,7 @@ public class GameCenter {
         return null;
     }
 
-    public List<Game> getGameByTagName (String tag) {
+    public List<Game> getGameListByTagName (String tag) {
         List<Game> games = new ArrayList<Game>();
         for (Game gm : myGames) {
             if (gm.getGenre().contains(tag)) {
@@ -91,9 +91,8 @@ public class GameCenter {
 //     public static void main(String args[]) {
 //     System.out.println("haha");
 //     GameCenter gc = new GameCenter();
-//     List<String> list = gc.getListOfGames();
+//     List<String> list = gc.getGameList();
 //     gc.refreshGames();
 //     System.out.println(list);
-//     System.out.println(list.get(0).length());
 //     }
 }
