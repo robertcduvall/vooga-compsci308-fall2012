@@ -1,54 +1,72 @@
 package arcade.usermanager;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import util.xml.XmlBuilder;
+import util.xml.XmlWriter;
+
+
 /**
  * 
  * @author Howard, modified by difan
- *
+ * 
  */
 
 public class GameData {
     private String myGameName;
     private String myGameInfo;
-    private int myHighScore;
-    private int myTimesPlayed;
-    
+    private String myHighScore;
+    private String myTimesPlayed;
+    private Map<String, String> myPropertyMap;
+    private String myFilePath;
+    private static ResourceBundle resource;
 
-    public GameData (String name, String gameInfo, int highScore, int timesPlayed) {
-        setMyGameName(name);
-        setMyGameInfo(gameInfo);
-        setMyHighScore(highScore);
-        setMyTimesPlayed(timesPlayed);
+    public GameData (String name, String gameInfo, String highScore,
+            String timesPlayed) {
+        myPropertyMap = new HashMap<String, String>();
+        myPropertyMap.put(myGameName, name);
+        myPropertyMap.put(myGameInfo, gameInfo);
+        myPropertyMap.put(myHighScore, highScore);
+        myPropertyMap.put(myTimesPlayed, timesPlayed);
+        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
+        myFilePath = resource.getString("GameFilePath") + name + ".xml";
+
     }
 
-    public String getMyGameName () {
-        return myGameName;
+    public String getGameInfo (String propertyName) {
+        if (myPropertyMap.containsKey(propertyName))
+            return myPropertyMap.get(propertyName);
+
+        return "";
+
     }
 
-    public void setMyGameName (String myGameName) {
-        this.myGameName = myGameName;
-    }
+    public boolean setGameInfo (String propertyName, String content) {
+        if (myPropertyMap.containsKey(propertyName)) {
+            myPropertyMap.put(propertyName, content);
+            Document doc = XmlBuilder.createDocument(myFilePath);
 
-    public String getMyGameInfo () {
-        return myGameInfo;
-    }
+            Element root = doc.getDocumentElement();
+            NodeList children = root.getChildNodes();
+            for (int i = 0; i < children.getLength(); i++) {
+                Element child = (Element) children.item(i);
 
-    public void setMyGameInfo (String myGameInfo) {
-        this.myGameInfo = myGameInfo;
-    }
+                if (XmlParser.getTextContent(child, "name").equals(
+                        getGameInfo(getGameInfo("myGameName")))) {
+                    XmlBuilder.modifyTag(child, propertyName, content);
+                }
+            }
 
-    public int getMyHighScore () {
-        return myHighScore;
-    }
+            XmlWriter.writeXML(doc, myFilePath);
 
-    public void setMyHighScore (int myHighScore) {
-        this.myHighScore = myHighScore;
-    }
+            return true;
+        }
 
-    public int getMyTimesPlayed () {
-        return myTimesPlayed;
-    }
+        return false;
 
-    public void setMyTimesPlayed (int myTimesPlayed) {
-        this.myTimesPlayed = myTimesPlayed;
     }
 }

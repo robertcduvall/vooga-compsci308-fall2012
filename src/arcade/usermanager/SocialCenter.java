@@ -1,13 +1,10 @@
 package arcade.usermanager;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
 import util.xml.XmlWriter;
@@ -26,7 +23,7 @@ import arcade.utility.FileOperation;
 public class SocialCenter {
     private User myCurrentUser;
     private static SocialCenter mySocialCenter;
-    //private Map<String, User> myAllUser;
+    // private Map<String, User> myAllUser;
     private String myUserBasicFilePath;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
@@ -37,7 +34,9 @@ public class SocialCenter {
     private UserManager myUserManager;
 
     public static SocialCenter getInstance () {
-        if (mySocialCenter == null) mySocialCenter = new SocialCenter();
+        if (mySocialCenter == null) {
+            mySocialCenter = new SocialCenter();
+        }
 
         return mySocialCenter;
     }
@@ -48,33 +47,23 @@ public class SocialCenter {
     private SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
-        myUserManager=UserManager.getInstance();
+        myUserManager = UserManager.getInstance();
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
 
-        
     }
-
-   
-
-   
 
     /*
      * 
      * return log on status
      */
-    public boolean logOnUser (String userName, String password) throws Exception {
-     String status=myUserManager.validateUser(userName, password);
-      
-     
-        if (!status.equals(successString)){
-            
-            throw new Exception(status);
-        
-        
-        }
+    public boolean logOnUser (String userName, String password)
+            throws Exception {
+        String status = myUserManager.validateUser(userName, password);
+
+        if (!status.equals(successString)) throw new Exception(status);
         // set current user
         myCurrentUser = myUserManager.getUser(userName);
 
@@ -84,15 +73,15 @@ public class SocialCenter {
     /*
      * return log on status
      */
-    public boolean registerUser (String userName, String password, String picture) throws Exception {
+    public boolean registerUser (String userName, String password,
+            String picture) throws Exception {
         // check validity
-        if (myUserManager.validateUser(userName,"").equals("This user exists, however password is incorrect")){
+        if (myUserManager.validateUser(userName, "").equals(
+                "This user exists, however password is incorrect"))
             throw new Exception("This user already exists");
-        } 
 
         // valid registration
         myCurrentUser = myUserManager.addNewUser(userName, password, picture);
-        
 
         return true;
     }
@@ -100,7 +89,8 @@ public class SocialCenter {
     /*
      * return operation status
      */
-    public boolean deleteUser (String userName, String password)throws Exception {
+    public boolean deleteUser (String userName, String password)
+            throws Exception {
         // check validity
         String status = myUserManager.validateUser(userName, password);
         if (!status.equals(successString)) throw new Exception(status);
@@ -113,7 +103,6 @@ public class SocialCenter {
         return true;
     }
 
-    
     /*
      * return operation status
      */
@@ -122,85 +111,95 @@ public class SocialCenter {
         File f = new File(filePath);
         XmlParser parser = new XmlParser(f);
         Document doc = parser.getDocument();
-        Element root = (Element) parser.getDocumentElement();
+        Element root = parser.getDocumentElement();
         Element message = XmlBuilder.appendElement(doc, root, "Message", "");
         XmlBuilder.appendElement(doc, message, "receiver", receiver);
         XmlBuilder.appendElement(doc, message, "content", content);
         XmlWriter.writeXML(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);
-        
+
         return true;
     }
 
     /*
      * return operation status
      */
-    public List<String> viewMessage (String sender, String receiver, String content) {
+    public List<String> viewMessage (String sender, String receiver,
+            String content) {
         return myCurrentUser.getMyMessage();
 
     }
-
-    /*
-     * return whether the operation is successful
-     */
-
-    public boolean writeGameScore (String gameName, int score) {
-        myCurrentUser.getGameData(gameName).setMyHighScore(score);
-
-        // write xml
-        String filePath = "myUserGameFilePath" + myCurrentUser.getName() + ".xml";
-        File f = new File(filePath);
-        XmlParser parser = new XmlParser(f);
-        Document doc = parser.getDocument();
-        Element root = (Element) parser.getDocumentElement();
-        NodeList children = root.getChildNodes();
-        for (int i = 0; i < children.getLength(); i++) {
-            Element child = (Element) children.item(i);
-            if (parser.getTextContent(child, "name").equals(gameName)) {
-                XmlBuilder.modifyTag(child, "highscore", Integer.toString(score));
-            }
-        }
-
-        XmlWriter.writeXML(doc, filePath);
-
-        return true;
-
+    
+    public GameData getGame(String gameName){
+        return myCurrentUser.getGameData(gameName);
     }
 
-    public boolean writeGameInfo (String gameName, String info) {
-        myCurrentUser.getGameData(gameName).setMyGameInfo(info);
-
-        String filePath = "myUserGameFilePath" + myCurrentUser.getName() + ".xml";
-        File f = new File(filePath);
-        XmlParser parser = new XmlParser(f);
-        Document doc = parser.getDocument();
-        Element root = (Element) parser.getDocumentElement();
-        NodeList children = root.getChildNodes();
-        for (int i = 0; i < children.getLength(); i++) {
-            Element child = (Element) children.item(i);
-            if (parser.getTextContent(child, "name").equals(gameName)) {
-                XmlBuilder.modifyTag(child, "gameinfo", info);
-            }
-        }
-
-        XmlWriter.writeXML(doc, filePath);
-
-        return true;
-
-    }
-
-    /*
-     * return game history for certain game
-     */
-
-    public int readGameScore (String gameName) {
-        return myCurrentUser.getGameData(gameName).getMyHighScore();
-
-    }
-
-    public String readGameInfo (String gameName) {
-        return myCurrentUser.getGameData(gameName).getMyGameInfo();
-
-    }
+    //
+    // /*
+    // * return whether the operation is successful
+    // */
+    //
+    // public boolean writeGameScore (String gameName, int score) {
+    // myCurrentUser.getGameData(gameName).setMyHighScore(score);
+    //
+    // // write xml
+    // String filePath = "myUserGameFilePath" + myCurrentUser.getName() +
+    // ".xml";
+    // File f = new File(filePath);
+    // XmlParser parser = new XmlParser(f);
+    // Document doc = parser.getDocument();
+    // Element root = (Element) parser.getDocumentElement();
+    // NodeList children = root.getChildNodes();
+    // for (int i = 0; i < children.getLength(); i++) {
+    // Element child = (Element) children.item(i);
+    // if (parser.getTextContent(child, "name").equals(gameName)) {
+    // XmlBuilder.modifyTag(child, "highscore", Integer.toString(score));
+    // }
+    // }
+    //
+    // XmlWriter.writeXML(doc, filePath);
+    //
+    // return true;
+    //
+    // }
+    //
+    // public boolean writeGameInfo (String gameName, String info) {
+    // myCurrentUser.getGameData(gameName).setMyGameInfo(info);
+    //
+    // String filePath = "myUserGameFilePath" + myCurrentUser.getName() +
+    // ".xml";
+    // File f = new File(filePath);
+    // XmlParser parser = new XmlParser(f);
+    // Document doc = parser.getDocument();
+    // Element root = (Element) parser.getDocumentElement();
+    // NodeList children = root.getChildNodes();
+    // for (int i = 0; i < children.getLength(); i++) {
+    // Element child = (Element) children.item(i);
+    // if (parser.getTextContent(child, "name").equals(gameName)) {
+    // XmlBuilder.modifyTag(child, "gameinfo", info);
+    // }
+    // }
+    //
+    // XmlWriter.writeXML(doc, filePath);
+    //
+    // return true;
+    //
+    // }
+    //
+    // /*
+    // * return game history for certain game
+    // */
+    //
+    // public int readGameScore (String gameName) {
+    // return myCurrentUser.getGameData(gameName).getMyHighScore();
+    //
+    // }
+    //
+    // public String readGameInfo (String gameName) {
+    // return myCurrentUser.getGameData(gameName).getMyGameInfo();
+    //
+    // }
+    //
+    //
 
 }

@@ -51,7 +51,8 @@ public class UserXMLReader {
         List<Message> messageList = getMessageList(name);
         List<GameData> gameDataList = getGameDataList(name);
 
-        return new User(username, password, picture, credits, messageList, gameDataList);
+        return new User(username, password, picture, credits, messageList,
+                gameDataList);
 
     }
 
@@ -74,7 +75,8 @@ public class UserXMLReader {
                 String gameInfo = myXmlParser.getTextContent(ele, "gameinfo");
                 int highScore = myXmlParser.getIntContent(ele, "highscore");
                 int timesPlayed = myXmlParser.getIntContent(ele, "timesplayed");
-                gameDataList.add(new GameData(gameName, gameInfo, highScore, timesPlayed));
+                gameDataList.add(new GameData(gameName, gameInfo, highScore,
+                        timesPlayed));
             }
         }
         return gameDataList;

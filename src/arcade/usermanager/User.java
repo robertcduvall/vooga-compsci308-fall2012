@@ -20,7 +20,7 @@ public class User {
     private int myCredits;
     private List<Message> myMessages;
     private List<GameData> myGameData;
-    private SocialCenter mySocialCenter;
+  
 
     /**
      * Constructs a new User
@@ -28,15 +28,15 @@ public class User {
      * @param name
      * @param picture
      */
-    public User (String name, String password, Image picture, int credits, List<Message> messages,
-                 List<GameData> gameData) {
+    public User (String name, String password, Image picture, int credits,
+            List<Message> messages, List<GameData> gameData) {
         myName = name;
         myPassword = password;
         myPicture = picture;
         myCredits = credits;
         myMessages = messages;
         myGameData = gameData;
-        // mySocialCenter=SocialCenter.getInstance();
+        
     }
 
     protected String getPassword () {
@@ -57,18 +57,13 @@ public class User {
 
     protected GameData getGameData (String gameName) {
         for (GameData gd : myGameData) {
-            if (gd.getMyGameName().equals(gameName)) { return gd;
-
-            }
+            if (gd.getGameInfo("myGameName").equals(gameName)) return gd;
 
         }
         return null;
     }
 
-    public void sendMessage (String receiver, String content) {
-        mySocialCenter.sendMessage(myName, receiver, content);
-
-    }
+    
 
     protected List<String> getMyMessage () {
         List<String> myMessage = new ArrayList<String>();
