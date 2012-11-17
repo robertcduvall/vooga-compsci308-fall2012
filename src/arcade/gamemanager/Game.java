@@ -215,11 +215,11 @@ public class Game {
 	 * @param element
 	 */
 	
-	protected void addGameElement(String tag, String value, Element element) {
+	protected void addProperty(String tag, String value, Element element) {
 		myXmlBuilder.appendElement(element, tag, value);
 	}
 	
-	protected void addGameElement(String tag, String value) {
+	protected void addProperty(String tag, String value) {
 		myXmlBuilder.appendElement((Element) myGameNode, tag, value);
 	}
 	
@@ -229,11 +229,11 @@ public class Game {
 	 * @param value 
 	 * @param element
 	 */
-	protected void setGameElement(String tag, String value, Element element) {
+	protected void setProperty(String tag, String value, Element element) {
 		myXmlBuilder.modifyTag(element, tag, value);
 	}
 	
-	protected void setGameElement(String tag, String value) {
+	protected void setProperty(String tag, String value) {
 		myXmlBuilder.modifyTag((Element) myGameNode, tag, value);
 	}
 	/**
@@ -246,7 +246,7 @@ public class Game {
 	 * @return
 	 */
 
-	public String getGameElement(String tag, Element element) {
+	public String getProperty(String tag, Element element) {
 		NodeList attributeList = element.getChildNodes();
 		for (int j = 0; j < attributeList.getLength(); j++) {
 			return myXmlParser.getTextContent(
@@ -255,7 +255,7 @@ public class Game {
 		return null;
 	}
 
-	public String getGameElement(String tag) {
+	public String geProperty(String tag) {
 		return getGameElement(tag, (Element) myGameNode);
 	}
 	/**
