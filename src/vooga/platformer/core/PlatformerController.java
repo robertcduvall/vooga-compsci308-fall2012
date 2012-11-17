@@ -3,6 +3,12 @@ package vooga.platformer.core;
 import games.platformerdemo.DemoLevelFactory;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
 import util.input.core.Controller;
@@ -30,6 +36,8 @@ public class PlatformerController extends JPanel implements Runnable {
         myInputController = null;
         
        setupLevel(myGameInitializer.getFirstLevelName());
+       
+       this.setFocusable(true);
         
         animator = new Thread(this);
         animator.start();
@@ -98,5 +106,43 @@ public class PlatformerController extends JPanel implements Runnable {
             }
             beforeTime = System.currentTimeMillis();
         }
+    }
+    
+    /*
+     * This method will be used if we need to write our own input-handling code while
+     * we are debugging our interaction with the Input team's API.
+     */
+    private void setTestInputListner () {
+        KeyListener kl = new KeyAdapter() {
+            @Override
+            public void keyPressed (KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                    //TODO: setup after getting access of player
+                    //player.goRight();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_LEFT){
+                    //TODO: setup after getting access of player
+                    //player.goLeft();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_UP){
+                    //TODO: setup after getting access of player
+                    //player.goUp();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_DOWN){
+                    //TODO: setup after getting access of player
+                    //player.goDown();
+                }
+            }
+
+            public void keyReleased (KeyEvent e) {
+                //player.stop();
+            }
+        };
+        MouseMotionListener mml = new MouseAdapter() {
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                //not been used yet.
+            }
+        };
     }
 }
