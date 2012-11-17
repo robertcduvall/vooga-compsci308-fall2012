@@ -2,6 +2,7 @@ package util.input.core;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.event.MouseInputListener;
 import util.input.inputhelpers.UKeyCode;
 
@@ -38,7 +39,9 @@ public class MouseController extends Controller<MouseInputListener> implements
             performReflections(e, "mouseClicked",
                     UKeyCode.codify(MouseEvent.MOUSE_CLICKED, e.getButton()));
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }
@@ -50,7 +53,9 @@ public class MouseController extends Controller<MouseInputListener> implements
                     UKeyCode.codify(MouseEvent.MOUSE_PRESSED, e.getButton()));
             System.out.println(e.getButton());
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }
@@ -61,10 +66,11 @@ public class MouseController extends Controller<MouseInputListener> implements
             performReflections(e, "mouseReleased",
                     UKeyCode.codify(MouseEvent.MOUSE_RELEASED, e.getButton()));
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
-
     }
 
     @Override
@@ -73,7 +79,9 @@ public class MouseController extends Controller<MouseInputListener> implements
             performReflections(e, "mouseEntered",
                     UKeyCode.codify(MouseEvent.MOUSE_ENTERED, NO_BUTTON));
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }
@@ -84,7 +92,9 @@ public class MouseController extends Controller<MouseInputListener> implements
             performReflections(e, "mouseExited",
                     UKeyCode.codify(MouseEvent.MOUSE_EXITED, NO_BUTTON));
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }
@@ -95,7 +105,9 @@ public class MouseController extends Controller<MouseInputListener> implements
             performReflections(e, "mouseDragged",
                     UKeyCode.codify(MouseEvent.MOUSE_DRAGGED, e.getButton()));
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }
@@ -106,7 +118,9 @@ public class MouseController extends Controller<MouseInputListener> implements
             performReflections(e, "mouseMoved",
                     UKeyCode.codify(MouseEvent.MOUSE_MOVED, NO_BUTTON));
         }
-        catch (Exception e1) {
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }

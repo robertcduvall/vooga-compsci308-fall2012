@@ -36,13 +36,10 @@ public class KeyboardController extends Controller<KeyListener> implements
                 performReflections(e, "keyTyped",
                         UKeyCode.codify(KeyEvent.KEY_TYPED, e.getKeyCode()));
             }
-            catch (IllegalAccessException | NoSuchMethodException e1) {
-                
+            catch (IllegalAccessException | NoSuchMethodException
+                    |InvocationTargetException e1) {
+                //this will never be thrown because it was checked for previously
                 e1.printStackTrace();
-            }
-            catch (InvocationTargetException e2){
-                //this will never be thrown
-                e2.printStackTrace();
             }
  
     }
@@ -52,7 +49,10 @@ public class KeyboardController extends Controller<KeyListener> implements
         try {
             performReflections(e, "keyPressed",
                     UKeyCode.codify(KeyEvent.KEY_PRESSED, e.getKeyCode()));
-        } catch (Exception e1) {
+        } 
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }
@@ -62,7 +62,10 @@ public class KeyboardController extends Controller<KeyListener> implements
         try {
             performReflections(e, "keyReleased",
                     UKeyCode.codify(KeyEvent.KEY_RELEASED, e.getKeyCode()));
-        } catch (Exception e1) {
+        } 
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
     }

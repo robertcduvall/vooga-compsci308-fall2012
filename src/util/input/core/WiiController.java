@@ -1,5 +1,6 @@
 package util.input.core;
 
+import java.lang.reflect.InvocationTargetException;
 import util.input.inputhelpers.UKeyCode;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
@@ -76,8 +77,11 @@ public class WiiController extends Controller<WiimoteListener> implements
                 performReflections(arg0, "onButtonsEvent",
                         UKeyCode.codify(BUTTON_HELD, arg0.getButtonsHeld()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
         }
     }
 

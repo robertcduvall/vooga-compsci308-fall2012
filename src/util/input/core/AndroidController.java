@@ -31,8 +31,10 @@ public class AndroidController extends Controller<AndroidListener> implements An
         try {
             performReflections(b, "onScreenPress", UKeyCode.codify(b.getPressType(), b.getID()));
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IllegalAccessException | NoSuchMethodException
+                    |InvocationTargetException e1) {
+        //this will never be thrown because it was checked for previously
+        e1.printStackTrace();
         }
     }
 
@@ -41,8 +43,10 @@ public class AndroidController extends Controller<AndroidListener> implements An
         try {
             performReflections(j, "onJoyStickMove", j.getID());
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
         }
     }
 
@@ -50,8 +54,10 @@ public class AndroidController extends Controller<AndroidListener> implements An
         try {
             broadcast("onControllerDisconnect");
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch (IllegalAccessException | NoSuchMethodException
+                |InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
         }
     }
     
