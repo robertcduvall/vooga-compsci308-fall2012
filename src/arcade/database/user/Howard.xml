@@ -1,5 +1,6 @@
 <user>
 	<name>Howard</name>
+	<password>password</password>
 	<picture>src/arcade/database/images/howard.jpg</picture>
 	<credits>50</credits>
 </user>

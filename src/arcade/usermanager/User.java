@@ -35,7 +35,7 @@ public class User {
         myCredits = credits;
         myMessages = messages;
         myGameData = gameData;
-        mySocialCenter=SocialCenter.getInstance();
+        //mySocialCenter=SocialCenter.getInstance();
     }
     protected String getPassword(){
         return myPicture;
