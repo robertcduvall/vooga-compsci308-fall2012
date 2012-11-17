@@ -78,11 +78,18 @@ public class WiiController extends Controller<WiimoteListener> implements
                         UKeyCode.codify(BUTTON_HELD, arg0.getButtonsHeld()));
             }
         }
-        catch (IllegalAccessException | NoSuchMethodException
-                |InvocationTargetException e1) {
+        catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        } 
     }
 
     @Override

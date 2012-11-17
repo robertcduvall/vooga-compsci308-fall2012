@@ -31,11 +31,18 @@ public class AndroidController extends Controller<AndroidListener> implements An
         try {
             performReflections(b, "onScreenPress", UKeyCode.codify(b.getPressType(), b.getID()));
         }
-        catch (IllegalAccessException | NoSuchMethodException
-                    |InvocationTargetException e1) {
-        //this will never be thrown because it was checked for previously
-        e1.printStackTrace();
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
         }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        } 
     }
 
     @Override
@@ -43,22 +50,36 @@ public class AndroidController extends Controller<AndroidListener> implements An
         try {
             performReflections(j, "onJoyStickMove", j.getID());
         }
-        catch (IllegalAccessException | NoSuchMethodException
-                |InvocationTargetException e1) {
+        catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        } 
     }
 
     public void onControllerDisconnect () {
         try {
             broadcast("onControllerDisconnect");
         }
-        catch (IllegalAccessException | NoSuchMethodException
-                |InvocationTargetException e1) {
+        catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
             e1.printStackTrace();
         }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        } 
     }
     
     public void restartController(){
