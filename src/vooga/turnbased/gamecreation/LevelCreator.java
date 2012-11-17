@@ -2,11 +2,17 @@ package vooga.turnbased.gamecreation;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import util.xml.XmlParser;
+import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.sprites.Sprite;
 
 /**
@@ -55,6 +61,38 @@ public class LevelCreator {
                 myDocumentElement, "backgroundImage");
     }
 
+    /**
+     *
+     * @return Player-controlled map object
+     */
+    public MapObject parserMapPlayer () {
+        NodeList playerList = myXmlParser.getElementsByName(myDocumentElement, "player");
+        Element player = (Element) playerList.item(0);
+        String className = myXmlParser.getTextContent(player, "class");
+        int id = myXmlParser.getIntContent(player, "id");
+        
+        String eventString = myXmlParser.getTextContent(player, "event");
+        GameManager.GameEvent event = null;
+        for (GameManager.GameEvent current : GameManager.GameEvent.values()) {
+            if (current.toString().equals(eventString)) {
+                event = current;
+            }
+        }
+        
+        NodeList locationList = myXmlParser.getElementsByName(player, "location");
+        Element location = (Element) locationList.item(0); 
+        int x = myXmlParser.getIntContent(location, "x");
+        int y = myXmlParser.getIntContent(location, "y");
+
+        NodeList imageList = myXmlParser.getElementsByName(player, "image");
+        Map<String, Image> imageMap = new HashMap<String, Image>();
+        Element imageData = (Element) imageList.item(0);
+        Image image = myXmlParser.getImageContent(imageData, "source");
+        String direction = myXmlParser.getTextContent(imageData, "direction");
+        imageMap.put(direction, image);
+        
+        return new MapPlayerObject(id, event, new Point(x,y), imageMap, null);
+    }
     /**
      *
      * @return List of Sprites in the Level

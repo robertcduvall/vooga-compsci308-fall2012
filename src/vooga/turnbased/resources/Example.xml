@@ -11,17 +11,16 @@
 	</event>
 	<player>
 		<map>
-			<position>
-				<xCoordinate>50</xCoordinate>
-				<yCoordinate>50</yCoordinate>
-			</position>
+			<class>MapObject</class>
+			<id>0</id>
+			<event>NO_ACTION</event>
+			<location>
+				<x>50</x>
+				<y>50</y>
+			</location>
 			<image>
-				<source></source>
-				<direction>left</direction>
-			</image>
-			<image>
-				<source></source>
-				<direction>right</direction>
+				<source>src/vooga/turnbased/resources/image/player/Down.png</source>
+				<direction>down</direction>
 			</image>
 		</map>
 		<battle>

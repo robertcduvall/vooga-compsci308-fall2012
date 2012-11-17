@@ -1,10 +1,7 @@
 package vooga.turnbased.gamecreation;
 
-import util.xml.*;
-import java.awt.Image;
+import vooga.turnbased.gameobject.MapPlayerObject;
 import java.io.File;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 public class XmlTester {
 
@@ -18,6 +15,12 @@ public class XmlTester {
         System.out.println(level.getDocumentElement().getNodeName());
         System.out.println(level.parseBackgroundImage());
         System.out.println(level.parseDimension());
+        
+        MapPlayerObject mapObject = (MapPlayerObject) level.parserMapPlayer();
+        System.out.println(mapObject.getID());
+        System.out.println(mapObject.getImage());
+        System.out.println(mapObject.getEvent());
+        System.out.println(mapObject.getLocation());
 //        XmlParser parser = new XmlParser(xmlFile);
 //
 //        Element root = parser.getDocumentElement();
