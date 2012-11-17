@@ -14,14 +14,19 @@ import util.input.android.events.JoyStickEvent;
 public interface AndroidListener {
 
     /**
-     * Method will be called if button is pressed
+     * Method will be called if a button event occurs
      */
-    public void onScreenPress(AndroidButtonEvent b);
+    void onScreenPress(AndroidButtonEvent b);
     
     /**
      * Event will be called everytime a joystick is moved.
      * @param j joystick event data wrapper
      */
-    public void onJoyStickMove(JoyStickEvent j);
+    void onJoyStickMove(JoyStickEvent j);
+    
+    /**
+     * Method called when an android controller loses connection with the server.
+     */
+    void onControllerDisconnect();
 
 }
