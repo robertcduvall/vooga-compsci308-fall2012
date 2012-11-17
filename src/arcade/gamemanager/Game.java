@@ -8,6 +8,8 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import util.xml.XmlBuilder;
 import util.xml.XmlParser;
 import arcade.IArcadeGame;
 import arcade.utility.ReadWriter;
@@ -18,7 +20,7 @@ import arcade.utility.ReadWriter;
  * Class of the arcade used to start, end, and maintain the relationship with
  * all games in the arcade.
  * 
- * @author Michael Deng, Patrick Royal
+ * @author Michael Deng, Patrick Royal, Seon Kang
  * 
  */
 public class Game {
@@ -27,6 +29,7 @@ public class Game {
 	private IArcadeGame myGame;
 	private Node myGameNode;
     private XmlParser myXmlParser;
+    private XmlBuilder myXmlBuilder;
 
 	/**
 	 * Constructor for Game Manager takes in a specific game, so there is a
@@ -44,6 +47,7 @@ public class Game {
 		File f = new File(
 				"../vooga-compsci308-fall2012/src/arcade/database/game.xml");
 		XmlParser myXmlParser = new XmlParser(f);
+		myXmlBuilder = new XmlBuilder(f);
 		NodeList allGames = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "game");
 		for (int i = 0; i < allGames.getLength(); i++) {
 			if (allGames.item(i).getTextContent().equals(myGame.getName()))
@@ -205,9 +209,36 @@ public class Game {
 	}
 
 	/**
+	 * @author Seon Kang
+	 * @param tag
+	 * @param value
+	 * @param element
+	 */
+	
+	protected void addGameElement(String tag, String value, Element element) {
+		myXmlBuilder.appendElement(element, tag, value);
+	}
+	
+	protected void addGameElement(String tag, String value) {
+		myXmlBuilder.appendElement((Element) myGameNode, tag, value);
+	}
+	
+	/**
+	 * @author Seon Kang
+	 * @param tag 
+	 * @param value 
+	 * @param element
+	 */
+	protected void setGameElement(String tag, String value, Element element) {
+		myXmlBuilder.modifyTag(element, tag, value);
+	}
+	
+	protected void setGameElement(String tag, String value) {
+		myXmlBuilder.modifyTag((Element) myGameNode, tag, value);
+	}
+	/**
 	 * A more general way to get game properties.
 	 * 
-	 * TODO Generalize function, ie not just for String
 	 * 
 	 * @author Seon Kang
 	 * @param gameName
@@ -215,8 +246,8 @@ public class Game {
 	 * @return
 	 */
 
-	public String getAttributeFromGame(String tag) {
-		NodeList attributeList = myGameNode.getChildNodes();
+	public String getGameElement(String tag, Element element) {
+		NodeList attributeList = element.getChildNodes();
 		for (int j = 0; j < attributeList.getLength(); j++) {
 			return myXmlParser.getTextContent(
 					(Element) attributeList.item(j), tag);
@@ -224,10 +255,12 @@ public class Game {
 		return null;
 	}
 
+	public String getGameElement(String tag) {
+		return getGameElement(tag, (Element) myGameNode);
+	}
 	/**
 	 * General function for getting String lists by passing a string of the tag.
 	 * 
-	 * TODO Generalize function, ie not just for String
 	 * 
 	 * @author Seon Kang
 	 * 
@@ -235,12 +268,16 @@ public class Game {
 	 * 
 	 * @return A String ArrayList of elements matching tag
 	 */
-	public List<String> getListByTagName(String tag) {
+	public List<String> getListByTagName(String tag, Element element) {
 		List<String> stringListByTag = new ArrayList<String>();
-		NodeList nodeList = myXmlParser.getElementsByName((Element) myGameNode, tag);
+		NodeList nodeList = myXmlParser.getElementsByName(element, tag);
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			stringListByTag.add(nodeList.item(i).getTextContent());
 		}
 		return stringListByTag;
+	}
+	
+	public List<String> getListByTagName(String tag) {
+		return getListByTagName(tag, (Element) myGameNode);
 	}
 }

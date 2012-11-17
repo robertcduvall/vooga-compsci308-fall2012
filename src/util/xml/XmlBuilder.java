@@ -26,6 +26,26 @@ import org.xml.sax.SAXException;
 
 public class XmlBuilder {
 
+    private File myXmlFile;
+    private Document myXmlDocument;
+
+    /**
+     * Added constructors for the createDocument() methods
+     * 
+     * @author Seon Kang
+     *
+     */
+	public XmlBuilder(File f) {
+		myXmlDocument = createDocument(f);
+	}
+	
+	public XmlBuilder(String filepath) {
+		myXmlDocument = createDocument(filepath);
+	}
+	
+	public XmlBuilder() {
+		myXmlDocument = createDocument();
+	}
     /**
      * Creates a Document Object and handles any exceptions
      * that might be thrown. The Document object is brand new
@@ -105,6 +125,27 @@ public class XmlBuilder {
     }
 
     /**
+     * @author Seon Kang
+     * @return
+     */
+    public Document getDocument() {
+    	return myXmlDocument;
+    }
+
+    /**
+     * Used Difan's appendElement() method but made it default to using this
+     * XmlBuilder's document.
+     * 
+     * @author Seon Kang
+     * @param root
+     * @param child
+     * @param value
+     */
+    public void appendElement(Element root, String child, String content) {
+    	appendElement(getDocument(), root, child, content);
+    }
+    
+    /**
      * create an element in xml
      * 
      * @param document
@@ -123,6 +164,25 @@ public class XmlBuilder {
 
     }
 
+
+    /**
+     * Used Difan's appendElementWithAttribute() method but made it default to using this
+     * XmlBuilder's document.
+     * 
+     * @author Seon Kang
+     * @param root
+     * @param child
+     * @param content
+     * @param attrName
+     * @param attrContent
+     */
+    public void appendElementWithAttribute(Element root, String child, String content,
+    		String attrName, String attrContent) {
+    	appendElementWithAttribute(getDocument(), root, child, content, 
+    			attrName, attrContent);
+    }
+    
+    
     /**
      * create an element with attribute in xml
      * 

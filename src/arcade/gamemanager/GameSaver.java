@@ -8,7 +8,7 @@ import arcade.usermanager.User;
  * Class that the games use to save preferences and score.
  * GameSaver will update User object.
  * 
- * @author Seon Kang, Jei Min Yoo
+ * @author Seon Kang
  * 
  */
 public class GameSaver {
