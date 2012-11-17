@@ -3,6 +3,7 @@ package util.input.core;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.InvocationTargetException;
 import util.input.inputhelpers.UKeyCode;
 
 
@@ -30,12 +31,20 @@ public class KeyboardController extends Controller<KeyListener> implements
 
     @Override
     public void keyTyped(KeyEvent e) {
-        try {
-            performReflections(e, "keyTyped",
-                    UKeyCode.codify(KeyEvent.KEY_TYPED, e.getKeyCode()));
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
+
+            try {
+                performReflections(e, "keyTyped",
+                        UKeyCode.codify(KeyEvent.KEY_TYPED, e.getKeyCode()));
+            }
+            catch (IllegalAccessException | NoSuchMethodException e1) {
+                
+                e1.printStackTrace();
+            }
+            catch (InvocationTargetException e2){
+                //this will never be thrown
+                e2.printStackTrace();
+            }
+ 
     }
 
     @Override
