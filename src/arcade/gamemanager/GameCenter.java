@@ -39,6 +39,9 @@ public class GameCenter {
 
     }
 
+    /**
+     * reads game.xml file and re-instantiates Game objects.
+     */
     private void refreshGames () {
         myGames.clear();
         NodeList nList =
@@ -63,6 +66,10 @@ public class GameCenter {
         }
     }
     
+    /**
+     * returns the list of available games.
+     * @return list of available games
+     */
     public List<String> getGameList () {
         List<String> gameList = new ArrayList<String>();
         for (Game game : myGames) {
@@ -71,6 +78,11 @@ public class GameCenter {
         return gameList;
     }
 
+    /**
+     * returns Game object specified by the game's name. If no game is found, returns null.
+     * @param gameName name of requested game
+     * @return requested Game object or null if no such game is found
+     */
     public Game getGame (String gameName) {
         for (Game gm : myGames) {
             if (gm.getGameName().equals(gameName)) { return gm; }
@@ -78,6 +90,11 @@ public class GameCenter {
         return null;
     }
 
+    /**
+     * returns a list of games that have the tag.
+     * @param tag a tag that games have in common
+     * @return list of games that have the tag.
+     */
     public List<Game> getGameListByTagName (String tag) {
         List<Game> games = new ArrayList<Game>();
         for (Game gm : myGames) {
