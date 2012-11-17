@@ -3,6 +3,7 @@ package util.input.android.bluetoothserver;
 import java.util.ArrayList;
 import java.util.List;
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.JoyStickEvent;
 import util.input.interfaces.listeners.AndroidListener;
 
 
@@ -19,31 +20,46 @@ import util.input.interfaces.listeners.AndroidListener;
 public class AndroidBluetoothServer {
 
     private Thread myWaitThread;
-    public static final int CONTROLLER_ONE = 0;
-    public static final int CONTROLLER_TWO = 1;
-    public static final int CONTROLLER_THREE = 2;
-    public static final int CONTROLLER_FOUR = 3;
-    public List<AndroidListener> myListeners;
+    private List<AndroidListener> myListeners;
 
+    /**
+     * Create a new bluetooth server. You must
+     * @param controllerNumber the number of this controller. Use class constants.
+     */
     public AndroidBluetoothServer (int controllerNumber) {
         myWaitThread = new Thread(new WaitThread(controllerNumber, this));
         myListeners = new ArrayList<AndroidListener>();
     }
-
+    /**
+     * Start the server listening for bluetooth connections.
+     */
     public void startServer () {
         myWaitThread.start();
     }
-
+    /**
+     * Subscribe to receive updated from this controller.
+     * @param subscriber A class which will directly receive updates from this controller.
+     */
     public void subscribe (AndroidListener subscriber) {
         myListeners.add(subscriber);
-        System.out.println("subscribed");
     }
 
-    public void notify (AndroidButtonEvent b) {
-        System.out.println(myListeners.size());
+    /**
+     * notify all subscribers of the button event
+     * @param buttonEvent the event that just occurred.
+     */
+    public void notify (AndroidButtonEvent buttonEvent) {
         for (AndroidListener listener : myListeners) {
-            listener.onScreenPress(b);
-            System.out.println("notifying");
+            listener.onScreenPress(buttonEvent);
+        }
+    }
+    /**
+     * notify all subscribers of the joystick event
+     * @param buttonEvent the event that just occurred.
+     */
+    public void notify(JoyStickEvent joystickEvent){
+        for (AndroidListener listener : myListeners) {
+            listener.onJoyStickMove(joystickEvent);
         }
     }
 

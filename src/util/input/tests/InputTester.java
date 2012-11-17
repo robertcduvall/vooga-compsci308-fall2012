@@ -29,7 +29,7 @@ import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 
 
-public class InputTester extends Applet implements MouseInputListener {
+public class InputTester extends Applet {
     // (Note: MouseListener is implemented only so that
     // the applet can request the input focus when
     // the user clicks on it.)
@@ -233,17 +233,6 @@ public class InputTester extends Applet implements MouseInputListener {
     } // interface.
 
     public void mouseClicked (MouseEvent evt) {
-    }
-
-    @Override
-    public void mouseDragged (MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseMoved (MouseEvent e) {
-        System.out.println("Mouse Moved" + e);
-
     }
 
 }

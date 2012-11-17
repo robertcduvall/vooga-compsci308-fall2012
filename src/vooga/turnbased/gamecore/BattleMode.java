@@ -194,4 +194,9 @@ public class BattleMode extends GameMode {
         // TODO Auto-generated method stub
 
     }
+
+	@Override
+	public void configureInputHandling() {
+		// handle inputs
+	}
 }

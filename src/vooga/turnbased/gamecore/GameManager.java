@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JComponent;
+
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
@@ -36,6 +38,8 @@ public class GameManager {
     // private MapObject myPlayer;
     private final boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
+	private KeyboardController myKeyboardController;
+	private MouseController myMouseController;
 
     /**
      * Constructor of GameManager
@@ -45,6 +49,8 @@ public class GameManager {
      */
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
+        myKeyboardController = gameCanvas.getKeyboardController();
+        myMouseController = gameCanvas.getMouseController();
         isOver = false;
         // mySprites =
         // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
@@ -54,9 +60,10 @@ public class GameManager {
         myBattleMode = new BattleMode(this, BattleObject.class);
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.resume();
+        configureInputHandling();
     }
 
-    private void generateHardcodedSprites () { // factory will do this job
+	private void generateHardcodedSprites () { // factory will do this job
         // eventually...
         Sprite s = new Sprite();
         s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 2, 3, GameWindow
@@ -154,5 +161,17 @@ public class GameManager {
     public enum GameEvent {
         MAP_COLLISION, BATTLE_OVER, NO_ACTION
     }
+	
+	public KeyboardController getKeyboardController() {
+		return myKeyboardController;
+	}
+	
+	public MouseController getMouseController() {
+		return myMouseController;
+	}
+	
+    private void configureInputHandling() {
+		// handle actions that shouldn't be passed down to individual gamemodes, i.e. game pause
+	}
 
 }

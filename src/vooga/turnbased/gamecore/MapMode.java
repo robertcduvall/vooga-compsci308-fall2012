@@ -374,4 +374,10 @@ public class MapMode extends GameMode {
 	public Point getOrigin() {
 		return myOrigin;
 	}
+
+	@Override
+	public void configureInputHandling() {
+		// will move all code for handling user input here
+		// once input api allows invoking methods with arguments
+	}
 }
