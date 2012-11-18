@@ -105,11 +105,11 @@ public class GameCenter {
         return games;
     }
 
-     public static void main(String args[]) {
-     System.out.println("haha");
-     GameCenter gc = new GameCenter();
-     List<String> list = gc.getGameList();
-     gc.refreshGames();
-     System.out.println(list);
-     }
+//     public static void main(String args[]) {
+//     System.out.println("haha");
+//     GameCenter gc = new GameCenter();
+//     List<String> list = gc.getGameList();
+//     gc.refreshGames();
+//     System.out.println(list);
+//     }
 }
