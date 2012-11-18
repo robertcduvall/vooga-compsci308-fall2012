@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><user><name>testuser</name><password>password</password><picture>src/arcade/database/images/default.jpg</picture></user>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><user><name>testuser</name><password>password</password><picture>src/arcade/database/images/default.jpg</picture><credits>100</credits></user>
