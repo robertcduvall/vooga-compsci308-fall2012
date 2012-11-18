@@ -48,7 +48,7 @@ public class AndroidBluetoothServer {
      * notify all subscribers of the button event
      * @param buttonEvent the event that just occurred.
      */
-    public void notify (AndroidButtonEvent buttonEvent) {
+    protected void notify (AndroidButtonEvent buttonEvent) {
         for (AndroidListener listener : myListeners) {
             listener.onScreenPress(buttonEvent);
         }
@@ -57,9 +57,15 @@ public class AndroidBluetoothServer {
      * notify all subscribers of the joystick event
      * @param buttonEvent the event that just occurred.
      */
-    public void notify(JoyStickEvent joystickEvent){
+    protected void notify(JoyStickEvent joystickEvent){
         for (AndroidListener listener : myListeners) {
             listener.onJoyStickMove(joystickEvent);
+        }
+    }
+    
+    protected void notifyDisconnect(){
+        for (AndroidListener listener : myListeners) {
+            listener.onControllerDisconnect();
         }
     }
 

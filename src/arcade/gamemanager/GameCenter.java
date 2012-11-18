@@ -11,79 +11,105 @@ import arcade.IArcadeGame;
 import arcade.usermanager.SocialCenter;
 import arcade.utility.ReadWriter;
 
+
 /**
- * 
+ * This class keeps a list of Games and returns appropriate Games at GUI's request.
  * @author Jei Min Yoo
- *
+ * 
  */
 public class GameCenter {
 
     private XmlParser myXmlParser;
-    private List<IArcadeGame> myGames;
-    private NodeList gameNodeList;
+    private List<Game> myGames;
     private SocialCenter socialCenter;
-    
-    public GameCenter() {
+
+    public GameCenter () {
         initialize();
     }
-    
+
     /**
      * initializes the class by reading information from game.xml file.
      */
-    public void initialize() {
-        socialCenter = SocialCenter.getInstance();
+    public void initialize () {
+//        socialCenter = SocialCenter.getInstance();
         File f = new File("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
         myXmlParser = new XmlParser(f);
-        gameNodeList = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "game");
+        myGames = new ArrayList<Game>();
+        refreshGames();
+
+    }
+
+    /**
+     * reads game.xml file and re-instantiates Game objects.
+     */
+    private void refreshGames () {
+        myGames.clear();
+        NodeList nList =
+                myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "filepath");
+
+        for (int i = 0; i < nList.getLength(); i++) {
+            String filePath = nList.item(i).getTextContent();
+            try {
+                IArcadeGame arcade = (IArcadeGame) Class.forName(filePath).newInstance();
+//                Game game = new Game(arcade);
+//                myGames.add(game);
+            }
+            catch (IllegalAccessException e) {
+                System.out.println("illegal access: " + filePath);
+            }
+            catch (InstantiationException e) {
+                System.out.println("failed to instantiate class: " + filePath);
+            }
+            catch (ClassNotFoundException e) {
+                System.out.println("class does not exist: " + filePath);
+            }
+        }
     }
     
-    public List<String> getListOfGames() {
+    /**
+     * returns the list of available games.
+     * @return list of available games
+     */
+    public List<String> getGameList () {
         List<String> gameList = new ArrayList<String>();
-        NodeList nList = myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "name");
-        for (int i = 0; i < nList.getLength(); i++) {
-            gameList.add(nList.item(i).getTextContent());
+        for (Game game : myGames) {
+            gameList.add(game.getGameName());
         }
         return gameList;
     }
-    
-    public String getRating(String gameName) {
-        
-        for (int i = 0; i < gameNodeList.getLength(); i++) {
-            NodeList gameInfoList = gameNodeList.item(i).getChildNodes();
-            for (int j = 0; j < gameInfoList.getLength(); j++) {
-                if (gameInfoList.item(j).getNodeName().equals(gameName)) {
-                  return myXmlParser.getTextContent((Element) gameNodeList.item(i), "rating");  
-                }
-            }
-        }
-        
-        return "0";
-    }
-    
-    public List<String> getListOfReviews(String gameName) {
-        List<String> reviewList = new ArrayList<String>();
-        
-        return reviewList;
-    }
-    
-    public List<String> getUsersThatPlayedGame(String gameName) {
-        List<String> userList = new ArrayList<String>();
-        return userList;
-    }
-    
-    public List<Integer> getUserScores(String gameName){
-        List<Integer> userList = new ArrayList<Integer>();
-        return userList;
-    }
-    
-    public Image getGameProfilePicture(String gameName) {
-        for (IArcadeGame game : myGames) {
-            if (game.getName().equals(gameName)) {
-                return game.getScreenshots().get(0);
-            }
+
+    /**
+     * returns Game object specified by the game's name. If no game is found, returns null.
+     * @param gameName name of requested game
+     * @return requested Game object or null if no such game is found
+     */
+    public Game getGame (String gameName) {
+        for (Game gm : myGames) {
+            if (gm.getGameName().equals(gameName)) { return gm; }
         }
         return null;
-        
     }
-    
+
+    /**
+     * returns a list of games that have the tag.
+     * @param tag a tag that games have in common
+     * @return list of games that have the tag.
+     */
+    public List<Game> getGameListByTagName (String tag) {
+        List<Game> games = new ArrayList<Game>();
+        for (Game gm : myGames) {
+            if (gm.getGenre().contains(tag)) {
+                games.add(gm);
+            }
+        }
+        return games;
+    }
+
+//     public static void main(String args[]) {
+//     System.out.println("haha");
+//     GameCenter gc = new GameCenter();
+//     List<String> list = gc.getGameList();
+//     gc.refreshGames();
+//     System.out.println(list);
+//     }
 }
