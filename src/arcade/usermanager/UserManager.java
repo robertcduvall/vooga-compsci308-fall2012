@@ -1,9 +1,11 @@
 package arcade.usermanager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import arcade.utility.FileOperation;
 
 
 /**
@@ -49,7 +51,7 @@ public class UserManager {
 
         for (File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
-                String name = listOfFile.getName();
+                String name = FileOperation.stripExtension(listOfFile.getName());
                 User newUser = myXMLReader.getUser(name);
                 
                 myAllUser.put(name, newUser);
@@ -79,7 +81,7 @@ public class UserManager {
 
     }
 
-    protected User addNewUser (String userName, String password, String picture) {
+    protected User addNewUser (String userName, String password, String picture) throws IOException {
         // write an xml file
         myXMLWriter.makeUserXML(userName, password, picture);
         // make new user class

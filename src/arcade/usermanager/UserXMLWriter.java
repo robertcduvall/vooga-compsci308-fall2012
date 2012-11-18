@@ -1,8 +1,10 @@
 package arcade.usermanager;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import arcade.utility.FileOperation;
 import util.xml.XmlBuilder;
 import util.xml.XmlWriter;
 
@@ -33,18 +35,20 @@ public class UserXMLWriter {
      * @param password
      * @param picture
      * @author difan
+     * @throws IOException 
      */
 
-    public void makeUserXML (String userName, String password, String picture) {
+    public void makeUserXML (String userName, String password, String picture) throws IOException {
 
-        makeBasicXml(userName, picture, picture);
+        makeBasicXml(userName, password, picture);
         makeMessageXml(userName);
         makeGameXml(userName);
     }
 
-    private void makeBasicXml (String userName, String password, String picture) {
+    private void makeBasicXml (String userName, String password, String picture) throws IOException {
         String basicInfoFilePath = myUserBasicFilePath + userName + ".xml";
-        Document basicDoc = XmlBuilder.createDocument(basicInfoFilePath);
+        
+        Document basicDoc = XmlBuilder.createDocument();
 
         Element rootElement = basicDoc.createElement("user");
         basicDoc.appendChild(rootElement);
@@ -56,9 +60,10 @@ public class UserXMLWriter {
 
     }
 
-    private void makeMessageXml (String userName) {
+    private void makeMessageXml (String userName) throws IOException {
         String messageFilePath = myUserMessageFilePath + userName + ".xml";
-        Document doc = XmlBuilder.createDocument(messageFilePath);
+       
+        Document doc = XmlBuilder.createDocument();
 
         Element rootElement = doc.createElement("message");
         doc.appendChild(rootElement);
@@ -67,9 +72,10 @@ public class UserXMLWriter {
 
     }
 
-    private void makeGameXml (String userName) {
+    private void makeGameXml (String userName) throws IOException {
         String gameFilePath = myUserGameFilePath + userName + ".xml";
-        Document doc = XmlBuilder.createDocument(gameFilePath);
+        
+        Document doc = XmlBuilder.createDocument();
 
         Element rootElement = doc.createElement("game");
         doc.appendChild(rootElement);

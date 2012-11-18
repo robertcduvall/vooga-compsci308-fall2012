@@ -1,9 +1,10 @@
 package arcade.usermanager;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 
 /**
- * 
+ * test user part of arcade
  * @author difan
  *
  */
@@ -18,11 +19,31 @@ public class Test {
     private static ResourceBundle resource;
     private static SocialCenter mySocialCenter;
     
-    public static void main(String[] args){
-        myXMLWriter=new UserXMLWriter();
+    public static void main(String[] args) throws Exception{
+       
         
-        mySocialCenter= SocialCenter.getInstance();
-        System.out.println("successful");
+       mySocialCenter= SocialCenter.getInstance();
+        
+     
+        
+    }
+    
+    private void testRegister() throws Exception{
+        boolean status2=mySocialCenter.registerUser("garfield", "password", "garfield.jpg");
+        System.out.println(status2);
+        
+    }
+    
+    private void testLogOn() throws Exception{
+        boolean status=mySocialCenter.logOnUser("Howard", "password");
+      System.out.println(status);
+        
+    }
+    
+    private void testXml() throws IOException{
+        myXMLWriter=new UserXMLWriter();
+        myXMLWriter.makeUserXML("counter", "clock", "wise");
+        
     }
     
     private void testBundle(){
