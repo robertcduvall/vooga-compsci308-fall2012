@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import util.imageprocessing.ImageLoop;
@@ -242,14 +243,18 @@ public class MapMode extends GameMode {
     /**
      * iterate through the map and update MapObjects at each position
      */
-    private synchronized void updateMapObjects () {
+    private void updateMapObjects () {
         for (Point p : myMapObjects.keySet()) {
             List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
-            for (MapObject s : objectsOnTile) {
-                if (!s.isVisible()) {
-                    objectsOnTile.remove(s);
+            Iterator<MapObject> it = objectsOnTile.iterator();
+            while (it.hasNext()) {
+            	MapObject nextObject = it.next();
+                if (!nextObject.isVisible()) {
+                    it.remove();
                 }
-                s.update(getGameManager().getDelayTime());
+                else {
+                    nextObject.update(getGameManager().getDelayTime());
+                }
             }
         }
     }

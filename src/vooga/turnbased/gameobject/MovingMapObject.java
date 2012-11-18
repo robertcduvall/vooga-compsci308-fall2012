@@ -84,16 +84,19 @@ public class MovingMapObject extends MapObject {
     }
 
     /**
-     * Gets destination(?) of object.
+     * Gets the current moving direction of the object.
      * 
-     * @return myDirection Point location to which the object is moving.
+     * @return the direction (left, right, up, down)
      */
-    // poorly named
     public Point getDirection () {
         return myDirection;
     }
 
     @Override
+    /**
+     * paint differently when the object is moving
+     * @param g Graphics object onto which the MapObject is painted
+     */
     public void paint (Graphics g) {
         if (isMoving()) {
             g.drawImage(getImage(), myOffset.x - myDirection.x * myTileDimensions.width +
@@ -101,8 +104,7 @@ public class MovingMapObject extends MapObject {
                     myYOriginInTile, myTileDimensions.width, myTileDimensions.height, null);
         }
         else {
-            g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
-                    myTileDimensions.height, null);
+            super.paint(g);
         }
 
     }
