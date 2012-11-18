@@ -43,7 +43,7 @@ public class InputTester extends Applet implements MouseInputListener {
     boolean focussed = false;   // True when this applet has input focus.
 
     private MouseController myMouseController;
-    
+
     private KeyboardController myKeyController;
 
     SpriteTestingInput mainPlayer = new SpriteTestingInput();
