@@ -339,10 +339,10 @@ public class MapMode extends GameMode {
                 myMapObjects.get(oldCoord).remove(s);
                 addMapObject(dest, s);
                 s.setLocation(dest);
-                s.setDirection(dir); // start moving in update() when direction
-                                     // is set
+                s.setMoving(true);
             }
         }
+        s.setDirection(dir); //direction changed even if the player is not moving
     }
 
     @Override

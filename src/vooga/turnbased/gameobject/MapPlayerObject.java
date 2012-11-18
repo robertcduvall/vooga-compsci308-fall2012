@@ -16,6 +16,7 @@ import vooga.turnbased.gamecore.MapMode;
  */
 public class MapPlayerObject extends MovingMapObject {
 
+	private static final int ANIMATION_FRAME_RATE = 3;
     private Map<String, Image> myImages;
     private Map<String, ImageLoop> myImageLoops;
     // feel free to rename
@@ -23,6 +24,7 @@ public class MapPlayerObject extends MovingMapObject {
     private String myUpLabel = "up";
     private String myLeftLabel = "left";
     private String myRightLabel = "right";
+    private int frameCount;
 
     /**
      * Creates the MovingMapObject that will be used in MapMode.
@@ -36,6 +38,7 @@ public class MapPlayerObject extends MovingMapObject {
     public MapPlayerObject (int id, GameManager.GameEvent event, Point coord, Image mapImage,
             MapMode mapMode) {
         super(id, event, coord, mapImage, mapMode);
+        frameCount = 0;
     }
 
     /**
@@ -82,7 +85,15 @@ public class MapPlayerObject extends MovingMapObject {
     @Override
     public void update (int delayTime) {
         super.update(delayTime);
-        if (isMoving()) {
+        frameCount++;
+        if (frameCount >= ANIMATION_FRAME_RATE) {
+        	animateCharactor();
+        	frameCount = 0;
+        }
+    }
+
+	private void animateCharactor() {
+		if (isMoving()) {
             if (getDirection().equals(MapMode.DOWN)) {
                 setImage((Image) myImageLoops.get(myDownLabel).next());
             }
@@ -110,6 +121,6 @@ public class MapPlayerObject extends MovingMapObject {
                 setImage(myImages.get(myRightLabel));
             }
         }
-    }
+	}
 
 }

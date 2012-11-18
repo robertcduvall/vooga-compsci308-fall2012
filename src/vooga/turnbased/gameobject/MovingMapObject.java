@@ -55,7 +55,6 @@ public class MovingMapObject extends MapObject {
     public Point calcScreenDisplacement (int tileWidth, int tileHeight) {
         myXOriginInTile = (int) (tileWidth * myXProportion);
         myYOriginInTile = (int) (tileHeight * myYProportion);
-        // System.out.println(-myXOriginInTile + " " + -myYOriginInTile);
         return new Point(-myXOriginInTile, -myYOriginInTile);
     }
 
@@ -82,7 +81,6 @@ public class MovingMapObject extends MapObject {
     // this is also poorly named
     public void setDirection (Point dir) {
         myDirection = dir;
-        this.setMoving(true);
     }
 
     /**
