@@ -3,10 +3,12 @@ package arcade.usermanager;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+
 /**
  * test user part of arcade
+ * 
  * @author difan
- *
+ * 
  */
 
 public class Test {
@@ -18,35 +20,34 @@ public class Test {
     private final String successString = "Successful";
     private static ResourceBundle resource;
     private static SocialCenter mySocialCenter;
-    
-    public static void main(String[] args) throws Exception{
-       
-        
-       mySocialCenter= SocialCenter.getInstance();
-        
-     
-        
+
+    public static void main (String[] args) throws Exception {
+
+        mySocialCenter = SocialCenter.getInstance();
+        Test test=new Test();
+        test.testLogOn();
+        //test.testRegister();
     }
-    
-    private void testRegister() throws Exception{
-        boolean status2=mySocialCenter.registerUser("garfield", "password", "garfield.jpg");
+
+    private void testRegister () throws Exception {
+        boolean status2 = mySocialCenter.registerUser("testuser", "password", "src/arcade/database/images/default.jpg");
         System.out.println(status2);
-        
+
     }
-    
-    private void testLogOn() throws Exception{
-        boolean status=mySocialCenter.logOnUser("Howard", "password");
-      System.out.println(status);
-        
+
+    private void testLogOn () throws Exception {
+        boolean status = mySocialCenter.logOnUser("Howard", "password");
+        System.out.println(status);
+
     }
-    
-    private void testXml() throws IOException{
-        myXMLWriter=new UserXMLWriter();
+
+    private void testXml () throws IOException {
+        myXMLWriter = new UserXMLWriter();
         myXMLWriter.makeUserXML("counter", "clock", "wise");
-        
+
     }
-    
-    private void testBundle(){
+
+    private void testBundle () {
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");

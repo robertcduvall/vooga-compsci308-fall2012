@@ -111,6 +111,7 @@ public class XmlParser {
      */
     public int getIntContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
+        System.out.println(list.item(0));
         return Integer.parseInt(list.item(0).getTextContent());
     }
 
