@@ -1,6 +1,5 @@
 package util.xml;
 
-
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class XmlParser {
 
     /**
      * Initiates the process for parsing an Xml file.
-     *
+     * 
      * @param file The Xml file that will be parsed.
      */
     public XmlParser (File file) {
@@ -35,7 +34,7 @@ public class XmlParser {
     }
 
     /**
-     * Enables parsing of the Xml file.  myXmlDocument is then the basis
+     * Enables parsing of the Xml file. myXmlDocument is then the basis
      * for the rest of the parsing.
      */
     private void makeDocument () {
@@ -92,7 +91,7 @@ public class XmlParser {
      * @param tagName The string name of the element containing desired image
      * @return The image in the desired tag
      */
-    public Image getImageContent(Element element, String tagName) {
+    public Image getImageContent (Element element, String tagName) {
         String pathName = getTextContent(element, tagName);
         Image image = null;
         try {
@@ -125,15 +124,14 @@ public class XmlParser {
         NodeList list = element.getElementsByTagName(tagName);
         return Double.parseDouble(list.item(0).getTextContent());
     }
-    
+
     /**
      * 
      * @return document
      * @author difan
      */
-   public Document getDocument(){
-       return myXmlDocument;
-   }
-    
-   
+    public Document getDocument () {
+        return myXmlDocument;
+    }
+
 }

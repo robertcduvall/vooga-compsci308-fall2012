@@ -1,12 +1,12 @@
 <gamelist>
 	<game id="1">
 		<name>Platform</name>
-		<picture></picture>
 		<rating>3</rating>
+		<filepath>arcade.Sample1</filepath>
 </game>
 	<game id="2">
 		<name>Shooter</name>
-		<picture></picture>
 		<rating>4</rating>
+		<filepath>arcade.Sample2</filepath>
 	</game>
 </gamelist>
