@@ -46,7 +46,7 @@ public class Arcade {
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
-        //mySocialCenter = new SocialCenter();
+        mySocialCenter = new SocialCenter();
         myGameManager = new GameLink();
         myUserManager = new UserLink();
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");

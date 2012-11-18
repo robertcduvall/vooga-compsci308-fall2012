@@ -16,14 +16,11 @@ public class EnemyPlayer extends CollisionEvent{
     }
     
     public EnemyPlayer (Player a, Enemy b) {
-        super(b, a);
-        myPlayer = (Player) this.a();
-        myEnemy = (Enemy) this.b();
+        this(b,a);
     }
 
     @Override
     public void applyCollision (Level level) {
-        // TODO Auto-generated method stub
         if (this.direction() == CollisionDirection.DOWN) {
             myEnemy.markForRemoval();
         }

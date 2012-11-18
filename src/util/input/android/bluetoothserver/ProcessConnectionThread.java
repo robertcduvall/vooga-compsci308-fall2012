@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import javax.microedition.io.StreamConnection;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.AndroidControllerEvent;
+import util.input.android.events.JoyStickEvent;
 
 
 /**
@@ -46,7 +47,7 @@ public class ProcessConnectionThread implements Runnable {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            myServer.notifyDisconnect();
         }
     }
 
@@ -54,6 +55,10 @@ public class ProcessConnectionThread implements Runnable {
         if (androidEvent.getClass() == AndroidButtonEvent.class) {
             AndroidButtonEvent b = (AndroidButtonEvent) androidEvent;
             myServer.notify(b);
+        }
+        if (androidEvent.getClass() == JoyStickEvent.class) {
+            JoyStickEvent j = (JoyStickEvent) androidEvent;
+            myServer.notify(j);
         }
 
     }

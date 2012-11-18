@@ -45,14 +45,12 @@ public class ControllerFactory {
     /**
      * Use the mouse as a controller.
      *
-     * @param wiiControl - The Wiimote object obtained on
-     *                          connection via bluetooth
      * @return - The Controller object
      */
     @SuppressWarnings("rawtypes")
-    public static Controller createWiiController(Wiimote wiiControl) {
+    public static Controller createWiiController() {
         // Create wii controller
-        return new WiiController(wiiControl);
+        return new WiiController();
     }
 
     /**

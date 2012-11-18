@@ -17,7 +17,7 @@ import arcade.utility.ImageReader;
  * @author Michael Deng
  * 
  */
-public class OnButton {
+public class TurnOnTheArcade {
 
     private static JFrame startFrame;
     private static JPanel startPanel;
@@ -36,7 +36,7 @@ public class OnButton {
     public static void main (String[] args) {
 
         // sets up the jframe and jpanel
-        startFrame = new JFrame("Are you ready?");
+        startFrame = new JFrame("Ready?");
         startFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         startFrame.setResizable(false);
         startPanel = new JPanel();

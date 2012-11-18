@@ -1,6 +1,8 @@
 package util.input.core;
 
+import java.lang.reflect.InvocationTargetException;
 import util.input.inputhelpers.UKeyCode;
+import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -44,10 +46,12 @@ public class WiiController extends Controller<WiimoteListener> implements
     /**
      * Create a new Wii controller.
      *
-     * @param wii - The Wiimote object to which we add the event listeners
      */
-    public WiiController(Wiimote wii) {
-        wii.addWiiMoteEventListeners(this);
+    public WiiController() {
+        super();
+        Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
+        Wiimote wiimote = wiimotes[0];
+        wiimote.addWiiMoteEventListeners(this);
     }
 
     @Override
@@ -73,9 +77,19 @@ public class WiiController extends Controller<WiimoteListener> implements
                 performReflections(arg0, "onButtonsEvent",
                         UKeyCode.codify(BUTTON_HELD, arg0.getButtonsHeld()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        } 
     }
 
     @Override

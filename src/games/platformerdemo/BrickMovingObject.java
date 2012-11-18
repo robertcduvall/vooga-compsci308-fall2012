@@ -18,9 +18,7 @@ public class BrickMovingObject extends CollisionEvent {
     }
 
     public BrickMovingObject (MovingObject a, Brick b) {
-        super(b, a);
-        myBrick = (Brick) this.a();
-        myMovingObject = (MovingObject) this.b();
+        this(b, a);
     }
 
     @Override

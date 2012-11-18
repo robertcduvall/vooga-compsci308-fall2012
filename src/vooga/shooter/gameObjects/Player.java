@@ -4,7 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-import javax.swing.ImageIcon;
+import java.util.ArrayList;
+import java.util.List;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
@@ -75,14 +76,22 @@ public class Player extends Sprite {
         });
 
         //-1 is the int value for no key pressed
-        getMapper().addPair("-1", this);
+        getMapper().addPair("-1", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                setVelocity(0, 0);
+            }
+        });
 
-        //the player is hit with a bullet (decreases health)
-        //also the bullet that hit the player goes away
         getMapper().addPair("hitbybullet", new SpriteActionInterface() {
             public void doAction(Object...o) {
                 decreaseHealth(((Bullet) o[0]).getDamage());
                 ((Bullet) o[0]).die();
+            }
+        });
+
+        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
             }
         });
     }
@@ -101,6 +110,10 @@ public class Player extends Sprite {
         if (getTop() <= 0 || getBottom() >= getBounds().height) {
             setVelocity(getVelocity().x, 0);
         }
+
+        for (Bullet b : getBulletsFired()) {
+            b.update();
+        }
     }
 
     /**
@@ -115,24 +128,17 @@ public class Player extends Sprite {
      * Paints bullets of player.
      */
     protected void continuePaint (Graphics pen) {
-        for (Bullet b : getMyBulletsFired()) {
-            b.paint(pen);
+        List<Bullet> deadBullets = new ArrayList<Bullet>();
+
+        for (Bullet b : getBulletsFired()) {
+            if (b.getImage() == null) {
+                deadBullets.add(b);
+            }
+            else {
+                b.paint(pen);
+            }
         }
-    }
 
-    /**
-     * Has the player fire a bullet.
-     * The bullet is added to the player's list of fired bullets
-     * and will be painted during the player's paint method.
-     */
-    public void fireBullet() {
-        ImageIcon iib = new ImageIcon(this.getClass().getResource(
-                "../vooga/shooter/images/playerbullet.png"));
-        Image bulletImage = iib.getImage();
-
-        Bullet b = new Bullet(getPosition(), new Dimension(5, 5), getBounds(),
-                bulletImage, new Point(0, getVelocity().y - 5), 0);
-
-        getMyBulletsFired().add(b);
+        getBulletsFired().removeAll(deadBullets);
     }
 }
