@@ -46,6 +46,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myPosition = position;
         mySize = size;
         myImage = image;
+        myVelocity = new Point(0, 0);
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
@@ -94,6 +95,7 @@ public abstract class Sprite implements SpriteActionInterface {
         mySize = size;
         myImage = image;
         myHealth = health;
+        myVelocity = new Point(0, 0);
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
         myShotsFired = new ArrayList<Bullet>();
