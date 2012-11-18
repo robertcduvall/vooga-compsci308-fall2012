@@ -3,29 +3,40 @@ package vooga.turnbased.gameobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.MapMode;
 
-/**
- * Map objects that can moves smoothly, but nevertheless restricted to tiles
- * @author rex
- *
- */
-public class MovingMapObject extends MapObject{
 
-	private int myMovementTimePerTile;
-	private int myTimePassed;
-	private double myXProportion;
-	private double myYProportion;
-	private int myXOriginInTile;
-	private int myYOriginInTile;
-	private Point myDirection;
-	private Point myPreviousLocation;
-	
-    public MovingMapObject (int id, GameManager.GameEvent event, Point coord, Image mapImage, MapMode mapMode) {
-        super(id, event, coord, mapImage, mapMode);
-        //need to be read in
+/**
+ * Map objects that can move smoothly, but are nevertheless restricted to tiles.
+ * 
+ * @author rex
+ * 
+ */
+public class MovingMapObject extends MapObject {
+
+    private int myMovementTimePerTile;
+    private int myTimePassed;
+    private double myXProportion;
+    private double myYProportion;
+    private int myXOriginInTile;
+    private int myYOriginInTile;
+    private Point myDirection;
+    private Point myPreviousLocation;
+
+    /**
+     * Creates the MovingMapObject that will be used in MapMode.
+     * 
+     * @param id Integer ID associated with the MovingMapObject.
+     * @param event GameEvent that can be passed to GameManager.
+     * @param location Location of object on the map.
+     * @param mapImage Image of the object.
+     * @param mapMode MapMode in which the object exists.
+     */
+    public MovingMapObject (int id, GameManager.GameEvent event, Point location, Image mapImage,
+            MapMode mapMode) {
+        super(id, event, location, mapImage, mapMode);
+        // need to be read in
         myMovementTimePerTile = 900;
         myXOriginInTile = 0;
         myYOriginInTile = 0;
@@ -33,74 +44,94 @@ public class MovingMapObject extends MapObject{
         myDirection = new Point(0, 0);
         myPreviousLocation = getLocation();
     }
-    
-    public Point calcScreenDisplacement(int tileWidth, int tileHeight) {
-    	myXOriginInTile = (int)(tileWidth * myXProportion);
-    	myYOriginInTile = (int)(tileHeight * myYProportion);
-    	//System.out.println(-myXOriginInTile + " " + -myYOriginInTile);
-    	return new Point(-myXOriginInTile, -myYOriginInTile);
+
+    /**
+     * Calculates the displacement of the screen.
+     * 
+     * @param tileWidth Integer width of the tile.
+     * @param tileHeight Integer height of the tile.
+     * @return
+     */
+    public Point calcScreenDisplacement (int tileWidth, int tileHeight) {
+        myXOriginInTile = (int) (tileWidth * myXProportion);
+        myYOriginInTile = (int) (tileHeight * myYProportion);
+        // System.out.println(-myXOriginInTile + " " + -myYOriginInTile);
+        return new Point(-myXOriginInTile, -myYOriginInTile);
     }
 
     @Override
-    public void update(int delayTime) {
-    	super.update(delayTime);
-    	if (isMoving()) {
-    		myTimePassed += delayTime;
-    	}
-    	myXProportion = myDirection.x * ((double)myTimePassed / myMovementTimePerTile);
-    	myYProportion = myDirection.y * ((double)myTimePassed / myMovementTimePerTile);
-    	if (myTimePassed >= myMovementTimePerTile) { //stop movements
-    		finishMovement();
-    	}
-    	calcScreenDisplacement(myTileDimensions.width, myTileDimensions.height);
+    public void update (int delayTime) {
+        super.update(delayTime);
+        if (isMoving()) {
+            myTimePassed += delayTime;
+        }
+        myXProportion = myDirection.x * ((double) myTimePassed / myMovementTimePerTile);
+        myYProportion = myDirection.y * ((double) myTimePassed / myMovementTimePerTile);
+        // stop movements
+        if (myTimePassed >= myMovementTimePerTile) {
+            finishMovement();
+        }
+        calcScreenDisplacement(myTileDimensions.width, myTileDimensions.height);
     }
-    
-    public void setDirection(Point dir) {
-    	myDirection = dir;
-    	this.setMoving(true);
+
+    /**
+     * Sets destination(?) of object and sets moving to true.
+     * 
+     * @param dir Point destination.
+     */
+    // this is also poorly named
+    public void setDirection (Point dir) {
+        myDirection = dir;
+        this.setMoving(true);
     }
-    
-    public Point getDirection() {
-    	return myDirection;
+
+    /**
+     * Gets destination(?) of object.
+     * 
+     * @return myDirection Point location to which the object is moving.
+     */
+    // poorly named
+    public Point getDirection () {
+        return myDirection;
     }
-    
+
     @Override
-    public void paint(Graphics g) {
-    	if(isMoving()) {
-    	g.drawImage(getImage(), myOffset.x - myDirection.x
-				* myTileDimensions.width + myXOriginInTile, myOffset.y
-				- myDirection.y * myTileDimensions.height + myYOriginInTile,
-				myTileDimensions.width, myTileDimensions.height, null);
-    	}
-    	else {
-    		g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
-    				myTileDimensions.height, null);
-    	}
-    		
+    public void paint (Graphics g) {
+        if (isMoving()) {
+            g.drawImage(getImage(), myOffset.x - myDirection.x * myTileDimensions.width +
+                    myXOriginInTile, myOffset.y - myDirection.y * myTileDimensions.height +
+                    myYOriginInTile, myTileDimensions.width, myTileDimensions.height, null);
+        }
+        else {
+            g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
+                    myTileDimensions.height, null);
+        }
+
     }
-    
+
     @Override
-    public void setLocation(Point p) {
-    	myPreviousLocation = getLocation();
-    	super.setLocation(p);
+    public void setLocation (Point p) {
+        myPreviousLocation = getLocation();
+        super.setLocation(p);
     }
-    
+
     /**
      * only for painting this MovingMapObject at the centre
+     * 
      * @return previous location before the most recent movement
      */
-    public Point getPreviousLocation() {
-    	return myPreviousLocation;
+    public Point getPreviousLocation () {
+        return myPreviousLocation;
     }
-    
-    private void finishMovement() {
-    	setMoving(false);
-		myTimePassed = 0;
-		myXProportion = 0;
-		myYProportion = 0;
-		myXOriginInTile = 0;
-		myYOriginInTile = 0;
-		//myDirection = new Point(0, 0);
-		myPreviousLocation = getLocation();
+
+    private void finishMovement () {
+        setMoving(false);
+        myTimePassed = 0;
+        myXProportion = 0;
+        myYProportion = 0;
+        myXOriginInTile = 0;
+        myYOriginInTile = 0;
+        // myDirection = new Point(0, 0);
+        myPreviousLocation = getLocation();
     }
 }
