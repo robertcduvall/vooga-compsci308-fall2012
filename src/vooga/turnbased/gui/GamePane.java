@@ -54,10 +54,9 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * update game
      */
-    @Override
-    public void update (Graphics g) {
-       // myGameManager.update();
-       // no need to call update twice in cycle, right?
+    //@Override
+    public void update () {
+       myGameManager.update();
     }
 
     /**
@@ -79,9 +78,8 @@ public class GamePane extends DisplayPane implements Runnable {
         long beforeTime, timeDiff, sleep;
         while (!myGameManager.isOver()) {
             beforeTime = System.currentTimeMillis();
-            myGameManager.update();
+            update();
             repaint();
-
             timeDiff = System.currentTimeMillis() - beforeTime;
             sleep = myDelayTime - timeDiff;
             if (sleep < 0) {
