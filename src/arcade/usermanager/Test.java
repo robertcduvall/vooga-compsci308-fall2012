@@ -23,19 +23,26 @@ public class Test {
        
         
        mySocialCenter= SocialCenter.getInstance();
+     //  testRegister();
+     //  testLogOn();
+       testSendMessage();
+       
         
      
         
     }
     
-    private void testRegister() throws Exception{
+    private static void testSendMessage(){
+        mySocialCenter.sendMessage("Howard","garfield", "Hi");
+    }
+    private static  void testRegister() throws Exception{
         boolean status2=mySocialCenter.registerUser("garfield", "password", "garfield.jpg");
         System.out.println(status2);
         
     }
     
-    private void testLogOn() throws Exception{
-        boolean status=mySocialCenter.logOnUser("Howard", "password");
+    private static void testLogOn() throws Exception{
+        boolean status=mySocialCenter.logOnUser("garfield", "password");
       System.out.println(status);
         
     }
