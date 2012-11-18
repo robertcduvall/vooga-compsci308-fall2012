@@ -35,7 +35,7 @@ public class MapPlayerObject extends MovingMapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (int id, GameManager.GameEvent event, Point coord, Image mapImage,
+    public MapPlayerObject (int id, String event, Point coord, Image mapImage,
             MapMode mapMode) {
         super(id, event, coord, mapImage, mapMode);
         frameCount = 0;
@@ -51,7 +51,7 @@ public class MapPlayerObject extends MovingMapObject {
      *        animation of the player object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (int id, GameManager.GameEvent event, Point coord,
+    public MapPlayerObject (int id, String event, Point coord,
             Map<String, Image> mapImages, MapMode mapMode) {
         super(id, event, coord, mapImages.get(0), mapMode);
         myImages = mapImages;
@@ -60,7 +60,7 @@ public class MapPlayerObject extends MovingMapObject {
     
     // Dummy Constructor used for testing XML parsing with reflection
     // Need to remove Map Mode argument for reflection to work correctly
-    public MapPlayerObject (int id, GameManager.GameEvent event, Point coord, 
+    public MapPlayerObject (int id, String event, Point coord, 
             Map<String, Image> mapImages) {
     super(id, event, coord, mapImages.get(0), null);
     myImages = mapImages;

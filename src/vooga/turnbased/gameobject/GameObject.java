@@ -19,19 +19,19 @@ import vooga.turnbased.gamecore.GameManager;
 public abstract class GameObject {
 
     private int myID;
-    private GameManager.GameEvent myGameEvent;
+    private final String myModeEvent;
     private Image myImage;
 
     /**
      * Construct the new game object.
      * 
      * @param objectID The ID number of the new object.
-     * @param gameEvent The event describing the current action occurring.
+     * @param modeEvent The event describing the current action occurring.
      * @param image The image associated with the new object.
      */
-    public GameObject (int objectID, GameManager.GameEvent gameEvent, Image image) {
+    public GameObject (int objectID, String modeEvent, Image image) {
         myID = objectID;
-        myGameEvent = gameEvent;
+        myModeEvent = modeEvent;
         setImage(image);
     }
 
@@ -58,8 +58,8 @@ public abstract class GameObject {
      * 
      * @return myGameEvent The GameEvent that does with this object.
      */
-    public GameManager.GameEvent getEvent () {
-        return myGameEvent;
+    public String getModeEvent () {
+        return myModeEvent;
     }
 
     /**

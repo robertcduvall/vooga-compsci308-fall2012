@@ -25,7 +25,7 @@ public class MapTileObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapTileObject (int id, GameManager.GameEvent event, Point location, Image mapImage,
+    public MapTileObject (int id, String event, Point location, Image mapImage,
             MapMode mapMode) {
         super(id, event, location, mapImage, mapMode);
     }

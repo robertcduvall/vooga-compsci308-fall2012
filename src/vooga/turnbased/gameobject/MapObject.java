@@ -34,7 +34,7 @@ public abstract class MapObject extends GameObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapObject (int id, GameManager.GameEvent event, Point location, Image mapImage,
+    public MapObject (int id, String event, Point location, Image mapImage,
             MapMode mapMode) {
         super(id, event, mapImage);
         setLocation(location);

@@ -22,7 +22,7 @@ public class TestMonster extends BattleObject {
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      * @param image The image of this testMonster
      */
-    public TestMonster (int id, GameManager.GameEvent event, int defense,
+    public TestMonster (int id, String event, int defense,
             int attack, int health, Image image) {
         super(id, event, defense, attack, health, image);
     }

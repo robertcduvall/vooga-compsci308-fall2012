@@ -33,7 +33,7 @@ public class MovingMapObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MovingMapObject (int id, GameManager.GameEvent event, Point location, Image mapImage,
+    public MovingMapObject (int id, String event, Point location, Image mapImage,
             MapMode mapMode) {
         super(id, event, location, mapImage, mapMode);
         // need to be read in

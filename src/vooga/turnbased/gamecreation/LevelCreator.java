@@ -72,7 +72,7 @@ public class LevelCreator {
         
         String className = myXmlParser.getTextContent(mapPlayer, "class");
         int id = myXmlParser.getIntContent(mapPlayer, "id");
-        GameManager.GameEvent event = parseEvent(mapPlayer);
+        String event = parseEvent(mapPlayer);
         Point point = parseLocation(mapPlayer);
         Map<String, Image> imageMap = parseImagesMap(mapPlayer);
         
@@ -89,15 +89,16 @@ public class LevelCreator {
         return mapPlayer;
     }
 
-    private GameManager.GameEvent parseEvent (Element element) {
+    private String parseEvent (Element element) {
         String eventString = myXmlParser.getTextContent(element, "event");
-        GameManager.GameEvent event = null;
-        for (GameManager.GameEvent current : GameManager.GameEvent.values()) {
-            if (current.toString().equals(eventString)) {
-                event = current;
-            }
-        }
-        return event;
+//        GameManager.ModeEvent event = null;
+//        for (GameManager.ModeEvent current : GameManager.ModeEvent.values()) {
+//            if (current.toString().equals(eventString)) {
+//                event = current;
+//            }
+//        }
+//        return event;
+        return eventString;
     }
 
     private Point parseLocation (Element element) {

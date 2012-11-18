@@ -26,7 +26,7 @@ public abstract class BattleObject extends GameObject {
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      * @param image The image of this BattleObject
      */
-    public BattleObject(int id, GameManager.GameEvent event, int defense,
+    public BattleObject(int id, String event, int defense,
             int attack, int health, Image image) {
         super(id, event, image);
         setDefense(defense);

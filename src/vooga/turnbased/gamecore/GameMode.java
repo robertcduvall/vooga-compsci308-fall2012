@@ -90,7 +90,7 @@ public abstract class GameMode {
 
     public abstract void update ();
 
-    public abstract void processGameEvents ();
+    //public abstract void processGameEvents ();
 
     public abstract void handleKeyPressed (KeyEvent e);
 

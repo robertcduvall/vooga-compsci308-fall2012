@@ -23,7 +23,7 @@ public class XmlTester {
         MapPlayerObject mapObject = (MapPlayerObject) level.parseMapPlayer();
         System.out.println("ID: " + mapObject.getID());
         System.out.println("Current Image: " + mapObject.getImage());
-        System.out.println("Event: " + mapObject.getEvent());
+        System.out.println("Event: " + mapObject.getModeEvent());
         System.out.println("Location: " + mapObject.getLocation());
         
         System.out.println();

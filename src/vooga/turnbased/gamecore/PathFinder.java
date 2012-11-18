@@ -180,7 +180,7 @@ public class PathFinder implements Runnable {
 	}
 	
 	private MapItemObject generatePathIndicator(Point p) {
-		return new MapItemObject(0, GameManager.GameEvent.NO_ACTION, p, GameWindow
+		return new MapItemObject(0, "NO_ACTION", p, GameWindow
                 .importImage("HighlightPath"), myMap);
 	}
 	

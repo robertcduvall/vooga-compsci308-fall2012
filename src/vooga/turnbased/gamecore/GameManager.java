@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import util.input.core.KeyboardController;
@@ -36,6 +37,7 @@ public class GameManager {
     // private MapObject myPlayer;
     private final boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
+    private List<ModeEvent> myEvents;
     private KeyboardController myKeyboardController;
     private MouseController myMouseController;
 
@@ -53,6 +55,7 @@ public class GameManager {
         // mySprites =
         // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         mySprites = new HashMap<Integer, Sprite>();
+        myEvents = new LinkedList<ModeEvent>();
         generateHardcodedSprites();
         myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
@@ -64,14 +67,14 @@ public class GameManager {
     private void generateHardcodedSprites () { // factory will do this job
         // eventually...
         Sprite s = new Sprite();
-        s.addGameObject(new TestMonster(0, GameEvent.NO_ACTION, 1, 2, 3, GameWindow
-                .importImage("something")));
+        s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3,
+                GameWindow.importImage("something")));
 
         mySprites.put(s.getID(), s);
 
         s = new Sprite();
-        s.addGameObject(new TestMonster(1, GameEvent.NO_ACTION, 1, 2, 3, GameWindow
-                .importImage("PlayerImage")));
+        s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3,
+                GameWindow.importImage("PlayerImage")));
 
         mySprites.put(s.getID(), s);
 
@@ -95,6 +98,7 @@ public class GameManager {
 
     public void update () {
         myCurrentGameMode.update();
+        handleEvents();
     }
 
     /**
@@ -107,26 +111,30 @@ public class GameManager {
         myCurrentGameMode.paint(g);
     }
 
-    public void handleEvents (List<Map<GameEvent, List<Integer>>> events) {
-        for (Map<GameEvent, List<Integer>> e : events) {
-            for (GameEvent ge : e.keySet()) {
-                handleEvent(ge, e.get(ge));
-            }
+    public void flagEvent(String eventName, List<Integer> involvedSpriteIDs){
+        myEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
+    }
+    
+    private void handleEvents () {
+        while(!myEvents.isEmpty()){
+            ModeEvent m = myEvents.remove(0);
+            handleEvent(m.getModeEventName(), m.getEventInvolvedIDs());
         }
     }
 
-    public void handleEvent (GameEvent eventName, List<Integer> myInvolvedIDs) {
-        switch (eventName) {
-            case NO_ACTION:
-                break;
-            case MAP_COLLISION:
-                if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
-                    changeCurrentMode(myBattleMode);
-                }
-                break;
-            case BATTLE_OVER:
-                changeCurrentMode(myMapMode);
-                break;
+    private void handleEvent (String eventName, List<Integer> myInvolvedIDs) {
+        if ("NO_ACTION".equals(eventName)) {
+            // do nothing
+        }
+        else if ("MAP_COLLISION".equals(eventName)) {
+            if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
+                changeCurrentMode(myBattleMode);
+            }
+        }
+        else if ("BATTLE_OVER".equals(eventName)) {
+            changeCurrentMode(myMapMode);
+        } else {
+            System.err.println("Unrecognized mode event requested.");
         }
     }
 
@@ -156,10 +164,6 @@ public class GameManager {
         return myGamePane.getDelayTime();
     }
 
-    public enum GameEvent {
-        MAP_COLLISION, BATTLE_OVER, NO_ACTION
-    }
-
     public KeyboardController getKeyboardController () {
         return myKeyboardController;
     }
@@ -173,4 +177,21 @@ public class GameManager {
         // i.e. game pause
     }
 
+    private class ModeEvent {
+        private final String myName;
+        private final ArrayList<Integer> myInvolvedIDs;
+
+        public ModeEvent (String eventName, List<Integer> involvedIDs) {
+            myName = eventName;
+            myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
+        }
+
+        public String getModeEventName () {
+            return myName;
+        }
+
+        public List<Integer> getEventInvolvedIDs () {
+            return myInvolvedIDs;
+        }
+    }
 }
