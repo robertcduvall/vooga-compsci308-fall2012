@@ -25,6 +25,11 @@ public class MapPlayerObject extends MovingMapObject {
     	setImage(mapImages.get("down"));
     }
     
+    // for testing with Xml parsing, can be deleted later
+    public Map<String,Image> getImageMap() {
+        return myImages;
+    }
+    
     public void setImageLoops(Map<String, ImageLoop> imageLoops) {
     	myImageLoops = imageLoops;
     }
