@@ -68,9 +68,17 @@ public class LevelCreator {
     public MapObject parserMapPlayer () {
         NodeList playerList = myXmlParser.getElementsByName(myDocumentElement, "player");
         Element player = (Element) playerList.item(0);
+        
         String className = myXmlParser.getTextContent(player, "class");
         int id = myXmlParser.getIntContent(player, "id");
+        GameManager.GameEvent event = parseEvent(player);
+        Point point = parseLocation(player);
+        Map<String, Image> imageMap = parseImagesMap(player);
         
+        return new MapPlayerObject(id, event, point, imageMap, null);
+    }
+
+    private GameManager.GameEvent parseEvent (Element player) {
         String eventString = myXmlParser.getTextContent(player, "event");
         GameManager.GameEvent event = null;
         for (GameManager.GameEvent current : GameManager.GameEvent.values()) {
@@ -78,20 +86,25 @@ public class LevelCreator {
                 event = current;
             }
         }
-        
+        return event;
+    }
+
+    private Point parseLocation (Element player) {
         NodeList locationList = myXmlParser.getElementsByName(player, "location");
         Element location = (Element) locationList.item(0); 
-        int x = myXmlParser.getIntContent(location, "x");
-        int y = myXmlParser.getIntContent(location, "y");
+        Point point = new Point(myXmlParser.getIntContent(location, "x"), 
+                myXmlParser.getIntContent(location, "y"));
+        return point;
+    }
 
+    private Map<String, Image> parseImagesMap (Element player) {
         NodeList imageList = myXmlParser.getElementsByName(player, "image");
         Map<String, Image> imageMap = new HashMap<String, Image>();
         Element imageData = (Element) imageList.item(0);
         Image image = myXmlParser.getImageContent(imageData, "source");
         String direction = myXmlParser.getTextContent(imageData, "direction");
         imageMap.put(direction, image);
-        
-        return new MapPlayerObject(id, event, new Point(x,y), imageMap, null);
+        return imageMap;
     }
     /**
      *
