@@ -40,6 +40,7 @@ public class UserXMLReader {
      * @return
      */
     public User getUser (String name) {
+        name=name+".xml";
         myXmlParser = new XmlParser(new File(myUserBasicFilePath + name));
         Element el = myXmlParser.getDocumentElement();
         String username = myXmlParser.getTextContent(el, "name");
