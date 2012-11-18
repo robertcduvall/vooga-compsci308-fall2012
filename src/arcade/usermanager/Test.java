@@ -2,10 +2,11 @@ package arcade.usermanager;
 
 import java.util.ResourceBundle;
 
+
 /**
  * 
  * @author difan
- *
+ * 
  */
 
 public class Test {
@@ -17,15 +18,15 @@ public class Test {
     private final String successString = "Successful";
     private static ResourceBundle resource;
     private static SocialCenter mySocialCenter;
-    
-    public static void main(String[] args){
-        myXMLWriter=new UserXMLWriter();
-        
-        mySocialCenter= SocialCenter.getInstance();
+
+    public static void main (String[] args) {
+        myXMLWriter = new UserXMLWriter();
+
+        mySocialCenter = SocialCenter.getInstance();
         System.out.println("successful");
     }
-    
-    private void testBundle(){
+
+    private void testBundle () {
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
