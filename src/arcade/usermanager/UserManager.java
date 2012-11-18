@@ -38,6 +38,7 @@ public class UserManager {
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
+       
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
 
@@ -50,10 +51,14 @@ public class UserManager {
             if (listOfFile.isFile()) {
                 String name = listOfFile.getName();
                 User newUser = myXMLReader.getUser(name);
+                
                 myAllUser.put(name, newUser);
 
             }
+            
         }
+        
+       
 
     }
 

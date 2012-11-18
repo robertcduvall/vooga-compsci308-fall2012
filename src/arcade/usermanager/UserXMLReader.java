@@ -73,8 +73,8 @@ public class UserXMLReader {
                 Element ele = (Element) nl.item(i);
                 String gameName = myXmlParser.getTextContent(ele, "name");
                 String gameInfo = myXmlParser.getTextContent(ele, "gameinfo");
-                int highScore = myXmlParser.getIntContent(ele, "highscore");
-                int timesPlayed = myXmlParser.getIntContent(ele, "timesplayed");
+                String highScore = myXmlParser.getTextContent(ele, "highscore");
+                String timesPlayed = myXmlParser.getTextContent(ele, "timesplayed");
                 gameDataList.add(new GameData(gameName, gameInfo, highScore,
                         timesPlayed));
             }
