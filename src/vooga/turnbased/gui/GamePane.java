@@ -56,7 +56,8 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void update (Graphics g) {
-        myGameManager.update();
+       // myGameManager.update();
+       // no need to call update twice in cycle, right?
     }
 
     /**
