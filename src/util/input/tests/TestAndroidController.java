@@ -34,8 +34,9 @@ public class TestAndroidController implements AndroidListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
+
+        catch (IllegalAccessException e){
+
             e.printStackTrace();
         }
         
