@@ -65,6 +65,18 @@ public class Level {
             //s.draw(g);
         }
     }
+    
+    /**
+     * Serializes the Level into the proper xml format.
+     * This stores all the information about the level
+     * and the sprites it contains.
+     * @return String the Level serialized as an xml string.
+     */
+    
+    public String serialize() {
+        // TODO: implement this using a shared writer.
+        return null;
+    }
 
 //    /**
 //     * Resets level to beginning

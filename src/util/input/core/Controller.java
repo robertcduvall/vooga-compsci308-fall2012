@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import util.input.exceptions.InvalidControllerActionException;
 import util.input.inputhelpers.BoolTuple;
 import util.input.inputhelpers.UKeyCode;
 
+
 /**
  * This class represents an abstract controller to provide input.
- *
+ * 
  * @author Amay, Lance
- *
+ * 
  * @param <T>
  */
 public abstract class Controller<T> {
@@ -26,7 +26,7 @@ public abstract class Controller<T> {
     /**
      * Create a new Controller.
      */
-    Controller() {
+    public Controller() {
         mySubscribedElements = new ArrayList<T>();
         myMenuPlate = new HashMap<Integer, BoolTuple<Object, Method>>();
     }
@@ -37,7 +37,7 @@ public abstract class Controller<T> {
      *
      * @param element - The subscribing element
      */
-    Controller(T element) {
+    public Controller(T element) {
         this();
         subscribe(element);
     }
@@ -47,7 +47,7 @@ public abstract class Controller<T> {
      *
      * @param element - The subscribing class
      */
-    public void subscribe(T element) {
+    public void subscribe (T element) {
         mySubscribedElements.add(element);
     }
 
@@ -58,14 +58,18 @@ public abstract class Controller<T> {
      * @param type - Pressed or released
      * @param o - The invoking object
      * @param method - The method to be invoked
-     * @throws NoSuchMethodException
+     * @throws NoSuchMethodException - thrown if the 
+     * string method passed in is not a method of Object o
+     * @throws IllegalAccessException -" thrown when an 
+     * application tries to reflectively create an instance (other than an array), 
+     * set or get a field, or invoke a method, but the currently executing method does not have access to the definition of 
+     * the specified class, field, method or constructor"
      */
     public void setControl(int action, int type, Object o, String method)
-            throws NoSuchMethodException {
-        // InvalidControllerType, InvalidControllerActionException {
-        Method m = retrieveMethod(o, method);
-        // actionValidate(action);//make sure to check for codify decodify
-        // typeValidate(type);
+            throws NoSuchMethodException,
+            IllegalAccessException{
+        Method m;
+        m = retrieveMethod(o, method);
         myMenuPlate.put(UKeyCode.codify(type, action),
                 new BoolTuple<Object, Method>(o, m));
     }
@@ -77,28 +81,22 @@ public abstract class Controller<T> {
      * @param type - Pressed or released
      * @param c - The invoking Class
      * @param method - The static method to be invoked
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
+     * @throws NoSuchMethodException - thrown if the string method passed in is not a method of Object o
+     * @throws InstantiationException- "thrown when an application tries to create an instance of a class 
+     * using the newInstance method in class Class, but the specified class object cannot be instantiated because it is an
+     *  interface or is an abstract class."
+     * @throws IllegalAccessException -" thrown when an application tries to reflectively create an instance (other than an array), 
+     * set or get a field, or invoke a method, but the currently executing method does not have access to the definition of 
+     * the specified class, field, method or constructor"
      */
     @SuppressWarnings("rawtypes")
-    public void setControl(int action, int type, Class c, String method)
+    public void setControl (int action, int type, Class c, String method)
             throws NoSuchMethodException, IllegalAccessException,
             InstantiationException {
-        // InvalidControllerType, InvalidControllerActionException {
-
         Method m = retrieveMethod(c, method);
-        // actionValidate(action);//make sure to check for codify decodify
-        // typeValidate(type);
         myMenuPlate.put(UKeyCode.codify(type, action),
                 new BoolTuple<Object, Method>(c, m));
     }
-
-    // protected abstract void typeValidate(int type) throws
-    // InvalidControllerType;
-
-    // public abstract void actionValidate(int action) throws
-    // InvalidControllerActionException;
 
     /**
      * Set the desired action on or off.
@@ -106,11 +104,8 @@ public abstract class Controller<T> {
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param isActive - Whether the action should be active or not
-     * @throws InvalidControllerActionException
      */
-    public void setActionActive(int action, int type, boolean isActive)
-            throws InvalidControllerActionException {
-        // actionValidate(action);
+    public void setActionActive(int action, int type, boolean isActive){
         if (isActive) {
             myMenuPlate.get(UKeyCode.codify(type, action)).activate();
         }
@@ -123,19 +118,38 @@ public abstract class Controller<T> {
      * @param e
      * @throws IllegalAccessException
      * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * @throws NoSuchMethodException 
      */
-    protected void performReflections(Object inputEvent, String method,
-            int actionID) throws IllegalAccessException,
-            InvocationTargetException, NoSuchMethodException {
+    protected void performReflections (Object inputEvent, String method, int actionID)
+            throws IllegalAccessException,
+            InvocationTargetException,
+            NoSuchMethodException {
         broadcastToSubscribers(method, inputEvent);
         invokeMethod(actionID);
+    }
+
+    /**
+     * Broadcast an event that does not need a description to your subscribers.
+     * @param e
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
+    protected void broadcast (String methodName) throws IllegalAccessException,
+    InvocationTargetException,
+    NoSuchMethodException {
+        for (T subscribedElement : mySubscribedElements) {
+            Method method = subscribedElement.getClass().getMethod(methodName);
+            System.out.println(method);
+            method.invoke(subscribedElement);
+        }
+
     }
 
     // PRIVATE METHODS
     /**
      * broadcasts the method to all subscribed elements.
-     *
+     * 
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
@@ -144,12 +158,15 @@ public abstract class Controller<T> {
      * @throws SecurityException
      * @throws NoSuchMethodException
      */
-    private void broadcastToSubscribers(String methodName, Object inputEvent)
-            throws IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
+    private void broadcastToSubscribers (String methodName, Object inputEvent)
+            throws IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException,
+            NoSuchMethodException,
+            SecurityException {
         for (T subscribedElement : mySubscribedElements) {
-            Method method = subscribedElement.getClass().getMethod(
-                    methodName, inputEvent.getClass());
+            Method method =
+                    subscribedElement.getClass().getMethod(methodName, inputEvent.getClass());
             System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
@@ -161,37 +178,54 @@ public abstract class Controller<T> {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    private void invokeMethod(int actionID) throws IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
+    private void invokeMethod (int actionID) throws IllegalAccessException,
+    IllegalArgumentException, InvocationTargetException {
         BoolTuple<Object, Method> retrieveTuple = myMenuPlate.get(actionID);
         if (retrieveTuple != null && retrieveTuple.isActive()) {
-            retrieveTuple.getLast().invoke(retrieveTuple.getFirst(),
-                    new Object[0]);
+            retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
         }
     }
 
     @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Object o, String method)
-            throws NoSuchMethodException {
+            throws NoSuchMethodException,IllegalAccessException{
         Class oc = o.getClass();
-        Method[] allMethods = oc.getDeclaredMethods();
+        Method[] allMethods = oc.getMethods();
         for (Method m : allMethods) {
-            if (m.getName().equals(method)) {
-                return m;
-            }
+            if (m.getName().equals(method)) { return m; }
         }
+        accessLegalityCheck(o, method);
         throw new NoSuchMethodException();
     }
 
+
     @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Class c, String method)
-            throws NoSuchMethodException {
+            throws NoSuchMethodException, IllegalAccessException,
+            InstantiationException{
         for (Method m : c.getMethods()) {
-            if (m.getName().equals(method)
-                    && Modifier.isStatic(m.getModifiers())) {
-                return m;
+            if (m.getName().equals(method) && Modifier.isStatic(m.getModifiers())) { return m; }
+        }
+        accessLegalityCheck(c, method);
+        instantiationLegalityCheck(c, method);
+        throw new NoSuchMethodException();
+    }
+
+    private void accessLegalityCheck (Object o, String method) 
+            throws IllegalAccessException {
+        Class oc = o.getClass();
+        Method[] allMethods = oc.getDeclaredMethods();
+        for (Method m : allMethods) {
+            if (!m.isAccessible()) {
+                throw new IllegalAccessException();
             }
         }
-        throw new NoSuchMethodException();
+    }
+    
+    private void instantiationLegalityCheck (Class c, String method) 
+            throws InstantiationException{
+        if (Modifier.ABSTRACT==c.getModifiers()|| Modifier.ABSTRACT==Modifier.INTERFACE){
+            throw new InstantiationException();
+        }
     }
 }

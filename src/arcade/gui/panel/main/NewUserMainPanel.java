@@ -47,9 +47,9 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
         myPanel = addField("Confirm Password", 17, 1, 5, NORTH);
         myPanel = addSubmitButton();
         myPanel = addLabel("The passwords don't match or " +
-        		"are shorter than 4 characters.",
-                        "warning", 5, 5, false);
-        
+                "are shorter than 4 characters.",
+                "warning", 5, 5, false);
+
 
         System.out.println("LoginMainPanel");
 
@@ -123,10 +123,16 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String cmd = e.getActionCommand();
 
-        if (SUBMIT.equals(cmd)){           
+        if (SUBMIT.equals(cmd)) {
             if (validatePasswords()) {
-                //                this.getArcade().getSocialCenter().registerUser(((JTextField) myPanel.getComponent("Password")).getText(),
-                //                        ((JTextField) myPanel.getComponent("Password")).getText(), "");
+//                this.getArcade().getSocialCenter().registerUser(
+//                        ((JTextField) myPanel.getComponent("Password")).getText(),
+//                        ((JTextField) myPanel.getComponent("Password")).getText(), "");
+//                this.getArcade().getSocialCenter().logOnUser(
+//                        ((JTextField) myPanel.getComponent("Password")).getText(),
+//                        ((JTextField) myPanel.getComponent("Password")).getText());
+                this.getArcade().replacePanel("UserPanel");
+                this.getArcade().replacePanel("MainHome");
                 //TODO add picture stuff...
                 //Kinda waiting for other people to get stuff done so we can do more work on this...
             }

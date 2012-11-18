@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
  * Represents an enemy sprite to be used in the game.
@@ -34,7 +37,9 @@ public class Enemy extends Sprite {
      * shot).
      */
     protected void continueUpdate() {
-
+        for (Bullet b : getBulletsFired()) {
+            b.update();
+        }
     }
 
     /**
@@ -49,13 +54,42 @@ public class Enemy extends Sprite {
      * Paints bullets of enemy.
      */
     protected void continuePaint (Graphics pen) {
-        for (Bullet b : getMyBulletsFired()) {
-            b.paint(pen);
+        List<Bullet> deadBullets = new ArrayList<Bullet>();
+
+        for (Bullet b : getBulletsFired()) {
+            if (b.getImage() == null) {
+                deadBullets.add(b);
+            }
+            else {
+                b.paint(pen);
+            }
         }
+
+        getBulletsFired().removeAll(deadBullets);
     }
 
     @Override
     void setMethods () {
+        //if the enemy is hit by a player's bullet then both
+        //bullet and enemy die
+        getMapper().addPair("hitbybullet", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
+                if ("player".equals(bulletOwnerType)) {
+                    die();
+                    ((Bullet) o[0]).die();
+                }
+            }
+        });
 
+        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
+                ((Player) o[0]).die();
+            }
+        });
+
+        //do nothing if an enemy intersects an enemy
+        getMapper().addPair("hitbyenemy", this);
     }
 }

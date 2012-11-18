@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
  * Bullet class will have all the info needed to
@@ -40,7 +41,7 @@ public class Bullet extends Sprite {
      * stuff, or something else cool).
      */
     protected void continueUpdate() {
-        
+
     }
 
     /**
@@ -84,13 +85,45 @@ public class Bullet extends Sprite {
 
     @Override
     void setMethods () {
+        //do nothing if it intersects another bullet
+        getMapper().addPair("hitbybullet", this);
 
+        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
+                ((Player) o[0]).die();
+            }
+        });
+
+        //only destroy enemy if a player shoots the enemy
+        //if an enemy shoots an enemy, nothing happens
+        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                if ("player".equals(myOwner.getType())) {
+                    die();
+                    ((Enemy) o[0]).die();
+                }
+            }
+        });
     }
 
     /**
-     * Removes this bullet from the game.
+     * Bullets cannot fire other bullets, so this
+     * method is overridden to do nothing for bullets.
      */
-    public void die() {
-        myOwner.getMyBulletsFired().remove(this);
+    @Override
+    public void fireBullet() {
+        return;
+    }
+
+    /**
+     * Bullets don't lose health, so override
+     * this to do nothing.
+     *
+     * @param damage nothing
+     */
+    @Override
+    public void decreaseHealth(int damage) {
+        return;
     }
 }

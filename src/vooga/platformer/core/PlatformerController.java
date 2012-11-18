@@ -40,6 +40,8 @@ public class PlatformerController extends JPanel implements Runnable {
         myLevelFactory = lf;
         myGameInitializer = gi;
         myInputController = null;
+       
+       //this.setFocusable(true);
         
         setupLevel(myGameInitializer.getFirstLevelName());
         myPlayer = myCurrentLevel.getPlayer();

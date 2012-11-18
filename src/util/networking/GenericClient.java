@@ -18,7 +18,7 @@ import java.net.*;
  * It reads text from the server and sends it to the console.
  **/
 public class GenericClient {
-    public static void main(String[] args) throws IOException {
+    public void run(String host, int port) throws IOException {
         try {
             /*// Check the number of arguments
             if (args.length != 2) 

@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
 
@@ -17,6 +19,8 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  *
  */
 public abstract class Sprite implements SpriteActionInterface {
+    private static final int BULLET_SIZE = 10;
+    private static final double BULLET_VELOCITY_SCALE = 1.5;
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
@@ -45,6 +49,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -69,6 +74,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -90,6 +96,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = health;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -113,13 +120,15 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = health;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
+        myShotsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
     abstract void setMethods();
 
     /**
-     * Returns this sprite's position.
+     * Returns this sprite's position of the
+     * center of its image.
      * @return myPosition
      */
     public Point getPosition() {
@@ -165,11 +174,10 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * Returns the bullets fired by this sprite.
-     * @return a list of the bullets that this sprite
-     * has fired.
+     * Returns a list of the bullets fired by this sprite.
+     * @return myShotsFired
      */
-    public List<Bullet> getMyBulletsFired() {
+    public List<Bullet> getBulletsFired() {
         return myShotsFired;
     }
     /**
@@ -250,11 +258,13 @@ public abstract class Sprite implements SpriteActionInterface {
      * Returns the dimensions of the sprite.
      * @return the dimensions of the sprite.
      */
-    public Dimension getDimension() {
+    public Dimension getSize() {
         return mySize;
     }
 
     /**
+     * Returns a string representing this sprite's type.
+     *
      * @return lowercase string representing type of this sprite
      */
     public abstract String getType();
@@ -283,6 +293,13 @@ public abstract class Sprite implements SpriteActionInterface {
      * to each sprite when calling the update method.
      */
     public void update() {
+        // if this sprite is out of bounds (top or bottom) then
+        // it is out of the game
+        if (getHealth() < 0 || myPosition.y > myBounds.height
+                || myPosition.y < 0) {
+            this.die();
+        }
+
         myPosition.translate(myVelocity.x, myVelocity.y);
         continueUpdate();
     }
@@ -327,13 +344,44 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * Sets the sprite's velocity to 0.
+     * Sets the sprite's default action as
+     * doing nothing (continuing on its current
+     * velocity vector).
      *
      * @param o a (possibly empty) list of
      * parameters to be used in the action
+     * (only used if the sprite overrides the do
+     * action method itself)
      */
     @Override
     public void doAction (Object ... o) {
-        setVelocity(0, 0);
+
+    }
+
+    /**
+     * Erases the sprite's image, which will be
+     * checked for during paint methods and erased
+     * from the game if null.
+     */
+    public void die() {
+        this.setImage(null);
+    }
+
+    /**
+     * Has the player fire a bullet.
+     * The bullet is added to the player's list of fired bullets
+     * and will be painted during the player's paint method.
+     */
+    public void fireBullet() {
+        ImageIcon iib = new ImageIcon(this.getClass().getResource(
+                "../vooga/shooter/images/playerbullet.png"));
+        Image bulletImage = iib.getImage();
+
+        Bullet b = new Bullet(getPosition(), new Dimension(
+                BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
+                new Point(0,
+                        (int)(getVelocity().y * BULLET_VELOCITY_SCALE)), 0);
+
+        getBulletsFired().add(b);
     }
 }

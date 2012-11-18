@@ -18,9 +18,7 @@ public class BrickEnemy extends BrickMovingObject{
     }
     
     public BrickEnemy (Enemy a, Brick b) {
-        super(b, a);
-        myBrick = (Brick) this.a();
-        myEnemy = (Enemy) this.b();
+        this(b, a);
     }
     
     @Override
