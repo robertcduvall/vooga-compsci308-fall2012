@@ -11,22 +11,18 @@ import org.w3c.dom.NodeList;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
 
+/**
+ * 
+ * @author Kang
+ *
+ */
 public class GameXmlParser {
-	/**
-	 * A more general way to get game properties.
-	 * 
-	 * 
-	 * @author Seon Kang
-	 * @param gameName
-	 * @param tag
-	 * @return
-	 */
 
     private XmlParser myXmlParser;
     private XmlBuilder myXmlBuilder;
     private Node myGameNode;
 	
-	public void GameXmlPArser(String gameName) {
+	public GameXmlParser(String gameName) {
 		File f = new File(
 				"../vooga-compsci308-fall2012/src/arcade/database/game.xml");
 		myXmlBuilder = new XmlBuilder(f);
@@ -41,6 +37,16 @@ public class GameXmlParser {
 				myGameNode = allGames.item(i);
 		}
 	}
+	
+	/**
+	 * A more general way to get game properties.
+	 * 
+	 * 
+	 * @author Seon Kang
+	 * @param gameName
+	 * @param tag
+	 * @return
+	 */
 	
 	public String getProperty(String tag, Element element) {
 		NodeList attributeList = element.getChildNodes();

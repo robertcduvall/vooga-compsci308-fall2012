@@ -20,12 +20,14 @@ public class UserXMLWriter {
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
     private ResourceBundle resource;
+    private String myUserImageFilePath;
 
     public UserXMLWriter () {
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
+        myUserImageFilePath=resource.getString("ImageFilePath");
     }
 
     /**
@@ -55,7 +57,8 @@ public class UserXMLWriter {
 
         XmlBuilder.appendElement(basicDoc, rootElement, "name", userName);
         XmlBuilder.appendElement(basicDoc, rootElement, "password", password);
-        XmlBuilder.appendElement(basicDoc, rootElement, "picture", picture);
+        XmlBuilder.appendElement(basicDoc, rootElement, "picture", myUserImageFilePath+picture);
+        XmlBuilder.appendElement(basicDoc, rootElement, "credits", "0");
         XmlWriter.writeXML(basicDoc, basicInfoFilePath);
 
     }
@@ -65,7 +68,7 @@ public class UserXMLWriter {
        
         Document doc = XmlBuilder.createDocument();
 
-        Element rootElement = doc.createElement("message");
+        Element rootElement = doc.createElement("messagelist");
         doc.appendChild(rootElement);
 
         XmlWriter.writeXML(doc, messageFilePath);
@@ -77,7 +80,7 @@ public class UserXMLWriter {
         
         Document doc = XmlBuilder.createDocument();
 
-        Element rootElement = doc.createElement("game");
+        Element rootElement = doc.createElement("gamelist");
         doc.appendChild(rootElement);
 
         XmlWriter.writeXML(doc, gameFilePath);
