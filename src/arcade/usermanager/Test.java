@@ -21,23 +21,36 @@ public class Test {
     private static ResourceBundle resource;
     private static SocialCenter mySocialCenter;
 
-    public static void main (String[] args) throws Exception {
-
-        mySocialCenter = SocialCenter.getInstance();
-        Test test=new Test();
-        test.testLogOn();
-        //test.testRegister();
+    
+    public static void main(String[] args) throws Exception{
+       
+        
+       mySocialCenter= SocialCenter.getInstance();
+     //  testRegister();
+     //  testLogOn();
+       testSendMessage();
+       
+        
+     
+        
+    }
+    
+    private static void testSendMessage(){
+        mySocialCenter.sendMessage("Howard","garfield", "Hi");
+    }
+    private static  void testRegister() throws Exception{
+        boolean status2=mySocialCenter.registerUser("garfield", "password", "garfield.jpg");
     }
 
-    private void testRegister () throws Exception {
-        boolean status2 = mySocialCenter.registerUser("testuser", "password", "src/arcade/database/images/default.jpg");
-        System.out.println(status2);
+    
 
-    }
+    
+   
 
     private void testLogOn () throws Exception {
         boolean status = mySocialCenter.logOnUser("Howard", "password");
         System.out.println(status);
+
 
     }
 
