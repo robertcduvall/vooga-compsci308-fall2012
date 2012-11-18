@@ -26,9 +26,10 @@ public class Test {
        
         
        mySocialCenter= SocialCenter.getInstance();
-     //  testRegister();
-     //  testLogOn();
-       testSendMessage();
+       // testLogOn();
+       testRegister();
+
+     // testSendMessage();
        
         
      
@@ -39,15 +40,13 @@ public class Test {
         mySocialCenter.sendMessage("Howard","garfield", "Hi");
     }
     private static  void testRegister() throws Exception{
-        boolean status2=mySocialCenter.registerUser("garfield", "password", "garfield.jpg");
+        boolean status2=mySocialCenter.registerUser("testuser", "password","garfield.jpg");
     }
-
-    
 
     
    
 
-    private void testLogOn () throws Exception {
+    private static void testLogOn () throws Exception {
         boolean status = mySocialCenter.logOnUser("Howard", "password");
         System.out.println(status);
 
