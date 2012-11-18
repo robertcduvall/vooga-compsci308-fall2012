@@ -1,8 +1,6 @@
 package vooga.turnbased.gameobject;
 
-import java.awt.Graphics;
 import java.awt.Image;
-import javax.swing.ImageIcon;
 
 import vooga.turnbased.gamecore.GameManager;
 

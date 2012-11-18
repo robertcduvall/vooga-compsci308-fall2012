@@ -26,7 +26,6 @@ import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
 
 
-// public class GameManager implements Observer {
 public class GameManager {
 
     private final GamePane myGamePane;

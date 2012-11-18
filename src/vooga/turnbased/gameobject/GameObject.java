@@ -4,16 +4,17 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
-
 import vooga.turnbased.gamecore.GameManager;
 
+
 /**
- * GameObject is the parent class of all important objects in this game. Each object will 
+ * GameObject is the parent class of all important objects in this game. Each object will
  * actually be only some sort of Object associated with that game mode where the object exists.
  * Thus there will not be any actual classes that implement GameObject directly, but rather
  * BattleObject or MapObject, etc.
+ * 
  * @author Michael Elgart
- *
+ * 
  */
 public abstract class GameObject {
 
@@ -23,42 +24,84 @@ public abstract class GameObject {
 
     /**
      * Construct the new game object.
+     * 
      * @param objectID The ID number of the new object.
+     * @param gameEvent The event describing the current action occurring.
+     * @param image The image associated with the new object.
      */
-    public GameObject(int objectID, GameManager.GameEvent gameEvent, Image image) {
+    public GameObject (int objectID, GameManager.GameEvent gameEvent, Image image) {
         myID = objectID;
         myGameEvent = gameEvent;
         setImage(image);
     }
-    
-    public void setID(int newID) {
+
+    /**
+     * Sets the ID of the object to the given parameter.
+     * 
+     * @param newID The ID to be used.
+     */
+    public void setID (int newID) {
         myID = newID;
     }
-    
-    public int getID() {
+
+    /**
+     * Returns the ID of the GameObject.
+     * 
+     * @return myID The object's current ID.
+     */
+    public int getID () {
         return myID;
     }
-    
-    public GameManager.GameEvent getEvent() {
-    	return myGameEvent;
+
+    /**
+     * Returns the GameEvent currently associated with the GameObject.
+     * 
+     * @return myGameEvent The GameEvent that does with this object.
+     */
+    public GameManager.GameEvent getEvent () {
+        return myGameEvent;
     }
 
+    /**
+     * Paints the GameObject.
+     * @param g Image to be painted.
+     * @param x X location of object.
+     * @param y Y location of object.
+     * @param width Width of image.
+     * @param height Height of image.
+     */
     public void paint (Graphics g, int x, int y, int width, int height) {
         g.drawImage(myImage, x, y, width, height, null);
     }
-    
-    public void setImage(Image img) {
+
+    /**
+     * Sets image of object to parameter.
+     * @param img Image to be set.
+     */
+    public void setImage (Image img) {
         myImage = img;
     }
-    
-    public void setImage(String imageLocation) {
+
+    /**
+     * Sets image of object to be object at directory location in parameter.
+     * @param imageLocation String location of image.
+     */
+    public void setImage (String imageLocation) {
         ImageIcon ii = new ImageIcon(this.getClass().getResource(imageLocation));
         myImage = ii.getImage();
     }
-    
-    public Image getImage() {
+
+    /**
+     * Returns image associated with the GameObject.
+     * @return myImage Image of object.
+     */
+    public Image getImage () {
         return myImage;
     }
 
+    /**
+     * Updates game after some time delay (to be implemented by child classes).
+     * @param delayTime Int amount of time to wait between updates.
+     */
     public abstract void update (int delayTime);
 }
