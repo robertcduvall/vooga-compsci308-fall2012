@@ -25,6 +25,15 @@ public class MapPlayerObject extends MovingMapObject {
     	setImage(mapImages.get("down"));
     }
     
+    // Dummy Constructor used for testing XML parsing with reflection
+    // Need to remove Map Mode argument for reflection to work correctly
+    public MapPlayerObject (int id, GameManager.GameEvent event, Point coord, 
+            Map<String, Image> mapImages) {
+    super(id, event, coord, mapImages.get(0), null);
+    myImages = mapImages;
+    setImage(mapImages.get("down"));
+}
+    
     // for testing with Xml parsing, can be deleted later
     public Map<String,Image> getImageMap() {
         return myImages;

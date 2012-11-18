@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import util.reflection.Reflection;
 import util.xml.XmlParser;
 import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.sprites.Sprite;
@@ -74,7 +76,9 @@ public class LevelCreator {
         Point point = parseLocation(mapPlayer);
         Map<String, Image> imageMap = parseImagesMap(mapPlayer);
         
-        return new MapPlayerObject(id, event, point, imageMap, null);
+        return (MapPlayerObject) Reflection.createInstance(className, id, event, point, imageMap);
+        
+        //return new MapPlayerObject(id, event, point, imageMap, null);
     }
 
     private Element isolateMapPlayer () {

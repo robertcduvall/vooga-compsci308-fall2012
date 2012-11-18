@@ -11,7 +11,7 @@
 	</event>
 	<player>
 		<map>
-			<class>MapObject</class>
+			<class>vooga.turnbased.gameobject.MapPlayerObject</class>
 			<id>0</id>
 			<event>NO_ACTION</event>
 			<location>
@@ -29,6 +29,42 @@
 			<image>
 				<source>src/vooga/turnbased/resources/image/player/Down2.png</source>
 				<direction>down2</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Left.png</source>
+				<direction>left</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Left1.png</source>
+				<direction>left1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Left2.png</source>
+				<direction>left2</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Right.png</source>
+				<direction>right</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Right1.png</source>
+				<direction>right1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Right2.png</source>
+				<direction>right2</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Up.png</source>
+				<direction>up</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Up1.png</source>
+				<direction>up1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Up2.png</source>
+				<direction>up2</direction>
 			</image>
 		</map>
 		<battle>
