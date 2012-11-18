@@ -18,7 +18,7 @@ public class MapPlayerObject extends MovingMapObject {
 
     private Map<String, Image> myImages;
     private Map<String, ImageLoop> myImageLoops;
-    //feel free to rename
+    // feel free to rename
     private String myDownLabel = "down";
     private String myUpLabel = "up";
     private String myLeftLabel = "left";
@@ -55,12 +55,19 @@ public class MapPlayerObject extends MovingMapObject {
         setImage(mapImages.get(myDownLabel));
     }
 
+    // for testing with Xml parsing, can be deleted later
+    public Map<String, Image> getImageMap () {
+        return myImages;
+    }
+
     /**
      * Sets the map of strings to ImageLoops to the parameter.
+     * 
      * @param imageLoops Map of strings to imageloops.
      */
     public void setImageLoops (Map<String, ImageLoop> imageLoops) {
         myImageLoops = imageLoops;
+
     }
 
     @Override

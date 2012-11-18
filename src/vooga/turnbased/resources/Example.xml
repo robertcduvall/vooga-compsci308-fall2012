@@ -22,6 +22,14 @@
 				<source>src/vooga/turnbased/resources/image/player/Down.png</source>
 				<direction>down</direction>
 			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Down1.png</source>
+				<direction>down1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Down2.png</source>
+				<direction>down2</direction>
+			</image>
 		</map>
 		<battle>
 			<attribute>

@@ -65,21 +65,28 @@ public class LevelCreator {
      *
      * @return Player-controlled map object
      */
-    public MapObject parserMapPlayer () {
-        NodeList playerList = myXmlParser.getElementsByName(myDocumentElement, "player");
-        Element player = (Element) playerList.item(0);
+    public MapObject parseMapPlayer () {
+        Element mapPlayer = isolateMapPlayer();
         
-        String className = myXmlParser.getTextContent(player, "class");
-        int id = myXmlParser.getIntContent(player, "id");
-        GameManager.GameEvent event = parseEvent(player);
-        Point point = parseLocation(player);
-        Map<String, Image> imageMap = parseImagesMap(player);
+        String className = myXmlParser.getTextContent(mapPlayer, "class");
+        int id = myXmlParser.getIntContent(mapPlayer, "id");
+        GameManager.GameEvent event = parseEvent(mapPlayer);
+        Point point = parseLocation(mapPlayer);
+        Map<String, Image> imageMap = parseImagesMap(mapPlayer);
         
         return new MapPlayerObject(id, event, point, imageMap, null);
     }
 
-    private GameManager.GameEvent parseEvent (Element player) {
-        String eventString = myXmlParser.getTextContent(player, "event");
+    private Element isolateMapPlayer () {
+        NodeList playerList = myXmlParser.getElementsByName(myDocumentElement, "player");
+        Element player = (Element) playerList.item(0);
+        NodeList mapList = myXmlParser.getElementsByName(player, "map");
+        Element mapPlayer = (Element) mapList.item(0);
+        return mapPlayer;
+    }
+
+    private GameManager.GameEvent parseEvent (Element element) {
+        String eventString = myXmlParser.getTextContent(element, "event");
         GameManager.GameEvent event = null;
         for (GameManager.GameEvent current : GameManager.GameEvent.values()) {
             if (current.toString().equals(eventString)) {
@@ -89,21 +96,23 @@ public class LevelCreator {
         return event;
     }
 
-    private Point parseLocation (Element player) {
-        NodeList locationList = myXmlParser.getElementsByName(player, "location");
+    private Point parseLocation (Element element) {
+        NodeList locationList = myXmlParser.getElementsByName(element, "location");
         Element location = (Element) locationList.item(0); 
         Point point = new Point(myXmlParser.getIntContent(location, "x"), 
                 myXmlParser.getIntContent(location, "y"));
         return point;
     }
 
-    private Map<String, Image> parseImagesMap (Element player) {
-        NodeList imageList = myXmlParser.getElementsByName(player, "image");
+    private Map<String, Image> parseImagesMap (Element element) {
+        NodeList imageList = myXmlParser.getElementsByName(element, "image");
         Map<String, Image> imageMap = new HashMap<String, Image>();
-        Element imageData = (Element) imageList.item(0);
-        Image image = myXmlParser.getImageContent(imageData, "source");
-        String direction = myXmlParser.getTextContent(imageData, "direction");
-        imageMap.put(direction, image);
+        for (int i = 0; i < imageList.getLength(); i++) {
+        Element imageData = (Element) imageList.item(i);
+            Image image = myXmlParser.getImageContent(imageData, "source");
+            String direction = myXmlParser.getTextContent(imageData, "direction");
+            imageMap.put(direction, image);
+        }
         return imageMap;
     }
     /**
