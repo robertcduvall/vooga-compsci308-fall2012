@@ -55,5 +55,8 @@ public class TestLevel extends Level {
         catch (NoSuchMethodException e) {
             System.out.println("Error setting up input");
         }
+        catch (IllegalAccessException e) {
+            System.out.println("Error setting up input.");
+        }
     }
 }
