@@ -242,7 +242,7 @@ public class MapMode extends GameMode {
     /**
      * iterate through the map and update MapObjects at each position
      */
-    private void updateMapObjects () {
+    private synchronized void updateMapObjects () {
         for (Point p : myMapObjects.keySet()) {
             List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
             for (MapObject s : objectsOnTile) {

@@ -21,7 +21,7 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class PathFinder implements Runnable {
 
-	private static final int ATTEMPT_INTERVAL = 30;
+	private static final int ATTEMPT_INTERVAL = 60;
 	private List<Point> myPath;
 	private MapMode myMap;
 	private boolean[][] myVisited;
