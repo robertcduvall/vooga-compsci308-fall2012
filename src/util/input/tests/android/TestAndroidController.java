@@ -1,7 +1,8 @@
-package util.input.tests;
+package util.input.tests.android;
 
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.JoyStickEvent;
+import util.input.android.events.LineSegment;
 import util.input.core.AndroidController;
 import util.input.core.Controller;
 import util.input.factories.ControllerFactory;
@@ -15,12 +16,14 @@ import util.input.interfaces.listeners.AndroidListener;
 public class TestAndroidController implements AndroidListener {
 
     private AndroidController myController;
+    private AndroidDrawGame myGame;
     public static void main(String [] args){
        
-        new TestAndroidController();
+        
     }
     
-    public TestAndroidController(){
+    public TestAndroidController(AndroidDrawGame parent){
+        myGame = parent;
         Controller<AndroidListener> testController = ControllerFactory.createAndroidController();
         myController = (AndroidController) testController;
         System.out.println("you are running a test android controller");
@@ -34,7 +37,9 @@ public class TestAndroidController implements AndroidListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
         catch (IllegalAccessException e){
+
             e.printStackTrace();
         }
         
@@ -66,6 +71,13 @@ public class TestAndroidController implements AndroidListener {
     public void onControllerDisconnect () {
        //myController.restartController();
         System.out.println("controller was disconected! game paused");
+        
+    }
+
+    @Override
+    public void onTouchMovement (LineSegment l) {
+        myGame.addLine(l);
+        System.out.println("received touch movement");
         
     }
     
