@@ -80,7 +80,7 @@ public class GameManager {
 
     }
 
-    public ArrayList<GameObject> getModesObjects (Class c) {
+    public ArrayList<GameObject> getGameObjectsOfSpecificMode (Class c) {
         ArrayList<GameObject> modeObjects = new ArrayList<GameObject>();
         for (Sprite s : mySprites.values()) {
             modeObjects.addAll(s.getObject(c));

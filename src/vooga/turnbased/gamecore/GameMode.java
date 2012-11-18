@@ -64,7 +64,7 @@ public abstract class GameMode {
     public void setObjects () { // to be deleted later, really only want sprites
                                 // correlating to involvedSpriteIDs in
                                 // gamemanager's handleEvent
-        myObjects = new ArrayList<GameObject>(myGameManager.getModesObjects(myObjectType));
+        myObjects = new ArrayList<GameObject>(myGameManager.getGameObjectsOfSpecificMode(myObjectType));
     }
 
     public ArrayList<GameObject> getObjects () {
