@@ -313,7 +313,7 @@ public abstract class Sprite implements SpriteActionInterface {
         }
         else {
             myPosition.translate(myVelocity.x, myVelocity.y);
-            continueUpdate();
+            //continueUpdate();
         }
     }
 
@@ -381,7 +381,7 @@ public abstract class Sprite implements SpriteActionInterface {
 
         Bullet b = new Bullet(getPosition(), new Dimension(
                 BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
-                new Point(getVelocity().x, getVelocity().y+5), 1);
+                new Point(0, -10), 1);
 
         this.getBulletsFired().add(b);
     }
