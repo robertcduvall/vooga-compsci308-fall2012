@@ -1,10 +1,10 @@
 package vooga.turnbased.gamecreation;
 
+import vooga.turnbased.gameobject.MapPlayerObject;
+import vooga.turnbased.gameobject.TestMonster;
 import java.awt.Image;
 import java.io.File;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import util.xml.XmlParser;
+import java.util.Map;
 
 public class XmlTester {
 
@@ -15,33 +15,33 @@ public class XmlTester {
         String xmlPath = "src/vooga/turnbased/resources/Example.xml";
         File xmlFile = new File(xmlPath);
         LevelCreator level = new LevelCreator(xmlFile);
-        System.out.println(level.getDocumentElement().getNodeName());
-        System.out.println(level.parseBackgroundImage());
-        System.out.println(level.parseDimension());
-//        XmlParser parser = new XmlParser(xmlFile);
-//
-//        Element root = parser.getDocumentElement();
-//        System.out.println(root.getNodeName().toString());
-//
-//        NodeList dimensionList = parser.getElementsByName(root, "dimension");
-//        Element dimension = (Element) dimensionList.item(0);
-//        System.out.println("  " + dimension.getNodeName());
-//        int width = parser.getIntContent(dimension, "width");
-//        double height = parser.getDoubleContent(dimension, "height");
-//        System.out.println("    width: " + width);
-//        System.out.println("    height: " + height);
-//
-//        Image background = parser.getImageContent(root, "backgroundImage");
-//        System.out.println("  Image: " + background);
-//
-//        NodeList eventList = parser.getElementsByName(root, "event");
-//        System.out.println("  " + eventList.item(0).getNodeName());
-//        for (int i = 0; i < eventList.getLength(); i++) {
-//            Element event = (Element) eventList.item(i);
-//            String eventName = parser.getTextContent(event, "name");
-//            String eventDestination = parser.getTextContent(event, "destination");
-//            System.out.println("    name: " + eventName);
-//            System.out.println("    destination: " + eventDestination);
-//        }
+        System.out.println("Root: " + level.getDocumentElement().getNodeName());
+        System.out.println("Background Image: " + level.parseBackgroundImage());
+        System.out.println("Level Dimension: " + level.parseDimension());
+        
+        System.out.println();
+        System.out.println("Player information:");
+        MapPlayerObject mapObject = (MapPlayerObject) level.parseMapPlayer();
+        System.out.println("ID: " + mapObject.getID());
+        System.out.println("Current Image: " + mapObject.getImage());
+        System.out.println("Event: " + mapObject.getModeEvent());
+        System.out.println("Location: " + mapObject.getLocation());
+        
+        System.out.println();
+        System.out.println("Player Images:");
+        Map<String,Image> testMap = mapObject.getImageMap();
+        for (String key : testMap.keySet()) {
+            System.out.println(key + " " + testMap.get(key));
+        }
+        
+        System.out.println();
+        System.out.println("Player Battle information:");
+        TestMonster battlePlayer = (TestMonster) level.parserBattlePlayer();
+        System.out.println("ID: " + battlePlayer.getID());
+        System.out.println("Event: " + battlePlayer.getModeEvent());
+        System.out.println("Health: " + battlePlayer.getHealth());
+        System.out.println("Defense: " + battlePlayer.getDefense());
+        System.out.println("Attack: " + battlePlayer.getAttack());
+        System.out.println("Image: " + battlePlayer.getImage());
     }
 }
