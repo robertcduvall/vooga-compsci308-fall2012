@@ -20,7 +20,7 @@ import arcade.utility.ReadWriter;
  * Class of the arcade used to start, end, and maintain the relationship with
  * all games in the arcade.
  * 
- * @author Michael Deng, Patrick Royal, Seon Kang
+ * @author Michael Deng, Patrick Royal
  * 
  */
 public class Game {
