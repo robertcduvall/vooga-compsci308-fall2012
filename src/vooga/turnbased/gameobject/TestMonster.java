@@ -2,8 +2,6 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Image;
 
-import vooga.turnbased.gamecore.GameManager;
-
 /**
  * This is a test battle monster that will be used to see if the BattleMode functions.
  * Extends the abstract class BattleObject.

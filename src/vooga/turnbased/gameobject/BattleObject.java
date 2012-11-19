@@ -2,8 +2,6 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Image;
 
-import vooga.turnbased.gamecore.GameManager;
-
 /**
  * Abstract class that is extended to create monsters/sprites in the BattleMode.
  * @author Michael Elgart

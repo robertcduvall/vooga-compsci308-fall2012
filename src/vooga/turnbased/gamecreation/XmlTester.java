@@ -1,6 +1,7 @@
 package vooga.turnbased.gamecreation;
 
 import vooga.turnbased.gameobject.MapPlayerObject;
+import vooga.turnbased.gameobject.TestMonster;
 import java.awt.Image;
 import java.io.File;
 import java.util.Map;
@@ -32,5 +33,15 @@ public class XmlTester {
         for (String key : testMap.keySet()) {
             System.out.println(key + " " + testMap.get(key));
         }
+        
+        System.out.println();
+        System.out.println("Player Battle information:");
+        TestMonster battlePlayer = (TestMonster) level.parserBattlePlayer();
+        System.out.println("ID: " + battlePlayer.getID());
+        System.out.println("Event: " + battlePlayer.getModeEvent());
+        System.out.println("Health: " + battlePlayer.getHealth());
+        System.out.println("Defense: " + battlePlayer.getDefense());
+        System.out.println("Attack: " + battlePlayer.getAttack());
+        System.out.println("Image: " + battlePlayer.getImage());
     }
 }

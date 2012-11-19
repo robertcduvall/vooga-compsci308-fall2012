@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.MapMode;
 
 
@@ -18,7 +17,7 @@ import vooga.turnbased.gamecore.MapMode;
 public abstract class MapObject extends GameObject {
     // checkstyle does not like that these are protected
     protected Dimension myTileDimensions;
-    protected Point myOrigin;
+    protected Point myCameraOrigin;
     protected Point myOffset;
 
     private Point myLocation;
@@ -122,10 +121,10 @@ public abstract class MapObject extends GameObject {
      */
     public void update (int delayTime) {
         myTileDimensions = new Dimension(myMapMode.getTileDimensions());
-        myOrigin = new Point(myMapMode.getOrigin());
+        myCameraOrigin = new Point(myMapMode.getOrigin());
         Rectangle camera = myMapMode.getCamera();
-        int xOffset = (getLocation().x - (camera.x)) * myTileDimensions.width + myOrigin.x;
-        int yOffset = (getLocation().y - (camera.y)) * myTileDimensions.height + myOrigin.y;
+        int xOffset = (getLocation().x - (camera.x)) * myTileDimensions.width + myCameraOrigin.x;
+        int yOffset = (getLocation().y - (camera.y)) * myTileDimensions.height + myCameraOrigin.y;
         myOffset = new Point(xOffset, yOffset);
     }
 

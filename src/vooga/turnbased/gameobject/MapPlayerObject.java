@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
 import util.imageprocessing.ImageLoop;
-import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.MapMode;
 
 
@@ -24,7 +23,7 @@ public class MapPlayerObject extends MovingMapObject {
     private String myUpLabel = "up";
     private String myLeftLabel = "left";
     private String myRightLabel = "right";
-    private int frameCount;
+    private int myFrameCount;
 
     /**
      * Creates the MovingMapObject that will be used in MapMode.
@@ -35,10 +34,9 @@ public class MapPlayerObject extends MovingMapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (int id, String event, Point coord, Image mapImage,
-            MapMode mapMode) {
+    public MapPlayerObject (int id, String event, Point coord, Image mapImage, MapMode mapMode) {
         super(id, event, coord, mapImage, mapMode);
-        frameCount = 0;
+        myFrameCount = 0;
     }
 
     /**
@@ -52,8 +50,8 @@ public class MapPlayerObject extends MovingMapObject {
      *        animation of the player object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (int id, String event, Point coord,
-            Map<String, Image> mapImages, MapMode mapMode) {
+    public MapPlayerObject (int id, String event, Point coord, Map<String, Image> mapImages,
+            MapMode mapMode) {
         super(id, event, coord, mapImages.get(0), mapMode);
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
@@ -61,11 +59,10 @@ public class MapPlayerObject extends MovingMapObject {
 
     // Dummy Constructor used for testing XML parsing with reflection
     // Need to remove Map Mode argument for reflection to work correctly
-    public MapPlayerObject (int id, String event, Point coord,
-            Map<String, Image> mapImages) {
+    public MapPlayerObject (int id, String event, Point coord, Map<String, Image> mapImages) {
         super(id, event, coord, mapImages.get(0), null);
         myImages = mapImages;
-        setImage(mapImages.get("down"));
+        setImage(mapImages.get(myDownLabel));
     }
 
     // for testing with Xml parsing, can be deleted later
@@ -86,10 +83,11 @@ public class MapPlayerObject extends MovingMapObject {
     @Override
     public void update (int delayTime) {
         super.update(delayTime);
-        frameCount++;
-        if (frameCount >= ANIMATION_FRAME_RATE) {
+
+        myFrameCount++;
+        if (myFrameCount >= ANIMATION_FRAME_RATE) {
             animateCharactor();
-            frameCount = 0;
+            myFrameCount = 0;
         }
     }
 

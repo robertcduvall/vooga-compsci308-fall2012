@@ -38,7 +38,8 @@ public class MapMode extends GameMode {
     private HashMap<Point, List<MapObject>> myMapObjects;
     private MapPlayerObject myPlayer;
     private Point myBottomRightCorner;
-    private Point myOrigin;
+
+	private Point myOrigin;
     private int myCurrentTileWidth;
     private int myCurrentTileHeight;
     private Rectangle myCurrentCamera;
@@ -56,83 +57,33 @@ public class MapMode extends GameMode {
     }
 
     @Override
+    /**
+     * pause the game
+     */
     public void pause () {
-        myMapObjects.clear();
+        //myMapObjects.clear();
     }
 
     @Override
     public void resume () {
-        myNumDisplayRows = Integer.parseInt(GameWindow
-                .importString("CameraHeight"));
-        myNumDisplayCols = Integer.parseInt(GameWindow
-                .importString("CameraWidth"));
-        myBottomRightCorner = new Point(20, 30);
-        addHardcodedSprites();
+        init(); // hardcoded for now - need to remove all instances of sprite's gameobjects ecery time sprite is removed 
     }
-
-    // only for testing purposes
-    public void addHardcodedSprites () {
+     
+    public void init () {
         myMapObjects = new HashMap<Point, List<MapObject>>();
-        for (int i = 0; i < myBottomRightCorner.x; i++) {
-            for (int j = 0; j < myBottomRightCorner.y; j++) {
-                Point p = new Point(i, j);
-                addMapObject(p, new MapTileObject(ID,
-                        "NO_ACTION", p, GameWindow
-                                .importImage("GrassImage"), this));
-            }
+        List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
+        for (MapObject mapObject : mapObjects) {
+            addMapObject(mapObject.getLocation(), mapObject);
         }
-        Point center = new Point(7, 5);
-        Map<String, Image> images = new HashMap<String, Image>();
-        images.put("left", GameWindow.importImage("PlayerLeft"));
-        images.put("right", GameWindow.importImage("PlayerRight"));
-        images.put("down", GameWindow.importImage("PlayerDown"));
-        images.put("up", GameWindow.importImage("PlayerUp"));
-        Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
-        Image left = GameWindow.importImage("PlayerLeft");
-        Image left1 = GameWindow.importImage("PlayerLeft1");
-        Image left2 = GameWindow.importImage("PlayerLeft2");
-        Image right = GameWindow.importImage("PlayerRight");
-        Image right1 = GameWindow.importImage("PlayerRight1");
-        Image right2 = GameWindow.importImage("PlayerRight2");
-        Image up = GameWindow.importImage("PlayerUp");
-        Image up1 = GameWindow.importImage("PlayerUp1");
-        Image up2 = GameWindow.importImage("PlayerUp2");
-        Image down = GameWindow.importImage("PlayerDown");
-        Image down1 = GameWindow.importImage("PlayerDown1");
-        Image down2 = GameWindow.importImage("PlayerDown2");
-        List<Image> leftList = new ArrayList<Image>();
-        leftList.add(left);
-        leftList.add(left1);
-        leftList.add(left2);
-        imageLoops.put("left", new ImageLoop(leftList));
-        List<Image> rightList = new ArrayList<Image>();
-        rightList.add(right);
-        rightList.add(right1);
-        rightList.add(right2);
-        imageLoops.put("right", new ImageLoop(rightList));
-        List<Image> upList = new ArrayList<Image>();
-        upList.add(up);
-        upList.add(up1);
-        upList.add(up2);
-        imageLoops.put("up", new ImageLoop(upList));
-        List<Image> downList = new ArrayList<Image>();
-        downList.add(down);
-        downList.add(down1);
-        downList.add(down2);
-        imageLoops.put("down", new ImageLoop(downList));
-
-        myPlayer = new MapPlayerObject(ID, "MAP_COLLISION",
-                center, images, this);
-        myPlayer.setImageLoops(imageLoops);
-        addMapObject(center, myPlayer);
-
-        center = new Point(5, 5);
-        MovingMapObject test1 = new MovingMapObject(ID,
-                "MAP_COLLISION", center, GameWindow
-                        .importImage("something"), this);
-        addMapObject(center, test1);
-
     }
+
+	public void setNumDisplayRows(int numDisplayRows) {
+		this.myNumDisplayRows = numDisplayRows;
+	}
+
+	public void setNumDisplayCols(int numDisplayCols) {
+		this.myNumDisplayCols = numDisplayCols;
+	}
 
     /**
      * add MapObject to the MapMode
@@ -429,4 +380,16 @@ public class MapMode extends GameMode {
         // will move all code for handling user input here
         // once input api allows invoking methods with arguments
     }
+    
+    public Point getBottomRight() {
+		return myBottomRightCorner;
+	}
+
+	public void setBottomRight(Point myBottomRightCorner) {
+		this.myBottomRightCorner = myBottomRightCorner;
+	}
+	
+	public void setPlayer(MapPlayerObject p) {
+		myPlayer = p;
+	}
 }

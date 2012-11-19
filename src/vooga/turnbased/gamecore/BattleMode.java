@@ -1,16 +1,11 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import vooga.turnbased.gameobject.BattleObject;
-import vooga.turnbased.gui.GameWindow;
 
 
 /**
@@ -22,9 +17,9 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class BattleMode extends GameMode {
     private List<Team> myTeams;
-    private BattleState myState;
     private BattleObject myPlayerObject;
     private BattleObject myEnemy;
+    private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
 
@@ -51,9 +46,10 @@ public class BattleMode extends GameMode {
         makeTeams();
         initialize();
         System.out.println("BattleStarting!");
-        //getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new ArrayList<Integer>());
+        // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
+        // ArrayList<Integer>());
     }
-    
+
     private void makeTeams () {
         // BAD BAD TEST CODE
         setObjects();
@@ -69,25 +65,25 @@ public class BattleMode extends GameMode {
 
     @Override
     public void update () {
-        //while(myState != BattleState.WAITING_FOR_MOVE){
-            if (isBattleOver()) {
-                endBattle();
-            }
-            // TODO: figure out how this should work. Right now we just give it the
-            // previous team
-            // TODO: Take into account animating, requesting user input for player
-            // team, etc.
-            //nextTeam().makeMove(myTeams.get(myTurnCount - 1 % myTeams.size()));
-        //}
+        // while(myState != BattleState.WAITING_FOR_MOVE){
+        if (isBattleOver()) {
+            endBattle();
+        }
+        // TODO: figure out how this should work. Right now we just give it the
+        // previous team
+        // TODO: Take into account animating, requesting user input for player
+        // team, etc.
+        // nextTeam().makeMove(myTeams.get(myTurnCount - 1 % myTeams.size()));
+        // }
     }
 
-
+    // this needs to be generalized
     @Override
     public void paint (Graphics g) {
-        int i = -300; //fix painting this stuff...
-        for(Team t : myTeams){
+        int i = -300; // fix painting this stuff...
+        for (Team t : myTeams) {
             i += 300;
-            for(BattleObject b : t.getBattleObjects()){
+            for (BattleObject b : t.getBattleObjects()) {
                 b.paint(g, 0, 0 + i, 800, 300);
             }
         }
@@ -118,8 +114,8 @@ public class BattleMode extends GameMode {
         for (Team t : myTeams) {
             if (!t.stillAlive()) {
                 allDead = true;
-                // delete dead sprites, this won't work yet because of map team :(
-                //getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
+                // hardcoded
+                getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
             }
         }
         return allDead;
@@ -138,6 +134,8 @@ public class BattleMode extends GameMode {
                 myPlayerObject.attackEnemy(myEnemy);
                 System.out.println("My health: " + myPlayerObject.getHealth());
                 System.out.println("Enemy health: " + myEnemy.getHealth());
+                break;
+            default:
                 break;
         }
     }
@@ -174,11 +172,11 @@ public class BattleMode extends GameMode {
             // currentEnemyBattleObject.attackEnemy(currentPlayerBattleObject);
         }
 
-        public List<BattleObject> getBattleObjects() {
+        public List<BattleObject> getBattleObjects () {
             return myBattleObjects;
         }
-        
-        public BattleObject nextPlayer() {
+
+        public BattleObject nextPlayer () {
             myBattleObjects.add(myBattleObjects.remove(0));
             return myBattleObjects.get(0);
         }
@@ -189,8 +187,14 @@ public class BattleMode extends GameMode {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
     }
 
-	@Override
-	public void configureInputHandling() {
-		// handle inputs
-	}
+    @Override
+    public void configureInputHandling () {
+        // handle inputs
+    }
+
+    @Override
+    public void init () {
+        // TODO Auto-generated method stub
+
+    }
 }
