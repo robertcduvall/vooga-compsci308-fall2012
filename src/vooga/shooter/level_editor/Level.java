@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.w3c.dom.Element;
+import util.pack.Packable;
 import vooga.shooter.gameObjects.Sprite;
 
 /**
@@ -14,11 +16,11 @@ import vooga.shooter.gameObjects.Sprite;
  * @author Niel Lebeck, Connor Gordon, Alex Browne
  * 
  */
-public class Level {
+public class Level implements Packable<Level>{
     private List<Sprite> mySprites;
 
     /**
-     * Initializes Sprite and Character lists
+     * Initializes Sprite list
      */
     public Level () {
         mySprites = new ArrayList<Sprite>();
@@ -89,6 +91,18 @@ public class Level {
     
     public boolean winningConditionsMet () {
         return mySprites.isEmpty();
+    }
+
+    @Override
+    public Element pack () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Level unpack (Element xmlData) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 //    /**
