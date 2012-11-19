@@ -68,7 +68,7 @@ public class UserXMLWriter {
        
         Document doc = XmlBuilder.createDocument();
 
-        Element rootElement = doc.createElement("message");
+        Element rootElement = doc.createElement("messagelist");
         doc.appendChild(rootElement);
 
         XmlWriter.writeXML(doc, messageFilePath);
@@ -80,7 +80,7 @@ public class UserXMLWriter {
         
         Document doc = XmlBuilder.createDocument();
 
-        Element rootElement = doc.createElement("game");
+        Element rootElement = doc.createElement("gamelist");
         doc.appendChild(rootElement);
 
         XmlWriter.writeXML(doc, gameFilePath);
