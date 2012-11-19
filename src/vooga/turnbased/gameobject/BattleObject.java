@@ -1,7 +1,12 @@
 package vooga.turnbased.gameobject;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 
 /**
  * Abstract class that is extended to create monsters/sprites in the BattleMode.
@@ -13,6 +18,7 @@ public abstract class BattleObject extends GameObject {
     private int myDefense;
     private int myAttack;
     private int myHealth;
+    private int myMaxHealth;
 
     /**
      * Create the BattleObject for this sprite which will be used in
@@ -28,6 +34,7 @@ public abstract class BattleObject extends GameObject {
     public BattleObject(int id, String event, int defense,
             int attack, int health, Image image) {
         super(id, event, image);
+        myMaxHealth = health;
         setDefense(defense);
         setAttack(attack);
         setHealth(health);
@@ -73,6 +80,16 @@ public abstract class BattleObject extends GameObject {
     private void paintStats (Graphics g, int x, int y, int width, int height) {
         g.drawRect(x, y, width, height);
 
+        Graphics2D g2d = (Graphics2D) g;
+        String name = "Cool Battler";
+        Font font = new Font("Sans_Serif", Font.PLAIN, 25);
+        FontRenderContext frc = g2d.getFontRenderContext();
+        g2d.setColor(Color.BLACK);
+        GlyphVector gv = font.createGlyphVector(frc, name);
+        g2d.drawGlyphVector(gv, x+10, y+30);
+        String health = "Health: " + myHealth + "/" + myMaxHealth;
+        gv = font.createGlyphVector(frc, health);
+        g2d.drawGlyphVector(gv, x+10, y+60);
     }
 
     /**

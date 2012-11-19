@@ -89,7 +89,7 @@ public class GameManager {
 
         s = new Sprite();
         s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3, GameWindow
-                .importImage("something")));
+                .importImage("Charmeleon")));
         Point center = new Point(5, 5);
         MovingMapObject test1 =
                 new MovingMapObject(0, "MAP_COLLISION", center,
@@ -101,7 +101,7 @@ public class GameManager {
 
         s = new Sprite();
         s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3, GameWindow
-                .importImage("PlayerImage")));
+                .importImage("MyPikachu")));
 
         mySprites.put(s.getID(), s);
 

@@ -136,8 +136,8 @@ public class BattleMode extends GameMode {
         switch (keyCode) {
             case KeyEvent.VK_A:
                 myPlayerObject.attackEnemy(myEnemy);
-                System.out.println("My health: " + myPlayerObject.getHealth());
-                System.out.println("Enemy health: " + myEnemy.getHealth());
+                //System.out.println("My health: " + myPlayerObject.getHealth());
+                //System.out.println("Enemy health: " + myEnemy.getHealth());
                 break;
             default:
                 break;

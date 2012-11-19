@@ -7,6 +7,7 @@
 package vooga.turnbased.gui;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -66,8 +67,9 @@ public class GamePane extends DisplayPane implements Runnable {
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
         Graphics nextFrameGraphics = nextFrameImage.getGraphics();
+        Graphics2D g2d = (Graphics2D) g;
         myGameManager.paint(nextFrameGraphics);
-        g.drawImage(nextFrameImage, 0, 0, null);
+        g2d.drawImage(nextFrameImage, 0, 0, null);
     }
 
     /**
