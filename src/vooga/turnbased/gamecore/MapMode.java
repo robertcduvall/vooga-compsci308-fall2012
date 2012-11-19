@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecorE;
+package vooga.turnbased.gamecoRe;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

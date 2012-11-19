@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
 import util.imageprocessing.ImageLoop;
-import vooga.turnbased.gamecorE.MapMode;
+import vooga.turnbased.gamecoRe.MapMode;
 
 
 /**
