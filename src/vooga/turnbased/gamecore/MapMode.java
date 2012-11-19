@@ -73,12 +73,17 @@ public class MapMode extends GameMode {
         myNumDisplayCols = Integer.parseInt(GameWindow
                 .importString("CameraWidth"));
         myBottomRightCorner = new Point(20, 30);
+        myMapObjects = new HashMap<Point, List<MapObject>>();
         addHardcodedSprites();
+        List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
+        for (MapObject mapObject : mapObjects) {
+            addMapObject(mapObject.getLocation(), mapObject);
+        }
+        
     }
 
     // only for testing purposes
     public void addHardcodedSprites () {
-        myMapObjects = new HashMap<Point, List<MapObject>>();
         for (int i = 0; i < myBottomRightCorner.x; i++) {
             for (int j = 0; j < myBottomRightCorner.y; j++) {
                 Point p = new Point(i, j);
@@ -132,12 +137,12 @@ public class MapMode extends GameMode {
         myPlayer.setImageLoops(imageLoops);
         addMapObject(center, myPlayer);
 
-        center = new Point(5, 5);
+        /*center = new Point(5, 5);
         MovingMapObject test1 = new MovingMapObject(ID,
                 "MAP_COLLISION", center, GameWindow
                         .importImage("something"), this);
-        addMapObject(center, test1);
-
+        addMapObject(center, test1);*/
+       
     }
 
     /**

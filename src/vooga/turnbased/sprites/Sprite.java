@@ -37,11 +37,17 @@ public class Sprite {
         return myID;
     }
 
-    public List<GameObject> getObject (Class<GameObject> c) {
-        List<GameObject> relevantObjects = new ArrayList<GameObject>();
+    /**
+     * Returns all GameObjects from myGameObjects that are
+     * instance of clazz
+     * @param clazz
+     * @return
+     */
+    public <T extends GameObject> List<T> getObject (Class<T> clazz) {
+        List<T> relevantObjects = new ArrayList<T>();
         for (GameObject go : myGameObjects) {
-            if (c.isAssignableFrom(go.getClass())) {
-                relevantObjects.add(go);
+            if (clazz.isAssignableFrom(go.getClass())) {
+                relevantObjects.add((T) go);
             }
         }
         return relevantObjects;

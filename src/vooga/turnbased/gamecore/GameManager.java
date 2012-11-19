@@ -9,6 +9,7 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import util.input.core.MouseController;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.MapTileObject;
+import vooga.turnbased.gameobject.MovingMapObject;
 import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
@@ -30,8 +33,8 @@ import vooga.turnbased.sprites.Sprite;
 public class GameManager {
 
     private final GamePane myGamePane;
-    private GameMode myMapMode; // Fix me once the factory opens!s
-    private GameMode myBattleMode;
+    private MapMode myMapMode; // Fix me once the factory opens!s
+    private BattleMode myBattleMode;
     private GameMode myCurrentGameMode;
     // private Factory myFactory;
     // private MapObject myPlayer;
@@ -56,9 +59,9 @@ public class GameManager {
         // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
-        generateHardcodedSprites();
         myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
+        generateHardcodedSprites();
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.resume();
         configureInputHandling();
@@ -69,6 +72,13 @@ public class GameManager {
         Sprite s = new Sprite();
         s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3,
                 GameWindow.importImage("something")));
+        
+        Point center = new Point(5, 5);
+        MovingMapObject test1 = new MovingMapObject(0,
+                "MAP_COLLISION", center, GameWindow
+                        .importImage("something"), myMapMode);
+        
+        s.addGameObject(test1);
 
         mySprites.put(s.getID(), s);
 
@@ -77,11 +87,20 @@ public class GameManager {
                 GameWindow.importImage("PlayerImage")));
 
         mySprites.put(s.getID(), s);
+        
+        /*for (int i = 0; i < myBottomRightCorner.x; i++) {
+            for (int j = 0; j < myBottomRightCorner.y; j++) {
+                Point p = new Point(i, j);
+                addMapObject(p, new MapTileObject(ID,
+                        "NO_ACTION", p, GameWindow
+                                .importImage("GrassImage"), this));
+            }
+        }*/
 
     }
 
-    public List<GameObject> getGameObjectsOfSpecificMode (Class c) {
-        List<GameObject> modeObjects = new ArrayList<GameObject>();
+    public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
+        List<T> modeObjects = new ArrayList<T>();
         for (Sprite s : mySprites.values()) {
             modeObjects.addAll(s.getObject(c));
         }
