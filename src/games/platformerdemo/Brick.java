@@ -37,11 +37,4 @@ public class Brick extends GameObject {
     public Image getCurrentImage () {
         return myImg;
     }
-
-    @Override
-    public Map<String, String> getConfigStringParams () {
-        Map<String, String> params = super.getConfigStringParams();
-        params.put(DEFAULT_IMAGE_TAG, "File name of the picture to render for this brick.");
-        return params;
-    }
 }
