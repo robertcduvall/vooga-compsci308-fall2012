@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import util.pack.Packable;
 import vooga.shooter.gameObjects.Sprite;
 
 /**
@@ -14,14 +17,14 @@ import vooga.shooter.gameObjects.Sprite;
  * @author Niel Lebeck, Connor Gordon, Alex Browne
  * 
  */
-public class Level {
-    private List<Sprite> mySpriteList;
+public class Level implements Packable<Level>{
+    private List<Sprite> mySprites;
 
     /**
-     * Initializes Sprite and Character lists
+     * Initializes Sprite list
      */
     public Level () {
-        mySpriteList = new ArrayList<Sprite>();
+        mySprites = new ArrayList<Sprite>();
     }
 
     /**
@@ -30,7 +33,7 @@ public class Level {
      * @return list of contained sprites
      */
     public Iterable<Sprite> getSpriteList () {
-        return Collections.unmodifiableList(mySpriteList);
+        return Collections.unmodifiableList(mySprites);
     }
     
     /**
@@ -39,7 +42,7 @@ public class Level {
      * @param s Sprite to be added
      */
     public void addSprite (Sprite s) {
-        mySpriteList.add(s);
+        mySprites.add(s);
     }
 
     /**
@@ -48,7 +51,7 @@ public class Level {
      * @param s Sprite to be removed
      */
     public void removeSprite (Sprite s) {
-        mySpriteList.remove(s);
+        mySprites.remove(s);
     }
 
 
@@ -60,21 +63,34 @@ public class Level {
      * @param offsetY relative point of origin -y
      */
     public void paintSprites (Graphics g, int offsetX, int offsetY) {
-        for (Sprite s : mySpriteList) {
+        for (Sprite s : mySprites) {
             // uncomment this when the errors in Sprite.java are fixed
-            //s.draw(g);
+            // s.draw(g);
         }
     }
     
     /**
-     * Serializes the Level into the proper xml format.
-     * This stores all the information about the level
-     * and the sprites it contains.
-     * @return String the Level serialized as an xml string.
+     * For now, we're going to assume that you win the level
+     * by destroying all the enemies. This might need to be
+     * customizable.
+     * 
+     * @return a boolean representing whether or not the level
+     * has been won.
      */
     
-    public String serialize() {
-        // TODO: implement this using a shared writer.
+    public boolean winningConditionsMet () {
+        return mySprites.isEmpty();
+    }
+
+    @Override
+    public Document pack () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Level unpack (Document xmlData) {
+        // TODO Auto-generated method stub
         return null;
     }
 

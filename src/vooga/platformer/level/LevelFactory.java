@@ -86,7 +86,7 @@ public final class LevelFactory {
             return level;
         }
         catch (ReflectionException e) {
-            throw new LevelFileIOException("Incorrect class name was passed as a type parameter");
+            throw new LevelFileIOException("Incorrect class name was passed as a type parameter: ");
         }
         catch (LevelFileIOException e) {
             throw e;
@@ -102,8 +102,9 @@ public final class LevelFactory {
         configString = configString.concat("x=" + s.getX() + deliminator);
         configString = configString.concat("y=" + s.getY() + deliminator);
         configString = configString.concat("width=" + s.getWidth() + deliminator);
-        configString = configString.concat("height=" + s.getHeight());
-        // TODO add strategies and attr
+        configString = configString.concat("height=" + s.getHeight() + deliminator);
+        configString = configString.concat("imagePath=" + s.getImagePath());
+        // TODO add additional params
         return (GameObject) Reflection.createInstance(s.getType(), configString);
     }
 

@@ -26,13 +26,11 @@ public class GameWindow extends JFrame {
     public static final String EDITOR = "1";
     public static final String GAME = "2";
 
-
     private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
     private static ResourceBundle myResources;
 
     private Container myContentPane;
     private CardLayout myLayout;
-
 
     /**
      * Constructor construct a game window given the size of the window
@@ -75,7 +73,6 @@ public class GameWindow extends JFrame {
     	DisplayPane myCurrentPane = (DisplayPane) myContentPane.getComponent(
     			Integer.parseInt(paneName));
     	myCurrentPane.initialize();
-
     }
 
     /**
@@ -89,7 +86,6 @@ public class GameWindow extends JFrame {
     	String imageFolder = myResources.getString("ImageFolder");
         ImageIcon imageIcon = new ImageIcon(imageFolder + importString(imageName));
         return imageIcon.getImage();   
-
     }
     
     /**
@@ -99,8 +95,7 @@ public class GameWindow extends JFrame {
      * @return
      */
     public static String importString(String stringName) {
-        return myResources.getString(stringName); 
-
+        return myResources.getString(stringName);
     }
     
     /**
@@ -109,6 +104,5 @@ public class GameWindow extends JFrame {
      */
     private void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
-
     }
 }

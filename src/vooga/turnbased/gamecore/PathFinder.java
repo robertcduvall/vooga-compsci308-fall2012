@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import vooga.turnbased.gameobject.MapItemObject;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MovingMapObject;
+import vooga.turnbased.gui.GameWindow;
 
 /**
  * path finding for a MovingMapObject to go to a target position
@@ -19,7 +21,7 @@ import vooga.turnbased.gameobject.MovingMapObject;
  */
 public class PathFinder implements Runnable {
 
-	private static final int ATTEMPT_INTERVAL = 30;
+	private static final int ATTEMPT_INTERVAL = 60;
 	private List<Point> myPath;
 	private MapMode myMap;
 	private boolean[][] myVisited;
@@ -47,7 +49,8 @@ public class PathFinder implements Runnable {
 		mySize = new Dimension(myBottomRightCorner.x, myBottomRightCorner.y);
 		myVisited = new boolean[mySize.width][mySize.height];
 		myCancelMovement = false;
-		depthFirstSearch(myStart);
+		findPossiblePath(myStart);
+		highlightPath();
 		myMovementThread = new Thread(this);
 		myMovementThread.start();
 	}
@@ -57,11 +60,10 @@ public class PathFinder implements Runnable {
 	 * @param current current position
 	 * @return if the path finding is successful
 	 */
-	public boolean depthFirstSearch(Point current) {
-		if (myVisited[current.x][current.y]) {
+	protected boolean findPossiblePath(Point current) {
+		if (checkVisited(current.x, current.y)) {
 			return false;
 		}
-		myVisited[current.x][current.y] = true;
 		if (current.equals(myEnd)) {
 			return true; // found the path
 		}
@@ -90,12 +92,26 @@ public class PathFinder implements Runnable {
 		while (!myOptions.isEmpty()) {
 			Point p = new Point(myOptions.poll());
 			myPath.add(p);
-			if (depthFirstSearch(p)) {
+			if (findPossiblePath(p)) {
 				return true;
 			} else {
 				myPath.remove(myPath.size() - 1);
 			}
 		}
+		return false;
+	}
+	
+	/**
+	 * check if the point is visited
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 * @return true if the (x, y) position is already visited
+	 */
+	public boolean checkVisited(int x, int y) {
+		if (myVisited[x][y]) {
+			return true;
+		}
+		myVisited[x][y] = true; //mark visited if the point has not yet been visited
 		return false;
 	}
 
@@ -138,13 +154,13 @@ public class PathFinder implements Runnable {
 	 * loop that moves the object
 	 */
 	@Override
-	public void run() {
-		Point previousPoint = myPath.get(0);
-		Point currentPoint;
+	public synchronized void run() {
 		if (myPath.isEmpty()) {
 			return;
 		}
-		for (int i = 1; i < myPath.size(); i++) {
+		Point previousPoint = myStart;
+		Point currentPoint;
+		for (int i = 0; i < myPath.size(); i++) {
 			if (myCancelMovement) {
 				break;
 			}
@@ -160,6 +176,17 @@ public class PathFinder implements Runnable {
 				}
 			}
 			myMap.moveSprite(myMovingObject, direction);
+		}
+	}
+	
+	private MapItemObject generatePathIndicator(Point p) {
+		return new MapItemObject(0, "NO_ACTION", p, GameWindow
+                .importImage("HighlightPath"), myMap);
+	}
+	
+	private void highlightPath() {
+		for (Point p: myPath) {
+			myMap.addMapObject(p, generatePathIndicator(p));
 		}
 	}
 }

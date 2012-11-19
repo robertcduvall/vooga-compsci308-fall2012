@@ -1,5 +1,5 @@
-
 package vooga.turnbased;
+
 import vooga.turnbased.gui.GameWindow;
 
 
@@ -23,6 +23,5 @@ public class Main {
      */
     public static void main (String[] args) {
         GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT);
-
     }
 }

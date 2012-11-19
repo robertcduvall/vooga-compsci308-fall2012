@@ -11,71 +11,72 @@
 	</event>
 	<player>
 		<map>
-			<position>
-				<xCoordinate>50</xCoordinate>
-				<yCoordinate>50</yCoordinate>
-			</position>
+			<class>vooga.turnbased.gameobject.MapPlayerObject</class>
+			<id>0</id>
+			<event>NO_ACTION</event>
+			<location>
+				<x>50</x>
+				<y>50</y>
+			</location>
 			<image>
-				<source></source>
+				<source>src/vooga/turnbased/resources/image/player/Down.png</source>
+				<direction>down</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Down1.png</source>
+				<direction>down1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Down2.png</source>
+				<direction>down2</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Left.png</source>
 				<direction>left</direction>
 			</image>
 			<image>
-				<source></source>
+				<source>src/vooga/turnbased/resources/image/player/Left1.png</source>
+				<direction>left1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Left2.png</source>
+				<direction>left2</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Right.png</source>
 				<direction>right</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Right1.png</source>
+				<direction>right1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Right2.png</source>
+				<direction>right2</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Up.png</source>
+				<direction>up</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Up1.png</source>
+				<direction>up1</direction>
+			</image>
+			<image>
+				<source>src/vooga/turnbased/resources/image/player/Up2.png</source>
+				<direction>up2</direction>
 			</image>
 		</map>
 		<battle>
-			<attribute>
-				<name>health</name>
-				<value>100</value>
-			</attribute>
-			<attribute>
-				<name>defense</name>
-				<value>50</value>
-			</attribute>
-			<attribute>
-				<name>attack</name>
-				<value>25</value>
-			</attribute>
-			<image>
-				<source></source>
-			</image>
+			<class>vooga.turnbased.gameobject.TestMonster</class>
+			<id>0</id>
+			<event>NO_ACTION</event>
+			<health>100</health>
+			<defense>50</defense>
+			<attack>25</attack>
+			<image>src/vooga/turnbased/resources/image/player/Down.png</image>
 		</battle>
 	</player>
-	<characterSprite>
-		<map>
-			<action>collision</action>
-			<position>
-				<xCoordinate>450</xCoordinate>
-				<yCoordinate>450</yCoordinate>
-			</position>
-			<image>
-				<source></source>
-				<direction>left</direction>
-			</image>
-			<image>
-				<source></source>
-				<direction>right</direction>
-			</image>
-		</map>
-		<battle>
-			<attribute>
-				<name>health</name>
-				<value>30</value>
-			</attribute>
-			<attribute>
-				<name>defense</name>
-				<value>10</value>
-			</attribute>
-			<attribute>
-				<name>attack</name>
-				<value>15</value>
-			</attribute>
-			<image>
-				<source></source>
-			</image>
-		</battle>
-	</characterSprite>
 	<interactableSprite>
 		<position>
 			<xCoordinate>150</xCoordinate>
