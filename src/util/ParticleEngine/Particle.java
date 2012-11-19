@@ -29,7 +29,7 @@ public class Particle {
     private Point myVelocity;
     private int myVariance;
     private double myAngle;
-    private int maxDistanceTraveledPerUpdate;
+    private double maxDistanceTraveledPerUpdate;
     
     private Random myRandomGenerator = new Random();
     
@@ -38,8 +38,9 @@ public class Particle {
                                                    // magic numbers, they're
                                                    // just for testing purposes
     private float[] offsets;
-    private BufferedImage myImage;
-
+    //private BufferedImage myImage;
+    private Image myImage;
+    
     private static final int oneHundred = 100;
     private static final double radiansPerCircle = 2*Math.PI;
     
@@ -65,35 +66,43 @@ public class Particle {
         durationLimit = duration;
         durationExisted = 0;
 
-        myImage = new BufferedImage(size.width, size.height,
+        myImage = image;
+/*        myImage = new BufferedImage(size.width, size.height,
                 BufferedImage.TYPE_INT_ARGB);
         myImage.createGraphics().drawImage(image, myPosition.x, myPosition.y,
-                size.width, size.height, null);
+                size.width, size.height, null);*/
     }
 
     /**
      * Stores the angle and magnitude of the velocty vector.
      */
     private void setupRadianMode(){
-    	Point normalizedVelocity = normalizeVector(myVelocity);
-    	if (normalizedVelocity.x == 0) {
+    	double[] normalizedVelocity = normalizeVector(myVelocity);
+    	//System.out.println("x "+normalizedVelocity[0]);
+    	//System.out.println("y "+normalizedVelocity[1]);
+    	
+    	if (normalizedVelocity[0] == 0) {
 			myAngle = Math.PI/2;
 		}
     	else {
-			myAngle = Math.atan(normalizedVelocity.y/normalizedVelocity.x);
+			myAngle = Math.atan(normalizedVelocity[1]/normalizedVelocity[0]);
 		}
     	if (myVelocity.y < 0) {
 			myAngle += Math.PI;
 		}
-    	maxDistanceTraveledPerUpdate = (int) calculateMagnitude(myVelocity);
+    	//System.out.println("My Angle "+myAngle);
+    	maxDistanceTraveledPerUpdate = Math.max(calculateMagnitude(myVelocity),1);
+    	//System.out.println("Max distance" +maxDistanceTraveledPerUpdate);
     }
     
     /**
      * Normalizes the vector v (which is represented as a Point).
      */
-    private Point normalizeVector(Point v){
-    	int magnitude = (int) Math.sqrt(v.x*v.x+v.y*v.y);
-    	return new Point(v.x/magnitude, v.y/magnitude);
+    private double[] normalizeVector(Point v){
+    	double magnitude = Math.sqrt(v.x*v.x+v.y*v.y);
+    	//System.out.println("Magnitude "+magnitude);
+    	double[] normalizedVector = {((double) v.x)/magnitude, ((double) v.y)/magnitude};
+    	return normalizedVector;
     }
   
     /**
@@ -111,22 +120,28 @@ public class Particle {
     public void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         RescaleOp rop = new RescaleOp(scales, offsets, null);
-
-        g2d.drawImage(myImage, rop, myPosition.x, myPosition.y);
+        g2d.drawImage(myImage, myPosition.x, myPosition.y, null);
+        //g2d.drawImage(myImage, rop, myPosition.x, myPosition.y);
     }
 
     public void update () {
-    	double angleVariation = (myRandomGenerator.nextInt(2*myVariance+1)-myVariance)/oneHundred;
-    	double tempNewAngle = myAngle + radiansPerCircle*angleVariation;
-    	int newX = (int) Math.cos(tempNewAngle);
-    	int newY = (int) Math.sin(tempNewAngle);
+    	double r = myRandomGenerator.nextInt(2*myVariance+1);
+    	double angleVariation = (r-myVariance)/oneHundred;
+    	//System.out.println("Angle variation: "+angleVariation);
     	
-        myPosition.x += maxDistanceTraveledPerUpdate*newX;
-        myPosition.y += maxDistanceTraveledPerUpdate*newY;
+    	double tempNewAngle = myAngle + radiansPerCircle*angleVariation;
+    	//System.out.println("New Angle: "+tempNewAngle);
+    	int newX = (int) (Math.cos(tempNewAngle)*maxDistanceTraveledPerUpdate);
+    	int newY = (int) (Math.sin(tempNewAngle)*maxDistanceTraveledPerUpdate);
+    	//System.out.println("X-Movement: "+newX);
+    	//System.out.println("Y-Movement: "+newY);
+        myPosition.x += newX;
+        myPosition.y += newY;
         durationExisted++;
 
         // this is the alpha scale
         scales[3] = (durationLimit - durationExisted) / durationLimit;
+        //System.out.println("("+myPosition.x+", "+myPosition.y+")");
     }
     
     /**
