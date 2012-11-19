@@ -35,6 +35,33 @@ public class Bullet extends Sprite {
     }
 
     /**
+     * Sets the methods for bullets.
+     */
+    @Override
+    void setMethods() {
+        //do nothing if it intersects another bullet
+        getMapper().addPair("hitbybullet", this);
+
+        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
+                ((Player) o[0]).die();
+            }
+        });
+
+        //only destroy enemy if a player shoots the enemy
+        //if an enemy shoots an enemy, nothing happens
+        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                if ("player".equals(myOwner.getType())) {
+                    die();
+                    ((Enemy) o[0]).die();
+                }
+            }
+        });
+    }
+
+    /**
      * This will be called after the bullet is done moving.
      * Will make the bullet do something extra after motion
      * (e.g. maybe some particle effects, or other graphical
@@ -82,30 +109,6 @@ public class Bullet extends Sprite {
      * Bullet has nothing else to paint.
      */
     protected void continuePaint (Graphics pen) { }
-
-    @Override
-    void setMethods () {
-        //do nothing if it intersects another bullet
-        getMapper().addPair("hitbybullet", this);
-
-        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
-            public void doAction(Object...o) {
-                die();
-                ((Player) o[0]).die();
-            }
-        });
-
-        //only destroy enemy if a player shoots the enemy
-        //if an enemy shoots an enemy, nothing happens
-        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
-            public void doAction(Object...o) {
-                if ("player".equals(myOwner.getType())) {
-                    die();
-                    ((Enemy) o[0]).die();
-                }
-            }
-        });
-    }
 
     /**
      * Bullets cannot fire other bullets, so this

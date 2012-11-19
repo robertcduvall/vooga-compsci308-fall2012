@@ -39,32 +39,53 @@ public class Player extends Sprite {
      * e.g. "37" is used for the left arrow key because that is the int value
      * returned by the keyListener when pressing the left arrow key.
      */
+    @Override
     void setMethods() {
         //37 is the int value for left arrow key
         getMapper().addPair("37", new SpriteActionInterface() {
             public void doAction(Object...o) {
-                setVelocity(-SPRITE_MOVEMENT, getVelocity().y);
+                if(checkBounds("left")) {
+                    setVelocity(-SPRITE_MOVEMENT, getVelocity().y);
+                }
+                else {
+                    setVelocity(0, 0);
+                }
             }
         });
 
         //38 is the int value for up arrow key
         getMapper().addPair("38", new SpriteActionInterface() {
             public void doAction(Object...o) {
-                setVelocity(getVelocity().x, -SPRITE_MOVEMENT);
+                if(checkBounds("top")) {
+                    setVelocity(getVelocity().x, -SPRITE_MOVEMENT);
+                }
+                else {
+                    setVelocity(0, 0);
+                }
             }
         });
 
         //39 is the int value for right arrow key
         getMapper().addPair("39", new SpriteActionInterface() {
             public void doAction(Object...o) {
-                setVelocity(SPRITE_MOVEMENT, getVelocity().y);
+                if(checkBounds("right")) {
+                    setVelocity(SPRITE_MOVEMENT, getVelocity().y);
+                }
+                else {
+                    setVelocity(0, 0);
+                }
             }
         });
 
         //40 is the int value for down arrow key
         getMapper().addPair("40", new SpriteActionInterface() {
             public void doAction(Object...o) {
-                setVelocity(getVelocity().x, SPRITE_MOVEMENT);
+                if(checkBounds("bottom")) {
+                    setVelocity(getVelocity().x, SPRITE_MOVEMENT);
+                }
+                else {
+                    setVelocity(0, 0);
+                }
             }
         });
 
@@ -102,15 +123,6 @@ public class Player extends Sprite {
      * needs to do when being updated (e.g. stop when at a wall).
      */
     protected void continueUpdate() {
-        //don't go past right or left wall
-        if (getRight() >= getBounds().width || getLeft() <= 0) {
-            setVelocity(0, getVelocity().y);
-        }
-        //don't go past top or bottom wall
-        if (getTop() <= 0 || getBottom() >= getBounds().height) {
-            setVelocity(getVelocity().x, 0);
-        }
-
         for (Bullet b : getBulletsFired()) {
             b.update();
         }

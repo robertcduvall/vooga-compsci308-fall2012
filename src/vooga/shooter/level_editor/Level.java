@@ -88,8 +88,7 @@ public class Level implements Packable<Level>{
      */
     public void paintSprites (Graphics g, int offsetX, int offsetY) {
         for (Sprite s : mySprites) {
-            // uncomment this when the errors in Sprite.java are fixed
-            // s.draw(g);
+             s.paint(g);
         }
     }
     

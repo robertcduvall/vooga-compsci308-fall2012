@@ -20,7 +20,6 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  */
 public abstract class Sprite implements SpriteActionInterface {
     private static final int BULLET_SIZE = 10;
-    private static final double BULLET_VELOCITY_SCALE = 1.5;
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
@@ -134,7 +133,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myPosition
      */
     public Point getPosition() {
-        return myPosition;
+        return this.myPosition;
     }
 
     /**
@@ -143,7 +142,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param position the new position
      */
     public void setPosition(Point position) {
-        myPosition = position;
+        this.myPosition = position;
     }
 
     /**
@@ -153,7 +152,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myVelocity
      */
     public Point getVelocity() {
-        return myVelocity;
+        return this.myVelocity;
     }
 
     /**
@@ -161,7 +160,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param velocity the new velocity to set to
      */
     public void setVelocity(Point velocity) {
-        myVelocity = velocity;
+        this.myVelocity = velocity;
     }
 
     /**
@@ -172,7 +171,7 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void setVelocity(int x, int y) {
         Point v = new Point(x, y);
-        setVelocity(v);
+        this.setVelocity(v);
     }
 
     /**
@@ -180,14 +179,14 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myShotsFired
      */
     public List<Bullet> getBulletsFired() {
-        return myShotsFired;
+        return this.myShotsFired;
     }
     /**
      * Returns the image representing this sprite.
      * @return myImage
      */
     public Image getImage() {
-        return myImage;
+        return this.myImage;
     }
 
     /**
@@ -195,7 +194,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param image the new image to use
      */
     public void setImage(Image image) {
-        myImage = image;
+        this.myImage = image;
     }
 
     /**
@@ -203,7 +202,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myHealth
      */
     public int getHealth() {
-        return myHealth;
+        return this.myHealth;
     }
 
     /**
@@ -212,7 +211,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param h the new health of the sprite
      */
     public void setHealth(int h) {
-        myHealth = h;
+        this.myHealth = h;
     }
 
     /**
@@ -221,7 +220,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param damage the amount to decrease health by
      */
     public void decreaseHealth(int damage) {
-        myHealth -= damage;
+        this.myHealth -= damage;
     }
 
     /**
@@ -261,7 +260,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return the dimensions of the sprite.
      */
     public Dimension getSize() {
-        return mySize;
+        return this.mySize;
     }
 
     /**
@@ -297,8 +296,8 @@ public abstract class Sprite implements SpriteActionInterface {
     public void update() {
         // if this sprite is out of bounds (top or bottom) then
         // it is out of the game
-        if (getHealth() < 0 || myPosition.y > myBounds.height
-                || myPosition.y < 0) {
+        if (getHealth() < 0 || !checkBounds("bottom")
+                || !checkBounds("top")) {
             this.die();
         }
         else {
@@ -309,27 +308,16 @@ public abstract class Sprite implements SpriteActionInterface {
 
     protected abstract void continueUpdate();
 
-    /**
-     * Called when this sprite collides with another
-     * sprite. Which one is called depends on the type
-     * of sprite it is colliding with.
-     *
-     * @param s the sprite that collides with this one
-     */
-    public void collide(Sprite s) {
-
-    }
-
     protected void setMapper (SpriteMethodMap mapper) {
         this.myMapper = mapper;
     }
 
     protected SpriteMethodMap getMapper () {
-        return myMapper;
+        return this.myMapper;
     }
 
     protected Dimension getBounds() {
-        return myBounds;
+        return this.myBounds;
     }
 
     /**
@@ -382,9 +370,29 @@ public abstract class Sprite implements SpriteActionInterface {
 
         Bullet b = new Bullet(getPosition(), new Dimension(
                 BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
-                new Point(0,
-                        (int)(getVelocity().y * BULLET_VELOCITY_SCALE)), 0);
+                new Point(getVelocity().x, getVelocity().y+5), 1);
 
-        getBulletsFired().add(b);
+        this.getBulletsFired().add(b);
+    }
+
+    public boolean checkBounds(String s) {
+        //don't go past right
+        if ("right".equals(s) && getRight() >= getBounds().width) {
+            return false;
+        }
+        //don't pass left
+        else if ("left".equals(s) && getLeft() <= 0) {
+            return false;
+        }
+        //don't go past top
+        else if ("top".equals(s) && getTop() <= 0) {
+            return false;        
+        }
+        //don't pass bottom
+        else if ("bottom".equals(s) && getBottom() >= getBounds().height) {
+            return false;
+        }
+
+        return true;
     }
 }

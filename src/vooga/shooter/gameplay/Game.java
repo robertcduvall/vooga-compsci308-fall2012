@@ -256,11 +256,10 @@ public class Game implements DrawableComponent, IArcadeGame{
      * @author Stephen Hunt
      */
     private class KeyboardListener implements KeyListener {
-        private int myNumKeysPressed;
+        private static final int NO_KEYS_PRESSED = -1;
 
         public KeyboardListener () {
             super();
-            myNumKeysPressed = 0;
         }
 
         /**
@@ -269,7 +268,6 @@ public class Game implements DrawableComponent, IArcadeGame{
         @Override
         public void keyPressed (KeyEvent e) {
             myPlayer.doEvent(Integer.toString(e.getKeyCode()), null);
-            myNumKeysPressed++;
         }
 
         /**
@@ -278,7 +276,7 @@ public class Game implements DrawableComponent, IArcadeGame{
          */
         @Override
         public void keyReleased (KeyEvent e) {
-                myPlayer.doEvent("-1", null);
+                myPlayer.doEvent(Integer.toString(NO_KEYS_PRESSED), null);
         }
 
         @Override
