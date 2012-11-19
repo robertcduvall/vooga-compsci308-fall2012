@@ -41,7 +41,7 @@ public class Game implements DrawableComponent, IArcadeGame{
     private Player myPlayer;
     private Player myPlayer2;
     private List<Enemy> myEnemies;
-    private Level myCurrentLevel;
+    private Level1 myCurrentLevel;
     private Applet myCanvas;
     private Image myPlayerImage;
     private ImageIcon myImageIcon;
@@ -53,12 +53,13 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     public Game(Applet a) {
         myCanvas = a;
-        initializeGame(myCanvas, true);
+        initializeGame(myCanvas, false);
     }
     
     private void initializeGame (Applet c, boolean multiplayer) {
         myCanvas = c;
         mySprites = new ArrayList<Sprite>();
+        myEnemies = new ArrayList<Enemy>();
         myImageIcon = new ImageIcon(this.getClass().getResource(
                         "../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
@@ -78,13 +79,14 @@ public class Game implements DrawableComponent, IArcadeGame{
             addSprite(myPlayer2);
         }
 
-        Level firstLevel = new Level1(this);
+        Level1 firstLevel = new Level1(this);
         myCanvas.addKeyListener(new KeyboardListener());
         startLevel(firstLevel);
     }
 
-    private void startLevel (Level level) {
+    private void startLevel (Level1 level) {
         myCurrentLevel = level;
+        myCurrentLevel.startLevel();
         update();
     }
 
