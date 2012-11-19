@@ -1,19 +1,19 @@
 package util.input.tests.twocontroller;
 
-import src.util.input.tests.android.ArrayList;
-import src.util.input.tests.android.BasicStroke;
-import src.util.input.tests.android.Color;
-import src.util.input.tests.android.Graphics;
-import src.util.input.tests.android.Graphics2D;
-import src.util.input.tests.android.InterruptedException;
-import src.util.input.tests.android.LineSegment;
-import src.util.input.tests.android.Override;
-import src.util.input.tests.android.Stroke;
-import src.util.input.tests.android.SuppressWarnings;
-import src.util.input.tests.android.TestAndroidController;
-import src.util.input.tests.android.Thread;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import javax.swing.JPanel;
 
-public class TwoController {
+import util.input.android.events.LineSegment;
+import util.input.core.WiiController;
+import util.input.factories.ControllerFactory;
+import util.input.tests.android.TestAndroidController;
+
+
+
+public class TwoController extends JPanel implements Runnable  {
     /**
      * 
      * @param gameSurface
@@ -29,9 +29,10 @@ public class TwoController {
 
     private ArrayList<LineSegment> mySegments;
 
-    public AndroidDrawGame () {
+    public TwoController () {
         mySegments = new ArrayList<LineSegment>();
-        TestAndroidController myController = new TestAndroidController(this);
+        //TestAndroidController myController = new TestAndroidController(this);
+        WiiController myWiiController = (WiiController)ControllerFactory.createWiiController();
         setDoubleBuffered(true);
         this.setFocusable(true);
         myGameLoop = new Thread(this);
