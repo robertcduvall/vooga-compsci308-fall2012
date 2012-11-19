@@ -41,7 +41,7 @@ public class GameProfileMainPanel extends AMainPanel {
         System.out.println(myPanel.getSize());
         
         JButton playButton = new JButton("Play");
-        playButton.setPreferredSize(new Dimension(300, 300));
+        playButton.setPreferredSize(new Dimension(200, 200));
         myPanel.add(playButton);
         playButton.addActionListener(new ActionListener(){
 
@@ -51,8 +51,6 @@ public class GameProfileMainPanel extends AMainPanel {
             }
               
           });
-        
-        
         return myPanel;
     }
 
