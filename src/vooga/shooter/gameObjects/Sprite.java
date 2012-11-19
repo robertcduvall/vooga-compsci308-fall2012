@@ -22,6 +22,7 @@ public abstract class Sprite implements SpriteActionInterface {
     
     protected static String HIT_BY_BULLET = "hitbybullet";
     protected static String HIT_BY_ENEMY = "hitbyenemy";
+    protected static String HIT_BY_PLAYER = "hitbyplayer";
     protected static String PLAYER_TYPE = "player";
     protected static String BULLET_TYPE = "bullet";
     protected static String ENEMY_TYPE = "enemy";

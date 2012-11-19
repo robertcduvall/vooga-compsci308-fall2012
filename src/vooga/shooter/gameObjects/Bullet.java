@@ -89,7 +89,7 @@ public class Bullet extends Sprite {
         //do nothing if it intersects another bullet
         getMapper().addPair(HIT_BY_BULLET, this);
 
-        getMapper().addPair(HIT_BY_BULLET, new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 die();
                 ((Player) o[0]).die();
