@@ -12,7 +12,7 @@ import java.util.List;
  * @author Michael Deng
  * 
  */
-interface IArcadeGame {
+public interface IArcadeGame {
 
     /**
      * This method is called by the Arcade to start the game
