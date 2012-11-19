@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.util.xml.XMLUtils;
 
 
@@ -184,7 +185,8 @@ public class LevelFileReader {
                                         XMLUtils.getTagValue(paramElement));
                             }
                         }
-                        builtSprite.addUpdateStrategy(strategyMap);
+                        // TODO resolve strategy using new level format API
+                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"), strategyMap);
 
                     }
                 }
