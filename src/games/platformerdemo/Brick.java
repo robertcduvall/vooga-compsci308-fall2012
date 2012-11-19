@@ -18,11 +18,7 @@ public class Brick extends GameObject {
 
     public Brick (String configString) {
         super(configString);
-        Map<String, String> parsedConfigString = parseConfigString(configString);
-        String imagePath = parsedConfigString.get(DEFAULT_IMAGE_TAG);
-        if (imagePath == null) {
-            // TODO throw exception for poorly formatted config string
-        }
+        String imagePath = parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
 
         try {
             myImg = ImageIO.read(new File(imagePath));
