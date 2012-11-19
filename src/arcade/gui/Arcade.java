@@ -34,7 +34,8 @@ public class Arcade {
     private static Map<String, Serializable> mySharedVariables;
 
     private static ArcadeFrame myFrame;
-
+    
+    private static GameCenter myGameCenter;
     private static SocialCenter mySocialCenter;
     private static GameLink myGameManager;
     private static UserLink myUserManager;
@@ -46,6 +47,7 @@ public class Arcade {
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
+        myGameCenter = new GameCenter();
         mySocialCenter = SocialCenter.getInstance();
         myGameManager = new GameLink();
         myUserManager = new UserLink();
@@ -127,6 +129,10 @@ public class Arcade {
         return mySharedVariables.get(varName);
     }
 
+    public GameCenter getGameCenter () {
+        return myGameCenter;
+    }
+    
     /**
      * @return the mySocialCenter
      */
