@@ -1,4 +1,4 @@
-package util.ParticleEngine;
+package util.particleEngine;
 
 import java.awt.Graphics;
 import java.awt.Image;
