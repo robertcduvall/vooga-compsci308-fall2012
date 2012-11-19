@@ -14,7 +14,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import util.input.core.Controller;
-import vooga.turnbased.gamecoRe.GameManager;
+import vooga.turnbased.gamecore.GameManager;
 import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
 
 

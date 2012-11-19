@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecoRe;
+package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
