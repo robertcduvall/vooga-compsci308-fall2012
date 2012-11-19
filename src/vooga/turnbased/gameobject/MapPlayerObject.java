@@ -16,7 +16,7 @@ import vooga.turnbased.gamecore.MapMode;
  */
 public class MapPlayerObject extends MovingMapObject {
 
-	private static final int ANIMATION_FRAME_RATE = 3;
+    private static final int ANIMATION_FRAME_RATE = 3;
     private Map<String, Image> myImages;
     private Map<String, ImageLoop> myImageLoops;
     // feel free to rename
@@ -42,7 +42,8 @@ public class MapPlayerObject extends MovingMapObject {
     }
 
     /**
-     * Creates a MapPlayerObject with a series of images instead of a single image.
+     * Creates a MapPlayerObject with a series of images instead of a single
+     * image.
      * 
      * @param id Integer ID associated with the MapObject.
      * @param event GameEvent that can be passed to GameManager.
@@ -57,16 +58,16 @@ public class MapPlayerObject extends MovingMapObject {
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
     }
-    
+
     // Dummy Constructor used for testing XML parsing with reflection
     // Need to remove Map Mode argument for reflection to work correctly
-    public MapPlayerObject (int id, String event, Point coord, 
+    public MapPlayerObject (int id, String event, Point coord,
             Map<String, Image> mapImages) {
-    super(id, event, coord, mapImages.get(0), null);
-    myImages = mapImages;
-    setImage(mapImages.get("down"));
-}
-    
+        super(id, event, coord, mapImages.get(0), null);
+        myImages = mapImages;
+        setImage(mapImages.get("down"));
+    }
+
     // for testing with Xml parsing, can be deleted later
     public Map<String, Image> getImageMap () {
         return myImages;
@@ -87,13 +88,13 @@ public class MapPlayerObject extends MovingMapObject {
         super.update(delayTime);
         frameCount++;
         if (frameCount >= ANIMATION_FRAME_RATE) {
-        	animateCharactor();
-        	frameCount = 0;
+            animateCharactor();
+            frameCount = 0;
         }
     }
 
-	private void animateCharactor() {
-		if (isMoving()) {
+    private void animateCharactor () {
+        if (isMoving()) {
             if (getDirection().equals(MapMode.DOWN)) {
                 setImage((Image) myImageLoops.get(myDownLabel).next());
             }
@@ -121,6 +122,6 @@ public class MapPlayerObject extends MovingMapObject {
                 setImage(myImages.get(myRightLabel));
             }
         }
-	}
+    }
 
 }
