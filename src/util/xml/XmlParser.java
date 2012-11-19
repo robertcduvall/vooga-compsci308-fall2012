@@ -80,7 +80,7 @@ public class XmlParser {
      * @param tagName The string name of the element containing desired text
      * @return The text contained in these desired tag
      */
-    public String getTextContent (Element element, String tagName) {
+    public static String getTextContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
         return list.item(0).getTextContent();
     }
@@ -111,7 +111,6 @@ public class XmlParser {
      */
     public int getIntContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        System.out.println(list.item(0));
         return Integer.parseInt(list.item(0).getTextContent());
     }
 

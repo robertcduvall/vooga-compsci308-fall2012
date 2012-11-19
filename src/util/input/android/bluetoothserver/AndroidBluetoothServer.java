@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.JoyStickEvent;
+import util.input.android.events.LineSegment;
 import util.input.interfaces.listeners.AndroidListener;
 
 
@@ -62,11 +63,17 @@ public class AndroidBluetoothServer {
             listener.onJoyStickMove(joystickEvent);
         }
     }
-    
+
     protected void notifyDisconnect(){
         for (AndroidListener listener : myListeners) {
             listener.onControllerDisconnect();
         }
+    }
+    public void notify (LineSegment l) {
+        for (AndroidListener listener : myListeners) {
+            listener.onTouchMovement(l);
+        }
+        
     }
 
 }
