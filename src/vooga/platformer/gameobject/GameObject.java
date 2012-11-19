@@ -14,16 +14,17 @@ import vooga.platformer.level.Level;
 
 /**
  * 
- * @author Niel Lebeck, revised by Yaqi
+ * @author Niel Lebeck
+ * @author Yaqi Zhang (revised)
+ * @author Grant Oakley (modified)
  * 
  */
-
 public abstract class GameObject {
-    private static final String X_TAG = "x";
-    private static final String Y_TAG = "y";
-    private static final String WIDTH_TAG = "width";
-    private static final String HEIGHT_TAG = "height";
-    private static final String DEFAULT_IMAGE_TAG = "imagePath";
+    protected static final String X_TAG = "x";
+    protected static final String Y_TAG = "y";
+    protected static final String WIDTH_TAG = "width";
+    protected static final String HEIGHT_TAG = "height";
+    protected static final String DEFAULT_IMAGE_TAG = "imagePath";
 
     private boolean removeFlag;
     private List<UpdateStrategy> strategyList;
