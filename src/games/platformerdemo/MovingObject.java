@@ -21,9 +21,8 @@ public class MovingObject extends GameObject {
 
     /**
      * @param configString String to parse parameters of this player
-     * @param type of this object starting with lower case, eg. player, brick.
      */
-    public MovingObject (String configString, String type) {
+    public MovingObject (String configString) {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
         String imagePath = parseConfigString(configString).get(DEFAULT_IMAGE_TAG);

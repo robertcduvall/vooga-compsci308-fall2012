@@ -19,7 +19,6 @@ public class Brick extends GameObject {
     public Brick (String configString) {
         super(configString);
         String imagePath = parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
-
         try {
             myImg = ImageIO.read(new File(imagePath));
         }
