@@ -41,6 +41,7 @@ public class GameXmlParser {
 	/**
 	 * A more general way to get game properties.
 	 * 
+	 * TODO fix this
 	 * 
 	 * @author Seon Kang
 	 * @param gameName
