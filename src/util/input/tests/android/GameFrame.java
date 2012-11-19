@@ -4,6 +4,7 @@ package util.input.tests.android;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import javax.swing.JFrame;
+import util.input.tests.twocontroller.TwoController;
 
 
 /**
@@ -29,7 +30,8 @@ public class GameFrame extends JFrame {
         contentPane.setLayout(new BorderLayout());
         setSize(myWidth, myHeight);
         setTitle("SampleGame");
-        AndroidDrawGame testGame = new AndroidDrawGame();
+        //AndroidDrawGame testGame = new AndroidDrawGame();
+        TwoController testGame = new TwoController();
         add(testGame, BorderLayout.CENTER);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

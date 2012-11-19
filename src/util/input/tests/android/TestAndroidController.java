@@ -24,7 +24,7 @@ public class TestAndroidController implements AndroidListener {
     
     public TestAndroidController(AndroidDrawGame parent){
         myGame = parent;
-        Controller<AndroidListener> testController = ControllerFactory.createAndroidController();
+        Controller<AndroidListener> testController = ControllerFactory.createAndroidController(1);
         myController = (AndroidController) testController;
         System.out.println("you are running a test android controller");
         testController.subscribe(this);

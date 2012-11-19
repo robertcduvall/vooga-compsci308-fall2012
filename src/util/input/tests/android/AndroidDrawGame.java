@@ -26,6 +26,7 @@ public class AndroidDrawGame extends JPanel implements Runnable {
     private final int myDelay = 1000 / GAME_FPS;
     private boolean myIsRunning;
     private Thread myGameLoop;
+    private Color myPenColor = Color.BLUE;
 
     private ArrayList<LineSegment> mySegments;
 
@@ -33,7 +34,7 @@ public class AndroidDrawGame extends JPanel implements Runnable {
         mySegments = new ArrayList<LineSegment>();
         TestAndroidController myController = new TestAndroidController(this);
         setDoubleBuffered(true);
-      
+        this.setFocusable(true);
         myGameLoop = new Thread(this);
     }
 
@@ -109,5 +110,17 @@ public class AndroidDrawGame extends JPanel implements Runnable {
         mySegments.add(l);
 
     };
+    
+    public void changeToRed(){
+        myPenColor = Color.RED;
+    }
+    
+    public void clearScreen(){
+        mySegments.clear();
+    }
+    
+    public void changeToBlue(){
+        myPenColor = Color.BLUE;
+    }
 
 }
