@@ -46,6 +46,7 @@ public class GameProfileMainPanel extends AMainPanel {
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 // TODO:
+                getArcade().getGameCenter().getGame(gameName).runGame();
             }
               
           });
