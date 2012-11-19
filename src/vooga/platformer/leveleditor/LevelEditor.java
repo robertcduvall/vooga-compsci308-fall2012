@@ -72,7 +72,7 @@ public class LevelEditor extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -218,8 +218,8 @@ public class LevelEditor extends JFrame {
         try {
             docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
-
-        } catch (ParserConfigurationException e) {
+        } 
+        catch (ParserConfigurationException e) {
             System.out.println("Directory does not exist, try again");
             newLevel();
         }
@@ -241,8 +241,10 @@ public class LevelEditor extends JFrame {
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             try {
-                myBoard.load(new URL(chooser.getSelectedFile().getPath()));
-            } catch (IOException io) {
+                URL myURL = new URL(chooser.getSelectedFile().getPath());
+                myBoard.load(myURL);
+            } 
+            catch (IOException io) {
                 System.out.println("File not found. Try again");
             }
         }

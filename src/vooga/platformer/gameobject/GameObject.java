@@ -14,34 +14,43 @@ import vooga.platformer.level.Level;
 
 /**
  * 
- * @author Niel Lebeck, revised by Yaqi
+ * @author Niel Lebeck
+ * @author Yaqi Zhang (revised)
+ * @author Grant Oakley (modified)
  * 
  */
-
 public abstract class GameObject {
+    protected static final String X_TAG = "x";
+    protected static final String Y_TAG = "y";
+    protected static final String WIDTH_TAG = "width";
+    protected static final String HEIGHT_TAG = "height";
+    protected static final String DEFAULT_IMAGE_TAG = "imagePath";
+
     private boolean removeFlag;
     private List<UpdateStrategy> strategyList;
     private double x;
     private double y;
     private double width;
     private double height;
+    private String defaultImage;
 
     private GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
     }
 
-    /**
-     * 
-     * @param inX starting x position
-     * @param inY starting y position
-     */
-    public GameObject (double inX, double inY, double inWidth, double inHeight) {
-        this();
-        x = inX;
-        y = inY;
-        width = inWidth;
-        height = inHeight;
-    }
+    // /**
+    // *
+    // * @param inX starting x position
+    // * @param inY starting y position
+    // */
+    // public GameObject (double inX, double inY, double inWidth, double
+    // inHeight) {
+    // this();
+    // x = inX;
+    // y = inY;
+    // width = inWidth;
+    // height = inHeight;
+    // }
 
     /**
      * @param configString containing key-value pairs for the GameObject's
@@ -54,10 +63,34 @@ public abstract class GameObject {
     public GameObject (String configString) {
         this();
         Map<String, String> configMap = parseConfigString(configString);
-        x = Double.parseDouble(configMap.get("x"));
-        y = Double.parseDouble(configMap.get("y"));
-        width = Double.parseDouble(configMap.get("width"));
-        height = Double.parseDouble(configMap.get("height"));
+        x = Double.parseDouble(configMap.get(X_TAG));
+        y = Double.parseDouble(configMap.get(Y_TAG));
+        width = Double.parseDouble(configMap.get(WIDTH_TAG));
+        height = Double.parseDouble(configMap.get(HEIGHT_TAG));
+        defaultImage = configMap.get(DEFAULT_IMAGE_TAG);
+    }
+
+    /**
+     * Gets a map in which the keys are parameter tag names, and the strings
+     * that they map to are the descriptions of the values that should be passed
+     * for that tag.
+     * 
+     * A null return value means that this GameObject subclass requires no
+     * additional parameters be passed in its config string in order to be
+     * instantiated.
+     * 
+     * @return a map of config string parameter tags and descriptions of the
+     *         values that should be passed with these tags
+     * @author Grant Oakley
+     */
+    public Map<String, String> getConfigStringParams () {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(X_TAG, "x position of the object");
+        params.put(Y_TAG, "y position of the object");
+        params.put(WIDTH_TAG, "width of the object");
+        params.put(HEIGHT_TAG, "height of the object");
+        params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
+        return params;
     }
 
     protected Map<String, String> parseConfigString (String configString) {
@@ -137,10 +170,9 @@ public abstract class GameObject {
         double yOffset = rect.getY();
 
         if (getShape().intersects(rect)) {
-            pen.drawImage(
-                    getCurrentImage().getScaledInstance((int) width,
-                            (int) height, Image.SCALE_DEFAULT),
-                    (int) (x - xOffset), (int) (y - yOffset), null);
+            pen.drawImage(getCurrentImage().getScaledInstance((int) width, (int) height,
+                                                              Image.SCALE_DEFAULT),
+                          (int) (x - xOffset), (int) (y - yOffset), null);
         }
     }
 

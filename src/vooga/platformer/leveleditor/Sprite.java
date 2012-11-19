@@ -45,8 +45,8 @@ public class Sprite {
      * Creates a new instance of Sprite of the type, position, size, and
      * appearance specified.
      * 
-     * @param type attribute of the sprite describing what its role in the game
-     *        is
+     * @param clazz fully qualified class name of the GameObject this Srite
+     *        represents
      * @param x x position of the sprite at level load
      * @param y y position of the sprite at level load
      * @param width width of the sprite in pixels
@@ -54,8 +54,8 @@ public class Sprite {
      * @param imagePath location of the image in the file system representing
      *        the sprite
      */
-    public Sprite (String type, int x, int y, int width, int height, String imagePath) {
-        myType = type;
+    public Sprite (String clazz, int x, int y, int width, int height, String imagePath) {
+        myType = clazz;
         myX = x;
         myY = y;
         myWidth = width;
@@ -92,23 +92,24 @@ public class Sprite {
      * paints it to whatever component Graphics g is connected to.
      * 
      * @param g Graphics of a Component, Image, or Canvas
-     * @param c Compnent containing sprite so the sprite knows where it is in the window. 
+     * @param c Compnent containing sprite so the sprite knows where it is in
+     *        the window.
      */
     public void paint (Graphics g, Component c) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 
-                0, 0, myImage.getWidth(null), myImage.getHeight(null), c);
+        g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 0, 0,
+                      myImage.getWidth(null), myImage.getHeight(null), c);
     }
 
     /**
      * Flips the sprites image across it's vertical axis.
      * 
      */
-    public void flipImage() {
+    public void flipImage () {
         AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
         tx.translate(-myImage.getWidth(null), 0);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
-        myImage = op.filter((BufferedImage)myImage, null);
+        myImage = op.filter((BufferedImage) myImage, null);
     }
 
     /**
