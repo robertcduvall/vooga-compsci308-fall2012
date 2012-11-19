@@ -127,6 +127,13 @@ public abstract class Controller<T> {
         broadcastToSubscribers(method, inputEvent);
         invokeMethod(actionID);
     }
+    protected void performReflections (Object inputEvent, String method)
+            throws IllegalAccessException,
+            InvocationTargetException,
+            NoSuchMethodException {
+        broadcastToSubscribers(method, inputEvent);
+        
+    }
 
     /**
      * Broadcast an event that does not need a description to your subscribers.

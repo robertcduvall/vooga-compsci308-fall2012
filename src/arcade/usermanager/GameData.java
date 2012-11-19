@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import util.xml.XmlBuilder;
+import util.xml.XmlParser;
 import util.xml.XmlWriter;
 
 
@@ -36,6 +37,12 @@ public class GameData {
         myFilePath = resource.getString("GameFilePath") + name + ".xml";
 
     }
+    
+//    public boolean addGame(String gameName){
+//        
+//        if (!myPropertyMap.containsKey(propertyName)){}
+//        else
+//    }
 
     public String getGameInfo (String propertyName) {
         if (myPropertyMap.containsKey(propertyName))

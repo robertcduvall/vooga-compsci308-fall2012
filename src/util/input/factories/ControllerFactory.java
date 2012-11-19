@@ -59,9 +59,9 @@ public class ControllerFactory {
      * @return - The Controller object
      */
     @SuppressWarnings("rawtypes")
-    public static Controller createAndroidController() {
+    public static Controller createAndroidController(int controllerNum) {
         // Create android controller
-        return new AndroidController();
+        return new AndroidController(controllerNum);
     }
 
 }

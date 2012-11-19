@@ -11,7 +11,7 @@
 <y>5</y>
 <width>33</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/player.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Enemy">
@@ -19,7 +19,7 @@
 <y>5</y>
 <width>40</width>
 <height>37</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/enemy.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -27,7 +27,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -35,7 +35,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -43,7 +43,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -51,7 +51,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -59,7 +59,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -67,7 +67,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -75,7 +75,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -83,7 +83,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -91,7 +91,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -99,7 +99,7 @@
 <y>300</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
 <gameObject type="games.platformerdemo.Brick">
@@ -107,6 +107,6 @@
 <y>250</y>
 <width>50</width>
 <height>50</height>
-<imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 </level>

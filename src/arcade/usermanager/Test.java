@@ -1,11 +1,14 @@
 package arcade.usermanager;
 
+import java.io.IOException;
 import java.util.ResourceBundle;
 
+
 /**
+ * test user part of arcade
  * 
  * @author difan
- *
+ * 
  */
 
 public class Test {
@@ -17,15 +20,46 @@ public class Test {
     private final String successString = "Successful";
     private static ResourceBundle resource;
     private static SocialCenter mySocialCenter;
+
     
-    public static void main(String[] args){
-        myXMLWriter=new UserXMLWriter();
+    public static void main(String[] args) throws Exception{
+       
         
-        mySocialCenter= SocialCenter.getInstance();
-        System.out.println("successful");
+       mySocialCenter= SocialCenter.getInstance();
+       // testLogOn();
+       testRegister();
+
+     // testSendMessage();
+       
+        
+     
+        
     }
     
-    private void testBundle(){
+    private static void testSendMessage(){
+        mySocialCenter.sendMessage("Howard","garfield", "Hi");
+    }
+    private static  void testRegister() throws Exception{
+        boolean status2=mySocialCenter.registerUser("testuser", "password","garfield.jpg");
+    }
+
+    
+   
+
+    private static void testLogOn () throws Exception {
+        boolean status = mySocialCenter.logOnUser("Howard", "password");
+        System.out.println(status);
+
+
+    }
+
+    private void testXml () throws IOException {
+        myXMLWriter = new UserXMLWriter();
+        myXMLWriter.makeUserXML("counter", "clock", "wise");
+
+    }
+
+    private void testBundle () {
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
