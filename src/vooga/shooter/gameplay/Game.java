@@ -42,7 +42,7 @@ public class Game implements DrawableComponent, IArcadeGame{
     private Player myPlayer2;
     private List<Enemy> myEnemies;
     private Level1 myCurrentLevel;
-    private Applet myCanvas;
+    public Applet myCanvas;
     private Image myPlayerImage;
     private ImageIcon myImageIcon;
     private final int myPlayerHealth = 10;
@@ -53,7 +53,6 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     public Game(Applet a) {
         myCanvas = a;
-        initializeGame(myCanvas, false);
     }
     
     private void initializeGame (Applet c, boolean multiplayer) {
