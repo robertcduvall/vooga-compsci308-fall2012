@@ -18,7 +18,7 @@ public abstract class GameObject {
 
     private int myID;
     private final String myModeEvent;
-    private Image myImage;
+    protected Image myImage;
 
     /**
      * Construct the new game object.

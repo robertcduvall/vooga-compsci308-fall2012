@@ -1,5 +1,6 @@
 package vooga.turnbased.gamecore;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -80,12 +81,15 @@ public class BattleMode extends GameMode {
     // this needs to be generalized
     @Override
     public void paint (Graphics g) {
-        int i = -300; // fix painting this stuff...
+        Dimension myWindow = getGameManager().getPaneDimension();
+        int height = myWindow.height;
+        int width = myWindow.width;
+        int teamNumber=0;
         for (Team t : myTeams) {
-            i += 300;
             for (BattleObject b : t.getBattleObjects()) {
-                b.paint(g, 0, 0 + i, 800, 300);
+                b.paint(g, 0, (teamNumber)*height/3, width, height/3);
             }
+            teamNumber += 1;
         }
     }
 
@@ -110,15 +114,15 @@ public class BattleMode extends GameMode {
     }
 
     private boolean isBattleOver () {
-        boolean allDead = false;
+        boolean teamDead = false;
         for (Team t : myTeams) {
             if (!t.stillAlive()) {
-                allDead = true;
+                teamDead = true;
                 // hardcoded
                 getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
             }
         }
-        return allDead;
+        return teamDead;
     }
 
     @Override

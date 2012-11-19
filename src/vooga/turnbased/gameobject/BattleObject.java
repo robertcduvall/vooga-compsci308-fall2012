@@ -1,5 +1,6 @@
 package vooga.turnbased.gameobject;
 
+import java.awt.Graphics;
 import java.awt.Image;
 
 /**
@@ -53,6 +54,25 @@ public abstract class BattleObject extends GameObject {
      */
     public boolean isAlive() {
         return myHealth > 0;
+    }
+
+    @Override
+    /**
+     * Paints the GameObject.
+     * @param g Image to be painted.
+     * @param x X location of object.
+     * @param y Y location of object.
+     * @param width Width of image.
+     * @param height Height of image.
+     */
+    public void paint (Graphics g, int x, int y, int width, int height) {
+        super.paint(g, x, y, width/2, height);
+        paintStats(g, x+width/2, y, width/2, height);
+    }
+    
+    private void paintStats (Graphics g, int x, int y, int width, int height) {
+        g.drawRect(x, y, width, height);
+
     }
 
     /**
