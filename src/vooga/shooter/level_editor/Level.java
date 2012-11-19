@@ -1,12 +1,17 @@
 package vooga.shooter.level_editor;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.ImageIcon;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.pack.Packable;
+import util.reflection.Reflection;
+import util.xml.XmlBuilder;
 import vooga.shooter.gameObjects.Sprite;
 
 /**
@@ -18,13 +23,32 @@ import vooga.shooter.gameObjects.Sprite;
  * 
  */
 public class Level implements Packable<Level>{
+    private Image myBackgroundImage;
+    private String myBackgroundImagePath;
     private List<Sprite> mySprites;
 
     /**
-     * Initializes Sprite list
+     * Default constructor
      */
     public Level () {
         mySprites = new ArrayList<Sprite>();
+    }
+    
+    /**
+     * 
+     * @param backgroundImagePath the path to a background image
+     */
+    public Level (String backgroundImagePath) {
+        this();
+        setBackgroundImage(backgroundImagePath);
+    }
+    
+    /**
+     * 
+     * @param backgroundImageFile a background image file
+     */
+    public Level (File backgroundImageFile) {
+        this(backgroundImageFile.getPath());
     }
 
     /**
@@ -81,17 +105,47 @@ public class Level implements Packable<Level>{
     public boolean winningConditionsMet () {
         return mySprites.isEmpty();
     }
+    
+    /**
+     * @return myBackgroundImage
+     */
+    public Image getBackgroundImage () {
+        return myBackgroundImage;
+    }
+    
+    /**
+     * @param imageFile a file to set as the background image
+     */
+    public void setBackgroundImage (File imageFile) {
+        setBackgroundImage(imageFile.getPath());
+    }
+    
+    /**
+     * @param imagePath the pathname to an image file that
+     * will be set as the background image
+     */
+    public void setBackgroundImage (String imagePath) {
+        this.myBackgroundImage = (new ImageIcon(imagePath)).getImage();
+        this.myBackgroundImagePath = imagePath;
+    }
+    
 
     @Override
     public Document pack () {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Use our consolidated xml tools for this.
+        Document doc = XmlBuilder.createDocument();
+        Element rootElement = doc.createElement("Level");
+        doc.appendChild(rootElement);
+        rootElement.setAttribute("backgroundImage", myBackgroundImagePath);
+        return doc;
     }
 
     @Override
     public Level unpack (Document xmlData) {
-        // TODO Auto-generated method stub
-        return null;
+        Element rootElement = (Element) xmlData.getFirstChild();
+        String bgImagePath = rootElement.getAttribute("backgroundImage");
+        String className = this.getClass().getName();
+        return (Level) Reflection.createInstance(className, bgImagePath);
     }
 
 //    /**
