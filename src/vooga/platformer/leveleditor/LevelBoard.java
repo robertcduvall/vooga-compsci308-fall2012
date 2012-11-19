@@ -204,6 +204,9 @@ public class LevelBoard extends Canvas implements ISavable {
         JMenuItem j2 = new JMenuItem("Duplicate");
         j2.addActionListener(sh);
         pop.add(j2);
+        JMenuItem j3 = new JMenuItem("Add attribute");
+        j3.addActionListener(sh);
+        pop.add(j3);
         pop.show(this.getParent(), e.getX(), e.getY());
     }
     /**
@@ -236,7 +239,7 @@ public class LevelBoard extends Canvas implements ISavable {
         mySprites.remove(sprite);
     }
 
-    private class SelectionHelper implements ActionListener{
+    private class SelectionHelper implements ActionListener {
         private Sprite mySprite;
         public SelectionHelper(Sprite s) {
             mySprite = s;
@@ -250,6 +253,9 @@ public class LevelBoard extends Canvas implements ISavable {
                 Sprite ns = new Sprite(mySprite.getType(), mySprite.getX(), mySprite.getY(),
                         mySprite.getWidth(), mySprite.getHeight(), mySprite.getImagePath());
                 LevelBoard.this.add(ns);
+            }
+            else if ("Add attribute".equals(event.getActionCommand())) {
+                
             }
         }
     }

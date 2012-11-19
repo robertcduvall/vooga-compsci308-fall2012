@@ -10,151 +10,243 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
 import java.io.*;
 
+
 /**
  * LevelEditor.java
  * GUI for making and editing Levels for a 2D Shooter game.
+ * 
  * @author Zachary Hopping
- *
+ * 
  */
 public class LevelEditor implements ActionListener, KeyListener {
-    
+
     private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
-    boolean compactToolbars = true;
-    boolean borderedButtons = true;
-    
-    private JFrame       mainFrame; // The main window   
+    boolean compactToolbars = false;
+    boolean borderedButtons = false;
+
+    private JFrame mainFrame; // The main window
     private JFileChooser chooser; // For saving and loading levels
-    private JSplitPane   split;  // provides the movable divider next to Sprite chooser
-    private JPanel       chooserPanel; //panel for the Sprite chooser 
-    private JPanel      leftPanel;
-    private JPanel      rightPanel;
-    private Canvas      myCanvas; //drawing canvas
-    
-    private File openFile; //currently open file
-    private Level myLevel; //level object for editing
-    
+    private JSplitPane split;  // provides the movable divider next to Sprite
+                              // chooser
+    private JPanel chooserPanel; // panel for the Sprite chooser
+    private JPanel leftPanel;
+    private JPanel rightPanel;
+    private Canvas myCanvas; // drawing canvas
+
+    private File openFile; // currently open file
+    private Level myLevel; // level object for editing
+
     /* Toolbar buttons, self-explanatory */
-    private JToolBar myToolBar;
+    JToolBar      myToolBar;
     private JButton newBtn;
     private JButton openBtn;
     private JButton saveBtn;
     private JButton clearBtn;
-    
-    public static void main(String args[]) {
+
+    /* Menu bar */
+    private JMenuBar menuBar;
+    private JMenu fileMenu;
+    private JMenu editMenu;
+    private JMenu toolMenu;
+    private JMenu helpMenu;
+    private JMenuItem undoMI;
+    private JMenuItem redoMI;
+    private JMenuItem openMI;
+    private JMenuItem newMI;
+    private JMenuItem saveMI;
+    private JMenuItem saveAsMI;
+    private JMenuItem exitMI;
+    private JMenuItem about;
+    private JMenuItem howToUse;
+
+    public static void main (String args[]) {
         new LevelEditor();
     }
-    
-    public LevelEditor() {
-        //TODO initialize all variables and load a level to edit/make a new level
+
+    public LevelEditor () {
+        // TODO initialize all variables and load a level to edit/make a new
+        // level
         mainFrame = new JFrame("Level Editor");
         mainFrame.setPreferredSize(FRAME_SIZE);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setBackground(Color.WHITE);
-        
-        makeMenu();       
-        
+
+        makeMenu();
+
         split = new JSplitPane();
         split.setDividerLocation(200);
-        
-        //myCanvas = new Canvas();
+
+        // myCanvas = new Canvas();
         leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBorder(new TitledBorder("Left Panel"));
-        
+
         rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBorder(new TitledBorder("Right Panel"));
-        
+
         split.setLeftComponent(leftPanel);
         split.setRightComponent(rightPanel);
-
         
+        JPanel myToolPane = (JPanel)mainFrame.getContentPane();
+        
+        myToolPane.setLayout(new BorderLayout());
+
+        setupMenus();
+        setupToolbars();
+        
+        /* Toolbar placement */
+        myToolPane.add(myToolBar, BorderLayout.NORTH);
+
         mainFrame.add(split, BorderLayout.CENTER);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
     }
-    
+
+    private void setupMenus () {
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
+        toolMenu = new JMenu("Tools");
+        editMenu = new JMenu("Edit");
+        helpMenu = new JMenu("Help");
+        openMI = new JMenuItem("Open...");
+        newMI = new JMenuItem("New");
+        saveMI = new JMenuItem("Save");
+        saveAsMI = new JMenuItem("Save As...");
+        exitMI = new JMenuItem("Exit");
+        undoMI = new JMenuItem("Undo");
+        redoMI = new JMenuItem("Redo");
+        about = new JMenuItem("About");
+        howToUse = new JMenuItem("How to use LevelEditor");
+
+        openMI.addActionListener(this);
+        newMI.addActionListener(this);
+        saveMI.addActionListener(this);
+        saveAsMI.addActionListener(this);
+        exitMI.addActionListener(this);
+        undoMI.addActionListener(this);
+        redoMI.addActionListener(this);
+        about.addActionListener(this);
+        howToUse.addActionListener(this);
+
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+        menuBar.add(helpMenu);
+
+        fileMenu.add(openMI);
+        fileMenu.add(newMI);
+        fileMenu.add(saveMI);
+        fileMenu.add(saveAsMI);
+        fileMenu.add(exitMI);
+        editMenu.add(undoMI);
+        editMenu.add(redoMI);
+        helpMenu.add(about);
+        helpMenu.add(howToUse);
+        mainFrame.setJMenuBar(menuBar);
+    }
+
+    private void setupToolbars () {
+        myToolBar = new JToolBar();
+        
+        /* Map file buttons */
+        saveBtn  = makeBtn("Save",    "vooga.shooter.resources/save.gif",  "Save map");
+        openBtn  = makeBtn("Open...", "open.gif",  "Open map...");
+        newBtn   = makeBtn("New",     "new.gif",   "New map");
+        clearBtn = makeBtn("Clear",   "clear.gif", "Reset map (Delete all tiles)");
+        
+        myToolBar.add(saveBtn);
+        myToolBar.add(openBtn);
+        myToolBar.add(newBtn);
+        myToolBar.add(clearBtn);
+    }
+
     @Override
     public void keyPressed (KeyEvent arg0) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void keyReleased (KeyEvent arg0) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void keyTyped (KeyEvent arg0) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void actionPerformed (ActionEvent e) {
         Object source = e.getSource();
-        
+
         if (source == newBtn) {
             newFile();
             openFile = null;
-        } else if (source == clearBtn) {
-            //clear current wave
-        } else if (source == saveBtn) {
+        }
+        else if (source == clearBtn) {
+            // clear current wave
+        }
+        else if (source == saveBtn) {
             if (openFile == null) {
-                //file has never ben saved, so we need to save as instead
-                
-            } else {
+                // file has never ben saved, so we need to save as instead
+
+            }
+            else {
                 saveFile(openFile);
             }
-        } else if (source == openBtn) {
+        }
+        else if (source == openBtn) {
             int success = chooser.showOpenDialog(mainFrame);
-            if (success == JFileChooser.APPROVE_OPTION){
+            if (success == JFileChooser.APPROVE_OPTION) {
                 openFile(chooser.getSelectedFile());
             }
         }
-        
+
     }
-    
-    private void openFile(File file) {
-        //TODO implement
+
+    private void openFile (File file) {
+        // TODO implement
     }
-    
-    private void saveFile(File file) {
-        //TODO implement
+
+    private void saveFile (File file) {
+        // TODO implement
     }
-    
-    public void newFile() {
-        //TODO implement
+
+    public void newFile () {
+        // TODO implement
     }
-    
+
     /**
      * Makes a JButton with the given icon and tooltop.
      * If the icon cannot be loaded, then the text will be used instead.
-     *
+     * 
      * Adds this LevelEditor as an actionListener.
-     *
+     * 
      * @return the new JButton
      **/
-    private JButton makeBtn(String text, String icon, String tooltip) {
-            JButton newBtn;
-            try {
-                    newBtn = new JButton(new ImageIcon(getClass().getResource(icon)));
-            } catch (Exception e) {
-                    newBtn = new JButton(text);
-            }
-            newBtn.setToolTipText(tooltip);
-            newBtn.addActionListener(this);
-            if(borderedButtons) {
-                    newBtn.setBorder(new LineBorder(Color.gray, 1, false));
-            } else if (compactToolbars) {
-                    newBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
-            }
-            //newBtn.setBorderPainted(false);
-            return newBtn;
+    private JButton makeBtn (String text, String path, String tooltip) {
+        JButton newBtn;
+        try {
+            newBtn = new JButton(new ImageIcon(this.getClass().getResource(path)));
+        }
+        catch (Exception e) {
+            newBtn = new JButton(text);
+        }
+        newBtn.setToolTipText(tooltip);
+        newBtn.addActionListener(this);
+        if (borderedButtons) {
+            newBtn.setBorder(new LineBorder(Color.gray, 1, false));
+        }
+        else if (compactToolbars) {
+            newBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
+        }
+        // newBtn.setBorderPainted(false);
+        return newBtn;
     }
-    
-    private JMenuBar makeMenu() {
+
+    private JMenuBar makeMenu () {
         JMenuBar bar = new JMenuBar();
         bar.add(makeFileMenu());
         mainFrame.setJMenuBar(bar);
@@ -164,7 +256,8 @@ public class LevelEditor implements ActionListener, KeyListener {
     @SuppressWarnings("serial")
     private JMenu makeFileMenu () {
         JMenu result = new JMenu("File");
-        result.add(new AbstractAction("New") { //this needs to come from language resources folder
+        result.add(new AbstractAction("New") { // this needs to come from
+                                               // language resources folder
             @Override
             public void actionPerformed (ActionEvent e) {
                 // go to start page
@@ -174,11 +267,11 @@ public class LevelEditor implements ActionListener, KeyListener {
         result.add(new AbstractAction("Quit") {
             @Override
             public void actionPerformed (ActionEvent e) {
-                 //end program
-                 System.exit(0);
+                // end program
+                System.exit(0);
             }
         });
         return result;
     }
-   
+
 }

@@ -54,8 +54,8 @@ public class Reflection {
         } catch (ClassNotFoundException e) {
             throw new ReflectionException("Incorrectly named class " + name);
         } catch (Exception e) {
-            throw new ReflectionException("No matching public constructor for "
-                    + name);
+            throw new ReflectionException("A problem occured during reflection of: "
+                    + name, e.getCause());
         }
     }
 
