@@ -1,4 +1,4 @@
-package util.particleEngine;
+package util.ParticleEngine;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -43,8 +43,8 @@ public abstract class ParticleEngineTestingUnit {
      * @param tolerance how much the particles can vary from the given direction
      * @param length how long the particles will exist before being reset
 	 */
-	protected void addParticleEngine(int density, Image particleImage, Point direction,
+	protected void addParticleEngine(int density, Image particleImage, Point position, Point velocity,
             int tolerance, int length){
-		myParticleEngines.add(new ParticleEngine(density, particleImage, direction, tolerance, length));
+		myParticleEngines.add(new ParticleEngine(density, particleImage, position, velocity, tolerance, length));
 	}
 }

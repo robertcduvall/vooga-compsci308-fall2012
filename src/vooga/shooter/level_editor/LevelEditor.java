@@ -9,6 +9,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
 import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,6 +24,7 @@ import java.io.*;
 public class LevelEditor implements ActionListener, KeyListener {
 
     private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
+    private static final String IMAGE_LOCATION = "/images/";
     boolean compactToolbars = false;
     boolean borderedButtons = false;
 
@@ -82,6 +86,8 @@ public class LevelEditor implements ActionListener, KeyListener {
 
         rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBorder(new TitledBorder("Right Panel"));
+        
+        setupImagePanel();
 
         split.setLeftComponent(leftPanel);
         split.setRightComponent(rightPanel);
@@ -148,15 +154,50 @@ public class LevelEditor implements ActionListener, KeyListener {
         myToolBar = new JToolBar();
         
         /* Map file buttons */
-        saveBtn  = makeBtn("Save",    "vooga.shooter.resources/save.gif",  "Save map");
-        openBtn  = makeBtn("Open...", "open.gif",  "Open map...");
-        newBtn   = makeBtn("New",     "new.gif",   "New map");
-        clearBtn = makeBtn("Clear",   "clear.gif", "Reset map (Delete all tiles)");
+        saveBtn  = makeBtn("Save",    "/vooga/shooter/resources/save.gif",  "Save level");
+        openBtn  = makeBtn("Open...", "/vooga/shooter/resources/open.gif",  "Open level...");
+        newBtn   = makeBtn("New",     "/vooga/shooter/resources/new.gif",   "New level");
+        clearBtn = makeBtn("Clear",   "/vooga/shooter/resources/clear.gif", "Reset level (Delete all sprites)");
         
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
         myToolBar.add(clearBtn);
+    }
+    
+    private void setupImagePanel() {
+        GridLayout experimentLayout = new GridLayout(0,2);
+        leftPanel.setLayout(experimentLayout);   
+        List<ImageIcon> results = loadImages("/vooga/shooter/images/");
+        
+        for (ImageIcon b: results) {
+            JButton newButton = new JButton();
+            newButton.setIcon(b);
+            leftPanel.add(newButton);
+        }
+    }
+    
+    private List<ImageIcon> loadImages (String directory)
+    {
+        try
+        {
+            URL path = getClass().getResource(directory);
+            List<ImageIcon> results = new ArrayList<ImageIcon>();
+
+            for (String file : new File(path.toURI()).list())
+            {
+                //System.out.println(path + file);
+                results.add(new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + file)));
+            }
+            return results;
+
+        }
+        catch (Exception e)
+        {
+            // should not happen
+            System.out.println("this should not happen");
+            return new ArrayList<ImageIcon>(); 
+        }
     }
 
     @Override
@@ -208,14 +249,18 @@ public class LevelEditor implements ActionListener, KeyListener {
 
     private void openFile (File file) {
         // TODO implement
+        // Uses XML Utility
+        // convert XML to Level object then display sprites
     }
 
     private void saveFile (File file) {
         // TODO implement
+        //needs to use XML utility to convert current Level to File then save that File
     }
 
     public void newFile () {
         // TODO implement
+        // Use XML Utility
     }
 
     /**
@@ -229,7 +274,7 @@ public class LevelEditor implements ActionListener, KeyListener {
     private JButton makeBtn (String text, String path, String tooltip) {
         JButton newBtn;
         try {
-            newBtn = new JButton(new ImageIcon(this.getClass().getResource(path)));
+            newBtn = new JButton(new ImageIcon(getClass().getResource(path)));
         }
         catch (Exception e) {
             newBtn = new JButton(text);
