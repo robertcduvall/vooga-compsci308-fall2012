@@ -109,7 +109,7 @@ public class GameCenter {
 //     System.out.println("haha");
 //     GameCenter gc = new GameCenter();
 //     List<String> list = gc.getGameList();
-//     gc.refreshGames();
-//     System.out.println(list);
+//     System.out.println(gc.myGames.size());
+//     gc.myGames.get(1).runGame();
 //     }
 }
