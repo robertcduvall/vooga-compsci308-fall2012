@@ -303,8 +303,7 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        Game myGame = new Game(new Applet());
-        myGame.initializeGame(new Applet(), false);
+        this.initializeGame(new Applet(), false);
         
     }
 
