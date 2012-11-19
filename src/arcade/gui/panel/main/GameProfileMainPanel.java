@@ -1,6 +1,7 @@
 package arcade.gui.panel.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -29,23 +30,23 @@ public class GameProfileMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.WHITE);
+        myPanel.setBackground(Color.CYAN);
         
         myPanel.setLayout(new GridBagLayout());
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridwidth = 3;
+        c.gridheight = 2;
         
         System.out.println(myPanel.getSize());
         
         JButton playButton = new JButton("Play");
-        
+        playButton.setPreferredSize(new Dimension(300, 300));
         myPanel.add(playButton);
-        
         playButton.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                // TODO:
                 getArcade().getGameCenter().getGame(gameName).runGame();
             }
               
