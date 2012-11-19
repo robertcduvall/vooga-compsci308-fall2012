@@ -7,6 +7,6 @@
 	<game id="2">
 		<name>Shooter</name>
 		<rating>4</rating>
-		<filepath>arcade.Sample2</filepath>
+		<filepath>vooga.shooter.gameplay.Game</filepath>
 	</game>
 </gamelist>

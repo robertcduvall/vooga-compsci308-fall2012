@@ -16,6 +16,9 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * (add your own name as you edit)
  */
 public class Bullet extends Sprite {
+    private static String HIT_BY_BULLET = "hitbybullet";
+    private static String HIT_BY_ENEMY = "hitbyenemy";
+    private static String PLAYER = "player";
     private int myDamage;
     private Sprite myOwner;
 
@@ -32,33 +35,6 @@ public class Bullet extends Sprite {
             Image image, Point velocity, int damage) {
         super(position, size, bounds, image, velocity);
         myDamage = damage;
-    }
-
-    /**
-     * Sets the methods for bullets.
-     */
-    @Override
-    void setMethods() {
-        //do nothing if it intersects another bullet
-        getMapper().addPair("hitbybullet", this);
-
-        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
-            public void doAction(Object...o) {
-                die();
-                ((Player) o[0]).die();
-            }
-        });
-
-        //only destroy enemy if a player shoots the enemy
-        //if an enemy shoots an enemy, nothing happens
-        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
-            public void doAction(Object...o) {
-                if ("player".equals(myOwner.getType())) {
-                    die();
-                    ((Enemy) o[0]).die();
-                }
-            }
-        });
     }
 
     /**
@@ -109,6 +85,30 @@ public class Bullet extends Sprite {
      * Bullet has nothing else to paint.
      */
     protected void continuePaint (Graphics pen) { }
+
+    @Override
+    void setMethods () {
+        //do nothing if it intersects another bullet
+        getMapper().addPair(HIT_BY_BULLET, this);
+
+        getMapper().addPair(HIT_BY_BULLET, new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                die();
+                ((Player) o[0]).die();
+            }
+        });
+
+        //only destroy enemy if a player shoots the enemy
+        //if an enemy shoots an enemy, nothing happens
+        getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
+            public void doAction(Object...o) {
+                if (PLAYER.equals(myOwner.getType())) {
+                    die();
+                    ((Enemy) o[0]).die();
+                }
+            }
+        });
+    }
 
     /**
      * Bullets cannot fire other bullets, so this
