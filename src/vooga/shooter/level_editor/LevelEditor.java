@@ -21,8 +21,8 @@ import java.io.*;
 public class LevelEditor implements ActionListener, KeyListener {
 
     private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
-    boolean compactToolbars = true;
-    boolean borderedButtons = true;
+    boolean compactToolbars = false;
+    boolean borderedButtons = false;
 
     private JFrame mainFrame; // The main window
     private JFileChooser chooser; // For saving and loading levels
@@ -37,8 +37,7 @@ public class LevelEditor implements ActionListener, KeyListener {
     private Level myLevel; // level object for editing
 
     /* Toolbar buttons, self-explanatory */
-    JToolBar      outerToolBar;
-    JToolBar      innerToolBar;
+    JToolBar      myToolBar;
     private JButton newBtn;
     private JButton openBtn;
     private JButton saveBtn;
@@ -86,9 +85,16 @@ public class LevelEditor implements ActionListener, KeyListener {
 
         split.setLeftComponent(leftPanel);
         split.setRightComponent(rightPanel);
+        
+        JPanel myToolPane = (JPanel)mainFrame.getContentPane();
+        
+        myToolPane.setLayout(new BorderLayout());
 
         setupMenus();
         setupToolbars();
+        
+        /* Toolbar placement */
+        myToolPane.add(myToolBar, BorderLayout.NORTH);
 
         mainFrame.add(split, BorderLayout.CENTER);
         mainFrame.pack();
@@ -109,8 +115,8 @@ public class LevelEditor implements ActionListener, KeyListener {
         exitMI = new JMenuItem("Exit");
         undoMI = new JMenuItem("Undo");
         redoMI = new JMenuItem("Redo");
-        about = new JMenuItem("About...(N/A)");
-        howToUse = new JMenuItem("How to use LevelEdit (N/A)");
+        about = new JMenuItem("About");
+        howToUse = new JMenuItem("How to use LevelEditor");
 
         openMI.addActionListener(this);
         newMI.addActionListener(this);
@@ -139,15 +145,18 @@ public class LevelEditor implements ActionListener, KeyListener {
     }
 
     private void setupToolbars () {
-        outerToolBar = new JToolBar();
-        innerToolBar = new JToolBar();
+        myToolBar = new JToolBar();
         
         /* Map file buttons */
         saveBtn  = makeBtn("Save",    "vooga.shooter.resources/save.gif",  "Save map");
-        openBtn  = makeBtn("Open...", "vooga.shooter.resources/open.gif",  "Open map...");
-        newBtn   = makeBtn("New",     "vooga.shooter.resources/new.gif",   "New map");
-        clearBtn = makeBtn("Clear",   "vooga.shooter.resources/clear.gif", "Reset map (Delete all tiles)");
+        openBtn  = makeBtn("Open...", "open.gif",  "Open map...");
+        newBtn   = makeBtn("New",     "new.gif",   "New map");
+        clearBtn = makeBtn("Clear",   "clear.gif", "Reset map (Delete all tiles)");
         
+        myToolBar.add(saveBtn);
+        myToolBar.add(openBtn);
+        myToolBar.add(newBtn);
+        myToolBar.add(clearBtn);
     }
 
     @Override
@@ -217,10 +226,10 @@ public class LevelEditor implements ActionListener, KeyListener {
      * 
      * @return the new JButton
      **/
-    private JButton makeBtn (String text, String icon, String tooltip) {
+    private JButton makeBtn (String text, String path, String tooltip) {
         JButton newBtn;
         try {
-            newBtn = new JButton(new ImageIcon(getClass().getResource(icon)));
+            newBtn = new JButton(new ImageIcon(this.getClass().getResource(path)));
         }
         catch (Exception e) {
             newBtn = new JButton(text);
