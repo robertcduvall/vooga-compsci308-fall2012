@@ -80,8 +80,8 @@ public class GameManager {
 
     }
 
-    public ArrayList<GameObject> getGameObjectsOfSpecificMode (Class c) {
-        ArrayList<GameObject> modeObjects = new ArrayList<GameObject>();
+    public List<GameObject> getGameObjectsOfSpecificMode (Class c) {
+        List<GameObject> modeObjects = new ArrayList<GameObject>();
         for (Sprite s : mySprites.values()) {
             modeObjects.addAll(s.getObject(c));
         }
@@ -179,7 +179,7 @@ public class GameManager {
 
     private class ModeEvent {
         private final String myName;
-        private final ArrayList<Integer> myInvolvedIDs;
+        private final List<Integer> myInvolvedIDs;
 
         public ModeEvent (String eventName, List<Integer> involvedIDs) {
             myName = eventName;
