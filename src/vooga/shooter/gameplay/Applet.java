@@ -108,7 +108,7 @@ public class Applet extends JApplet {
     @Override
     public void paint (Graphics pen)
     {
-        pen.setColor(Color.WHITE);
+        pen.setColor(Color.BLACK);
         pen.fillRect(0, 0, getSize().width, getSize().height);
         myGame.paint(pen);
     }
