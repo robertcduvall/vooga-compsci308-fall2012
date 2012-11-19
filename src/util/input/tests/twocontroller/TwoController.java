@@ -6,7 +6,10 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
+import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidControllerEvent;
 import util.input.android.events.LineSegment;
+import util.input.core.AndroidController;
 import util.input.core.WiiController;
 import util.input.factories.ControllerFactory;
 import util.input.tests.android.TestAndroidController;
@@ -33,6 +36,19 @@ public class TwoController extends JPanel implements Runnable  {
         mySegments = new ArrayList<LineSegment>();
         //TestAndroidController myController = new TestAndroidController(this);
         WiiController myWiiController = (WiiController)ControllerFactory.createWiiController();
+        AndroidController myAndroidController = (AndroidController)ControllerFactory.createAndroidController();
+        try {
+            myAndroidController.setControl(AndroidButtonEvent.Playstation.CIRCLE, AndroidButtonEvent.BUTTON_PRESSED, this, "testMethod");
+            myWiiController.setControl(WiiController.WIIMOTE_BUTTON_A, WiiController.BUTTON_PRESSED, this, "testMethod");
+        }
+        catch (NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         setDoubleBuffered(true);
         this.setFocusable(true);
         myGameLoop = new Thread(this);
@@ -95,6 +111,10 @@ public class TwoController extends JPanel implements Runnable  {
             myGameLoop.stop();
             myIsRunning = false;
         }
+    }
+    
+    public void testMethod(){
+        System.out.println("control received");
     }
 
  
