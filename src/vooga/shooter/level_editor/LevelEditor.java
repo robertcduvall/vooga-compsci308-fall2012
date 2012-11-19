@@ -9,6 +9,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
 import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,6 +24,7 @@ import java.io.*;
 public class LevelEditor implements ActionListener, KeyListener {
 
     private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
+    private static final String IMAGE_LOCATION = "/images/";
     boolean compactToolbars = false;
     boolean borderedButtons = false;
 
@@ -82,6 +86,8 @@ public class LevelEditor implements ActionListener, KeyListener {
 
         rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBorder(new TitledBorder("Right Panel"));
+        
+        setupImagePanel();
 
         split.setLeftComponent(leftPanel);
         split.setRightComponent(rightPanel);
@@ -157,6 +163,41 @@ public class LevelEditor implements ActionListener, KeyListener {
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
         myToolBar.add(clearBtn);
+    }
+    
+    private void setupImagePanel() {
+        GridLayout experimentLayout = new GridLayout(0,2);
+        leftPanel.setLayout(experimentLayout);   
+        List<ImageIcon> results = loadImages("/vooga/shooter/images/");
+        
+        for (ImageIcon b: results) {
+            JButton newButton = new JButton();
+            newButton.setIcon(b);
+            leftPanel.add(newButton);
+        }
+    }
+    
+    private List<ImageIcon> loadImages (String directory)
+    {
+        try
+        {
+            URL path = getClass().getResource(directory);
+            List<ImageIcon> results = new ArrayList<ImageIcon>();
+
+            for (String file : new File(path.toURI()).list())
+            {
+                //System.out.println(path + file);
+                results.add(new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + file)));
+            }
+            return results;
+
+        }
+        catch (Exception e)
+        {
+            // should not happen
+            System.out.println("this should not happen");
+            return new ArrayList<ImageIcon>(); 
+        }
     }
 
     @Override

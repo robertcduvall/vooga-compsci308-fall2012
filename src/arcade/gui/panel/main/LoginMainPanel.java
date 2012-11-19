@@ -143,12 +143,14 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         char[] password = passwordField.getPassword();
         if (this.getArcade().getUserManager().loginUser(username, password)) {
             this.getArcade().replacePanel("MainHome");
+            this.getArcade().replacePanel("NormNav");
         }
         else {
             wrongPassword.setVisible(true);
         }
     }
     private void bypass() {
+        this.getArcade().replacePanel("NormNav");
         this.getArcade().replacePanel("MainHome");
     }
 }
