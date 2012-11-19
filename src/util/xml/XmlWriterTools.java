@@ -106,14 +106,6 @@ public class XmlWriterTools {
     	addElementAndAttribute(getDefaultElement(), tag, content, attributeName, 
     			attributeContent);
     }
-    
-    public void modifyElementContent(Element element, String newContent) {
-    	element.setTextContent(newContent);
-    }
-    
-    public void modifyElementContent(String newContent) {
-    	modifyElementContent(getDefaultElement(), newContent);
-    }
 
     public void replaceAllTagNames(Element element, String oldTag, String newTag) {
     	NodeList nodeList = element.getElementsByTagName(oldTag);
@@ -124,15 +116,5 @@ public class XmlWriterTools {
     
     public void replaceAllTagNames(String oldTag, String newTag) {
     	replaceAllTagNames(getDefaultElement(), oldTag, newTag);
-    }
-    
-    public void modifyAttribute(Element element, String attributeName,
-    		String newAttributeContent) {
-    	element.setAttribute(attributeName, newAttributeContent);
-    }
-    
-    public void modifyAttribute(String attributeName,
-    		String newAttributeContent) {
-    	modifyAttribute(getDefaultElement(), attributeName, newAttributeContent);
     }
 }
