@@ -68,14 +68,6 @@ public class XmlReaderTools {
     }
     
     
-    public List<Element> getElementsByTag(String tag) {
-    	return getElementsByTag(getDefaultElement(), tag);
-    }
-    
-    public List<Element> getElementsByTag(Element parent, String tag) {
-		return (List<Element>) parent.getElementsByTagName(tag);
-    }
-    
     public List<String> getContentListByTag(Element parent, String tag) {
 		List<String> stringListByTag = new ArrayList<String>();
 		NodeList nodeList = parent.getElementsByTagName(tag);
