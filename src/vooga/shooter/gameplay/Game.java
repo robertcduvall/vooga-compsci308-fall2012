@@ -60,7 +60,7 @@ public class Game implements DrawableComponent, IArcadeGame{
         myCanvas = c;
         mySprites = new ArrayList<Sprite>();
         myImageIcon = new ImageIcon(this.getClass().getResource(
-                        "../images/alien.png"));
+                        "../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
         myPlayer = new Player(myPlayerOneStart, myPlayerSize,
                            new Dimension(myCanvas.getWidth(),
