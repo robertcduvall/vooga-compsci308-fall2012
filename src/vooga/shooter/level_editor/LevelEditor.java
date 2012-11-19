@@ -148,10 +148,10 @@ public class LevelEditor implements ActionListener, KeyListener {
         myToolBar = new JToolBar();
         
         /* Map file buttons */
-        saveBtn  = makeBtn("Save",    "vooga.shooter.resources/save.gif",  "Save map");
-        openBtn  = makeBtn("Open...", "open.gif",  "Open map...");
-        newBtn   = makeBtn("New",     "new.gif",   "New map");
-        clearBtn = makeBtn("Clear",   "clear.gif", "Reset map (Delete all tiles)");
+        saveBtn  = makeBtn("Save",    "/vooga/shooter/resources/save.gif",  "Save level");
+        openBtn  = makeBtn("Open...", "/vooga/shooter/resources/open.gif",  "Open level...");
+        newBtn   = makeBtn("New",     "/vooga/shooter/resources/new.gif",   "New level");
+        clearBtn = makeBtn("Clear",   "/vooga/shooter/resources/clear.gif", "Reset level (Delete all sprites)");
         
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
@@ -208,14 +208,18 @@ public class LevelEditor implements ActionListener, KeyListener {
 
     private void openFile (File file) {
         // TODO implement
+        // Uses XML Utility
+        // convert XML to Level object then display sprites
     }
 
     private void saveFile (File file) {
         // TODO implement
+        //needs to use XML utility to convert current Level to File then save that File
     }
 
     public void newFile () {
         // TODO implement
+        // Use XML Utility
     }
 
     /**
@@ -229,7 +233,7 @@ public class LevelEditor implements ActionListener, KeyListener {
     private JButton makeBtn (String text, String path, String tooltip) {
         JButton newBtn;
         try {
-            newBtn = new JButton(new ImageIcon(this.getClass().getResource(path)));
+            newBtn = new JButton(new ImageIcon(getClass().getResource(path)));
         }
         catch (Exception e) {
             newBtn = new JButton(text);
