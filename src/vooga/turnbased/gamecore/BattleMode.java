@@ -22,6 +22,9 @@ public class BattleMode extends GameMode {
     private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
+    
+    private final int ATTACK_KEY = KeyEvent.VK_A;
+    private final int DEFENSE_KEY = KeyEvent.VK_D;
 
     /**
      * Constructor for a Battle.
@@ -128,21 +131,65 @@ public class BattleMode extends GameMode {
 
     @Override
     public void handleKeyReleased (KeyEvent e) {
+        // should some of this be handled in update?
         int keyCode = e.getKeyCode();
         switch (keyCode) {
-            case KeyEvent.VK_A:
-                myPlayerObject.attackEnemy(myEnemy);
-                System.out.println("My health: " + myPlayerObject.getHealth());
-                System.out.println("Enemy health: " + myEnemy.getHealth());
+            case ATTACK_KEY: 
+                triggerAttackEvent();
+                break;
+            case DEFENSE_KEY:
+                triggerDefenseEvent();
                 break;
             default:
                 break;
         }
     }
 
+    private void triggerAttackEvent() {
+        // for now, player attacks enemy player
+        // by difference in defense
+        myPlayerObject.attackEnemy(myEnemy);
+        System.out.println("You use ATTACK");
+        displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) {
+            return;
+        }
+        // pause while enemy "thinks"
+        // opposing team makes some predetermined action
+        myEnemy.attackEnemy(myPlayerObject);
+        System.out.println("Your enemy uses ATTACK");
+        displayBattleStats();
+    }
+
+    private void triggerDefenseEvent() {
+        // for now, increases player defense by one; other team still attacks
+        myPlayerObject.attackEnemy(myEnemy);
+        System.out.println("You use DEFENSE");
+        myPlayerObject.setDefense(myPlayerObject.getDefense() + 1);
+        displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) {
+            return;
+        }
+        // pause while enemy "thinks"
+        // opposing team makes some predetermined action
+        myEnemy.attackEnemy(myPlayerObject);
+        System.out.println("Your enemy uses ATTACK");
+        displayBattleStats();
+    }
+
+    // for debugging etc
+    private void displayBattleStats () {
+        System.out.println("My health: " + myPlayerObject.getHealth());
+        // System.out.println("My defense: " + myPlayerObject.getDefense());
+        System.out.println("Enemy health: " + myEnemy.getHealth());
+        // System.out.println("Enemy defense: " + myEnemy.getDefense());
+    }
+
     /**
      * Returns the team that should make the next move and increments
-     * myTurnCount by 1.
+     * myTurnCount by 1. 
      * 
      * @return Team that should make next move.
      */
