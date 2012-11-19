@@ -119,10 +119,9 @@ public class Game implements DrawableComponent, IArcadeGame {
 
                     // might not need this second one if going through
                     // all combinations of sprites anyway
-//                    key = HIT_BY + collides.get(0).getType();
-//                    collides.get(1).doEvent(key, collides.get(0));
+                    key = HIT_BY + collides.get(0).getType();
+                    collides.get(1).doEvent(key, collides.get(0));
                 }
-                collides.clear();
             }
         }
     }

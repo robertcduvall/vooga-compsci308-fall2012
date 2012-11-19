@@ -19,7 +19,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  *
  */
 public abstract class Sprite implements SpriteActionInterface {
-    
+
     protected static final String HIT_BY_BULLET = "hitbybullet";
     protected static final String HIT_BY_ENEMY = "hitbyenemy";
     protected static final String HIT_BY_PLAYER = "hitbyplayer";
@@ -38,7 +38,7 @@ public abstract class Sprite implements SpriteActionInterface {
     private Dimension mySize;
     private Dimension myBounds;
     private Image myImage;
-    private List<Bullet> myShotsFired;
+    private List<Bullet> myBulletsFired;
     private int myHealth;
     private SpriteMethodMap myMapper;
 
@@ -62,7 +62,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -87,7 +87,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -110,7 +110,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myVelocity = new Point(0, 0);
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -134,7 +134,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = health;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -146,7 +146,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param damage the amount to decrease health by
      */
     public void decreaseHealth(int damage) {
-        this.myHealth -= damage;
+        myHealth -= damage;
     }
 
     /**
@@ -173,13 +173,11 @@ public abstract class Sprite implements SpriteActionInterface {
      * to each sprite when calling the update method.
      */
     public void update() {
-        // if this sprite is out of bounds (top or bottom) then
-        // it is out of the game
-        if (getHealth() < 0) {
-            this.die();
+        if (myHealth <= 0) {
+            die();
         }
         else {
-            getPosition().translate(getVelocity().x, getVelocity().y);
+            myPosition.translate(myVelocity.x, myVelocity.y);
             continueUpdate();
         }
     }
@@ -221,7 +219,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * from the game if null.
      */
     public void die() {
-        this.setImage(null);
+        myImage = null;
     }
 
     /**
@@ -234,16 +232,22 @@ public abstract class Sprite implements SpriteActionInterface {
                 "../images/playerbullet.png"));
         Image bulletImage = iib.getImage();
 
-        Bullet b = new Bullet(new Point(getPosition().x, getPosition().y), new Dimension(
-                BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
+        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), new Dimension(
+                BULLET_SIZE, BULLET_SIZE), myBounds, bulletImage,
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
-        this.getBulletsFired().add(b);
+        myBulletsFired.add(b);
     }
 
+    /**
+     * Checks whether this sprite is within the bounds of the canvas,
+     * depending on which wall is checked.
+     * @param s the name of the wall to check e.g. "left", "right"
+     * @return false if out of bounds, true if in bounds
+     */
     public boolean checkBounds(String s) {
         //don't go past right
-        if (RIGHT_BOUND.equals(s) && getRight() >= getBounds().width) {
+        if (RIGHT_BOUND.equals(s) && getRight() >= myBounds.width) {
             return false;
         }
         //don't pass left
@@ -255,10 +259,9 @@ public abstract class Sprite implements SpriteActionInterface {
             return false;        
         }
         //don't pass bottom
-        else if (BOTTOM_BOUND.equals(s) && getBottom() >= getBounds().height) {
+        else if (BOTTOM_BOUND.equals(s) && getBottom() >= myBounds.height) {
             return false;
         }
-
         return true;
     }
 
@@ -279,7 +282,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myPosition
      */
     public Point getPosition() {
-        return this.myPosition;
+        return myPosition;
     }
 
     /**
@@ -288,7 +291,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param position the new position
      */
     public void setPosition(Point position) {
-        this.myPosition = position;
+        myPosition = position;
     }
 
     /**
@@ -298,7 +301,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myVelocity
      */
     public Point getVelocity() {
-        return this.myVelocity;
+        return myVelocity;
     }
 
     /**
@@ -306,7 +309,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @param velocity the new velocity to set to
      */
     public void setVelocity(Point velocity) {
-        this.myVelocity = velocity;
+        myVelocity = velocity;
     }
 
     /**
@@ -317,7 +320,7 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void setVelocity(int x, int y) {
         Point v = new Point(x, y);
-        this.setVelocity(v);
+        setVelocity(v);
     }
 
     /**
@@ -325,51 +328,18 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myShotsFired
      */
     public List<Bullet> getBulletsFired() {
-        return this.myShotsFired;
+        return myBulletsFired;
     }
     /**
      * Returns the image representing this sprite.
      * @return myImage
      */
     public Image getImage() {
-        return this.myImage;
-    }
-
-    /**
-     * Sets this sprite's image to something else.
-     * @param image the new image to use
-     */
-    public void setImage(Image image) {
-        this.myImage = image;
-    }
-
-    /**
-     * Returns the health of the player.
-     * @return myHealth
-     */
-    public int getHealth() {
-        return this.myHealth;
-    }
-
-    /**
-     * Sets the sprite's health to
-     * a new number (e.g. after being damaged).
-     * @param h the new health of the sprite
-     */
-    public void setHealth(int h) {
-        this.myHealth = h;
-    }
-
-    protected void setMapper (SpriteMethodMap mapper) {
-        this.myMapper = mapper;
+        return myImage;
     }
 
     protected SpriteMethodMap getMapper () {
-        return this.myMapper;
-    }
-
-    protected Dimension getBounds() {
-        return this.myBounds;
+        return myMapper;
     }
 
     /**
@@ -409,6 +379,6 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return the dimensions of the sprite.
      */
     public Dimension getSize() {
-        return this.mySize;
+        return mySize;
     }
 }

@@ -118,7 +118,6 @@ public class Player extends Sprite {
      * needs to do when being updated (e.g. stop when at a wall).
      */
     protected void continueUpdate () {
-        this.setVelocity(0, 0);
         for (Bullet b : getBulletsFired()) {
             b.update();
         }
