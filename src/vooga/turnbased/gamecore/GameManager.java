@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +68,7 @@ public class GameManager {
         myBattleMode = new BattleMode(this, BattleObject.class);
         generateHardcodedLevel();
         myCurrentGameMode = myMapMode;
-        myCurrentGameMode.resume();
+        myCurrentGameMode.init();
         configureInputHandling();
     }
 

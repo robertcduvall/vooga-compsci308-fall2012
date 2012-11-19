@@ -119,7 +119,7 @@ public class BattleMode extends GameMode {
             if (!t.stillAlive()) {
                 allDead = true;
                 // delete dead sprites, this won't work yet because of map team :(
-                //getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
+                getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
             }
         }
         return allDead;
@@ -193,4 +193,10 @@ public class BattleMode extends GameMode {
 	public void configureInputHandling() {
 		// handle inputs
 	}
+
+    @Override
+    public void init () {
+        // TODO Auto-generated method stub
+        
+    }
 }

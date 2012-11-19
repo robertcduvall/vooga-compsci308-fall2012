@@ -1,6 +1,7 @@
 package vooga.turnbased.sprites;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
 
@@ -52,4 +53,11 @@ public class Sprite {
         }
         return relevantObjects;
     }
+
+    public Iterator<GameObject> getGameObjectsIterator () {
+        return myGameObjects.iterator();
+    }
+    
+    
+
 }

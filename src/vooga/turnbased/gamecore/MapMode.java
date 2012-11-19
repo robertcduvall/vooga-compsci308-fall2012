@@ -61,20 +61,20 @@ public class MapMode extends GameMode {
      * pause the game
      */
     public void pause () {
-        myMapObjects.clear();
+        //myMapObjects.clear();
     }
 
     @Override
-    /**
-     * resume/start the game
-     */
     public void resume () {
+        init(); // hardcoded for now - need to remove all instances of sprite's gameobjects ecery time sprite is removed 
+    }
+     
+    public void init () {
         myMapObjects = new HashMap<Point, List<MapObject>>();
         List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         for (MapObject mapObject : mapObjects) {
             addMapObject(mapObject.getLocation(), mapObject);
         }
-        myPlayer.setLocation(new Point(8, 8)); //hard-coded now
     }
 
 	public void setNumDisplayRows(int numDisplayRows) {

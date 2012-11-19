@@ -85,6 +85,8 @@ public abstract class GameMode {
     public abstract void pause ();
 
     public abstract void resume ();
+    
+    public abstract void init ();
 
     public abstract void paint (Graphics g);
 
