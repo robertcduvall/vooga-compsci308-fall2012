@@ -22,6 +22,7 @@ import util.input.core.MouseController;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.MapTileObject;
 import vooga.turnbased.gameobject.MovingMapObject;
 import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
@@ -58,9 +59,9 @@ public class GameManager {
         // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
-        generateHardcodedSprites();
         myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
+        generateHardcodedSprites();
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.resume();
         configureInputHandling();
@@ -86,11 +87,20 @@ public class GameManager {
                 GameWindow.importImage("PlayerImage")));
 
         mySprites.put(s.getID(), s);
+        
+        /*for (int i = 0; i < myBottomRightCorner.x; i++) {
+            for (int j = 0; j < myBottomRightCorner.y; j++) {
+                Point p = new Point(i, j);
+                addMapObject(p, new MapTileObject(ID,
+                        "NO_ACTION", p, GameWindow
+                                .importImage("GrassImage"), this));
+            }
+        }*/
 
     }
 
-    public List<GameObject> getGameObjectsOfSpecificMode (Class c) {
-        List<GameObject> modeObjects = new ArrayList<GameObject>();
+    public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
+        List<T> modeObjects = new ArrayList<T>();
         for (Sprite s : mySprites.values()) {
             modeObjects.addAll(s.getObject(c));
         }
