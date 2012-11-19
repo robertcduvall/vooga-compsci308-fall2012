@@ -30,7 +30,7 @@ public abstract class Sprite implements SpriteActionInterface {
     protected static final String RIGHT_BOUND = "right";
     protected static final String TOP_BOUND = "top";
     protected static final String BOTTOM_BOUND = "bottom";
-    private static final int BULLET_SIZE = 10;
+    private static final Dimension BULLET_SIZE = new Dimension(5, 10);
     private static final int BULLET_SPEED = 10;
     private static final int BULLET_DAMAGE = 1;
     private Point myPosition;
@@ -232,8 +232,7 @@ public abstract class Sprite implements SpriteActionInterface {
                 "../images/playerbullet.png"));
         Image bulletImage = iib.getImage();
 
-        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), new Dimension(
-                BULLET_SIZE, BULLET_SIZE), myBounds, bulletImage,
+        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, bulletImage,
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
         myBulletsFired.add(b);

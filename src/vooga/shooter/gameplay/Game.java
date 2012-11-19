@@ -98,6 +98,11 @@ public class Game implements DrawableComponent, IArcadeGame {
      * correct method to deal with that type of collision.
      */
     public void update () {
+        
+        if (myCurrentLevel.winningConditionsMet()) {
+            System.out.println("Level Won!");
+        }
+        
         for (Sprite s : getSprites()) {
             s.update();
         }
