@@ -22,7 +22,7 @@ import javax.microedition.io.StreamConnectionNotifier;
 public class WaitThread implements Runnable {
 
     private AndroidBluetoothServer myServer;
-    private UUID myServerID = new UUID("04c6093b00001000800000805f9b34fb", false);
+   
 
     /**
      * Create a thread to wait for a connection
@@ -31,7 +31,7 @@ public class WaitThread implements Runnable {
      */
     public WaitThread (int controllerNumber, AndroidBluetoothServer server) {
         myServer = server;
-        
+
     }
 
     @Override
@@ -49,7 +49,8 @@ public class WaitThread implements Runnable {
         try {
             local = LocalDevice.getLocalDevice();
             local.setDiscoverable(DiscoveryAgent.GIAC);
-            String url = "btspp://localhost:" + myServerID.toString() + ";name=RemoteBluetooth";
+            String url = "btspp://localhost:" + myServer.getActiveUUID().toString() + ";name=RemoteBluetooth";
+            System.out.println("btspp://localhost:" + myServer.getActiveUUID().toString() + ";name=RemoteBluetooth");
             notifier = (StreamConnectionNotifier) Connector.open(url);
         }
         catch (BluetoothStateException e) {
@@ -69,6 +70,8 @@ public class WaitThread implements Runnable {
             connection = notifier.acceptAndOpen();
             Thread processThread = new Thread(new ProcessConnectionThread(connection, myServer));
             processThread.start();
+            //AndroidBluetoothServer.connectedControllers++;
+
 
         }
         catch (Exception e) {
@@ -76,4 +79,6 @@ public class WaitThread implements Runnable {
             return;
         }
     }
+
+   
 }

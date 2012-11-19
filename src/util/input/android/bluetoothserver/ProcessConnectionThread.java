@@ -6,6 +6,7 @@ import javax.microedition.io.StreamConnection;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.AndroidControllerEvent;
 import util.input.android.events.JoyStickEvent;
+import util.input.android.events.LineSegment;
 
 
 /**
@@ -59,6 +60,10 @@ public class ProcessConnectionThread implements Runnable {
         if (androidEvent.getClass() == JoyStickEvent.class) {
             JoyStickEvent j = (JoyStickEvent) androidEvent;
             myServer.notify(j);
+        }
+        if (androidEvent.getClass() == LineSegment.class) {
+            LineSegment l = (LineSegment) androidEvent;
+            myServer.notify(l);
         }
 
     }

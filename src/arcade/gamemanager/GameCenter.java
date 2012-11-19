@@ -31,7 +31,7 @@ public class GameCenter {
      * initializes the class by reading information from game.xml file.
      */
     public void initialize () {
-//        socialCenter = SocialCenter.getInstance();
+        socialCenter = SocialCenter.getInstance();
         File f = new File("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
         myXmlParser = new XmlParser(f);
         myGames = new ArrayList<Game>();
@@ -51,8 +51,8 @@ public class GameCenter {
             String filePath = nList.item(i).getTextContent();
             try {
                 IArcadeGame arcade = (IArcadeGame) Class.forName(filePath).newInstance();
-//                Game game = new Game(arcade);
-//                myGames.add(game);
+                Game game = new Game(arcade);
+                myGames.add(game);
             }
             catch (IllegalAccessException e) {
                 System.out.println("illegal access: " + filePath);
