@@ -67,6 +67,7 @@ public class MapMode extends GameMode {
         myNumDisplayCols = Integer.parseInt(GameWindow
                 .importString("CameraWidth"));
         myBottomRightCorner = new Point(20, 30);
+        //List<GameObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         addHardcodedSprites();
     }
 
@@ -131,7 +132,7 @@ public class MapMode extends GameMode {
                 "MAP_COLLISION", center, GameWindow
                         .importImage("something"), this);
         addMapObject(center, test1);
-
+       
     }
 
     /**
