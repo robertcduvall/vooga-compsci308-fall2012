@@ -218,13 +218,13 @@ public class LevelEditor extends JFrame {
         spriteMenu.add(new AbstractAction("Load") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                load();
+                //load();
             }
         });
         spriteMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                newLevel();
+                //newLevel();
             }
         });
         bar.add(levelMenu);

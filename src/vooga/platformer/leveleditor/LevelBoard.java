@@ -49,6 +49,7 @@ public class LevelBoard extends Canvas implements ISavable {
 
     private static final long serialVersionUID = -3528519211577278934L;
     private Collection<Sprite> mySprites;
+    private Collection<String> myAvailableAttributes;
     private ISpritePlacementManager myPlacementManager;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
@@ -69,10 +70,14 @@ public class LevelBoard extends Canvas implements ISavable {
      */
     public LevelBoard(Dimension d) {
         mySprites = new ArrayList<Sprite>();
+        myAvailableAttributes = new ArrayList<String>();
+        myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
+        myAvailableAttributes.add("Patrolling"); myAvailableAttributes.add("Teammate");
         myPlacementManager = new SpritePlacementManager(this);
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
+        
         setupMouseInput();
     }
 
@@ -263,11 +268,25 @@ public class LevelBoard extends Canvas implements ISavable {
             else if ("Delete".equals(event.getActionCommand())) {
                 mySprites.remove(mySprite);
             }
+            else {
+                System.out.println("Added " + event.getActionCommand() + " as an attribute");
+            }
+            
         }
         private void createAttributeWindow() {
-            //JPopupMenu pop = new JPopupMenu();
-            // create a list of attributes from the resource file 
-            // and get appropriate values for certain attributes.
+             JPopupMenu pop = new JPopupMenu();
+
+             for (String att : myAvailableAttributes) {
+                JMenuItem j = new JMenuItem(att);
+                j.addActionListener(this);
+                pop.add(j);
+             }
+             pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
+
+
+/*           create a list of attributes from the resource file 
+             and get appropriate values for certain attributes.
+*/
         }
     }
 }
