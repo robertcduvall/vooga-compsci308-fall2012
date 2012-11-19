@@ -14,8 +14,20 @@ import util.reflection.*;
  * @author Bruce
  */
 public class SloppyCollisionChecker extends BasicCollisionChecker {
+    
+    public SloppyCollisionChecker() {
+        this.addCollisionEvents("games.platformerdemo.Brick", "games.platformerdemo.Enemy", "games.platformerdemo.BrickEnemy");
+        
+        
+        this.addCollisionEvents("games.platformerdemo.Brick", "games.platformerdemo.Player", "games.platformerdemo.BrickMovingObject");
+        
+        
+        this.addCollisionEvents("games.platformerdemo.Enemy", "games.platformerdemo.Player", "games.platformerdemo.EnemyPlayer");
+        
+        System.out.print("done");
+    }
 
-    @Override
+    /*@Override
     public CollisionEvent buildCollisionEvent (GameObject a, GameObject b) {
         String className;
         String nameA;
@@ -59,11 +71,11 @@ public class SloppyCollisionChecker extends BasicCollisionChecker {
         }
         else {
             return null;
-        }*/
+        }
         
         CollisionEvent ce = (CollisionEvent) Reflection.createInstance(className, a, b);
       
         return ce;
-    }
+    }*/
 
 }
