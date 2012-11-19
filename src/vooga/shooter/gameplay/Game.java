@@ -301,9 +301,9 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-//        Game myGame = new Game(new Applet());
-//        myGame.initializeGame(new Applet(this), false);
-//        
+        Game myGame = new Game(new Applet());
+        myGame.initializeGame(new Applet(), false);
+        
     }
 
     @Override
@@ -329,9 +329,5 @@ public class Game implements DrawableComponent, IArcadeGame{
         // TODO Auto-generated method stub
         return null;
     }
-    
-//    public static void main(String[] args) {
-//     Game myGame = new Game(new Applet());
-//     myGame.initializeGame(new Canvas(myGame), false);
-//    }
 }
+    
