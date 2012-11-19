@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 import javax.imageio.ImageIO;
 
 
@@ -66,6 +67,11 @@ public class Sprite {
         myImage = getImage(myImagePath);
         myUpdateStrategies = new ArrayList<Map<String, String>>();
         myAttributes = new HashMap<String, String>();
+    }
+    
+ 
+    protected Sprite() {
+        
     }
 
     private Image getImage(String filename) {
@@ -320,5 +326,9 @@ public class Sprite {
      */
     public boolean contains(int x, int y) {
         return isIntersecting(new Rectangle(x, y));
+    }
+    
+    protected void setImage (Image img) {
+        myImage = img;
     }
 }
