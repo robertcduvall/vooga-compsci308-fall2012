@@ -1,20 +1,19 @@
-package util.input.tests.android;
+package util.input.tests.twocontroller;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Stroke;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import javax.swing.JPanel;
-import util.input.android.events.LineSegment;
+import src.util.input.tests.android.ArrayList;
+import src.util.input.tests.android.BasicStroke;
+import src.util.input.tests.android.Color;
+import src.util.input.tests.android.Graphics;
+import src.util.input.tests.android.Graphics2D;
+import src.util.input.tests.android.InterruptedException;
+import src.util.input.tests.android.LineSegment;
+import src.util.input.tests.android.Override;
+import src.util.input.tests.android.Stroke;
+import src.util.input.tests.android.SuppressWarnings;
+import src.util.input.tests.android.TestAndroidController;
+import src.util.input.tests.android.Thread;
 
-
-public class AndroidDrawGame extends JPanel implements Runnable {
-
+public class TwoController {
     /**
      * 
      * @param gameSurface
@@ -48,16 +47,7 @@ public class AndroidDrawGame extends JPanel implements Runnable {
         Graphics2D pen = (Graphics2D) g;
         pen.setColor(Color.BLACK);
         pen.fillRect(0, 0, getWidth(), getHeight());
-        pen.setColor(Color.BLUE);
-        Stroke stroke = new BasicStroke (5.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-        pen.setStroke(stroke);
-        for (int i = mySegments.size() - 1; i >= 0; i--) {
-            LineSegment l = mySegments.get(i);
-            pen.drawLine((int) (l.getRelativeStartX() * getWidth()),
-                         (int) (l.getRelativeStartY() * getHeight()),
-                         (int) (l.getRelativeEndX() * getWidth()),
-                         (int) (l.getRelativeEndY() * getHeight()));
-        }
+  
 
     }
 
@@ -106,21 +96,6 @@ public class AndroidDrawGame extends JPanel implements Runnable {
         }
     }
 
-    public void addLine (LineSegment l) {
-        mySegments.add(l);
-
-    };
-    
-    public void changeToRed(){
-        myPenColor = Color.RED;
-    }
-    
-    public void clearScreen(){
-        mySegments.clear();
-    }
-    
-    public void changeToBlue(){
-        myPenColor = Color.BLUE;
-    }
+ 
 
 }
