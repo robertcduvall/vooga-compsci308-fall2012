@@ -9,6 +9,7 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -17,11 +18,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import util.imageprocessing.ImageLoop;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gameobject.MapTileObject;
 import vooga.turnbased.gameobject.MovingMapObject;
 import vooga.turnbased.gameobject.TestMonster;
@@ -61,15 +65,33 @@ public class GameManager {
         myEvents = new LinkedList<ModeEvent>();
         myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
-        generateHardcodedSprites();
+        generateHardcodedLevel();
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.resume();
         configureInputHandling();
     }
 
-    private void generateHardcodedSprites () { // factory will do this job
+    private void generateHardcodedLevel () { // factory will do this job
         // eventually...
-        Sprite s = new Sprite();
+    	myMapMode.setNumDisplayRows(Integer.parseInt(GameWindow
+                .importString("CameraHeight")));
+        myMapMode.setNumDisplayCols(Integer.parseInt(GameWindow
+                .importString("CameraWidth")));
+        myMapMode.setBottomRight(new Point(20, 30));
+    	
+    	Sprite s = new Sprite();
+        for (int i = 0; i < myMapMode.getBottomRight().x; i++) {
+            for (int j = 0; j < myMapMode.getBottomRight().y; j++) {
+                Point p = new Point(i, j);
+                s = new Sprite();
+                s.addGameObject(new MapTileObject(s.getID(),
+                        "NO_ACTION", p, GameWindow
+                                .importImage("GrassImage"), myMapMode));
+                mySprites.put(s.getID(), s);
+            }
+        }
+    	
+        s = new Sprite();
         s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3,
                 GameWindow.importImage("something")));
         
@@ -88,15 +110,53 @@ public class GameManager {
 
         mySprites.put(s.getID(), s);
         
-        /*for (int i = 0; i < myBottomRightCorner.x; i++) {
-            for (int j = 0; j < myBottomRightCorner.y; j++) {
-                Point p = new Point(i, j);
-                addMapObject(p, new MapTileObject(ID,
-                        "NO_ACTION", p, GameWindow
-                                .importImage("GrassImage"), this));
-            }
-        }*/
+        center = new Point(8, 8);
+        Map<String, Image> images = new HashMap<String, Image>();
+        images.put("left", GameWindow.importImage("PlayerLeft"));
+        images.put("right", GameWindow.importImage("PlayerRight"));
+        images.put("down", GameWindow.importImage("PlayerDown"));
+        images.put("up", GameWindow.importImage("PlayerUp"));
+        Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
+        Image left = GameWindow.importImage("PlayerLeft");
+        Image left1 = GameWindow.importImage("PlayerLeft1");
+        Image left2 = GameWindow.importImage("PlayerLeft2");
+        Image right = GameWindow.importImage("PlayerRight");
+        Image right1 = GameWindow.importImage("PlayerRight1");
+        Image right2 = GameWindow.importImage("PlayerRight2");
+        Image up = GameWindow.importImage("PlayerUp");
+        Image up1 = GameWindow.importImage("PlayerUp1");
+        Image up2 = GameWindow.importImage("PlayerUp2");
+        Image down = GameWindow.importImage("PlayerDown");
+        Image down1 = GameWindow.importImage("PlayerDown1");
+        Image down2 = GameWindow.importImage("PlayerDown2");
+        List<Image> leftList = new ArrayList<Image>();
+        leftList.add(left);
+        leftList.add(left1);
+        leftList.add(left2);
+        imageLoops.put("left", new ImageLoop(leftList));
+        List<Image> rightList = new ArrayList<Image>();
+        rightList.add(right);
+        rightList.add(right1);
+        rightList.add(right2);
+        imageLoops.put("right", new ImageLoop(rightList));
+        List<Image> upList = new ArrayList<Image>();
+        upList.add(up);
+        upList.add(up1);
+        upList.add(up2);
+        imageLoops.put("up", new ImageLoop(upList));
+        List<Image> downList = new ArrayList<Image>();
+        downList.add(down);
+        downList.add(down1);
+        downList.add(down2);
+        imageLoops.put("down", new ImageLoop(downList));
 
+        s = new Sprite();
+        MapPlayerObject player = new MapPlayerObject(s.getID(), "MAP_COLLISION",
+                center, images, myMapMode);
+        player.setImageLoops(imageLoops);
+        myMapMode.setPlayer(player);
+        s.addGameObject(player);
+        mySprites.put(s.getID(), s);
     }
 
     public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
