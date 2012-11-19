@@ -66,7 +66,7 @@ public class ParticleTestApplet extends JApplet {
     public void start () {
         Image particleImage = new ImageIcon(
                 DensityTester.class.getResource("explosion.png")).getImage();
-        engine = new ParticleEngine(100, particleImage, new Point(300, 300), 20, 20);
+        engine = new ParticleEngine(10000, particleImage, new Point(300, 300), new Point(0,-1), 20, 200000);
         // create a timer to animate the canvas
         myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND,
                 new ActionListener() {
