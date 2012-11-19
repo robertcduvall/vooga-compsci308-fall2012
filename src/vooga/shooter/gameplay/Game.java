@@ -293,9 +293,13 @@ public class Game implements DrawableComponent, IArcadeGame {
     @Override
     public void setKeyboardListener (KeyListener k) {
         // TODO Auto-generated method stub
-
+        
     }
 
+    
+    public Dimension getCanvasDimension() {
+        return myCanvas.getSize();
+    }
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         // will eventually get Game to run without running it through Applet
