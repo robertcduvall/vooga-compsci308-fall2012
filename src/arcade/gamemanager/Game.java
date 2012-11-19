@@ -177,7 +177,7 @@ public class Game {
      * Returns the name of the game.
      */
     public String getGameName () {
-        return myGame.getName();
+        return myGameNode.getTextContent();
     }
 
     /**

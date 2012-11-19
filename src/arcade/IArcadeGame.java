@@ -1,8 +1,8 @@
 package arcade;
 
+import arcade.gamemanager.GameSaver;
 import java.awt.Image;
 import java.util.List;
-import arcade.gamemanager.GameSaver;
 
 
 /**
@@ -12,7 +12,7 @@ import arcade.gamemanager.GameSaver;
  * @author Michael Deng
  * 
  */
-public interface IArcadeGame {
+interface IArcadeGame {
 
     /**
      * This method is called by the Arcade to start the game
@@ -20,34 +20,34 @@ public interface IArcadeGame {
      * @param userPreferences string that contains any saved game data
      * @param s pointer to the GameSaver object
      */
-    public void runGame(String userPreferences, GameSaver s);
+    void runGame(String userPreferences, GameSaver s);
 
     /**
      * Method called by the Arcade to get screenshots of the game.
      * 
      * @return a list of images that the Arcade can display
      */
-    public List<Image> getScreenshots();
+    List<Image> getScreenshots();
 
     /**
      * Method called by the Arcade to get the profile image of the game.
      * 
      * @return the profile image of the game
      */
-    public Image getMainImage();
+    Image getMainImage();
 
     /**
      * Method called by the Arcade to get the description of the game.
      * 
      * @return a string containing a description of the game
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * Method called by the Arcade to get the name of the game.
      * 
      * @return The name of the game.
      */
-    public String getName();
+    String getName();
 
 }
