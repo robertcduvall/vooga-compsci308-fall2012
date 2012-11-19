@@ -36,6 +36,13 @@ import javax.swing.border.TitledBorder;
  */
 public class EditorLauncher extends JFrame {
 
+  //TEMPORARY
+    public static void main (String[] args) {
+        JFrame editorLauncher = new EditorLauncher("english");
+        editorLauncher.setVisible(true);
+    }
+    
+    
     private JLabel mySearchBoxLabel;
     private JList mySpriteOptions;
     private JPanel myLeft;
@@ -106,7 +113,7 @@ public class EditorLauncher extends JFrame {
         spriteList.setModel(new AbstractListModel() {
 
             private static final long serialVersionUID = 1L;
-            String[] strings = { "Item 1", "Item 2" };
+            String[] strings = { "Item 1", "Item 2", "Thing" };
 
             @Override
             public int getSize () {
