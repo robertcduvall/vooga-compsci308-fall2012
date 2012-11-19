@@ -68,6 +68,9 @@ public class Enemy extends Sprite {
         getBulletsFired().removeAll(deadBullets);
     }
 
+    /**
+     * Sets the methods for enemies.
+     */
     @Override
     void setMethods () {
         //if the enemy is hit by a player's bullet then both
