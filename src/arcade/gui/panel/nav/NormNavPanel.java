@@ -34,7 +34,7 @@ public class NormNavPanel extends ANavPanel {
 
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                getArcade().replacePanel("GameList");
+                getArcade().replacePanel("MainHome");
             }
               
           });
