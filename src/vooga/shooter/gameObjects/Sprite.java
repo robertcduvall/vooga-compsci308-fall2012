@@ -31,6 +31,8 @@ public abstract class Sprite implements SpriteActionInterface {
     protected static final String TOP_BOUND = "top";
     protected static final String BOTTOM_BOUND = "bottom";
     private static final int BULLET_SIZE = 10;
+    private static final int BULLET_SPEED = 10;
+    private static final int BULLET_DAMAGE = 1;
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
@@ -235,7 +237,7 @@ public abstract class Sprite implements SpriteActionInterface {
 
         Bullet b = new Bullet(new Point(getPosition().x, getPosition().y), new Dimension(
                 BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
-                new Point(0, -5), 1);
+                new Point(0, -BULLET_SPEED), BULLET_DAMAGE);
 
         this.getBulletsFired().add(b);
     }
