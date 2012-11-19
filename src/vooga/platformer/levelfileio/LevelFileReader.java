@@ -1,17 +1,18 @@
 package vooga.platformer.levelfileio;
 
+
+import java.awt.Image;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.util.xml.XMLUtils;
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -44,7 +45,7 @@ public class LevelFileReader {
      * @param levelFile File in XML format representing the level to be read
      */
 
-    public LevelFileReader (File levelFile) {
+    public LevelFileReader(File levelFile) {
         myDocument = XMLUtils.initializeDocument(levelFile);
         myLevelFile = levelFile;
         myRoot = myDocument.getDocumentElement();
@@ -65,7 +66,7 @@ public class LevelFileReader {
      * 
      * @return name of the level as a String
      */
-    public String getLevelID () {
+    public String getLevelID() {
         return XMLUtils.getTagValue("id", myRoot);
     }
 
@@ -74,7 +75,7 @@ public class LevelFileReader {
      * 
      * @return width of the level as an int
      */
-    public int getWidth () {
+    public int getWidth() {
         return XMLUtils.getTagInt("width", myRoot);
     }
 
@@ -83,7 +84,7 @@ public class LevelFileReader {
      * 
      * @return height of the level as an int
      */
-    public int getHeight () {
+    public int getHeight() {
         return XMLUtils.getTagInt("height", myRoot);
     }
 
@@ -93,9 +94,9 @@ public class LevelFileReader {
      * 
      * @return Image representing the background of the level
      */
-    public Image getBackgroundImage () {
+    public Image getBackgroundImage() {
         return XMLUtils.fileNameToImage(myLevelFile,
-                                        XMLUtils.getTagValue("backgroundImage", myRoot));
+                XMLUtils.getTagValue("backgroundImage", myRoot));
     }
 
     /**
@@ -125,9 +126,11 @@ public class LevelFileReader {
      * @return a collection of Sprite objects representing the level's
      *         gameObjects
      */
-    public Collection<Sprite> getSprites () {
-        NodeList spritesNode = myDocument.getElementsByTagName("gameObject");
-        Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
+
+    public Collection<Sprite> getSprites() {
+        NodeList spritesNode = myDocument.getElementsByTagName("gameobject");
+        Collection<Sprite> spritesList = new ArrayList<Sprite>(
+                spritesNode.getLength());
 
         for (int i = 0; i < spritesNode.getLength(); i++) {
             Node spriteNode = spritesNode.item(i);
@@ -154,22 +157,37 @@ public class LevelFileReader {
         return builtSprite;
     }
 
-    private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
-        NodeList strategiesNodeList = spriteElement.getElementsByTagName("strategies");
+    private void addUpdateStrategies(Element spriteElement, Sprite builtSprite) {
+        NodeList strategiesNodeList = spriteElement
+                .getElementsByTagName("strategies");
 
         for (int i = 0; i < strategiesNodeList.getLength(); i++) {
             Node strategiesNode = strategiesNodeList.item(i);
             if (strategiesNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element strategiesElement = (Element) strategiesNode;
-                NodeList strategyNodeList = strategiesElement.getElementsByTagName("strategy");
+                NodeList strategyNodeList = strategiesElement
+                        .getElementsByTagName("strategy");
 
                 for (int j = 0; j < strategyNodeList.getLength(); j++) {
                     Node strategyNode = strategyNodeList.item(j);
                     if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element strategyElement = (Element) strategyNode;
-                        Map<String, String> strategyMap = extractMapFromXML(strategyElement);
-                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"),
-                                                      strategyMap);
+
+                        NodeList paramNodeList = strategyElement
+                                .getChildNodes();
+                        Map<String, String> strategyMap = new HashMap<String, String>();
+
+                        for (int k = 0; k < paramNodeList.getLength(); k++) {
+                            Node paramNode = paramNodeList.item(k);
+                            if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
+                                Element paramElement = (Element) paramNode;
+                                strategyMap.put(paramElement.getTagName(),
+                                        XMLUtils.getTagValue(paramElement));
+                            }
+                        }
+                        // TODO resolve strategy using new level format API
+                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"), strategyMap);
+
                     }
                 }
             }

@@ -20,6 +20,7 @@ import java.util.Collections;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -45,7 +46,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * @author Paul Dannenberg, Sam Rang
  * 
  */
-public class LevelBoard extends Canvas implements ISavable {
+public class LevelBoard extends JPanel implements ISavable {
 
     private static final long serialVersionUID = -3528519211577278934L;
     private Collection<Sprite> mySprites;
@@ -167,6 +168,7 @@ public class LevelBoard extends Canvas implements ISavable {
      * @param g Graphics attached to level.
      */
     public void paint(Graphics g) {
+        super.paint(g);
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
     }
 
