@@ -9,11 +9,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import util.imageprocessing.ImageLoop;
-import vooga.turnbased.gamecore.GameManager.GameEvent;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.gameobject.MapTileObject;
@@ -78,7 +77,7 @@ public class MapMode extends GameMode {
             for (int j = 0; j < myBottomRightCorner.y; j++) {
                 Point p = new Point(i, j);
                 addMapObject(p, new MapTileObject(ID,
-                        GameManager.GameEvent.NO_ACTION, p, GameWindow
+                        "NO_ACTION", p, GameWindow
                                 .importImage("GrassImage"), this));
             }
         }
@@ -121,18 +120,18 @@ public class MapMode extends GameMode {
         downList.add(down1);
         downList.add(down2);
         imageLoops.put("down", new ImageLoop(downList));
-        
-        myPlayer = new MapPlayerObject(ID, GameManager.GameEvent.MAP_COLLISION,
+
+        myPlayer = new MapPlayerObject(ID, "MAP_COLLISION",
                 center, images, this);
         myPlayer.setImageLoops(imageLoops);
         addMapObject(center, myPlayer);
 
         center = new Point(5, 5);
         MovingMapObject test1 = new MovingMapObject(ID,
-                GameManager.GameEvent.MAP_COLLISION, center, GameWindow
+                "MAP_COLLISION", center, GameWindow
                         .importImage("something"), this);
         addMapObject(center, test1);
-        
+
     }
 
     /**
@@ -161,33 +160,33 @@ public class MapMode extends GameMode {
      *        Graphics onto which the map is drawn
      */
     @Override
-	public void paint(Graphics g) {
-		paintMapBackgroung(g);
-		List<MapObject> visibleSprites = getSpritesWithinCamera();
-		for(MapObject s : visibleSprites) {
-			s.paint(g);
-		}
-		myPlayer.paint(g);
-	}
+    public void paint (Graphics g) {
+        paintMapBackgroung(g);
+        List<MapObject> visibleSprites = getSpritesWithinCamera();
+        for (MapObject s : visibleSprites) {
+            s.paint(g);
+        }
+        myPlayer.paint(g);
+    }
 
-	private void paintMapBackgroung(Graphics g) {
-		Image background = GameWindow.importImage("TileBackground");
-		Dimension paneDim = getGameManager().getPaneDimension();
-		g.drawImage(background,0,0,paneDim.width,paneDim.width, null);
-	}
+    private void paintMapBackgroung (Graphics g) {
+        Image background = GameWindow.importImage("TileBackground");
+        Dimension paneDim = getGameManager().getPaneDimension();
+        g.drawImage(background, 0, 0, paneDim.width, paneDim.width, null);
+    }
 
-	private List<MapObject> getSpritesWithinCamera() {
-		List<MapObject> visibleSprites = new ArrayList<MapObject>();
-		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
-			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
-				List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
-				if(spritesOnTile != null) {
-					visibleSprites.addAll(spritesOnTile);
-				}
-			}
-		}
-		return visibleSprites;
-	}
+    private List<MapObject> getSpritesWithinCamera () {
+        List<MapObject> visibleSprites = new ArrayList<MapObject>();
+        for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
+            for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
+                List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
+                if (spritesOnTile != null) {
+                    visibleSprites.addAll(spritesOnTile);
+                }
+            }
+        }
+        return visibleSprites;
+    }
 
     @Override
     /**
@@ -241,8 +240,9 @@ public class MapMode extends GameMode {
             myTopLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows;
             displacement.y = 0;
         }
-        myCurrentCamera = new Rectangle(myTopLeftCoord.x - 1, myTopLeftCoord.y - 1,
-                myNumDisplayCols + 2, myNumDisplayRows + 2);
+        myCurrentCamera = new Rectangle(myTopLeftCoord.x - 1,
+                myTopLeftCoord.y - 1, myNumDisplayCols + 2,
+                myNumDisplayRows + 2);
         myOrigin = changeOriginForPlayer(displacement);
     }
 
@@ -251,38 +251,42 @@ public class MapMode extends GameMode {
      */
     private void updateMapObjects () {
         for (Point p : myMapObjects.keySet()) {
-        	List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
-            for (MapObject s : objectsOnTile) {
-            	if (!s.isVisible()) {
-            		objectsOnTile.remove(s);
-            	}
-                s.update(getGameManager().getDelayTime());
+            List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
+            Iterator<MapObject> it = objectsOnTile.iterator();
+            while (it.hasNext()) {
+                MapObject nextObject = it.next();
+                if (!nextObject.isVisible()) {
+                    it.remove();
+                }
+                else {
+                    nextObject.update(getGameManager().getDelayTime());
+                }
             }
         }
     }
 
-    public void processGameEvents () { // this can be optimized A LOT, only
+    private void processGameEvents () { // this can be optimized A LOT, only
         // check mapobjects that did something last turn
-    	for (MapObject m: getSpritesOnTile(myPlayer.getLocation().x, myPlayer.getLocation().y)) {
-    		if (m != myPlayer) {
-    			m.interact(myPlayer);
-    		}
-    	}
-    	
-        List<Map<GameEvent, List<Integer>>> myEvents = new ArrayList<Map<GameEvent, List<Integer>>>();
-        for (Point p : myMapObjects.keySet()) {
-            Map<GameEvent, List<Integer>> myTileEvents = new HashMap<GameEvent, List<Integer>>();
-            for (MapObject s : getSpritesOnTile(p.x, p.y)) {
-                if (!myTileEvents.containsKey(s.getEvent())) {
-                    myTileEvents.put(s.getEvent(), new ArrayList<Integer>());
-                }
-                myTileEvents.get(s.getEvent()).add(s.getID());
-            }
-            if (myTileEvents.keySet().size() > 0) {
-                myEvents.add(myTileEvents);
+        for (MapObject m : getSpritesOnTile(myPlayer.getLocation().x, myPlayer
+                .getLocation().y)) {
+            if (m != myPlayer) {
+                m.interact(myPlayer);
             }
         }
-        getGameManager().handleEvents(myEvents);
+
+        for (Point p : myMapObjects.keySet()) {
+            HashMap<String, List<Integer>> myTileEvents = new HashMap<String, List<Integer>>();
+            for (MapObject s : getSpritesOnTile(p.x, p.y)) {
+                if (!myTileEvents.containsKey(s.getModeEvent())) {
+                    myTileEvents
+                            .put(s.getModeEvent(), new ArrayList<Integer>());
+                }
+                myTileEvents.get(s.getModeEvent()).add(s.getID());
+            }
+            for(String s : myTileEvents.keySet()){
+                getGameManager().flagEvent(s, myTileEvents.get(s));
+            }
+        }
     }
 
     /**
@@ -346,9 +350,11 @@ public class MapMode extends GameMode {
                 myMapObjects.get(oldCoord).remove(s);
                 addMapObject(dest, s);
                 s.setLocation(dest);
-                s.setDirection(dir); // start moving in update() when direction is set
+                s.setMoving(true);
             }
         }
+        s.setDirection(dir); // direction changed even if the player is not
+                             // moving
     }
 
     @Override
@@ -398,22 +404,29 @@ public class MapMode extends GameMode {
             if (myPathFinder != null) {
                 myPathFinder.stop();
             }
-            Point target = new Point(e.getX() / myCurrentTileWidth + myTopLeftCoord.x, 
-            		e.getY() / myCurrentTileHeight + myTopLeftCoord.y);
+            Point target = new Point(e.getX() / myCurrentTileWidth
+                    + myTopLeftCoord.x, e.getY() / myCurrentTileHeight
+                    + myTopLeftCoord.y);
             myPathFinder = new PathFinder(this, myPlayer, target,
                     myBottomRightCorner);
         }
     }
-    
-    public Rectangle getCamera() {
-		return myCurrentCamera;
-	}
 
-	public Dimension getTileDimensions() {
-		return new Dimension(myCurrentTileWidth, myCurrentTileHeight);
-	}
+    public Rectangle getCamera () {
+        return myCurrentCamera;
+    }
 
-	public Point getOrigin() {
-		return myOrigin;
-	}
+    public Dimension getTileDimensions () {
+        return new Dimension(myCurrentTileWidth, myCurrentTileHeight);
+    }
+
+    public Point getOrigin () {
+        return myOrigin;
+    }
+
+    @Override
+    public void configureInputHandling () {
+        // will move all code for handling user input here
+        // once input api allows invoking methods with arguments
+    }
 }

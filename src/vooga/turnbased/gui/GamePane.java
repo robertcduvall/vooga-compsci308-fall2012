@@ -1,18 +1,21 @@
 /**
  * The canvas that paints game objects every for every myDelayTime milliseconds
- * Responds to input events 
+ * Responds to input events
+ * 
  * @author Rex, Vo
  */
 package vooga.turnbased.gui;
 
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import util.input.core.Controller;
 import vooga.turnbased.gamecore.GameManager;
+import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
+
 
 @SuppressWarnings("serial")
 public class GamePane extends DisplayPane implements Runnable {
@@ -25,7 +28,9 @@ public class GamePane extends DisplayPane implements Runnable {
 
     /**
      * Constructor of the canvas which displays the game
-     * @param gameWindow The GameWindow it belongs to
+     * 
+     * @param gameWindow
+     *        The GameWindow it belongs to
      */
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
@@ -35,8 +40,9 @@ public class GamePane extends DisplayPane implements Runnable {
         addMouseListener(new GameMouseListener());
         myGameManager = new GameManager(this);
         enableFocus();
+        configureInputHandling();
     }
-    
+
     /**
      * initialize properties when user switch to game
      */
@@ -48,38 +54,37 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * update game
      */
-    @Override
-    public void update(Graphics g) {
-    	myGameManager.update();
+    //@Override
+    public void update () {
+       myGameManager.update();
     }
-    
+
     /**
      * Paint gameobjects and background to the canvas using double buffering
      */
-    //@Override
-    public void paint(Graphics g) {
-    	Image nextFrameImage = createImage(getSize().width, getSize().height);
-    	Graphics nextFrameGraphics = nextFrameImage.getGraphics();
-    	myGameManager.paint(nextFrameGraphics);
-    	g.drawImage(nextFrameImage, 0, 0, null);
+    // @Override
+    public void paint (Graphics g) {
+        Image nextFrameImage = createImage(getSize().width, getSize().height);
+        Graphics nextFrameGraphics = nextFrameImage.getGraphics();
+        myGameManager.paint(nextFrameGraphics);
+        g.drawImage(nextFrameImage, 0, 0, null);
     }
-    
+
     /**
      * main game loop
      */
     @Override
     public void run () {
-    	long beforeTime, timeDiff, sleep;
+        long beforeTime, timeDiff, sleep;
         while (!myGameManager.isOver()) {
-        	beforeTime = System.currentTimeMillis();
-            myGameManager.update();
+            beforeTime = System.currentTimeMillis();
+            update();
             repaint();
-            
             timeDiff = System.currentTimeMillis() - beforeTime;
-	        sleep = myDelayTime - timeDiff;
-	        if (sleep < 0) {
-	        	sleep = 0;
-	        }
+            sleep = myDelayTime - timeDiff;
+            if (sleep < 0) {
+                sleep = 0;
+            }
             try {
                 Thread.sleep(sleep);
             }
@@ -88,13 +93,17 @@ public class GamePane extends DisplayPane implements Runnable {
             }
         }
     }
-    
+
+    public void configureInputHandling () {
+        // handle actions that shouldn't be passed down to gamemanager
+    }
+
     /**
      * event handling when user types anything
      */
     @Override
     public void keyTyped (KeyEvent e) {
-        //System.out.println("Typed " + e.getKeyCode());
+        // System.out.println("Typed " + e.getKeyCode());
     }
 
     /**
@@ -102,7 +111,7 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void keyPressed (KeyEvent e) {
-        //System.out.println("Pressed " + e.getKeyCode());
+        // System.out.println("Pressed " + e.getKeyCode());
         myGameManager.handleKeyPressed(e);
     }
 
@@ -111,18 +120,18 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void keyReleased (KeyEvent e) {
-        //System.out.println("Released " + e.getKeyCode());
+        // System.out.println("Released " + e.getKeyCode());
         myGameManager.handleKeyReleased(e);
     }
 
-    public int getDelayTime() {
-    	return myDelayTime;
+    public int getDelayTime () {
+        return myDelayTime;
     }
-    
+
     private class GameMouseListener extends MouseAdapter {
-    	@Override
-    	public void mouseClicked(MouseEvent e) {
-    		myGameManager.handleMouseClicked(e);
-    	}
+        @Override
+        public void mouseClicked (MouseEvent e) {
+            myGameManager.handleMouseClicked(e);
+        }
     }
 }

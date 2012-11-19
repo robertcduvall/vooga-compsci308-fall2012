@@ -21,7 +21,7 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class PathFinder implements Runnable {
 
-	private static final int ATTEMPT_INTERVAL = 30;
+	private static final int ATTEMPT_INTERVAL = 60;
 	private List<Point> myPath;
 	private MapMode myMap;
 	private boolean[][] myVisited;
@@ -180,7 +180,7 @@ public class PathFinder implements Runnable {
 	}
 	
 	private MapItemObject generatePathIndicator(Point p) {
-		return new MapItemObject(0, GameManager.GameEvent.NO_ACTION, p, GameWindow
+		return new MapItemObject(0, "NO_ACTION", p, GameWindow
                 .importImage("HighlightPath"), myMap);
 	}
 	

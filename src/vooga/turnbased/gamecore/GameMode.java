@@ -13,6 +13,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
+import util.input.factories.ControllerFactory;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.MapObject;
 
@@ -23,6 +26,8 @@ public abstract class GameMode {
     private final Class myObjectType;
 
     private ArrayList<GameObject> myObjects;
+    private KeyboardController myKeyboardController;
+    private MouseController myMouseController;
 
     /**
      * Constructor
@@ -33,8 +38,23 @@ public abstract class GameMode {
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
         myObjectType = modeObjectType;
+        setControllers();
+        configureInputHandling();
         // myObjects = new
         // ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
+    }
+
+    private void setControllers () {
+        myKeyboardController = getGameManager().getKeyboardController();
+        myMouseController = getGameManager().getMouseController();
+    }
+
+    public KeyboardController getKeyboardController () {
+        return myKeyboardController;
+    }
+
+    public MouseController getMouseController () {
+        return myMouseController;
     }
 
     protected GameManager getGameManager () {
@@ -44,8 +64,7 @@ public abstract class GameMode {
     public void setObjects () { // to be deleted later, really only want sprites
                                 // correlating to involvedSpriteIDs in
                                 // gamemanager's handleEvent
-        myObjects = new ArrayList<GameObject>(myGameManager
-                .getModesObjects(myObjectType));
+        myObjects = new ArrayList<GameObject>(myGameManager.getGameObjectsOfSpecificMode(myObjectType));
     }
 
     public ArrayList<GameObject> getObjects () {
@@ -71,11 +90,13 @@ public abstract class GameMode {
 
     public abstract void update ();
 
-    public abstract void processGameEvents ();
+    //public abstract void processGameEvents ();
 
     public abstract void handleKeyPressed (KeyEvent e);
 
     public abstract void handleKeyReleased (KeyEvent e);
+
+    public abstract void configureInputHandling ();
 
     /**
      * Override if any sub-mode needs to handle MouseClicked events

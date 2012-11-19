@@ -1,63 +1,136 @@
 package util.input.android.events;
-
+/**
+ * This class wraps information from an Android controller button event.
+ * @author Ben Schwab
+ *
+ */
 public class AndroidButtonEvent extends AndroidControllerEvent {
-    
+    /**
+     * A constant representing that a button was just pushed.
+     */
+    public static final int BUTTON_PRESSED = 401;
+    /**
+     * A constant representing that a button was just released.
+     */
+    public static final int BUTTON_RELEASED = 402;
     private int myButtonID;
     private int myButtonAction;
     private int myEventCode;
-    public static final int BUTTON_PRESSED = 401;
-    public static final int BUTTON_RELEASED = 402;
     
     /**
      * 
-     * A data wrapper for the components found on an Android playstation controller.
-     *
+     * @param buttonID The ID of the button
+     * @param buttonAction The action int for the button
      */
-    public static final class Playstation{
-        public static final int TRIANGLE =1;
-        public static final int SQUARE =2;
-        public static final int CIRCLE =3;
-        public static final int X =4;
-        public static final int UP =5;
-        public static final int DOWN =6;
-        public static final int LEFT = 7;
-        public static final int RIGHT =8;
-        public static final int START =9;
-    }
-    
-    /**
-     * 
-     * A data wrapper for the components found on an Android Gameboy controller.
-     *
-     */
-    public static final class GameBoy{
-        public static final int TRIANGLE =100;
-        public static final int SQUARE =101;
-        public static final int CIRCLE =102;
-        public static final int X =103;
-        public static final int UP =104;
-        public static final int DOWN =105;
-        public static final int LEFT = 106;
-        public static final int RIGHT =107;
-    }
-    
-    
-    public AndroidButtonEvent(int buttonID, int buttonAction){
-        String eventCodeString = ""+buttonID+""+buttonAction;
+    public AndroidButtonEvent (int buttonID, int buttonAction) {
+        String eventCodeString = "" + buttonID + "" + buttonAction;
         myEventCode = Integer.parseInt(eventCodeString);
         myButtonID = buttonID;
         myButtonAction = buttonAction;
     }
-    
-    public int getID(){
+    /**
+     * Get the ID of the button event.
+     * @return The ID of the button event
+     */
+    public int getID () {
         return myButtonID;
     }
-    
-    public int getPressType(){
+    /**
+     * Get the type of button event (press/release)
+     * @return an integer representing the type of button event (press/release).
+     */
+    public int getPressType () {
         return myButtonAction;
     }
-    
-    public int getEventCode(){
+
+    /**
+     * Get the combined button type / press type code
+     * @return the combined integer of the button press type and id
+     */
+    public int getEventCode () {
         return myEventCode;
     }
+
+    /**
+     * 
+     * A data wrapper for the components found on an Android playstation
+     * controller.
+     * 
+     */
+    public static final class Playstation {
+        /**
+         * 
+         */
+        public static final int TRIANGLE = 1;
+        /**
+         * Triangle Button
+         */
+        public static final int SQUARE = 2;
+        /**
+         * Square Button
+         */
+        public static final int CIRCLE = 3;
+        /**
+         * Circle Button
+         */
+        public static final int X = 4;
+        /**
+         * Up arrow
+         */
+        public static final int UP = 5;
+        /**
+         * Down arrow
+         */
+        public static final int DOWN = 6;
+        /**
+         * Left arrow
+         */
+        public static final int LEFT = 7;
+        /**
+         * Right arrow
+         */
+        public static final int RIGHT = 8;
+        /**
+         * Start arrow
+         */
+        public static final int START = 9;
+    }
+
+    /**
+     * 
+     * A data wrapper for the components found on an Android Gameboy controller.
+     * 
+     */
+    public static final class GameBoy {
+        /**
+         * A Button.
+         */
+        public static final int A = 100;
+        /**
+         * B Button
+         */
+        public static final int B = 101;
+        /**
+         * Up arrow
+         */
+        public static final int UP = 102;
+        /**
+         * Down arrow
+         */
+        public static final int DOWN = 103;
+        /**
+         * Left arrow
+         */
+        public static final int LEFT = 104;
+        /**
+         * Right arrow
+         */
+        public static final int RIGHT = 105;
+        /**
+         * Start button
+         */
+        public static final int START = 106;
+        
+    }
+   
 }

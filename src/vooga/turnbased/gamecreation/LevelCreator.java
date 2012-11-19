@@ -2,11 +2,19 @@ package vooga.turnbased.gamecreation;
 
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import util.reflection.Reflection;
 import util.xml.XmlParser;
+import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.MapPlayerObject;
 import vooga.turnbased.sprites.Sprite;
 
 /**
@@ -55,6 +63,63 @@ public class LevelCreator {
                 myDocumentElement, "backgroundImage");
     }
 
+    /**
+     *
+     * @return Player-controlled map object
+     */
+    public MapObject parseMapPlayer () {
+        Element mapPlayer = isolateMapPlayer();
+        
+        String className = myXmlParser.getTextContent(mapPlayer, "class");
+        int id = myXmlParser.getIntContent(mapPlayer, "id");
+        String event = parseEvent(mapPlayer);
+        Point point = parseLocation(mapPlayer);
+        Map<String, Image> imageMap = parseImagesMap(mapPlayer);
+        
+        return (MapPlayerObject) Reflection.createInstance(className, id, event, point, imageMap);
+        
+        //return new MapPlayerObject(id, event, point, imageMap, null);
+    }
+
+    private Element isolateMapPlayer () {
+        NodeList playerList = myXmlParser.getElementsByName(myDocumentElement, "player");
+        Element player = (Element) playerList.item(0);
+        NodeList mapList = myXmlParser.getElementsByName(player, "map");
+        Element mapPlayer = (Element) mapList.item(0);
+        return mapPlayer;
+    }
+
+    private String parseEvent (Element element) {
+        String eventString = myXmlParser.getTextContent(element, "event");
+//        GameManager.ModeEvent event = null;
+//        for (GameManager.ModeEvent current : GameManager.ModeEvent.values()) {
+//            if (current.toString().equals(eventString)) {
+//                event = current;
+//            }
+//        }
+//        return event;
+        return eventString;
+    }
+
+    private Point parseLocation (Element element) {
+        NodeList locationList = myXmlParser.getElementsByName(element, "location");
+        Element location = (Element) locationList.item(0); 
+        Point point = new Point(myXmlParser.getIntContent(location, "x"), 
+                myXmlParser.getIntContent(location, "y"));
+        return point;
+    }
+
+    private Map<String, Image> parseImagesMap (Element element) {
+        NodeList imageList = myXmlParser.getElementsByName(element, "image");
+        Map<String, Image> imageMap = new HashMap<String, Image>();
+        for (int i = 0; i < imageList.getLength(); i++) {
+        Element imageData = (Element) imageList.item(i);
+            Image image = myXmlParser.getImageContent(imageData, "source");
+            String direction = myXmlParser.getTextContent(imageData, "direction");
+            imageMap.put(direction, image);
+        }
+        return imageMap;
+    }
     /**
      *
      * @return List of Sprites in the Level

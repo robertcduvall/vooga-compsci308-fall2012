@@ -110,7 +110,7 @@ public class BattleMode extends GameMode {
 
     private void endBattle () {
         System.out.println("End battle!");
-        getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new ArrayList());
+        getGameManager().flagEvent("BATTLE_OVER", new ArrayList());
     }
 
     private boolean isBattleOver () {
@@ -189,9 +189,8 @@ public class BattleMode extends GameMode {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
     }
 
-    @Override
-    public void processGameEvents () {
-        // TODO Auto-generated method stub
-
-    }
+	@Override
+	public void configureInputHandling() {
+		// handle inputs
+	}
 }
