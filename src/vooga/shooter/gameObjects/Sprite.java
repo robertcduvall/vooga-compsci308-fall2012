@@ -19,6 +19,12 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  *
  */
 public abstract class Sprite implements SpriteActionInterface {
+    
+    protected static String HIT_BY_BULLET = "hitbybullet";
+    protected static String HIT_BY_ENEMY = "hitbyenemy";
+    protected static String PLAYER_TYPE = "player";
+    protected static String BULLET_TYPE = "bullet";
+    protected static String ENEMY_TYPE = "enemy";
     private static final int BULLET_SIZE = 10;
     private static final double BULLET_VELOCITY_SCALE = 1.5;
     private Point myPosition;

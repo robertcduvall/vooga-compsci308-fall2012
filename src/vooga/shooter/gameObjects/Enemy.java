@@ -47,7 +47,7 @@ public class Enemy extends Sprite {
      * @return "enemy"
      */
     public String getType() {
-        return "enemy";
+        return ENEMY_TYPE;
     }
 
     /**

@@ -82,14 +82,14 @@ public class Player extends Sprite {
             }
         });
 
-        getMapper().addPair("hitbybullet", new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_BULLET, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 decreaseHealth(((Bullet) o[0]).getDamage());
                 ((Bullet) o[0]).die();
             }
         });
 
-        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 die();
             }
@@ -121,7 +121,7 @@ public class Player extends Sprite {
      * @return player
      */
     public String getType() {
-        return "player";
+        return PLAYER_TYPE;
     }
 
     /**

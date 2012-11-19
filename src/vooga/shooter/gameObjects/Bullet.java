@@ -16,9 +16,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * (add your own name as you edit)
  */
 public class Bullet extends Sprite {
-    private static String HIT_BY_BULLET = "hitbybullet";
-    private static String HIT_BY_ENEMY = "hitbyenemy";
-    private static String PLAYER = "player";
+
     private int myDamage;
     private Sprite myOwner;
 
@@ -78,7 +76,7 @@ public class Bullet extends Sprite {
      * @return "bullet"
      */
     public String getType() {
-        return "bullet";
+        return BULLET_TYPE;
     }
 
     /**
@@ -102,7 +100,7 @@ public class Bullet extends Sprite {
         //if an enemy shoots an enemy, nothing happens
         getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
             public void doAction(Object...o) {
-                if (PLAYER.equals(myOwner.getType())) {
+                if (PLAYER_TYPE.equals(myOwner.getType())) {
                     die();
                     ((Enemy) o[0]).die();
                 }
