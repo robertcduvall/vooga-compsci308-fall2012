@@ -15,13 +15,13 @@ import vooga.shooter.gameObjects.Sprite;
  * 
  */
 public class Level {
-    private List<Sprite> mySpriteList;
+    private List<Sprite> mySprites;
 
     /**
      * Initializes Sprite and Character lists
      */
     public Level () {
-        mySpriteList = new ArrayList<Sprite>();
+        mySprites = new ArrayList<Sprite>();
     }
 
     /**
@@ -30,7 +30,7 @@ public class Level {
      * @return list of contained sprites
      */
     public Iterable<Sprite> getSpriteList () {
-        return Collections.unmodifiableList(mySpriteList);
+        return Collections.unmodifiableList(mySprites);
     }
     
     /**
@@ -39,7 +39,7 @@ public class Level {
      * @param s Sprite to be added
      */
     public void addSprite (Sprite s) {
-        mySpriteList.add(s);
+        mySprites.add(s);
     }
 
     /**
@@ -48,7 +48,7 @@ public class Level {
      * @param s Sprite to be removed
      */
     public void removeSprite (Sprite s) {
-        mySpriteList.remove(s);
+        mySprites.remove(s);
     }
 
 
@@ -60,9 +60,9 @@ public class Level {
      * @param offsetY relative point of origin -y
      */
     public void paintSprites (Graphics g, int offsetX, int offsetY) {
-        for (Sprite s : mySpriteList) {
+        for (Sprite s : mySprites) {
             // uncomment this when the errors in Sprite.java are fixed
-            //s.draw(g);
+            // s.draw(g);
         }
     }
     
@@ -76,6 +76,19 @@ public class Level {
     public String serialize() {
         // TODO: implement this using a shared writer.
         return null;
+    }
+    
+    /**
+     * For now, we're going to assume that you win the level
+     * by destroying all the enemies. This might need to be
+     * customizable.
+     * 
+     * @return a boolean representing whether or not the level
+     * has been won.
+     */
+    
+    public boolean winningConditionsMet () {
+        return mySprites.isEmpty();
     }
 
 //    /**
