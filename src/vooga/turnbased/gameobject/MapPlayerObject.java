@@ -40,7 +40,8 @@ public class MapPlayerObject extends MovingMapObject {
     }
 
     /**
-     * Creates a MapPlayerObject with a series of images instead of a single image.
+     * Creates a MapPlayerObject with a series of images instead of a single
+     * image.
      * 
      * @param id Integer ID associated with the MapObject.
      * @param event GameEvent that can be passed to GameManager.
@@ -82,6 +83,7 @@ public class MapPlayerObject extends MovingMapObject {
     @Override
     public void update (int delayTime) {
         super.update(delayTime);
+
         myFrameCount++;
         if (myFrameCount >= ANIMATION_FRAME_RATE) {
             animateCharactor();

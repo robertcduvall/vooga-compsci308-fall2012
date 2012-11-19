@@ -1,10 +1,3 @@
-/**
- * Manage Game Sprites, and change the game modes when certain events are
- * triggered
- * Check gameover conditions and goals of games
- * 
- * @author rex, Vo
- */
 package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
