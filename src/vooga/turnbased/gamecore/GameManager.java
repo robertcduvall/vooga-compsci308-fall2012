@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import util.imageprocessing.ImageLoop;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
@@ -35,6 +34,13 @@ import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
 
 
+/**
+ * GameManager class that manages interations between the map and battle modes
+ * of the game.
+ * 
+ * @author Turnbased team
+ * 
+ */
 public class GameManager {
 
     private final GamePane myGamePane;
@@ -74,43 +80,38 @@ public class GameManager {
 
     private void generateHardcodedLevel () { // factory will do this job
         // eventually...
-    	myMapMode.setNumDisplayRows(Integer.parseInt(GameWindow
-                .importString("CameraHeight")));
-        myMapMode.setNumDisplayCols(Integer.parseInt(GameWindow
-                .importString("CameraWidth")));
+        myMapMode.setNumDisplayRows(Integer.parseInt(GameWindow.importString("CameraHeight")));
+        myMapMode.setNumDisplayCols(Integer.parseInt(GameWindow.importString("CameraWidth")));
         myMapMode.setBottomRight(new Point(20, 30));
-    	
-    	Sprite s = new Sprite();
+        Sprite s = new Sprite();
         for (int i = 0; i < myMapMode.getBottomRight().x; i++) {
             for (int j = 0; j < myMapMode.getBottomRight().y; j++) {
                 Point p = new Point(i, j);
                 s = new Sprite();
-                s.addGameObject(new MapTileObject(s.getID(),
-                        "NO_ACTION", p, GameWindow
-                                .importImage("GrassImage"), myMapMode));
+                s.addGameObject(new MapTileObject(s.getID(), "NO_ACTION", p, GameWindow
+                        .importImage("GrassImage"), myMapMode));
                 mySprites.put(s.getID(), s);
             }
         }
-    	
+
         s = new Sprite();
-        s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3,
-                GameWindow.importImage("something")));
-        
+        s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3, GameWindow
+                .importImage("something")));
         Point center = new Point(5, 5);
-        MovingMapObject test1 = new MovingMapObject(0,
-                "MAP_COLLISION", center, GameWindow
-                        .importImage("something"), myMapMode);
-        
+        MovingMapObject test1 =
+                new MovingMapObject(0, "MAP_COLLISION", center,
+                                    GameWindow.importImage("something"), myMapMode);
+
         s.addGameObject(test1);
 
         mySprites.put(s.getID(), s);
 
         s = new Sprite();
-        s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3,
-                GameWindow.importImage("PlayerImage")));
+        s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3, GameWindow
+                .importImage("PlayerImage")));
 
         mySprites.put(s.getID(), s);
-        
+
         center = new Point(8, 8);
         Map<String, Image> images = new HashMap<String, Image>();
         images.put("left", GameWindow.importImage("PlayerLeft"));
@@ -152,14 +153,22 @@ public class GameManager {
         imageLoops.put("down", new ImageLoop(downList));
 
         s = new Sprite();
-        MapPlayerObject player = new MapPlayerObject(s.getID(), "MAP_COLLISION",
-                center, images, myMapMode);
+        MapPlayerObject player =
+                new MapPlayerObject(s.getID(), "MAP_COLLISION", center, images, myMapMode);
         player.setImageLoops(imageLoops);
         myMapMode.setPlayer(player);
         s.addGameObject(player);
         mySprites.put(s.getID(), s);
     }
 
+    /**
+     * Returns a list of GameObjects of the indicated type.
+     * 
+     * @param c Class of desired GameObjects.
+     * @param <T> Type of class in the list.
+     * @return modeObjects A list of all requested GameObjects within all
+     *         sprites.
+     */
     public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
         List<T> modeObjects = new ArrayList<T>();
         for (Sprite s : mySprites.values()) {
@@ -168,35 +177,59 @@ public class GameManager {
         return modeObjects;
     }
 
+    /**
+     * Removes the sprite with the given ID from the list of sprites in the
+     * game.
+     * 
+     * @param spriteID Int ID of sprite to be removed.
+     */
     public void deleteSprite (int spriteID) {
         mySprites.remove(spriteID);
     }
 
+    /**
+     * Checks whether the game is over.
+     * 
+     * @return isOver True if game is over, false if not.
+     */
     public boolean isOver () {
         return isOver;
     }
 
+    /**
+     * Updates the actve game mode and handles any events occurring.
+     */
     public void update () {
         myCurrentGameMode.update();
         handleEvents();
     }
 
     /**
-     * paint the images to the buffer
+     * Paints the images to the buffer.
      * 
-     * @param g
-     *        the Graphics object of the offScreenImage
+     * @param g The Graphics object of the offScreenImage.
      */
     public void paint (Graphics g) {
         myCurrentGameMode.paint(g);
     }
 
-    public void flagEvent(String eventName, List<Integer> involvedSpriteIDs){
+    /**
+     * Adds an event to the list of events to handle.
+     * 
+     * @param eventName String name of event to add.
+     * @param involvedSpriteIDs List of integer IDs of sprites involved in given
+     *        action.
+     */
+    public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
         myEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
     }
-    
+
+    /**
+     * Takes events to be handled and deals with each according to the mode and
+     * sprites involved.
+     */
     private void handleEvents () {
-        while(!myEvents.isEmpty()){
+        while (!myEvents.isEmpty()) {
             ModeEvent m = myEvents.remove(0);
             handleEvent(m.getModeEventName(), m.getEventInvolvedIDs());
         }
@@ -213,41 +246,82 @@ public class GameManager {
         }
         else if ("BATTLE_OVER".equals(eventName)) {
             changeCurrentMode(myMapMode);
-        } else {
+        }
+        else {
             System.err.println("Unrecognized mode event requested.");
         }
     }
 
+    /**
+     * Pauses current mode, switches to given GameMode, and begins that mode.
+     * 
+     * @param mode GameMode type to be switched to.
+     */
     public void changeCurrentMode (GameMode mode) {
         myCurrentGameMode.pause();
         myCurrentGameMode = mode;
         myCurrentGameMode.resume();
     }
 
+    /**
+     * Passes key input to the GameMode.
+     * 
+     * @param e KeyEvent to be handled.
+     */
     public void handleKeyPressed (KeyEvent e) {
         myCurrentGameMode.handleKeyPressed(e);
     }
 
+    /**
+     * Passes key input to the GameMode.
+     * 
+     * @param e KeyEvent to be handled.
+     */
     public void handleKeyReleased (KeyEvent e) {
         myCurrentGameMode.handleKeyReleased(e);
     }
 
+    /**
+     * Passes mouse input to the GameMode.
+     * 
+     * @param e MouseEvent to be handled.
+     */
     public void handleMouseClicked (MouseEvent e) {
         myCurrentGameMode.handleMouseClicked(e);
     }
 
+    /**
+     * Returns the Dimension associated with the current game window.
+     * 
+     * @return Size of current GamePane.
+     */
     public Dimension getPaneDimension () {
         return myGamePane.getSize();
     }
 
+    /**
+     * Returns the current time delay for the game window.
+     * 
+     * @return Current time delay.
+     */
     public int getDelayTime () {
         return myGamePane.getDelayTime();
     }
 
+    /**
+     * Returns the current KeyboardController.
+     * 
+     * @return KeyboardController in use.
+     */
     public KeyboardController getKeyboardController () {
         return myKeyboardController;
     }
 
+    /**
+     * Returns the current MouseController.
+     * 
+     * @return MouseController in use.
+     */
     public MouseController getMouseController () {
         return myMouseController;
     }
