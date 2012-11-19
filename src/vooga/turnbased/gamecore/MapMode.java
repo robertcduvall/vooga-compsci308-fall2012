@@ -56,11 +56,17 @@ public class MapMode extends GameMode {
     }
 
     @Override
+    /**
+     * pause the game
+     */
     public void pause () {
         myMapObjects.clear();
     }
 
     @Override
+    /**
+     * resume/start the game
+     */
     public void resume () {
         myNumDisplayRows = Integer.parseInt(GameWindow
                 .importString("CameraHeight"));
