@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
+import util.xml.XmlWriter;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -19,12 +20,12 @@ import java.util.List;
  * GUI for making and editing Levels for a 2D Shooter game.
  * 
  * @author Zachary Hopping
- * 
+ * @author guytracy
  */
 public class LevelEditor implements ActionListener, KeyListener {
 
     private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
-    private static final String IMAGE_LOCATION = "/images/";
+    private static final String IMAGE_LOCATION = "/vooga/shooter/images/";
     boolean compactToolbars = false;
     boolean borderedButtons = false;
 
@@ -46,6 +47,7 @@ public class LevelEditor implements ActionListener, KeyListener {
     private JButton openBtn;
     private JButton saveBtn;
     private JButton clearBtn;
+    private JButton backgroundBtn;
 
     /* Menu bar */
     private JMenuBar menuBar;
@@ -70,6 +72,9 @@ public class LevelEditor implements ActionListener, KeyListener {
     public LevelEditor () {
         // TODO initialize all variables and load a level to edit/make a new
         // level
+        
+        myLevel = new Level();
+        
         mainFrame = new JFrame("Level Editor");
         mainFrame.setPreferredSize(FRAME_SIZE);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -158,17 +163,20 @@ public class LevelEditor implements ActionListener, KeyListener {
         openBtn  = makeBtn("Open...", "/vooga/shooter/resources/open.gif",  "Open level...");
         newBtn   = makeBtn("New",     "/vooga/shooter/resources/new.gif",   "New level");
         clearBtn = makeBtn("Clear",   "/vooga/shooter/resources/clear.gif", "Reset level (Delete all sprites)");
+        clearBtn = makeBtn("Clear",   "/vooga/shooter/resources/clear.gif", "Reset level (Delete all sprites)");
+        backgroundBtn = makeBtn("Set",   "/vooga/shooter/resources/redo.gif", "Set Background");
         
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
         myToolBar.add(clearBtn);
+        myToolBar.add(backgroundBtn);
     }
     
     private void setupImagePanel() {
         GridLayout experimentLayout = new GridLayout(0,2);
         leftPanel.setLayout(experimentLayout);   
-        List<ImageIcon> results = loadImages("/vooga/shooter/images/");
+        List<ImageIcon> results = loadImages(IMAGE_LOCATION);
         
         for (ImageIcon b: results) {
             JButton newButton = new JButton();
@@ -232,7 +240,8 @@ public class LevelEditor implements ActionListener, KeyListener {
         else if (source == saveBtn) {
             if (openFile == null) {
                 // file has never ben saved, so we need to save as instead
-
+                String file_path = System.getProperty("user.dir") + "/src/vooga/shooter/levels/level1.xml";
+                XmlWriter.writeXML(myLevel.pack(), file_path);
             }
             else {
                 saveFile(openFile);
@@ -243,6 +252,25 @@ public class LevelEditor implements ActionListener, KeyListener {
             if (success == JFileChooser.APPROVE_OPTION) {
                 openFile(chooser.getSelectedFile());
             }
+        }
+        
+        else if (source == backgroundBtn) {
+            //int success = chooser.showOpenDialog(mainFrame);
+            //if (success == JFileChooser.APPROVE_OPTION) {
+            //    openFile(chooser.getSelectedFile());
+            //}
+            //myLevel.setBackgroundImage( IMAGE_LOCATION + "alienship.gif");
+            JFileChooser backchooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
+            int response = backchooser.showOpenDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                myLevel.setBackgroundImage(backchooser.getSelectedFile());
+            }
+            //ImageIcon backGroundIcon = new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + "alienship.gif"));
+            //JButton newButton = new JButton();
+            //newButton.setIcon(backGroundIcon);
+            //rightPanel.add(newButton);
+            //newBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
+           // myCanvas.paint()
         }
 
     }
