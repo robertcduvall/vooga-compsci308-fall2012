@@ -47,13 +47,13 @@ public class Game implements DrawableComponent, IArcadeGame{
     private ImageIcon myImageIcon;
     private final int myPlayerHealth = 10;
     private final Dimension myPlayerSize = new Dimension(20, 20);
-    private final Point myPlayerOneStart = new Point(400, 300);
-    private final Point myPlayerTwoStart = new Point(400, 500);
+    private final Point myPlayerOneStart = new Point(400, 400);
+    private final Point myPlayerTwoStart = new Point(200, 400);
 
 
     public Game(Applet a) {
         myCanvas = a;
-        initializeGame(myCanvas, false);
+        initializeGame(myCanvas, true);
     }
     
     private void initializeGame (Applet c, boolean multiplayer) {
@@ -70,7 +70,7 @@ public class Game implements DrawableComponent, IArcadeGame{
         addSprite(myPlayer);
 
         if (multiplayer) {
-            myPlayer2 = new Player(myPlayerOneStart, myPlayerSize,
+            myPlayer2 = new Player(myPlayerTwoStart, myPlayerSize,
                     new Dimension(myCanvas.getWidth(),
                     myCanvas.getHeight()),
                     myPlayerImage, myPlayerHealth);
