@@ -12,7 +12,7 @@ import util.input.factories.ControllerFactory;
 public class TestAndroidController {
     
     public static void main(String [] args){
-        AndroidController testController = (AndroidController) ControllerFactory.createAndroidController();
+        AndroidController testController = (AndroidController) ControllerFactory.createAndroidController(1);
         System.out.println("you are running a test android controller");
         TestAndroidController myTester = new TestAndroidController();
         try {

@@ -19,10 +19,11 @@ public class AndroidController extends Controller<AndroidListener> implements An
 
     /**
      * Create a new android controller.
+     * @param controllerNum 
      */
-    public AndroidController () {
+    public AndroidController (int controllerNum) {
         super();
-        AndroidBluetoothServer server = new AndroidBluetoothServer(0);
+        AndroidBluetoothServer server = new AndroidBluetoothServer(controllerNum);
         server.subscribe(this);
         server.startServer();
     }

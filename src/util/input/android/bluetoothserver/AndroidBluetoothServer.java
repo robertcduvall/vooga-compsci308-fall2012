@@ -2,6 +2,7 @@ package util.input.android.bluetoothserver;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.bluetooth.UUID;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
@@ -22,6 +23,11 @@ public class AndroidBluetoothServer {
 
     private Thread myWaitThread;
     private List<AndroidListener> myListeners;
+    private int myControllerNumber;
+    private UUID myServerID1 = new UUID("04c6093b00001000800000805f9b34fb", false);
+    private UUID myServerID2= new UUID("14c6093b00001000800000805f9b34fb", false);
+    private UUID myServerID3= new UUID("24c6093b00001000800000805f9b34fb", false);
+    private UUID myServerID4= new UUID("34c6093b00001000800000805f9b34fb", false);
 
     /**
      * Create a new bluetooth server. You must
@@ -30,6 +36,8 @@ public class AndroidBluetoothServer {
     public AndroidBluetoothServer (int controllerNumber) {
         myWaitThread = new Thread(new WaitThread(controllerNumber, this));
         myListeners = new ArrayList<AndroidListener>();
+        myControllerNumber = controllerNumber;
+
     }
     /**
      * Start the server listening for bluetooth connections.
@@ -73,7 +81,24 @@ public class AndroidBluetoothServer {
         for (AndroidListener listener : myListeners) {
             listener.onTouchMovement(l);
         }
-        
+
     }
+
+    protected UUID getActiveUUID(){
+
+        switch(myControllerNumber){
+            case 1:
+                return myServerID1;
+
+            case 2:
+                return myServerID2;
+            case 3:
+                return myServerID3;
+            case 4:
+                return myServerID4;
+        }
+        return myServerID1;
+    }
+
 
 }
