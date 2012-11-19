@@ -21,10 +21,10 @@ import vooga.shooter.gameObjects.Sprite;
  * @author David Spruill, modest contributions from Kathleen Lan
  */
 public class ParticleEngine {
-    private static final int DEFAULT_COUNT = 100;
-    private static final Point DEFAULT_DIRECTION = new Point(0, 0);
+    private static final int DEFAULT_COUNT = 1;
+    private static final Point DEFAULT_DIRECTION = new Point(0, 10);
     private static final int DEFAULT_VARIANCE = 15; //i.e. 15%
-    private static final int DEFAULT_DURATION = 100;
+    private static final int DEFAULT_DURATION = 10000;
 
     private int spriteCount;
     private Image spriteImage;
@@ -84,7 +84,6 @@ public class ParticleEngine {
     }
 
     public void update() {
-    	System.out.println("Update!");
     	for (Particle p: particles){
     		if (p.stillExists())
     			p.update();

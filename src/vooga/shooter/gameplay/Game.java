@@ -21,6 +21,7 @@ import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.implementation.Level1;
 import vooga.shooter.level_editor.Level;
+import vooga.shooter.gameplay.Applet;
 
 
 /**
@@ -32,6 +33,8 @@ import vooga.shooter.level_editor.Level;
  * @author Jesse Starr
  */
 public class Game implements DrawableComponent, IArcadeGame{
+    
+    
     private static final String HIT_BY = "hitby";
 
     private List<Sprite> mySprites;
@@ -39,7 +42,7 @@ public class Game implements DrawableComponent, IArcadeGame{
     private Player myPlayer2;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
-    private Canvas myCanvas;
+    private Applet myCanvas;
     private Image myPlayerImage;
     private ImageIcon myImageIcon;
     private final int myPlayerHealth = 10;
@@ -47,11 +50,17 @@ public class Game implements DrawableComponent, IArcadeGame{
     private final Point myPlayerOneStart = new Point(400, 300);
     private final Point myPlayerTwoStart = new Point(400, 500);
 
-    private void initializeGame (Canvas c, boolean multiplayer) {
+
+    public Game(Applet a) {
+        myCanvas = a;
+        initializeGame(myCanvas, false);
+    }
+    
+    private void initializeGame (Applet c, boolean multiplayer) {
         myCanvas = c;
         mySprites = new ArrayList<Sprite>();
         myImageIcon = new ImageIcon(this.getClass().getResource(
-                        "../images/alien.png"));
+                        "../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
         myPlayer = new Player(myPlayerOneStart, myPlayerSize,
                            new Dimension(myCanvas.getWidth(),
@@ -269,10 +278,7 @@ public class Game implements DrawableComponent, IArcadeGame{
          */
         @Override
         public void keyReleased (KeyEvent e) {
-            myNumKeysPressed--;
-            if (myNumKeysPressed == 0) {
                 myPlayer.doEvent("-1", null);
-            }
         }
 
         @Override
@@ -295,8 +301,8 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        Game myGame = new Game();
-        myGame.initializeGame(new Canvas(this), false);
+        Game myGame = new Game(new Applet());
+        myGame.initializeGame(new Applet(), false);
         
     }
 
@@ -323,9 +329,5 @@ public class Game implements DrawableComponent, IArcadeGame{
         // TODO Auto-generated method stub
         return null;
     }
-    
-    public static void main(String[] args) {
-     Game myGame = new Game();
-     myGame.initializeGame(new Canvas(myGame), false);
-    }
 }
+    
