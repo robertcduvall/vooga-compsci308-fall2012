@@ -103,7 +103,8 @@ public class Game implements DrawableComponent, IArcadeGame {
 
         for (Sprite s1 : getSprites()) {
             for (Sprite s2 : getSprites()) {
-                if (s1.getImage() == null || s2.getImage() == null) {
+                if (s1.getImage() == null || s2.getImage() == null
+                        || s1 == s2) {
                     continue;
                 }
 
@@ -118,9 +119,10 @@ public class Game implements DrawableComponent, IArcadeGame {
 
                     // might not need this second one if going through
                     // all combinations of sprites anyway
-                    key = HIT_BY + collides.get(0).getType();
-                    collides.get(1).doEvent(key, collides.get(0));
+//                    key = HIT_BY + collides.get(0).getType();
+//                    collides.get(1).doEvent(key, collides.get(0));
                 }
+                collides.clear();
             }
         }
     }
@@ -169,6 +171,7 @@ public class Game implements DrawableComponent, IArcadeGame {
                 return ret;
             }
         }
+
         return ret;
     }
 

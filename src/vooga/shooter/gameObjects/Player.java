@@ -44,7 +44,7 @@ public class Player extends Sprite {
     void setMethods () {
         getMapper().addPair(Integer.toString(KeyEvent.VK_LEFT), new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                if (checkBounds("LEFT_BOUND")) {
+                if (checkBounds(LEFT_BOUND)) {
                     setVelocity(-SPRITE_MOVEMENT, getVelocity().y);
                 }
                 else {
@@ -55,7 +55,7 @@ public class Player extends Sprite {
 
         getMapper().addPair(Integer.toString(KeyEvent.VK_UP), new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                if (checkBounds("TOP_BOUND")) {
+                if (checkBounds(TOP_BOUND)) {
                     setVelocity(getVelocity().x, -SPRITE_MOVEMENT);
                 }
                 else {
@@ -66,7 +66,7 @@ public class Player extends Sprite {
 
         getMapper().addPair(Integer.toString(KeyEvent.VK_RIGHT), new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                if (checkBounds("RIGHT_BOUND")) {
+                if (checkBounds(RIGHT_BOUND)) {
                     setVelocity(SPRITE_MOVEMENT, getVelocity().y);
                 }
                 else {
@@ -77,7 +77,7 @@ public class Player extends Sprite {
 
         getMapper().addPair(Integer.toString(KeyEvent.VK_DOWN), new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                if (checkBounds("BOTTOM_BOUND")) {
+                if (checkBounds(BOTTOM_BOUND)) {
                     setVelocity(getVelocity().x, SPRITE_MOVEMENT);
                 }
                 else {

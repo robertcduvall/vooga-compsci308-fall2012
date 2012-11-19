@@ -173,8 +173,7 @@ public abstract class Sprite implements SpriteActionInterface {
     public void update() {
         // if this sprite is out of bounds (top or bottom) then
         // it is out of the game
-        if (getHealth() < 0 || !checkBounds(BOTTOM_BOUND)
-                || !checkBounds(TOP_BOUND)) {
+        if (getHealth() < 0) {
             this.die();
         }
         else {
@@ -235,7 +234,7 @@ public abstract class Sprite implements SpriteActionInterface {
 
         Bullet b = new Bullet(new Point(getPosition().x, getPosition().y), new Dimension(
                 BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
-                new Point(0, -5), 1);
+                new Point(0, -5), 1, this);
 
         this.getBulletsFired().add(b);
     }
