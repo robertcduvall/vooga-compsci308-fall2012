@@ -7,14 +7,18 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import arcade.IArcadeGame;
+import arcade.gamemanager.GameSaver;
 import vooga.shooter.gameObjects.Bullet;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
+import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.implementation.Level1;
 import vooga.shooter.level_editor.Level;
 
@@ -27,7 +31,7 @@ import vooga.shooter.level_editor.Level;
  * @author Stephen Hunt
  * @author Jesse Starr
  */
-public class Game {
+public class Game implements DrawableComponent, IArcadeGame{
     private static final String HIT_BY = "hitby";
 
     private List<Sprite> mySprites;
@@ -44,8 +48,10 @@ public class Game {
     private final Point myPlayerTwoStart = new Point(400, 500);
 
     private void initializeGame (Canvas c, boolean multiplayer) {
+        myCanvas = c;
+        mySprites = new ArrayList<Sprite>();
         myImageIcon = new ImageIcon(this.getClass().getResource(
-                        "../vooga/shooter/images/alien.png"));
+                        "../images/alien.png"));
         myPlayerImage = myImageIcon.getImage();
         myPlayer = new Player(myPlayerOneStart, myPlayerSize,
                            new Dimension(myCanvas.getWidth(),
@@ -64,7 +70,6 @@ public class Game {
         }
 
         Level firstLevel = new Level1(this);
-        myCanvas = c;
         myCanvas.addKeyListener(new KeyboardListener());
         startLevel(firstLevel);
     }
@@ -138,10 +143,8 @@ public class Game {
             ret.add(s2);
             return ret;
         }
-
         // will be bounds for the bullets from sprites
         Rectangle bulletR;
-
         // checks for bullets from 1st sprite hitting 2nd sprite
         for (Bullet b : s1.getBulletsFired()) {
             bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
@@ -152,7 +155,6 @@ public class Game {
                 return ret;
             }
         }
-
         // checks for bullets from 2nd sprite hitting 1st sprite
         for (Bullet b : s2.getBulletsFired()) {
             bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
@@ -163,7 +165,6 @@ public class Game {
                 return ret;
             }
         }
-
         return ret;
     }
 
@@ -185,7 +186,6 @@ public class Game {
                 s.paint(pen);
             }
         }
-
         getSprites().removeAll(deadSprites);
     }
 
@@ -279,5 +279,53 @@ public class Game {
         public void keyTyped (KeyEvent e) {
         }
 
+    }
+
+    @Override
+    public void setMouseListener (MouseMotionListener m) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void setKeyboardListener (KeyListener k) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void runGame (String userPreferences, GameSaver s) {
+        Game myGame = new Game();
+        myGame.initializeGame(new Canvas(this), false);
+        
+    }
+
+    @Override
+    public List<Image> getScreenshots () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Image getMainImage () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getDescription () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getName () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    public static void main(String[] args) {
+     Game myGame = new Game();
+     myGame.initializeGame(new Canvas(myGame), false);
     }
 }

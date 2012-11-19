@@ -207,6 +207,9 @@ public class LevelBoard extends Canvas implements ISavable {
         JMenuItem j3 = new JMenuItem("Add attribute");
         j3.addActionListener(sh);
         pop.add(j3);
+        JMenuItem j4 = new JMenuItem("Delete");
+        j4.addActionListener(sh);
+        pop.add(j4);
         pop.show(this.getParent(), e.getX(), e.getY());
     }
     /**
@@ -255,8 +258,16 @@ public class LevelBoard extends Canvas implements ISavable {
                 LevelBoard.this.add(ns);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
-                
+                createAttributeWindow();
             }
+            else if ("Delete".equals(event.getActionCommand())) {
+                mySprites.remove(mySprite);
+            }
+        }
+        private void createAttributeWindow() {
+            //JPopupMenu pop = new JPopupMenu();
+            // create a list of attributes from the resource file 
+            // and get appropriate values for certain attributes.
         }
     }
 }

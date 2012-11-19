@@ -11,6 +11,11 @@ import org.w3c.dom.NodeList;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
 
+/**
+ * 
+ * @author Kang
+ *
+ */
 public class GameXmlWriter {
 	
     private XmlParser myXmlParser;

@@ -107,12 +107,12 @@ public class SocialCenter {
      * return operation status
      */
     public boolean sendMessage (String sender, String receiver, String content) {
-        String filePath = "myUserMessageFilePath" + receiver + ".xml";
+        String filePath = myUserMessageFilePath + receiver + ".xml";
         File f = new File(filePath);
         XmlParser parser = new XmlParser(f);
         Document doc = parser.getDocument();
         Element root = parser.getDocumentElement();
-        Element message = XmlBuilder.appendElement(doc, root, "Message", "");
+        Element message = XmlBuilder.appendElement(doc, root, "message", "");
         XmlBuilder.appendElement(doc, message, "receiver", receiver);
         XmlBuilder.appendElement(doc, message, "content", content);
         XmlWriter.writeXML(doc, filePath);

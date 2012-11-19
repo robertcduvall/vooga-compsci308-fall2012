@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import util.input.android.bluetoothserver.AndroidBluetoothServer;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.JoyStickEvent;
+import util.input.android.events.LineSegment;
 import util.input.inputhelpers.UKeyCode;
 import util.input.interfaces.listeners.AndroidListener;
 
@@ -18,10 +19,11 @@ public class AndroidController extends Controller<AndroidListener> implements An
 
     /**
      * Create a new android controller.
+     * @param controllerNum 
      */
-    public AndroidController () {
+    public AndroidController (int controllerNum) {
         super();
-        AndroidBluetoothServer server = new AndroidBluetoothServer(0);
+        AndroidBluetoothServer server = new AndroidBluetoothServer(controllerNum);
         server.subscribe(this);
         server.startServer();
     }
@@ -86,6 +88,26 @@ public class AndroidController extends Controller<AndroidListener> implements An
         AndroidBluetoothServer server = new AndroidBluetoothServer(0);
         server.subscribe(this);
         server.startServer();
+    }
+
+    @Override
+    public void onTouchMovement (LineSegment l) {
+        try {
+            performReflections(l, "onTouchMovement");
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        } 
+        
     }
 
 }

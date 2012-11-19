@@ -2,6 +2,7 @@ package util.input.interfaces.listeners;
 
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.JoyStickEvent;
+import util.input.android.events.LineSegment;
 
 
 /**
@@ -28,5 +29,10 @@ public interface AndroidListener {
      * Method called when an android controller loses connection with the server.
      */
     void onControllerDisconnect();
+    /**
+     * Method called when an android controller has a draw action on a touch screen.
+     * @param l line segment data wrapper
+     */
+    void onTouchMovement(LineSegment l);
 
 }
