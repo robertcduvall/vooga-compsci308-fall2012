@@ -132,5 +132,30 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
         public static final int START = 106;
         
     }
+    
+    public static final class TouchController {
+        
+        /**
+         * A Button.
+         */
+        public static final int A = 200;
+        /**
+         * B Button
+         */
+        public static final int B = 201;
+        /**
+         * X Button
+         */
+        public static final int X = 202;
+        /**
+         * Y Button
+         */
+        public static final int Y = 203;
+        /**
+         * Start button
+         */
+        public static final int START = 204;
+        
+    }
    
 }

@@ -30,8 +30,8 @@ public class GameFrame extends JFrame {
         contentPane.setLayout(new BorderLayout());
         setSize(myWidth, myHeight);
         setTitle("SampleGame");
-        //AndroidDrawGame testGame = new AndroidDrawGame();
-        TwoController testGame = new TwoController();
+        AndroidDrawGame testGame = new AndroidDrawGame();
+        //TwoController testGame = new TwoController();
         add(testGame, BorderLayout.CENTER);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

@@ -92,9 +92,7 @@ public class TwoController extends JPanel implements Runnable, AndroidListener  
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.DOWN, AndroidButtonEvent.BUTTON_RELEASED, squareTwo, "toggleMoveDown");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.LEFT, AndroidButtonEvent.BUTTON_RELEASED, squareTwo, "toggleMoveLeft");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.RIGHT, AndroidButtonEvent.BUTTON_RELEASED, squareTwo, "toggleMoveRight");
-            //myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.CIRCLE, AndroidButtonEvent.BUTTON_PRESSED, this, "testMethod");
-            
-            //myWiiController.setControl(WiiController.WIIMOTE_BUTTON_A, WiiController.BUTTON_PRESSED, this, "testMethod");
+        
         }
         catch (NoSuchMethodException e) {
          
@@ -104,6 +102,38 @@ public class TwoController extends JPanel implements Runnable, AndroidListener  
          
             e.printStackTrace();
         }
+        
+        myAndroidControllerTwo.subscribe(new AndroidListener(){
+
+            @Override
+            public void onScreenPress (AndroidButtonEvent b) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onJoyStickMove (JoyStickEvent j) {
+                double mag = j.getMyMagnitude()*4;
+                double angle = j.getMyAngle();
+                int x = (int) (mag*Math.cos(Math.toRadians(angle)));
+                int y = (int) (-mag*Math.sin(Math.toRadians(angle)));
+                squareTwo.setNextMove(x,y);
+                
+            }
+
+            @Override
+            public void onControllerDisconnect () {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onTouchMovement (LineSegment l) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
         
         KeyboardController  myKeyboardController = (KeyboardController)ControllerFactory.createKeyboardController(this);
         try {
@@ -124,10 +154,6 @@ public class TwoController extends JPanel implements Runnable, AndroidListener  
           
             e.printStackTrace();
         }
-  
-        
-        
-        
     }
 
     /**
@@ -212,7 +238,6 @@ public class TwoController extends JPanel implements Runnable, AndroidListener  
         int y = (int) (-mag*Math.sin(Math.toRadians(angle)));
        // System.out.println(x+" "+y);
         squareOne.setNextMove(x,y);
-        
     }
 
     @Override
