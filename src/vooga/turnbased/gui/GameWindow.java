@@ -94,7 +94,7 @@ public class GameWindow extends JFrame {
      * @return
      */
     public static String importString(String stringName) {
-        return myResources.getString(stringName); 
+        return myResources.getString(stringName);
     }
     
     /**
