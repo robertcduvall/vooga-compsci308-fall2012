@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.pack.Packable;
 import vooga.shooter.gameObjects.Sprite;
@@ -69,18 +70,6 @@ public class Level implements Packable<Level>{
     }
     
     /**
-     * Serializes the Level into the proper xml format.
-     * This stores all the information about the level
-     * and the sprites it contains.
-     * @return String the Level serialized as an xml string.
-     */
-    
-    public String serialize() {
-        // TODO: implement this using a shared writer.
-        return null;
-    }
-    
-    /**
      * For now, we're going to assume that you win the level
      * by destroying all the enemies. This might need to be
      * customizable.
@@ -94,13 +83,13 @@ public class Level implements Packable<Level>{
     }
 
     @Override
-    public Element pack () {
+    public Document pack () {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Level unpack (Element xmlData) {
+    public Level unpack (Document xmlData) {
         // TODO Auto-generated method stub
         return null;
     }
