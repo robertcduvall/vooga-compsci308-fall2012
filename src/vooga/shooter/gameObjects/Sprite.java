@@ -20,12 +20,16 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  */
 public abstract class Sprite implements SpriteActionInterface {
     
-    protected static String HIT_BY_BULLET = "hitbybullet";
-    protected static String HIT_BY_ENEMY = "hitbyenemy";
-    protected static String HIT_BY_PLAYER = "hitbyplayer";
-    protected static String PLAYER_TYPE = "player";
-    protected static String BULLET_TYPE = "bullet";
-    protected static String ENEMY_TYPE = "enemy";
+    protected static final String HIT_BY_BULLET = "hitbybullet";
+    protected static final String HIT_BY_ENEMY = "hitbyenemy";
+    protected static final String HIT_BY_PLAYER = "hitbyplayer";
+    protected static final String PLAYER_TYPE = "player";
+    protected static final String BULLET_TYPE = "bullet";
+    protected static final String ENEMY_TYPE = "enemy";
+    protected static final String LEFT_BOUND = "left";
+    protected static final String RIGHT_BOUND = "right";
+    protected static final String TOP_BOUND = "top";
+    protected static final String BOTTOM_BOUND = "bottom";
     private static final int BULLET_SIZE = 10;
     private Point myPosition;
     private Point myVelocity;
@@ -303,8 +307,8 @@ public abstract class Sprite implements SpriteActionInterface {
     public void update() {
         // if this sprite is out of bounds (top or bottom) then
         // it is out of the game
-        if (getHealth() < 0 || !checkBounds("bottom")
-                || !checkBounds("top")) {
+        if (getHealth() < 0 || !checkBounds(BOTTOM_BOUND)
+                || !checkBounds(TOP_BOUND)) {
             this.die();
         }
         else {
@@ -384,19 +388,19 @@ public abstract class Sprite implements SpriteActionInterface {
 
     public boolean checkBounds(String s) {
         //don't go past right
-        if ("right".equals(s) && getRight() >= getBounds().width) {
+        if (RIGHT_BOUND.equals(s) && getRight() >= getBounds().width) {
             return false;
         }
         //don't pass left
-        else if ("left".equals(s) && getLeft() <= 0) {
+        else if (LEFT_BOUND.equals(s) && getLeft() <= 0) {
             return false;
         }
         //don't go past top
-        else if ("top".equals(s) && getTop() <= 0) {
+        else if (TOP_BOUND.equals(s) && getTop() <= 0) {
             return false;        
         }
         //don't pass bottom
-        else if ("bottom".equals(s) && getBottom() >= getBounds().height) {
+        else if (BOTTOM_BOUND.equals(s) && getBottom() >= getBounds().height) {
             return false;
         }
 

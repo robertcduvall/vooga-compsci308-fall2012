@@ -75,17 +75,17 @@ public class Enemy extends Sprite {
     void setMethods () {
         //if the enemy is hit by a player's bullet then both
         //bullet and enemy die
-        getMapper().addPair("hitbybullet", new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_BULLET, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
-                if ("player".equals(bulletOwnerType)) {
+                if (PLAYER_TYPE.equals(bulletOwnerType)) {
                     die();
                     ((Bullet) o[0]).die();
                 }
             }
         });
 
-        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 die();
                 ((Player) o[0]).die();
@@ -93,6 +93,6 @@ public class Enemy extends Sprite {
         });
 
         //do nothing if an enemy intersects an enemy
-        getMapper().addPair("hitbyenemy", this);
+        getMapper().addPair(HIT_BY_ENEMY, this);
     }
 }

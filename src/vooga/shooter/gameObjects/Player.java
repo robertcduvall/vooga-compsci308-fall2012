@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
@@ -19,6 +20,8 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  */
 public class Player extends Sprite {
     private static final int SPRITE_MOVEMENT = 10;
+    private static final String NO_KEY_PRESSED = "-1";
+
     /**
      * Constructs a player for the user to control.
      * @param position the center of the sprite image
@@ -41,10 +44,9 @@ public class Player extends Sprite {
      */
     @Override
     void setMethods() {
-        //37 is the int value for left arrow key
-        getMapper().addPair("37", new SpriteActionInterface() {
+        getMapper().addPair(Integer.toString(KeyEvent.VK_LEFT), new SpriteActionInterface() {
             public void doAction(Object...o) {
-                if(checkBounds("left")) {
+                if(checkBounds("LEFT_BOUND")) {
                     setVelocity(-SPRITE_MOVEMENT, getVelocity().y);
                 }
                 else {
@@ -53,10 +55,9 @@ public class Player extends Sprite {
             }
         });
 
-        //38 is the int value for up arrow key
-        getMapper().addPair("38", new SpriteActionInterface() {
+        getMapper().addPair(Integer.toString(KeyEvent.VK_UP), new SpriteActionInterface() {
             public void doAction(Object...o) {
-                if(checkBounds("top")) {
+                if(checkBounds("TOP_BOUND")) {
                     setVelocity(getVelocity().x, -SPRITE_MOVEMENT);
                 }
                 else {
@@ -65,10 +66,9 @@ public class Player extends Sprite {
             }
         });
 
-        //39 is the int value for right arrow key
-        getMapper().addPair("39", new SpriteActionInterface() {
+        getMapper().addPair(Integer.toString(KeyEvent.VK_RIGHT), new SpriteActionInterface() {
             public void doAction(Object...o) {
-                if(checkBounds("right")) {
+                if(checkBounds("RIGHT_BOUND")) {
                     setVelocity(SPRITE_MOVEMENT, getVelocity().y);
                 }
                 else {
@@ -77,10 +77,9 @@ public class Player extends Sprite {
             }
         });
 
-        //40 is the int value for down arrow key
-        getMapper().addPair("40", new SpriteActionInterface() {
+        getMapper().addPair(Integer.toString(KeyEvent.VK_DOWN), new SpriteActionInterface() {
             public void doAction(Object...o) {
-                if(checkBounds("bottom")) {
+                if(checkBounds("BOTTOM_BOUND")) {
                     setVelocity(getVelocity().x, SPRITE_MOVEMENT);
                 }
                 else {
@@ -89,15 +88,13 @@ public class Player extends Sprite {
             }
         });
 
-        //32 is the int value for spacebar key
-        getMapper().addPair("32", new SpriteActionInterface() {
+        getMapper().addPair(Integer.toString(KeyEvent.VK_SPACE), new SpriteActionInterface() {
             public void doAction(Object...o) {
                 fireBullet();
             }
         });
 
-        //-1 is the int value for no key pressed
-        getMapper().addPair("-1", new SpriteActionInterface() {
+        getMapper().addPair(NO_KEY_PRESSED, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 setVelocity(0, 0);
             }
