@@ -46,7 +46,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     private ImageIcon myImageIcon;
     private final int myPlayerHealth = 10;
     private final Dimension myPlayerSize = new Dimension(20, 20);
-    private final Point myPlayerOneStart = new Point(400, 400);
+    private Point myPlayerOneStart;
     private final Point myPlayerTwoStart = new Point(200, 400);
 
     public Game (Applet a) {
@@ -60,6 +60,7 @@ public class Game implements DrawableComponent, IArcadeGame {
         myEnemies = new ArrayList<Enemy>();
         myImageIcon = new ImageIcon(this.getClass().getResource("../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
+        myPlayerOneStart = new Point((myCanvas.getWidth()/2), ((myCanvas.getHeight() - 50)));
         myPlayer =
                 new Player(myPlayerOneStart, myPlayerSize, new Dimension(myCanvas.getWidth(),
                                                                          myCanvas.getHeight()),
@@ -291,9 +292,13 @@ public class Game implements DrawableComponent, IArcadeGame {
     @Override
     public void setKeyboardListener (KeyListener k) {
         // TODO Auto-generated method stub
-
+        
     }
 
+    
+    public Dimension getCanvasDimension() {
+        return myCanvas.getSize();
+    }
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         // will eventually get Game to run without running it through Applet
