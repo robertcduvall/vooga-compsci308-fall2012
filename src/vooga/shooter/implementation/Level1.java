@@ -32,7 +32,7 @@ public class Level1 extends Level {
     }
 
     public void startLevel () {
-        imageIcon = new ImageIcon(this.getClass().getResource("../vooga/shooter/images/alien.png"));
+        imageIcon = new ImageIcon(this.getClass().getResource("../images/alien.png"));
         enemyImage = imageIcon.getImage();
         for (int i = 0; i < NUMBER_OF_ENEMIES; i++) {
             myGame.addEnemy(new Enemy(new Point(100 + (10 * i), 100), new Dimension(20, 20),

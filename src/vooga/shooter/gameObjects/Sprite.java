@@ -301,9 +301,10 @@ public abstract class Sprite implements SpriteActionInterface {
                 || myPosition.y < 0) {
             this.die();
         }
-
-        myPosition.translate(myVelocity.x, myVelocity.y);
-        continueUpdate();
+        else {
+            myPosition.translate(myVelocity.x, myVelocity.y);
+            continueUpdate();
+        }
     }
 
     protected abstract void continueUpdate();
@@ -376,7 +377,7 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void fireBullet() {
         ImageIcon iib = new ImageIcon(this.getClass().getResource(
-                "../vooga/shooter/images/playerbullet.png"));
+                "../images/playerbullet.png"));
         Image bulletImage = iib.getImage();
 
         Bullet b = new Bullet(getPosition(), new Dimension(
