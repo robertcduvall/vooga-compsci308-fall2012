@@ -233,7 +233,7 @@ public abstract class Sprite implements SpriteActionInterface {
                 "../images/playerbullet.png"));
         Image bulletImage = iib.getImage();
 
-        Bullet b = new Bullet(getPosition(), new Dimension(
+        Bullet b = new Bullet(new Point(getPosition().x, getPosition().y), new Dimension(
                 BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
                 new Point(0, -5), 1);
 
