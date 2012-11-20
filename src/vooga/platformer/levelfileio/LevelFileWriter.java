@@ -58,16 +58,16 @@ public final class LevelFileWriter {
                                   String cameraType) {
         Document doc = XmlUtilities.makeDocument();
 
-        Element level = doc.createElement("level");
+        Element level = doc.createElement(XmlTags.DOCUMENT);
         doc.appendChild(level);
 
-        level.setAttribute("type", levelType);
-        XmlUtilities.appendElement(doc, level, "id", levelName);
-        XmlUtilities.appendElement(doc, level, "width", String.valueOf(width));
-        XmlUtilities.appendElement(doc, level, "height", String.valueOf(height));
-        XmlUtilities.appendElement(doc, level, "backgroundImage", backgroundImage);
-        XmlUtilities.appendElement(doc, level, "collisionChecker", collisionCheckerType);
-        XmlUtilities.appendElement(doc, level, "camera", cameraType);
+        level.setAttribute(XmlTags.CLASS_NAME, levelType);
+        XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
+        XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
+        XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
+        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
+        XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionCheckerType);
+        XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
 
         addLevelObjects(levelObjects, doc, level);
 
@@ -79,14 +79,16 @@ public final class LevelFileWriter {
     private static void addLevelObjects (Collection<Sprite> levelObjects, Document doc,
                                          Element level) {
         for (Sprite s : levelObjects) {
-            Element spriteElement = doc.createElement("gameObject");
-            spriteElement.setAttribute("type", s.getType());
+            Element spriteElement = doc.createElement(XmlTags.GAMEOBJECT);
+            spriteElement.setAttribute(XmlTags.CLASS_NAME, s.getType());
 
-            XmlUtilities.appendElement(doc, spriteElement, "x", String.valueOf(s.getX()));
-            XmlUtilities.appendElement(doc, spriteElement, "y", String.valueOf(s.getY()));
-            XmlUtilities.appendElement(doc, spriteElement, "width", String.valueOf(s.getWidth()));
-            XmlUtilities.appendElement(doc, spriteElement, "height", String.valueOf(s.getHeight()));
-            XmlUtilities.appendElement(doc, spriteElement, "imagePath",
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.X, String.valueOf(s.getX()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.Y, String.valueOf(s.getY()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.WIDTH,
+                                       String.valueOf(s.getWidth()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.HEIGHT,
+                                       String.valueOf(s.getHeight()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH,
                                        String.valueOf(s.getImagePath()));
 
             if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
@@ -94,21 +96,22 @@ public final class LevelFileWriter {
                 for (Map<String, String> strategy : s.getUpdateStrategies()) {
 
                     String strategyType = "";
-                    if (strategy.containsKey("type")) {
-                        strategyType = strategy.get("type");
-                        strategy.remove("type");
+                    if (strategy.containsKey(XmlTags.CLASS_NAME)) {
+                        strategyType = strategy.get(XmlTags.CLASS_NAME);
+                        strategy.remove(XmlTags.CLASS_NAME);
                     }
 
                     Element strategyElement =
-                            XmlUtilities.generateElementFromMap(doc, "strategy", strategy);
-                    strategyElement.setAttribute("type", strategyType);
+                            XmlUtilities.generateElementFromMap(doc, XmlTags.STRATEGY, strategy);
+                    strategyElement.setAttribute(XmlTags.CLASS_NAME, strategyType);
                     strategiesElement.appendChild(strategyElement);
                 }
                 spriteElement.appendChild(strategiesElement);
             }
 
             if (s.getAttributes() != null && s.getAttributes().size() > 0) {
-                XmlUtilities.appendMapContents(doc, spriteElement, "attr", s.getAttributes());
+                XmlUtilities.appendMapContents(doc, spriteElement, XmlTags.CONFIG,
+                                               s.getAttributes());
             }
 
             level.appendChild(spriteElement);
