@@ -1,11 +1,11 @@
 package vooga.platformer.leveleditor;
 
+
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
 
 /**
  * Responsible for placing sprites on the LevelBoard. This class
@@ -69,7 +69,7 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     public void selectRegion (Rectangle region) {
         for (Sprite currentlyPlacedSprites : myLevelBoard.getSprites()) {
             if (currentlyPlacedSprites.isIntersecting(region)) {
-                mySelectedSprites.add(currentlyPlacedSprites);
+                selectSprite(currentlyPlacedSprites);
             }
         }
 
@@ -78,7 +78,7 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     @Override
     public boolean isValidPosition (Sprite sprite) {
         for (Sprite currentlyPlacedSprites : myLevelBoard.getSprites()) {
-            if (sprite.isIntersecting(currentlyPlacedSprites)) { return false; }
+            if (sprite.isIntersecting(currentlyPlacedSprites)) return false;
         }
         return true;
 

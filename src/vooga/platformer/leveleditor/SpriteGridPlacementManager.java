@@ -1,7 +1,11 @@
 package vooga.platformer.leveleditor;
 
+import grid.Grid;
 import java.awt.Dimension;
 import java.awt.Point;
+import leveleditor.LevelBoard;
+import leveleditor.Sprite;
+import leveleditor.SpritePlacementManager;
 
 
 /**
@@ -43,7 +47,7 @@ public class SpriteGridPlacementManager extends SpritePlacementManager {
 
     /**
      * Causes all selected sprites to move based on the coordinates given
-     * by x and y. Also highlights the tile located at x and y. 
+     * by x and y. Also highlights the tile located at x and y.
      */
     @Override
     public void follow (int x, int y) {
@@ -51,4 +55,14 @@ public class SpriteGridPlacementManager extends SpritePlacementManager {
         myGrid.highlightTile(x, y);
     }
 
+    /**
+     * Since the grid tiles are sprites, this method makes sure the user
+     * doesn't select a grid tile while he tries to select another sprite.
+     */
+    @Override
+    public void selectSprite (Sprite toSelect) {
+        if (!myGrid.containsTile(toSelect)) {
+            super.selectSprite(toSelect);
+        }
+    }
 }
