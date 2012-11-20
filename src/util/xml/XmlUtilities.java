@@ -389,12 +389,6 @@ public class XmlUtilities {
 
     public static Element addAttribute (Element element, String attributeName,
             String attributeValue) {
-        //TODO warning statement being called inappropriately
-        System.out.println(element.getAttribute(attributeName));
-        if (element.getAttribute(attributeName) != null) {
-            System.err.println("WARNING: The attribute '" + attributeName + "' for "
-                    + "this element already exists. It will be overwritten!");
-        }
         element.setAttribute(attributeName, attributeValue);
         return element;
     }
