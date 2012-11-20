@@ -1,24 +1,10 @@
 package vooga.platformer.levelfileio;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
-import util.xml.XMLUtils;
+import util.xml.XmlUtilities;
 import vooga.platformer.leveleditor.Sprite;
 
 
@@ -70,42 +56,23 @@ public final class LevelFileWriter {
                                   int height, String backgroundImage,
                                   Collection<Sprite> levelObjects, String collisionCheckerType,
                                   String cameraType) {
-        try {
-            DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder;
-            docBuilder = dbfac.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
+        Document doc = XmlUtilities.makeDocument();
 
-            Element level = doc.createElement("level");
-            doc.appendChild(level);
+        Element level = doc.createElement("level");
+        doc.appendChild(level);
 
-            level.setAttribute("type", levelType);
-            XMLUtils.appendSimpleElement(doc, level, "id", levelName);
-            XMLUtils.appendSimpleElement(doc, level, "width", String.valueOf(width));
-            XMLUtils.appendSimpleElement(doc, level, "height", String.valueOf(height));
-            XMLUtils.appendSimpleElement(doc, level, "backgroundImage", backgroundImage);
-            XMLUtils.appendSimpleElement(doc, level, "collisionChecker", collisionCheckerType);
-            XMLUtils.appendSimpleElement(doc, level, "camera", cameraType);
+        level.setAttribute("type", levelType);
+        XmlUtilities.appendElement(doc, level, "id", levelName);
+        XmlUtilities.appendElement(doc, level, "width", String.valueOf(width));
+        XmlUtilities.appendElement(doc, level, "height", String.valueOf(height));
+        XmlUtilities.appendElement(doc, level, "backgroundImage", backgroundImage);
+        XmlUtilities.appendElement(doc, level, "collisionChecker", collisionCheckerType);
+        XmlUtilities.appendElement(doc, level, "camera", cameraType);
 
-            addLevelObjects(levelObjects, doc, level);
+        addLevelObjects(levelObjects, doc, level);
 
-            String xmlString = XMLUtils.getXMLAsString(doc);
-            FileWriter writer = new FileWriter(filePath);
-            writer.write(xmlString);
-            writer.close();
-        }
-        catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            return UNSUCCESSFUL_WRITE;
-        }
-        catch (TransformerException e) {
-            e.printStackTrace();
-            return UNSUCCESSFUL_WRITE;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return UNSUCCESSFUL_WRITE;
-        }
+        XmlUtilities.write(doc, filePath);
+
         return SUCCESSFUL_WRITE;
     }
 
@@ -115,14 +82,12 @@ public final class LevelFileWriter {
             Element spriteElement = doc.createElement("gameObject");
             spriteElement.setAttribute("type", s.getType());
 
-            XMLUtils.appendSimpleElement(doc, spriteElement, "x", String.valueOf(s.getX()));
-            XMLUtils.appendSimpleElement(doc, spriteElement, "y", String.valueOf(s.getY()));
-            XMLUtils.appendSimpleElement(doc, spriteElement, "width",
-                                              String.valueOf(s.getWidth()));
-            XMLUtils.appendSimpleElement(doc, spriteElement, "height",
-                                              String.valueOf(s.getHeight()));
-            XMLUtils.appendSimpleElement(doc, spriteElement, "imagePath",
-                                              String.valueOf(s.getImagePath()));
+            XmlUtilities.appendElement(doc, spriteElement, "x", String.valueOf(s.getX()));
+            XmlUtilities.appendElement(doc, spriteElement, "y", String.valueOf(s.getY()));
+            XmlUtilities.appendElement(doc, spriteElement, "width", String.valueOf(s.getWidth()));
+            XmlUtilities.appendElement(doc, spriteElement, "height", String.valueOf(s.getHeight()));
+            XmlUtilities.appendElement(doc, spriteElement, "imagePath",
+                                       String.valueOf(s.getImagePath()));
 
             if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
                 Element strategiesElement = doc.createElement("strategies");
@@ -135,7 +100,7 @@ public final class LevelFileWriter {
                     }
 
                     Element strategyElement =
-                            XMLUtils.generateElementFromMap(doc, "strategy", strategy);
+                            XmlUtilities.generateElementFromMap(doc, "strategy", strategy);
                     strategyElement.setAttribute("type", strategyType);
                     strategiesElement.appendChild(strategyElement);
                 }
@@ -143,7 +108,7 @@ public final class LevelFileWriter {
             }
 
             if (s.getAttributes() != null && s.getAttributes().size() > 0) {
-                XMLUtils.appendMapContents(doc, spriteElement, "attr", s.getAttributes());
+                XmlUtilities.appendMapContents(doc, spriteElement, "attr", s.getAttributes());
             }
 
             level.appendChild(spriteElement);
