@@ -80,7 +80,7 @@ public final class LevelFactory {
                 level.addGameObject(g);
             }
 
-            // TODO set to a permanent data type
+            // TODO set to a permanent data type, not one in the demo
             level.setPlayer((Player) player);
 
             return level;
