@@ -1,13 +1,15 @@
 package vooga.shooter.gameplay;
 
+import javax.swing.JFrame;
 import arcade.gamemanager.GameSaver;
 import vooga.shooter.gameplay.Game;
-import vooga.shooter.gameplay.Applet;
+import vooga.shooter.graphics.*;
 
-public class Main {
+public class Main extends JFrame{
 
     public static void main(String [] args) {
-        //some way to get Game to run externally by calling runGame()
+        Game myGame = new Game();
+        myGame.runGame(null, null);
     }
     
 }
