@@ -201,25 +201,11 @@ public class LevelFileReader {
             Node attrNode = attrNodeList.item(i);
             if (attrNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element attrElement = (Element) attrNode;
-                Map<String, String> attrMap = extractMapFromXML(attrElement);
+                Map<String, String> attrMap = XMLUtils.extractMapFromXML(attrElement);
                 for (String str : attrMap.keySet()) {
                     builtSprite.addAttribute(str, attrMap.get(str));
                 }
             }
         }
-    }
-
-    private Map<String, String> extractMapFromXML (Element parentElement) {
-        NodeList paramNodeList = parentElement.getChildNodes();
-        Map<String, String> strategyMap = new HashMap<String, String>();
-
-        for (int k = 0; k < paramNodeList.getLength(); k++) {
-            Node paramNode = paramNodeList.item(k);
-            if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element paramElement = (Element) paramNode;
-                strategyMap.put(paramElement.getTagName(), XMLUtils.getTagValue(paramElement));
-            }
-        }
-        return strategyMap;
     }
 }
