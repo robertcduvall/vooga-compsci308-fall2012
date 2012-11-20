@@ -35,7 +35,6 @@ import org.w3c.dom.NodeList;
  * 
  * TODO: Include more robust error checking and throw an XmlException when
  * appropriate.
- * TODO: Add Javadoc comments for all methods (and fix some existing ones)
  * 
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
  * 
@@ -56,7 +55,29 @@ import org.w3c.dom.NodeList;
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov, Difan Zhao,
  *         Mark Hoffman
  */
+
 public class XmlUtilities {
+    
+    /**
+     * Creates a new (empty) Document.
+     * 
+     * @return a new (empty) Document
+     */
+
+    public static Document makeDocument () {
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        Document doc = null;
+        try {
+            doc = dbFactory.newDocumentBuilder().newDocument();
+        }
+        catch (Exception e) {
+            System.err
+                    .println("ERROR: Could not instantiate a Document element! "
+                            + e.getMessage());
+            e.printStackTrace();
+        }
+        return doc;
+    }
 
     /**
      * Creates a new Document and loads it with data from an existing
@@ -98,27 +119,6 @@ public class XmlUtilities {
 
     public static Document makeDocument (String filepath) {
         return makeDocument(new File(filepath));
-    }
-
-    /**
-     * Creates a new (empty) Document.
-     * 
-     * @return a new (empty) Document
-     */
-
-    public static Document makeDocument () {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        Document doc = null;
-        try {
-            doc = dbFactory.newDocumentBuilder().newDocument();
-        }
-        catch (Exception e) {
-            System.err
-                    .println("ERROR: Could not instantiate a Document element! "
-                            + e.getMessage());
-            e.printStackTrace();
-        }
-        return doc;
     }
 
     /**
@@ -586,7 +586,7 @@ public class XmlUtilities {
     public static Element addAttribute (Element element, String attributeName,
             String attributeValue) {
         if (element.getAttribute(attributeName) != null) {
-            System.err.println("WARNING: The attributes for "
+            System.err.println("WARNING: The attribute '" + attributeName + "' for "
                     + "this element already exists. It will be overwritten!");
         }
         element.setAttribute(attributeName, attributeValue);
@@ -645,8 +645,8 @@ public class XmlUtilities {
     public static Element setAttribute (Element element, String attributeName,
             String newAttributeContent) {
         if (element.getAttribute(attributeName) == null) {
-            System.err
-                    .println("WARNING: Tried to set an attribute that doesn't yet exist! Added it as a new attribute.");
+            System.err.println("WARNING: Tried to set an attribute " +
+            		"that doesn't yet exist! Added it as a new attribute.");
         }
         element.setAttribute(attributeName, newAttributeContent);
         return element;
@@ -910,6 +910,35 @@ public class XmlUtilities {
         String xmlString = sw.toString();
         return xmlString;
     }
+    
+    /**
+     * Returns a String created from an Xml Element. Useful for debugging in
+     * the console.
+     * 
+     * @param element Element that will be printed.
+     * @return Xml Element as a String
+     * @throws TransformerException thrown if Document cannot be converted to a
+     *         String
+     */
+    public static String getXmlAsString (Element element)
+            throws TransformerException {
+        TransformerFactory transfac = TransformerFactory.newInstance();
+        Transformer trans = transfac.newTransformer();
+        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        // Make a document and add the element to it
+        // (This is necessary for setting it as a DOMSource).
+        Document doc = makeDocument();
+        doc.appendChild(element);
+        
+        StringWriter sw = new StringWriter();
+        StreamResult result = new StreamResult(sw);
+        DOMSource source = new DOMSource(doc);
+        trans.transform(source, result);
+        String xmlString = sw.toString();
+        return xmlString;
+    }
 
     /**
      * Writes a document to an xml file
@@ -948,6 +977,7 @@ public class XmlUtilities {
      * @param nodeList the NodeList to convert.
      * @return a collection of elements.
      */
+    
     public static Collection<Element> convertNodeListToCollection (
             NodeList nodeList) {
         ArrayList<Element> list = new ArrayList<Element>();
