@@ -40,7 +40,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     private Player myPlayer;
     private Player myPlayer2;
     private List<Enemy> myEnemies;
-    private Level1 myCurrentLevel;
+    private Level myCurrentLevel;
     private Applet myCanvas;
     private Image myPlayerImage;
     private ImageIcon myImageIcon;
@@ -77,12 +77,12 @@ public class Game implements DrawableComponent, IArcadeGame {
             addSprite(myPlayer2);
         }
 
-        Level1 firstLevel = new Level1(this);
+        Level firstLevel = new Level1(this);
         myCanvas.addKeyListener(new KeyboardListener());
         startLevel(firstLevel);
     }
 
-    private void startLevel (Level1 level) {
+    private void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
         update();
@@ -100,7 +100,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     public void update () {
         
         if (myCurrentLevel.winningConditionsMet()) {
-            System.out.println("Level Won!");
+            myCurrentLevel = myCurrentLevel.getNextLevel();
         }
         
         for (Sprite s : getSprites()) {
