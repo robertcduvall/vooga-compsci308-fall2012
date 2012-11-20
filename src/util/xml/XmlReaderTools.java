@@ -11,6 +11,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 /**
+ * @deprecated Please use XmlUtilities instead
+ * 
  * A general-use xml reader that gives users tools to easily read xml files. 
  * 
  * @author Seon Kang
@@ -21,12 +23,18 @@ public class XmlReaderTools {
     private Document myXmlDocument;
     private Element myDefaultElement;
     
+    /**
+     * @deprecated Please use the static methods in XmlUtilities instead.
+     * @param file
+     */
     public XmlReaderTools(File file) {
     	myXmlFile = file;
     	makeDocument(myXmlFile);
     }
 
     /**
+     * @deprecated Please use the makeDocument method in XmlUtilities instead.
+     * 
      * Creates a document from file and sets the document element
      * as the default.
      * 
@@ -46,6 +54,11 @@ public class XmlReaderTools {
         }
     }
     
+    /**
+     * @deprecated please use the static methods in XmlUtilities instead.
+     * 
+     * @return
+     */
     protected Document getXmlDocument() {
     	return myXmlDocument;
     }
@@ -55,6 +68,8 @@ public class XmlReaderTools {
     }
     
     /**
+     * @deprecated please use the static methods in XmlUtilities instead.
+     * 
      * This method lets you set your default root element.
      * 
      * @param element The element you want as your default
@@ -63,11 +78,22 @@ public class XmlReaderTools {
     	myDefaultElement = element;
     }
     
+    /**
+     * @deprecated please use the static methods in XmlUtilities instead.
+     * 
+     * @return
+     */
     public Element getDefaultElement() {
     	return myDefaultElement;
     }
     
-    
+    /**
+     * @deprecated please use the methods in XmlUtilities instead.
+     * 
+     * @param parent
+     * @param tag
+     * @return
+     */
     public List<String> getContentListByTag(Element parent, String tag) {
 		List<String> stringListByTag = new ArrayList<String>();
 		NodeList nodeList = parent.getElementsByTagName(tag);

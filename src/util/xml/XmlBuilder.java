@@ -12,6 +12,8 @@ import org.xml.sax.SAXException;
 
 
 /**
+ * @deprecated Please use XmlUtilities instead.
+ * 
  * A set of utility methods for creating, editing, and
  * appending to an xml Document object.
  * 
@@ -30,6 +32,8 @@ public class XmlBuilder {
     private Document myXmlDocument;
 
     /**
+     * @deprecated Use static methods in XmlUtilities instead.
+     * 
      * Added constructors for the createDocument() methods
      * 
      * @author Seon Kang
@@ -46,7 +50,10 @@ public class XmlBuilder {
 	public XmlBuilder() {
 		myXmlDocument = createDocument();
 	}
+	
     /**
+     * @deprecated Use the makeDocument method in XmlUtilities instead.
+     * 
      * Creates a Document Object and handles any exceptions
      * that might be thrown. The Document object is brand new
      * and empty.
@@ -69,6 +76,8 @@ public class XmlBuilder {
     }
 
     /**
+     * @deprecated Use the makeDocument method in XmlUtilities instead.
+     * 
      * Creates a Document Object and loads in the data from
      * an existing xml file. Also handles any exceptions
      * that might be thrown.
@@ -110,6 +119,8 @@ public class XmlBuilder {
     }
 
     /**
+     * @deprecated Use the makeDocument method in XmlUtilities instead.
+     * 
      * Creates a Document Object and loads in the data from
      * an existing xml file. Also handles any exceptions
      * that might be thrown.
@@ -125,6 +136,8 @@ public class XmlBuilder {
     }
 
     /**
+     * @deprecated Use the static methods in XmlUtilities instead.
+     * 
      * @author Seon Kang
      * @return
      */
@@ -133,6 +146,8 @@ public class XmlBuilder {
     }
 
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * Used Difan's appendElement() method but made it default to using this
      * XmlBuilder's document.
      * 
@@ -146,6 +161,8 @@ public class XmlBuilder {
     }
     
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * create an element in xml
      * 
      * @param document
@@ -166,6 +183,8 @@ public class XmlBuilder {
 
 
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * Used Difan's appendElementWithAttribute() method but made it default to using this
      * XmlBuilder's document.
      * 
@@ -184,6 +203,8 @@ public class XmlBuilder {
     
     
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * create an element with attribute in xml
      * 
      * @param document
@@ -210,6 +231,7 @@ public class XmlBuilder {
     }
 
     /**
+     * @deprecated Use the replaceAllTagNames method in XmlUtilities instead.
      * 
      * @param el :root element
      * @param tagName :element whoes content should be modified
