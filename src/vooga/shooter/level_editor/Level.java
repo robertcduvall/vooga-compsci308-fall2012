@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.pack.Packable;
 import util.reflection.Reflection;
@@ -130,13 +131,17 @@ public class Level implements Packable<Level> {
     }
 
     @Override
-    public Element pack () {
-        return XmlUtilities.makeElement("Level", "backgroundImage", myBackgroundImagePath);
+    public Document pack () {
+        Document doc = XmlUtilities.makeDocument();
+        Element element = XmlUtilities.makeElement(doc, "Level", "backgroundImage", myBackgroundImagePath);
+        doc.appendChild(element);
+        return doc;
     }
 
     @Override
-    public Level unpack (Element xmlData) {
-        String bgImagePath = xmlData.getAttribute("backgroundImage");
+    public Level unpack (Document xmlData) {
+        Element root = xmlData.getDocumentElement();
+        String bgImagePath = root.getAttribute("backgroundImage");
         String className = this.getClass().getName();
         return (Level) Reflection.createInstance(className, bgImagePath);
     }

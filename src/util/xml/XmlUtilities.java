@@ -123,7 +123,7 @@ public class XmlUtilities {
     /**
      * Create a new (empty) element.
      * 
-     * @param doc (optional) the doc which will create the element.
+     * @param doc the Document which will create the element.
      * @param tag the tag of the newly created element.
      * @return the newly created (empty) element.
      */
@@ -133,20 +133,9 @@ public class XmlUtilities {
     }
 
     /**
-     * Create a new (empty) element.
-     * 
-     * @param tag the tag of the newly created element.
-     * @return the newly created (empty) element.
-     */
-
-    public static Element makeElement (String tag) {
-        return makeDocument().createElement(tag);
-    }
-
-    /**
      * Returns a newly created element with content.
      * 
-     * @param doc (optional) the Document which will create the element.
+     * @param doc the Document which will create the element.
      * @param tag the tag of the newly created element.
      * @param content the content of the newly created element.
      * @return the newly created element.
@@ -158,21 +147,9 @@ public class XmlUtilities {
     }
 
     /**
-     * Returns a newly created element with content.
-     * 
-     * @param tag the tag of the newly created element.
-     * @param content the content of the newly created element.
-     * @return the newly created element.
-     */
-
-    public static Element makeElement (String tag, String content) {
-        return makeElement(makeDocument(), tag, content);
-    }
-
-    /**
      * Returns a newly created element with an attribute.
      * 
-     * @param doc (optional) the Document which will create the element.
+     * @param doc the Document which will create the element.
      * @param tag the tag of the newly created element.
      * @param attributeName the attribute name of the attribute of the new
      *        element.
@@ -187,24 +164,9 @@ public class XmlUtilities {
     }
 
     /**
-     * Returns a newly created element with an attribute.
-     * 
-     * @param tag the tag of the newly created element.
-     * @param attributeName the attribute name of the attribute of the new
-     *        element.
-     * @param attributeValue the value of the attribute of the new element.
-     * @return the newly created element.
-     */
-
-    public static Element makeElement (String tag, String attributeName,
-            String attributeValue) {
-        return makeElement(makeDocument(), tag, attributeName, attributeValue);
-    }
-
-    /**
      * Returns a newly created element with content and a single attribute.
      * 
-     * @param doc (optional) the Document which will create the element.
+     * @param doc the Document which will create the element.
      * @param tag the tag of the newly created element.
      * @param content the content of the newly created element.
      * @param attributeName the attribute name of the attribute of the new
@@ -221,26 +183,9 @@ public class XmlUtilities {
     }
 
     /**
-     * Returns a newly created element with content and a single attribute.
-     * 
-     * @param tag the tag of the newly created element.
-     * @param content the content of the newly created element.
-     * @param attributeName the attribute name of the attribute of the new
-     *        element.
-     * @param attributeValue the value of the attribute of the new element.
-     * @return the newly created element.
-     */
-
-    public static Element makeElement (String tag, String content,
-            String attributeName, String attributeValue) {
-        return makeElement(makeDocument(), tag, content, attributeName,
-                attributeValue);
-    }
-
-    /**
      * Returns a newly created element with more than one attribute.
      * 
-     * @param doc (optional) the Document which will create the element.
+     * @param doc the Document which will create the element.
      * @param tag the tag of the newly created element.
      * @param attributeMap a Map of attributeName to attributeValue.
      * @return the newly created element.
@@ -255,20 +200,7 @@ public class XmlUtilities {
     /**
      * Returns a newly created element with content and more than one attribute.
      * 
-     * @param tag the tag of the newly created element.
-     * @param attributeMap a Map of attributeName to attributeValue.
-     * @return the newly created element.
-     */
-
-    public static Element makeElement (String tag,
-            Map<String, String> attributesMap) {
-        return makeElement(makeDocument(), tag, attributesMap);
-    }
-
-    /**
-     * Returns a newly created element with content and more than one attribute.
-     * 
-     * @param doc (optional) the Document which will create the element.
+     * @param doc the Document which will create the element.
      * @param tag the tag of the newly created element.
      * @param content the content of the newly created element.
      * @param attributeMap a Map of attributeName to attributeValue.
@@ -280,20 +212,6 @@ public class XmlUtilities {
         Element e = doc.createElement(tag);
         setContent(e, content);
         return addAttributes(e, attributesMap);
-    }
-
-    /**
-     * Returns a newly created element with content and more than one attribute.
-     * 
-     * @param tag the tag of the newly created element.
-     * @param content the content of the newly created element.
-     * @param attributeMap a Map of attributeName to attributeValue.
-     * @return the newly created element.
-     */
-
-    public static Element makeElement (String tag, String content,
-            Map<String, String> attributesMap) {
-        return makeElement(makeDocument(), tag, content, attributesMap);
     }
 
     /**
@@ -313,7 +231,7 @@ public class XmlUtilities {
     /**
      * Appends an empty element to a parent element.
      * 
-     * @param doc (optional) a Document object that will create the Element
+     * @param doc a Document object that will create the Element
      * @param parent the parent element to which the new element
      *        will be appended.
      * @param tag the tag name of the new element.
@@ -327,22 +245,9 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element to a parent element.
-     * 
-     * @param parent the parent element to which the new element
-     *        will be appended.
-     * @param tag the tag name of the new element.
-     * @return the new element that was appended.
-     */
-
-    public static Element appendElement (Element parent, String tag) {
-        return appendElement(makeDocument(), parent, tag);
-    }
-
-    /**
      * Appends an element with some content to a parent element.
      * 
-     * @param doc (optional) a Document object that will create the Element
+     * @param doc a Document object that will create the Element
      * @param parent the parent element to which the new element
      *        will be appended.
      * @param tag the tag name of the new element.
@@ -357,25 +262,10 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element with some content to a parent element.
-     * 
-     * @param parent the parent element to which the new element
-     *        will be appended.
-     * @param tag the tag name of the new element.
-     * @param content the content of the new element.
-     * @return the new element that was appended.
-     */
-
-    public static Element appendElement (Element parent, String tag,
-            String content) {
-        return appendElement(makeDocument(), parent, tag, content);
-    }
-
-    /**
      * Appends an element with a single attribute to
      * the parent element.
      * 
-     * @param doc (optional) a Document which will be used to create the
+     * @param doc a Document which will be used to create the
      *        element.
      * @param parent the element to which the new element will be appended.
      * @param tag the tag (name) of the new element.
@@ -391,28 +281,10 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element with a single attribute to
-     * the parent element.
-     * 
-     * @param parent the element to which the new element will be appended.
-     * @param tag the tag (name) of the new element.
-     * @param content the content of the new element.
-     * @param attributeName the name of the attribute of the new element.
-     * @param attributeValue the value of the attribute of the new element.
-     * @return the new element that was appended to parent.
-     */
-
-    public static Element appendElement (Element parent, String tag,
-            String attributeName, String attributeValue) {
-        return appendElement(makeDocument(), parent, tag, attributeName,
-                attributeValue);
-    }
-
-    /**
      * Appends an element with content and a single attribute to
      * the parent element.
      * 
-     * @param doc (optional) a Document which will be used to create the
+     * @param doc a Document which will be used to create the
      *        element.
      * @param parent the element to which the new element will be appended.
      * @param tag the tag (name) of the new element.
@@ -431,28 +303,10 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element with content and a single attribute to
-     * the parent element.
-     * 
-     * @param parent the element to which the new element will be appended.
-     * @param tag the tag (name) of the new element.
-     * @param content the content of the new element.
-     * @param attributeName the name of the attribute of the new element.
-     * @param attributeValue the value of the attribute of the new element.
-     * @return the new element that was appended to parent.
-     */
-
-    public static Element appendElement (Element parent, String tag,
-            String content, String attributeName, String attributeValue) {
-        return appendElement(makeDocument(), parent, tag, content,
-                attributeName, attributeValue);
-    }
-
-    /**
      * Appends an element with more than one attribute to
      * the parent element.
      * 
-     * @param doc (optional) a Document which will be used to create the
+     * @param doc a Document which will be used to create the
      *        element.
      * @param parent the element to which the new element will be appended.
      * @param tag the tag (name) of the new element.
@@ -467,25 +321,10 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element with more than one attribute to
-     * the parent element.
-     * 
-     * @param parent the element to which the new element will be appended.
-     * @param tag the tag (name) of the new element.
-     * @param attributeMap a Map of attributeName to attributeValue
-     * @return the new element that was appended to parent.
-     */
-
-    public static Element appendElement (Element parent, String tag,
-            Map<String, String> attributeMap) {
-        return appendElement(makeDocument(), parent, tag, attributeMap);
-    }
-
-    /**
      * Appends an element with content and more than one attribute to
      * the parent element.
      * 
-     * @param doc (optional) a Document which will be used to create the
+     * @param doc a Document which will be used to create the
      *        element.
      * @param parent the element to which the new element will be appended.
      * @param tag the tag (name) of the new element.
@@ -501,27 +340,11 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element with content more than one attribute to
-     * the parent element.
-     * 
-     * @param parent the element to which the new element will be appended.
-     * @param tag the tag (name) of the new element.
-     * @param content the content of the new element.
-     * @param attributeMap a Map of attributeName to attributeValue
-     * @return the new element that was appended to parent.
-     */
-
-    public static Element appendElement (Element parent, String tag,
-            String content, Map<String, String> attributeMap) {
-        return appendElement(makeDocument(), parent, tag, content, attributeMap);
-    }
-
-    /**
      * Appends a set of elements with the same tag name and
      * different content to a parent element. That is, each
      * element can have different content.
      * 
-     * @param doc (optional) a Document object that will create the Element
+     * @param doc a Document object that will create the Element
      * @param parent the parent element to which the new element
      *        will be appended.
      * @param tag the tag name of the new element.
@@ -538,24 +361,6 @@ public class XmlUtilities {
             list.add(appendElement(doc, parent, tag, s));
         }
         return list;
-    }
-
-    /**
-     * Appends a set of elements with the same tag name but
-     * different content to a parent element.
-     * 
-     * @param parent the parent element to which the new element
-     *        will be appended.
-     * @param tag the tag name of the new element.
-     * @param content a list of Strings which will be the content
-     *        of the new elements. The number of elements created
-     *        corresponds to the size of this list.
-     * @return the new element that was appended.
-     */
-
-    public static Collection<Element> appendElements (Element parent,
-            String tag, List<String> content) {
-        return appendElements(makeDocument(), parent, tag, content);
     }
 
     /**
