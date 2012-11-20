@@ -21,6 +21,7 @@ import vooga.shooter.gameObjects.Sprite;
  * (This is derived from a previous cs308 project)
  * 
  * @author Niel Lebeck, Connor Gordon, Alex Browne
+ *      edited by Tommy Petrilak
  * 
  */
 public class Level implements Packable<Level> {
@@ -153,7 +154,6 @@ public class Level implements Packable<Level> {
      * Level
      */
     public void startLevel () {
-
     }
     
     /**

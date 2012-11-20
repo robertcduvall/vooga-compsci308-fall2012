@@ -39,17 +39,14 @@ public class Level1 extends Level {
         Image enemyImage = imageIcon.getImage();
         for (int i = 0; i < NUMBER_OF_STAGES; i++) {
             for (int j = 0; j < NUMBER_OF_ENEMIES; j++) {
-//                myGame.addEnemy(new Enemy(new Point(100 + (150 * j), 200 * -i), ENEMY_DIMENSION,
-//                                          myGame.getCanvasDimension(), enemyImage, ENEMY_VELOCITY,
-//                                          ENEMY_DAMAGE));
-                myGame.addEnemy(new Enemy(new Point(300, 175), ENEMY_DIMENSION,
-                                        myGame.getCanvasDimension(), enemyImage, ENEMY_VELOCITY,
-                                        ENEMY_DAMAGE));
+                myGame.addEnemy(new Enemy(new Point(300 + (150 * j), 150 * -i), ENEMY_DIMENSION,
+                                          myGame.getCanvasDimension(), enemyImage, ENEMY_VELOCITY,
+                                          ENEMY_DAMAGE));
             }
         }
 
     }
-
+    @Override
     public boolean winningConditionsMet () {
         return myGame.getEnemies().isEmpty();
     }
