@@ -1,6 +1,5 @@
 package vooga.platformer.levelfileio;
 
-
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import util.xml.XMLUtils;
+import util.xml.XmlUtilities;
 import vooga.platformer.leveleditor.Sprite;
 
 
@@ -45,8 +44,8 @@ public class LevelFileReader {
      * @param levelFile File in XML format representing the level to be read
      */
 
-    public LevelFileReader(File levelFile) {
-        myDocument = XMLUtils.initializeDocument(levelFile);
+    public LevelFileReader (File levelFile) {
+        myDocument = XmlUtilities.makeDocument(levelFile);
         myLevelFile = levelFile;
         myRoot = myDocument.getDocumentElement();
     }
@@ -66,8 +65,8 @@ public class LevelFileReader {
      * 
      * @return name of the level as a String
      */
-    public String getLevelID() {
-        return XMLUtils.getTagValue("id", myRoot);
+    public String getLevelID () {
+        return XmlUtilities.getChildContent(myRoot, "id");
     }
 
     /**
@@ -75,8 +74,8 @@ public class LevelFileReader {
      * 
      * @return width of the level as an int
      */
-    public int getWidth() {
-        return XMLUtils.getTagInt("width", myRoot);
+    public int getWidth () {
+        return XmlUtilities.getChildContentAsInt(myRoot, "width");
     }
 
     /**
@@ -84,8 +83,8 @@ public class LevelFileReader {
      * 
      * @return height of the level as an int
      */
-    public int getHeight() {
-        return XMLUtils.getTagInt("height", myRoot);
+    public int getHeight () {
+        return XmlUtilities.getChildContentAsInt(myRoot, "height");
     }
 
     /**
@@ -94,9 +93,10 @@ public class LevelFileReader {
      * 
      * @return Image representing the background of the level
      */
-    public Image getBackgroundImage() {
-        return XMLUtils.fileNameToImage(myLevelFile,
-                XMLUtils.getTagValue("backgroundImage", myRoot));
+    public Image getBackgroundImage () {
+        return XmlUtilities
+                .fileNameToImage(myLevelFile,
+                                 XmlUtilities.getChildContent(myRoot, "backgroundImage"));
     }
 
     /**
@@ -106,7 +106,7 @@ public class LevelFileReader {
      * @return class name of this level's CollisionChecker subclass
      */
     public String getCollisionCheckerType () {
-        return XMLUtils.getTagValue("collisionChecker", myRoot);
+        return XmlUtilities.getChildContent(myRoot, "collisionChecker");
     }
 
     /**
@@ -115,7 +115,7 @@ public class LevelFileReader {
      * @return class name of this level's Camera subclass
      */
     public String getCameraType () {
-        return XMLUtils.getTagValue("camera", myRoot);
+        return XmlUtilities.getChildContent(myRoot, "camera");
     }
 
     /**
@@ -127,10 +127,9 @@ public class LevelFileReader {
      *         gameObjects
      */
 
-    public Collection<Sprite> getSprites() {
+    public Collection<Sprite> getSprites () {
         NodeList spritesNode = myDocument.getElementsByTagName("gameobject");
-        Collection<Sprite> spritesList = new ArrayList<Sprite>(
-                spritesNode.getLength());
+        Collection<Sprite> spritesList = new ArrayList<Sprite>(spritesNode.getLength());
 
         for (int i = 0; i < spritesNode.getLength(); i++) {
             Node spriteNode = spritesNode.item(i);
@@ -148,33 +147,30 @@ public class LevelFileReader {
 
     private Sprite buildSprite (Element spriteElement) {
         String tag = spriteElement.getAttribute("type");
-        int x = XMLUtils.getTagInt("x", spriteElement);
-        int y = XMLUtils.getTagInt("y", spriteElement);
-        int width = XMLUtils.getTagInt("width", spriteElement);
-        int height = XMLUtils.getTagInt("height", spriteElement);
-        String imagePath = XMLUtils.getTagValue("imagePath", spriteElement);
+        int x = XmlUtilities.getChildContentAsInt(myRoot, "x");
+        int y = XmlUtilities.getChildContentAsInt(myRoot, "y");
+        int width = XmlUtilities.getChildContentAsInt(myRoot, "width");
+        int height = XmlUtilities.getChildContentAsInt(myRoot, "height");
+        String imagePath = XmlUtilities.getChildContent(myRoot, "imagePath");
         Sprite builtSprite = new Sprite(tag, x, y, width, height, imagePath);
         return builtSprite;
     }
 
-    private void addUpdateStrategies(Element spriteElement, Sprite builtSprite) {
-        NodeList strategiesNodeList = spriteElement
-                .getElementsByTagName("strategies");
+    private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
+        NodeList strategiesNodeList = spriteElement.getElementsByTagName("strategies");
 
         for (int i = 0; i < strategiesNodeList.getLength(); i++) {
             Node strategiesNode = strategiesNodeList.item(i);
             if (strategiesNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element strategiesElement = (Element) strategiesNode;
-                NodeList strategyNodeList = strategiesElement
-                        .getElementsByTagName("strategy");
+                NodeList strategyNodeList = strategiesElement.getElementsByTagName("strategy");
 
                 for (int j = 0; j < strategyNodeList.getLength(); j++) {
                     Node strategyNode = strategyNodeList.item(j);
                     if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
                         Element strategyElement = (Element) strategyNode;
 
-                        NodeList paramNodeList = strategyElement
-                                .getChildNodes();
+                        NodeList paramNodeList = strategyElement.getChildNodes();
                         Map<String, String> strategyMap = new HashMap<String, String>();
 
                         for (int k = 0; k < paramNodeList.getLength(); k++) {
@@ -182,11 +178,12 @@ public class LevelFileReader {
                             if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
                                 Element paramElement = (Element) paramNode;
                                 strategyMap.put(paramElement.getTagName(),
-                                        XMLUtils.getTagValue(paramElement));
+                                                XmlUtilities.getContent(paramElement));
                             }
                         }
                         // TODO resolve strategy using new level format API
-                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"), strategyMap);
+                        builtSprite.addUpdateStrategy(strategyElement.getAttribute("type"),
+                                                      strategyMap);
 
                     }
                 }
@@ -201,7 +198,7 @@ public class LevelFileReader {
             Node attrNode = attrNodeList.item(i);
             if (attrNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element attrElement = (Element) attrNode;
-                Map<String, String> attrMap = XMLUtils.extractMapFromXML(attrElement);
+                Map<String, String> attrMap = XmlUtilities.extractMapFromXml(attrElement);
                 for (String str : attrMap.keySet()) {
                     builtSprite.addAttribute(str, attrMap.get(str));
                 }
