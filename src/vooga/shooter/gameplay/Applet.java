@@ -71,7 +71,7 @@ public class Applet extends JApplet {
     public void start ()
      {
         // create the game! 
-        myGame = new Game(this);
+        myGame = new Game();
         // create a timer to animate the canvas
         myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
             new ActionListener()

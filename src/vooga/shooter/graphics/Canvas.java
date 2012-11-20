@@ -1,5 +1,6 @@
 package vooga.shooter.graphics;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class Canvas extends JApplet {
 
     /**
      * Initilizes the applet, but is called by the main method
-     * 
+     *
      * @param size the window size
      */
     public void init (Dimension size) {
@@ -103,6 +104,8 @@ public class Canvas extends JApplet {
      *        SpecialGraphics
      */
     public void paint (Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getSize().width, getSize().height);
         myScreen.paint(g);
     }
 
