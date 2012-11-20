@@ -1,12 +1,15 @@
 package util.xml;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
@@ -58,88 +61,70 @@ public class XmlUtilities {
         return doc;
     }
       
-    /**
-     * This method lets you set your default root element.
-     * 
-     * @param element The element you want as your default
-     */
-    private void setDefault(Element element) {
-    	//myDefaultElement = element;
+    public static Element addElement(Document doc, Element parent, String tag, String content) {
+    	Element child = doc.createElement(tag);
+    	child.setTextContent(content);
+    	parent.appendChild(child);
+    	return child;
     }
     
-    private Element getDefaultElement() {
-        //TODO: fix this
-    	//return myDefaultElement;
-        return null;
-    }
-    
-    public void addElement(Element parent, String tag, String content) {
-//    	Element child = myXmlDocument.createElement(tag);
-//    	child.setTextContent(content);
-//    	parent.appendChild(child);
-    }
-    
-    public void addElement(Element parent, String tag, List<String> content) {
-    	for (String s: content) {
-    		addElement(parent, tag, s);
+    public static Collection<Element> addElement(Document doc, Element parent, String tag, List<String> content) {
+    	ArrayList<Element> list = new ArrayList<Element>();
+        for (String s: content) {
+    		list.add(addElement(doc, parent, tag, s));
     	}
+    	return list;
     }
     
-    public void addElement(String tag, String content) {
-    	addElement(getDefaultElement(), tag, content);
-    }
-    
-    public void addAttribute(Element element, String attributeName, String attributeContent) {
+    public static Element addAttribute(Element element, String attributeName, String attributeContent) {
     	element.setAttribute(attributeName, attributeContent);
+    	return element;
     }
     
-    public void addAttribute(Element element, String attributeName, 
+    public static Collection<Element> addAttribute(Element element, String attributeName, 
     		List<String> attributeContent) {
+        ArrayList<Element> list = new ArrayList<Element>();
     	for (String s: attributeContent) {
-    		addAttribute(element, attributeName, s);
+    		list.add(addAttribute(element, attributeName, s));
     	}
+    	return list;
     }
     
-    public void addElementAndAttribute(Element parent, String tag, String content,
+    public static Element addElementAndAttribute(Document doc, Element parent, String tag, String content,
    		String attributeName, String attributeContent) {
-//    	Element child = myXmlDocument.createElement(tag);
-//    	child.setTextContent(content);
-//    	parent.appendChild(child);
-//    	addAttribute(child, attributeName, attributeContent);
+    	Element child = doc.createElement(tag);
+    	child.setTextContent(content);
+    	parent.appendChild(child);
+    	addAttribute(child, attributeName, attributeContent);
+    	return child;
     }
     
-    public void addElementAndAttribute(String tag, String content,
-    		String attributeName, String attributeContent) {
-//    	addElementAndAttribute(getDefaultElement(), tag, content, attributeName, 
-//    			attributeContent);
-    }
-    
-    public void modifyElementContent(Element element, String newContent) {
+    public static Element setElementContent(Element element, String newContent) {
     	element.setTextContent(newContent);
+    	return element;
     }
     
-    public void modifyElementContent(String newContent) {
-    	modifyElementContent(getDefaultElement(), newContent);
-    }
-
-    public void replaceAllTagNames(Element element, String oldTag, String newTag) {
-    	NodeList nodeList = element.getElementsByTagName(oldTag);
+    public static Collection<Element> replaceAllTagNames(Element element, String oldTag, String newTag) {
+        ArrayList<Element> list = new ArrayList<Element>();
+        NodeList nodeList = element.getElementsByTagName(oldTag);
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			nodeList.item(i).setNodeValue(newTag);
+		    Node node = nodeList.item(i);
+			node.setNodeValue(newTag);
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+			    list.add((Element) node);
+			} else {
+			    System.err.println("WARNING: Node could not be converted to element!");
+			}
 		}
+	return list;
     }
     
-    public void replaceAllTagNames(String oldTag, String newTag) {
-    	replaceAllTagNames(getDefaultElement(), oldTag, newTag);
-    }
-    
-    public void modifyAttribute(Element element, String attributeName,
+    public static Element setAttribute(Element element, String attributeName,
     		String newAttributeContent) {
+        if (element.getAttribute(attributeName) == null) {
+            System.err.println("WARNING: Tried to set an attribute that doesn't yet exist! Added it as a new attribute.");
+        }
     	element.setAttribute(attributeName, newAttributeContent);
-    }
-    
-    public void modifyAttribute(String attributeName,
-    		String newAttributeContent) {
-    	modifyAttribute(getDefaultElement(), attributeName, newAttributeContent);
+    	return element;
     }
 }
