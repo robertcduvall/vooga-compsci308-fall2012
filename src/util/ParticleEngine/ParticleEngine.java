@@ -1,9 +1,12 @@
 package util.ParticleEngine;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
+
 import vooga.shooter.gameObjects.Sprite;
 
 /**
@@ -15,29 +18,30 @@ import vooga.shooter.gameObjects.Sprite;
  * To use this you simply need to create an object of this type and have it
  * update and draw.
  * 
- * @author David Spruill
+ * @author David Spruill, modest contributions from Kathleen Lan
  */
 public class ParticleEngine {
-    private static final int DEFAULT_COUNT = 100;
-    private static final Point DEFAULT_DIRECTION = new Point(0, 0);
-    private static final int DEFAULT_VARIANCE = 100;
-    private static final int DEFAULT_DURATION = 100;
+    private static final int DEFAULT_COUNT = 1;
+    private static final Point DEFAULT_DIRECTION = new Point(0, 10);
+    private static final int DEFAULT_VARIANCE = 15; //i.e. 15%
+    private static final int DEFAULT_DURATION = 10000;
 
     private int spriteCount;
     private Image spriteImage;
-    private Point mainDirection;
+    private Point initialPosition;
+    private Point mainVelocity;
     private int variance;
     private int duration;
 
-    private List<Sprite> particles;
+    private List<Particle> particles;
 
     /**
      * Construct the ParticleEngine object using default values
      * 
      * @param particleImage the image to use as the particle
      */
-    public ParticleEngine (Image particleImage) {
-        this(DEFAULT_COUNT, particleImage, DEFAULT_DIRECTION,
+    public ParticleEngine (Image particleImage, Point initialPosition) {
+        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
                 DEFAULT_VARIANCE, DEFAULT_DURATION);
     }
 
@@ -48,27 +52,42 @@ public class ParticleEngine {
      * @param particleImage the image to use for the particles
      * @param direction the general direction in which the particles will
      *        travel, (0,0) will travel in all directions
-     * @param tolerance how much the particles can vary from the given direction
+     * @param tolerance (%) how much the particles can vary from the given direction
      * @param length how long the particles will exist before being reset
      */
-    public ParticleEngine(int density, Image particleImage, Point direction,
+    public ParticleEngine(int density, Image particleImage, Point position, Point velocity,
             int tolerance, int length) {
         spriteCount = density;
         spriteImage = particleImage;
-        mainDirection = direction;
+        initialPosition = position;
+        mainVelocity = velocity;
         variance = tolerance;
         duration = length;
-
-        for (int i = 0; i < spriteCount; i++) {
-        }
+        
+        particles = new ArrayList<Particle>();
+        createParticles();
     }
 
+    private void createParticles(){
+    	Dimension particleSize = new Dimension(spriteImage.getWidth(null),spriteImage.getHeight(null));
+    	for (int i = 0; i < spriteCount; i++) {
+        	particles.add(new Particle(initialPosition, particleSize, spriteImage,
+            mainVelocity, variance, duration));
+        }
+    }
+    
     public void draw(Graphics g) {
-
+    	for (Particle p: particles){
+    		if (p.stillExists())
+        		p.draw(g);
+    	}
     }
 
     public void update() {
-
+    	for (Particle p: particles){
+    		if (p.stillExists())
+    			p.update();
+    	}
     }
 
     public void setDuration(int length) {
@@ -79,11 +98,8 @@ public class ParticleEngine {
         spriteCount = density;
     }
 
-    public void setDirection(Point direction) {
-        mainDirection = direction;
+    public void setVelocity(Point v) {
+        mainVelocity = v;
     }
-
-    public void setLength(int length) {
-        duration = length;
-    }
+    
 }

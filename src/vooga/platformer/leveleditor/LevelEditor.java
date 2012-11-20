@@ -36,6 +36,7 @@ public class LevelEditor extends JFrame {
     private KeyListener myKeyListener;
     private SelectionMouseListener myMouseListener;
     private MouseListener myButtonListener;
+    private int myViewOffset;
 
     public static void main(String[] args) {
         new LevelEditor();
@@ -90,7 +91,29 @@ public class LevelEditor extends JFrame {
         myContainer.add(board);
         myMouseListener = myBoard.getMouseListener();
         myKeyListener = new KeyAdapter() {
+            @Override 
+            public void keyPressed (KeyEvent arg0) {
+                switch (arg0.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        if (myViewOffset == 0) {
+                            bumpLeft();
+                        }
+                        else {
+                            myViewOffset -= DEFAULT_FRAME_SIZE.width;
+                        }
+                        break;
+                    case KeyEvent.VK_RIGHT: 
+                        if (myViewOffset == myBoard.getWidth() - DEFAULT_FRAME_SIZE.width) {
+                        }
+                }
+            }
 
+            private void bumpLeft () {
+                System.out.println("Already at beginning!");
+            }
+            private void bumpRight () {
+                System.out.println("Already at end!");
+            }
         };
         myButtonListener = new MouseAdapter() {
             @Override
@@ -115,6 +138,7 @@ public class LevelEditor extends JFrame {
         panel.addMouseMotionListener(myMouseListener);
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
+        myViewOffset = 0;
     }
 
     private GameButton createButton(String spritename) {
@@ -194,13 +218,13 @@ public class LevelEditor extends JFrame {
         spriteMenu.add(new AbstractAction("Load") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                load();
+                //load();
             }
         });
         spriteMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                newLevel();
+                //newLevel();
             }
         });
         bar.add(levelMenu);
@@ -263,5 +287,9 @@ public class LevelEditor extends JFrame {
         list.add("Bowser");
         list.add("Baby Bowser");
         mySpriteTypes.put("Bowser", list);
+        list = new ArrayList<String>();
+        list.add("Brick");
+        list.add("Question Block");
+        mySpriteTypes.put("Block", list);
     }
 }

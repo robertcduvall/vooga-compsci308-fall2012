@@ -72,6 +72,7 @@ public class Game {
      */
     public String getUserPreferences () {
         NodeList gameInfo = myGameNode.getChildNodes();
+        if(gameInfo == null) return null;
         for (int i = 0; i < gameInfo.getLength(); i++) {
             if ("preferences".equals(gameInfo.item(i))) {
                 return gameInfo.item(
@@ -176,7 +177,7 @@ public class Game {
      * Returns the name of the game.
      */
     public String getGameName () {
-        return myGame.getName();
+        return myGameNode.getTextContent();
     }
 
     /**

@@ -13,6 +13,7 @@ import org.xml.sax.SAXException;
 
 
 /**
+ * @deprecated Please use XmlUtilities instead.
  * Parses Xml to get data from the file.
  * 
  * @author Mark Hoffman
@@ -24,6 +25,8 @@ public class XmlParser {
     private Document myXmlDocument;
 
     /**
+     * @deprecated use static methods in XmlUtilities instead.
+     * 
      * Initiates the process for parsing an Xml file.
      * 
      * @param file The Xml file that will be parsed.
@@ -34,6 +37,8 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the makeDocument method in XmlUtilities instead.
+     * 
      * Enables parsing of the Xml file. myXmlDocument is then the basis
      * for the rest of the parsing.
      */
@@ -55,6 +60,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated call getDocumentElement on a doc directly instead.
      * 
      * @return Document (Root) Element
      */
@@ -63,6 +69,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the getElements method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param name The string name of the desired elements
@@ -75,6 +82,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the getContent method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired text
@@ -86,6 +94,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the getContentAsImage method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired image
@@ -104,6 +113,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the getContentAsInt method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired int
@@ -115,6 +125,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the getContentAsDouble method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired double
@@ -126,6 +137,7 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated use static methods in XmlUtilities instead.
      * 
      * @return document
      * @author difan

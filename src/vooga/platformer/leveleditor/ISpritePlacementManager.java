@@ -26,17 +26,6 @@ public interface ISpritePlacementManager {
     boolean isValidPosition (Sprite sprite);
 
     /**
-     * Places a sprite on a LevelBoard, if
-     * that position is valid. Validity is
-     * determined by the individual subclass
-     * of this interface.
-     * 
-     * @param toPosition The sprite to be
-     *        placed on the LevelBoard.
-     */
-    void positionSprite (Sprite toPosition);
-
-    /**
      * Selects a sprite which can now be
      * moved by the user.
      * 
@@ -87,7 +76,9 @@ public interface ISpritePlacementManager {
     void selectRegion (Rectangle region);
 
     /**
-     * Causes all SELECTED sprites to move to the
+     * Sends all selected sprites coordinates
+     * to move to. This causes all
+     * SELECTED sprites to move to the
      * coordinates described by x and y
      * regardless of whether or not they are
      * 'valid' placement positions.
@@ -96,5 +87,15 @@ public interface ISpritePlacementManager {
      * @param y y coordinate.
      */
     void follow (int x, int y);
+
+    /**
+     * Places all currently selected sprites
+     * on the LevelBoard.
+     * Calls the sprite's getLocation() method
+     * to determine if that sprite, at its
+     * current location can be placed on the
+     * LevelBoard.
+     */
+    void positionSprites ();
 
 }
