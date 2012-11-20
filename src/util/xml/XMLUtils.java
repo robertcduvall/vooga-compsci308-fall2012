@@ -1,4 +1,4 @@
-package vooga.platformer.util.xml;
+package util.xml;
 
 import java.awt.Image;
 import java.io.File;

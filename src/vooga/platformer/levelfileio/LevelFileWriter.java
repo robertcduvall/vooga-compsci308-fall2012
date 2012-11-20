@@ -18,8 +18,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import util.xml.XMLUtils;
 import vooga.platformer.leveleditor.Sprite;
-import vooga.platformer.util.xml.XMLUtils;
 
 
 /**
