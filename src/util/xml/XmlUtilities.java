@@ -32,10 +32,8 @@ import org.w3c.dom.NodeList;
  * The 5-6 of us got together to make one Utility class that has the best from all the
  * others and is more robust. All other xml utilities have been deprecated.
  * 
-
- * 
  * TODO: Include more robust error checking and throw an XMLException when appropriate.
- * TODO: Add Javadoc comments for all methods.
+ * TODO: Add Javadoc comments for all methods (and fix some existing ones)
  * 
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
  * 
