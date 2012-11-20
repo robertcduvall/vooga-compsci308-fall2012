@@ -967,6 +967,35 @@ public class XmlUtilities {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Writes an element to an xml file
+     * 
+     * @param element the xml element to write
+     * @param filePath the full path to the file, including filename.xml
+     */
+
+    public static void write (Element element, String filePath) {
+        
+        FileWriter writer = null;
+        String xmlString = null;
+        try {
+            xmlString = getXmlAsString(element);
+        }
+        catch (TransformerException e) {
+            System.err.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+        try {
+            writer = new FileWriter(filePath);
+            writer.write(xmlString);
+            writer.close();
+        }
+        catch (IOException e) {
+            System.err.println("ERROR: could not open file! " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Converts a NodeList to a Collection of Elements.

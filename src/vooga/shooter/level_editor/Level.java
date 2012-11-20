@@ -12,6 +12,7 @@ import org.w3c.dom.Element;
 import util.pack.Packable;
 import util.reflection.Reflection;
 import util.xml.XmlBuilder;
+import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Sprite;
 
 
@@ -131,19 +132,13 @@ public class Level implements Packable<Level> {
     }
 
     @Override
-    public Document pack () {
-        // TODO Use our consolidated xml tools for this.
-        Document doc = XmlBuilder.createDocument();
-        Element rootElement = doc.createElement("Level");
-        doc.appendChild(rootElement);
-        rootElement.setAttribute("backgroundImage", myBackgroundImagePath);
-        return doc;
+    public Element pack () {
+        return XmlUtilities.makeElement("Level", "backgroundImage", myBackgroundImagePath);
     }
 
     @Override
-    public Level unpack (Document xmlData) {
-        Element rootElement = (Element) xmlData.getFirstChild();
-        String bgImagePath = rootElement.getAttribute("backgroundImage");
+    public Level unpack (Element xmlData) {
+        String bgImagePath = xmlData.getAttribute("backgroundImage");
         String className = this.getClass().getName();
         return (Level) Reflection.createInstance(className, bgImagePath);
     }

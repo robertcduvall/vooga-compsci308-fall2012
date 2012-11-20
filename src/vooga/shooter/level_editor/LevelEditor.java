@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.*;
+import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
 import java.io.*;
 import java.net.URL;
@@ -241,7 +242,7 @@ public class LevelEditor implements ActionListener, KeyListener {
             if (openFile == null) {
                 // file has never ben saved, so we need to save as instead
                 String file_path = System.getProperty("user.dir") + "/src/vooga/shooter/levels/level1.xml";
-                XmlWriter.writeXML(myLevel.pack(), file_path);
+                XmlUtilities.write(myLevel.pack(), file_path);
             }
             else {
                 saveFile(openFile);

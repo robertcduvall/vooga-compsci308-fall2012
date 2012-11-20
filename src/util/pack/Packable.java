@@ -1,6 +1,5 @@
 package util.pack;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public interface Packable<T> {
@@ -14,7 +13,7 @@ public interface Packable<T> {
      * @return Element an xml element that contains all
      * the relevant information about the object
      */
-    public Document pack();
+    public Element pack();
 
     /**
      * Instantiates an object from information stored
@@ -23,6 +22,6 @@ public interface Packable<T> {
      * @return T an instance of an object of class
      * T that was stored in the xml element.
      */
-    public T unpack(Document xmlData);
+    public T unpack(Element xmlData);
     
 }
