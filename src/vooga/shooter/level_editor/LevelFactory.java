@@ -17,6 +17,10 @@ import vooga.shooter.gameObjects.Sprite;
 
 
 /**
+ * @deprecated Use the Packable interface and
+ * the pack() and unpack() methods on level
+ * instead of this.
+ * 
  * Level Factory.java
  * Instantiates Levels from an XML file
  * 

@@ -2,14 +2,11 @@ package vooga.shooter.level_editor;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.*;
 import util.xml.XmlUtilities;
-import util.xml.XmlWriter;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;

@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.pack.Packable;
 import util.reflection.Reflection;
-import util.xml.XmlBuilder;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Sprite;
 
