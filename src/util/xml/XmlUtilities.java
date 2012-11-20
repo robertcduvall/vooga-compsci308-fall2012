@@ -26,13 +26,32 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * A general-use xml writer that gives users tools to easily create and modify xml files.
+ * A general-use xml utility class.
  * 
  * IMPORTANT: There are other xml utilities but this is the one that everyone should use.
  * The 5-6 of us got together to make one Utility class that has the best from all the
  * others and is more robust. All other xml utilities have been deprecated.
  * 
+
+ * 
+ * TODO: Include more robust error checking and throw an XMLException when appropriate.
+ * TODO: Add Javadoc comments for all methods.
+ * 
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
+ * 
+ * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * 
+ * Example of the semantics used here:
+ * 
+ *      <tag attribute="value"> content </tag>
+ *              ~or~
+ *      <tag attributeName="attributeContent"> content </tag>
+ *      
+ *      <parent>
+ *         <child></child>
+ *      </parent>
+ * 
+ * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
  * 
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov, Difan Zhao, Mark Hoffman
  */
@@ -52,11 +71,17 @@ public class XmlUtilities {
         try {
         	doc = dbFactory.newDocumentBuilder().parse(file);
         }
-        catch (Exception e) {
-            System.err.println("An error occurred while trying to make document: "
+        catch (IOException e) {
+            System.err.println("ERROR: Could not open the file! "
                     + e.getMessage());
             e.printStackTrace();
         }
+        catch (Exception e) {
+            System.err.println("ERROR: Could not instantiate a Document element! "
+                    + e.getMessage());
+            e.printStackTrace();
+        }
+        
         return doc;
     }
     
@@ -71,7 +96,7 @@ public class XmlUtilities {
                 doc = dbFactory.newDocumentBuilder().newDocument();
         }
         catch (Exception e) {
-            System.err.println("An error occurred while trying to make document: "
+            System.err.println("ERROR: Could not instantiate a Document element! "
                     + e.getMessage());
             e.printStackTrace();
         }
@@ -121,8 +146,8 @@ public class XmlUtilities {
     	return element;
     }
     
-    public static Collection<Element> replaceAllTagNames(Element element, String oldTag, String newTag) {
-        NodeList nodeList = element.getElementsByTagName(oldTag);
+    public static Collection<Element> replaceAllTagNames(Element parent, String oldTag, String newTag) {
+        NodeList nodeList = parent.getElementsByTagName(oldTag);
 		for (int i = 0; i < nodeList.getLength(); i++) {
 		    Node node = nodeList.item(i);
 			node.setNodeValue(newTag);
@@ -150,8 +175,7 @@ public class XmlUtilities {
      * @return the Image imageFileName refers to
      */
     public static Image fileNameToImage (File configFileName, String imageFileName) {
-        // creates a new File by appending the imageFileName to the path of
-        // config file
+        
         File imageFile = new File(configFileName.getParentFile(), imageFileName);
 
         ImageIcon ii = new ImageIcon(imageFile.getAbsolutePath());
@@ -159,7 +183,7 @@ public class XmlUtilities {
     }
     
     /**
-     * Helper function for creating an image from an image file.
+     * Helper function for creating an image from an image filename.
      * 
      * @param dir the directory where the image is stored
      * @param imageFileName the filename specified in the config file e.g.
@@ -174,7 +198,7 @@ public class XmlUtilities {
     }
     
     /**
-     * Helper function for creating an image from an image file.
+     * Helper function for creating an image from an image filename.
      * 
      * @param imageFileName the full path to an image file.
      * @return the Image imageFileName refers to
@@ -187,14 +211,14 @@ public class XmlUtilities {
     }
     
     /**
-     * helper for retrieving a node by its tag
+     * helper for retrieving a list of elements by tag
      * 
-     * @param tag name of Node we want to retrieve
-     * @param element the element from which we start our search
+     * @param tag name of the elements we want to retrieve
+     * @param parent the parent element from which we start our search
      * @return a NodeList which contains all the elements specified by tag
      */
-    public static Collection<Element> getElements (String tag, Element element) {
-        NodeList list = element.getElementsByTagName(tag);
+    public static Collection<Element> getElements (Element parent, String tag) {
+        NodeList list = parent.getElementsByTagName(tag);
         return convertNodeListToCollection(list);
     }
     
@@ -205,7 +229,7 @@ public class XmlUtilities {
      * @param parent the parent element from which we start our search
      * @return
      */
-    public static Element getElement (String tag, Element parent) {
+    public static Element getElement (Element parent, String tag) {
         return (Element) parent.getElementsByTagName(tag).item(0);
     }
     
@@ -227,7 +251,7 @@ public class XmlUtilities {
      * @param element
      * @return
      */
-    public static int getContentAsInt (String tag, Element element) {
+    public static int getContentAsInt (Element element) {
         return Integer.parseInt(getContent(element));
     }
 
@@ -238,7 +262,7 @@ public class XmlUtilities {
      * @param element
      * @return
      */
-    public static double getContentAsDouble (String tag, Element element) {
+    public static double getContentAsDouble (Element element) {
         return Double.parseDouble(getContent(element));
     }
     
@@ -249,7 +273,7 @@ public class XmlUtilities {
      * @param element
      * @return
      */
-    public static Image getContentAsImage (String tag, Element element) {
+    public static Image getContentAsImage (Element element) {
         return fileNameToImage(getContent(element));
     }
     
@@ -261,8 +285,8 @@ public class XmlUtilities {
      * @param parent the element from which we start our search
      * @return the value of the Node designated by tag
      */
-    public static String getChildContent (String tag, Element parent) {
-        Node child = getElement(tag, parent);
+    public static String getChildContent (Element parent, String tag) {
+        Node child = getElement(parent, tag);
         return child.getTextContent();
     }
     
@@ -273,8 +297,8 @@ public class XmlUtilities {
      * @param element
      * @return
      */
-    public static int getChildContentAsInt (String tag, Element element) {
-        return Integer.parseInt(getChildContent(tag, element));
+    public static int getChildContentAsInt (Element parent, String tag) {
+        return Integer.parseInt(getChildContent(parent, tag));
     }
 
     /**
@@ -284,8 +308,8 @@ public class XmlUtilities {
      * @param element
      * @return
      */
-    public static double getChildContentAsDouble (String tag, Element element) {
-        return Double.parseDouble(getChildContent(tag, element));
+    public static double getChildContentAsDouble (Element parent, String tag) {
+        return Double.parseDouble(getChildContent(parent, tag));
     }
     
     /**
@@ -297,8 +321,8 @@ public class XmlUtilities {
      * @return a map of String keys which are the tags, which map to String
      *         values that are their contents
      */
-    public static Map<String, String> extractMapFromXML (Element parentElement) {
-        NodeList paramNodeList = parentElement.getChildNodes();
+    public static Map<String, String> extractMapFromXML (Element parent) {
+        NodeList paramNodeList = parent.getChildNodes();
         Map<String, String> map = new HashMap<String, String>();
 
         for (int k = 0; k < paramNodeList.getLength(); k++) {
@@ -342,10 +366,10 @@ public class XmlUtilities {
      * @param map map of Strings onto Strings representing the tags and values
      *        to be written as child Elements of the new Element
      */
-    public static void appendMapContents (Document doc, Element parentElement,
+    public static void appendMapContents (Document doc, Element parent,
                                           String childElementName, Map<String, String> map) {
         Element childElement = generateElementFromMap(doc, childElementName, map);
-        parentElement.appendChild(childElement);
+        parent.appendChild(childElement);
     }
     
     /**
@@ -397,7 +421,7 @@ public class XmlUtilities {
         }
         catch (IOException e) {
             // TODO Auto-generated catch block
-            System.err.println("ERROR: could not open file!" + e.getMessage());
+            System.err.println("ERROR: could not open file! " + e.getMessage());
             e.printStackTrace();
         } 
     }
