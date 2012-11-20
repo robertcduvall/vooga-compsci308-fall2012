@@ -177,6 +177,7 @@ public class GameManager {
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
+        mySprites.get(spriteID).clear();
         mySprites.remove(spriteID);
     }
 

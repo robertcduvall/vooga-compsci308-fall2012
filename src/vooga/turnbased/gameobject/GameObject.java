@@ -102,4 +102,9 @@ public abstract class GameObject {
      * @param delayTime Int amount of time to wait between updates.
      */
     public abstract void update (int delayTime);
+
+    /**
+     * Remove all occurences of this object in the program.
+     */
+    public abstract void clear();
 }

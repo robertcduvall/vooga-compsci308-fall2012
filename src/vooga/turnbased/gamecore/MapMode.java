@@ -66,7 +66,7 @@ public class MapMode extends GameMode {
 
     @Override
     public void resume () {
-        init(); // hardcoded for now - need to remove all instances of sprite's gameobjects ecery time sprite is removed 
+        // do stuff when back to map mode
     }
      
     public void init () {
@@ -392,4 +392,8 @@ public class MapMode extends GameMode {
 	public void setPlayer(MapPlayerObject p) {
 		myPlayer = p;
 	}
+
+    public void removeMapObject (MapObject mapObject) {
+        myMapObjects.get(mapObject.getLocation()).remove(mapObject);
+    }
 }

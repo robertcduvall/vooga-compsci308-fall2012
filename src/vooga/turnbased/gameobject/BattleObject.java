@@ -149,4 +149,9 @@ public abstract class BattleObject extends GameObject {
     public void changeHealth(int healthDiff) {
         myHealth += healthDiff;
     }
+    
+    @Override 
+    public void clear() {
+        // remove all instances of this battleobject in the game
+    }
 }

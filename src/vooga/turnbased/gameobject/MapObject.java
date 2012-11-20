@@ -137,4 +137,9 @@ public abstract class MapObject extends GameObject {
         g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
                 myTileDimensions.height, null);
     }
+    
+    @Override
+    public void clear() {
+        myMapMode.removeMapObject(this);
+    }
 }
