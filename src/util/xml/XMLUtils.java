@@ -22,11 +22,14 @@ import org.w3c.dom.Text;
 
 
 /**
+ * @deprecated Please use XmlUtilities instead.
  * @author Zach Michaelov
  * @author Grant Oakley
  */
 public class XMLUtils {
     /**
+     * @deprecated Use the function in XmlUtilities instead.
+     *
      * Helper function for extracting the Image specified in a config file. It
      * assumes
      * imageFileName is in the same directory as the config file.
@@ -46,6 +49,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function makeDocument in XmlUtilities instead.
+     * 
      * convenience method for initializing a Document based on an XML file
      * 
      * @param xmlFile the XML file we want to parse
@@ -66,6 +71,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function getChildContent in XmlUtilities instead.
+     * 
      * retrieves the value of the tag beneath element
      * 
      * @param tag the name of the tag we want to extract
@@ -78,6 +85,7 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function getNode in XmlUtilities instead.
      * helper for retrieving a node by its tag
      * 
      * @param tag name of Node we want to retrieve
@@ -90,6 +98,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function getNode in XmlUtilities instead.
+     * 
      * Searches for a single Node beneath element
      * 
      * @param tag the name of the Node we want to extract
@@ -101,6 +111,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function getContent in XmlUtilities instead.
+     * 
      * retrieves the value of the given node in a xml tree
      * e.g. <file>brick.jpg</file> yields "brick.jpg"
      * 
@@ -113,6 +125,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function getChildContentAsInt in XmlUtilities instead.
+     * 
      * gets the integer value of Node specified by tag
      * 
      * @param tag
@@ -124,6 +138,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the function getChildContentAsDouble in XmlUtilities instead.
+     * 
      * gets the double value of Node specified by tag
      * 
      * @param tag
@@ -135,6 +151,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * Iterates over the child elements of a specified parent element. The tag
      * values are stored as Strings and are the keys of the map. All text in
      * between these tags are stored as String, which the tag String maps to.
@@ -158,6 +176,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the addElement method in XmlUtilities instead.
+     * 
      * Adds a simple element containing a single string value and no attributes
      * to a parent Element.
      * 
@@ -175,6 +195,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * Creates a new XML Element using the contents of a Map<String, String>.
      * 
      * @param doc Document in which the Element is being created
@@ -193,6 +215,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * Adds the contents of a Map<String, String> as a child element to an
      * existing XML Element. This child element is map up of tags, which are the
      * keys of the Map, and values, which are the values of the Map.
@@ -212,6 +236,8 @@ public class XMLUtils {
     }
 
     /**
+     * @deprecated Use the method in XmlUtilities instead.
+     * 
      * Returns a String created from an XML Document. Useful for debugging in
      * the console.
      * 
