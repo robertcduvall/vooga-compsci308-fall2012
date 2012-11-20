@@ -120,5 +120,23 @@ public class Grid extends JLayeredPane {
             }
         }
     }
+    
+    /**
+     * Checks to see if an object is one of the tiles on
+     * the grid.
+     * 
+     * @param tile The Object that could be equal to one of the
+     *        tiles on the grid.
+     * @return true if the Object is equal to one of the tiles,
+     *         false otherwise.
+     */
+    public boolean containsTile (Object tile) {
+        for (int i = 0; i < myGrid.length; i++) {
+            for (int j = 0; j < myGrid[i].length; j++) {
+                if (myGrid[i][j].equals(tile)) { return true; }
+            }
+        }
+        return false;
+    }
 
 }
