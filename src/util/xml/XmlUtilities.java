@@ -27,10 +27,14 @@ import org.w3c.dom.NodeList;
 
 /**
  * A general-use xml writer that gives users tools to easily create and modify xml files.
- * This is the one that we're going to use.
+ * 
+ * IMPORTANT: There are other xml utilities but this is the one that everyone should use.
+ * The 5-6 of us got together to make one Utility class that has the best from all the
+ * others and is more robust. All other xml utilities have been deprecated.
+ * 
+ * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
  * 
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov, Difan Zhao, Mark Hoffman
- *
  */
 public class XmlUtilities {
 
@@ -74,7 +78,7 @@ public class XmlUtilities {
         return doc;
     }
       
-    public static Element addElement(Document doc, Element parent, String tag, String content) {
+    public static Element appendElement(Document doc, Element parent, String tag, String content) {
     	Element child = doc.createElement(tag);
     	child.setTextContent(content);
     	parent.appendChild(child);
@@ -84,7 +88,7 @@ public class XmlUtilities {
     public static Collection<Element> appendElement(Document doc, Element parent, String tag, List<String> content) {
     	ArrayList<Element> list = new ArrayList<Element>();
         for (String s: content) {
-    		list.add(addElement(doc, parent, tag, s));
+    		list.add(appendElement(doc, parent, tag, s));
     	}
     	return list;
     }
@@ -103,7 +107,7 @@ public class XmlUtilities {
     	return list;
     }
     
-    public static Element addElementAndAttribute(Document doc, Element parent, String tag, String content,
+    public static Element appendElementWithAttribute(Document doc, Element parent, String tag, String content,
    		String attributeName, String attributeContent) {
     	Element child = doc.createElement(tag);
     	child.setTextContent(content);
@@ -320,7 +324,7 @@ public class XmlUtilities {
                                                   Map<String, String> map) {
         Element mapElement = doc.createElement(elementName);
         for (String key : map.keySet()) {
-            addElement(doc, mapElement, key, map.get(key));
+            appendElement(doc, mapElement, key, map.get(key));
         }
         return mapElement;
     }
@@ -374,7 +378,7 @@ public class XmlUtilities {
      * @param filePath(including filename.xml)
      */
 
-    public static void writeXML (Document doc, String filePath) {
+    public static void write (Document doc, String filePath) {
         
         FileWriter writer = null;
         String xmlString = null;

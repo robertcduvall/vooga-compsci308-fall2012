@@ -85,7 +85,7 @@ public class XMLUtils {
     }
 
     /**
-     * @deprecated Use the function getNode in XmlUtilities instead.
+     * @deprecated Use the function getElement in XmlUtilities instead.
      * helper for retrieving a node by its tag
      * 
      * @param tag name of Node we want to retrieve
@@ -98,7 +98,7 @@ public class XMLUtils {
     }
 
     /**
-     * @deprecated Use the function getNode in XmlUtilities instead.
+     * @deprecated Use the function getElement in XmlUtilities instead.
      * 
      * Searches for a single Node beneath element
      * 
@@ -176,7 +176,7 @@ public class XMLUtils {
     }
 
     /**
-     * @deprecated Use the addElement method in XmlUtilities instead.
+     * @deprecated Use the appendElement method in XmlUtilities instead.
      * 
      * Adds a simple element containing a single string value and no attributes
      * to a parent Element.
