@@ -45,7 +45,7 @@ import org.w3c.dom.NodeList;
  * 
  * <tag attribute="value"> content </tag>
  * ~or~
- * <tag attributeName="attributeContent"> content </tag>
+ * <tag attributeName="attributeValue"> content </tag>
  * 
  * <parent>
  * <child></child>
@@ -122,39 +122,399 @@ public class XmlUtilities {
     }
 
     /**
-     * Appends an element to a parent element.
+     * Create a new (empty) element.
      * 
-     * @param doc a Document object that will create the Element
+     * @param doc (optional) the doc which will create the element.
+     * @param tag the tag of the newly created element.
+     * @return the newly created (empty) element.
+     */
+
+    public static Element makeElement (Document doc, String tag) {
+        return doc.createElement(tag);
+    }
+
+    /**
+     * Create a new (empty) element.
+     * 
+     * @param tag the tag of the newly created element.
+     * @return the newly created (empty) element.
+     */
+
+    public static Element makeElement (String tag) {
+        return makeDocument().createElement(tag);
+    }
+
+    /**
+     * Returns a newly created element with content.
+     * 
+     * @param doc (optional) the Document which will create the element.
+     * @param tag the tag of the newly created element.
+     * @param content the content of the newly created element.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (Document doc, String tag, String content) {
+        Element e = doc.createElement(tag);
+        return setContent(e, content);
+    }
+
+    /**
+     * Returns a newly created element with content.
+     * 
+     * @param tag the tag of the newly created element.
+     * @param content the content of the newly created element.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (String tag, String content) {
+        return makeElement(makeDocument(), tag, content);
+    }
+
+    /**
+     * Returns a newly created element with an attribute.
+     * 
+     * @param doc (optional) the Document which will create the element.
+     * @param tag the tag of the newly created element.
+     * @param attributeName the attribute name of the attribute of the new
+     *        element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (Document doc, String tag,
+            String attributeName, String attributeValue) {
+        Element e = doc.createElement(tag);
+        return addAttribute(e, attributeName, attributeValue);
+    }
+
+    /**
+     * Returns a newly created element with an attribute.
+     * 
+     * @param tag the tag of the newly created element.
+     * @param attributeName the attribute name of the attribute of the new
+     *        element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (String tag, String attributeName,
+            String attributeValue) {
+        return makeElement(makeDocument(), tag, attributeName, attributeValue);
+    }
+
+    /**
+     * Returns a newly created element with content and a single attribute.
+     * 
+     * @param doc (optional) the Document which will create the element.
+     * @param tag the tag of the newly created element.
+     * @param content the content of the newly created element.
+     * @param attributeName the attribute name of the attribute of the new
+     *        element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (Document doc, String tag,
+            String content, String attributeName, String attributeValue) {
+        Element e = doc.createElement(tag);
+        setContent(e, content);
+        return addAttribute(e, attributeName, attributeValue);
+    }
+
+    /**
+     * Returns a newly created element with content and a single attribute.
+     * 
+     * @param tag the tag of the newly created element.
+     * @param content the content of the newly created element.
+     * @param attributeName the attribute name of the attribute of the new
+     *        element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (String tag, String content,
+            String attributeName, String attributeValue) {
+        return makeElement(makeDocument(), tag, content, attributeName,
+                attributeValue);
+    }
+
+    /**
+     * Returns a newly created element with more than one attribute.
+     * 
+     * @param doc (optional) the Document which will create the element.
+     * @param tag the tag of the newly created element.
+     * @param attributeMap a Map of attributeName to attributeValue.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (Document doc, String tag,
+            Map<String, String> attributesMap) {
+        Element e = doc.createElement(tag);
+        return addAttributes(e, attributesMap);
+    }
+
+    /**
+     * Returns a newly created element with content and more than one attribute.
+     * 
+     * @param tag the tag of the newly created element.
+     * @param attributeMap a Map of attributeName to attributeValue.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (String tag,
+            Map<String, String> attributesMap) {
+        return makeElement(makeDocument(), tag, attributesMap);
+    }
+
+    /**
+     * Returns a newly created element with content and more than one attribute.
+     * 
+     * @param doc (optional) the Document which will create the element.
+     * @param tag the tag of the newly created element.
+     * @param content the content of the newly created element.
+     * @param attributeMap a Map of attributeName to attributeValue.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (Document doc, String tag,
+            String content, Map<String, String> attributesMap) {
+        Element e = doc.createElement(tag);
+        setContent(e, content);
+        return addAttributes(e, attributesMap);
+    }
+
+    /**
+     * Returns a newly created element with content and more than one attribute.
+     * 
+     * @param tag the tag of the newly created element.
+     * @param content the content of the newly created element.
+     * @param attributeMap a Map of attributeName to attributeValue.
+     * @return the newly created element.
+     */
+
+    public static Element makeElement (String tag, String content,
+            Map<String, String> attributesMap) {
+        return makeElement(makeDocument(), tag, content, attributesMap);
+    }
+
+    /**
+     * Appends an empty element to a parent element.
+     * 
      * @param parent the parent element to which the new element
      *        will be appended.
-     * @param tag the tag name of the new element.
-     * @return the new element that was appended.
+     * @param child the child element which will be appended to parent.
+     * @return the child element that was appended.
      */
-    
-    public static Element appendElement (Document doc, Element parent,
-            String tag) {
-        Element child = doc.createElement(tag);
+
+    public static Element appendElement (Element parent, Element child) {
         parent.appendChild(child);
         return child;
     }
 
     /**
+     * Appends an empty element to a parent element.
+     * 
+     * @param doc (optional) a Document object that will create the Element
+     * @param parent the parent element to which the new element
+     *        will be appended.
+     * @param tag the tag name of the new element.
+     * @return the new element that was appended.
+     */
+
+    public static Element appendElement (Document doc, Element parent,
+            String tag) {
+        Element child = doc.createElement(tag);
+        return appendElement(parent, child);
+    }
+
+    /**
+     * Appends an element to a parent element.
+     * 
+     * @param parent the parent element to which the new element
+     *        will be appended.
+     * @param tag the tag name of the new element.
+     * @return the new element that was appended.
+     */
+
+    public static Element appendElement (Element parent, String tag) {
+        return appendElement(makeDocument(), parent, tag);
+    }
+
+    /**
      * Appends an element with some content to a parent element.
      * 
-     * @param doc a Document object that will create the Element
+     * @param doc (optional) a Document object that will create the Element
      * @param parent the parent element to which the new element
      *        will be appended.
      * @param tag the tag name of the new element.
      * @param content the content of the new element.
      * @return the new element that was appended.
      */
-    
+
     public static Element appendElement (Document doc, Element parent,
             String tag, String content) {
-        Element child = doc.createElement(tag);
-        child.setTextContent(content);
-        parent.appendChild(child);
-        return child;
+        Element child = makeElement(doc, tag, content);
+        return appendElement(parent, child);
+    }
+
+    /**
+     * Appends an element with some content to a parent element.
+     * 
+     * @param parent the parent element to which the new element
+     *        will be appended.
+     * @param tag the tag name of the new element.
+     * @param content the content of the new element.
+     * @return the new element that was appended.
+     */
+
+    public static Element appendElement (Element parent, String tag,
+            String content) {
+        return appendElement(makeDocument(), parent, tag, content);
+    }
+
+    /**
+     * Appends an element with a single attribute to
+     * the parent element.
+     * 
+     * @param doc (optional) a Document which will be used to create the
+     *        element.
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param attributeName the name of the attribute of the new element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Document doc, Element parent,
+            String tag, String attributeName, String attributeValue) {
+        Element child = makeElement(doc, tag, attributeName, attributeValue);
+        return appendElement(parent, child);
+    }
+
+    /**
+     * Appends an element with a single attribute to
+     * the parent element.
+     * 
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param content the content of the new element.
+     * @param attributeName the name of the attribute of the new element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Element parent, String tag,
+            String attributeName, String attributeValue) {
+        return appendElement(makeDocument(), parent, tag, attributeName,
+                attributeValue);
+    }
+
+    /**
+     * Appends an element with content and a single attribute to
+     * the parent element.
+     * 
+     * @param doc (optional) a Document which will be used to create the
+     *        element.
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param content the content of the new element.
+     * @param attributeName the name of the attribute of the new element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Document doc, Element parent,
+            String tag, String content, String attributeName,
+            String attributeValue) {
+        Element child = makeElement(doc, tag, content, attributeName,
+                attributeValue);
+        return appendElement(parent, child);
+    }
+
+    /**
+     * Appends an element with content and a single attribute to
+     * the parent element.
+     * 
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param content the content of the new element.
+     * @param attributeName the name of the attribute of the new element.
+     * @param attributeValue the value of the attribute of the new element.
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Element parent, String tag,
+            String content, String attributeName, String attributeValue) {
+        return appendElement(makeDocument(), parent, tag, content,
+                attributeName, attributeValue);
+    }
+
+    /**
+     * Appends an element with more than one attribute to
+     * the parent element.
+     * 
+     * @param doc (optional) a Document which will be used to create the
+     *        element.
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param attributeMap a Map of attributeName to attributeValue
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Document doc, Element parent,
+            String tag, Map<String, String> attributeMap) {
+        Element child = makeElement(doc, tag, attributeMap);
+        return appendElement(parent, child);
+    }
+
+    /**
+     * Appends an element with more than one attribute to
+     * the parent element.
+     * 
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param attributeMap a Map of attributeName to attributeValue
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Element parent, String tag,
+            Map<String, String> attributeMap) {
+        return appendElement(makeDocument(), parent, tag, attributeMap);
+    }
+
+    /**
+     * Appends an element with content and more than one attribute to
+     * the parent element.
+     * 
+     * @param doc (optional) a Document which will be used to create the
+     *        element.
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param content the content of the new element.
+     * @param attributeMap a Map of attributeName to attributeValue
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Document doc, Element parent,
+            String tag, String content, Map<String, String> attributeMap) {
+        Element child = makeElement(doc, tag, content, attributeMap);
+        return appendElement(parent, child);
+    }
+
+    /**
+     * Appends an element with content more than one attribute to
+     * the parent element.
+     * 
+     * @param parent the element to which the new element will be appended.
+     * @param tag the tag (name) of the new element.
+     * @param content the content of the new element.
+     * @param attributeMap a Map of attributeName to attributeValue
+     * @return the new element that was appended to parent.
+     */
+
+    public static Element appendElement (Element parent, String tag,
+            String content, Map<String, String> attributeMap) {
+        return appendElement(makeDocument(), parent, tag, content, attributeMap);
     }
 
     /**
@@ -162,7 +522,7 @@ public class XmlUtilities {
      * different content to a parent element. That is, each
      * element can have different content.
      * 
-     * @param doc a Document object that will create the Element
+     * @param doc (optional) a Document object that will create the Element
      * @param parent the parent element to which the new element
      *        will be appended.
      * @param tag the tag name of the new element.
@@ -171,8 +531,8 @@ public class XmlUtilities {
      *        corresponds to the size of this list.
      * @return the new element that was appended.
      */
-    
-    public static Collection<Element> appendElement (Document doc,
+
+    public static Collection<Element> appendElements (Document doc,
             Element parent, String tag, List<String> content) {
         ArrayList<Element> list = new ArrayList<Element>();
         for (String s : content) {
@@ -182,65 +542,21 @@ public class XmlUtilities {
     }
 
     /**
-     * Adds an attribute to the element. If the attribute already exists,
-     * throws a warning and then overwrites it.
+     * Appends a set of elements with the same tag name but
+     * different content to a parent element.
      * 
-     * @param element the element to which an attribute will be added.
-     * @param attributeName the name of the attribute to be set.
-     * @param attributeContent the content of the attribute to be set.
-     * @return the element to which the new attribute was added.
+     * @param parent the parent element to which the new element
+     *        will be appended.
+     * @param tag the tag name of the new element.
+     * @param content a list of Strings which will be the content
+     *        of the new elements. The number of elements created
+     *        corresponds to the size of this list.
+     * @return the new element that was appended.
      */
 
-    public static Element addAttribute (Element element, String attributeName,
-            String attributeContent) {
-        if (element.getAttribute(attributeName) != null) {
-            System.err.println("WARNING: The attributes for "
-                    + "this element already exists. It will be overwritten!");
-        }
-        element.setAttribute(attributeName, attributeContent);
-        return element;
-    }
-
-    /**
-     * Adds a set of attributes to the element. If an attribute
-     * already exists, throws a warning and then overwrites it.
-     * The attributes are passed in as a Map.
-     * 
-     * @param element the element to which an attribute will be added.
-     * @param attributeMap a Map of attributeName to attributeContent.
-     * @return the element to which the new attributes were added.
-     */
-
-    public static Element addAttributes (Element element,
-            Map<String, String> attributeMap) {
-        for (String name : attributeMap.keySet()) {
-            String value = attributeMap.get(name);
-            addAttribute(element, name, value);
-        }
-        return element;
-    }
-
-    /**
-     * Appends an element with content and a single attribute to
-     * the parent element.
-     * 
-     * @param doc a Document which will be used to create the element.
-     * @param parent the element to which the new element will be appended.
-     * @param tag the tag (name) of the new element.
-     * @param content the content of the new element.
-     * @param attributeName the name of the attribute of the new element.
-     * @param attributeContent the content of the attribute of the new element.
-     * @return the new element that was appended to parent.
-     */
-
-    public static Element appendElementWithAttribute (Document doc,
-            Element parent, String tag, String content, String attributeName,
-            String attributeContent) {
-        Element child = doc.createElement(tag);
-        child.setTextContent(content);
-        parent.appendChild(child);
-        addAttribute(child, attributeName, attributeContent);
-        return child;
+    public static Collection<Element> appendElements (Element parent,
+            String tag, List<String> content) {
+        return appendElements(makeDocument(), parent, tag, content);
     }
 
     /**
@@ -252,8 +568,47 @@ public class XmlUtilities {
      * @return the element to which new content was added.
      */
 
-    public static Element setElementContent (Element element, String newContent) {
+    public static Element setContent (Element element, String newContent) {
         element.setTextContent(newContent);
+        return element;
+    }
+
+    /**
+     * Adds an attribute to the element. If the attribute already exists,
+     * throws a warning and then overwrites it.
+     * 
+     * @param element the element to which an attribute will be added.
+     * @param attributeName the name of the attribute to be set.
+     * @param attributeValue the value of the attribute to be set.
+     * @return the element to which the new attribute was added.
+     */
+
+    public static Element addAttribute (Element element, String attributeName,
+            String attributeValue) {
+        if (element.getAttribute(attributeName) != null) {
+            System.err.println("WARNING: The attributes for "
+                    + "this element already exists. It will be overwritten!");
+        }
+        element.setAttribute(attributeName, attributeValue);
+        return element;
+    }
+
+    /**
+     * Adds a set of attributes to the element. If an attribute
+     * already exists, throws a warning and then overwrites it.
+     * The attributes are passed in as a Map.
+     * 
+     * @param element the element to which an attribute will be added.
+     * @param attributeMap a Map of attributeName to attributeValue.
+     * @return the element to which the new attributes were added.
+     */
+
+    public static Element addAttributes (Element element,
+            Map<String, String> attributeMap) {
+        for (String name : attributeMap.keySet()) {
+            String value = attributeMap.get(name);
+            addAttribute(element, name, value);
+        }
         return element;
     }
 
@@ -306,7 +661,7 @@ public class XmlUtilities {
      *        brick.jpg
      * @return the Image imageFileName refers to
      */
-    
+
     public static Image fileNameToImage (File configFileName,
             String imageFileName) {
 
@@ -324,7 +679,7 @@ public class XmlUtilities {
      *        brick.jpg
      * @return the Image imageFileName refers to
      */
-    
+
     public static Image fileNameToImage (String dir, String imageFileName) {
         File imageFile = new File(dir, imageFileName);
 
@@ -338,7 +693,7 @@ public class XmlUtilities {
      * @param imageFileName the full path to an image file.
      * @return the Image imageFileName refers to
      */
-    
+
     public static Image fileNameToImage (String imageFileName) {
         File imageFile = new File(imageFileName);
 
@@ -353,7 +708,7 @@ public class XmlUtilities {
      * @param parent the parent element from which we start our search
      * @return a NodeList which contains all the elements specified by tag
      */
-    
+
     public static Collection<Element> getElements (Element parent, String tag) {
         NodeList list = parent.getElementsByTagName(tag);
         return convertNodeListToCollection(list);
@@ -366,7 +721,7 @@ public class XmlUtilities {
      * @param parent the parent element from which we start our search.
      * @return the first element with the given tag.
      */
-    
+
     public static Element getElement (Element parent, String tag) {
         return (Element) parent.getElementsByTagName(tag).item(0);
     }
@@ -378,7 +733,7 @@ public class XmlUtilities {
      * @param element the Element we want to extract the value from
      * @return the value enclosed in the tag
      */
-    
+
     public static String getContent (Element element) {
         return element.getTextContent();
     }
@@ -390,7 +745,7 @@ public class XmlUtilities {
      *        can be casted to int.
      * @return the integer value of the element.
      */
-    
+
     public static int getContentAsInt (Element element) {
         return Integer.parseInt(getContent(element));
     }
