@@ -19,7 +19,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 public class Applet extends JApplet {
         // constants
-    public static final Dimension SIZE = new Dimension(500, 500);
+    public static final Dimension SIZE = new Dimension(600, 400);
     public static final int NO_KEY_PRESSED = -1;
     // animate 25 times per second if possible (in milliseconds)
     public static final int ONE_SECOND = 1000;
@@ -71,7 +71,7 @@ public class Applet extends JApplet {
     public void start ()
      {
         // create the game! 
-        myGame = new Game(this);
+        myGame = new Game();
         // create a timer to animate the canvas
         myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
             new ActionListener()

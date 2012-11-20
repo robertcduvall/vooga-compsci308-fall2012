@@ -1,6 +1,6 @@
 package vooga.shooter.level_editor;
 
-import util.xml.XmlWriter;
+import util.xml.XmlUtilities;
 
 /**
  * This is only a temporary test and should probably be
@@ -21,7 +21,7 @@ public class TestLevelEditor {
         String image_path = project_path + "/src/vooga/shooter/images/alien.png";
         String file_path = project_path + "/src/vooga/shooter/levels/level1.xml";
         Level l = new Level(image_path);
-        XmlWriter.writeXML(l.pack(), file_path);
+        XmlUtilities.write(l.pack(), file_path);
     }
     
 }
