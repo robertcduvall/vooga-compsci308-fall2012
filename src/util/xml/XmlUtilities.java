@@ -28,10 +28,9 @@ import org.w3c.dom.NodeList;
  * A general-use xml utility class.
  * 
  * IMPORTANT: There are other xml utilities but this is the one that everyone
- * should use.
- * The 5-6 of us got together to make one Utility class that has the best from
- * all the
- * others and is more robust. All other xml utilities have been deprecated.
+ * should use. The 5-6 of us got together to make one Utility class that has 
+ * the best from all the others and is more robust. All other xml utilities
+ * have been deprecated.
  * 
  * TODO: Include more robust error checking and throw an XmlException when
  * appropriate.
@@ -52,8 +51,8 @@ import org.w3c.dom.NodeList;
  * 
  * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
  * 
- * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov, Difan Zhao,
- *         Mark Hoffman
+ * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov,
+ *      Difan Zhao, Mark Hoffman
  */
 
 public class XmlUtilities {
@@ -955,7 +954,6 @@ public class XmlUtilities {
             xmlString = getXmlAsString(doc);
         }
         catch (TransformerException e) {
-            // TODO Auto-generated catch block
             System.err.println("ERROR: " + e.getMessage());
             e.printStackTrace();
         }
@@ -965,7 +963,6 @@ public class XmlUtilities {
             writer.close();
         }
         catch (IOException e) {
-            // TODO Auto-generated catch block
             System.err.println("ERROR: could not open file! " + e.getMessage());
             e.printStackTrace();
         }
