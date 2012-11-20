@@ -13,8 +13,9 @@ import java.awt.Point;
 public class DensityTester extends ParticleEngineTestingUnit{
 	//Need to be given default values
 	private static Image particleImage;
-	private static Point direction = new Point(0,-1);
-    private static int tolerance = 1;
+	private static Point position = new Point (100,100);
+	private static Point velocity = new Point(0,-1);
+    private static int tolerance = 15;
     private static int length = 1000;
 	
     private static int densityStartNum = 1000;
@@ -24,7 +25,7 @@ public class DensityTester extends ParticleEngineTestingUnit{
     @Override
 	protected void setUpParticleEngines() {
 		for (int k = densityStartNum; k<densityEndNum; k+=densityStepCount){
-			addParticleEngine(k, particleImage, direction, tolerance, length);
+			addParticleEngine(k, particleImage, position, velocity, tolerance, length);
 		}
 	}
 
