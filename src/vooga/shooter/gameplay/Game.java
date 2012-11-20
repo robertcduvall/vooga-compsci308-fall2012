@@ -20,6 +20,7 @@ import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.implementation.Level1;
+import vooga.shooter.implementation.Level2;
 import vooga.shooter.level_editor.Level;
 import vooga.shooter.gameplay.Applet;
 
@@ -77,9 +78,9 @@ public class Game implements DrawableComponent, IArcadeGame {
             addSprite(myPlayer2);
         }
 
-        Level firstLevel = new Level1(this);
+        Level myCurrentLevel = new Level1(this);
         myCanvas.addKeyListener(new KeyboardListener());
-        startLevel(firstLevel);
+        startLevel(myCurrentLevel);
     }
 
     private void startLevel (Level level) {
@@ -99,8 +100,9 @@ public class Game implements DrawableComponent, IArcadeGame {
      */
     public void update () {
         
-        if (myCurrentLevel.winningConditionsMet()) {
+        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
             myCurrentLevel = myCurrentLevel.getNextLevel();
+            startLevel(myCurrentLevel);
         }
         
         for (Sprite s : getSprites()) {
@@ -189,6 +191,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      */
     public void paint (Graphics pen) {
         List<Sprite> deadSprites = new ArrayList<Sprite>();
+        List<Enemy> deadEnemies = new ArrayList<Enemy>();
 
         for (Sprite s : getSprites()) {
             if (s.getImage() == null) {
@@ -198,7 +201,16 @@ public class Game implements DrawableComponent, IArcadeGame {
                 s.paint(pen);
             }
         }
-        getSprites().removeAll(deadSprites);
+        
+        for (Enemy e : getEnemies()) {
+            if (e.getImage() == null) {
+                deadEnemies.add(e);
+            }
+            else {
+                e.paint(pen);
+            }
+        }
+        getEnemies().removeAll(deadEnemies);
     }
 
     /**

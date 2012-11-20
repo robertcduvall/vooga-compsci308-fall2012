@@ -21,7 +21,7 @@ public class Level2 extends Level {
 
     private static final int NUMBER_OF_STAGES = 1;
     private static final int NUMBER_OF_ENEMIES = 2;
-    private static final Dimension ENEMY_DIMENSION = new Dimension(20, 20);
+    private static final Dimension ENEMY_DIMENSION = new Dimension(20, 17);
     private static final Point ENEMY_VELOCITY = new Point(0, 5);
     private static final int ENEMY_DAMAGE = 1;
 
@@ -31,7 +31,7 @@ public class Level2 extends Level {
     public Level2 (Game game) {
         super();
         myGame = game;
-        myNextLevel = null;
+        setNextLevel(new Level3(myGame));
     }
 
     public void startLevel () {
