@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 
 
 public class Square {
@@ -19,41 +20,67 @@ public class Square {
     private boolean moveDown;
     private int nextXMove;
     private int nextYMove;
+    private double myRotation = 0;
 
     public Square (Point startPosition, Color color) {
         myX = startPosition.x;
         myY = startPosition.y;
         myColor = color;
+        
+        
     }
 
     public void draw (Graphics2D pen) {
+        
+        /*AffineTransform rotationTransform = new AffineTransform();
+        rotationTransform.rotate(Math.toRadians(myRotation),
+                (myX+myWidth/2), (myY+myHeight/2));
+        AffineTransform savedTransform = pen.getTransform();
+        pen.setTransform(rotationTransform); */
         move();
         pen.setColor(myColor);
         pen.fillRect(myX, myY, myWidth, myHeight);
     }
 
-    public void toggleMoveLeft () {
-        moveLeft = !moveLeft;
+    public void enableMoveUp () {
+        moveUp = true;
     }
 
-    public void toggleMoveRight () {
-        moveRight = !moveRight;
+    public void disableMoveUp () {
+        moveUp = false;
     }
 
-    public void toggleMoveUp () {
-        moveUp = !moveUp;
+    public void enableMoveDown () {
+        moveDown = true;
     }
 
-    public void toggleMoveDown () {
-        moveDown = !moveDown;
+    public void disableMoveDown () {
+        moveDown = false;
     }
+
+    public void enableMoveLeft () {
+        moveLeft = true;
+    }
+
+    public void disableMoveLeft () {
+        moveLeft = false;
+    }
+
+    public void enableMoveRight () {
+        moveRight = true;
+    }
+
+    public void disableMoveRight () {
+        moveRight = false;
+    }
+
 
     public void move () {
-        myX+=nextXMove;
-        myY+=nextYMove;
-        nextXMove=0;
-        nextYMove=0;
-        
+        myX += nextXMove;
+        myY += nextYMove;
+        nextXMove = 0;
+        nextYMove = 0;
+
         if (moveLeft) {
             myX += -3;
         }
@@ -79,9 +106,12 @@ public class Square {
     }
 
     public void setNextMove (int x, int y) {
-        nextXMove =x;
-        nextYMove =y;
-        
+        nextXMove = x;
+        nextYMove = y;
+
+    }
+    public void setRotation(double rotation){
+        myRotation = rotation;
     }
 
 }
