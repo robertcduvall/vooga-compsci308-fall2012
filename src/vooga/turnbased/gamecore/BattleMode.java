@@ -1,7 +1,9 @@
 package vooga.turnbased.gamecore;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +93,16 @@ public class BattleMode extends GameMode {
             }
             teamNumber += 1;
         }
+        paintMenu(g);
+    }
+    
+    public void paintMenu (Graphics g) {
+        Dimension myWindow = getGameManager().getPaneDimension();
+        int height = myWindow.height;
+        int width = myWindow.width;
+        Graphics2D g2d = (Graphics2D)g;
+        g2d.setColor(Color.GREEN);
+        g2d.fillRect(0, 2*height/3, width, height/3);
     }
 
     /**

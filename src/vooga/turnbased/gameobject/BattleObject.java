@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Abstract class that is extended to create monsters/sprites in the BattleMode.
@@ -76,11 +77,12 @@ public abstract class BattleObject extends GameObject {
         super.paint(g, x, y, width/2, height);
         paintStats(g, x+width/2, y, width/2, height);
     }
-    
-    private void paintStats (Graphics g, int x, int y, int width, int height) {
-        g.drawRect(x, y, width, height);
 
+    private void paintStats (Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setPaint(Color.CYAN);
+        g2d.draw3DRect(x, y, width, height, true);
+        g2d.fill(new Rectangle2D.Double(x, y, width, height));
         String name = "Cool Battler";
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
