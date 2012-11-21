@@ -23,7 +23,6 @@ public abstract class MapObject extends GameObject {
 
     private Point myLocation;
     private boolean myIsVisible;
-    private boolean myIsMoving;
     private MapMode myMapMode;
 
     /**
@@ -91,22 +90,6 @@ public abstract class MapObject extends GameObject {
      */
     public boolean isVisible () {
         return myIsVisible;
-    }
-
-    /**
-     * Sets whether the object is moving or not.
-     * @param b Boolean to set state of "moving".
-     */
-    public void setMoving (boolean b) {
-        myIsMoving = b;
-    }
-
-    /**
-     * Checks whether the object is moving or not.
-     * @return myIsMoving True if moving, false if not.
-     */
-    public boolean isMoving () {
-        return myIsMoving;
     }
 
     /**

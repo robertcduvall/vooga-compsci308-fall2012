@@ -324,7 +324,7 @@ public class MapMode extends GameMode {
         }
         else {
         	//reset myCanMove to default(true) for the next round of movement
-        	mapObject.resetCanMove(); 
+        	mapObject.setCanMove(true); 
         }
     }
 

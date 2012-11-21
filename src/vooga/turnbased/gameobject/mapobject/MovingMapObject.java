@@ -24,6 +24,7 @@ public class MovingMapObject extends MapObject {
     private Point myDirection;
     private Point myPreviousLocation;
     private boolean myCanMove;
+    private boolean myIsMoving;
 
     /**
      * Creates the MovingMapObject that will be used in MapMode.
@@ -138,17 +139,36 @@ public class MovingMapObject extends MapObject {
         myPreviousLocation = getLocation();
     }
     
-    public void interact (MapObject m) {
-    	if (m instanceof MapObstacleObject) {
-    		myCanMove = false;
-    	}
-    }
-    
+    /**
+     * Checks whether the object can move.
+     * @return if the MapObject can move
+     */
     public boolean canMove() {
     	return myCanMove;
     }
     
-    public void resetCanMove() {
-    	myCanMove = true;
+    /**
+     * Sets whether the object can move in this turn.
+     * Obstacles will set it to false in interact()
+     * @param b Boolean to set state of "can move".
+     */
+    public void setCanMove(boolean b) {
+    	myCanMove = b;
+    }
+
+    /**
+     * Sets whether the object is moving or not.
+     * @param b Boolean to set state of "moving".
+     */
+    public void setMoving (boolean b) {
+        myIsMoving = b;
+    }
+
+    /**
+     * Checks whether the object is moving or not.
+     * @return myIsMoving True if moving, false if not.
+     */
+    public boolean isMoving () {
+        return myIsMoving;
     }
 }
