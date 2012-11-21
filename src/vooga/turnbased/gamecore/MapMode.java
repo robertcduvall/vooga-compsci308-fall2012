@@ -275,7 +275,7 @@ public class MapMode extends GameMode {
 	 *            y-coordinate on the grid
 	 * @return a list of MapObjects on the tile
 	 */
-	private List<MapObject> getSpritesOnTile(int i, int j) {
+	public List<MapObject> getSpritesOnTile(int i, int j) {
 		return myMapObjects.get(new Point(i, j));
 	}
 
@@ -287,7 +287,7 @@ public class MapMode extends GameMode {
 	 * @param dir
 	 *            direction it moves towards
 	 */
-	public void moveSprite(MovingMapObject s, Point dir) {
+	private void moveSprite(MovingMapObject s, Point dir) {
 		Point dest = s.getLocation(dir);
 
 		if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
@@ -308,7 +308,7 @@ public class MapMode extends GameMode {
 	 * 
 	 * @param mapObject
 	 */
-	private void checkCollision(MovingMapObject mapObject, Point dir) {
+	public void checkCollision(MovingMapObject mapObject, Point dir) {
 		mapObject.setDirection(dir); // direction changed even if the player is
 									 // not moving
 		Point dest = mapObject.getLocation(dir);
@@ -398,7 +398,7 @@ public class MapMode extends GameMode {
 		// will move all code for handling user input here
 		// once input api allows invoking methods with arguments
 	}
-
+	
 	public Point getBottomRight() {
 		return myBottomRightCorner;
 	}

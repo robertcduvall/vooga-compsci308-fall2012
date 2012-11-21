@@ -5,12 +5,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
 import vooga.turnbased.gameobject.mapobject.MapItemObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapObstacleObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
@@ -49,7 +51,10 @@ public class PathFinder implements Runnable {
 		mySize = new Dimension(myBottomRightCorner.x, myBottomRightCorner.y);
 		myVisited = new boolean[mySize.width][mySize.height];
 		myCancelMovement = false;
-		findPossiblePath(myStart);
+		if (!findPossiblePath(myStart)) {
+			System.out.println("path not found!");
+			return;
+		}
 		highlightPath();
 		myMovementThread = new Thread(this);
 		myMovementThread.start();
@@ -70,24 +75,20 @@ public class PathFinder implements Runnable {
 		PriorityQueue<Point> myOptions = new PriorityQueue<Point>(2,
 				new Comparator<Point>() {
 					public int compare(Point a, Point b) {
-						return (distance(a, myEnd) - distance(b, myEnd));
+						return Double.compare(a.distance(myEnd), b.distance(myEnd));
 					}
 				});
 		if (validateMove(current, MapMode.LEFT)) {
-			myOptions.add(new Point(current.x + MapMode.LEFT.x, current.y
-					+ MapMode.LEFT.y));
+			myOptions.add(translatePoint(current, MapMode.LEFT));
 		}
 		if (validateMove(current, MapMode.RIGHT)) {
-			myOptions.add(new Point(current.x + MapMode.RIGHT.x, current.y
-					+ MapMode.RIGHT.y));
+			myOptions.add(translatePoint(current, MapMode.RIGHT));
 		}
 		if (validateMove(current, MapMode.UP)) {
-			myOptions.add(new Point(current.x + MapMode.UP.x, current.y
-					+ MapMode.UP.y));
+			myOptions.add(translatePoint(current, MapMode.UP));
 		}
 		if (validateMove(current, MapMode.DOWN)) {
-			myOptions.add(new Point(current.x + MapMode.DOWN.x, current.y
-					+ MapMode.DOWN.y));
+			myOptions.add(translatePoint(current, MapMode.DOWN));
 		}
 		while (!myOptions.isEmpty()) {
 			Point p = new Point(myOptions.poll());
@@ -99,6 +100,20 @@ public class PathFinder implements Runnable {
 			}
 		}
 		return false;
+	}
+	
+	private Point translatePoint(Point a, Point b) {
+		return new Point(a.x + b.x, a.y + b.y);
+	}
+	
+	private void shortestPath(Point start) {
+		LinkedList<Point> bfsQueue = new LinkedList<Point>();
+		bfsQueue.add(start);
+		while (bfsQueue.size() != 0) {
+			if (validateMove(start, MapMode.LEFT)) {
+				bfsQueue.add(translatePoint(start, MapMode.LEFT));
+			}
+		}
 	}
 	
 	/**
@@ -114,6 +129,15 @@ public class PathFinder implements Runnable {
 		myVisited[x][y] = true; //mark visited if the point has not yet been visited
 		return false;
 	}
+	
+	protected boolean canMoveTo(int x, int y) {
+		for (MapObject m: myMap.getSpritesOnTile(x, y)) {
+			if (m instanceof MapObstacleObject) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * find distance between two points in grid system
@@ -121,8 +145,8 @@ public class PathFinder implements Runnable {
 	 * @param b second point
 	 * @return distance in grid system
 	 */
-	private int distance(Point a, Point b) {
-		return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+	private double distance(Point a, Point b) {
+		return a.distance(b);
 	}
 
 	/**
@@ -138,6 +162,9 @@ public class PathFinder implements Runnable {
 		}
 		if ((position.y + direction.y >= mySize.height)
 				|| (position.y + direction.y < 0)) {
+			return false;
+		}
+		if (!canMoveTo(position.x + direction.x, position.y + direction.y)) {
 			return false;
 		}
 		return true;
@@ -175,7 +202,7 @@ public class PathFinder implements Runnable {
 					e.printStackTrace();
 				}
 			}
-			myMap.moveSprite(myMovingObject, direction);
+			myMap.checkCollision(myMovingObject, direction);
 		}
 	}
 	
