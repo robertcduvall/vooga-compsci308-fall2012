@@ -10,16 +10,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import util.input.core.Controller;
+import vooga.turnbased.gamecore.GameLoopMember;
 import vooga.turnbased.gamecore.GameManager;
-import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
 
 
 @SuppressWarnings("serial")
-public class GamePane extends DisplayPane implements Runnable {
+public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
     private GameManager myGameManager;
     private Thread myGameThread;
@@ -55,7 +53,7 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * update game
      */
-    //@Override
+    @Override
     public void update () {
        myGameManager.update();
     }
@@ -63,7 +61,7 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * Paint gameobjects and background to the canvas using double buffering
      */
-    // @Override
+    @Override
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
         Graphics nextFrameGraphics = nextFrameImage.getGraphics();

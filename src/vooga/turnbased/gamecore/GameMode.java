@@ -17,7 +17,7 @@ import vooga.turnbased.gameobject.GameObject;
  * @author rex, Volodymyr
  */
 // public abstract class GameMode extends Observable {
-public abstract class GameMode {
+public abstract class GameMode implements GameLoopMember {
     private final GameManager myGameManager;
     private final Class myObjectType;
 
@@ -114,11 +114,13 @@ public abstract class GameMode {
      * Method that will paint the different objects in the mode.
      * @param g Graphics.
      */
+    @Override
     public abstract void paint (Graphics g);
 
     /**
      * Method that will update the objects in the GameMode when called.
      */
+    @Override
     public abstract void update ();
 
     // public abstract void processGameEvents ();

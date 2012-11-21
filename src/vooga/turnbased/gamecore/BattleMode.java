@@ -90,7 +90,9 @@ public class BattleMode extends GameMode {
         int teamNumber=0;
         for (Team t : myTeams) {
             for (BattleObject b : t.getBattleObjects()) {
-                b.paint(g, 0, (teamNumber)*height/3, width, height/3);
+                b.paintBattleObject(g, 0, (teamNumber)*height/3, width, height/3);
+                // can this be done via b.paint(g)? i.e. let battleobject do it's own paint/update work
+                // trying to keep paint/update signature consistent across project..
             }
             teamNumber += 1;
         }
