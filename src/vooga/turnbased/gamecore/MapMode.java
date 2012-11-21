@@ -13,10 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import util.imageprocessing.ImageLoop;
-import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gameobject.MapPlayerObject;
-import vooga.turnbased.gameobject.MapTileObject;
-import vooga.turnbased.gameobject.MovingMapObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
+import vooga.turnbased.gameobject.mapobject.MapTileObject;
+import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
 

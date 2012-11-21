@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Graphics;
 import java.awt.Image;

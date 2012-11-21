@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import vooga.turnbased.gameobject.MapItemObject;
-import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gameobject.MovingMapObject;
+import vooga.turnbased.gameobject.mapobject.MapItemObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
 /**

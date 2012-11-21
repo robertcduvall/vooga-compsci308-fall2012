@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gameobject.GameObject;
 
 
 /**

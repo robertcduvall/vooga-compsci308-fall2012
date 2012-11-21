@@ -11,8 +11,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import util.reflection.Reflection;
 import util.xml.XmlParser;
-import vooga.turnbased.gameobject.BattleObject;
-import vooga.turnbased.gameobject.MapObject;
+import vooga.turnbased.gameobject.battleobject.BattleObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.sprites.Sprite;
 
 
