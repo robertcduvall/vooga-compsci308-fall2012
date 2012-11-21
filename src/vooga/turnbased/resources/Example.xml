@@ -5,6 +5,7 @@
 		<height>500</height>
 	</dimension>
 	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+	<!-- <event type="collision"></event> -->
 	<event>
     	<name>collision</name>
     	<destination>BattleMode</destination>

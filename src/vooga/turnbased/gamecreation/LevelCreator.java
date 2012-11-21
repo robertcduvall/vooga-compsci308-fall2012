@@ -7,10 +7,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import util.reflection.Reflection;
 import util.xml.XmlParser;
+import util.xml.XmlUtilities;
 import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.MapObject;
 import vooga.turnbased.sprites.Sprite;
@@ -26,7 +28,7 @@ import vooga.turnbased.sprites.Sprite;
  */
 public class LevelCreator {
 
-    private XmlParser myXmlParser;
+    private Document myXmlDocument;
     private Element myDocumentElement;
 
     /**
@@ -35,9 +37,8 @@ public class LevelCreator {
      *        parameters may change in the future.
      */
     public LevelCreator (File file) {
-        myXmlParser = new XmlParser(file);
-        validateXml();
-        myDocumentElement = myXmlParser.getDocumentElement();
+        myXmlDocument = XmlUtilities.makeDocument(file);
+        myDocumentElement = myXmlDocument.getDocumentElement();
     }
 
     /**
@@ -45,11 +46,10 @@ public class LevelCreator {
      * @return The Dimension of the Level
      */
     public Dimension parseDimension () {
-        NodeList dimensionList = myXmlParser.getElementsByName(
-                myDocumentElement, "dimension");
-        Element dimension = (Element) dimensionList.item(0);
-        int width = myXmlParser.getIntContent(dimension, "width");
-        int height = myXmlParser.getIntContent(dimension, "height");
+        List<Element> dimensionList = (List<Element>) XmlUtilities.getElements(myDocumentElement, "dimension");
+        Element dimension = dimensionList.get(0);
+        int width = XmlUtilities.getChildContentAsInt(dimension, "width");
+        int height = XmlUtilities.getChildContentAsInt(dimension, "height");
         return new Dimension(width, height);
     }
 
@@ -58,8 +58,7 @@ public class LevelCreator {
      * @return Background Image of the Level
      */
     public Image parseBackgroundImage () {
-        return myXmlParser
-                .getImageContent(myDocumentElement, "backgroundImage");
+        return XmlUtilities.getChildContentAsImage(myDocumentElement, "backgroundImage");
     }
 
     /**
@@ -69,66 +68,60 @@ public class LevelCreator {
     public MapObject parseMapPlayer () {
         Element mapPlayer = isolateMapPlayer();
 
-        String className = myXmlParser.getTextContent(mapPlayer, "class");
-        int id = myXmlParser.getIntContent(mapPlayer, "id");
-        String event = myXmlParser.getTextContent(mapPlayer, "event");
+        String className = XmlUtilities.getChildContent(mapPlayer, "class");
+        int id = XmlUtilities.getChildContentAsInt(mapPlayer, "id");
+        String event = XmlUtilities.getChildContent(mapPlayer, "event");
         Point point = parseLocation(mapPlayer);
         Map<String, Image> imageMap = parseImagesMap(mapPlayer);
 
         return (MapObject) Reflection.createInstance(className, id, event,
                 point, imageMap);
-
-        // return new MapPlayerObject(id, event, point, imageMap, null);
     }
 
     public BattleObject parserBattlePlayer () {
         Element battlePlayer = isolateBattlePlayer();
-        String className = myXmlParser.getTextContent(battlePlayer, "class");
-        int id = myXmlParser.getIntContent(battlePlayer, "id");
-        String event = myXmlParser.getTextContent(battlePlayer, "event");
-        int health = myXmlParser.getIntContent(battlePlayer, "health");
-        int defense = myXmlParser.getIntContent(battlePlayer, "defense");
-        int attack = myXmlParser.getIntContent(battlePlayer, "attack");
-        Image image = myXmlParser.getImageContent(battlePlayer, "image");
+        String className = XmlUtilities.getChildContent(battlePlayer, "class");
+        int id = XmlUtilities.getChildContentAsInt(battlePlayer, "id");
+        String event = XmlUtilities.getChildContent(battlePlayer, "event");
+        int health = XmlUtilities.getChildContentAsInt(battlePlayer, "health"); 
+        int defense = XmlUtilities.getChildContentAsInt(battlePlayer, "defense"); 
+        int attack = XmlUtilities.getChildContentAsInt(battlePlayer, "attack"); 
+        Image image = XmlUtilities.getChildContentAsImage(battlePlayer, "image");
         return (BattleObject) Reflection.createInstance(className, id, event,
                 defense, attack, health, image);
     }
 
     private Element isolateBattlePlayer () {
-        NodeList playerList = myXmlParser.getElementsByName(myDocumentElement,
-                "player");
-        Element player = (Element) playerList.item(0);
-        NodeList battleList = myXmlParser.getElementsByName(player, "battle");
-        Element battlePlayer = (Element) battleList.item(0);
+        List<Element> playerList = (List<Element>) XmlUtilities.getElements(myDocumentElement, "player");
+        Element player = (Element) playerList.get(0);
+        List<Element> battleList = (List<Element>) XmlUtilities.getElements(player, "battle");
+        Element battlePlayer = (Element) battleList.get(0);
         return battlePlayer;
     }
 
     private Element isolateMapPlayer () {
-        NodeList playerList = myXmlParser.getElementsByName(myDocumentElement,
-                "player");
-        Element player = (Element) playerList.item(0);
-        NodeList mapList = myXmlParser.getElementsByName(player, "map");
-        Element mapPlayer = (Element) mapList.item(0);
+        List<Element> playerList = (List<Element>) XmlUtilities.getElements(myDocumentElement, "player");
+        Element player = (Element) playerList.get(0);
+        List<Element> mapList = (List<Element>) XmlUtilities.getElements(player, "map");
+        Element mapPlayer = (Element) mapList.get(0);
         return mapPlayer;
     }
 
     private Point parseLocation (Element element) {
-        NodeList locationList = myXmlParser.getElementsByName(element,
-                "location");
-        Element location = (Element) locationList.item(0);
-        Point point = new Point(myXmlParser.getIntContent(location, "x"),
-                myXmlParser.getIntContent(location, "y"));
+        List<Element> locationList = (List<Element>) XmlUtilities.getElements(element, "location");
+        Element location = (Element) locationList.get(0);
+        Point point = new Point(XmlUtilities.getChildContentAsInt(location,"x"),
+                XmlUtilities.getChildContentAsInt(location, "y"));
         return point;
     }
 
     private Map<String, Image> parseImagesMap (Element element) {
-        NodeList imageList = myXmlParser.getElementsByName(element, "image");
+        List<Element> imageList = (List<Element>) XmlUtilities.getElements(element, "image");
         Map<String, Image> imageMap = new HashMap<String, Image>();
-        for (int i = 0; i < imageList.getLength(); i++) {
-            Element imageData = (Element) imageList.item(i);
-            Image image = myXmlParser.getImageContent(imageData, "source");
-            String direction = myXmlParser.getTextContent(imageData,
-                    "direction");
+        for (int i = 0; i < imageList.size(); i++) {
+            Element imageData = (Element) imageList.get(i);
+            Image image = XmlUtilities.getChildContentAsImage(imageData, "source");
+            String direction = XmlUtilities.getChildContent(imageData, "direction");
             imageMap.put(direction, image);
         }
         return imageMap;
@@ -148,12 +141,5 @@ public class LevelCreator {
      */
     public Element getDocumentElement () {
         return myDocumentElement;
-    }
-
-    /**
-     * Used to check for all required elements of the XML file.
-     */
-    private void validateXml () {
-        // Empty until decided what is required of Xml
     }
 }
