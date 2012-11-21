@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <level>
 	<dimension>
-		<width>500</width>
-		<height>500</height>
+		<width>20</width>
+		<height>30</height>
 	</dimension>
 	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
 	<!-- <event type="collision"></event> -->
@@ -12,12 +12,11 @@
 	</event>
 	<player>
 		<map>
-			<class>vooga.turnbased.gameobject.MapPlayerObject</class>
-			<id>0</id>
-			<event>NO_ACTION</event>
+			<class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
+			<event>MAP_COLLISION</event>
 			<location>
-				<x>50</x>
-				<y>50</y>
+				<x>8</x>
+				<y>8</y>
 			</location>
 			<image>
 				<source>src/vooga/turnbased/resources/image/player/Down.png</source>
@@ -69,38 +68,53 @@
 			</image>
 		</map>
 		<battle>
-			<class>vooga.turnbased.gameobject.TestMonster</class>
-			<id>0</id>
-			<event>NO_ACTION</event>
-			<health>100</health>
-			<defense>50</defense>
-			<attack>25</attack>
-			<image>src/vooga/turnbased/resources/image/player/Down.png</image>
 		</battle>
 	</player>
-	<interactableSprite>
-		<position>
-			<xCoordinate>150</xCoordinate>
-			<yCoordinate>150</yCoordinate>
-		</position>
-		<type>button</type>
-		<action>revealPotion</action>
-		<imageSource></imageSource>
-	</interactableSprite>
-	<pickupSprite>
-		<position>
-			<xCoordinate>250</xCoordinate>
-			<yCoordinate>250</yCoordinate>
-		</position>
-		<type>potion</type>
-		<value>20</value>
-		<imageSource></imageSource>
-	</pickupSprite>
+	<sprite>
+		<map>
+			<class>vooga.turnbased.gameobject.mapobject.MovingMapObject</class>
+			<event>MAP_COLLISION</event>
+			<location>
+				<x>5</x>
+				<y>5</y>
+			</location>
+			<image>src/vooga/turnbased/resources/image/something.png</image>
+		</map>
+		<battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<health>3</health>
+			<defense>2</defense>
+			<attack>1</attack>
+			<image>src/vooga/turnbased/resources/image/enemy/005.png</image>
+		</battle>
+	</sprite>
+	<sprite>
+		<map>
+			<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+			<event>NO_ACTION</event>
+			<location>
+				<x>6</x>
+				<y>5</y>
+			</location>
+			<image>src/vooga/turnbased/resources/image/mapobject/heart-rock.jpg</image>
+		</map>
+		<battle/>
+	</sprite>
+	<sprite>
+		<map/>
+		<battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<health>3</health>
+			<defense>2</defense>
+			<attack>1</attack>
+			<image>src/vooga/turnbased/resources/image/enemy/025b.png</image>
+		</battle>
+	</sprite>
 	<staticSprite>
-		<position>
-			<xCoordinate>350</xCoordinate>
-			<yCoordinate>350</yCoordinate>
-		</position>
-		<imageSource></imageSource>
+		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
+		<event>NO_ACTION</event>
+		<image>src/vooga/turnbased/resources/image/grass.png</image>
 	</staticSprite>
 </level>
