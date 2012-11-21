@@ -6,12 +6,12 @@ package util.xml;
  * @author Robert C. Duvall
  */
 @SuppressWarnings("serial")
-public final class XmlException extends RuntimeException {
-    public XmlException (String s) {
+public final class XMLException extends RuntimeException {
+    public XMLException (String s) {
         super(s);
     }
 
-    public XmlException (String s, Throwable cause) {
+    public XMLException (String s, Throwable cause) {
         super(s, cause);
     }
 }
