@@ -17,7 +17,11 @@ import util.input.core.AndroidController;
 import util.input.factories.ControllerFactory;
 import util.input.interfaces.listeners.AndroidListener;
 
-
+/**
+ * @author Ben
+ * A rough sample game that uses an andorid touch controller to draw on the screen.
+ *
+ */
 public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener {
 
     /**
@@ -33,7 +37,6 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
     private Thread myGameLoop;
     private Color myPenColor = Color.BLUE;
     private AndroidController testController;
-
     private ArrayList<LineSegment> mySegments;
 
     public AndroidDrawGame () {
@@ -44,6 +47,9 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
         this.setFocusable(true);
         myGameLoop = new Thread(this);
     }
+    /**
+     * Set the controls for this game.
+     */
     public void setControls(){
         try {
             testController.setControl(AndroidButtonEvent.TouchController.A, AndroidButtonEvent.BUTTON_PRESSED, this, "changeToRed");
@@ -170,12 +176,12 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
         System.out.println("controller was disconected! game paused");
         
     }
-
+    /**
+     * Overriding on touchMovemnt to keep track of the line segments received from the touch android controller.
+     */
     @Override
     public void onTouchMovement (LineSegment l) {
         addLine(l);
-        System.out.println("received touch movement");
-        
     }
 
 }

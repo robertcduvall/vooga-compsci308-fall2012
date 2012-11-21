@@ -132,7 +132,11 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
         public static final int START = 106;
         
     }
-    
+    /**
+     * 
+     * A data wrapper for the components found on a touch controller.
+     *
+     */
     public static final class TouchController {
         
         /**
