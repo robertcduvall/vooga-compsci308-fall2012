@@ -6,15 +6,8 @@ import vooga.turnbased.gamecore.MapMode;
 
 
 /**
- * This class is a bit stupid
-<<<<<<< HEAD
- * Agreed.
-=======
+ * This class WILL no longer BE stupid, HOPEFULLY
  * 
- * I would agree
- * 
- * @author Come forward if this is yours
->>>>>>> 7fe03a588e392aa2505cd30cae12949c4fa5fbcd
  */
 
 public class MapTileObject extends MapObject {

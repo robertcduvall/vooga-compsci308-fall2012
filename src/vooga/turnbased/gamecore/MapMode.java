@@ -292,7 +292,8 @@ public class MapMode extends GameMode {
      *        direction it moves towards
      */
     public void moveSprite (MovingMapObject s, Point dir) {
-        Point dest = myPlayer.getLocation(dir);
+        Point dest = s.getLocation(dir);
+ 
         if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
                 && dest.y < myBottomRightCorner.y) {
             Point oldCoord = s.getLocation();
@@ -308,6 +309,25 @@ public class MapMode extends GameMode {
                              // moving
     }
 
+    /**
+     * check if the sprite need to interact with anything when moving
+     * @param mapObject
+     */
+    private void checkCollision(MovingMapObject mapObject, Point dir) {
+    	Point dest = mapObject.getLocation(dir);
+        for (MapObject m : getSpritesOnTile(dest.x, dest.y)) {
+            m.interact(mapObject);
+            mapObject.interact(m);
+        }
+        if (mapObject.canMove()) {
+        	moveSprite(mapObject, dir);
+        }
+        else {
+        	//reset myCanMove to default(true) for the next round of movement
+        	mapObject.resetCanMove(); 
+        }
+    }
+
     @Override
     /**
      * handle key pressed events specific to MapMode
@@ -318,16 +338,16 @@ public class MapMode extends GameMode {
         if (myPlayer.isMoving()) { return; }
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
-                moveSprite(myPlayer, LEFT);
+            	checkCollision(myPlayer, LEFT);
                 break;
             case KeyEvent.VK_UP:
-                moveSprite(myPlayer, UP);
+            	checkCollision(myPlayer, UP);
                 break;
             case KeyEvent.VK_RIGHT:
-                moveSprite(myPlayer, RIGHT);
+            	checkCollision(myPlayer, RIGHT);
                 break;
             case KeyEvent.VK_DOWN:
-                moveSprite(myPlayer, DOWN);
+            	checkCollision(myPlayer, DOWN);
                 break;
         }
     }

@@ -23,6 +23,7 @@ public class MovingMapObject extends MapObject {
     private int myYOriginInTile;
     private Point myDirection;
     private Point myPreviousLocation;
+    private boolean myCanMove;
 
     /**
      * Creates the MovingMapObject that will be used in MapMode.
@@ -43,6 +44,7 @@ public class MovingMapObject extends MapObject {
         myTimePassed = 0;
         myDirection = new Point(0, 0);
         myPreviousLocation = getLocation();
+        myCanMove = true;
     }
 
     /**
@@ -134,5 +136,19 @@ public class MovingMapObject extends MapObject {
         myYOriginInTile = 0;
         // myDirection = new Point(0, 0);
         myPreviousLocation = getLocation();
+    }
+    
+    public void interact (MapObject m) {
+    	if (m instanceof MapObstacleObject) {
+    		myCanMove = false;
+    	}
+    }
+    
+    public boolean canMove() {
+    	return myCanMove;
+    }
+    
+    public void resetCanMove() {
+    	myCanMove = true;
     }
 }
