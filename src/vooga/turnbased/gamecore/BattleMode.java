@@ -8,7 +8,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import vooga.turnbased.gameobject.BattleObject;
+
+import vooga.turnbased.gameobject.battleobject.BattleObject;
 
 
 /**

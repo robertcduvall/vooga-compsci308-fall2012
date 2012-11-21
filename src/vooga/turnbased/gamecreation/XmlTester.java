@@ -1,7 +1,8 @@
 package vooga.turnbased.gamecreation;
 
-import vooga.turnbased.gameobject.MapPlayerObject;
-import vooga.turnbased.gameobject.TestMonster;
+import vooga.turnbased.gameobject.battleobject.TestMonster;
+import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
+
 import java.awt.Image;
 import java.io.File;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -34,7 +34,7 @@ public class MapTileObject extends MapObject {
     }
 
     @Override
-    public void update (int delayTime) {
-        super.update(delayTime);
+    public void update () {
+        super.update();
     }
 }

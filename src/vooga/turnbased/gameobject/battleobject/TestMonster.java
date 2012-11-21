@@ -1,6 +1,7 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
+
 
 /**
  * This is a test battle monster that will be used to see if the BattleMode functions.
@@ -37,7 +38,7 @@ public class TestMonster extends BattleObject {
     }
 
     @Override
-    public void update (int delayTime) {
+    public void update () {
 
     }
 

@@ -23,7 +23,7 @@ public class GamePane extends DisplayPane implements Runnable {
 
     private GameManager myGameManager;
     private Thread myGameThread;
-    private int myDelayTime;
+    private static int delayBetweenGameLoopCycles;
 
     // InfoPanel infoPanel;
 
@@ -36,7 +36,7 @@ public class GamePane extends DisplayPane implements Runnable {
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
         myGameThread = new Thread(this);
-        myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
+        delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
         addKeyListener(this);
         addMouseListener(new GameMouseListener());
         myGameManager = new GameManager(this);
@@ -83,7 +83,7 @@ public class GamePane extends DisplayPane implements Runnable {
             update();
             repaint();
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = myDelayTime - timeDiff;
+            sleep = delayBetweenGameLoopCycles - timeDiff;
             if (sleep < 0) {
                 sleep = 0;
             }
@@ -126,8 +126,8 @@ public class GamePane extends DisplayPane implements Runnable {
         myGameManager.handleKeyReleased(e);
     }
 
-    public int getDelayTime () {
-        return myDelayTime;
+    public static int getDelayTime () {
+        return delayBetweenGameLoopCycles;
     }
 
     private class GameMouseListener extends MouseAdapter {

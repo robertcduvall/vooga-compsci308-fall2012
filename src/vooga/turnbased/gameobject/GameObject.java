@@ -99,7 +99,11 @@ public abstract class GameObject {
 
     /**
      * Updates game after some time delay (to be implemented by child classes).
-     * @param delayTime Int amount of time to wait between updates.
      */
-    public abstract void update (int delayTime);
+    public abstract void update ();
+
+    /**
+     * Remove all occurences of this object in the program.
+     */
+    public abstract void clear();
 }

@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gameobject.GameObject;
 
 
 /**
@@ -119,7 +120,7 @@ public abstract class MapObject extends GameObject {
      * Updates MapObject; delayTime not used.
      * @param delayTime Not used.
      */
-    public void update (int delayTime) {
+    public void update () {
         myTileDimensions = new Dimension(myMapMode.getTileDimensions());
         myCameraOrigin = new Point(myMapMode.getOrigin());
         Rectangle camera = myMapMode.getCamera();
@@ -136,5 +137,10 @@ public abstract class MapObject extends GameObject {
         if (getImage() == null || myOffset == null || myTileDimensions == null) { return; }
         g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
                 myTileDimensions.height, null);
+    }
+    
+    @Override
+    public void clear() {
+        myMapMode.removeMapObject(this);
     }
 }

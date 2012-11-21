@@ -15,13 +15,13 @@ import java.util.Map;
 import util.imageprocessing.ImageLoop;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
-import vooga.turnbased.gameobject.BattleObject;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gameobject.MapPlayerObject;
-import vooga.turnbased.gameobject.MapTileObject;
-import vooga.turnbased.gameobject.MovingMapObject;
-import vooga.turnbased.gameobject.TestMonster;
+import vooga.turnbased.gameobject.battleobject.BattleObject;
+import vooga.turnbased.gameobject.battleobject.TestMonster;
+import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
+import vooga.turnbased.gameobject.mapobject.MapTileObject;
+import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
@@ -177,6 +177,7 @@ public class GameManager {
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
+        mySprites.get(spriteID).clear();
         mySprites.remove(spriteID);
     }
 
@@ -290,17 +291,7 @@ public class GameManager {
      */
     public Dimension getPaneDimension () {
         return myGamePane.getSize();
-    }
-
-    /**
-     * Returns the current time delay for the game window.
-     * 
-     * @return Current time delay.
-     */
-    public int getDelayTime () {
-        return myGamePane.getDelayTime();
-    }
-
+    } 
     /**
      * Returns the current KeyboardController.
      * 

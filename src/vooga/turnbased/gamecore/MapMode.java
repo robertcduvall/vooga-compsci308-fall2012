@@ -13,10 +13,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import util.imageprocessing.ImageLoop;
-import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gameobject.MapPlayerObject;
-import vooga.turnbased.gameobject.MapTileObject;
-import vooga.turnbased.gameobject.MovingMapObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
+import vooga.turnbased.gameobject.mapobject.MapTileObject;
+import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
 
@@ -66,7 +66,7 @@ public class MapMode extends GameMode {
 
     @Override
     public void resume () {
-        init(); // hardcoded for now - need to remove all instances of sprite's gameobjects ecery time sprite is removed 
+        // do stuff when back to map mode
     }
      
     public void init () {
@@ -210,7 +210,7 @@ public class MapMode extends GameMode {
                     it.remove();
                 }
                 else {
-                    nextObject.update(getGameManager().getDelayTime());
+                    nextObject.update();
                 }
             }
         }
@@ -392,4 +392,8 @@ public class MapMode extends GameMode {
 	public void setPlayer(MapPlayerObject p) {
 		myPlayer = p;
 	}
+
+    public void removeMapObject (MapObject mapObject) {
+        myMapObjects.get(mapObject.getLocation()).remove(mapObject);
+    }
 }
