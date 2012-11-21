@@ -23,6 +23,7 @@ import vooga.turnbased.sprites.Sprite;
  * 
  * @author Mark Hoffman
  * 
+ * (could we rename it to something like XmlInfoParser?)
  */
 public class LevelCreator {
 
