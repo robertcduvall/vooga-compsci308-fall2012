@@ -37,9 +37,4 @@ public class TestMonster extends BattleObject {
         enemy.takeDamage(getAttack());
     }
 
-    @Override
-    public void update () {
-
-    }
-
 }

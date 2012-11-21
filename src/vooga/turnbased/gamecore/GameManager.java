@@ -34,7 +34,7 @@ import vooga.turnbased.sprites.Sprite;
  * @author Turnbased team
  * 
  */
-public class GameManager {
+public class GameManager implements GameLoopMember {
 
     private final GamePane myGamePane;
     private MapMode myMapMode; // Fix me once the factory opens!s
@@ -193,6 +193,7 @@ public class GameManager {
     /**
      * Updates the actve game mode and handles any events occurring.
      */
+    @Override
     public void update () {
         myCurrentGameMode.update();
         handleEvents();
@@ -203,6 +204,7 @@ public class GameManager {
      * 
      * @param g The Graphics object of the offScreenImage.
      */
+    @Override
     public void paint (Graphics g) {
         myCurrentGameMode.paint(g);
     }

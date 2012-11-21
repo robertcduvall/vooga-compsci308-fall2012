@@ -66,17 +66,17 @@ public abstract class BattleObject extends GameObject {
         return myHealth > 0;
     }
 
-    @Override
     /**
-     * Paints the GameObject.
+     * Paints the BattleObject.
      * @param g Image to be painted.
      * @param x X location of object.
      * @param y Y location of object.
      * @param width Width of image.
      * @param height Height of image.
      */
-    public void paint (Graphics g, int x, int y, int width, int height) {
-        super.paint(g, x, y, width/2, height);
+    // see comments in battlemode.paint(g) explaining why this was renamed
+    public void paintBattleObject (Graphics g, int x, int y, int width, int height) {
+        super.drawRectangularImage(g, x, y, width/2, height);
         paintStats(g, x+width/2, y, width/2, height);
     }
 
@@ -155,5 +155,15 @@ public abstract class BattleObject extends GameObject {
     @Override 
     public void clear() {
         // remove all instances of this battleobject in the game
+    }
+    
+    @Override 
+    public void update () {
+        
+    }
+    
+    @Override 
+    public void paint (Graphics g) {
+        
     }
 }
