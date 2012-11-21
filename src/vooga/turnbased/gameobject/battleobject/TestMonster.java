@@ -38,7 +38,7 @@ public class TestMonster extends BattleObject {
     }
 
     @Override
-    public void update (int delayTime) {
+    public void update () {
 
     }
 

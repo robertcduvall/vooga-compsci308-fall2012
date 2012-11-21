@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gui.GamePane;
 
 
 /**
@@ -58,8 +59,9 @@ public class MovingMapObject extends MapObject {
     }
 
     @Override
-    public void update (int delayTime) {
-        super.update(delayTime);
+    public void update () {
+        int delayTime = GamePane.getDelayTime();
+        super.update();
         if (isMoving()) {
             myTimePassed += delayTime;
         }
