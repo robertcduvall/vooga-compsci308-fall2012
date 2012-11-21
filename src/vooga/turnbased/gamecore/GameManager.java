@@ -75,16 +75,11 @@ public class GameManager implements GameLoopMember {
         String xmlPath = "src/vooga/turnbased/resources/Example.xml";
         File xmlFile = new File(xmlPath);
         LevelCreator test = new LevelCreator(xmlFile, myMapMode);
-        mySprites.putAll(test.parseStaticSprites());
 
         List<Sprite> sprites = test.parseSprites();
         for (Sprite s : sprites) {
             mySprites.put(s.getID(), s);
         }
-
-        Sprite s = test.parsePlayerSprite();
-        mySprites.put(s.getID(), s);
-        
     }
 
     /**
