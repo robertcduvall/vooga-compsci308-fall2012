@@ -15,6 +15,7 @@ import vooga.turnbased.gui.GamePane;
  */
 public class MovingMapObject extends MapObject {
 
+	private static final double SIZE_RELATIVE_TO_TILE = 0.9;
     private int myMovementTimePerTile;
     private int myTimePassed;
     private double myXProportion;
@@ -102,15 +103,12 @@ public class MovingMapObject extends MapObject {
      * @param g Graphics object onto which the MapObject is painted
      */
     public void paint (Graphics g) {
-        if (isMoving()) {
-            g.drawImage(getImage(), myOffset.x - myDirection.x * myTileDimensions.width +
-                    myXOriginInTile, myOffset.y - myDirection.y * myTileDimensions.height +
-                    myYOriginInTile, myTileDimensions.width, myTileDimensions.height, null);
-        }
-        else {
-            super.paint(g);
-        }
-
+    	Point offset = new Point(myOffset);
+    	if (isMoving()) {
+    		offset.x = myOffset.x - myDirection.x * myTileDimensions.width + myXOriginInTile;
+    		offset.y = myOffset.y - myDirection.y * myTileDimensions.height + myYOriginInTile;
+    	}
+    	paintInProportion(g, offset, myTileDimensions, SIZE_RELATIVE_TO_TILE);
     }
 
     @Override

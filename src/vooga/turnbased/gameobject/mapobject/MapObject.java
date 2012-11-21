@@ -16,7 +16,6 @@ import vooga.turnbased.gameobject.GameObject;
  * 
  */
 public abstract class MapObject extends GameObject {
-    // checkstyle does not like that these are protected
     protected Dimension myTileDimensions;
     protected Point myCameraOrigin;
     protected Point myOffset;
@@ -117,9 +116,19 @@ public abstract class MapObject extends GameObject {
      * @param g Graphics object.
      */
     public void paint (Graphics g) {
-        if (getImage() == null || myOffset == null || myTileDimensions == null) { return; }
-        g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
-                myTileDimensions.height, null);
+        paintInProportion(g, myOffset, myTileDimensions, 1);
+    }
+    
+    public void paintInProportion(Graphics g, Point offset, Dimension tileDimension,
+    		double proportion) {
+    	if (getImage() == null || offset == null || tileDimension == null) {
+        	return;
+        }
+    	offset.x += (1 - proportion) / 2 * tileDimension.width;
+    	offset.y += (1 - proportion) / 2 * tileDimension.height;
+    	int imageWidth = (int)Math.round(tileDimension.width * proportion);
+    	int imageHeight = (int)Math.round(tileDimension.height * proportion);
+        g.drawImage(getImage(), offset.x, offset.y, imageWidth, imageHeight, null);
     }
     
     @Override
