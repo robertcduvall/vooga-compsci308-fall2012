@@ -3,9 +3,9 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gui.GamePane;
-
 
 /**
  * Map objects that can move smoothly, but are nevertheless restricted to tiles.
@@ -78,7 +78,7 @@ public class MovingMapObject extends MapObject {
     }
 
     /**
-     * Sets destination(?) of object and sets moving to true.
+     * Sets direction
      * 
      * @param dir Point destination.
      */

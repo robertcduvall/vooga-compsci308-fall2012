@@ -19,7 +19,6 @@ import vooga.turnbased.gameobject.mapobject.MapTileObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
-
 /**
  * Map Mode on which players move around and interact with other game objects
  * for now, the mastermind behind map mode...does just about everything
@@ -27,55 +26,56 @@ import vooga.turnbased.gui.GameWindow;
  * @author Tony, Rex
  **/
 public class MapMode extends GameMode {
-    public static final Point UP = new Point(0, -1);
-    public static final Point RIGHT = new Point(1, 0);
-    public static final Point DOWN = new Point(0, 1);
-    public static final Point LEFT = new Point(-1, 0);
-    private final int ID = 0;
-    private boolean myIsFixedPlayer;
-    private int myNumDisplayRows;
-    private int myNumDisplayCols;
-    private HashMap<Point, List<MapObject>> myMapObjects;
-    private MapPlayerObject myPlayer;
-    private Point myBottomRightCorner;
+	public static final Point UP = new Point(0, -1);
+	public static final Point RIGHT = new Point(1, 0);
+	public static final Point DOWN = new Point(0, 1);
+	public static final Point LEFT = new Point(-1, 0);
+	private final int ID = 0;
+	private boolean myIsFixedPlayer;
+	private int myNumDisplayRows;
+	private int myNumDisplayCols;
+	private HashMap<Point, List<MapObject>> myMapObjects;
+	private MapPlayerObject myPlayer;
+	private Point myBottomRightCorner;
 
 	private Point myOrigin;
-    private int myCurrentTileWidth;
-    private int myCurrentTileHeight;
-    private Rectangle myCurrentCamera;
-    private PathFinder myPathFinder;
-    private Point myTopLeftCoord;
+	private int myCurrentTileWidth;
+	private int myCurrentTileHeight;
+	private Rectangle myCurrentCamera;
+	private PathFinder myPathFinder;
+	private Point myTopLeftCoord;
 
-    /**
-     * Constructor of MapMode
-     * 
-     * @param gm
-     *        the GameManager which manages the mode
-     */
-    public MapMode (GameManager gm, Class modeObjectType) {
-        super(gm, modeObjectType);
-    }
+	/**
+	 * Constructor of MapMode
+	 * 
+	 * @param gm
+	 *            the GameManager which manages the mode
+	 */
+	public MapMode(GameManager gm, Class modeObjectType) {
+		super(gm, modeObjectType);
+	}
 
-    @Override
-    /**
-     * pause the game
-     */
-    public void pause () {
-        //myMapObjects.clear();
-    }
+	@Override
+	/**
+	 * pause the game
+	 */
+	public void pause() {
+		// myMapObjects.clear();
+	}
 
-    @Override
-    public void resume () {
-        // do stuff when back to map mode
-    }
-     
-    public void init () {
-        myMapObjects = new HashMap<Point, List<MapObject>>();
-        List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
-        for (MapObject mapObject : mapObjects) {
-            addMapObject(mapObject.getLocation(), mapObject);
-        }
-    }
+	@Override
+	public void resume() {
+		// do stuff when back to map mode
+	}
+
+	public void init() {
+		myMapObjects = new HashMap<Point, List<MapObject>>();
+		List<MapObject> mapObjects = getGameManager()
+				.getGameObjectsOfSpecificMode(MapObject.class);
+		for (MapObject mapObject : mapObjects) {
+			addMapObject(mapObject.getLocation(), mapObject);
+		}
+	}
 
 	public void setNumDisplayRows(int numDisplayRows) {
 		this.myNumDisplayRows = numDisplayRows;
@@ -85,335 +85,333 @@ public class MapMode extends GameMode {
 		this.myNumDisplayCols = numDisplayCols;
 	}
 
-    /**
-     * add MapObject to the MapMode
-     * 
-     * @param p
-     *        coordinate the MapObject shoulld be placed
-     * @param s
-     *        MapObject to be added
-     */
-    public void addMapObject (Point p, MapObject s) {
-        if (myMapObjects.keySet().contains(p)) {
-            myMapObjects.get(p).add(s);
-        }
-        else {
-            ArrayList<MapObject> spriteList = new ArrayList<MapObject>();
-            spriteList.add(s);
-            myMapObjects.put(p, spriteList);
-        }
-    }
+	/**
+	 * add MapObject to the MapMode
+	 * 
+	 * @param p
+	 *            coordinate the MapObject shoulld be placed
+	 * @param s
+	 *            MapObject to be added
+	 */
+	public void addMapObject(Point p, MapObject s) {
+		if (myMapObjects.keySet().contains(p)) {
+			myMapObjects.get(p).add(s);
+		} else {
+			ArrayList<MapObject> spriteList = new ArrayList<MapObject>();
+			spriteList.add(s);
+			myMapObjects.put(p, spriteList);
+		}
+	}
 
-    /**
-     * paint the map
-     * 
-     * @param g
-     *        Graphics onto which the map is drawn
-     */
-    @Override
-    public void paint (Graphics g) {
-        paintMapBackgroung(g);
-        List<MapObject> visibleSprites = getSpritesWithinCamera();
-        for (MapObject s : visibleSprites) {
-            s.paint(g);
-        }
-        myPlayer.paint(g);
-    }
+	/**
+	 * paint the map
+	 * 
+	 * @param g
+	 *            Graphics onto which the map is drawn
+	 */
+	@Override
+	public void paint(Graphics g) {
+		paintMapBackgroung(g);
+		List<MapObject> visibleSprites = getSpritesWithinCamera();
+		for (MapObject s : visibleSprites) {
+			s.paint(g);
+		}
+		myPlayer.paint(g);
+	}
 
-    private void paintMapBackgroung (Graphics g) {
-        Image background = GameWindow.importImage("TileBackground");
-        Dimension paneDim = getGameManager().getPaneDimension();
-        g.drawImage(background, 0, 0, paneDim.width, paneDim.width, null);
-    }
+	private void paintMapBackgroung(Graphics g) {
+		Image background = GameWindow.importImage("TileBackground");
+		Dimension paneDim = getGameManager().getPaneDimension();
+		g.drawImage(background, 0, 0, paneDim.width, paneDim.width, null);
+	}
 
-    private List<MapObject> getSpritesWithinCamera () {
-        List<MapObject> visibleSprites = new ArrayList<MapObject>();
-        for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
-            for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
-                List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
-                if (spritesOnTile != null) {
-                    visibleSprites.addAll(spritesOnTile);
-                }
-            }
-        }
-        return visibleSprites;
-    }
+	private List<MapObject> getSpritesWithinCamera() {
+		List<MapObject> visibleSprites = new ArrayList<MapObject>();
+		for (int i = myCurrentCamera.x; i < myCurrentCamera.getMaxX(); i++) {
+			for (int j = myCurrentCamera.y; j < myCurrentCamera.getMaxY(); j++) {
+				List<MapObject> spritesOnTile = getSpritesOnTile(i, j);
+				if (spritesOnTile != null) {
+					visibleSprites.addAll(spritesOnTile);
+				}
+			}
+		}
+		return visibleSprites;
+	}
 
-    @Override
-    /**
-     * update the map
-     */
-    public void update () {
-        updateTileInfo();
-        updateCameraPosition();
-        updateMapObjects();
-        processGameEvents();
-    }
+	@Override
+	/**
+	 * update the map
+	 */
+	public void update() {
+		updateTileInfo();
+		updateCameraPosition();
+		updateMapObjects();
+		processGameEvents();
+	}
 
-    /**
-     * update tile's width and height, which will change when the window is
-     * resized
-     */
-    public void updateTileInfo () {
-        myCurrentTileWidth = getGameManager().getPaneDimension().width
-                / myNumDisplayCols;
-        myCurrentTileHeight = getGameManager().getPaneDimension().height
-                / myNumDisplayRows;
-        myOrigin = initializeOrigin();
-    }
+	/**
+	 * update tile's width and height, which will change when the window is
+	 * resized
+	 */
+	public void updateTileInfo() {
+		myCurrentTileWidth = getGameManager().getPaneDimension().width
+				/ myNumDisplayCols;
+		myCurrentTileHeight = getGameManager().getPaneDimension().height
+				/ myNumDisplayRows;
+		myOrigin = initializeOrigin();
+	}
 
-    /**
-     * move the camera according to player's movement do not move when player
-     * reaches the edge There are 2 rows and columns of margin for smooth
-     * movement
-     */
-    private void updateCameraPosition () {
-        Point displacement = myPlayer.calcScreenDisplacement(
-                myCurrentTileWidth, myCurrentTileHeight);
-        myTopLeftCoord = calculateTopLeftCoordinate();
-        if (myTopLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
-            myTopLeftCoord.x = 0; // player near the left boundary
-            displacement.x = 0; // screen fixed when player moves to the edge
-        }
-        else if ((myTopLeftCoord.x + myNumDisplayCols) * myCurrentTileWidth
-                + myPlayer.getDirection().x > myBottomRightCorner.x
-                * myCurrentTileWidth) {
-            myTopLeftCoord.x = myBottomRightCorner.x - myNumDisplayCols;
-            displacement.x = 0;
-        }
-        if (myTopLeftCoord.y * myCurrentTileHeight + myPlayer.getDirection().y < 0) {
-            myTopLeftCoord.y = 0; // player near the top boundary
-            displacement.y = 0;
-        }
-        else if ((myTopLeftCoord.y + myNumDisplayRows) * myCurrentTileHeight
-                + myPlayer.getDirection().y > myBottomRightCorner.y
-                * myCurrentTileHeight) {
-            myTopLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows;
-            displacement.y = 0;
-        }
-        myCurrentCamera = new Rectangle(myTopLeftCoord.x - 1,
-                myTopLeftCoord.y - 1, myNumDisplayCols + 2,
-                myNumDisplayRows + 2);
-        myOrigin = changeOriginForPlayer(displacement);
-    }
+	/**
+	 * move the camera according to player's movement do not move when player
+	 * reaches the edge There are 2 rows and columns of margin for smooth
+	 * movement
+	 */
+	private void updateCameraPosition() {
+		Point displacement = myPlayer.calcScreenDisplacement(
+				myCurrentTileWidth, myCurrentTileHeight);
+		myTopLeftCoord = calculateTopLeftCoordinate();
+		if (myTopLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
+			myTopLeftCoord.x = 0; // player near the left boundary
+			displacement.x = 0; // screen fixed when player moves to the edge
+		} else if ((myTopLeftCoord.x + myNumDisplayCols) * myCurrentTileWidth
+				+ myPlayer.getDirection().x > myBottomRightCorner.x
+				* myCurrentTileWidth) {
+			myTopLeftCoord.x = myBottomRightCorner.x - myNumDisplayCols;
+			displacement.x = 0;
+		}
+		if (myTopLeftCoord.y * myCurrentTileHeight + myPlayer.getDirection().y < 0) {
+			myTopLeftCoord.y = 0; // player near the top boundary
+			displacement.y = 0;
+		} else if ((myTopLeftCoord.y + myNumDisplayRows) * myCurrentTileHeight
+				+ myPlayer.getDirection().y > myBottomRightCorner.y
+				* myCurrentTileHeight) {
+			myTopLeftCoord.y = myBottomRightCorner.y - myNumDisplayRows;
+			displacement.y = 0;
+		}
+		myCurrentCamera = new Rectangle(myTopLeftCoord.x - 1,
+				myTopLeftCoord.y - 1, myNumDisplayCols + 2,
+				myNumDisplayRows + 2);
+		myOrigin = changeOriginForPlayer(displacement);
+	}
 
-    /**
-     * iterate through the map and update MapObjects at each position
-     */
-    private void updateMapObjects () {
-        for (Point p : myMapObjects.keySet()) {
-            List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
-            Iterator<MapObject> it = objectsOnTile.iterator();
-            while (it.hasNext()) {
-                MapObject nextObject = it.next();
-                if (!nextObject.isVisible()) {
-                    it.remove();
-                }
-                else {
-                    nextObject.update();
-                }
-            }
-        }
-    }
+	/**
+	 * iterate through the map and update MapObjects at each position
+	 */
+	private void updateMapObjects() {
+		for (Point p : myMapObjects.keySet()) {
+			List<MapObject> objectsOnTile = getSpritesOnTile(p.x, p.y);
+			Iterator<MapObject> it = objectsOnTile.iterator();
+			while (it.hasNext()) {
+				MapObject nextObject = it.next();
+				if (!nextObject.isVisible()) {
+					it.remove();
+				} else {
+					nextObject.update();
+				}
+			}
+		}
+	}
 
-    private void processGameEvents () { // this can be optimized A LOT, only
-        // check mapobjects that did something last turn
-        for (MapObject m : getSpritesOnTile(myPlayer.getLocation().x, myPlayer
-                .getLocation().y)) {
-            if (m != myPlayer) {
-                m.interact(myPlayer);
-            }
-        }
+	private void processGameEvents() { // this can be optimized A LOT, only
+		// check mapobjects that did something last turn
+		for (MapObject m : getSpritesOnTile(myPlayer.getLocation().x,
+				myPlayer.getLocation().y)) {
+			if (m != myPlayer) {
+				m.interact(myPlayer);
+			}
+		}
 
-        for (Point p : myMapObjects.keySet()) {
-            HashMap<String, List<Integer>> myTileEvents = new HashMap<String, List<Integer>>();
-            for (MapObject s : getSpritesOnTile(p.x, p.y)) {
-                if (!myTileEvents.containsKey(s.getModeEvent())) {
-                    myTileEvents
-                            .put(s.getModeEvent(), new ArrayList<Integer>());
-                }
-                myTileEvents.get(s.getModeEvent()).add(s.getID());
-            }
-            for(String s : myTileEvents.keySet()){
-                getGameManager().flagEvent(s, myTileEvents.get(s));
-            }
-        }
-    }
+		for (Point p : myMapObjects.keySet()) {
+			HashMap<String, List<Integer>> myTileEvents = new HashMap<String, List<Integer>>();
+			for (MapObject s : getSpritesOnTile(p.x, p.y)) {
+				if (!myTileEvents.containsKey(s.getModeEvent())) {
+					myTileEvents
+							.put(s.getModeEvent(), new ArrayList<Integer>());
+				}
+				myTileEvents.get(s.getModeEvent()).add(s.getID());
+			}
+			for (String s : myTileEvents.keySet()) {
+				getGameManager().flagEvent(s, myTileEvents.get(s));
+			}
+		}
+	}
 
-    /**
-     * change the top left corner of the screen when the player moves
-     * 
-     * @param displacement
-     *        the displacement of the screen
-     * @return new origin point
-     */
-    private Point changeOriginForPlayer (Point displacement) {
-        Point result = new Point(myOrigin.x + displacement.x, myOrigin.y
-                + displacement.y);
-        if (result.x == 0) { // screen movement done!
-            result = initializeOrigin();
-        }
-        return result;
-    }
+	/**
+	 * change the top left corner of the screen when the player moves
+	 * 
+	 * @param displacement
+	 *            the displacement of the screen
+	 * @return new origin point
+	 */
+	private Point changeOriginForPlayer(Point displacement) {
+		Point result = new Point(myOrigin.x + displacement.x, myOrigin.y
+				+ displacement.y);
+		if (result.x == 0) { // screen movement done!
+			result = initializeOrigin();
+		}
+		return result;
+	}
 
-    /**
-     * calculate top left corner coordinate of the grid
-     * 
-     * @return top-left coordinate
-     */
-    private Point calculateTopLeftCoordinate () {
-        myIsFixedPlayer = true;
-        int x = myPlayer.getPreviousLocation().x;
-        int y = myPlayer.getPreviousLocation().y;
-        x -= (myNumDisplayCols - 1) / 2;
-        y -= (myNumDisplayRows - 1) / 2;
-        return new Point(x, y);
-    }
+	/**
+	 * calculate top left corner coordinate of the grid
+	 * 
+	 * @return top-left coordinate
+	 */
+	private Point calculateTopLeftCoordinate() {
+		myIsFixedPlayer = true;
+		int x = myPlayer.getPreviousLocation().x;
+		int y = myPlayer.getPreviousLocation().y;
+		x -= (myNumDisplayCols - 1) / 2;
+		y -= (myNumDisplayRows - 1) / 2;
+		return new Point(x, y);
+	}
 
-    /**
-     * get a list of MapObjects on the tile
-     * 
-     * @param i
-     *        x-coordinate on the grid
-     * @param j
-     *        y-coordinate on the grid
-     * @return a list of MapObjects on the tile
-     */
-    private List<MapObject> getSpritesOnTile (int i, int j) {
-        return myMapObjects.get(new Point(i, j));
-    }
+	/**
+	 * get a list of MapObjects on the tile
+	 * 
+	 * @param i
+	 *            x-coordinate on the grid
+	 * @param j
+	 *            y-coordinate on the grid
+	 * @return a list of MapObjects on the tile
+	 */
+	private List<MapObject> getSpritesOnTile(int i, int j) {
+		return myMapObjects.get(new Point(i, j));
+	}
 
-    /**
-     * move a MovingMapObject to a nearby tile in a specific direction
-     * 
-     * @param s
-     *        MovingMapObject
-     * @param dir
-     *        direction it moves towards
-     */
-    public void moveSprite (MovingMapObject s, Point dir) {
-        Point dest = s.getLocation(dir);
- 
-        if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
-                && dest.y < myBottomRightCorner.y) {
-            Point oldCoord = s.getLocation();
+	/**
+	 * move a MovingMapObject to a nearby tile in a specific direction
+	 * 
+	 * @param s
+	 *            MovingMapObject
+	 * @param dir
+	 *            direction it moves towards
+	 */
+	public void moveSprite(MovingMapObject s, Point dir) {
+		Point dest = s.getLocation(dir);
 
-            if (myMapObjects.get(oldCoord).contains(s)) {
-                myMapObjects.get(oldCoord).remove(s);
-                addMapObject(dest, s);
-                s.setLocation(dest);
-                s.setMoving(true);
-            }
-        }
-        s.setDirection(dir); // direction changed even if the player is not
-                             // moving
-    }
+		if (dest.x >= 0 && dest.x < myBottomRightCorner.x && dest.y >= 0
+				&& dest.y < myBottomRightCorner.y) {
+			Point oldCoord = s.getLocation();
 
-    /**
-     * check if the sprite need to interact with anything when moving
-     * @param mapObject
-     */
-    private void checkCollision(MovingMapObject mapObject, Point dir) {
-    	Point dest = mapObject.getLocation(dir);
-        for (MapObject m : getSpritesOnTile(dest.x, dest.y)) {
-            m.interact(mapObject);
-            mapObject.interact(m);
-        }
-        if (mapObject.canMove()) {
-        	moveSprite(mapObject, dir);
-        }
-        else {
-        	//reset myCanMove to default(true) for the next round of movement
-        	mapObject.setCanMove(true); 
-        }
-    }
+			if (myMapObjects.get(oldCoord).contains(s)) {
+				myMapObjects.get(oldCoord).remove(s);
+				addMapObject(dest, s);
+				s.setLocation(dest);
+				s.setMoving(true);
+			}
+		}
+	}
 
-    @Override
-    /**
-     * handle key pressed events specific to MapMode
-     */
-    public void handleKeyPressed (KeyEvent e) {
-        // foreach sprite: s.handleKeyPressed(e); s.update();
-        int keyCode = e.getKeyCode();
-        if (myPlayer.isMoving()) { return; }
-        switch (keyCode) {
-            case KeyEvent.VK_LEFT:
-            	checkCollision(myPlayer, LEFT);
-                break;
-            case KeyEvent.VK_UP:
-            	checkCollision(myPlayer, UP);
-                break;
-            case KeyEvent.VK_RIGHT:
-            	checkCollision(myPlayer, RIGHT);
-                break;
-            case KeyEvent.VK_DOWN:
-            	checkCollision(myPlayer, DOWN);
-                break;
-        }
-    }
+	/**
+	 * check if the sprite need to interact with anything when moving
+	 * 
+	 * @param mapObject
+	 */
+	private void checkCollision(MovingMapObject mapObject, Point dir) {
+		mapObject.setDirection(dir); // direction changed even if the player is
+									 // not moving
+		Point dest = mapObject.getLocation(dir);
+		for (MapObject m : getSpritesOnTile(dest.x, dest.y)) {
+			m.interact(mapObject);
+			mapObject.interact(m);
+		}
+		if (mapObject.canMove()) {
+			moveSprite(mapObject, dir);
+		} else {
+			// reset myCanMove to default(true) for the next round of movement
+			mapObject.setCanMove(true);
+		}
+	}
 
-    @Override
-    /**
-     * handle key released event specific to MapMode
-     */
-    public void handleKeyReleased (KeyEvent e) {
+	@Override
+	/**
+	 * handle key pressed events specific to MapMode
+	 */
+	public void handleKeyPressed(KeyEvent e) {
+		// foreach sprite: s.handleKeyPressed(e); s.update();
+		int keyCode = e.getKeyCode();
+		if (myPlayer.isMoving()) {
+			return;
+		}
+		switch (keyCode) {
+		case KeyEvent.VK_LEFT:
+			checkCollision(myPlayer, LEFT);
+			break;
+		case KeyEvent.VK_UP:
+			checkCollision(myPlayer, UP);
+			break;
+		case KeyEvent.VK_RIGHT:
+			checkCollision(myPlayer, RIGHT);
+			break;
+		case KeyEvent.VK_DOWN:
+			checkCollision(myPlayer, DOWN);
+			break;
+		}
+	}
 
-    }
+	@Override
+	/**
+	 * handle key released event specific to MapMode
+	 */
+	public void handleKeyReleased(KeyEvent e) {
 
-    /**
-     * initialize the origin point
-     * 
-     * @return origin point
-     */
-    private Point initializeOrigin () {
-        return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
-    }
+	}
 
-    public void handleMouseClicked (MouseEvent e) {
-        // right click
-        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-            if (myPathFinder != null) {
-                myPathFinder.stop();
-            }
-            Point target = new Point(e.getX() / myCurrentTileWidth
-                    + myTopLeftCoord.x, e.getY() / myCurrentTileHeight
-                    + myTopLeftCoord.y);
-            myPathFinder = new PathFinder(this, myPlayer, target,
-                    myBottomRightCorner);
-        }
-    }
+	/**
+	 * initialize the origin point
+	 * 
+	 * @return origin point
+	 */
+	private Point initializeOrigin() {
+		return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
+	}
 
-    public Rectangle getCamera () {
-        return myCurrentCamera;
-    }
+	public void handleMouseClicked(MouseEvent e) {
+		// right click
+		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+			if (myPathFinder != null) {
+				myPathFinder.stop();
+			}
+			Point target = new Point(e.getX() / myCurrentTileWidth
+					+ myTopLeftCoord.x, e.getY() / myCurrentTileHeight
+					+ myTopLeftCoord.y);
+			myPathFinder = new PathFinder(this, myPlayer, target,
+					myBottomRightCorner);
+		}
+	}
 
-    public Dimension getTileDimensions () {
-        return new Dimension(myCurrentTileWidth, myCurrentTileHeight);
-    }
+	public Rectangle getCamera() {
+		return myCurrentCamera;
+	}
 
-    public Point getOrigin () {
-        return myOrigin;
-    }
+	public Dimension getTileDimensions() {
+		return new Dimension(myCurrentTileWidth, myCurrentTileHeight);
+	}
 
-    @Override
-    public void configureInputHandling () {
-        // will move all code for handling user input here
-        // once input api allows invoking methods with arguments
-    }
-    
-    public Point getBottomRight() {
+	public Point getOrigin() {
+		return myOrigin;
+	}
+
+	@Override
+	public void configureInputHandling() {
+		// will move all code for handling user input here
+		// once input api allows invoking methods with arguments
+	}
+
+	public Point getBottomRight() {
 		return myBottomRightCorner;
 	}
 
 	public void setBottomRight(Point myBottomRightCorner) {
 		this.myBottomRightCorner = myBottomRightCorner;
 	}
-	
+
 	public void setPlayer(MapPlayerObject p) {
 		myPlayer = p;
 	}
 
-    public void removeMapObject (MapObject mapObject) {
-        myMapObjects.get(mapObject.getLocation()).remove(mapObject);
-    }
+	public void removeMapObject(MapObject mapObject) {
+		myMapObjects.get(mapObject.getLocation()).remove(mapObject);
+	}
 }

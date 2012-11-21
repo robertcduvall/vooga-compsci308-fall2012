@@ -19,6 +19,7 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.battleobject.TestMonster;
 import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapObstacleObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapobject.MapTileObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
@@ -88,21 +89,22 @@ public class GameManager implements GameLoopMember {
         }
 
         s = new Sprite();
-        s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3, GameWindow
+        s.addGameObject(new TestMonster(s.getID(), "NO_ACTION", 1, 2, 3, GameWindow
                 .importImage("Charmeleon")));
         Point center = new Point(5, 5);
-        MovingMapObject test1 =
-                new MovingMapObject(0, "MAP_COLLISION", center,
-                                    GameWindow.importImage("something"), myMapMode);
-
-        s.addGameObject(test1);
-
+        s.addGameObject(new MovingMapObject(s.getID(), "MAP_COLLISION", center,
+                                    GameWindow.importImage("something"), myMapMode));
+        mySprites.put(s.getID(), s);
+        
+        s = new Sprite();
+        center = new Point(6, 5);
+        s.addGameObject(new MapObstacleObject(s.getID(), "NO_ACTION", center,
+                GameWindow.importImage("Obstacle1"), myMapMode));
         mySprites.put(s.getID(), s);
 
         s = new Sprite();
         s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3, GameWindow
                 .importImage("MyPikachu")));
-
         mySprites.put(s.getID(), s);
 
         center = new Point(8, 8);
