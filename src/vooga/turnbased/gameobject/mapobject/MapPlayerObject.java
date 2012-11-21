@@ -81,8 +81,8 @@ public class MapPlayerObject extends MovingMapObject {
     }
 
     @Override
-    public void update (int delayTime) {
-        super.update(delayTime);
+    public void update () {
+        super.update();
 
         myFrameCount++;
         if (myFrameCount >= ANIMATION_FRAME_RATE) {

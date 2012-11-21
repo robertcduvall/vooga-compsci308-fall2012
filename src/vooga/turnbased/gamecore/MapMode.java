@@ -210,7 +210,7 @@ public class MapMode extends GameMode {
                     it.remove();
                 }
                 else {
-                    nextObject.update(getGameManager().getDelayTime());
+                    nextObject.update();
                 }
             }
         }

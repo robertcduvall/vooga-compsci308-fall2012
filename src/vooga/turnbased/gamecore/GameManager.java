@@ -291,17 +291,7 @@ public class GameManager {
      */
     public Dimension getPaneDimension () {
         return myGamePane.getSize();
-    }
-
-    /**
-     * Returns the current time delay for the game window.
-     * 
-     * @return Current time delay.
-     */
-    public int getDelayTime () {
-        return myGamePane.getDelayTime();
-    }
-
+    } 
     /**
      * Returns the current KeyboardController.
      * 

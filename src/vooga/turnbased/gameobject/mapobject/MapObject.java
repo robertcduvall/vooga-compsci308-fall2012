@@ -120,7 +120,7 @@ public abstract class MapObject extends GameObject {
      * Updates MapObject; delayTime not used.
      * @param delayTime Not used.
      */
-    public void update (int delayTime) {
+    public void update () {
         myTileDimensions = new Dimension(myMapMode.getTileDimensions());
         myCameraOrigin = new Point(myMapMode.getOrigin());
         Rectangle camera = myMapMode.getCamera();

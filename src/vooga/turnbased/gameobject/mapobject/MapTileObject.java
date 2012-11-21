@@ -34,7 +34,7 @@ public class MapTileObject extends MapObject {
     }
 
     @Override
-    public void update (int delayTime) {
-        super.update(delayTime);
+    public void update () {
+        super.update();
     }
 }
