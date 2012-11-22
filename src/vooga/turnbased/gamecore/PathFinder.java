@@ -25,6 +25,7 @@ public class PathFinder implements Runnable {
 
 	private static final int ATTEMPT_INTERVAL = 60;
 	private List<Point> myPath;
+	private List<MapObject> myHighlightObjects;
 	private MapMode myMap;
 	private boolean[][] myVisited;
 	private boolean myCancelMovement;
@@ -48,6 +49,7 @@ public class PathFinder implements Runnable {
 		myStart = object.getLocation();
 		myEnd = target;
 		myPath = new ArrayList<Point>();
+		myHighlightObjects = new ArrayList<MapObject>();
 		mySize = new Dimension(myBottomRightCorner.x, myBottomRightCorner.y);
 		myVisited = new boolean[mySize.width][mySize.height];
 		myCancelMovement = false;
@@ -130,6 +132,12 @@ public class PathFinder implements Runnable {
 		return false;
 	}
 	
+	/**
+	 * check if the player can move to the tile at the coordinate x, y
+	 * @param x x-coordinate in the current map
+	 * @param y y-coordinate in the current map
+	 * @return if the player can move to the tile at the coordinate x, y
+	 */
 	protected boolean canMoveTo(int x, int y) {
 		for (MapObject m: myMap.getSpritesOnTile(x, y)) {
 			if (m instanceof MapObstacleObject) {
@@ -137,16 +145,6 @@ public class PathFinder implements Runnable {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * find distance between two points in grid system
-	 * @param a first point
-	 * @param b second point
-	 * @return distance in grid system
-	 */
-	private double distance(Point a, Point b) {
-		return a.distance(b);
 	}
 
 	/**
@@ -171,9 +169,12 @@ public class PathFinder implements Runnable {
 	}
 	
 	/**
-	 * stop the moving process
+	 * stop the moving process and the highlighted path disappeared
 	 */
 	public void stop() {
+		for (MapObject m: myHighlightObjects) {
+			m.setVisible(false);
+		}
 		myCancelMovement = true;
 	}
 
@@ -188,9 +189,6 @@ public class PathFinder implements Runnable {
 		Point previousPoint = myStart;
 		Point currentPoint;
 		for (int i = 0; i < myPath.size(); i++) {
-			if (myCancelMovement) {
-				break;
-			}
 			currentPoint = myPath.get(i);
 			Point direction = new Point(currentPoint.x - previousPoint.x,
 					currentPoint.y - previousPoint.y);
@@ -201,6 +199,9 @@ public class PathFinder implements Runnable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+			}
+			if (myCancelMovement) {
+				break;
 			}
 			myMap.checkCollision(myMovingObject, direction);
 		}
@@ -213,7 +214,9 @@ public class PathFinder implements Runnable {
 	
 	private void highlightPath() {
 		for (Point p: myPath) {
-			myMap.addMapObject(p, generatePathIndicator(p));
+			MapObject m = generatePathIndicator(p);
+			myMap.addMapObject(p, m);
+			myHighlightObjects.add(m);
 		}
 	}
 }

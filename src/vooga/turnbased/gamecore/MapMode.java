@@ -30,8 +30,6 @@ public class MapMode extends GameMode {
 	public static final Point RIGHT = new Point(1, 0);
 	public static final Point DOWN = new Point(0, 1);
 	public static final Point LEFT = new Point(-1, 0);
-	private final int ID = 0;
-	private boolean myIsFixedPlayer;
 	private int myNumDisplayRows;
 	private int myNumDisplayCols;
 	private HashMap<Point, List<MapObject>> myMapObjects;
@@ -258,7 +256,6 @@ public class MapMode extends GameMode {
 	 * @return top-left coordinate
 	 */
 	private Point calculateTopLeftCoordinate() {
-		myIsFixedPlayer = true;
 		int x = myPlayer.getPreviousLocation().x;
 		int y = myPlayer.getPreviousLocation().y;
 		x -= (myNumDisplayCols - 1) / 2;
