@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
+import vooga.turnbased.gamecreation.GameLevelManager;
 import vooga.turnbased.gamecreation.LevelCreator;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
@@ -59,7 +60,9 @@ public class GameManager implements GameLoopMember {
         myEvents = new LinkedList<ModeEvent>();
         myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
-        generateHardcodedLevel();
+        GameLevelManager levelManager = new GameLevelManager(this, "src/vooga/turnbased/resources/Example.xml");
+        myMapMode = levelManager.getCurrentMapMode();
+        //generateHardcodedLevel();
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.init();
         configureInputHandling();
@@ -80,6 +83,12 @@ public class GameManager implements GameLoopMember {
         for (Sprite s : sprites) {
             mySprites.put(s.getID(), s);
         }
+    }
+    
+    public void addSprites(List<Sprite> sprites) {
+    	for (Sprite s: sprites) {
+    		mySprites.put(s.getID(), s);
+    	}
     }
 
     /**

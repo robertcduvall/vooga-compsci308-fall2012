@@ -4,7 +4,9 @@
 		<width>20</width>
 		<height>30</height>
 	</dimension>
-	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+	<cameraDimension>
+		<width>15</width>
+		<height>11</height></cameraDimension><backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
 	<!-- <event type="collision"></event> -->
 	<event>
     	<name>collision</name>
@@ -117,4 +119,4 @@
 		<event>NO_ACTION</event>
 		<image>src/vooga/turnbased/resources/image/grass.png</image>
 	</staticSprite>
-</level>
+	</level>
