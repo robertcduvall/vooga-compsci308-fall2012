@@ -11,7 +11,7 @@ import util.input.factories.ControllerFactory;
 
 
 @SuppressWarnings("serial")
-public abstract class DisplayPane extends JPanel implements KeyListener {
+public abstract class DisplayPane extends JPanel {
     private GameWindow myGameWindow;
     public static KeyboardController keyboardController;
     public static MouseController mouseController;

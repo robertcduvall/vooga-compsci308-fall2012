@@ -11,6 +11,7 @@ import java.util.Random;
 import util.input.core.KeyboardController;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.gui.InputAPI;
 
 
 /**
@@ -20,7 +21,7 @@ import vooga.turnbased.gui.GamePane;
  * @author David Howdyshell, Michael Elgart, Kevin Gao, Jenni Mercado
  * 
  */
-public class BattleMode extends GameMode {
+public class BattleMode extends GameMode implements InputAPI {
     private List<Team> myTeams;
     private BattleObject myPlayerObject;
     private BattleObject myEnemy;
@@ -56,9 +57,19 @@ public class BattleMode extends GameMode {
         // ArrayList<Integer>());
     }
 
-    private void configureInputHandling () {
+    public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
-        // GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, myPlayerObject, "attack");
+        try {
+            GamePane.keyboardController.setControl(KeyEvent.VK_A, KeyboardController.RELEASED, this, "hardcodeAttack");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // input api only supports invoking methods w/t parameters
+    public void hardcodeAttack() {
+        myPlayerObject.attackEnemy(myEnemy);
     }
 
     private void makeTeams () {
@@ -120,6 +131,7 @@ public class BattleMode extends GameMode {
     /**
      * Initializes a battle with the current lists of BattleObjects
      */
+    @Override
     public void initialize () {
         myState = BattleState.WAITING_FOR_MOVE;
         myTurnCount = 0;
@@ -149,7 +161,7 @@ public class BattleMode extends GameMode {
         return teamDead;
     }
 
-    @Override
+    /*@Override
     public void handleKeyPressed (KeyEvent e) {
         // use configureInputHandling() instead. see InputAPI.java interface for usage
     }
@@ -168,7 +180,7 @@ public class BattleMode extends GameMode {
             default:
                 break;
         }
-    }
+    }*/
 
     /**
      * Returns the team that should make the next move and increments
@@ -215,11 +227,5 @@ public class BattleMode extends GameMode {
 
     private enum BattleState {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
-    }
-
-    @Override
-    public void init () {
-        // TODO Auto-generated method stub
-
     }
 }

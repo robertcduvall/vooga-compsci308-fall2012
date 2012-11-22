@@ -14,7 +14,6 @@ public class EditorPane extends DisplayPane {
     public EditorPane (GameWindow gameWindow) {
         super(gameWindow);
         addButtons();
-        addKeyListener(this);
     }
 
     private void addButtons () {
@@ -49,29 +48,5 @@ public class EditorPane extends DisplayPane {
         super.paintComponent(g);
         Image background = GameWindow.importImage("EditorBackgroundImage");
         g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
-    }
-
-    /**
-     * event handling when user types anything
-     */
-    @Override
-    public void keyTyped (KeyEvent e) {
-        System.out.println("Typed " + e.getKeyCode());
-    }
-
-    /**
-     * event handling when any key is pressed
-     */
-    @Override
-    public void keyPressed (KeyEvent e) {
-        System.out.println("Pressed " + e.getKeyCode());
-    }
-
-    /**
-     * event handling when any key is released
-     */
-    @Override
-    public void keyReleased (KeyEvent e) {
-        System.out.println("Released " + e.getKeyCode());
     }
 }

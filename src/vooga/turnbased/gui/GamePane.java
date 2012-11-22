@@ -17,7 +17,7 @@ import vooga.turnbased.gamecore.GameManager;
 
 
 @SuppressWarnings("serial")
-public class GamePane extends DisplayPane implements Runnable, GameLoopMember, InputAPI {
+public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
     private GameManager myGameManager;
     private Thread myGameThread;
@@ -35,11 +35,9 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember, I
         super(gameWindow);
         myGameThread = new Thread(this);
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
-        addKeyListener(this);
         addMouseListener(new GameMouseListener());
         myGameManager = new GameManager(this);
         enableFocus();
-        configureInputHandling();
     }
 
     /**
@@ -93,35 +91,7 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember, I
             }
         }
     }
-
-    public void configureInputHandling () {
-        // handle actions that shouldn't be passed down to gamemanager
-    }
-
-    /**
-     * event handling when user types anything
-     */
-    @Override
-    public void keyTyped (KeyEvent e) {
-        // System.out.println("Typed " + e.getKeyCode());
-    }
-
-    /**
-     * event handling when any key is pressed
-     */
-    @Override
-    public void keyPressed (KeyEvent e) {
-        myGameManager.handleKeyPressed(e);
-    }
-
-    /**
-     * event handling when any key is released
-     */
-    @Override
-    public void keyReleased (KeyEvent e) {
-        myGameManager.handleKeyReleased(e);
-    }
-
+    
     public static int getDelayTime () {
         return delayBetweenGameLoopCycles;
     }

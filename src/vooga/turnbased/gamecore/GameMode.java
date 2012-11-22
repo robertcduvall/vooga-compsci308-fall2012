@@ -77,7 +77,10 @@ public abstract class GameMode implements GameLoopMember {
      */
     public abstract void resume ();
     
-    public abstract void init ();
+    /**
+     * Call when gamemode if first created
+     */
+    public abstract void initialize ();
 
     /**
      * Method that will paint the different objects in the mode.
@@ -93,20 +96,6 @@ public abstract class GameMode implements GameLoopMember {
     public abstract void update ();
 
     // public abstract void processGameEvents ();
-
-    /**
-     * Method that will handle key pressed.
-     * @param e KeyEvent to be handled.
-     */
-    // use input api instead
-    public abstract void handleKeyPressed (KeyEvent e);
-
-    /**
-     * Method that will handle keys released.
-     * @param e KeyEvent to be handled.
-     */
-     // use input api instead
-    public abstract void handleKeyReleased (KeyEvent e);
 
     /**
      * Override if any sub-mode needs to handle MouseClicked events.

@@ -53,7 +53,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         myMapMode = levelManager.getCurrentMapMode();
         // generateHardcodedLevel();
         myCurrentGameMode = myMapMode;
-        myCurrentGameMode.init();
+        myCurrentGameMode.initialize();
         configureInputHandling();
     }
 
@@ -169,24 +169,6 @@ public class GameManager implements GameLoopMember, InputAPI {
     }
 
     /**
-     * Passes key input to the GameMode.
-     * 
-     * @param e KeyEvent to be handled.
-     */
-    public void handleKeyPressed (KeyEvent e) {
-        myCurrentGameMode.handleKeyPressed(e);
-    }
-
-    /**
-     * Passes key input to the GameMode.
-     * 
-     * @param e KeyEvent to be handled.
-     */
-    public void handleKeyReleased (KeyEvent e) {
-        myCurrentGameMode.handleKeyReleased(e);
-    }
-
-    /**
      * Passes mouse input to the GameMode.
      * 
      * @param e MouseEvent to be handled.
@@ -206,7 +188,7 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     public void configureInputHandling () {
         // handle actions that shouldn't be passed down to individual gamemodes,
-        // i.e. game pause
+        // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED, this, "gameOver");
     }
 
     private class ModeEvent {

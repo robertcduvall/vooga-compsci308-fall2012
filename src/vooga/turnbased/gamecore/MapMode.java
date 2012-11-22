@@ -67,7 +67,8 @@ public class MapMode extends GameMode implements InputAPI {
         configureInputHandling();
     }
 
-    public void init () {
+    @Override
+    public void initialize () {
         myMapObjects = new HashMap<Point, List<MapObject>>();
         List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         for (MapObject mapObject : mapObjects) {
@@ -276,37 +277,6 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public List<MapObject> getSpritesOnTile (int i, int j) {
         return myMapObjects.get(new Point(i, j));
-    }
-
-    @Override
-    /**
-     * handle key pressed events specific to MapMode
-     */
-    public void handleKeyPressed (KeyEvent e) {
-        /*int keyCode = e.getKeyCode();
-        //if (myPlayer.isMoving()) { return; }
-        switch (keyCode) {
-            case KeyEvent.VK_LEFT:
-                myPlayer.moveLeft();
-                break;
-            case KeyEvent.VK_UP:
-                myPlayer.moveUp();
-                break;
-            case KeyEvent.VK_RIGHT:
-                myPlayer.moveRight();
-                break;
-            case KeyEvent.VK_DOWN:
-                myPlayer.moveDown();
-                break;
-        }*/
-    }
-
-    @Override
-    /**
-     * handle key released event specific to MapMode
-     */
-    public void handleKeyReleased (KeyEvent e) {
-
     }
 
     /**
