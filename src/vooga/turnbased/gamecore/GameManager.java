@@ -27,6 +27,7 @@ import vooga.turnbased.sprites.Sprite;
 public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
+    private GameLevelManager myLevelManager;
     private MapMode myMapMode;
     private BattleMode myBattleMode;
     private GameMode myCurrentGameMode;
@@ -45,19 +46,24 @@ public class GameManager implements GameLoopMember, InputAPI {
         isOver = false;
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
-        // myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
-
-        GameLevelManager levelManager =
-                new GameLevelManager(this, GameWindow.importString("Entrance"));
-        myMapMode = levelManager.getCurrentMapMode();
-        // generateHardcodedLevel();
-        myCurrentGameMode = myMapMode;
-        myCurrentGameMode.initialize();
+        initializeGameLevel();
         configureInputHandling();
     }
 
-    public void addSprites (List<Sprite> sprites) {
+    private void initializeGameLevel () {
+        myLevelManager = new GameLevelManager(this, GameWindow.importString("Entrance"));
+        myMapMode = myLevelManager.getCurrentMapMode();
+        addSprites(myLevelManager.getCurrentSprites());
+        myCurrentGameMode = myMapMode;
+        myCurrentGameMode.initialize();
+    }
+
+    /**
+     * add a list of sprites to the GameManager
+     * @param sprites
+     */
+    private void addSprites (List<Sprite> sprites) {
         for (Sprite s : sprites) {
             mySprites.put(s.getID(), s);
         }
@@ -188,7 +194,8 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     public void configureInputHandling () {
         // handle actions that shouldn't be passed down to individual gamemodes,
-        // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED, this, "gameOver");
+        // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
+        // KeyboardController.PRESSED, this, "gameOver");
     }
 
     private class ModeEvent {
