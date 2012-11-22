@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import vooga.turnbased.gamecore.MapMode;
 
-
 /**
  * This class WILL no longer BE stupid, HOPEFULLY
  * 

@@ -111,7 +111,6 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
      */
     @Override
     public void keyPressed (KeyEvent e) {
-        // System.out.println("Pressed " + e.getKeyCode());
         myGameManager.handleKeyPressed(e);
     }
 
@@ -120,7 +119,6 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
      */
     @Override
     public void keyReleased (KeyEvent e) {
-        // System.out.println("Released " + e.getKeyCode());
         myGameManager.handleKeyReleased(e);
     }
 
