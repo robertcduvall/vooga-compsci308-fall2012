@@ -25,6 +25,20 @@ public class EditorPane extends DisplayPane {
             }
         });
         add(menuButton);
+        JButton newLevelButton = new JButton("Create New Level");
+        newLevelButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                System.out.println("Action performed to create a new Level");
+            }
+        });
+        add(newLevelButton);
+        JButton modifyLevelButton = new JButton("Modify Existing Level");
+        modifyLevelButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                System.out.println("Action performed to modify existing level");
+            }
+        });
+        add(modifyLevelButton);
     }
 
     /**
