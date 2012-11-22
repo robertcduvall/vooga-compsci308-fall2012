@@ -69,7 +69,7 @@ public abstract class MapObject extends GameObject {
     }
 
     // ...this is poorly named
-    public Point getLocation (Point p) {
+    public Point IncrementLocation (Point p) {
         int x = getLocation().x + p.x;
         int y = getLocation().y + p.y;
         return new Point(x, y);

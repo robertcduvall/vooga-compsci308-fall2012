@@ -2,10 +2,8 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,7 +11,6 @@ import java.util.List;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import vooga.turnbased.gamecreation.GameLevelManager;
-import vooga.turnbased.gamecreation.LevelCreator;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -58,7 +55,7 @@ public class GameManager implements GameLoopMember {
         // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
-        myMapMode = new MapMode(this, MapObject.class);
+        // myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
 
         GameLevelManager levelManager =

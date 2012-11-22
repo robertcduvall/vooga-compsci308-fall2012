@@ -193,7 +193,7 @@ public class PathFinder implements Runnable {
             if (myCancelMovement) {
                 break;
             }
-            myMap.checkCollision(myMovingObject, direction);
+            myMovingObject.tryMove(direction);
         }
     }
 

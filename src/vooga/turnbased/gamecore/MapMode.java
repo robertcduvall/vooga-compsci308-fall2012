@@ -11,11 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import util.imageprocessing.ImageLoop;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
-import vooga.turnbased.gameobject.mapobject.MapTileObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 import vooga.turnbased.gui.GameWindow;
 
@@ -100,6 +97,10 @@ public class MapMode extends GameMode {
             spriteList.add(s);
             myMapObjects.put(p, spriteList);
         }
+    }
+
+    public void removeMapObject (MapObject mapObject) {
+        myMapObjects.get(mapObject.getLocation()).remove(mapObject);
     }
 
     /**
@@ -273,72 +274,25 @@ public class MapMode extends GameMode {
         return myMapObjects.get(new Point(i, j));
     }
 
-    /**
-     * move a MovingMapObject to a nearby tile in a specific direction
-     * 
-     * @param s
-     *        MovingMapObject
-     * @param dir
-     *        direction it moves towards
-     */
-    private void moveSprite (MovingMapObject s, Point dir) {
-        Point dest = s.getLocation(dir);
-
-        if (dest.x >= 0 && dest.x < myMapSize.height && dest.y >= 0 &&
-            dest.y < myMapSize.height) {
-            Point oldCoord = s.getLocation();
-
-            if (myMapObjects.get(oldCoord).contains(s)) {
-                myMapObjects.get(oldCoord).remove(s);
-                addMapObject(dest, s);
-                s.setLocation(dest);
-                s.setMoving(true);
-            }
-        }
-    }
-
-    /**
-     * check if the sprite need to interact with anything when moving
-     * 
-     * @param mapObject
-     */
-    public void checkCollision (MovingMapObject mapObject, Point dir) {
-        mapObject.setDirection(dir); // direction changed even if the player is
-                                     // not moving
-        Point dest = mapObject.getLocation(dir);
-        for (MapObject m : getSpritesOnTile(dest.x, dest.y)) {
-            m.interact(mapObject);
-            mapObject.interact(m);
-        }
-        if (mapObject.canMove()) {
-            moveSprite(mapObject, dir);
-        }
-        else {
-            // reset myCanMove to default(true) for the next round of movement
-            mapObject.setCanMove(true);
-        }
-    }
-
     @Override
     /**
      * handle key pressed events specific to MapMode
      */
     public void handleKeyPressed (KeyEvent e) {
-        // foreach sprite: s.handleKeyPressed(e); s.update();
         int keyCode = e.getKeyCode();
         if (myPlayer.isMoving()) { return; }
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
-                checkCollision(myPlayer, LEFT);
+                myPlayer.moveLeft();
                 break;
             case KeyEvent.VK_UP:
-                checkCollision(myPlayer, UP);
+                myPlayer.moveUp();
                 break;
             case KeyEvent.VK_RIGHT:
-                checkCollision(myPlayer, RIGHT);
+                myPlayer.moveRight();
                 break;
             case KeyEvent.VK_DOWN:
-                checkCollision(myPlayer, DOWN);
+                myPlayer.moveDown();
                 break;
         }
     }
@@ -403,7 +357,7 @@ public class MapMode extends GameMode {
         myPlayer = p;
     }
 
-    public void removeMapObject (MapObject mapObject) {
-        myMapObjects.get(mapObject.getLocation()).remove(mapObject);
+    public boolean isWithinBounds (Point dest) {
+        return myMapSize.height > dest.y && myMapSize.width > dest.x && dest.x >= 0 && dest.y >= 0;
     }
 }

@@ -172,4 +172,44 @@ public class MovingMapObject extends MapObject {
     public boolean isMoving () {
         return myIsMoving;
     }
+    
+    public void tryMove (Point dir) {
+        setDirection(dir); // direction changed even if not going to move
+        Point dest = IncrementLocation(dir);
+        if (getMapMode().isWithinBounds(dest)) {
+            for (MapObject m : getMapMode().getSpritesOnTile(dest.x, dest.y)) {
+                m.interact(this);
+                interact(m);
+            }
+            if (canMove()) {
+                moveTo(dest);
+            }
+            else {
+                setCanMove(true); // reset for the next round of movement
+            }
+        }
+    }
+
+    private void moveTo (Point dest) {
+        getMapMode().removeMapObject(this);
+        getMapMode().addMapObject(dest, this);
+        setLocation(dest);
+        setMoving(true);
+    }
+
+    public void moveUp () {
+        tryMove(MapMode.UP);
+    }
+
+    public void moveDown () {
+        tryMove(MapMode.DOWN);
+    }
+
+    public void moveLeft () {
+        tryMove(MapMode.LEFT);
+    }
+
+    public void moveRight () {
+        tryMove(MapMode.RIGHT);
+    }
 }
