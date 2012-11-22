@@ -24,9 +24,9 @@ import java.util.Map;
  * @author Sam Rang
  */
 @SuppressWarnings("serial")
-public class LevelEditor extends JFrame {
+public class LevelEditor extends JPanel {
     private static final Dimension BUTTON_BAR_SIZE = new Dimension(50, 150);
-    private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
+//    private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> mySpriteTypes;
     private JFrame myContainer;
@@ -38,25 +38,25 @@ public class LevelEditor extends JFrame {
     private MouseListener myButtonListener;
     private int myViewOffset;
 
-    public static void main(String[] args) {
-        new LevelEditor();
-    }
+//    public static void main(String[] args) {
+//        new LevelEditor();
+//    }
 
     /**
      * Frame containing all the elements needed to save, load, and create
      * levels. Allows users to drag and drop sprites onto a level as well
      * as set the background image.
      */
-    public LevelEditor() {
-        super("LevelEditor");
+    public LevelEditor(JFrame parent) {
+        myContainer = parent;
+        myContainer.setTitle("Level Editor");
         myGameIsRunning = true;
-        frameBuild();
+//        frameBuild();
         fillMap();
         createListeners();
         createEditPane();
         createButtonPanel();
         createTopMenu();
-        pack();
         setVisible(true);
         editLoop();
     }
@@ -67,26 +67,25 @@ public class LevelEditor extends JFrame {
         }
     }
 
-    private void frameBuild() {
-        myContainer = this;
-        setPreferredSize(DEFAULT_FRAME_SIZE);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void frameBuild() {
+//        setPreferredSize(DEFAULT_FRAME_SIZE);
+//        setResizable(false);
+//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        try {
+//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedLookAndFeelException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void createListeners() {
-        LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
+        LevelBoard board = new LevelBoard(myContainer.getSize());
         myBoard = board;
         myContainer.add(board);
         myMouseListener = myBoard.getMouseListener();
@@ -99,11 +98,11 @@ public class LevelEditor extends JFrame {
                             bumpLeft();
                         }
                         else {
-                            myViewOffset -= DEFAULT_FRAME_SIZE.width;
+                            myViewOffset -= myContainer.getSize().width;
                         }
                         break;
                     case KeyEvent.VK_RIGHT: 
-                        if (myViewOffset == myBoard.getWidth() - DEFAULT_FRAME_SIZE.width) {
+                        if (myViewOffset == myBoard.getWidth() - myContainer.getSize().width) {
                         }
                 }
             }
@@ -127,7 +126,7 @@ public class LevelEditor extends JFrame {
         JPanel panel = new JPanel() {
             @Override
             public void paint(Graphics g) {
-                g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
+                g.clearRect(0, 0, myContainer.getSize().width, myContainer.getSize().height);
                 myBoard.paint(g);
                 super.paintComponents(g);
             }
@@ -248,7 +247,7 @@ public class LevelEditor extends JFrame {
             newLevel();
         }
         // root elements
-        myBoard = new LevelBoard(DEFAULT_FRAME_SIZE);
+        myBoard = new LevelBoard(myContainer.getSize());
         myViewPane.addMouseListener(myBoard.getMouseListener());
         myViewPane.addMouseMotionListener(myBoard.getMouseListener());
     }

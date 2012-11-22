@@ -78,7 +78,6 @@ public class LevelBoard extends JPanel implements ISavable {
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
-        
         setupMouseInput();
     }
 
