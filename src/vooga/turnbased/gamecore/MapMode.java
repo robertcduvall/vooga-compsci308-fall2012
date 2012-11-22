@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import util.input.core.KeyboardController;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
-import vooga.turnbased.gameobject.mapobject.MovingMapObject;
+import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
+import vooga.turnbased.gui.InputAPI;
 
 
 /**
@@ -23,7 +25,7 @@ import vooga.turnbased.gui.GameWindow;
  * 
  * @author Tony, Rex
  **/
-public class MapMode extends GameMode {
+public class MapMode extends GameMode implements InputAPI {
     public static final Point UP = new Point(0, -1);
     public static final Point RIGHT = new Point(1, 0);
     public static final Point DOWN = new Point(0, 1);
@@ -62,6 +64,7 @@ public class MapMode extends GameMode {
     @Override
     public void resume () {
         // do stuff when back to map mode
+        configureInputHandling();
     }
 
     public void init () {
@@ -70,6 +73,7 @@ public class MapMode extends GameMode {
         for (MapObject mapObject : mapObjects) {
             addMapObject(mapObject.getLocation(), mapObject);
         }
+        configureInputHandling();
     }
 
     public void setNumDisplayRows (int numDisplayRows) {
@@ -279,8 +283,8 @@ public class MapMode extends GameMode {
      * handle key pressed events specific to MapMode
      */
     public void handleKeyPressed (KeyEvent e) {
-        int keyCode = e.getKeyCode();
-        if (myPlayer.isMoving()) { return; }
+        /*int keyCode = e.getKeyCode();
+        //if (myPlayer.isMoving()) { return; }
         switch (keyCode) {
             case KeyEvent.VK_LEFT:
                 myPlayer.moveLeft();
@@ -294,7 +298,7 @@ public class MapMode extends GameMode {
             case KeyEvent.VK_DOWN:
                 myPlayer.moveDown();
                 break;
-        }
+        }*/
     }
 
     @Override
@@ -341,8 +345,16 @@ public class MapMode extends GameMode {
 
     @Override
     public void configureInputHandling () {
-        // will move all code for handling user input here
-        // once input api allows invoking methods with arguments
+        try {
+            GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myPlayer, "moveLeft");
+            GamePane.keyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myPlayer, "moveUp");
+            GamePane.keyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myPlayer, "moveRight");
+            GamePane.keyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myPlayer, "moveDown");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 
     public Dimension getMapSize () {

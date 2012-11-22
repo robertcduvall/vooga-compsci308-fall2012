@@ -17,7 +17,7 @@ import vooga.turnbased.gamecore.GameManager;
 
 
 @SuppressWarnings("serial")
-public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
+public class GamePane extends DisplayPane implements Runnable, GameLoopMember, InputAPI {
 
     private GameManager myGameManager;
     private Thread myGameThread;

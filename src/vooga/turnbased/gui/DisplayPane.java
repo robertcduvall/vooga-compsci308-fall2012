@@ -13,8 +13,8 @@ import util.input.factories.ControllerFactory;
 @SuppressWarnings("serial")
 public abstract class DisplayPane extends JPanel implements KeyListener {
     private GameWindow myGameWindow;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
+    public static KeyboardController keyboardController;
+    public static MouseController mouseController;
 
     public DisplayPane (GameWindow gameWindow) {
         myGameWindow = gameWindow;
@@ -24,19 +24,11 @@ public abstract class DisplayPane extends JPanel implements KeyListener {
     }
 
     private void setControllers () {
-        myKeyboardController =
+        keyboardController =
                 (KeyboardController) ControllerFactory.createKeyboardController(this);
-        myMouseController = (MouseController) ControllerFactory.createMouseController(this);
+        mouseController = (MouseController) ControllerFactory.createMouseController(this);
     }
-
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
-    }
-
-    public MouseController getMouseController () {
-        return myMouseController;
-    }
-
+    
     public GameWindow getGameWindow () {
         return myGameWindow;
     }

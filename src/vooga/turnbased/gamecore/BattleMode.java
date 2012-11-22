@@ -8,7 +8,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import util.input.core.KeyboardController;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
+import vooga.turnbased.gui.GamePane;
 
 
 /**
@@ -49,8 +51,14 @@ public class BattleMode extends GameMode {
         makeTeams();
         initialize();
         System.out.println("BattleStarting!");
+        configureInputHandling();
         // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
         // ArrayList<Integer>());
+    }
+
+    private void configureInputHandling () {
+        // use input api for key handling. notice how you can only invoke methods w/t parameters...
+        // GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, myPlayerObject, "attack");
     }
 
     private void makeTeams () {
@@ -143,11 +151,12 @@ public class BattleMode extends GameMode {
 
     @Override
     public void handleKeyPressed (KeyEvent e) {
-        // TODO Auto-generated method stub
+        // use configureInputHandling() instead. see InputAPI.java interface for usage
     }
-
+    
     @Override
     public void handleKeyReleased (KeyEvent e) {
+        // use configureInputHandling() instead
         int keyCode = e.getKeyCode();
         switch (keyCode) {
             case KeyEvent.VK_A:
@@ -206,11 +215,6 @@ public class BattleMode extends GameMode {
 
     private enum BattleState {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
-    }
-
-    @Override
-    public void configureInputHandling () {
-        // handle inputs
     }
 
     @Override

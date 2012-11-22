@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import util.input.core.KeyboardController;
-import util.input.core.MouseController;
 import vooga.turnbased.gamecreation.GameLevelManager;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
-import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
+import vooga.turnbased.gui.InputAPI;
 import vooga.turnbased.sprites.Sprite;
 
 
@@ -26,19 +24,15 @@ import vooga.turnbased.sprites.Sprite;
  * @author Turnbased team
  * 
  */
-public class GameManager implements GameLoopMember {
+public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
-    private MapMode myMapMode; // Fix me once the factory opens!s
+    private MapMode myMapMode;
     private BattleMode myBattleMode;
     private GameMode myCurrentGameMode;
-    // private Factory myFactory;
-    // private MapObject myPlayer;
-    private final boolean isOver;
+    private boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
     private List<ModeEvent> myEvents;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
 
     /**
      * Constructor of GameManager
@@ -48,11 +42,7 @@ public class GameManager implements GameLoopMember {
      */
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
-        myKeyboardController = gameCanvas.getKeyboardController();
-        myMouseController = gameCanvas.getMouseController();
         isOver = false;
-        // mySprites =
-        // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
         // myMapMode = new MapMode(this, MapObject.class);
@@ -214,25 +204,7 @@ public class GameManager implements GameLoopMember {
         return myGamePane.getSize();
     }
 
-    /**
-     * Returns the current KeyboardController.
-     * 
-     * @return KeyboardController in use.
-     */
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
-    }
-
-    /**
-     * Returns the current MouseController.
-     * 
-     * @return MouseController in use.
-     */
-    public MouseController getMouseController () {
-        return myMouseController;
-    }
-
-    private void configureInputHandling () {
+    public void configureInputHandling () {
         // handle actions that shouldn't be passed down to individual gamemodes,
         // i.e. game pause
     }

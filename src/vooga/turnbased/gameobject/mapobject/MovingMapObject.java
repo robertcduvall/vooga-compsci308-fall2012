@@ -174,6 +174,7 @@ public class MovingMapObject extends MapObject {
     }
     
     public void tryMove (Point dir) {
+        if (isMoving()) { return; }
         setDirection(dir); // direction changed even if not going to move
         Point dest = IncrementLocation(dir);
         if (getMapMode().isWithinBounds(dest)) {

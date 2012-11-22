@@ -22,8 +22,6 @@ public abstract class GameMode implements GameLoopMember {
     private final Class myObjectType;
 
     private ArrayList<GameObject> myObjects;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
 
     /**
      * Constructor for GameMode.
@@ -36,35 +34,6 @@ public abstract class GameMode implements GameLoopMember {
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
         myObjectType = modeObjectType;
-        setControllers();
-        configureInputHandling();
-        // myObjects = new
-        // ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
-    }
-
-    private void setControllers () {
-        myKeyboardController = getGameManager().getKeyboardController();
-        myMouseController = getGameManager().getMouseController();
-    }
-
-    // these methods already exist in game manager...isn't one of them redundant?
-
-    /**
-     * Returns the current KeyboardController.
-     * 
-     * @return KeyboardController in use.
-     */
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
-    }
-
-    /**
-     * Returns the current MouseController.
-     * 
-     * @return MouseController in use.
-     */
-    public MouseController getMouseController () {
-        return myMouseController;
     }
 
     protected GameManager getGameManager () {
@@ -129,18 +98,15 @@ public abstract class GameMode implements GameLoopMember {
      * Method that will handle key pressed.
      * @param e KeyEvent to be handled.
      */
+    // use input api instead
     public abstract void handleKeyPressed (KeyEvent e);
 
     /**
      * Method that will handle keys released.
      * @param e KeyEvent to be handled.
      */
+     // use input api instead
     public abstract void handleKeyReleased (KeyEvent e);
-
-    /**
-     * Method to configure how inputs will be handled (possibly using input API?)
-     */
-    public abstract void configureInputHandling ();
 
     /**
      * Override if any sub-mode needs to handle MouseClicked events.
