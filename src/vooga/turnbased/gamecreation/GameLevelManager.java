@@ -54,6 +54,12 @@ public class GameLevelManager {
         return myLoadedSprites.get(myCurrentMapModeKey);
     }
 
+    /**
+     * create a new MapMode using the LevelXmlParser
+     * also process relevant Sprites
+     * @param URI
+     * @return
+     */
     private MapMode createLevel (String URI) {
         MapMode mapMode = new MapMode(myGameManager, MapMode.class);
 
@@ -65,7 +71,6 @@ public class GameLevelManager {
         mapMode.setNumDisplayRows(cameraDimension.height);
         List<Sprite> sprites = test.parseSprites();
         myLoadedSprites.put(URI, sprites);
-        //myGameManager.addSprites(sprites);
 
         return mapMode;
     }

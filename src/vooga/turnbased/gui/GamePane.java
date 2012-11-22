@@ -1,9 +1,3 @@
-/**
- * The canvas that paints game objects every for every myDelayTime milliseconds
- * Responds to input events
- * 
- * @author Rex, Vo
- */
 package vooga.turnbased.gui;
 
 import java.awt.Graphics;
@@ -17,6 +11,12 @@ import vooga.turnbased.gamecore.GameManager;
 
 
 @SuppressWarnings("serial")
+/**
+ * The canvas that paints game objects every for every myDelayTime milliseconds
+ * Responds to input events
+ * 
+ * @author Rex, Vo
+ */
 public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
     private GameManager myGameManager;

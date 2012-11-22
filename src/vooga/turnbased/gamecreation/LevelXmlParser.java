@@ -27,8 +27,6 @@ import vooga.turnbased.sprites.Sprite;
  * other objects that will either be interacted with or act as obstacles.
  * 
  * @author Mark Hoffman
- * 
- *         (could we rename it to something like XmlInfoParser?)
  */
 public class LevelXmlParser {
 

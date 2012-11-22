@@ -20,8 +20,7 @@ import vooga.turnbased.gui.GameWindow;
 /**
  * path finding for a MovingMapObject to go to a target position
  * 
- * @author rex
- * 
+ * @author Rex Ying
  */
 public class PathFinder implements Runnable {
 
@@ -60,43 +59,22 @@ public class PathFinder implements Runnable {
         myMovementThread.start();
     }
     
+    /**
+     * use PathSearch for finding path
+     * @return the path represented by a list of Points
+     */
     private List<Point> searchPath() {
-        myPathSearch = new DepthFirstSearch(myStart, myEnd, mySize);
+        //For now, it can either be a DepthFirstSearch, or BreadthFirstSearch
+        myPathSearch = new BreadthFirstSearch(myStart, myEnd, mySize);
         checkObstacles();
         myPathSearch.findPath(myStart);
         return myPathSearch.getImmutablePath();
     }
 
     /**
-     * check if the point is visited
-     * 
-     * @param x x-coordinate
-     * @param y y-coordinate
-     * @return true if the (x, y) position is already visited
-     */
-    public boolean checkVisited (int x, int y) {
-        if (myVisited[x][y]) { return true; }
-        myVisited[x][y] = true; // mark visited if the point has not yet been
-                                // visited
-        return false;
-    }
-
-    /**
-     * check if the player can move to the tile at the coordinate x, y
-     * 
-     * @param x x-coordinate in the current map
-     * @param y y-coordinate in the current map
-     * @return if the player can move to the tile at the coordinate x, y
-     */
-    protected boolean canMoveTo (int x, int y) {
-        for (MapObject m : myMap.getSpritesOnTile(x, y)) {
-            if (m instanceof MapObstacleObject) { return false; }
-        }
-        return true;
-    }
-    
-    /**
      * mark obstacles as inaccessible
+     * should be used after PathSearch object is instantiated
+     * pre-processing
      */
     private void checkObstacles () {
         for (int i = 0; i < mySize.width; i++) {
@@ -148,10 +126,18 @@ public class PathFinder implements Runnable {
         }
     }
 
+    /**
+     * generate path indicator as MapItemObject
+     * @param p Position the indicator should be placed
+     * @return the MapItemObject representing a path indicator
+     */
     private MapItemObject generatePathIndicator (Point p) {
         return new MapItemObject(0, "NO_ACTION", p, GameWindow.importImage("HighlightPath"), myMap);
     }
 
+    /**
+     * highlight the path by generating a series of path indicators
+     */
     private void highlightPath () {
         for (Point p : myPath) {
             MapObject m = generatePathIndicator(p);

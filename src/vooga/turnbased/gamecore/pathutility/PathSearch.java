@@ -117,6 +117,10 @@ public abstract class PathSearch {
     public List<Point> getImmutablePath () {
         return Collections.unmodifiableList(myPath);
     }
+    
+    protected void setPath(List<Point> path) {
+        myPath = path;
+    }
 
     protected void addToPath (Point p) {
         myPath.add(p);
