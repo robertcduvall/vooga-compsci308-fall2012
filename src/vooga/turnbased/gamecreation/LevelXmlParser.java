@@ -30,7 +30,7 @@ import vooga.turnbased.sprites.Sprite;
  * 
  *         (could we rename it to something like XmlInfoParser?)
  */
-public class LevelCreator {
+public class LevelXmlParser {
 
     private Document myXmlDocument;
     private Element myDocumentElement;
@@ -41,7 +41,7 @@ public class LevelCreator {
      * @param file XML file used to create the level, the constructor
      *        parameters may change in the future.
      */
-    public LevelCreator (File file, MapMode mapMode) {
+    public LevelXmlParser (File file, MapMode mapMode) {
         myXmlDocument = XmlUtilities.makeDocument(file);
         myDocumentElement = myXmlDocument.getDocumentElement();
         myMapMode = mapMode;

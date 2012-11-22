@@ -39,7 +39,7 @@ public class GameLevelManager {
         MapMode mapMode = new MapMode(myGameManager, MapMode.class);
 
         File xmlFile = new File(entrance);
-        LevelCreator test = new LevelCreator(xmlFile, mapMode);
+        LevelXmlParser test = new LevelXmlParser(xmlFile, mapMode);
         mapMode.setMapSize(test.parseDimension(GameWindow.importString("MapDimension")));
         Dimension cameraDimension = test.parseDimension(GameWindow.importString("CameraDimension"));
         mapMode.setNumDisplayCols(cameraDimension.width);
