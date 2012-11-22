@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import util.input.core.KeyboardController;
+import vooga.turnbased.gamecore.pathutility.PathFinder;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gui.GamePane;
@@ -273,10 +274,13 @@ public class MapMode extends GameMode implements InputAPI {
      *        x-coordinate on the grid
      * @param j
      *        y-coordinate on the grid
-     * @return a list of MapObjects on the tile
+     * @return a list of MapObjects on the tile; empty list if no MapObjects found
      */
     public List<MapObject> getSpritesOnTile (int i, int j) {
-        return myMapObjects.get(new Point(i, j));
+        if (myMapObjects.containsKey(new Point(i, j))) {
+            return myMapObjects.get(new Point(i, j));
+        }
+        return new ArrayList<MapObject>();
     }
 
     /**

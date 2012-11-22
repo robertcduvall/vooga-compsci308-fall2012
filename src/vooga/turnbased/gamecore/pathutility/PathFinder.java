@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecore.pathutility;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapItemObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapObstacleObject;
@@ -35,6 +36,7 @@ public class PathFinder implements Runnable {
     private Dimension mySize;
     private Thread myMovementThread;
     private MovingMapObject myMovingObject;
+    private PathSearch myPathSearch;
 
     /**
      * constructor
@@ -49,72 +51,20 @@ public class PathFinder implements Runnable {
         myMovingObject = object;
         myStart = object.getLocation();
         myEnd = target;
-        myPath = new ArrayList<Point>();
         myHighlightObjects = new ArrayList<MapObject>();
         mySize = new Dimension(mapSize);
-        myVisited = new boolean[mySize.width][mySize.height];
-        myCancelMovement = false;
-        if (!findPossiblePath(myStart)) {
-            System.out.println("path not found!");
-            return;
-        }
+        myPath = searchPath();
+        if (myPath.isEmpty()) { return; }
         highlightPath();
         myMovementThread = new Thread(this);
         myMovementThread.start();
     }
-
-    /**
-     * depth first search using heuristics
-     * 
-     * @param current current position
-     * @return if the path finding is successful
-     */
-    protected boolean findPossiblePath (Point current) {
-        if (checkVisited(current.x, current.y)) { return false; }
-        if (current.equals(myEnd)) { return true; // found the path
-        }
-        PriorityQueue<Point> myOptions = new PriorityQueue<Point>(2, new Comparator<Point>() {
-            public int compare (Point a, Point b) {
-                return Double.compare(a.distance(myEnd), b.distance(myEnd));
-            }
-        });
-        if (validateMove(current, MapMode.LEFT)) {
-            myOptions.add(translatePoint(current, MapMode.LEFT));
-        }
-        if (validateMove(current, MapMode.RIGHT)) {
-            myOptions.add(translatePoint(current, MapMode.RIGHT));
-        }
-        if (validateMove(current, MapMode.UP)) {
-            myOptions.add(translatePoint(current, MapMode.UP));
-        }
-        if (validateMove(current, MapMode.DOWN)) {
-            myOptions.add(translatePoint(current, MapMode.DOWN));
-        }
-        while (!myOptions.isEmpty()) {
-            Point p = new Point(myOptions.poll());
-            myPath.add(p);
-            if (findPossiblePath(p)) {
-                return true;
-            }
-            else {
-                myPath.remove(myPath.size() - 1);
-            }
-        }
-        return false;
-    }
-
-    private Point translatePoint (Point a, Point b) {
-        return new Point(a.x + b.x, a.y + b.y);
-    }
-
-    private void shortestPath (Point start) {
-        LinkedList<Point> bfsQueue = new LinkedList<Point>();
-        bfsQueue.add(start);
-        while (bfsQueue.size() != 0) {
-            if (validateMove(start, MapMode.LEFT)) {
-                bfsQueue.add(translatePoint(start, MapMode.LEFT));
-            }
-        }
+    
+    private List<Point> searchPath() {
+        myPathSearch = new DepthFirstSearch(myStart, myEnd, mySize);
+        checkObstacles();
+        myPathSearch.findPath(myStart);
+        return myPathSearch.getImmutablePath();
     }
 
     /**
@@ -144,19 +94,20 @@ public class PathFinder implements Runnable {
         }
         return true;
     }
-
+    
     /**
-     * check if a movement is possible, or will get out of boundaries
-     * 
-     * @param position original position of the object
-     * @param direction direction it takes
-     * @return if a movement is possible
+     * mark obstacles as inaccessible
      */
-    public boolean validateMove (Point position, Point direction) {
-        if ((position.x + direction.x >= mySize.width) || (position.x + direction.x < 0)) { return false; }
-        if ((position.y + direction.y >= mySize.height) || (position.y + direction.y < 0)) { return false; }
-        if (!canMoveTo(position.x + direction.x, position.y + direction.y)) { return false; }
-        return true;
+    private void checkObstacles () {
+        for (int i = 0; i < mySize.width; i++) {
+            for (int j = 0; j < mySize.height; j++) {
+                for (MapObject m : myMap.getSpritesOnTile(i, j)) {
+                    if (m instanceof MapObstacleObject) { 
+                        myPathSearch.markVisited(i, j);
+                    }
+                }
+            }
+        }
     }
 
     /**
