@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.Point;
 import vooga.turnbased.gamecore.MapMode;
 
+
 /**
  * This class WILL no longer BE stupid, HOPEFULLY
  * 
@@ -20,8 +21,7 @@ public class MapTileObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapTileObject (int id, String event, Point location, Image mapImage,
-            MapMode mapMode) {
+    public MapTileObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
         super(id, event, location, mapImage, mapMode);
     }
 

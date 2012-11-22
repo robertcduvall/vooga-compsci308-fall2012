@@ -60,35 +60,20 @@ public class GameManager implements GameLoopMember {
         myEvents = new LinkedList<ModeEvent>();
         myMapMode = new MapMode(this, MapObject.class);
         myBattleMode = new BattleMode(this, BattleObject.class);
-        GameLevelManager levelManager = new GameLevelManager(this, "src/vooga/turnbased/resources/Example.xml");
+
+        GameLevelManager levelManager =
+                new GameLevelManager(this, GameWindow.importString("Entrance"));
         myMapMode = levelManager.getCurrentMapMode();
-        //generateHardcodedLevel();
+        // generateHardcodedLevel();
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.init();
         configureInputHandling();
     }
 
-    private void generateHardcodedLevel () { // factory will do this job
-        // eventually...
-        
-        myMapMode.setNumDisplayRows(Integer.parseInt(GameWindow.importString("CameraHeight")));
-        myMapMode.setNumDisplayCols(Integer.parseInt(GameWindow.importString("CameraWidth")));
-        myMapMode.setBottomRight(new Point(20, 30));
-        
-        String xmlPath = "src/vooga/turnbased/resources/Example.xml";
-        File xmlFile = new File(xmlPath);
-        LevelCreator test = new LevelCreator(xmlFile, myMapMode);
-
-        List<Sprite> sprites = test.parseSprites();
+    public void addSprites (List<Sprite> sprites) {
         for (Sprite s : sprites) {
             mySprites.put(s.getID(), s);
         }
-    }
-    
-    public void addSprites(List<Sprite> sprites) {
-    	for (Sprite s: sprites) {
-    		mySprites.put(s.getID(), s);
-    	}
     }
 
     /**
@@ -230,7 +215,8 @@ public class GameManager implements GameLoopMember {
      */
     public Dimension getPaneDimension () {
         return myGamePane.getSize();
-    } 
+    }
+
     /**
      * Returns the current KeyboardController.
      * 

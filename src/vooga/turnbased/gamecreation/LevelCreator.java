@@ -51,9 +51,9 @@ public class LevelCreator {
      * 
      * @return The Dimension of the Level
      */
-    public Dimension parseDimension () {
+    public Dimension parseDimension (String name) {
         List<Element> dimensionList = (List<Element>) XmlUtilities.getElements(
-                myDocumentElement, "dimension");
+                myDocumentElement, name);
         Element dimension = dimensionList.get(0);
         int width = XmlUtilities.getChildContentAsInt(dimension, "width");
         int height = XmlUtilities.getChildContentAsInt(dimension, "height");
@@ -95,8 +95,8 @@ public class LevelCreator {
     private List<Sprite> parseStaticSprites () {
         List<Sprite> spriteList = new ArrayList<Sprite>();
         Sprite s = new Sprite();
-        for (int i = 0; i < myMapMode.getBottomRight().x; i++) {
-            for (int j = 0; j < myMapMode.getBottomRight().y; j++) {
+        for (int i = 0; i < myMapMode.getMapSize().width; i++) {
+            for (int j = 0; j < myMapMode.getMapSize().height; j++) {
                 Point point = new Point(i, j);
                 s = new Sprite();
                 Element staticSprite = XmlUtilities.getElement(

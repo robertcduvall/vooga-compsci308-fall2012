@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 
 
@@ -87,25 +86,27 @@ public class BattleMode extends GameMode {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-        int teamNumber=0;
+        int teamNumber = 0;
         for (Team t : myTeams) {
             for (BattleObject b : t.getBattleObjects()) {
-                b.paintBattleObject(g, 0, (teamNumber)*height/3, width, height/3);
-                // can this be done via b.paint(g)? i.e. let battleobject do it's own paint/update work
-                // trying to keep paint/update signature consistent across project..
+                b.paintBattleObject(g, 0, (teamNumber) * height / 3, width, height / 3);
+                // can this be done via b.paint(g)? i.e. let battleobject do
+                // it's own paint/update work
+                // trying to keep paint/update signature consistent across
+                // project..
             }
             teamNumber += 1;
         }
         paintMenu(g);
     }
-    
+
     public void paintMenu (Graphics g) {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-        Graphics2D g2d = (Graphics2D)g;
+        Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.GREEN);
-        g2d.fillRect(0, 2*height/3, width, height/3);
+        g2d.fillRect(0, 2 * height / 3, width, height / 3);
     }
 
     /**
@@ -151,8 +152,9 @@ public class BattleMode extends GameMode {
         switch (keyCode) {
             case KeyEvent.VK_A:
                 myPlayerObject.attackEnemy(myEnemy);
-                //System.out.println("My health: " + myPlayerObject.getHealth());
-                //System.out.println("Enemy health: " + myEnemy.getHealth());
+                // System.out.println("My health: " +
+                // myPlayerObject.getHealth());
+                // System.out.println("Enemy health: " + myEnemy.getHealth());
                 break;
             default:
                 break;

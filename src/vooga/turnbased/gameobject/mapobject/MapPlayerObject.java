@@ -51,7 +51,7 @@ public class MapPlayerObject extends MovingMapObject {
      * @param mapMode MapMode in which the object exists.
      */
     public MapPlayerObject (int id, String event, Point coord, Map<String, Image> mapImages,
-            MapMode mapMode) {
+                            MapMode mapMode) {
         super(id, event, coord, mapImages.get(0), mapMode);
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));

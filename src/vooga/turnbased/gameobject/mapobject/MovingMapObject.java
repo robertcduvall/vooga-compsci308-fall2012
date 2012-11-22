@@ -3,9 +3,9 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gui.GamePane;
+
 
 /**
  * Map objects that can move smoothly, but are nevertheless restricted to tiles.
@@ -15,7 +15,7 @@ import vooga.turnbased.gui.GamePane;
  */
 public class MovingMapObject extends MapObject {
 
-	private static final double SIZE_RELATIVE_TO_TILE = 0.9;
+    private static final double SIZE_RELATIVE_TO_TILE = 0.9;
     private int myMovementTimePerTile;
     private int myTimePassed;
     private double myXProportion;
@@ -36,8 +36,7 @@ public class MovingMapObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MovingMapObject (int id, String event, Point location, Image mapImage,
-            MapMode mapMode) {
+    public MovingMapObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
         super(id, event, location, mapImage, mapMode);
         // need to be read in
         myMovementTimePerTile = 900;
@@ -103,12 +102,12 @@ public class MovingMapObject extends MapObject {
      * @param g Graphics object onto which the MapObject is painted
      */
     public void paint (Graphics g) {
-    	Point offset = new Point(myOffset);
-    	if (isMoving()) {
-    		offset.x = myOffset.x - myDirection.x * myTileDimensions.width + myXOriginInTile;
-    		offset.y = myOffset.y - myDirection.y * myTileDimensions.height + myYOriginInTile;
-    	}
-    	paintInProportion(g, offset, myTileDimensions, SIZE_RELATIVE_TO_TILE);
+        Point offset = new Point(myOffset);
+        if (isMoving()) {
+            offset.x = myOffset.x - myDirection.x * myTileDimensions.width + myXOriginInTile;
+            offset.y = myOffset.y - myDirection.y * myTileDimensions.height + myYOriginInTile;
+        }
+        paintInProportion(g, offset, myTileDimensions, SIZE_RELATIVE_TO_TILE);
     }
 
     @Override
@@ -136,26 +135,29 @@ public class MovingMapObject extends MapObject {
         // myDirection = new Point(0, 0);
         myPreviousLocation = getLocation();
     }
-    
+
     /**
      * Checks whether the object can move.
+     * 
      * @return if the MapObject can move
      */
-    public boolean canMove() {
-    	return myCanMove;
+    public boolean canMove () {
+        return myCanMove;
     }
-    
+
     /**
      * Sets whether the object can move in this turn.
      * Obstacles will set it to false in interact()
+     * 
      * @param b Boolean to set state of "can move".
      */
-    public void setCanMove(boolean b) {
-    	myCanMove = b;
+    public void setCanMove (boolean b) {
+        myCanMove = b;
     }
 
     /**
      * Sets whether the object is moving or not.
+     * 
      * @param b Boolean to set state of "moving".
      */
     public void setMoving (boolean b) {
@@ -164,6 +166,7 @@ public class MovingMapObject extends MapObject {
 
     /**
      * Checks whether the object is moving or not.
+     * 
      * @return myIsMoving True if moving, false if not.
      */
     public boolean isMoving () {
