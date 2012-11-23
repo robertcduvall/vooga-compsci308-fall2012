@@ -118,5 +118,16 @@
 		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
 		<event>NO_ACTION</event>
 		<image>src/vooga/turnbased/resources/image/grass.png</image>
-	</staticSprite>
+	</staticSprite><sprite>
+		<map>
+			<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+			<event>NO_ACTION</event>
+			<location>
+				<x>10</x>
+				<y>10</y>
+			</location>
+			<image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
+		</map>
+		<battle />
+	</sprite>
 	</level>
