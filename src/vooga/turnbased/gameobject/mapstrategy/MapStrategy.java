@@ -1,5 +1,6 @@
 package vooga.turnbased.gameobject.mapstrategy;
 
+import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 
@@ -33,5 +34,9 @@ public abstract class MapStrategy {
     
     public MapMode getMapMode() {
         return myMapMode;
+    }
+    
+    public GameManager getGameManager() {
+        return myMapMode.getGameManager();
     }
 }

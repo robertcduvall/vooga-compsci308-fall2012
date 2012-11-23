@@ -47,16 +47,26 @@ public class GameManager implements GameLoopMember, InputAPI {
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
         myBattleMode = new BattleMode(this, BattleObject.class);
+        myLevelManager = new GameLevelManager(this);
         initializeGameLevel(GameWindow.importString("Entrance"));
         configureInputHandling();
     }
 
-    public void initializeGameLevel (String mapURI) {
-        myLevelManager = new GameLevelManager(this, mapURI);
+    public void initializeGameLevel (String levelFileName) {
+        myLevelManager.enterMap(levelFileName);
         myMapMode = myLevelManager.getCurrentMapMode();
         addSprites(myLevelManager.getCurrentSprites());
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.initialize();
+    }
+    
+    /**
+     * find the Sprite with specific ID
+     * @param ID ID of the Sprite
+     * @return the Sprite found (null if no Sprite with that ID was found)
+     */
+    public Sprite findSpriteWithID (int ID) {
+        return mySprites.get(ID);
     }
 
     /**
@@ -92,7 +102,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
-        mySprites.get(spriteID).clear();
+        findSpriteWithID(spriteID).clear();
         mySprites.remove(spriteID);
     }
 

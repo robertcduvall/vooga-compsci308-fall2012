@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapstrategy;
 import java.awt.Point;
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.sprites.Sprite;
 
 /**
  * @author rex
@@ -18,12 +19,14 @@ public class TransportStrategy extends MapStrategy{
         myNewPlayerLocation = location;
     }
     
+    /**
+     * perform the strategy
+     * on an object that should be ported to another location
+     * @param s The MapObject on which the strategy is applied 
+     */
     @Override
     public void performStrategy(MapObject s) {
-        changeGameLevel();
-    }
-    
-    private void changeGameLevel() {
-        getMapMode().getGameManager().initializeGameLevel(myMapModeResource);
+        Sprite movingSprite = getGameManager().findSpriteWithID(s.getID());
+        getGameManager().initializeGameLevel(myMapModeResource);
     }
 }

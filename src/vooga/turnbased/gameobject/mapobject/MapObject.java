@@ -103,6 +103,10 @@ public abstract class MapObject extends GameObject {
     public void interact (MapObject target) {
         myMapStrategy.performStrategy(target);
     }
+    
+    public void setStrategy (MapStrategy mapStrategy) {
+        myMapStrategy = mapStrategy;
+    }
 
     /**
      * Updates MapObject; delayTime not used.

@@ -39,7 +39,7 @@ public class MovingMapObject extends MapObject {
     public MovingMapObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
         super(id, event, location, mapImage, mapMode);
         // need to be read in
-        myMovementTimePerTile = 900;
+        myMovementTimePerTile = 600;
         myXOriginInTile = 0;
         myYOriginInTile = 0;
         myTimePassed = 0;
@@ -172,7 +172,7 @@ public class MovingMapObject extends MapObject {
     public boolean isMoving () {
         return myIsMoving;
     }
-    
+
     public void tryMove (Point dir) {
         if (isMoving()) { return; }
         setDirection(dir); // direction changed even if not going to move

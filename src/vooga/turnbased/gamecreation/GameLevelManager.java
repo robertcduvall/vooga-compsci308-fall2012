@@ -27,27 +27,28 @@ public class GameLevelManager {
 
     /**
      * Constructor
+     * 
      * @param gameManager The GameManager it belongs to
      * @param entrance The URI of the xml file that describes the entrance level
      */
-    public GameLevelManager (GameManager gameManager, String entrance) {
+    public GameLevelManager (GameManager gameManager) {
         myGameManager = gameManager;
         myLoadedMapModes = new HashMap<String, MapMode>();
         myLoadedSprites = new HashMap<String, List<Sprite>>();
-        myCurrentMapModeKey = entrance;
-        myLoadedMapModes.put(myCurrentMapModeKey, createLevel(myCurrentMapModeKey));
     }
 
     /**
      * get the current MapMode
+     * 
      * @return current MapMode
      */
     public MapMode getCurrentMapMode () {
         return myLoadedMapModes.get(myCurrentMapModeKey);
     }
-    
+
     /**
      * get the current MapMode
+     * 
      * @return current MapMode
      */
     public List<Sprite> getCurrentSprites () {
@@ -57,6 +58,7 @@ public class GameLevelManager {
     /**
      * create a new MapMode using the LevelXmlParser
      * also process relevant Sprites
+     * 
      * @param URI
      * @return
      */
@@ -73,5 +75,11 @@ public class GameLevelManager {
         myLoadedSprites.put(URI, sprites);
 
         return mapMode;
+    }
+
+    public void enterMap (String levelFileName) {
+        myCurrentMapModeKey = levelFileName;
+        if (myCurrentMapModeKey == null) { return; }
+        myLoadedMapModes.put(myCurrentMapModeKey, createLevel(myCurrentMapModeKey));
     }
 }
