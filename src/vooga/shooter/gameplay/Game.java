@@ -1,5 +1,7 @@
 package vooga.shooter.gameplay;
 
+import arcade.IArcadeGame;
+import arcade.gamemanager.GameSaver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,8 +27,6 @@ import vooga.shooter.implementation.LostGame;
 import vooga.shooter.implementation.MainScreen;
 import vooga.shooter.implementation.WonGame;
 import vooga.shooter.level_editor.Level;
-import arcade.IArcadeGame;
-import arcade.gamemanager.GameSaver;
 
 
 /**
@@ -55,16 +55,16 @@ public class Game implements DrawableComponent, IArcadeGame {
     private Image myPlayerImage;
     private ImageIcon myImageIcon;
     private Point myPlayerOneStart;
-    private Point myPlayerTwoStart = new Point(200, 400);
+    private Point myPlayerTwoStart;
     private JFrame myFrame;
     private Image myGameImage;
-    private boolean startGame = false;
 
+    /**
+     * Game constructor (initializes anything not set in initializeGame())
+     */
     public Game () {
-
-        myFrame = new JFrame("Tester");
+        myFrame = new JFrame(GAME_NAME);
         myFrame.addWindowListener(new WindowAdapter() {
-
             @Override
             public void windowClosing (WindowEvent e) {
                 System.exit(0);
@@ -87,18 +87,19 @@ public class Game implements DrawableComponent, IArcadeGame {
         myEnemies = new ArrayList<Enemy>();
         myImageIcon = new ImageIcon(this.getClass().getResource("../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
-        myPlayerOneStart = new Point((myCanvas.getWidth() / 2), ((myCanvas.getHeight() - 50)));
+        myPlayerOneStart = new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - 50);
         myPlayer =
                 new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                         myCanvas.getHeight()),
+                                                                        myCanvas.getHeight()),
                            myPlayerImage, PLAYER_HEALTH);
 
         addSprite(myPlayer);
 
         if (multiplayer) {
+            myPlayerTwoStart = new Point(200, 400);
             myPlayer2 =
                     new Player(myPlayerTwoStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                             myCanvas.getHeight()),
+                                                                            myCanvas.getHeight()),
                                myPlayerImage, PLAYER_HEALTH);
 
             addSprite(myPlayer2);
@@ -133,37 +134,30 @@ public class Game implements DrawableComponent, IArcadeGame {
             myPlayer.setDead(false);
             startLevel(myCurrentLevel);
         }
-
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
         }
-
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
             myCurrentLevel.setNextLevel(new WonGame(this));
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
         }
-
         for (Sprite s : getSprites()) {
             s.update();
         }
-
         for (Sprite s1 : getSprites()) {
             for (Sprite s2 : getSprites()) {
                 if (s1.getImage() == null || s2.getImage() == null || s1 == s2) {
                     continue;
                 }
-
                 // list of the two sprites that collide
                 // either enemy/player, enemy/enemy, or bullet/sprite
                 List<Sprite> collides = collisionCheck(s1, s2);
-
                 // if there is a collision
                 if (collides.size() > 0) {
                     String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
-
                     // might not need this second one if going through
                     // all combinations of sprites anyway
                     key = HIT_BY + collides.get(0).getType();
@@ -341,13 +335,11 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     @Override
     public void setMouseListener (MouseMotionListener m) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void setKeyboardListener (KeyListener k) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -364,7 +356,6 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     @Override
     public List<Image> getScreenshots () {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -381,19 +372,5 @@ public class Game implements DrawableComponent, IArcadeGame {
     @Override
     public String getName () {
         return GAME_NAME;
-    }
-
-    /**
-     * @return the startGame
-     */
-    public boolean startGame () {
-        return startGame;
-    }
-
-    /**
-     * @param startGame the startGame to set
-     */
-    public void setStartGame (boolean startGame) {
-        this.startGame = startGame;
     }
 }
