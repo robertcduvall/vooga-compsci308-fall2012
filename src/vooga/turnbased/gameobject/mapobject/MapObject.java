@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
+import vooga.turnbased.gameobject.mapstrategy.NullStrategy;
 
 
 /**
@@ -23,6 +25,8 @@ public abstract class MapObject extends GameObject {
     private Point myLocation;
     private boolean myIsVisible;
     private MapMode myMapMode;
+    
+    private MapStrategy myMapStrategy; //addition of Strategy hardcoded right now
 
     /**
      * Creates the MapObject that will be used in MapMode.
@@ -38,6 +42,7 @@ public abstract class MapObject extends GameObject {
         setLocation(location);
         setVisible(true);
         setMapMode(mapMode);
+        myMapStrategy = new NullStrategy(mapMode);
     }
 
     private void setMapMode (MapMode mapMode) {
@@ -96,6 +101,7 @@ public abstract class MapObject extends GameObject {
      * @param target MapObject to be interacted with.
      */
     public void interact (MapObject target) {
+        myMapStrategy.performStrategy(target);
     }
 
     /**

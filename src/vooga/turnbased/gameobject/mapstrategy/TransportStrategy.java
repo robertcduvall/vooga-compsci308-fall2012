@@ -10,10 +10,12 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
 public class TransportStrategy extends MapStrategy{
     
     private String myMapModeResource;
+    private Point myNewPlayerLocation;
 
     public TransportStrategy(MapMode mapMode, String mapModeResource, Point location) {
         super(mapMode);
         myMapModeResource = mapModeResource;
+        myNewPlayerLocation = location;
     }
     
     @Override
