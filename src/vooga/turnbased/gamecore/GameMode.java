@@ -36,7 +36,7 @@ public abstract class GameMode implements GameLoopMember {
         myObjectType = modeObjectType;
     }
 
-    protected GameManager getGameManager () {
+    public GameManager getGameManager () {
         return myGameManager;
     }
 

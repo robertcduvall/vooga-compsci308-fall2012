@@ -60,7 +60,7 @@ public class GameLevelManager {
      * @param URI
      * @return
      */
-    private MapMode createLevel (String URI) {
+    public MapMode createLevel (String URI) {
         MapMode mapMode = new MapMode(myGameManager, MapMode.class);
 
         File xmlFile = new File(URI);

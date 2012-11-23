@@ -47,12 +47,12 @@ public class GameManager implements GameLoopMember, InputAPI {
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<ModeEvent>();
         myBattleMode = new BattleMode(this, BattleObject.class);
-        initializeGameLevel();
+        initializeGameLevel(GameWindow.importString("Entrance"));
         configureInputHandling();
     }
 
-    private void initializeGameLevel () {
-        myLevelManager = new GameLevelManager(this, GameWindow.importString("Entrance"));
+    public void initializeGameLevel (String mapURI) {
+        myLevelManager = new GameLevelManager(this, mapURI);
         myMapMode = myLevelManager.getCurrentMapMode();
         addSprites(myLevelManager.getCurrentSprites());
         myCurrentGameMode = myMapMode;
