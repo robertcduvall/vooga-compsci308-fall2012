@@ -26,6 +26,7 @@ import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.implementation.Level1;
 import vooga.shooter.implementation.Level2;
 import vooga.shooter.implementation.LostGame;
+import vooga.shooter.implementation.MainScreen;
 import vooga.shooter.implementation.WonGame;
 import vooga.shooter.level_editor.Level;
 import vooga.shooter.gameplay.Applet;
@@ -42,6 +43,9 @@ import vooga.shooter.gameplay.Applet;
 public class Game implements DrawableComponent, IArcadeGame {
 
     private static final String HIT_BY = "hitby";
+    private static final String GAME_NAME = "Space Invaders";
+    private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
+    private static final String GAME_IMAGEPATH = "../images/background.gif";
 
     private List<Sprite> mySprites;
     private Player myPlayer;
@@ -56,6 +60,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     private Point myPlayerOneStart;
     private final Point myPlayerTwoStart = new Point(200, 400);
     private JFrame frame;
+    private Image gameImage;
 
     public Game () {
 
@@ -72,6 +77,8 @@ public class Game implements DrawableComponent, IArcadeGame {
         frame.getContentPane().add(myCanvas,BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
+        gameImage = imageIcon.getImage();
         
         
     }
@@ -99,7 +106,7 @@ public class Game implements DrawableComponent, IArcadeGame {
             addSprite(myPlayer2);
         }
 
-        Level myCurrentLevel = new Level1(this);
+        Level myCurrentLevel = new MainScreen(this, "../images/background.gif");
         myCanvas.addKeyListener(new KeyboardListener());
         startLevel(myCurrentLevel);
     }
@@ -370,19 +377,16 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     @Override
     public Image getMainImage () {
-        // TODO Auto-generated method stub
-        return null;
+        return gameImage;
     }
 
     @Override
     public String getDescription () {
-        // TODO Auto-generated method stub
-        return null;
+        return GAME_DESCRIPTION;
     }
 
     @Override
     public String getName () {
-        // TODO Auto-generated method stub
-        return null;
+        return GAME_NAME;
     }
 }
