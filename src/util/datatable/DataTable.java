@@ -76,7 +76,7 @@ public class DataTable {
         while(it.hasNext()){
             RowElement re=it.next();
             if (strValue.equals(re.getEntry(strKey))){
-                re.setEntry(strKey, strValueNew);
+                re.setEntry(strKeyNew, strValueNew);
             }
         }
     }
@@ -105,6 +105,15 @@ public class DataTable {
             }
         }
         return null;
+    }
+    
+    public void viewContents(){
+        System.out.println("Table Contents: ");
+        Iterator<RowElement> it= myDataRows.iterator();
+        while(it.hasNext()){
+            RowElement re=it.next();
+            re.printData();
+        }
     }
    
     public void save (String string) {

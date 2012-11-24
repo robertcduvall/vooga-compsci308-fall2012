@@ -22,7 +22,6 @@ public class RowElement {
     }
     
     public void setEntry(String s,String s2) throws UnrecognizedColumnNameException{
-        System.out.println(myData.keySet());
         if (myData.containsKey(s)){
             myData.put(s, s2);
         }
@@ -63,5 +62,10 @@ public class RowElement {
         else{
             throw new RepeatedColumnNameException(s);   
         }
+    }
+
+    public void printData () {
+        System.out.println(myData);
+        
     }
 }
