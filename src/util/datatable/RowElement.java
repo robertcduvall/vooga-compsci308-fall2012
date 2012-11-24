@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
@@ -32,7 +33,7 @@ public class RowElement {
     
 
     public void setEntry (Map<String, String> map) throws UnrecognizedColumnNameException {
-        HashSet<String> keyset=(HashSet) map.keySet();
+        Set<String> keyset=map.keySet();
         Iterator<String> it=keyset.iterator();
         while(it.hasNext()){
             String pKey=(String) it.next();

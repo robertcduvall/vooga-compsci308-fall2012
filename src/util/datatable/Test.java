@@ -46,8 +46,8 @@ public class Test {
         
         
         //retrieving a table entry
-      //  UnmodifiableRowElement re= table.find("name","bob");
-       // System.out.println(re.getEntry("name"));
+        UnmodifiableRowElement re= table.find("name","bob");
+        System.out.println(re.getEntry("name"));
         
 
         //edit row entry data
@@ -59,34 +59,28 @@ public class Test {
             e.printStackTrace();
         }   
         
-        //retrieving a table entry
-        UnmodifiableRowElement rowe= table.find("name","bob");
-        System.out.println(table.getColumnNames());
-
-        System.out.println(rowe.getEntry("password"));
         
+        table.viewContents();
         
-        Map<String,String> map= new HashMap<String, String>();
-        map.put("address","LAAZ");
-        map.put("name", "bobby");
-        
-        //retrieve data
-        UnmodifiableRowElement rez= table.find("name","bob");
-        System.out.println(rez.getEntry("password"));
+        Map<String,String> newData= new HashMap<String, String>();
+        newData.put("address","LAAZ");
+        newData.put("favorite color", "blue");
         
         try {
-            table.editRowEntry("name","lance",map);
+            table.editRowEntry("name","bob",newData);
         }
         catch (UnrecognizedColumnNameException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        table.viewContents();
        
         //delete row entry
         table.deleteRowEntry("name","bob");
         
-        UnmodifiableRowElement rezz= table.find("name","bob");
-        System.out.println(rezz.getEntry("password"));
+        UnmodifiableRowElement rowE= table.find("name","bob");
+        System.out.println(rowE);
         
         //loading and saving
         table.save("/resources/data.txt");
