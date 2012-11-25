@@ -9,6 +9,7 @@ import org.junit.Test;
 import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
+import vooga.platformer.levelfileio.XmlTags;
 
 
 /**
@@ -19,22 +20,21 @@ import vooga.platformer.levelfileio.LevelFileWriter;
 public class LevelFileIOTest {
 
     private static final String XML_FILE_PATH = "src/vooga/platformer/test/testIO.xml";
-    private static final String LEVEL_TYPE = "someLevelType";
+    private static final String LEVEL_TYPE = "vooga.platformer.someGameObjectClass";
     private static final String LEVEL_ID = "Level Name";
     private static final int LEVEL_WIDTH = 20;
     private static final int LEVEL_HEIGHT = 20;
     private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.jpg";
-    private static final String COLLISION_CHECKER_TYPE = "someCollisionChecker";
-    private static final String CAMERA_TYPE = "someCamera";
+    private static final String COLLISION_CHECKER_TYPE = "vooga.platformer.someCollisionChecker";
+    private static final String CAMERA_TYPE = "vooga.platformer.someCamera";
 
-    private static final String TYPE = "enemy";
+    private static final String TYPE = "vooga.platformer.enemy";
     private static final int X_POS = 1;
     private static final int Y_POS = 1;
     private static final int SPRITE_WIDTH = 1;
     private static final int SPRITE_HEIGHT = 1;
 
-    private static final String STRATEGY_TYPE_TAG = "type";
-    private static final String STRATEGY_TYPE_VALUE = "movement";
+    private static final String STRATEGY_CLASS = "vooga.platformer.movement";
     private static final String STRATEGY_PARAM_TAG = "distance";
     private static final String STRATEGY_PARAM_VALUE = String.valueOf(10);
 
@@ -51,7 +51,7 @@ public class LevelFileIOTest {
         strategy.put(STRATEGY_PARAM_TAG, STRATEGY_PARAM_VALUE);
 
         sprite = new Sprite(TYPE, X_POS, Y_POS, SPRITE_WIDTH, SPRITE_HEIGHT, TEST_IMAGE);
-        sprite.addUpdateStrategy(STRATEGY_TYPE_VALUE, strategy);
+        sprite.addUpdateStrategy(STRATEGY_CLASS, strategy);
         sprite.addAttribute(SPRITE_ATTR_TAG, SPRITE_ATTR_VALUE);
         sprites.add(sprite);
         LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_TYPE, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT,
@@ -137,7 +137,8 @@ public class LevelFileIOTest {
 
     @Test
     public void testGetUpdateStrategyType () throws Exception {
-        Assert.assertEquals(STRATEGY_TYPE_VALUE, getFirstStrategy().get(STRATEGY_TYPE_TAG));
+        // TODO type became class. Rewrite test.
+        Assert.assertEquals(STRATEGY_CLASS, getFirstStrategy().get(XmlTags.CLASS_NAME));
     }
 
     @Test
