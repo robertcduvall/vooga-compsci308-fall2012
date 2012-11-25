@@ -815,7 +815,7 @@ public class XmlUtilities {
             }
             else {
                 System.err
-                        .println("WARNING: Node could not be converted to element!");
+                        .println("WARNING: The Node " + node.getNodeName() + " could not be converted to element!");
             }
         }
         return list;
