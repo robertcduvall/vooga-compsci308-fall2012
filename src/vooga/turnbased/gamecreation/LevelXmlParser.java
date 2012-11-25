@@ -235,8 +235,7 @@ public class LevelXmlParser {
             MapObject mapObject =
                     (MapObject) Reflection.createInstance(className, s.getID(), event, point,
                                                           image, myMapMode);
-            // I'll definitely remember what I've changed and delete it as soon
-            // as possible
+            // I'll delete it as soon as possible
             /*if (point.equals(new Point(10, 10))) {
                 mapObject
                         .setStrategy(new TransportStrategy(
