@@ -71,7 +71,7 @@ public class ParticleEngine {
     private void createParticles(){
     	Dimension particleSize = new Dimension(spriteImage.getWidth(null),spriteImage.getHeight(null));
     	for (int i = 0; i < spriteCount; i++) {
-        	particles.add(new Particle(initialPosition, particleSize, spriteImage,
+        	particles.add(new Particle(new Point(initialPosition), particleSize, spriteImage,
             mainVelocity, variance, duration));
         }
     }
