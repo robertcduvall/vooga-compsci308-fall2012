@@ -813,6 +813,11 @@ public class XmlUtilities {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 list.add((Element) node);
             }
+            else if (node.getNodeType() == Node.TEXT_NODE && (node.getNodeValue().trim().length() == 0)) {
+                /*
+                 * Do nothing. This is a bug fix to keep the warning from being thrown for row returns.
+                 */
+            }
             else {
                 System.err
                         .println("WARNING: The Node " + node.getNodeName() + " could not be converted to element!");
