@@ -92,7 +92,7 @@ public class ParticleEngine {
     private void createParticles(double angleSpan, int numberOfDirections){
     	Dimension particleSize = new Dimension(spriteImage.getWidth(null),spriteImage.getHeight(null));
     	int numberOfOriginLines = Math.max(1,numberOfDirections-1);
-    	double angleInterval = angleSpan/ (double) numberOfOriginLines;
+    	double angleInterval = angleSpan/ (double) numberOfOriginLines * Math.PI/180;
     	int approxNumberOfSpritesPerOriginLine = spriteCount/numberOfOriginLines+numberOfOriginLines;
     	double velocityMagnitude = vcalculator.calculateMagnitude(mainVelocity);
     	double velocityAngle = vcalculator.calculateAngle(mainVelocity);

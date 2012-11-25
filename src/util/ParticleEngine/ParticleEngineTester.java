@@ -69,7 +69,9 @@ public class ParticleEngineTester extends JApplet {
      * Instantiates myParticleEngines as a copy of the List of ParticleEngine objects in the specified ParticleEngineTestingUnit subclass.
      */
     public void setUpParticleEngines(){
-    	ParticleEngineTestingUnit myTestingUnit = new OutwardShootingTester(); //THIS IS THE ONLY LINE THAT NEEDS TO BE CHANGED BY USER.
+    	ParticleEngineTestingUnit myTestingUnit = new AngleDistributionTester(); //THIS IS THE ONLY LINE THAT NEEDS TO BE CHANGED BY USER.
+    	//ParticleEngineTestingUnit myTestingUnit = new OutwardShootingTester(); //uncomment this line and comment the 
+    	                                                                         //previous line to run the OutwardShootingTester
     	myParticleEngines = myTestingUnit.getParticleEngines();
     }
 

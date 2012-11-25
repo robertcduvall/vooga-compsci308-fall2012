@@ -31,7 +31,7 @@ public class VectorCalculator {
     }
     
     /**
-     * Calculates the angle from the positive x-axis to the vector v.
+     * Calculates the angle (in radians) from the positive x-axis to the vector v.
      * @param v vector
      * @return
      */
@@ -46,14 +46,11 @@ public class VectorCalculator {
     	if (v[0] < 0 || (v[0]==0 && v[1]<0)) {
 			myAngle += Math.PI;
 		}
-/*    	if (v[1]<0){
-    		myAngle += Math.PI;
-    	}*/
     	return myAngle;
     }
     
     /**
-     * Calculates the angle from the positive x-axis to the vector v.
+     * Calculates the angle (in radians) from the positive x-axis to the vector v.
      * @param v vector
      * @return
      */
