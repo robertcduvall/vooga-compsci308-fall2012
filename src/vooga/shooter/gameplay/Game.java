@@ -1,5 +1,6 @@
 package vooga.shooter.gameplay;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,11 +9,14 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import arcade.IArcadeGame;
+import javax.swing.JFrame;
 import arcade.gamemanager.GameSaver;
+import arcade.IArcadeGame;
 import vooga.shooter.gameObjects.Bullet;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
@@ -20,18 +24,21 @@ import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.implementation.Level1;
+import vooga.shooter.implementation.Level2;
 import vooga.shooter.level_editor.Level;
+import vooga.shooter.gameplay.Applet;
 
 
 /**
  * Initializes the top-down shooter game and owns all sprites and levels
  * initiated throughout the course of the game.
- *
+ * 
  * @author Tommy Petrilak
  * @author Stephen Hunt
  * @author Jesse Starr
  */
-public class Game implements DrawableComponent, IArcadeGame{
+public class Game implements DrawableComponent, IArcadeGame {
+
     private static final String HIT_BY = "hitby";
 
     private List<Sprite> mySprites;
@@ -44,38 +51,60 @@ public class Game implements DrawableComponent, IArcadeGame{
     private ImageIcon myImageIcon;
     private final int myPlayerHealth = 10;
     private final Dimension myPlayerSize = new Dimension(20, 20);
-    private final Point myPlayerOneStart = new Point(400, 300);
-    private final Point myPlayerTwoStart = new Point(400, 500);
+    private Point myPlayerOneStart;
+    private final Point myPlayerTwoStart = new Point(200, 400);
+    private JFrame frame;
+
+    public Game () {
+
+        frame = new JFrame("Tester");
+        frame.addWindowListener(new WindowAdapter() {
+
+            public void windowClosing (WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        myCanvas = new Canvas(this);
+        initializeGame(myCanvas, false);
+        myCanvas.start();
+        frame.getContentPane().add(myCanvas,BorderLayout.CENTER);
+        frame.pack();
+        frame.setVisible(true);
+        
+        
+    }
 
     private void initializeGame (Canvas c, boolean multiplayer) {
         myCanvas = c;
         mySprites = new ArrayList<Sprite>();
+        myEnemies = new ArrayList<Enemy>();
         myImageIcon = new ImageIcon(this.getClass().getResource(
-                        "../images/alien.png"));
+                "../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
-        myPlayer = new Player(myPlayerOneStart, myPlayerSize,
-                           new Dimension(myCanvas.getWidth(),
-                           myCanvas.getHeight()), myPlayerImage,
-                           myPlayerHealth);
+        myPlayerOneStart = new Point((myCanvas.getWidth() / 2),
+                ((myCanvas.getHeight() - 50)));
+        myPlayer = new Player(myPlayerOneStart, myPlayerSize, new Dimension(
+                myCanvas.getWidth(), myCanvas.getHeight()), myPlayerImage,
+                myPlayerHealth);
 
         addSprite(myPlayer);
 
         if (multiplayer) {
-            myPlayer2 = new Player(myPlayerOneStart, myPlayerSize,
-                    new Dimension(myCanvas.getWidth(),
-                    myCanvas.getHeight()),
+            myPlayer2 = new Player(myPlayerTwoStart, myPlayerSize,
+                    new Dimension(myCanvas.getWidth(), myCanvas.getHeight()),
                     myPlayerImage, myPlayerHealth);
 
             addSprite(myPlayer2);
         }
 
-        Level firstLevel = new Level1(this);
+        Level myCurrentLevel = new Level1(this);
         myCanvas.addKeyListener(new KeyboardListener());
-        startLevel(firstLevel);
+        startLevel(myCurrentLevel);
     }
 
     private void startLevel (Level level) {
         myCurrentLevel = level;
+        myCurrentLevel.startLevel();
         update();
     }
 
@@ -89,13 +118,20 @@ public class Game implements DrawableComponent, IArcadeGame{
      * correct method to deal with that type of collision.
      */
     public void update () {
+
+        if (myCurrentLevel.winningConditionsMet()
+                && myCurrentLevel.getNextLevel() != null) {
+            myCurrentLevel = myCurrentLevel.getNextLevel();
+            startLevel(myCurrentLevel);
+        }
+
         for (Sprite s : getSprites()) {
             s.update();
         }
 
         for (Sprite s1 : getSprites()) {
             for (Sprite s2 : getSprites()) {
-                if (s1.getImage() == null || s2.getImage() == null) {
+                if (s1.getImage() == null || s2.getImage() == null || s1 == s2) {
                     continue;
                 }
 
@@ -103,13 +139,13 @@ public class Game implements DrawableComponent, IArcadeGame{
                 // either enemy/player, enemy/enemy, or bullet/sprite
                 List<Sprite> collides = collisionCheck(s1, s2);
 
-                //if there is a collision
+                // if there is a collision
                 if (collides.size() > 0) {
                     String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
 
-                    //might not need this second one if going through
-                    //all combinations of sprites anyway
+                    // might not need this second one if going through
+                    // all combinations of sprites anyway
                     key = HIT_BY + collides.get(0).getType();
                     collides.get(1).doEvent(key, collides.get(0));
                 }
@@ -121,7 +157,7 @@ public class Game implements DrawableComponent, IArcadeGame{
      * Checks if two sprites are colliding with each other.
      * Or checks if any of the bullets from either collides with
      * the other sprite.
-     *
+     * 
      * @param s1 The first sprite to check.
      * @param s2 The second sprite to check.
      * @return Returns a list of 2 sprites: either (1) the two original
@@ -132,10 +168,10 @@ public class Game implements DrawableComponent, IArcadeGame{
         List<Sprite> ret = new ArrayList<Sprite>();
 
         // get bounds of both sprites
-        Rectangle r1 = new Rectangle(new Point(s1.getLeft(),
-                s1.getTop()), s1.getSize());
-        Rectangle r2 = new Rectangle(new Point(s2.getLeft(),
-                s2.getTop()), s2.getSize());
+        Rectangle r1 = new Rectangle(new Point(s1.getLeft(), s1.getTop()),
+                s1.getSize());
+        Rectangle r2 = new Rectangle(new Point(s2.getLeft(), s2.getTop()),
+                s2.getSize());
 
         // checks for collision between 1st and 2nd sprite
         if (r1.intersects(r2)) {
@@ -165,6 +201,7 @@ public class Game implements DrawableComponent, IArcadeGame{
                 return ret;
             }
         }
+
         return ret;
     }
 
@@ -172,11 +209,12 @@ public class Game implements DrawableComponent, IArcadeGame{
      * Paints all still-alive sprites on the screen.
      * Any sprites who have died (e.g. have health < 0)
      * are removed from the game.
-     *
+     * 
      * @param pen used to draw the images
      */
     public void paint (Graphics pen) {
         List<Sprite> deadSprites = new ArrayList<Sprite>();
+        List<Enemy> deadEnemies = new ArrayList<Enemy>();
 
         for (Sprite s : getSprites()) {
             if (s.getImage() == null) {
@@ -186,12 +224,21 @@ public class Game implements DrawableComponent, IArcadeGame{
                 s.paint(pen);
             }
         }
-        getSprites().removeAll(deadSprites);
+
+        for (Enemy e : getEnemies()) {
+            if (e.getImage() == null) {
+                deadEnemies.add(e);
+            }
+            else {
+                e.paint(pen);
+            }
+        }
+        getEnemies().removeAll(deadEnemies);
     }
 
     /**
      * Add a sprite to the list of sprites currently existing in the Game.
-     *
+     * 
      * @param sprite to be added to list of existing sprites
      */
     public void addSprite (Sprite sprite) {
@@ -200,7 +247,7 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     /**
      * Add an enemy to the list of enemies currently existing in the Game.
-     *
+     * 
      * @param enemy to be added to list of existing enemies
      */
     public void addEnemy (Enemy enemy) {
@@ -211,7 +258,7 @@ public class Game implements DrawableComponent, IArcadeGame{
     /**
      * Returns a list of all players/enemies in
      * the game.
-     *
+     * 
      * @return mySprites
      */
     public List<Sprite> getSprites () {
@@ -243,15 +290,14 @@ public class Game implements DrawableComponent, IArcadeGame{
 
     /**
      * Listens for input and sends input to the method mapper.
-     *
+     * 
      * @author Stephen Hunt
      */
     private class KeyboardListener implements KeyListener {
-        private int myNumKeysPressed;
+        private static final int NO_KEYS_PRESSED = -1;
 
         public KeyboardListener () {
             super();
-            myNumKeysPressed = 0;
         }
 
         /**
@@ -260,7 +306,6 @@ public class Game implements DrawableComponent, IArcadeGame{
         @Override
         public void keyPressed (KeyEvent e) {
             myPlayer.doEvent(Integer.toString(e.getKeyCode()), null);
-            myNumKeysPressed++;
         }
 
         /**
@@ -269,10 +314,7 @@ public class Game implements DrawableComponent, IArcadeGame{
          */
         @Override
         public void keyReleased (KeyEvent e) {
-            myNumKeysPressed--;
-            if (myNumKeysPressed == 0) {
-                myPlayer.doEvent("-1", null);
-            }
+            myPlayer.doEvent(Integer.toString(NO_KEYS_PRESSED), null);
         }
 
         @Override
@@ -284,20 +326,24 @@ public class Game implements DrawableComponent, IArcadeGame{
     @Override
     public void setMouseListener (MouseMotionListener m) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void setKeyboardListener (KeyListener k) {
         // TODO Auto-generated method stub
-        
+
+    }
+
+    public Dimension getCanvasDimension () {
+        return myCanvas.getSize();
     }
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        Game myGame = new Game();
-        myGame.initializeGame(new Canvas(this), false);
-        
+        // will eventually get Game to run without running it through Applet
+        // (ideally when Canvas is finally working)
+
     }
 
     @Override
@@ -322,10 +368,5 @@ public class Game implements DrawableComponent, IArcadeGame{
     public String getName () {
         // TODO Auto-generated method stub
         return null;
-    }
-    
-    public static void main(String[] args) {
-     Game myGame = new Game();
-     myGame.initializeGame(new Canvas(myGame), false);
     }
 }

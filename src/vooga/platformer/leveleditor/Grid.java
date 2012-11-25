@@ -1,12 +1,10 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
-import javax.swing.JLayeredPane;
-import vooga.platformer.leveleditor.Sprite;
-
 
 /**
  * This class represents an actual grid. This grid will be used to
@@ -15,15 +13,12 @@ import vooga.platformer.leveleditor.Sprite;
  * @author Paul Dannenberg
  * 
  */
-public class Grid extends JLayeredPane {
-
-    // LayeredPane correct?
-    // TODO MAKE SURE NO INDEXOUTOFBOUNDS EXCEPTION! DO THIS FIRST!
+public class Grid extends Sprite {
 
     private static final long serialVersionUID = 2449587405419439040L;
     private GridTile[][] myGrid;
     private Dimension mySize;
-    private GridTile myHighLightedTile;
+    private GridTile myHighlightedTile;
 
     /**
      * Creates a new Grid object.
@@ -49,8 +44,8 @@ public class Grid extends JLayeredPane {
         for (int i = 0; i < toFill.length; i++) {
             for (int j = 0; j < toFill[i].length; j++) {
                 GridTile tile = new GridTile(tileSize.width, tileSize.height);
-                tile.setX(i * tileSize.width);
-                tile.setY(j * tileSize.height);
+                tile.setX(j * tileSize.width);
+                tile.setY(i * tileSize.height);
                 toFill[i][j] = tile;
             }
         }
@@ -68,7 +63,7 @@ public class Grid extends JLayeredPane {
     private GridTile[][] createGrid (Dimension gridSize, Dimension tileSize) {
         int numberRows = gridSize.height / tileSize.width;
         int numberColumns = gridSize.width / tileSize.width;
-        return new GridTile[numberRows][numberColumns]; // +1 needed?
+        return new GridTile[numberRows][numberColumns];
     }
 
     /**
@@ -89,36 +84,55 @@ public class Grid extends JLayeredPane {
      * @param y The y coordinate.
      * @return The grid tile found at the specified location.
      */
-    private GridTile findTile (int x, int y) {
-        return myGrid[mySize.height / x][mySize.width / y];
+    private GridTile findTile (double x, double y) {
+        return myGrid[(int) (myGrid.length * (y / mySize.height))][(int) (myGrid[0].length * (x / mySize.width))];
     }
 
     /**
-     * Highlights the tile located at the coordinates specified 
+     * Highlights the tile located at the coordinates specified
      * by the method parameters.
+     * 
      * @param x The x coordinate.
      * @param y The y coordinate.
      */
     public void highlightTile (int x, int y) {
-        GridTile tileToHighLight = findTile(x, y);
-        if (!tileToHighLight.equals(myHighLightedTile) && myHighLightedTile != null) {
-            myHighLightedTile.unHighLight();
-            tileToHighLight.highlight();
-            myHighLightedTile = tileToHighLight;
+        GridTile tileToHighlight = findTile(x, y);
+        if (!tileToHighlight.equals(myHighlightedTile) && myHighlightedTile != null) {
+            myHighlightedTile.unHighLight();
         }
+        tileToHighlight.highlight();
+        myHighlightedTile = tileToHighlight;
     }
+
 
     /**
      * Paints the entire grid.
      */
     @Override
-    public void paint (Graphics pen) {
-        super.paint(pen);
+    public void paint (Graphics pen, Component component) {
         for (GridTile[] row : myGrid) {
             for (GridTile tile : row) {
-                tile.paint((Graphics2D) pen, this);
+                tile.paint((Graphics2D) pen, component);
             }
         }
+    }
+    
+    /**
+     * Checks to see if an object is one of the tiles on
+     * the grid.
+     * 
+     * @param tile The Object that could be equal to one of the
+     *        tiles on the grid.
+     * @return true if the Object is equal to one of the tiles,
+     *         false otherwise.
+     */
+    public boolean containsTile (Object tile) {
+        for (int i = 0; i < myGrid.length; i++) {
+            for (int j = 0; j < myGrid[i].length; j++) {
+                if (myGrid[i][j].equals(tile)) { return true; }
+            }
+        }
+        return false;
     }
 
 }

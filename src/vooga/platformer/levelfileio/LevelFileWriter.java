@@ -1,23 +1,10 @@
 package vooga.platformer.levelfileio;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Text;
+import util.xml.XmlUtilities;
 import vooga.platformer.leveleditor.Sprite;
 
 
@@ -69,116 +56,65 @@ public final class LevelFileWriter {
                                   int height, String backgroundImage,
                                   Collection<Sprite> levelObjects, String collisionCheckerType,
                                   String cameraType) {
-        try {
-            DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder;
-            docBuilder = dbfac.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
+        Document doc = XmlUtilities.makeDocument();
 
-            Element level = doc.createElement("level");
-            doc.appendChild(level);
+        Element level = doc.createElement(XmlTags.DOCUMENT);
+        doc.appendChild(level);
 
-            level.setAttribute("type", levelType);
-            appendChildTextNode(doc, level, "id", levelName);
-            appendChildTextNode(doc, level, "width", String.valueOf(width));
-            appendChildTextNode(doc, level, "height", String.valueOf(height));
-            appendChildTextNode(doc, level, "backgroundImage", backgroundImage);
-            appendChildTextNode(doc, level, "collisionChecker", collisionCheckerType);
-            appendChildTextNode(doc, level, "camera", cameraType);
+        level.setAttribute(XmlTags.CLASS_NAME, levelType);
+        XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
+        XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
+        XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
+        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
+        XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionCheckerType);
+        XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
 
-            addLevelObjects(levelObjects, doc, level);
+        addLevelObjects(levelObjects, doc, level);
 
-            String xmlString = getXMLAsString(doc);
-            FileWriter writer = new FileWriter(filePath);
-            writer.write(xmlString);
-            writer.close();
-        }
-        catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            return UNSUCCESSFUL_WRITE;
-        }
-        catch (TransformerException e) {
-            e.printStackTrace();
-            return UNSUCCESSFUL_WRITE;
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return UNSUCCESSFUL_WRITE;
-        }
+        XmlUtilities.write(doc, filePath);
+
         return SUCCESSFUL_WRITE;
     }
 
     private static void addLevelObjects (Collection<Sprite> levelObjects, Document doc,
                                          Element level) {
         for (Sprite s : levelObjects) {
-            Element spriteElement = doc.createElement("gameObject");
-            spriteElement.setAttribute("type", s.getType());
+            Element spriteElement = doc.createElement(XmlTags.GAMEOBJECT);
+            spriteElement.setAttribute(XmlTags.CLASS_NAME, s.getType());
 
-            appendChildTextNode(doc, spriteElement, "x", String.valueOf(s.getX()));
-            appendChildTextNode(doc, spriteElement, "y", String.valueOf(s.getY()));
-            appendChildTextNode(doc, spriteElement, "width", String.valueOf(s.getWidth()));
-            appendChildTextNode(doc, spriteElement, "height", String.valueOf(s.getHeight()));
-            appendChildTextNode(doc, spriteElement, "imagePath", String.valueOf(s.getImagePath()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.X, String.valueOf(s.getX()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.Y, String.valueOf(s.getY()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.WIDTH,
+                                       String.valueOf(s.getWidth()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.HEIGHT,
+                                       String.valueOf(s.getHeight()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH,
+                                       String.valueOf(s.getImagePath()));
 
             if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
                 Element strategiesElement = doc.createElement("strategies");
                 for (Map<String, String> strategy : s.getUpdateStrategies()) {
 
                     String strategyType = "";
-                    if (strategy.containsKey("type")) {
-                        strategyType = strategy.get("type");
-                        strategy.remove("type");
+                    if (strategy.containsKey(XmlTags.CLASS_NAME)) {
+                        strategyType = strategy.get(XmlTags.CLASS_NAME);
+                        strategy.remove(XmlTags.CLASS_NAME);
                     }
 
-                    Element strategyElement = makeElementFromMap(doc, "strategy", strategy);
-                    strategyElement.setAttribute("type", strategyType);
+                    Element strategyElement =
+                            XmlUtilities.generateElementFromMap(doc, XmlTags.STRATEGY, strategy);
+                    strategyElement.setAttribute(XmlTags.CLASS_NAME, strategyType);
                     strategiesElement.appendChild(strategyElement);
                 }
                 spriteElement.appendChild(strategiesElement);
             }
 
             if (s.getAttributes() != null && s.getAttributes().size() > 0) {
-                appendMapContents(doc, spriteElement, "attr", s.getAttributes());
+                XmlUtilities.appendMapContents(doc, spriteElement, XmlTags.CONFIG,
+                                               s.getAttributes());
             }
 
             level.appendChild(spriteElement);
         }
-    }
-
-    private static void appendMapContents (Document doc, Element parentElement,
-                                           String childElementName, Map<String, String> map) {
-        Element childElement = makeElementFromMap(doc, childElementName, map);
-        parentElement.appendChild(childElement);
-    }
-
-    private static Element makeElementFromMap (Document doc, String childElementName,
-                                               Map<String, String> map) {
-        Element childElement = doc.createElement(childElementName);
-        for (String param : map.keySet()) {
-            appendChildTextNode(doc, childElement, param, map.get(param));
-        }
-        return childElement;
-    }
-
-    private static String getXMLAsString (Document doc) throws TransformerException {
-        TransformerFactory transfac = TransformerFactory.newInstance();
-        Transformer trans = transfac.newTransformer();
-        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-        StringWriter sw = new StringWriter();
-        StreamResult result = new StreamResult(sw);
-        DOMSource source = new DOMSource(doc);
-        trans.transform(source, result);
-        String xmlString = sw.toString();
-        return xmlString;
-    }
-
-    private static void appendChildTextNode (Document doc, Element parentElement,
-                                             String attributeName, String value) {
-        Element element = doc.createElement(attributeName);
-        Text text = doc.createTextNode(value);
-        element.appendChild(text);
-        parentElement.appendChild(element);
     }
 }

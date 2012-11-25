@@ -19,14 +19,26 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  *
  */
 public abstract class Sprite implements SpriteActionInterface {
-    private static final int BULLET_SIZE = 10;
-    private static final double BULLET_VELOCITY_SCALE = 1.5;
+
+    protected static final String HIT_BY_BULLET = "hitbybullet";
+    protected static final String HIT_BY_ENEMY = "hitbyenemy";
+    protected static final String HIT_BY_PLAYER = "hitbyplayer";
+    protected static final String PLAYER_TYPE = "player";
+    protected static final String BULLET_TYPE = "bullet";
+    protected static final String ENEMY_TYPE = "enemy";
+    protected static final String LEFT_BOUND = "left";
+    protected static final String RIGHT_BOUND = "right";
+    protected static final String TOP_BOUND = "top";
+    protected static final String BOTTOM_BOUND = "bottom";
+    private static final Dimension BULLET_SIZE = new Dimension(5, 10);
+    private static final int BULLET_SPEED = 10;
+    private static final int BULLET_DAMAGE = 1;
     private Point myPosition;
     private Point myVelocity;
     private Dimension mySize;
     private Dimension myBounds;
     private Image myImage;
-    private List<Bullet> myShotsFired;
+    private List<Bullet> myBulletsFired;
     private int myHealth;
     private SpriteMethodMap myMapper;
 
@@ -50,7 +62,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -75,7 +87,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = Integer.MAX_VALUE;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -98,7 +110,7 @@ public abstract class Sprite implements SpriteActionInterface {
         myVelocity = new Point(0, 0);
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
@@ -122,11 +134,146 @@ public abstract class Sprite implements SpriteActionInterface {
         myHealth = health;
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
-        myShotsFired = new ArrayList<Bullet>();
+        myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
 
     abstract void setMethods();
+
+    /**
+     * Decreases the health of this sprite by the
+     * amount specified (e.g. after being hit by a bullet).
+     * @param damage the amount to decrease health by
+     */
+    public void decreaseHealth(int damage) {
+        myHealth -= damage;
+    }
+
+    /**
+     * This method draws the image at the sprite's
+     * current position. If a sprite needs to draw anything
+     * else (e.g. its bullets) then it can implement the
+     * continuePaint method, if not, just leave it blank.
+     * @param pen used for drawing the image
+     */
+    public void paint(Graphics pen) {
+        pen.drawImage(myImage, getLeft(), getTop(),
+                mySize.width, mySize.height, null);
+        continuePaint(pen);
+    }
+
+    protected abstract void continuePaint(Graphics pen);
+
+    /**
+     * This method will update the position for every
+     * sprite, then call an abstract method. This abstract
+     * method will be specific to a certain sprite (only if
+     * they need to do something other than update position).
+     * This allows for easy implementation of new results specific
+     * to each sprite when calling the update method.
+     */
+    public void update() {
+        if (myHealth <= 0) {
+            die();
+        }
+        else {
+            myPosition.translate(myVelocity.x, myVelocity.y);
+            continueUpdate();
+        }
+    }
+
+    protected abstract void continueUpdate();
+
+    /**
+     * Tells the method mapper (class that holds strings to methods)
+     * which key to use (which method to choose).
+     * If parameters are added here, they should also be added to
+     * SpriteMethodMap -> doEvent method. Also, newly added parameters
+     * should be added at the end (after all other previous parameters).
+     *
+     * @param key the string (key) that maps to the right method to do
+     * @param s the sprite that this one collides with
+     */
+    public void doEvent(String key, Sprite s) {
+        myMapper.doEvent(key, s);
+    }
+
+    /**
+     * Sets the sprite's default action as
+     * doing nothing (continuing on its current
+     * velocity vector).
+     *
+     * @param o a (possibly empty) list of
+     * parameters to be used in the action
+     * (only used if the sprite overrides the do
+     * action method itself)
+     */
+    @Override
+    public void doAction (Object ... o) {
+
+    }
+
+    /**
+     * Erases the sprite's image, which will be
+     * checked for during paint methods and erased
+     * from the game if null.
+     */
+    public void die() {
+        myImage = null;
+    }
+
+    /**
+     * Has the player fire a bullet.
+     * The bullet is added to the player's list of fired bullets
+     * and will be painted during the player's paint method.
+     */
+    public void fireBullet() {
+        ImageIcon iib = new ImageIcon(this.getClass().getResource(
+                "../images/playerbullet.png"));
+        Image bulletImage = iib.getImage();
+
+        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, bulletImage,
+                new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
+
+        myBulletsFired.add(b);
+    }
+
+    /**
+     * Checks whether this sprite is within the bounds of the canvas,
+     * depending on which wall is checked.
+     * @param s the name of the wall to check e.g. "left", "right"
+     * @return false if out of bounds, true if in bounds
+     */
+    public boolean checkBounds(String s) {
+        //don't go past right
+        if (RIGHT_BOUND.equals(s) && getRight() >= myBounds.width) {
+            return false;
+        }
+        //don't pass left
+        else if (LEFT_BOUND.equals(s) && getLeft() <= 0) {
+            return false;
+        }
+        //don't go past top
+        else if (TOP_BOUND.equals(s) && getTop() <= 0) {
+            return false;        
+        }
+        //don't pass bottom
+        else if (BOTTOM_BOUND.equals(s) && getBottom() >= myBounds.height) {
+            return false;
+        }
+        return true;
+    }
+
+    /*
+     * Getters and setters below here.
+     */
+
+    /**
+     * Returns a string representing this sprite's type.
+     *
+     * @return lowercase string representing type of this sprite
+     */
+    public abstract String getType();
 
     /**
      * Returns this sprite's position of the
@@ -180,7 +327,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * @return myShotsFired
      */
     public List<Bullet> getBulletsFired() {
-        return myShotsFired;
+        return myBulletsFired;
     }
     /**
      * Returns the image representing this sprite.
@@ -190,38 +337,8 @@ public abstract class Sprite implements SpriteActionInterface {
         return myImage;
     }
 
-    /**
-     * Sets this sprite's image to something else.
-     * @param image the new image to use
-     */
-    public void setImage(Image image) {
-        myImage = image;
-    }
-
-    /**
-     * Returns the health of the player.
-     * @return myHealth
-     */
-    public int getHealth() {
-        return myHealth;
-    }
-
-    /**
-     * Sets the sprite's health to
-     * a new number (e.g. after being damaged).
-     * @param h the new health of the sprite
-     */
-    public void setHealth(int h) {
-        myHealth = h;
-    }
-
-    /**
-     * Decreases the health of this sprite by the
-     * amount specified (e.g. after being hit by a bullet).
-     * @param damage the amount to decrease health by
-     */
-    public void decreaseHealth(int damage) {
-        myHealth -= damage;
+    protected SpriteMethodMap getMapper () {
+        return myMapper;
     }
 
     /**
@@ -262,128 +379,5 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public Dimension getSize() {
         return mySize;
-    }
-
-    /**
-     * Returns a string representing this sprite's type.
-     *
-     * @return lowercase string representing type of this sprite
-     */
-    public abstract String getType();
-
-    /**
-     * This method draws the image at the sprite's
-     * current position. If a sprite needs to draw anything
-     * else (e.g. its bullets) then it can implement the
-     * continuePaint method, if not, just leave it blank.
-     * @param pen used for drawing the image
-     */
-    public void paint(Graphics pen) {
-        pen.drawImage(myImage, getLeft(), getTop(),
-                mySize.width, mySize.height, null);
-        continuePaint(pen);
-    }
-
-    protected abstract void continuePaint(Graphics pen);
-
-    /**
-     * This method will update the position for every
-     * sprite, then call an abstract method. This abstract
-     * method will be specific to a certain sprite (only if
-     * they need to do something other than update position).
-     * This allows for easy implementation of new results specific
-     * to each sprite when calling the update method.
-     */
-    public void update() {
-        // if this sprite is out of bounds (top or bottom) then
-        // it is out of the game
-        if (getHealth() < 0 || myPosition.y > myBounds.height
-                || myPosition.y < 0) {
-            this.die();
-        }
-
-        myPosition.translate(myVelocity.x, myVelocity.y);
-        continueUpdate();
-    }
-
-    protected abstract void continueUpdate();
-
-    /**
-     * Called when this sprite collides with another
-     * sprite. Which one is called depends on the type
-     * of sprite it is colliding with.
-     *
-     * @param s the sprite that collides with this one
-     */
-    public void collide(Sprite s) {
-
-    }
-
-    protected void setMapper (SpriteMethodMap mapper) {
-        this.myMapper = mapper;
-    }
-
-    protected SpriteMethodMap getMapper () {
-        return myMapper;
-    }
-
-    protected Dimension getBounds() {
-        return myBounds;
-    }
-
-    /**
-     * Tells the method mapper (class that holds strings to methods)
-     * which key to use (which method to choose).
-     * If parameters are added here, they should also be added to
-     * SpriteMethodMap -> doEvent method. Also, newly added parameters
-     * should be added at the end (after all other previous parameters).
-     *
-     * @param key the string (key) that maps to the right method to do
-     * @param s the sprite that this one collides with
-     */
-    public void doEvent(String key, Sprite s) {
-        myMapper.doEvent(key, s);
-    }
-
-    /**
-     * Sets the sprite's default action as
-     * doing nothing (continuing on its current
-     * velocity vector).
-     *
-     * @param o a (possibly empty) list of
-     * parameters to be used in the action
-     * (only used if the sprite overrides the do
-     * action method itself)
-     */
-    @Override
-    public void doAction (Object ... o) {
-
-    }
-
-    /**
-     * Erases the sprite's image, which will be
-     * checked for during paint methods and erased
-     * from the game if null.
-     */
-    public void die() {
-        this.setImage(null);
-    }
-
-    /**
-     * Has the player fire a bullet.
-     * The bullet is added to the player's list of fired bullets
-     * and will be painted during the player's paint method.
-     */
-    public void fireBullet() {
-        ImageIcon iib = new ImageIcon(this.getClass().getResource(
-                "../vooga/shooter/images/playerbullet.png"));
-        Image bulletImage = iib.getImage();
-
-        Bullet b = new Bullet(getPosition(), new Dimension(
-                BULLET_SIZE, BULLET_SIZE), getBounds(), bulletImage,
-                new Point(0,
-                        (int)(getVelocity().y * BULLET_VELOCITY_SCALE)), 0);
-
-        getBulletsFired().add(b);
     }
 }

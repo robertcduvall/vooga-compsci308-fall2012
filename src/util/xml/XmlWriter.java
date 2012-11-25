@@ -10,6 +10,8 @@ import org.w3c.dom.Document;
 
 
 /**
+ * @deprecated Use XmlUtilities instead.
+ * 
  * helper function in creating elements in xml
  * 
  * @author difan
@@ -19,6 +21,8 @@ import org.w3c.dom.Document;
 public class XmlWriter {
 
     /**
+     * @deprecated use the write method in XmlUtilities instead.
+     * 
      * write document into a xml file
      * 
      * @param doc

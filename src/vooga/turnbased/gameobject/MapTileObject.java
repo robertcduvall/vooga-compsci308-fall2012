@@ -2,33 +2,35 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
+import vooga.turnbased.gamecore.MapMode;
 
-import vooga.turnbased.gamecore.GameManager;
 
 /**
  * This class is a bit stupid
+ * 
+ * I would agree
+ * 
+ * @author Come forward if this is yours
  */
+
 public class MapTileObject extends MapObject {
 
-    public MapTileObject(int id, GameManager.GameEvent event, Point location, Image mapImage) {
-        super(id, event, location, mapImage);
-    }
-    
-    @Override 
-    public void update(int delayTime) {
-        // tile behaviour on update
-    }
-    
-    @Override
-    public void handleKeyPressed(KeyEvent e) {
-        // tile behaviour on keyPress
-    }
-    
-    @Override
-    public void handleKeyReleased(KeyEvent e) {
-        // tile behaviour on keyReleased
+    /**
+     * Creates the MapTileObject that will be used in MapMode.
+     * 
+     * @param id Integer ID associated with the MapTileObject.
+     * @param event GameEvent that can be passed to GameManager.
+     * @param location Location of object on the map.
+     * @param mapImage Image of the object.
+     * @param mapMode MapMode in which the object exists.
+     */
+    public MapTileObject (int id, String event, Point location, Image mapImage,
+            MapMode mapMode) {
+        super(id, event, location, mapImage, mapMode);
     }
 
+    @Override
+    public void update (int delayTime) {
+        super.update(delayTime);
+    }
 }

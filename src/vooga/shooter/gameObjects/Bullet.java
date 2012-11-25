@@ -16,6 +16,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * (add your own name as you edit)
  */
 public class Bullet extends Sprite {
+
     private int myDamage;
     private Sprite myOwner;
 
@@ -29,9 +30,10 @@ public class Bullet extends Sprite {
      * @param damage the damage that the bullet will do (to enemy or player)
      */
     public Bullet (Point position, Dimension size, Dimension bounds,
-            Image image, Point velocity, int damage) {
+            Image image, Point velocity, int damage, Sprite owner) {
         super(position, size, bounds, image, velocity);
         myDamage = damage;
+        myOwner = owner;
     }
 
     /**
@@ -41,7 +43,9 @@ public class Bullet extends Sprite {
      * stuff, or something else cool).
      */
     protected void continueUpdate() {
-
+        if(!checkBounds(BOTTOM_BOUND) || !checkBounds(TOP_BOUND)) {
+            die();
+        }
     }
 
     /**
@@ -75,7 +79,7 @@ public class Bullet extends Sprite {
      * @return "bullet"
      */
     public String getType() {
-        return "bullet";
+        return BULLET_TYPE;
     }
 
     /**
@@ -86,9 +90,9 @@ public class Bullet extends Sprite {
     @Override
     void setMethods () {
         //do nothing if it intersects another bullet
-        getMapper().addPair("hitbybullet", this);
+        getMapper().addPair(HIT_BY_BULLET, this);
 
-        getMapper().addPair("hitbyplayer", new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction(Object...o) {
                 die();
                 ((Player) o[0]).die();
@@ -97,9 +101,9 @@ public class Bullet extends Sprite {
 
         //only destroy enemy if a player shoots the enemy
         //if an enemy shoots an enemy, nothing happens
-        getMapper().addPair("hitbyenemy", new SpriteActionInterface() {
+        getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
             public void doAction(Object...o) {
-                if ("player".equals(myOwner.getType())) {
+                if (PLAYER_TYPE.equals(myOwner.getType())) {
                     die();
                     ((Enemy) o[0]).die();
                 }
