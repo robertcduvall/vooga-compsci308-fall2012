@@ -17,4 +17,14 @@ public class LevelFileIOException extends RuntimeException {
     public LevelFileIOException (String s) {
         super(s);
     }
+
+    /**
+     * Creates a new LevelFileIOException with the specified error message.
+     * 
+     * @param s error message
+     * @param cause Throwable that caused the exception.
+     */
+    public LevelFileIOException (String s, Throwable cause) {
+        super(s, cause);
+    }
 }
