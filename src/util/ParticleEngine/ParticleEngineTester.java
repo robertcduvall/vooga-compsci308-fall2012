@@ -1,12 +1,15 @@
 package util.ParticleEngine;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 
@@ -23,9 +26,9 @@ import vooga.shooter.gameplay.Game;
  *  setUpParticleEngines method (see below). The "Tester" classes are not limited to testing a single parameter. The user can create 
  *  a "Tester" class that holds any number of particle engine objects with any variations of parameters desired.
  *  
- *  ****Work-in-progress: waiting for David to finish implementing the ParticleEngine. This class is subject to change.
+ *  ****Work-in-progress: This class is subject to change.***
  *  
- * @author Kathleen
+ * @author Kathleen, JApplet code borrowed from Professor Duvall
  *
  */
 
@@ -66,7 +69,7 @@ public class ParticleEngineTester extends JApplet {
      * Instantiates myParticleEngines as a copy of the List of ParticleEngine objects in the specified ParticleEngineTestingUnit subclass.
      */
     public void setUpParticleEngines(){
-    	ParticleEngineTestingUnit myTestingUnit = new DensityTester();
+    	ParticleEngineTestingUnit myTestingUnit = new OutwardShootingTester(); //THIS IS THE ONLY LINE THAT NEEDS TO BE CHANGED BY USER.
     	myParticleEngines = myTestingUnit.getParticleEngines();
     }
 
@@ -83,6 +86,7 @@ public class ParticleEngineTester extends JApplet {
                 @Override
                 public void actionPerformed (ActionEvent e)
                 {
+                	update();
                     repaint();
                 }
             });
@@ -105,6 +109,8 @@ public class ParticleEngineTester extends JApplet {
      */
     @Override
 	public void paint(Graphics g) {
+    	g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getSize().width, getSize().height);
     	for (ParticleEngine e : myParticleEngines)
     		e.draw(g);
     }
