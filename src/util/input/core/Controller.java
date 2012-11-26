@@ -118,7 +118,7 @@ public abstract class Controller<T> {
      * @param e
      * @throws IllegalAccessException
      * @throws InvocationTargetException
-     * @throws NoSuchMethodException 
+     * @throws NoSuchMethodException
      */
     protected void performReflections (Object inputEvent, String method, int actionID)
             throws IllegalAccessException,
@@ -127,12 +127,13 @@ public abstract class Controller<T> {
         broadcastToSubscribers(method, inputEvent);
         invokeMethod(actionID);
     }
+
+    //get rid of this and set actionID to -1 for the previous one
     protected void performReflections (Object inputEvent, String method)
             throws IllegalAccessException,
             InvocationTargetException,
             NoSuchMethodException {
         broadcastToSubscribers(method, inputEvent);
-        
     }
 
     /**
@@ -142,6 +143,7 @@ public abstract class Controller<T> {
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
+    //get rid of this
     protected void broadcast (String methodName) throws IllegalAccessException,
     InvocationTargetException,
     NoSuchMethodException {
@@ -150,13 +152,12 @@ public abstract class Controller<T> {
             System.out.println(method);
             method.invoke(subscribedElement);
         }
-
     }
 
     // PRIVATE METHODS
     /**
      * broadcasts the method to all subscribed elements.
-     * 
+     *
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
@@ -171,6 +172,7 @@ public abstract class Controller<T> {
             InvocationTargetException,
             NoSuchMethodException,
             SecurityException {
+        //Make inputEvent null and we no longer need broadcast
         for (T subscribedElement : mySubscribedElements) {
             Method method =
                     subscribedElement.getClass().getMethod(methodName, inputEvent.getClass());

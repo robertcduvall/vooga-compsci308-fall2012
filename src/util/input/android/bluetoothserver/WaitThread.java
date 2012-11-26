@@ -70,7 +70,8 @@ public class WaitThread implements Runnable {
             connection = notifier.acceptAndOpen();
             Thread processThread = new Thread(new ProcessConnectionThread(connection, myServer));
             processThread.start();
-            //AndroidBluetoothServer.connectedControllers++;
+            myServer.setMessenger(new Messenger(connection));
+          
 
 
         }
