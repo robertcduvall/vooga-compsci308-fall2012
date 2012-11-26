@@ -1,6 +1,7 @@
 package util.input.interfaces.listeners;
 
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 
@@ -34,5 +35,10 @@ public interface AndroidListener {
      * @param l line segment data wrapper
      */
     void onTouchMovement(LineSegment l);
+    /**
+     * Method called when an android controller experiences a accelerometer event. Only called if acceleromter is enabled for controller;
+     * @param e the accelerometer event
+     */
+    void onAccelerometerEvent(AndroidSensorEvent e);
 
 }

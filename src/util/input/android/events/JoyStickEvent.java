@@ -10,13 +10,8 @@ import java.io.Serializable;
  * 
  */
 public class JoyStickEvent extends AndroidControllerEvent {
-    /**
-     * Constant representing the right joystick.
-     */
+
     public static final int RIGHT = 1;
-    /**
-     * Constant representing the left joystick.
-     */
     public static final int LEFT = 2;
     private double myAngle;
     private double myMagnitude;
