@@ -17,6 +17,10 @@ import util.input.interfaces.listeners.AndroidListener;
  * @author Ben, Lance
  *
  */
+/**
+ * @author Amay
+ *
+ */
 public class AndroidController extends Controller<AndroidListener> implements
         AndroidListener {
 
@@ -29,6 +33,11 @@ public class AndroidController extends Controller<AndroidListener> implements
     private int myControllerNum;
     private AndroidBluetoothServer myServer;
 
+    /**
+     * Create a new Android controller.
+     *
+     * @param controllerNum - The controller number
+     */
     public AndroidController (int controllerNum) {
         super();
         myControllerNum = controllerNum;
@@ -70,6 +79,7 @@ public class AndroidController extends Controller<AndroidListener> implements
         }
     }
 
+    @Override
     public void onControllerDisconnect () {
         try {
             performReflections("onControllerDisconnect", Controller.NO_ACTION);
@@ -102,10 +112,10 @@ public class AndroidController extends Controller<AndroidListener> implements
             performReflections(l, "onTouchMovement", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
-            // this will never be thrown because it was checked for previously            
+            // this will never be thrown because it was checked for previously
         }
         catch (InvocationTargetException e1) {
-            // this will never be thrown because it was checked for previously            
+            // this will never be thrown because it was checked for previously
         }
         catch (NoSuchMethodException e1) {
             // this will never be thrown because it was checked for previously
@@ -113,15 +123,25 @@ public class AndroidController extends Controller<AndroidListener> implements
 
     }
 
+    /**
+     * @param isGameBoyActive -
+     * @param isPlaystationActive -
+     * @param isTouchControlActive -
+     * @param isAccelerometerActive -
+     */
     public void setControlOptions (boolean isGameBoyActive,
             boolean isPlaystationActive, boolean isTouchControlActive,
             boolean isAccelerometerActive) {
-        AndroidControllerConfigMessage settings = new AndroidControllerConfigMessage(
+        AndroidControllerConfigMessage settings =
+                new AndroidControllerConfigMessage(
                 isGameBoyActive, isPlaystationActive, isTouchControlActive,
                 isAccelerometerActive);
         myServer.notifyController(settings);
     }
 
+    /**
+     * Send message to server.
+     */
     public void messageServer () {
         // myServer.notifyController(new AndroidButtonEvent(4, 8));
     }

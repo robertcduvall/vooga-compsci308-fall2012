@@ -13,9 +13,9 @@ import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class represents an abstract controller to provide input.
- * 
+ *
  * @author Amay, Lance
- * 
+ *
  * @param <T>
  */
 public abstract class Controller<T> {
@@ -33,9 +33,9 @@ public abstract class Controller<T> {
     }
 
     /**
-     * Create a new Controller with an elements that
+     * Create a new Controller with an element that
      * subscribes to its raw data.
-     * 
+     *
      * @param element - The subscribing element
      */
     public Controller (T element) {
@@ -45,7 +45,7 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events.
-     * 
+     *
      * @param element - The subscribing class
      */
     public void subscribe (T element) {
@@ -54,7 +54,7 @@ public abstract class Controller<T> {
 
     /**
      * Object invokes a method every time action and type occur.
-     * 
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -78,7 +78,7 @@ public abstract class Controller<T> {
 
     /**
      * Class invokes a static method every time action and type occur.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -107,7 +107,7 @@ public abstract class Controller<T> {
 
     /**
      * Set the desired action on or off.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param isActive - Whether the action should be active or not
@@ -143,7 +143,7 @@ public abstract class Controller<T> {
     // PRIVATE METHODS
     /**
      * broadcasts the method to all subscribed elements.
-     * 
+     *
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
@@ -209,6 +209,7 @@ public abstract class Controller<T> {
         throw new NoSuchMethodException();
     }
 
+    @SuppressWarnings("rawtypes")
     private void accessLegalityCheck (Object o, String method)
             throws IllegalAccessException {
         Class oc = o.getClass();
@@ -218,9 +219,12 @@ public abstract class Controller<T> {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     private void instantiationLegalityCheck (Class c, String method)
             throws InstantiationException {
         if (Modifier.ABSTRACT == c.getModifiers()
-                || Modifier.ABSTRACT == Modifier.INTERFACE) { throw new InstantiationException(); }
+                || Modifier.ABSTRACT == Modifier.INTERFACE) {
+            throw new InstantiationException();
+        }
     }
 }
