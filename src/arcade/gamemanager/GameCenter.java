@@ -55,7 +55,7 @@ public class GameCenter {
      * initializes the class by reading information from game.xml file.
      */
     public void initialize () {
-        socialCenter = SocialCenter.getInstance();
+//        socialCenter = SocialCenter.getInstance();
         myGames = new ArrayList<Game>();
         refreshGames();
 

@@ -1,11 +1,11 @@
 <gamelist>
 	<game id="1">
-		<name>Platform</name>
+		<name>Turnbased RPG</name>
 		<rating>3</rating>
-		<filepath>arcade.Sample1</filepath>
+		<filepath>vooga.turnbased.Start</filepath>
 </game>
 	<game id="2">
-		<name>Shooter</name>
+		<name>Space Invaders</name>
 		<rating>4</rating>
 		<filepath>vooga.shooter.gameplay.Game</filepath>
 	</game>
