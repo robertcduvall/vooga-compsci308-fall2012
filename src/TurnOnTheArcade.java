@@ -19,10 +19,10 @@ import arcade.utility.ImageReader;
  */
 public class TurnOnTheArcade {
 
+    /**
+     * Select whether or not to load arcade with a power button
+     */
     private static final boolean START_WITH_POWER_BUTTON = false;
-
-    private static JFrame startFrame;
-    private static JPanel startPanel;
 
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_WIDTH = 500;
@@ -30,20 +30,21 @@ public class TurnOnTheArcade {
     private static final int BUTTON_HEIGHT = 190;
     private static final int BUTTON_WIDTH = 190;
 
+    private static JFrame startFrame;
+    private static JPanel startPanel;
+
     /**
      * This code starts it all!
      * 
      * @param args
      */
     public static void main (String[] args) {
-
         if (START_WITH_POWER_BUTTON) {
             startWithPowerButton();
         }
         else {
             startWithoutPowerButton();
         }
-
     }
 
     /**
