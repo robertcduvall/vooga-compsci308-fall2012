@@ -24,7 +24,7 @@ public class AngleDistributionTester extends ParticleEngineTestingUnit{
 	protected void setUpParticleEngines() {
 		//these 2 lines of code are from David's ParticleTestApplet class
 		ImageIcon temp = new ImageIcon(
-				DensityTester.class.getResource("explosion.png"));
+				AngleDistributionTester.class.getResource("explosion.png"));
 		Image particleImage = temp.getImage();
 
 		vcalculator = new VectorCalculator();
