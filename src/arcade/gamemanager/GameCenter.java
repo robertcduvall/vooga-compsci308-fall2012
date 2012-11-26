@@ -27,7 +27,6 @@ import arcade.utility.ReadWriter;
 public class GameCenter {
 
     private List<Game> myGames;
-    private SocialCenter socialCenter;
     private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
 
     public GameCenter () {
@@ -55,7 +54,6 @@ public class GameCenter {
      * initializes the class by reading information from game.xml file.
      */
     public void initialize () {
-//        socialCenter = SocialCenter.getInstance();
         myGames = new ArrayList<Game>();
         refreshGames();
 
