@@ -6,6 +6,12 @@ import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+
+/**
+ * 
+ * @author Michael Deng
+ * 
+ */
 public class JobsMainPanel extends AMainPanel {
 
     public JobsMainPanel (Arcade a) {
@@ -22,10 +28,10 @@ public class JobsMainPanel extends AMainPanel {
         label.setForeground(Color.WHITE);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
-        
+
         myPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         myPanel.add(label, "align center");
-        
+
         return myPanel;
     }
 
