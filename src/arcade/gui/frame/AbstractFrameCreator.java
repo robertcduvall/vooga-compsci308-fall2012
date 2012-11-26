@@ -5,8 +5,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -48,7 +50,7 @@ public abstract class AbstractFrameCreator {
         ArcadeFrame myFrame = new ArcadeFrame(myArcade, ARCADE_NAME, myPanels);
 
         // set size
-//        myFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        // myFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         myFrame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         myFrame.setResizable(FRAME_RESIZABLE);
 
@@ -61,7 +63,7 @@ public abstract class AbstractFrameCreator {
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setLocationRelativeTo(null);
 
-         myFrame.pack();
+        myFrame.pack();
         myFrame.setVisible(true);
         return myFrame;
 
@@ -74,14 +76,14 @@ public abstract class AbstractFrameCreator {
      * This method lays out the base panels in the frame.
      * Remember to add each base panel to the content panel.
      * 
-     * Each subclass MUST override this method, and 
+     * Each subclass MUST override this method, and
      * call up: super.layoutContentPanel()
      */
-    protected void layoutContentPanel (){
+    protected void layoutContentPanel () {
         myContentPanel = new ArcadePanel(myArcade, "contentpanel");
         myContentPanel.removeAll();
-//        myContentPanel.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-//        myContentPanel.setMaximumSize(new Dimension(10000, 10000));
+        // myContentPanel.setPreferredSize(new Dimension(FRAME_WIDTH,
+        // FRAME_HEIGHT));
 
         myContentPanel.setBackground(Color.BLACK);
     }
@@ -95,22 +97,21 @@ public abstract class AbstractFrameCreator {
         // create holder panel
         ArcadePanel holder = new ArcadePanel(myArcade, panelType + "holder");
         holder.setLayout(new BorderLayout());
-//        holder.setPreferredSize(new Dimension( 2000,2000));
-
+        holder.setBackground(Color.BLACK);
+        
         // add reference to holder panel to map
         myPanels.put(panelType, holder);
 
         // add holder panel to scrollpane
         JScrollPane scrollPane = new JScrollPane(holder);
-        holder.setAutoscrolls(true);
-//        scrollPane.setPreferredSize(new Dimension(300, 300));
+        Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+        scrollPane.setBorder(border);
+        
+//        holder.setAutoscrolls(true);
 
         // add scrollpane to sizing panel
         panel.setLayout(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);
-        
-        
-//        panel.add(holder, BorderLayout.CENTER);
 
     }
 
@@ -121,12 +122,12 @@ public abstract class AbstractFrameCreator {
     protected ArcadePanel getContentPanel () {
         return myContentPanel;
     }
-    
+
     /**
      * 
      * @return reference to the arcade
      */
-    protected Arcade getArcade(){
+    protected Arcade getArcade () {
         return myArcade;
     }
 

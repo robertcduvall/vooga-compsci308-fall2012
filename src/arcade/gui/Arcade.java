@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import arcade.datatransfer.GameLink;
 import arcade.datatransfer.UserLink;
 import arcade.gamemanager.GameCenter;
+import arcade.gui.frame.AltFrameCreator;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
@@ -39,14 +40,14 @@ public class Arcade {
     private static SocialCenter mySocialCenter;
     private static GameLink myGameManager;
     private static UserLink myUserManager;
-    private static PanelCreatorFactory myFactory;
+    private static CreatorFactory myFactory;
     private static ResourceBundle myResources;
 
     public Arcade () {
         System.out.println("got it!");
 
         // initialize things
-        myFactory = new PanelCreatorFactory(this);
+        myFactory = new CreatorFactory(this);
         // myGameCenter = new GameCenter(); // GameCenter is currently broken.
         mySocialCenter = SocialCenter.getInstance();
         myGameManager = new GameLink();
@@ -65,8 +66,12 @@ public class Arcade {
     private void frameSetup () {
         // create the frame
         // MainFrameCreatorOld frameCreator = new MainFrameCreatorOld(this);
-        MainFrameCreator frameCreator = new MainFrameCreator(this);
-        myFrame = frameCreator.createFrame();
+//        MainFrameCreator frameCreator = new MainFrameCreator(this);
+        
+//        AltFrameCreator frameCreator = new AltFrameCreator(this);
+//        myFrame = frameCreator.createFrame();
+        
+        myFrame = myFactory.createFrameCreator(myResources.getString("Frame")).createFrame();
 
         // fill it with default panels
         replacePanel("FootDefault");
