@@ -11,6 +11,8 @@ package vooga.turnbased.gui;
  * GamePane.keyboardController.setControl(KeyEvent.VK_LEFT,
  * KeyboardController.PRESSED, myPlayer, "moveLeft");
  * }
+ * 
+ * @author Volodymyr
  */
 public interface InputAPI {
     public void configureInputHandling ();

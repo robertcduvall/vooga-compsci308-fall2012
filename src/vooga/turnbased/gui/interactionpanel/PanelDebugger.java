@@ -7,6 +7,11 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * To debug the panel!
+ * @author rex
+ *
+ */
 public class PanelDebugger extends JPanel{
     InteractionPanel myInteractionPanel;
     
