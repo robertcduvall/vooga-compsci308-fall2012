@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import util.camera.Camera;
 import util.reflection.Reflection;
 import util.reflection.ReflectionException;
@@ -86,7 +87,7 @@ public final class LevelFactory {
             return level;
         }
         catch (ReflectionException e) {
-            throw new LevelFileIOException("Incorrect class name was passed as a type parameter: ");
+            throw new LevelFileIOException("Class name in Level file not found.", e);
         }
         catch (LevelFileIOException e) {
             throw e;
@@ -99,12 +100,19 @@ public final class LevelFactory {
     private static GameObject spriteToGameObject (Sprite s) {
         String configString = "";
         String deliminator = ",";
-        configString = configString.concat("x=" + s.getX() + deliminator);
-        configString = configString.concat("y=" + s.getY() + deliminator);
-        configString = configString.concat("width=" + s.getWidth() + deliminator);
-        configString = configString.concat("height=" + s.getHeight() + deliminator);
-        configString = configString.concat("imagePath=" + s.getImagePath());
-        // TODO add additional params
+        configString = configString.concat("x=" + s.getX());
+        configString = configString.concat(deliminator + "y=" + s.getY());
+        configString = configString.concat(deliminator + "width=" + s.getWidth());
+        configString = configString.concat(deliminator + "height=" + s.getHeight());
+        configString = configString.concat(deliminator + "imagePath=" + s.getImagePath());
+
+        Map<String, String> spriteAttr = s.getAttributes();
+        for (String key : spriteAttr.keySet()) {
+            configString = configString.concat(deliminator + key + "=" + spriteAttr.get(key));
+        }
+
+        // TODO strategy instantiation
+
         return (GameObject) Reflection.createInstance(s.getType(), configString);
     }
 
