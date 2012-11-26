@@ -65,12 +65,6 @@ public class Arcade {
      */
     private void frameSetup () {
         // create the frame
-        // MainFrameCreatorOld frameCreator = new MainFrameCreatorOld(this);
-//        MainFrameCreator frameCreator = new MainFrameCreator(this);
-        
-//        AltFrameCreator frameCreator = new AltFrameCreator(this);
-//        myFrame = frameCreator.createFrame();
-        
         myFrame = myFactory.createFrameCreator(myResources.getString("Frame")).createFrame();
 
         // fill it with default panels
