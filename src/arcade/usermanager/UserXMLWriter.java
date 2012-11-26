@@ -13,6 +13,8 @@ import util.xml.XmlWriter;
  * Writes user data to an XML file.
  * 
  * @author Howard, Difan
+ * TODO: message XML should contain sender, not receiver tag
+ * TODO: change to use new XMLUtilities
  * 
  */
 public class UserXMLWriter {
