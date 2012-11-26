@@ -13,20 +13,21 @@ import util.input.interfaces.listeners.AndroidListener;
 
 /**
  * This class allows users to enter input through an Android app.
- * 
+ *
  * @author Ben, Lance
- * 
+ *
  */
-public class AndroidController extends Controller<AndroidListener> implements AndroidListener {
+public class AndroidController extends Controller<AndroidListener> implements
+        AndroidListener {
 
     /**
      * Create a new android controller.
-     * 
+     *
      * @param controllerNum
      */
 
     private int myControllerNum;
-    AndroidBluetoothServer myServer;
+    private AndroidBluetoothServer myServer;
 
     public AndroidController (int controllerNum) {
         super();
@@ -39,19 +40,17 @@ public class AndroidController extends Controller<AndroidListener> implements An
     @Override
     public void onScreenPress (AndroidButtonEvent b) {
         try {
-            performReflections(b, "onScreenPress", UKeyCode.codify(b.getPressType(), b.getID()));
+            performReflections(b, "onScreenPress",
+                    UKeyCode.codify(b.getPressType(), b.getID()));
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
     }
 
@@ -62,33 +61,27 @@ public class AndroidController extends Controller<AndroidListener> implements An
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
     }
 
     public void onControllerDisconnect () {
         try {
-            broadcast("onControllerDisconnect");
+            performReflections("onControllerDisconnect", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
     }
 
@@ -97,7 +90,8 @@ public class AndroidController extends Controller<AndroidListener> implements An
      * to connect in app before connection is reestablished.
      */
     public void restartController () {
-        AndroidBluetoothServer server = new AndroidBluetoothServer(myControllerNum);
+        AndroidBluetoothServer server = new AndroidBluetoothServer(
+                myControllerNum);
         server.subscribe(this);
         server.startServer();
     }
@@ -105,49 +99,47 @@ public class AndroidController extends Controller<AndroidListener> implements An
     @Override
     public void onTouchMovement (LineSegment l) {
         try {
-            performReflections(l, "onTouchMovement");
+            performReflections(l, "onTouchMovement", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
-            // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
+            // this will never be thrown because it was checked for previously            
         }
         catch (InvocationTargetException e1) {
-            // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
+            // this will never be thrown because it was checked for previously            
         }
         catch (NoSuchMethodException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
 
     }
-    public void setControlOptions(boolean isGameBoyActive, boolean isPlaystationActive, boolean isTouchControlActive, boolean isAccelerometerActive){
-       AndroidControllerConfigMessage settings = new AndroidControllerConfigMessage(isGameBoyActive, isPlaystationActive, isTouchControlActive, isAccelerometerActive);
-       myServer.notifyController(settings);
+
+    public void setControlOptions (boolean isGameBoyActive,
+            boolean isPlaystationActive, boolean isTouchControlActive,
+            boolean isAccelerometerActive) {
+        AndroidControllerConfigMessage settings = new AndroidControllerConfigMessage(
+                isGameBoyActive, isPlaystationActive, isTouchControlActive,
+                isAccelerometerActive);
+        myServer.notifyController(settings);
     }
-    
-    public void messageServer(){
-        //myServer.notifyController(new AndroidButtonEvent(4, 8));
+
+    public void messageServer () {
+        // myServer.notifyController(new AndroidButtonEvent(4, 8));
     }
 
     @Override
     public void onAccelerometerEvent (AndroidSensorEvent e) {
         try {
-            performReflections(e, "onAccelerometerEvent");
+            performReflections(e, "onAccelerometerEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             // this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
-        
     }
 
 }
