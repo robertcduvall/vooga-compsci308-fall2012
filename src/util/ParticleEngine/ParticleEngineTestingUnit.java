@@ -45,15 +45,15 @@ public abstract class ParticleEngineTestingUnit {
      * @param length how long the particles will exist before being reset
 	 */
 	protected void addParticleEngine(int density, Image particleImage, Point position, Point velocity,
-            int tolerance, int length, double angleSpan, int numberOfDirections){
-		myParticleEngines.add(new ParticleEngine(density, particleImage, position, velocity, tolerance, length, angleSpan, numberOfDirections));
+            int tolerance, int length, double angleSpan, int numberOfDirections, Boolean loop){
+		myParticleEngines.add(new ParticleEngine(density, particleImage, position, velocity, tolerance, length, angleSpan, numberOfDirections, loop));
 	}
 	
-	protected void addParticleEngine(Image particleImage, Point position){
-		myParticleEngines.add(new ParticleEngine(particleImage, position));
+	protected void addParticleEngine(Image particleImage, Point position, Boolean loop){
+		myParticleEngines.add(new ParticleEngine(particleImage, position, loop));
 	}
 	
-	protected void addParticleEngine(Image particleImage, Point position, double angleSpan, int numberOfDirections){
-		myParticleEngines.add(new ParticleEngine(particleImage, position, angleSpan, numberOfDirections));
+	protected void addParticleEngine(Image particleImage, Point position, double angleSpan, int numberOfDirections, Boolean loop){
+		myParticleEngines.add(new ParticleEngine(particleImage, position, angleSpan, numberOfDirections, loop));
 	}
 }

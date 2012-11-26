@@ -16,7 +16,7 @@ public class AngleDistributionTester extends ParticleEngineTestingUnit{
 	private static int numberOfDirections = 10;
 	private static Point velocity = new Point(2,2);
 	private static int tolerance = 10;
-	private static int length = 1000;
+	private static int length = 55;
 
 	private static int density = 100;
 	
@@ -28,7 +28,7 @@ public class AngleDistributionTester extends ParticleEngineTestingUnit{
 		Image particleImage = temp.getImage();
 
 		vcalculator = new VectorCalculator();
-		addParticleEngine(density, particleImage, position, velocity, tolerance, length, angleSpan, numberOfDirections);
+		addParticleEngine(density, particleImage, position, velocity, tolerance, length, angleSpan, numberOfDirections, false);
 
 	}
 }
