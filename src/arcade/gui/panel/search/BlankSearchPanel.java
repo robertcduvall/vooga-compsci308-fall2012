@@ -20,7 +20,6 @@ public class BlankSearchPanel extends ASearchPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.GRAY);
         System.out.println("BlankSearchPanel");
         
         return myPanel;
