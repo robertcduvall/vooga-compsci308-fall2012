@@ -1,4 +1,4 @@
-package vooga.platformer.leveleditor;
+package util.searchbar;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
