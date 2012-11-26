@@ -8,9 +8,7 @@ import java.util.ResourceBundle;
 import arcade.datatransfer.GameLink;
 import arcade.datatransfer.UserLink;
 import arcade.gamemanager.GameCenter;
-import arcade.gui.frame.AltFrameCreator;
 import arcade.gui.frame.ArcadeFrame;
-import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.SocialCenter;
 

@@ -5,18 +5,20 @@ import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+
 /**
  * 
+ * Alternative frame creator. Creates the frame for the arcade.
+ * 
  * @author Michael Deng
- *
+ * 
  */
 public class AltFrameCreator extends AbstractFrameCreator {
 
     public AltFrameCreator (Arcade a) {
         super(a);
     }
-    
-    
+
     @Override
     protected void layoutContentPanel () {
         super.layoutContentPanel();
@@ -79,7 +81,7 @@ public class AltFrameCreator extends AbstractFrameCreator {
         getContentPanel().add(panel7, "span, growx, wrap");
         getContentPanel().add(panel5, "span 2, grow");
         getContentPanel().add(panel6, "growy");
-        
+
     }
 
 }

@@ -98,7 +98,7 @@ public abstract class AbstractFrameCreator {
         ArcadePanel holder = new ArcadePanel(myArcade, panelType + "holder");
         holder.setLayout(new BorderLayout());
         holder.setBackground(Color.BLACK);
-        
+
         // add reference to holder panel to map
         myPanels.put(panelType, holder);
 
@@ -106,8 +106,8 @@ public abstract class AbstractFrameCreator {
         JScrollPane scrollPane = new JScrollPane(holder);
         Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
         scrollPane.setBorder(border);
-        
-//        holder.setAutoscrolls(true);
+
+        // holder.setAutoscrolls(true);
 
         // add scrollpane to sizing panel
         panel.setLayout(new BorderLayout());

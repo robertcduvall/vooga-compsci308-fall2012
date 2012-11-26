@@ -26,7 +26,7 @@ public class ArcadeFrame extends JFrame {
 
     /**
      * Method to return a 'holder' panel. This panel is one of
-     * the holder panels in the frame. You can place place things in this 
+     * the holder panels in the frame. You can place place things in this
      * panel. To do so, first clear the panel, and then add the new
      * component.
      * 
@@ -34,12 +34,9 @@ public class ArcadeFrame extends JFrame {
      * @return
      */
     public ArcadePanel getPanel (String panelType) {
-        if (myPanels.containsKey(panelType)) {
+        if (myPanels.containsKey(panelType))
             return myPanels.get(panelType);
-        }
-        else {
-            return null;
-        }
+        else return null;
     }
 
 }

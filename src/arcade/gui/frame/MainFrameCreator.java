@@ -8,6 +8,8 @@ import arcade.gui.panel.ArcadePanel;
 
 /**
  * 
+ * Primary frame creator. Creates the frame for the arcade.
+ * 
  * @author Michael Deng
  * 
  */
@@ -72,9 +74,9 @@ public class MainFrameCreator extends AbstractFrameCreator {
         setupPanel("foot", panel7);
 
         // add subpanels to contentpanel
-        getContentPanel().add(panel1, "center");
-        getContentPanel().add(panel2, "growx, center");
-        getContentPanel().add(panel3, "center, wrap");
+        getContentPanel().add(panel1, "align center");
+        getContentPanel().add(panel2, "growx, align center");
+        getContentPanel().add(panel3, "align center, wrap");
         getContentPanel().add(panel4, "span, growx, wrap");
         getContentPanel().add(panel5, "span 2, grow");
         getContentPanel().add(panel6, "growy, wrap");
