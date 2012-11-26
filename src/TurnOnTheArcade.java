@@ -19,6 +19,8 @@ import arcade.utility.ImageReader;
  */
 public class TurnOnTheArcade {
 
+    private static final boolean START_WITH_POWER_BUTTON = false;
+
     private static JFrame startFrame;
     private static JPanel startPanel;
 
@@ -35,17 +37,38 @@ public class TurnOnTheArcade {
      */
     public static void main (String[] args) {
 
+        if (START_WITH_POWER_BUTTON) {
+            startWithPowerButton();
+        }
+        else {
+            startWithoutPowerButton();
+        }
+
+    }
+
+    /**
+     * Starts the arcade without a power button
+     */
+    private static void startWithoutPowerButton () {
+        Arcade theArcade = new Arcade();
+    }
+
+    /**
+     * Starts the arcade with a power button
+     */
+    private static void startWithPowerButton () {
+
         // sets up the jframe and jpanel
         startFrame = new JFrame("Ready?");
         startFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         startFrame.setResizable(false);
         startPanel = new JPanel();
-//        startPanel.setLayout(new BorderLayout());
+        // startPanel.setLayout(new BorderLayout());
         startPanel.setBackground(Color.BLACK);
 
         addPowerButton();
 
-//        startFrame.getContentPane().add(startPanel, BorderLayout.CENTER);
+        // startFrame.getContentPane().add(startPanel, BorderLayout.CENTER);
         startFrame.getContentPane().add(startPanel);
 
         // starts the jframe
@@ -54,6 +77,7 @@ public class TurnOnTheArcade {
 
         startFrame.pack();
         startFrame.setVisible(true);
+
     }
 
     private static void addPowerButton () {

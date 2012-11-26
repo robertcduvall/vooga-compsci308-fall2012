@@ -9,7 +9,7 @@ import arcade.gamemanager.GameCenter;
 import arcade.datatransfer.GameLink;
 import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
-import arcade.gui.frame.MainFrameCreator;
+import arcade.gui.frame.MainFrameCreatorOld;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.SocialCenter;
 
@@ -47,7 +47,7 @@ public class Arcade {
 
         // initialize things
         myFactory = new PanelCreatorFactory(this);
-        myGameCenter = new GameCenter();
+//        myGameCenter = new GameCenter(); // GameCenter is currently broken. 
         mySocialCenter = SocialCenter.getInstance();
         myGameManager = new GameLink();
         myUserManager = new UserLink();
@@ -59,9 +59,12 @@ public class Arcade {
 
     }
 
+    /**
+     * Creates the frame and populates it with the default panels
+     */
     private void frameSetup () {
         // create the frame
-        MainFrameCreator frameCreator = new MainFrameCreator(this);
+        MainFrameCreatorOld frameCreator = new MainFrameCreatorOld(this);
         myFrame = frameCreator.createFrame();
 
         // fill it with default panels

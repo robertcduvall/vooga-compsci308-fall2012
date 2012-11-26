@@ -5,6 +5,6 @@ package arcade.gui.frame;
  * @author Michael Deng
  *
  */
-public class MainFrameCreator  extends AbstractFrameCreator {
+public class AltFrameCreator extends AbstractFrameCreator {
 
 }

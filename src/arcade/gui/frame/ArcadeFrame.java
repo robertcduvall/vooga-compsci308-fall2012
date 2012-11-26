@@ -26,7 +26,9 @@ public class ArcadeFrame extends JFrame {
 
     /**
      * Method to return a 'holder' panel. This panel is one of
-     * the panels in the frame. You can put things in this panel.
+     * the holder panels in the frame. You can place place things in this 
+     * panel. To do so, first clear the panel, and then add the new
+     * component.
      * 
      * @param panelType the name of the holder panel
      * @return
