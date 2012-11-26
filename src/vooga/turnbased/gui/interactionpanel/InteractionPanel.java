@@ -1,6 +1,7 @@
 package vooga.turnbased.gui.interactionpanel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -15,14 +16,24 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import vooga.turnbased.gamecore.GameLoopMember;
 
+/**
+ * A GUI panel for dialogue box etc. to be displayed in game
+ * 
+ * @author rex
+ *
+ */
+public class InteractionPanel {
 
-public class InteractionPanel implements GameLoopMember {
-    
     private static final int WIDTH = 200;
     private static final int HEIGHT = 100;
     private static final int ROW_NUMBER = 3;
     private static final int COLUMN_NUMBER = 2;
-    private static final double MARGIN_PROPORTION = 0.11;
+    private static final double MARGIN_PROPORTION = 0.1;
+    private static Image myBulletPointImage = Toolkit.getDefaultToolkit()
+            .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
+    private static Dimension ourBulletSize = new Dimension(50, 50);
+
+    private int myBulletPointIndex = 0;
 
     private Image myPanelImage;
 
@@ -33,7 +44,8 @@ public class InteractionPanel implements GameLoopMember {
 
     public InteractionPanel () {
         try {
-            myPanelImage = ImageIO.read(new File("src/vooga/turnbased/resources/image/GUI/dialogue1.png"));
+            myPanelImage =
+                    ImageIO.read(new File("src/vooga/turnbased/resources/image/GUI/dialogue1.png"));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -44,42 +56,50 @@ public class InteractionPanel implements GameLoopMember {
         createHardcodedOptions();
     }
 
-    private void createHardcodedOptions() {
+    private void createHardcodedOptions () {
         myOptions.add(new StrategyOption("option1", myOptionPositions.get(0)));
         myOptions.add(new StrategyOption("Another boring option", myOptionPositions.get(1)));
         myOptions.add(new StrategyOption("Even more option!!!", myOptionPositions.get(2)));
     }
-    
-    public void update () {
-
-    }
 
     public void paint (Graphics g) {
-        for (StrategyOption option: myOptions) {
+        for (StrategyOption option : myOptions) {
             option.paintOption(myImageGraphics);
         }
+        drawBulletPoint(myImageGraphics);
         g.drawImage(myPanelImage, 0, 0, null);
     }
-    
-    public void highlightOption(MouseEvent e) {
-        for (StrategyOption option: myOptions) {
-            option.highlight(e);
+
+    public void highlightOption (MouseEvent e) {
+        for (int i=0; i< myOptions.size(); i++) {
+            myOptions.get(i).highlight(e);
+            if (myOptions.get(i).optionIsHighlighted()) {
+                myBulletPointIndex = i;
+            }
         }
     }
-    
-    public void dehighlightOption(MouseEvent e) {
-        for (StrategyOption option: myOptions) {
+
+    public void dehighlightOption (MouseEvent e) {
+        for (StrategyOption option : myOptions) {
             option.dehighlight(e);
         }
     }
     
-    private List<Point> initializeOptionPositions() {
+    private void drawBulletPoint(Graphics g) {
+        int x = myOptionPositions.get(myBulletPointIndex).x - ourBulletSize.width;
+        int y = myOptionPositions.get(myBulletPointIndex).y - ourBulletSize.height / 2;
+        g.drawImage(myBulletPointImage, x, y, ourBulletSize.width, ourBulletSize.height, null);
+    }
+
+    private List<Point> initializeOptionPositions () {
         List<Point> positions = new ArrayList<Point>();
         int width = myPanelImage.getWidth(null);
         int height = myPanelImage.getHeight(null);
-        for (int i=1; i<=ROW_NUMBER; i++) {
-            positions.add(new Point((int)Math.round(MARGIN_PROPORTION * width), height * i / 4));
-            positions.add(new Point(width / 2, height * i / 4));
+        for (int i = 1; i <= ROW_NUMBER; i++) {
+            for (int j = 0; j < COLUMN_NUMBER; j++) {
+                int xCoordinate = (int) Math.round(MARGIN_PROPORTION * width) + width * j / COLUMN_NUMBER;
+                positions.add(new Point(xCoordinate, height * i / 4));
+            }
         }
         return positions;
     }

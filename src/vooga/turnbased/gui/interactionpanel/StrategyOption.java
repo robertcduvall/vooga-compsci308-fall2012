@@ -13,10 +13,6 @@ import java.awt.event.MouseEvent;
 
 
 public class StrategyOption {
-
-    private static Image myBulletPointImage = Toolkit.getDefaultToolkit()
-            .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
-    private static Dimension ourBulletSize = new Dimension(50, 50);
     
     private static final int FONT_SIZE = 20;
     private String myOptionMessage;
@@ -24,20 +20,20 @@ public class StrategyOption {
     private FontMetrics myFontMetrics;
     private Rectangle mySize;
     private Color myColor;
-    boolean isHighlighted;
+    private boolean isHighlighted;
 
     public StrategyOption (String message, Point position) {
         myOptionMessage = message;
         myPosition = position;
         myColor = Color.RED;
         isHighlighted = false;
-        // FontMetrics metr = this.getFontMetrics(gameFont);
     }
 
     public void paintOption (Graphics g) {
         Font optionFont = new Font("Helvetica", Font.BOLD, FONT_SIZE);
         g.setFont(optionFont);
         g.setColor(myColor);
+        GameFont myGameFont = new GameFont(g, optionFont);
         myFontMetrics = g.getFontMetrics();
         if (mySize == null) {
             mySize =
@@ -45,19 +41,12 @@ public class StrategyOption {
                                   myFontMetrics.stringWidth(myOptionMessage),
                                   myFontMetrics.getHeight());
         }
-        drawBulletPoint(g);
-        g.drawString(myOptionMessage, myPosition.x, myPosition.y);
-    }
-    
-    private void drawBulletPoint(Graphics g) {
-        int x = myPosition.x - ourBulletSize.width;
-        int y = myPosition.y - ourBulletSize.height / 2;
-        g.drawImage(myBulletPointImage, x, y, ourBulletSize.width, ourBulletSize.height, null);
+        myGameFont.shodow(myOptionMessage, myColor, myPosition);
     }
 
     public void highlight (MouseEvent e) {
         if (mySize.contains(e.getPoint())) {
-            myColor = Color.CYAN;
+            myColor = Color.BLUE;
             isHighlighted = true;
         }
     }
@@ -67,5 +56,9 @@ public class StrategyOption {
             myColor = Color.RED;
             isHighlighted = false;
         }
+    }
+    
+    public boolean optionIsHighlighted() {
+        return isHighlighted;
     }
 }
