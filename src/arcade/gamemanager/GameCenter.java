@@ -2,11 +2,18 @@ package arcade.gamemanager;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 import util.xml.XmlParser;
+import util.xml.XmlUtilities;
 import arcade.IArcadeGame;
 import arcade.usermanager.SocialCenter;
 import arcade.utility.ReadWriter;
@@ -19,12 +26,29 @@ import arcade.utility.ReadWriter;
  */
 public class GameCenter {
 
-    private XmlParser myXmlParser;
     private List<Game> myGames;
     private SocialCenter socialCenter;
+    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
 
     public GameCenter () {
         initialize();
+    }
+    
+    private Document makeDocument(File file) {
+        Document doc = null;
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            doc = db.parse(file);
+        } catch (IOException e) {
+            System.out.println("IOException on file: " + file.toString());
+        } catch (ParserConfigurationException e) {
+            System.out.println("parser error on file: " + file.toString());
+        } catch (SAXException e) {
+            System.out.println("SAXException on file: " + file.toString());
+        }
+        
+        return doc;
     }
 
     /**
@@ -32,8 +56,6 @@ public class GameCenter {
      */
     public void initialize () {
         socialCenter = SocialCenter.getInstance();
-        File f = new File("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
-        myXmlParser = new XmlParser(f);
         myGames = new ArrayList<Game>();
         refreshGames();
 
@@ -44,9 +66,8 @@ public class GameCenter {
      */
     private void refreshGames () {
         myGames.clear();
-        NodeList nList =
-                myXmlParser.getElementsByName(myXmlParser.getDocumentElement(), "filepath");
-
+        Document doc = makeDocument(new File(myGameXml));
+        NodeList nList = doc.getElementsByTagName("filepath");
         for (int i = 0; i < nList.getLength(); i++) {
             String filePath = nList.item(i).getTextContent();
             try {
