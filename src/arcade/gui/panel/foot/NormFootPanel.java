@@ -33,28 +33,29 @@ public class NormFootPanel extends AFootPanel {
         aboutBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                // getArcade().replacePanel("Login");
+                getArcade().replacePanel("AboutMain");
             }
         });
 
         helpBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                // getArcade().replacePanel("Login");
+                getArcade().replacePanel("HelpMain");
             }
         });
 
         companyBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                // getArcade().replacePanel("Login");
+                getArcade().replacePanel("CompanyMain");
             }
         });
 
         jobsBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                // getArcade().replacePanel("Login");
+
+                getArcade().replacePanel("JobsMain");
             }
         });
 
