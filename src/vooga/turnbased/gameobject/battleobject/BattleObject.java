@@ -8,20 +8,19 @@ import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
+import java.util.Map;
 
 import vooga.turnbased.gameobject.GameObject;
 
 /**
  * Abstract class that is extended to create monsters/sprites in the BattleMode.
- * @author Michael Elgart
+ * @author Michael Elgart, Tony
  *
  */
 public abstract class BattleObject extends GameObject {
-
-    private int myDefense;
-    private int myAttack;
-    private int myHealth;
-    private int myMaxHealth;
+    
+    private Map<String, Number> myStats;
 
     /**
      * Create the BattleObject for this sprite which will be used in
@@ -34,13 +33,42 @@ public abstract class BattleObject extends GameObject {
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      * @param image The image of this BattleObject
      */
-    public BattleObject(int id, String event, int defense,
-            int attack, int health, Image image) {
+    public BattleObject(int id, String event, Map<String, Number> stats, Image image) {
         super(id, event, image);
-        myMaxHealth = health;
-        setDefense(defense);
-        setAttack(attack);
-        setHealth(health);
+        myStats = new HashMap<String, Number>();
+        setStats(stats);
+    }
+    /**
+     * Set the stats of the battle object
+     * @param stats 
+     */
+    public void setStats (Map<String, Number> stats) {
+        for (String key:stats.keySet()) {
+            myStats.put(key, stats.get(key));
+        }
+    }
+    /**
+     * Fetch a particular stat
+     * @param statName 
+     * @return
+     */
+    public Number getStat (String statName) {
+        if (myStats.containsKey(statName)) {
+            return myStats.get(statName);
+        }
+        else {
+            return 0;
+        }
+    }
+    /**
+     * Change the value of the given stat
+     * @param statName 
+     * @param value 
+     */
+    public void changeStat (String statName, Number value) {
+        if (myStats.containsKey(statName)) {
+            myStats.put(statName, value);
+        }
     }
 
     /**
@@ -63,7 +91,12 @@ public abstract class BattleObject extends GameObject {
      * @return True if health > 0.
      */
     public boolean isAlive() {
-        return myHealth > 0;
+        if (myStats.containsKey("health")) {
+            Number health = myStats.get("health");
+            return health.doubleValue() > 0;
+        }
+        else
+            return false;
     }
 
     /**
@@ -81,6 +114,8 @@ public abstract class BattleObject extends GameObject {
     }
 
     private void paintStats (Graphics g, int x, int y, int width, int height) {
+        int myHealth = myStats.get("health").intValue();
+        int myMaxHealth = myStats.get("maxHealth").intValue();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(Color.CYAN);
         g2d.draw3DRect(x, y, width, height, true);
@@ -94,62 +129,6 @@ public abstract class BattleObject extends GameObject {
         String health = "Health: " + myHealth + "/" + myMaxHealth;
         gv = font.createGlyphVector(frc, health);
         g2d.drawGlyphVector(gv, x+10, y+60);
-    }
-
-    /**
-     * Set defense to the input parameter.
-     * @param defense The value to set the defense at.
-     */
-    public void setDefense (int defense) {
-        myDefense = defense;
-    }
-
-    /**
-     * Returns the defense stat of the BattleObject/monster.
-     * @return This the defense stat of the BattleObject/monster
-     */
-    public int getDefense () {
-        return myDefense;
-    }
-
-    /**
-     * Set the attack to be a new value.
-     * @param attack The new value for attack.
-     */
-    public void setAttack (int attack) {
-        myAttack = attack;
-    }
-
-    /**
-     * Returns the attack stat of the BattleObjet/monster.
-     * @return The value of the attack that is returned.
-     */
-    public int getAttack () {
-        return myAttack;
-    }
-
-    /**
-     * Set the health to be a new value.
-     * @param health The new value for health.
-     */
-    public void setHealth (int health) {
-        myHealth = health;
-    }
-
-    /**
-     * Returns the current health stat of the BattleObjet/monster.
-     * @return The value of the health that is returned.
-     */
-    public int getHealth () {
-        return myHealth;
-    }
-
-    /**
-     * Changes the current health by healthDiff.
-     * @param healthDiff amount to change health by.
-     */
-    public void changeHealth(int healthDiff) {
-        myHealth += healthDiff;
     }
     
     @Override 

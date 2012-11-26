@@ -1,12 +1,13 @@
 package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
+import java.util.Map;
 
 
 /**
  * This is a test battle monster that will be used to see if the BattleMode functions.
  * Extends the abstract class BattleObject.
- * @author Michael Elgart
+ * @author Michael Elgart, Tony
  *
  */
 public class TestMonster extends BattleObject {
@@ -21,20 +22,19 @@ public class TestMonster extends BattleObject {
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      * @param image The image of this testMonster
      */
-    public TestMonster (int id, String event, int defense,
-            int attack, int health, Image image) {
-        super(id, event, defense, attack, health, image);
+    public TestMonster (int id, String event, Map<String, Number> stats, Image image) {
+        super(id, event, stats, image);
     }
 
     @Override
     public void takeDamage (int damageDone) {
-        int healthLost =  damageDone - getDefense();
-        setHealth(getHealth() - healthLost);
+        int healthLost =  damageDone - getStat("defense").intValue();
+        //System.out.println(healthLost);
+        changeStat("health", getStat("health").intValue() - healthLost);
     }
 
     @Override
     public void attackEnemy (BattleObject enemy) {
-        enemy.takeDamage(getAttack());
+        enemy.takeDamage(getStat("attack").intValue());
     }
-
 }
