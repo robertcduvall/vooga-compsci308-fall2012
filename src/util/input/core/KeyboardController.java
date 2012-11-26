@@ -38,15 +38,12 @@ public class KeyboardController extends Controller<KeyListener> implements
             }
             catch (IllegalAccessException e1) {
                 //this will never be thrown because it was checked for previously
-                e1.printStackTrace();
             }
             catch (InvocationTargetException e1) {
                 //this will never be thrown because it was checked for previously
-                e1.printStackTrace();
             }
             catch (NoSuchMethodException e1) {
                 //this will never be thrown because it was checked for previously
-                e1.printStackTrace();
             } 
  
     }
@@ -59,16 +56,13 @@ public class KeyboardController extends Controller<KeyListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
@@ -79,15 +73,12 @@ public class KeyboardController extends Controller<KeyListener> implements
             }
             catch (IllegalAccessException e1) {
                 //this will never be thrown because it was checked for previously
-                e1.printStackTrace();
             }
             catch (InvocationTargetException e1) {
                 //this will never be thrown because it was checked for previously
-                e1.printStackTrace();
             }
             catch (NoSuchMethodException e1) {
                 //this will never be thrown because it was checked for previously
-                e1.printStackTrace();
             } 
     }
 }

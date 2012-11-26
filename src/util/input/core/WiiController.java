@@ -1,5 +1,6 @@
 package util.input.core;
 
+import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 import util.input.inputhelpers.UKeyCode;
 import wiiusej.WiiUseApiManager;
@@ -80,80 +81,115 @@ public class WiiController extends Controller<WiimoteListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
     public void onMotionSensingEvent(MotionSensingEvent arg0) {
         // Based on the data invoke up motion, down motion, left motion or right
         // motion
+        try {
+            performReflections(arg0, "onMotionSensingEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onClassicControllerInsertedEvent(
             ClassicControllerInsertedEvent arg0) {
-
+        //method will never be called as classic controller is not supported
     }
 
     @Override
     public void onClassicControllerRemovedEvent(
             ClassicControllerRemovedEvent arg0) {
-
-
+        //method will never be called as classic controller is not supported
     }
 
     @Override
     public void onDisconnectionEvent(DisconnectionEvent arg0) {
-
-
+        try {
+            performReflections(arg0, "onDisconnectionEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onExpansionEvent(ExpansionEvent arg0) {
-
-
+        //method will never be called as other controllers are not supported
     }
 
     @Override
     public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
-
-
+        //method will never be called as guitar hero is not supported
     }
 
     @Override
     public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
-
-
+      //method will never be called
     }
 
     @Override
     public void onIrEvent(IREvent arg0) {
-
-
+        try {
+            performReflections(arg0, "onIrEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
-
-
+        //method will never be called
     }
 
     @Override
     public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
-
+      //method will never be called
     }
 
     @Override
     public void onStatusEvent(StatusEvent arg0) {
-
+        try {
+            performReflections(arg0, "onStatusEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 }
