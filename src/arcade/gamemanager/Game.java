@@ -26,8 +26,8 @@ public class Game {
     private GameSaver mySaver;
     private IArcadeGame myGame;
     private Node myGameNode;
-    private XmlParser myXmlParser;
-    private XmlBuilder myXmlBuilder;
+    private GameXmlParser myXmlParser;
+    private GameXmlWriter myXmlBuilder;
 
     /**
      * Constructor for Game Manager takes in a specific game, so there is a
@@ -42,10 +42,8 @@ public class Game {
     public Game (IArcadeGame gameObject) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
-        File f = new File(
-                "../vooga-compsci308-fall2012/src/arcade/database/game.xml");
-        XmlParser myXmlParser = new XmlParser(f);
-        myXmlBuilder = new XmlBuilder(f);
+        GameXmlParser myXmlParser = new GameXmlParser("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
+        myXmlBuilder = new GameXmlWriter();
         NodeList allGames = myXmlParser.getElementsByName(
                 myXmlParser.getDocumentElement(), "game");
         for (int i = 0; i < allGames.getLength(); i++) {
