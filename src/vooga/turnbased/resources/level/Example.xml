@@ -88,6 +88,7 @@
 				<defense>2</defense>
 				<attack>5</attack>
 			</stats>
+			<name>Evil Monster</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/005.png</image>
 		</battle>
 	</sprite>
@@ -113,6 +114,7 @@
 				<defense>3</defense>
 				<attack>7</attack>
 			</stats>
+			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
 		</battle>
 	</sprite>

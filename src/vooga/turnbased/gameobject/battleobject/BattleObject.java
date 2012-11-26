@@ -21,7 +21,8 @@ import vooga.turnbased.gameobject.GameObject;
 public abstract class BattleObject extends GameObject {
     
     private Map<String, Number> myStats;
-
+    private String myName;
+    
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
@@ -33,10 +34,11 @@ public abstract class BattleObject extends GameObject {
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      * @param image The image of this BattleObject
      */
-    public BattleObject(int id, String event, Map<String, Number> stats, Image image) {
+    public BattleObject(int id, String event, Map<String, Number> stats, String name, Image image) {
         super(id, event, image);
         myStats = new HashMap<String, Number>();
         setStats(stats);
+        myName = name;
     }
     /**
      * Set the stats of the battle object
@@ -114,18 +116,18 @@ public abstract class BattleObject extends GameObject {
     }
 
     private void paintStats (Graphics g, int x, int y, int width, int height) {
-        int myHealth = myStats.get("health").intValue();
-        int myMaxHealth = myStats.get("maxHealth").intValue();
+        
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(Color.CYAN);
         g2d.draw3DRect(x, y, width, height, true);
         g2d.fill(new Rectangle2D.Double(x, y, width, height));
-        String name = "Cool Battler";
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
-        GlyphVector gv = font.createGlyphVector(frc, name);
+        GlyphVector gv = font.createGlyphVector(frc, myName);
         g2d.drawGlyphVector(gv, x+10, y+30);
+        int myHealth = myStats.get("health").intValue();
+        int myMaxHealth = myStats.get("maxHealth").intValue();
         String health = "Health: " + myHealth + "/" + myMaxHealth;
         gv = font.createGlyphVector(frc, health);
         g2d.drawGlyphVector(gv, x+10, y+60);

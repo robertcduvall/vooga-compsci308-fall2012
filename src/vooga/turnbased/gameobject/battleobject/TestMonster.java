@@ -11,7 +11,7 @@ import java.util.Map;
  *
  */
 public class TestMonster extends BattleObject {
-
+    
     /**
      * Creates a test battle monster.
      * @param id the ID number of the object.
@@ -22,8 +22,8 @@ public class TestMonster extends BattleObject {
      * @param health The amount of health that must be destroyed for the sprite/monster to die.
      * @param image The image of this testMonster
      */
-    public TestMonster (int id, String event, Map<String, Number> stats, Image image) {
-        super(id, event, stats, image);
+    public TestMonster (int id, String event, Map<String, Number> stats, String name, Image image) {
+        super(id, event, stats, name, image);
     }
 
     @Override

@@ -221,9 +221,11 @@ public class LevelXmlParser {
                 stats.put("health", XmlUtilities.getChildContentAsDouble(battleStats, "health"));
                 stats.put("maxHealth", XmlUtilities.getChildContentAsDouble(battleStats, "health"));
             }
+            String name = XmlUtilities.getChildContent(battleSprite, "name");
             Image image = XmlUtilities.getChildContentAsImage(battleSprite, "image");
             BattleObject battleObject =
-                    (BattleObject) Reflection.createInstance(className, s.getID(), event, stats, image);
+                    (BattleObject) Reflection.createInstance(className, s.getID(), 
+                            event, stats, name, image);
             return battleObject;
         }
         return null;
