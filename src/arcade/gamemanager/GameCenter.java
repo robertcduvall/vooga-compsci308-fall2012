@@ -129,6 +129,6 @@ public class GameCenter {
 //     GameCenter gc = new GameCenter();
 //     List<String> list = gc.getGameList();
 //     System.out.println(gc.myGames.size());
-//     gc.myGames.get(1).runGame();
+//     gc.getGame("Turnbased RPG").runGame();
 //     }
 }
