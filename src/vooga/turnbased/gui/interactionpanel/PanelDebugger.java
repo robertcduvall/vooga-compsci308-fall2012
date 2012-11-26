@@ -3,6 +3,7 @@ package vooga.turnbased.gui.interactionpanel;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -31,11 +32,33 @@ public class PanelDebugger extends JPanel{
         myFrame.add(new PanelDebugger());
     }
     
-    private class GameMouseListener extends MouseAdapter {
+    private class GameMouseListener implements MouseListener {
         @Override
-        //specifically deal with left click
         public void mouseClicked (MouseEvent e) {
-            myInteractionPanel.handleMouseEvent(e);
+            
+        }
+
+        @Override
+        public void mouseEntered (MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseExited (MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mousePressed (MouseEvent e) {
+            myInteractionPanel.highlightOption(e);
+            repaint();
+        }
+
+        @Override
+        public void mouseReleased (MouseEvent e) {
+            myInteractionPanel.dehighlightOption(e);
             repaint();
         }
     }

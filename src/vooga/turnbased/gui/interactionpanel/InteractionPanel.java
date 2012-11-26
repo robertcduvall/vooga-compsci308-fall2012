@@ -20,6 +20,8 @@ public class InteractionPanel implements GameLoopMember {
     
     private static final int WIDTH = 200;
     private static final int HEIGHT = 100;
+    private static final int ROW_NUMBER = 3;
+    private static final int COLUMN_NUMBER = 2;
     private static final double MARGIN_PROPORTION = 0.11;
 
     private Image myPanelImage;
@@ -59,9 +61,15 @@ public class InteractionPanel implements GameLoopMember {
         g.drawImage(myPanelImage, 0, 0, null);
     }
     
-    public void handleMouseEvent(MouseEvent e) {
+    public void highlightOption(MouseEvent e) {
         for (StrategyOption option: myOptions) {
-            option.handleMouseEvent(e);
+            option.highlight(e);
+        }
+    }
+    
+    public void dehighlightOption(MouseEvent e) {
+        for (StrategyOption option: myOptions) {
+            option.dehighlight(e);
         }
     }
     
@@ -69,7 +77,7 @@ public class InteractionPanel implements GameLoopMember {
         List<Point> positions = new ArrayList<Point>();
         int width = myPanelImage.getWidth(null);
         int height = myPanelImage.getHeight(null);
-        for (int i=1; i<=3; i++) {
+        for (int i=1; i<=ROW_NUMBER; i++) {
             positions.add(new Point((int)Math.round(MARGIN_PROPORTION * width), height * i / 4));
             positions.add(new Point(width / 2, height * i / 4));
         }

@@ -14,20 +14,23 @@ import java.awt.event.MouseEvent;
 
 public class StrategyOption {
 
+    private static Image myBulletPointImage = Toolkit.getDefaultToolkit()
+            .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
+    private static Dimension ourBulletSize = new Dimension(50, 50);
+    
     private static final int FONT_SIZE = 20;
     private String myOptionMessage;
     private Point myPosition;
     private FontMetrics myFontMetrics;
     private Rectangle mySize;
     private Color myColor;
-    private static Image myBulletPointImage = Toolkit.getDefaultToolkit()
-            .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
-    private static Dimension ourBulletSize = new Dimension(50, 50);
+    boolean isHighlighted;
 
     public StrategyOption (String message, Point position) {
         myOptionMessage = message;
         myPosition = position;
         myColor = Color.RED;
+        isHighlighted = false;
         // FontMetrics metr = this.getFontMetrics(gameFont);
     }
 
@@ -52,9 +55,17 @@ public class StrategyOption {
         g.drawImage(myBulletPointImage, x, y, ourBulletSize.width, ourBulletSize.height, null);
     }
 
-    public void handleMouseEvent (MouseEvent e) {
+    public void highlight (MouseEvent e) {
         if (mySize.contains(e.getPoint())) {
             myColor = Color.CYAN;
+            isHighlighted = true;
+        }
+    }
+    
+    public void dehighlight (MouseEvent e) {
+        if (isHighlighted) {
+            myColor = Color.RED;
+            isHighlighted = false;
         }
     }
 }
