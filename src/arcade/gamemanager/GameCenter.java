@@ -27,7 +27,6 @@ import arcade.utility.ReadWriter;
 public class GameCenter {
 
     private List<Game> myGames;
-    private SocialCenter socialCenter;
     private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
 
     public GameCenter () {
@@ -55,7 +54,6 @@ public class GameCenter {
      * initializes the class by reading information from game.xml file.
      */
     public void initialize () {
-        socialCenter = SocialCenter.getInstance();
         myGames = new ArrayList<Game>();
         refreshGames();
 
@@ -116,14 +114,14 @@ public class GameCenter {
      * @param tag a tag that games have in common
      * @return list of games that have the tag.
      */
-    public List<Game> getGameListByTagName (String tag) {
-        List<Game> games = new ArrayList<Game>();
+    public List<String> getGameListByTagName (String tag) {
+        List<String> gameList = new ArrayList<String>();
         for (Game gm : myGames) {
             if (gm.getGenre().contains(tag)) {
-                games.add(gm);
+                gameList.add(gm.getGameName());
             }
         }
-        return games;
+        return gameList;
     }
 
 //     public static void main(String args[]) {
