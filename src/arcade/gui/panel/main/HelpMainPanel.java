@@ -12,26 +12,26 @@ import arcade.gui.panel.ArcadePanel;
  * @author Michael Deng
  * 
  */
-public class BlankMainPanel extends AMainPanel {
+public class HelpMainPanel extends AMainPanel {
 
-    public BlankMainPanel (Arcade a) {
+    public HelpMainPanel (Arcade a) {
         super(a);
     }
 
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("BlankMainPanel");
+        System.out.println("HelpMainPanel");
 
         JLabel label = new JLabel();
-        label.setText("Please login to begin.");
+        label.setText("This is the Help page.");
         label.setForeground(Color.WHITE);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
 
         myPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         myPanel.add(label, "align center");
-        
+
         return myPanel;
     }
 

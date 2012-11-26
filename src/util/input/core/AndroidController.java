@@ -3,6 +3,8 @@ package util.input.core;
 import java.lang.reflect.InvocationTargetException;
 import util.input.android.bluetoothserver.AndroidBluetoothServer;
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidControllerConfigMessage;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 import util.input.inputhelpers.UKeyCode;
@@ -24,13 +26,14 @@ public class AndroidController extends Controller<AndroidListener> implements An
      */
 
     private int myControllerNum;
+    AndroidBluetoothServer myServer;
 
     public AndroidController (int controllerNum) {
         super();
         myControllerNum = controllerNum;
-        AndroidBluetoothServer server = new AndroidBluetoothServer(controllerNum);
-        server.subscribe(this);
-        server.startServer();
+        myServer = new AndroidBluetoothServer(controllerNum);
+        myServer.subscribe(this);
+        myServer.startServer();
     }
 
     @Override
@@ -117,6 +120,34 @@ public class AndroidController extends Controller<AndroidListener> implements An
             e1.printStackTrace();
         }
 
+    }
+    public void setControlOptions(boolean isGameBoyActive, boolean isPlaystationActive, boolean isTouchControlActive, boolean isAccelerometerActive){
+       AndroidControllerConfigMessage settings = new AndroidControllerConfigMessage(isGameBoyActive, isPlaystationActive, isTouchControlActive, isAccelerometerActive);
+       myServer.notifyController(settings);
+    }
+    
+    public void messageServer(){
+        //myServer.notifyController(new AndroidButtonEvent(4, 8));
+    }
+
+    @Override
+    public void onAccelerometerEvent (AndroidSensorEvent e) {
+        try {
+            performReflections(e, "onAccelerometerEvent");
+        }
+        catch (IllegalAccessException e1) {
+            // this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (InvocationTargetException e1) {
+            // this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        catch (NoSuchMethodException e1) {
+            // this will never be thrown because it was checked for previously
+            e1.printStackTrace();
+        }
+        
     }
 
 }

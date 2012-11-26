@@ -130,13 +130,13 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
          * Start button
          */
         public static final int START = 106;
+        /**
+         * Select button
+         */
+        public static final int SELECT = 107;
         
     }
-    /**
-     * 
-     * A data wrapper for the components found on a touch controller.
-     *
-     */
+    
     public static final class TouchController {
         
         /**
@@ -159,6 +159,10 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
          * Start button
          */
         public static final int START = 204;
+        /**
+        * Select button
+        */
+       public static final int SELECT = 204;
         
     }
    

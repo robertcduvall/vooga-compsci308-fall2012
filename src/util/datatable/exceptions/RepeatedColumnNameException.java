@@ -1,11 +1,21 @@
 package util.datatable.exceptions;
 
-public class RepeatedColumnNameException extends Exception{
-        
-        private final static String DESCRIPTION=" Repeated Column Name ";
-        public RepeatedColumnNameException(String repeatedColumn){
-            super(DESCRIPTION+ repeatedColumn);
-        }
+/**
+ * Exception thrown for repeated column name.
+ * @author Lance
+ *
+ */
+@SuppressWarnings("serial")
+public class RepeatedColumnNameException extends
+    Exception {
+    private static final String DESCRIPTION = " Repeated Column Name ";
+
+    /**
+     * @param repeatedColumn - specific column repeated
+     */
+    public RepeatedColumnNameException(String repeatedColumn) {
+        super(DESCRIPTION + repeatedColumn);
+    }
 
 
 }

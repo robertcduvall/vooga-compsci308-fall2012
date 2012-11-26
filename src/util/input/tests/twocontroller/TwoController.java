@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.AndroidControllerEvent;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 import util.input.core.AndroidController;
@@ -302,6 +303,12 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
     @Override
     public void onTouchMovement (LineSegment l) {
         //not relevant for non touch controller enabled games
+    }
+
+    @Override
+    public void onAccelerometerEvent (AndroidSensorEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

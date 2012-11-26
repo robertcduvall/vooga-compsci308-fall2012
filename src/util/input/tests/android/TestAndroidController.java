@@ -1,6 +1,7 @@
 package util.input.tests.android;
 
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 import util.input.core.AndroidController;
@@ -65,6 +66,12 @@ public class TestAndroidController implements AndroidListener {
     public void onTouchMovement (LineSegment l) {
         myGame.addLine(l);
         System.out.println("received touch movement");
+        
+    }
+
+    @Override
+    public void onAccelerometerEvent (AndroidSensorEvent e) {
+        // TODO Auto-generated method stub
         
     }
     

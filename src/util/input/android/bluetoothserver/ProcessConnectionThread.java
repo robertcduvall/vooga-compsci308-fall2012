@@ -2,9 +2,11 @@ package util.input.android.bluetoothserver;
 
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.OutputStream;
 import javax.microedition.io.StreamConnection;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.AndroidControllerEvent;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 
@@ -43,11 +45,12 @@ public class ProcessConnectionThread implements Runnable {
                 AndroidControllerEvent androidEvent =
                         (AndroidControllerEvent) objectStream.readObject();
                 handleObject(androidEvent);
-                // System.out.println(androidEvent.getClass().toString()+"worked");
+               
 
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             myServer.notifyDisconnect();
         }
     }
@@ -64,6 +67,10 @@ public class ProcessConnectionThread implements Runnable {
         if (androidEvent.getClass() == LineSegment.class) {
             LineSegment l = (LineSegment) androidEvent;
             myServer.notify(l);
+        }
+        if(androidEvent instanceof AndroidSensorEvent){
+            AndroidSensorEvent e = (AndroidSensorEvent) androidEvent;
+            myServer.notify(e);
         }
 
     }
