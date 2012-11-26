@@ -1,72 +1,113 @@
 package util.datatable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
+/**
+ * Container for a row in the datatable.
+ * @author Lance
+ *
+ */
 public class RowElement {
-    
-    protected Map<String,String> myData;
-    
-    public RowElement(){
-        myData=new HashMap<String,String>();
+
+    private Map<String , String> myData;
+
+    /**
+     * Instantiating an empty row element.
+     */
+    public RowElement() {
+        myData = new HashMap<String, String>();
     }
-    
-    public RowElement(Map<String,String> map){
+
+    /**
+     * Instantiating a row element with initial values from a map.
+     * @param map - initial data values
+     */
+    public RowElement(Map<String , String> map) {
         this();
         myData.putAll(map);
     }
-    
-    public void setEntry(String s,String s2) throws UnrecognizedColumnNameException{
-        if (myData.containsKey(s)){
-            myData.put(s, s2);
+
+    /**
+     * Write to specific column of the row element.
+     * @param  col - Column key
+     * @param value - Specific Value
+     * @throws UnrecognizedColumnNameException - column name doesnt exist
+     */
+    public void setEntry(String col , String value) throws
+        UnrecognizedColumnNameException {
+        if (myData.containsKey(col)) {
+            myData.put(col, value);
         }
-        else{
-            throw new UnrecognizedColumnNameException(s);
+        else {
+            throw new UnrecognizedColumnNameException(col);
         }
     }
-    
 
-    public void setEntry (Map<String, String> map) throws UnrecognizedColumnNameException {
-        Set<String> keyset=map.keySet();
-        Iterator<String> it=keyset.iterator();
-        while(it.hasNext()){
-            String pKey=(String) it.next();
-            if(myData.containsKey(pKey)){
-                myData.put(pKey,map.get(pKey));
+    /**
+     * Write to specific column of the row element.
+     * @param  map - map of values to be written
+     * @throws UnrecognizedColumnNameException - column name doesnt exist
+     */
+    public void setEntry (Map<String, String> map) throws
+        UnrecognizedColumnNameException {
+        Set<String> keySet = map.keySet();
+        Iterator<String> it = keySet.iterator();
+        while (it.hasNext()) {
+            String pKey = (String) it.next();
+            if (myData.containsKey(pKey)) {
+                myData.put(pKey , map.get(pKey));
             }
-            else{
+            else {
                 throw new UnrecognizedColumnNameException(pKey);
             }
         }
     }
-    
-    public String getEntry(String s) {
-        return myData.get(s);
+
+
+    /**
+     * Retrieve an entry in row element.
+     * @param col - column key
+     * @return
+     */
+    public String getEntry(String col) {
+        return myData.get(col);
     }
-   
-    protected Map<String,String> getAllData(){
-        Map<String,String> cpmap= new HashMap<String, String> ();
+
+
+    /**
+     * Retrieve all keys and data.
+     * @return - map of all the keys and data
+     */
+    protected Map<String , String> getAllData() {
+        Map<String , String> cpmap = new HashMap<String , String>();
         cpmap.putAll(myData);
         return cpmap;
     }
-    
-    protected void addNewColumn(String s) throws RepeatedColumnNameException  {
-        if (!myData.containsKey(s)){
-            myData.put( s, null);    
+
+    /**
+     * Adds a new column.
+     * @param s
+     * @throws RepeatedColumnNameException
+     */
+    protected void addNewColumn(String col) throws
+        RepeatedColumnNameException  {
+        if (!myData.containsKey(col)) {
+            myData.put(col , null);
         }
-        else{
-            throw new RepeatedColumnNameException(s);   
+        else {
+            throw new RepeatedColumnNameException(col);
         }
     }
 
+    /**
+     * Prints contents of row element.
+     */
     public void printData () {
         System.out.println(myData);
-        
     }
 }
