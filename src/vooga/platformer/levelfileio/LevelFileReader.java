@@ -145,14 +145,14 @@ public class LevelFileReader {
     }
 
     private Sprite buildSprite (Element spriteElement) {
-        String tag = spriteElement.getAttribute(XmlTags.CLASS_NAME);
+        String className = spriteElement.getAttribute(XmlTags.CLASS_NAME);
         int x = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.X);
         int y = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.Y);
         int width = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.WIDTH);
         int height = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.HEIGHT);
         String imagePath = XmlUtilities.getChildContent(spriteElement, XmlTags.IMAGE_PATH);
 
-        return new Sprite(tag, x, y, width, height, imagePath);
+        return new Sprite(className, x, y, width, height, imagePath);
     }
 
     private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
