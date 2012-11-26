@@ -25,6 +25,7 @@ public class UserManager {
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
+    private User myCurrentUser;
 
     public static UserManager getInstance () {
         if (myUserManager == null) {
@@ -68,6 +69,14 @@ public class UserManager {
         if (myAllUser.containsKey(userName)) return myAllUser.get(userName);
         return null;
 
+    }
+    
+    public User getCurrentUser(){
+        return myCurrentUser;
+    }
+    
+    public void setCurrentUser(User user){
+        myCurrentUser=user;
     }
 
     protected String validateUser (String userName, String password) {

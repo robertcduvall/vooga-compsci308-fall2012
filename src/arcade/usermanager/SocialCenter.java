@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
+import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
 import arcade.utility.FileOperation;
 
@@ -21,7 +22,7 @@ import arcade.utility.FileOperation;
  *         modified by Howard Chung
  */
 public class SocialCenter {
-    private User myCurrentUser;
+  //  private User myCurrentUser;
     private static SocialCenter mySocialCenter;
     // private Map<String, User> myAllUser;
     private String myUserBasicFilePath;
@@ -33,18 +34,18 @@ public class SocialCenter {
     private static ResourceBundle resource;
     private UserManager myUserManager;
 
-    public static SocialCenter getInstance () {
-        if (mySocialCenter == null) {
-            mySocialCenter = new SocialCenter();
-        }
-
-        return mySocialCenter;
-    }
+//    public static SocialCenter getInstance () {
+//        if (mySocialCenter == null) {
+//            mySocialCenter = new SocialCenter();
+//        }
+//
+//        return mySocialCenter;
+//    }
 
     /*
      * initiate user list
      */
-    private SocialCenter () {
+    public SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
         myUserManager = UserManager.getInstance();
@@ -59,21 +60,21 @@ public class SocialCenter {
      * 
      * return log on status
      */
-    public boolean logOnUser (String userName, String password)
+    public void logOnUser (String userName, String password)
             throws Exception {
         String status = myUserManager.validateUser(userName, password);
 
         if (!status.equals(successString)) throw new Exception(status);
         // set current user
-        myCurrentUser = myUserManager.getUser(userName);
+         myUserManager.setCurrentUser(myUserManager.getUser(userName));
 
-        return true;
+       
     }
 
     /*
      * return log on status
      */
-    public boolean registerUser (String userName, String password,
+    public void registerUser (String userName, String password,
             String picture) throws Exception {
         // check validity
         if (myUserManager.validateUser(userName, "").equals(
@@ -81,15 +82,16 @@ public class SocialCenter {
             throw new Exception("This user already exists");
 
         // valid registration
-        myCurrentUser = myUserManager.addNewUser(userName, password, picture);
+        User newUser = myUserManager.addNewUser(userName, password, picture);
+        myUserManager.setCurrentUser(newUser);
 
-        return true;
+       
     }
 
     /*
      * return operation status
      */
-    public boolean deleteUser (String userName, String password)
+    public void deleteUser (String userName, String password)
             throws Exception {
         // check validity
         String status = myUserManager.validateUser(userName, password);
@@ -100,7 +102,7 @@ public class SocialCenter {
         FileOperation.deleteFile(myUserMessageFilePath + userName + ".xml");
         FileOperation.deleteFile(myUserGameFilePath + userName + ".xml");
         myUserManager.deleteUser(userName);
-        return true;
+        
     }
 
     /*
@@ -108,31 +110,19 @@ public class SocialCenter {
      */
     public boolean sendMessage (String sender, String receiver, String content) {
         String filePath = myUserMessageFilePath + receiver + ".xml";
-        File f = new File(filePath);
-        XmlParser parser = new XmlParser(f);
-        Document doc = parser.getDocument();
-        Element root = parser.getDocumentElement();
-        Element message = XmlBuilder.appendElement(doc, root, "message", "");
-        XmlBuilder.appendElement(doc, message, "receiver", receiver);
-        XmlBuilder.appendElement(doc, message, "content", content);
-        XmlWriter.writeXML(doc, filePath);
+                
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "receiver", receiver);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.write(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);
 
         return true;
     }
 
-    /*
-     * return operation status
-     */
-    public List<String> viewMessage (String sender, String receiver,
-            String content) {
-        return myCurrentUser.getMyMessage();
-
-    }
     
-    public GameData getGame(String gameName){
-        return myCurrentUser.getGameData(gameName);
-    }
 
     //
     // /*

@@ -23,7 +23,7 @@ public class Test {
 
     public static void main (String[] args) throws Exception {
 
-        mySocialCenter = SocialCenter.getInstance();
+        mySocialCenter = new SocialCenter();
         testLogOn();
         // testRegister();
 
@@ -36,12 +36,12 @@ public class Test {
     }
 
     private static void testRegister () throws Exception {
-        boolean status2 = mySocialCenter.registerUser("testuser", "password", "garfield.jpg");
+         mySocialCenter.registerUser("testuser", "password", "garfield.jpg");
     }
 
     private static void testLogOn () throws Exception {
-        boolean status = mySocialCenter.logOnUser("Howard", "password");
-        System.out.println(status);
+        mySocialCenter.logOnUser("Howard", "password");
+    //    System.out.println(status);
 
     }
 
