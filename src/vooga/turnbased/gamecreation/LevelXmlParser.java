@@ -18,7 +18,6 @@ import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapobject.MapTileObject;
-import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
 import vooga.turnbased.sprites.Sprite;
 
 
@@ -31,7 +30,21 @@ import vooga.turnbased.sprites.Sprite;
  */
 public class LevelXmlParser {
 
+    private final String CLASS = "class";
+    private final String EVENT = "event";
+    private final String IMAGE = "image";
+    private final String LEFT = "left";
+    private final String RIGHT = "right";
+    private final String UP = "up";
+    private final String DOWN = "down";
+    private final String MAP = "map";
+    private final String X = "x";
+    private final String Y = "y";
+    private final String LOCATION = "location";
+    private final String PLAYER_XML_PATH = "src/vooga/turnbased/resources/level/Player.xml";
+
     private Document myXmlDocument;
+    private Document myPlayerXmlDocument;
     private Element myDocumentElement;
     private MapMode myMapMode;
 
@@ -39,15 +52,17 @@ public class LevelXmlParser {
      * 
      * @param file XML file used to create the level, the constructor
      *        parameters may change in the future.
+     * @param mapMode The map mode of the level that is being parsed
      */
     public LevelXmlParser (File file, MapMode mapMode) {
         myXmlDocument = XmlUtilities.makeDocument(file);
         myDocumentElement = myXmlDocument.getDocumentElement();
         myMapMode = mapMode;
+        myPlayerXmlDocument = XmlUtilities.makeDocument(PLAYER_XML_PATH);
     }
 
     /**
-     * 
+     * @param name The string name of the element containing dimensions
      * @return The Dimension of the Level
      */
     public Dimension parseDimension (String name) {
@@ -101,9 +116,9 @@ public class LevelXmlParser {
                 Point point = new Point(i, j);
                 s = new Sprite();
                 Element staticSprite = XmlUtilities.getElement(myDocumentElement, "staticSprite");
-                String className = XmlUtilities.getChildContent(staticSprite, "class");
-                String event = XmlUtilities.getChildContent(staticSprite, "event");
-                Image image = XmlUtilities.getChildContentAsImage(staticSprite, "image");
+                String className = XmlUtilities.getChildContent(staticSprite, CLASS);
+                String event = XmlUtilities.getChildContent(staticSprite, EVENT);
+                Image image = XmlUtilities.getChildContentAsImage(staticSprite, IMAGE);
                 MapTileObject mapTile =
                         (MapTileObject) Reflection.createInstance(className, s.getID(), event,
                                                                   point, image, myMapMode);
@@ -128,14 +143,14 @@ public class LevelXmlParser {
 
     private Map<String, ImageLoop> parsePlayerImageLoops (Map<String, Image> map) {
         Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
-        List<Image> leftList = parseImageList("left", map);
-        List<Image> rightList = parseImageList("right", map);
-        List<Image> upList = parseImageList("up", map);
-        List<Image> downList = parseImageList("down", map);
-        imageLoops.put("left", new ImageLoop(leftList));
-        imageLoops.put("right", new ImageLoop(rightList));
-        imageLoops.put("up", new ImageLoop(upList));
-        imageLoops.put("down", new ImageLoop(downList));
+        List<Image> leftList = parseImageList(LEFT, map);
+        List<Image> rightList = parseImageList(RIGHT, map);
+        List<Image> upList = parseImageList(UP, map);
+        List<Image> downList = parseImageList(DOWN, map);
+        imageLoops.put(LEFT, new ImageLoop(leftList));
+        imageLoops.put(RIGHT, new ImageLoop(rightList));
+        imageLoops.put(UP, new ImageLoop(upList));
+        imageLoops.put(DOWN, new ImageLoop(downList));
         return imageLoops;
     }
 
@@ -152,8 +167,8 @@ public class LevelXmlParser {
     private MapPlayerObject parseMapPlayer (Sprite s) {
         Element mapPlayer = isolateMapPlayer();
         if (mapPlayer == null) { return null; }
-        String className = XmlUtilities.getChildContent(mapPlayer, "class");
-        String event = XmlUtilities.getChildContent(mapPlayer, "event");
+        String className = XmlUtilities.getChildContent(mapPlayer, CLASS);
+        String event = XmlUtilities.getChildContent(mapPlayer, EVENT);
         Point point = parseLocation(mapPlayer);
         Map<String, Image> imageMap = parsePlayerImages(mapPlayer);
 
@@ -162,26 +177,27 @@ public class LevelXmlParser {
     }
 
     private Element isolateMapPlayer () {
+        Element playerRoot = myPlayerXmlDocument.getDocumentElement();
         List<Element> playerList =
-                (List<Element>) XmlUtilities.getElements(myDocumentElement, "player");
+                (List<Element>) XmlUtilities.getElements(playerRoot, "player");
         if (playerList.isEmpty()) { return null; }
         Element player = playerList.get(0);
-        List<Element> mapList = (List<Element>) XmlUtilities.getElements(player, "map");
+        List<Element> mapList = (List<Element>) XmlUtilities.getElements(player, MAP);
         Element mapPlayer = mapList.get(0);
         return mapPlayer;
     }
 
     private Point parseLocation (Element element) {
-        List<Element> locationList = (List<Element>) XmlUtilities.getElements(element, "location");
+        List<Element> locationList = (List<Element>) XmlUtilities.getElements(element, LOCATION);
         Element location = locationList.get(0);
         Point point =
-                new Point(XmlUtilities.getChildContentAsInt(location, "x"),
-                          XmlUtilities.getChildContentAsInt(location, "y"));
+                new Point(XmlUtilities.getChildContentAsInt(location, X),
+                          XmlUtilities.getChildContentAsInt(location, Y));
         return point;
     }
 
     private Map<String, Image> parsePlayerImages (Element element) {
-        List<Element> imageList = (List<Element>) XmlUtilities.getElements(element, "image");
+        List<Element> imageList = (List<Element>) XmlUtilities.getElements(element, IMAGE);
         Map<String, Image> imageMap = new HashMap<String, Image>();
         for (int i = 0; i < imageList.size(); i++) {
             Element imageData = imageList.get(i);
@@ -208,12 +224,12 @@ public class LevelXmlParser {
     private BattleObject parseBattleObject (Sprite s, Element sprite) {
         Element battleSprite = XmlUtilities.getElement(sprite, "battle");
         if (battleSprite.hasChildNodes()) {
-            String className = XmlUtilities.getChildContent(battleSprite, "class");
-            String event = XmlUtilities.getChildContent(battleSprite, "event");
+            String className = XmlUtilities.getChildContent(battleSprite, CLASS);
+            String event = XmlUtilities.getChildContent(battleSprite, EVENT);
             int attack = XmlUtilities.getChildContentAsInt(battleSprite, "attack");
             int defense = XmlUtilities.getChildContentAsInt(battleSprite, "defense");
             int health = XmlUtilities.getChildContentAsInt(battleSprite, "health");
-            Image image = XmlUtilities.getChildContentAsImage(battleSprite, "image");
+            Image image = XmlUtilities.getChildContentAsImage(battleSprite, IMAGE);
             BattleObject battleObject =
                     (BattleObject) Reflection.createInstance(className, s.getID(), event, attack,
                                                              defense, health, image);
@@ -223,15 +239,15 @@ public class LevelXmlParser {
     }
 
     private MapObject parseMapObject (Sprite s, Element sprite) {
-        Element mapSprite = XmlUtilities.getElement(sprite, "map");
+        Element mapSprite = XmlUtilities.getElement(sprite, MAP);
         if (mapSprite.hasChildNodes()) {
-            String className = XmlUtilities.getChildContent(mapSprite, "class");
-            String event = XmlUtilities.getChildContent(mapSprite, "event");
-            Element location = XmlUtilities.getElement(mapSprite, "location");
+            String className = XmlUtilities.getChildContent(mapSprite, CLASS);
+            String event = XmlUtilities.getChildContent(mapSprite, EVENT);
+            Element location = XmlUtilities.getElement(mapSprite, LOCATION);
             Point point =
-                    new Point(XmlUtilities.getChildContentAsInt(location, "x"),
-                              XmlUtilities.getChildContentAsInt(location, "y"));
-            Image image = XmlUtilities.getChildContentAsImage(mapSprite, "image");
+                    new Point(XmlUtilities.getChildContentAsInt(location, X),
+                              XmlUtilities.getChildContentAsInt(location, Y));
+            Image image = XmlUtilities.getChildContentAsImage(mapSprite, IMAGE);
             MapObject mapObject =
                     (MapObject) Reflection.createInstance(className, s.getID(), event, point,
                                                           image, myMapMode);
@@ -240,9 +256,9 @@ public class LevelXmlParser {
             /*if (point.equals(new Point(10, 10))) {
                 mapObject
                         .setStrategy(new TransportStrategy(
-                                                           myMapMode,
-                                                           "src/vooga/turnbased/resources/level/Level-one.xml",
-                                                           new Point(0, 0)));
+                                               myMapMode,
+                                               "src/vooga/turnbased/resources/level/Level-one.xml",
+                                               new Point(0, 0)));
             }*/
 
             return mapObject;

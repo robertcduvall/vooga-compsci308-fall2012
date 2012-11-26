@@ -30,7 +30,8 @@
 			<attack>1</attack>
 			<image>src/vooga/turnbased/resources/image/enemy/005.png</image>
 		</battle>
-	</sprite><sprite>
+	</sprite>
+	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
 			<event>NO_ACTION</event>
@@ -38,7 +39,7 @@
 				<x>6</x>
 				<y>4</y>
 			</location>
-			<image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.jpg</image>
+			<image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.png</image>
 		</map>
 		<battle />
 	</sprite>
@@ -50,7 +51,7 @@
 				<x>6</x>
 				<y>5</y>
 			</location>
-			<image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.jpg</image>
+			<image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.png</image>
 		</map>
 		<battle/>
 	</sprite>
