@@ -37,10 +37,10 @@ import org.w3c.dom.NodeList;
  * 
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
  * 
- * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * <hr/>
  * 
  * Example of the semantics used here:
- * 
+ * <pre/>
  * <tag attribute="value"> content </tag>
  * ~or~
  * <tag attributeName="attributeValue"> content </tag>
@@ -48,8 +48,8 @@ import org.w3c.dom.NodeList;
  * <parent>
  * <child></child>
  * </parent>
- * 
- * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * </pre>
+ * <hr/>
  * 
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov,
  *         Difan Zhao, Mark Hoffman
