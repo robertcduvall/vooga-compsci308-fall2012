@@ -34,12 +34,10 @@ public class NormUserPanel extends AUserPanel {
         // use the username to pull the user's first name
         // TODO
         String user = getArcade().getUsername();
-        
-        
-        
+
         JButton logoutBut = new JButton("Logout");
 
-        JLabel welcomeLabel = new JLabel("Welcome, REALLYLONGNAME!", JLabel.CENTER);
+        JLabel welcomeLabel = new JLabel("You are current logged in as: " + user, JLabel.CENTER);
         welcomeLabel.setForeground(Color.WHITE);
 
         logoutBut.addActionListener(new ActionListener() {
@@ -48,8 +46,14 @@ public class NormUserPanel extends AUserPanel {
             public void actionPerformed (ActionEvent e) {
                 // execute arcade logout
                 // TODO
-                
-//                getArcade().replacePanel("NewUser");
+
+                getArcade().setUsername("");
+
+                getArcade().replacePanel("MainDefault");
+                getArcade().replacePanel("UserDefault");
+                getArcade().replacePanel("SearchDefault");
+                getArcade().replacePanel("NavDefault3");
+
             }
 
         });

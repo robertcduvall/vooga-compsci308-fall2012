@@ -17,8 +17,10 @@ public class NormSearchPanel extends ASearchPanel {
 
     @Override
     public ArcadePanel createPanel () {
-        // TODO Auto-generated method stub
-        return null;
+        ArcadePanel myPanel = initializeNewPanel();
+        System.out.println("NormSearchPanel");
+        
+        return myPanel;
     }
 
 

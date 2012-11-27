@@ -25,47 +25,12 @@ public class ModelInterface {
 
         // myGameCenter = new GameCenter(); // GameCenter is currently broken.
         // mySocialCenter = SocialCenter.getInstance();
-        
+
     }
 
     // #############################################################
     // Implemented by the Game team
     // #############################################################
-
-    public String getGameName () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public Image getGameProfilePicture (String gameName) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List<String> getListOfGames () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public String getRating () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List<String> getListOfReviews () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List<String> getUsersThatPlayedGame () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List<Integer> getUserScores () {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     // #############################################################
     // Implemented by the User team
@@ -76,35 +41,34 @@ public class ModelInterface {
      * logged in.
      * 
      * @param username String of the username to be logged in.
-     * @param password Array of characters for the attempted password. Must be
-     *        array.
+     * @param password string password
      * @return True if successful login, false if unsuccessful.
      */
-    public boolean loginUser (String username, char[] password) {
+    public boolean executeLogin (String username, String password) {
         // TODO Implement this. Return true if login successful, false if
         // unsuccessful.
+
+        // test code
+        if (username.equals("mdeng1990") && password.equals("pswd")) { return true; }
+
         return false;
     }
 
-    public String getUserName () {
-        // TODO Auto-generated method stub
-        return null;
+    /**
+     * method creates a new user
+     * 
+     * @param username
+     * @param password
+     * @param fn
+     * @param ln
+     * @return true if successful, false if unsuccessful
+     */
+    public boolean executeNewUser (String username, String password, String fn, String ln) {
 
-    }
+        // test code
+        if (username.equals("mdeng1990")) { return true; }
 
-    public Image getUserProfilePicture () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List<String> getListOfGamesPlayed () {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public List<Integer> getListOfScores () {
-        // TODO Auto-generated method stub
-        return null;
+        return false;
     }
 
 }
