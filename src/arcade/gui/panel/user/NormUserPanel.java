@@ -44,18 +44,13 @@ public class NormUserPanel extends AUserPanel {
 
             @Override
             public void actionPerformed (ActionEvent e) {
-                // execute arcade logout
-                // TODO
-
                 getArcade().setUsername("");
 
                 getArcade().replacePanel("MainDefault");
                 getArcade().replacePanel("UserDefault");
                 getArcade().replacePanel("SearchDefault");
-                getArcade().replacePanel("NavDefault3");
-
+                getArcade().replacePanel("NavDefault");
             }
-
         });
 
         myPanel.setLayout(new MigLayout("", "[grow]", "[][b]"));
