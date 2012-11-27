@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
@@ -93,14 +94,18 @@ public class RowElement {
      * Adds a new column.
      * @param s
      * @throws RepeatedColumnNameException
+     * @throws InvalidXMLTagException 
      */
     protected void addNewColumn(String col) throws
-        RepeatedColumnNameException  {
-        if (!myData.containsKey(col)) {
-            myData.put(col , null);
-        }
-        else {
+        RepeatedColumnNameException, InvalidXMLTagException  {
+        if(myData.containsKey(col)){
             throw new RepeatedColumnNameException(col);
+        }
+        else if(col.split(" ").length != 1){
+            throw new InvalidXMLTagException(col);
+        }
+        else{
+            myData.put(col, null);
         }
     }
 

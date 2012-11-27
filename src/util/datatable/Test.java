@@ -2,6 +2,7 @@ package util.datatable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
@@ -21,6 +22,9 @@ public class Test {
             // exception thrown when column already exists
             e.printStackTrace();
         } 
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
         
         //setting column name by adding an array
         String [] sarray=new String[2];
@@ -31,6 +35,9 @@ public class Test {
         }
         catch (RepeatedColumnNameException e) {
             // exception thrown when column already exists
+            e.printStackTrace();
+        }
+        catch (InvalidXMLTagException e){
             e.printStackTrace();
         }
         
@@ -75,6 +82,7 @@ public class Test {
             e.printStackTrace();
         }
         
+        System.out.println("oldtable");
         table.viewContents();
        
         //delete row entry
@@ -84,11 +92,21 @@ public class Test {
        // System.out.println(rowE + "hi");
         
         //loading and saving
+        
         table.save("src/util/datatable/resources/data.txt");
         
         //DataTable 
-       // table.load("src/util/datatable/resources/data.txt");
-        
+        DataTable newtable = null;
+        try {
+            newtable = new DataTable();
+            newtable.load("src/util/datatable/resources/data.txt");
+        }
+        catch (RepeatedColumnNameException | InvalidXMLTagException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        System.out.println("new table");
+        newtable.viewContents(); 
         
         //demo of inserting objects
         RowElement rey= new RowElement();
@@ -99,6 +117,10 @@ public class Test {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
+        
         try {
             rey.setEntry("phone","09090");
         }
@@ -114,6 +136,10 @@ public class Test {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
+        
         Map<String,Object> myMap=new HashMap<String,Object>();
         myMap.put("ObjectTest", rey);
         myMap.put("address","DC");
