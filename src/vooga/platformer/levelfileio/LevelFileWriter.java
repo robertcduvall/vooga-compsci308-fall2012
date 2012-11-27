@@ -91,22 +91,18 @@ public final class LevelFileWriter {
             XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH,
                                        String.valueOf(s.getImagePath()));
 
-            if (s.getUpdateStrategies() != null && s.getUpdateStrategies().size() > 0) {
-                Element strategiesElement = doc.createElement("strategies");
-                for (Map<String, String> strategy : s.getUpdateStrategies()) {
+            for (Map<String, String> strategy : s.getUpdateStrategies()) {
 
-                    String strategyType = "";
-                    if (strategy.containsKey(XmlTags.CLASS_NAME)) {
-                        strategyType = strategy.get(XmlTags.CLASS_NAME);
-                        strategy.remove(XmlTags.CLASS_NAME);
-                    }
-
-                    Element strategyElement =
-                            XmlUtilities.generateElementFromMap(doc, XmlTags.STRATEGY, strategy);
-                    strategyElement.setAttribute(XmlTags.CLASS_NAME, strategyType);
-                    strategiesElement.appendChild(strategyElement);
+                String strategyType = "";
+                if (strategy.containsKey(XmlTags.CLASS_NAME)) {
+                    strategyType = strategy.get(XmlTags.CLASS_NAME);
+                    strategy.remove(XmlTags.CLASS_NAME);
                 }
-                spriteElement.appendChild(strategiesElement);
+
+                Element strategyElement =
+                        XmlUtilities.generateElementFromMap(doc, XmlTags.STRATEGY, strategy);
+                strategyElement.setAttribute(XmlTags.CLASS_NAME, strategyType);
+                spriteElement.appendChild(strategyElement);
             }
 
             if (s.getAttributes() != null && s.getAttributes().size() > 0) {

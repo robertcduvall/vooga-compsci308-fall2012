@@ -145,49 +145,27 @@ public class LevelFileReader {
     }
 
     private Sprite buildSprite (Element spriteElement) {
-        String tag = spriteElement.getAttribute(XmlTags.CLASS_NAME);
-        int x = XmlUtilities.getChildContentAsInt(myRoot, XmlTags.X);
-        int y = XmlUtilities.getChildContentAsInt(myRoot, XmlTags.Y);
-        int width = XmlUtilities.getChildContentAsInt(myRoot, XmlTags.WIDTH);
-        int height = XmlUtilities.getChildContentAsInt(myRoot, XmlTags.HEIGHT);
-        String imagePath = XmlUtilities.getChildContent(myRoot, XmlTags.IMAGE_PATH);
-        Sprite builtSprite = new Sprite(tag, x, y, width, height, imagePath);
-        return builtSprite;
+        String className = spriteElement.getAttribute(XmlTags.CLASS_NAME);
+        int x = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.X);
+        int y = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.Y);
+        int width = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.WIDTH);
+        int height = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.HEIGHT);
+        String imagePath = XmlUtilities.getChildContent(spriteElement, XmlTags.IMAGE_PATH);
+
+        return new Sprite(className, x, y, width, height, imagePath);
     }
 
     private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {
-        NodeList strategiesNodeList = spriteElement.getElementsByTagName("strategies");
+        Collection<Element> strategies = XmlUtilities.getElements(spriteElement, XmlTags.STRATEGY);
 
-        for (int i = 0; i < strategiesNodeList.getLength(); i++) {
-            Node strategiesNode = strategiesNodeList.item(i);
-            if (strategiesNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element strategiesElement = (Element) strategiesNode;
-                NodeList strategyNodeList =
-                        strategiesElement.getElementsByTagName(XmlTags.STRATEGY);
-
-                for (int j = 0; j < strategyNodeList.getLength(); j++) {
-                    Node strategyNode = strategyNodeList.item(j);
-                    if (strategyNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element strategyElement = (Element) strategyNode;
-
-                        NodeList paramNodeList = strategyElement.getChildNodes();
-                        Map<String, String> strategyMap = new HashMap<String, String>();
-
-                        for (int k = 0; k < paramNodeList.getLength(); k++) {
-                            Node paramNode = paramNodeList.item(k);
-                            if (paramNode.getNodeType() == Node.ELEMENT_NODE) {
-                                Element paramElement = (Element) paramNode;
-                                strategyMap.put(paramElement.getTagName(),
-                                                XmlUtilities.getContent(paramElement));
-                            }
-                        }
-                        // TODO resolve strategy using new level format API
-                        builtSprite.addUpdateStrategy(strategyElement
-                                .getAttribute(XmlTags.CLASS_NAME), strategyMap);
-
-                    }
-                }
+        for (Element strategy : strategies) {
+            Map<String, String> strategyMap = new HashMap<String, String>();
+            Collection<Element> attributes =
+                    XmlUtilities.convertNodeListToCollection(strategy.getChildNodes());
+            for (Element attr : attributes) {
+                strategyMap.put(attr.getTagName(), XmlUtilities.getContent(attr));
             }
+            builtSprite.addUpdateStrategy(strategy.getAttribute(XmlTags.CLASS_NAME), strategyMap);
         }
     }
 

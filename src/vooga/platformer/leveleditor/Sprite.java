@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 import javax.imageio.ImageIO;
+import vooga.platformer.levelfileio.XmlTags;
 
 
 /**
@@ -225,7 +226,6 @@ public class Sprite {
         return myImagePath;
     }
 
-    // TODO clarify type declaration
     /**
      * Adds update strategy to the Sprite. This is added as Map.
      * 
@@ -237,7 +237,7 @@ public class Sprite {
      */
     public void addUpdateStrategy(String strategyType,
             Map<String, String> strategy) {
-        strategy.put("type", strategyType);
+        strategy.put(XmlTags.CLASS_NAME, strategyType);
         myUpdateStrategies.add(strategy);
     }
 
