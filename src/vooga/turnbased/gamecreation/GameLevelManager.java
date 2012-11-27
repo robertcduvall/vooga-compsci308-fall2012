@@ -79,18 +79,24 @@ public class GameLevelManager {
             sprites.add(test.parsePlayerSprite());
         }
         else { //occurs when someone steps on a portal
-            sprites.add(myGameManager.findSpriteWithID(enteringObject.getID()));            
-            if (enteringObject == myPreviousMap.getPlayer()) {
+            //sprites.add(myGameManager.findSpriteWithID(enteringObject.getID()));
+            sprites.add(test.parsePlayerSprite());
+            /*if (enteringObject == myPreviousMap.getPlayer()) {
                 mapMode.setPlayer((MapPlayerObject)enteringObject);
                 myPreviousMap.setPlayer(null);
-            }
-            removeEnteringObject(enteringObject);
+            }*/
+            removeEnteringObject(enteringObject); //from previous map
         }
         myLoadedSprites.put(URI, sprites);
 
         return mapMode;
     }
 
+    /**
+     * the enteringObject enters the map 
+     * @param levelFileName file that describes this level
+     * @param enteringObject MapObject that enters
+     */
     public void enterMap (String levelFileName, MapObject enteringObject) {
         myPreviousMap = myLoadedMapModes.get(myCurrentMapModeKey);
         myCurrentMapModeKey = levelFileName;

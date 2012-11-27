@@ -104,7 +104,6 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
-        //findSpriteWithID(spriteID).clear(); //WHY?????????!!!!!!!
         mySprites.remove(spriteID);
     }
 
