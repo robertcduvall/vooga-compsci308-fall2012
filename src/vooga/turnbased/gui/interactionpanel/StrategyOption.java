@@ -15,6 +15,8 @@ import java.awt.event.MouseEvent;
 public class StrategyOption {
     
     private static final int FONT_SIZE = 20;
+    //Amount of change in x, y coordinates when highlighted
+    private static final Point DISPLACEMENT = new Point(2, 3);
     private String myOptionMessage;
     private Point myPosition;
     private FontMetrics myFontMetrics;
@@ -48,6 +50,7 @@ public class StrategyOption {
         if (mySize.contains(e.getPoint())) {
             myColor = Color.BLUE;
             isHighlighted = true;
+            myPosition.translate(DISPLACEMENT.x, DISPLACEMENT.y);
         }
     }
     
@@ -55,6 +58,7 @@ public class StrategyOption {
         if (isHighlighted) {
             myColor = Color.RED;
             isHighlighted = false;
+            myPosition.translate(-DISPLACEMENT.x, -DISPLACEMENT.y);
         }
     }
     

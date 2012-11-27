@@ -43,14 +43,7 @@ public class InteractionPanel {
     private List<Point> myOptionPositions;
 
     public InteractionPanel () {
-        try {
-            myPanelImage =
-                    ImageIO.read(new File("src/vooga/turnbased/resources/image/GUI/dialogue1.png"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        myImageGraphics = (myPanelImage.getGraphics());
+        initializePanelImage();
         myOptionPositions = initializeOptionPositions();
         myOptions = new ArrayList<StrategyOption>();
         createHardcodedOptions();
@@ -63,11 +56,23 @@ public class InteractionPanel {
     }
 
     public void paint (Graphics g) {
+        initializePanelImage();
         for (StrategyOption option : myOptions) {
             option.paintOption(myImageGraphics);
         }
         drawBulletPoint(myImageGraphics);
         g.drawImage(myPanelImage, 0, 0, null);
+    }
+    
+    private void initializePanelImage() {
+        try {
+            myPanelImage =
+                    ImageIO.read(new File("src/vooga/turnbased/resources/image/GUI/dialogue1.png"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        myImageGraphics = (myPanelImage.getGraphics());
     }
 
     public void highlightOption (MouseEvent e) {
