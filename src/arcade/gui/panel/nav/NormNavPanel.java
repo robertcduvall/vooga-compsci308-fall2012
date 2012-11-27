@@ -5,8 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
+
 
 /**
  * This will be the top navigation panel. This needs to be implemented.
@@ -23,31 +25,48 @@ public class NormNavPanel extends ANavPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.ORANGE);
-        JButton button1 = new JButton("All Games");
-        JButton button2 = new JButton("My Profile Page");
-        
-        myPanel.add(button1);
-        myPanel.add(button2);
-        
-        button1.addActionListener(new ActionListener(){
 
+        JButton allgamesBut = new JButton("All Games");
+        JButton allusersBut = new JButton("All Users");
+        JButton myprofileBut = new JButton("My Profile");
+        JButton messagecenterBut = new JButton("Message Center");
+
+        allgamesBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                getArcade().replacePanel("MainHome");
+                getArcade().replacePanel("GameList");
             }
-              
-          });
-          
-          button2.addActionListener(new ActionListener(){
+        });
 
+        allusersBut.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed (ActionEvent e) {
+            public void actionPerformed (ActionEvent arg0) {
+                getArcade().replacePanel("UserList");
+            }
+        });
+
+        myprofileBut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
                 getArcade().replacePanel("UserProfile");
             }
-              
-          });
-        
+        });
+
+        messagecenterBut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+
+                getArcade().replacePanel("MessageCenter");
+            }
+        });
+
+        myPanel.setLayout(new MigLayout("", "[c, grow][c, grow][c, grow][c, grow]", "[c]"));
+
+        myPanel.add(allgamesBut, "align center");
+        myPanel.add(allusersBut, "align center");
+        myPanel.add(myprofileBut, "align center");
+        myPanel.add(messagecenterBut, "align center");
+
         return myPanel;
     }
 

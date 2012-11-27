@@ -21,10 +21,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public abstract class AbstractFrameCreator {
 
-    private static final String ARCADE_NAME = "Duke CS 308 Arcade";
-    private static final int FRAME_HEIGHT = 700;
-    private static final int FRAME_WIDTH = 1130;
-    private static final boolean FRAME_RESIZABLE = true;
+    private final String ARCADE_NAME = "Duke CS 308 Arcade";
+    private final int FRAME_HEIGHT = 700;
+    private final int FRAME_WIDTH = 1130;
+    private final boolean FRAME_RESIZABLE = true;
 
     private Arcade myArcade;
     private ArcadePanel myContentPanel;

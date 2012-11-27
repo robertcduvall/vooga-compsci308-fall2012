@@ -1,5 +1,8 @@
 package util.networking;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.Socket;
 
 /**
@@ -8,16 +11,34 @@ import java.net.Socket;
  */
 
 public class ChatClient {
+    private final static int ourXMPPPort = 5222;
+    
     private Socket myConnection;
     // private Language myLanguage;
-    private String myHost;
+    private ChatProtocol myProtocol;
     private String myUser, myPass;
     
-    public ChatClient(String host, int port){}
+    private Reader from_server;
+    private Writer to_server;
+    private Reader from_user;
+    private Writer to_user;
     
-    private Socket connect(String host, int port){
-        return null;
+    public ChatClient(String host, int port, ChatProtocol c){
+        try {
+            myProtocol = c;
+            myConnection = connect(host, port);
+            
+        }
+        catch (IOException e) {
+            System.out.println("Unable to connect to Server specified.");
+        }
     }
+    
+    private Socket connect(String host, int port) throws IOException{
+        return new Socket(host, port);
+    }
+    
+    
     
     private void openStream(String user){}
     
