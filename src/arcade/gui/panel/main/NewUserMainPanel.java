@@ -11,7 +11,11 @@ import arcade.gui.Arcade;
 import arcade.gui.components.HintTextField;
 import arcade.gui.panel.ArcadePanel;
 
-
+/**
+ * 
+ * @author Michael Deng
+ *
+ */
 public class NewUserMainPanel extends AMainPanel implements ActionListener {
 
     ArcadePanel myPanel;

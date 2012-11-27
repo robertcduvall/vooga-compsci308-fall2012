@@ -1,5 +1,6 @@
 package arcade.gui.panel.main;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,8 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        System.out.println("LoginMainPanel");
+
 
         myPanel.setLayout(new GridBagLayout());
         c = new GridBagConstraints();
@@ -48,13 +51,13 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel = addWrongPasswordLabel(myPanel);
         // myPanel = addBypassButton(myPanel);
 
-        System.out.println("LoginMainPanel");
 
         return myPanel;
     }
 
     private ArcadePanel addWrongPasswordLabel (ArcadePanel myPanel) {
         wrongPassword = new JLabel("Wrong Username or Password.");
+        wrongPassword.setForeground(Color.WHITE);
         wrongPassword.setVisible(false);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 2;
@@ -104,6 +107,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel.add(usernameField, c);
 
         JLabel label = new JLabel("Username: ");
+      label.setForeground(Color.WHITE);
         label.setLabelFor(usernameField);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
@@ -121,6 +125,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel.add(passwordField, c);
 
         JLabel label = new JLabel("Password: ");
+        label.setForeground(Color.WHITE);
         label.setLabelFor(passwordField);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
