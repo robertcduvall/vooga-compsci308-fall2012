@@ -102,7 +102,10 @@ public class LevelXmlParser {
     public Sprite parsePlayerSprite () {
         Sprite s = new Sprite();
         MapPlayerObject mapPlayer = parseMapPlayer(s);
-        if (mapPlayer == null) { return null; }
+        if (mapPlayer == null) { 
+            System.err.println("No player information found!");
+            return null; 
+        }
         Map<String, ImageLoop> imageLoops = parseImageLoops(mapPlayer.getImageMap());
         mapPlayer.setImageLoops(imageLoops);
         myMapMode.setPlayer(mapPlayer);

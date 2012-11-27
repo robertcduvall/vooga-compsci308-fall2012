@@ -26,9 +26,9 @@ public class TransportStrategy extends MapStrategy{
      */
     @Override
     public void performStrategy(MapObject mapObject) {
-        getGameManager().initializeGameLevel(myMapModeResource, mapObject);
         //Only MovingMapObject can be transported from one map to the other
         ((MovingMapObject) mapObject).finishMovement();
         ((MovingMapObject) mapObject).setLocation(myNewPlayerLocation);
+        getGameManager().initializeGameLevel(myMapModeResource, mapObject);
     }
 }

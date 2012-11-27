@@ -101,13 +101,12 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     /**
      * Removes the sprite with the given ID from the list of sprites in the
-     * game.
+     * game. Trigger removal of corresponding gameobjects inside each sprite.
      * 
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
-        // findSpriteWithID(spriteID).clear(); //WHY?????????!!!!!!!
-        mySprites.remove(spriteID);
+        findSpriteWithID(spriteID).clear();
     }
 
     /**
