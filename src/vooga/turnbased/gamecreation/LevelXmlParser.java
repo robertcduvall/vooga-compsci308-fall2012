@@ -102,7 +102,7 @@ public class LevelXmlParser {
         Sprite s = new Sprite();
         MapPlayerObject mapPlayer = parseMapPlayer(s);
         if (mapPlayer == null) { return null; }
-        Map<String, ImageLoop> imageLoops = parsePlayerImageLoops(mapPlayer.getImageMap());
+        Map<String, ImageLoop> imageLoops = parseImageLoops(mapPlayer.getImageMap());
         mapPlayer.setImageLoops(imageLoops);
         myMapMode.setPlayer(mapPlayer);
         s.addGameObject(mapPlayer);
@@ -142,7 +142,7 @@ public class LevelXmlParser {
         return spriteList;
     }
 
-    private Map<String, ImageLoop> parsePlayerImageLoops (Map<String, Image> map) {
+    private Map<String, ImageLoop> parseImageLoops (Map<String, Image> map) {
         Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
         List<Image> leftList = parseImageList(LEFT, map);
         List<Image> rightList = parseImageList(RIGHT, map);
@@ -228,17 +228,7 @@ public class LevelXmlParser {
             String className = XmlUtilities.getChildContent(battleSprite, CLASS);
             String event = XmlUtilities.getChildContent(battleSprite, EVENT);
             Image image = XmlUtilities.getChildContentAsImage(battleSprite, IMAGE);
-            Map<String, Number> stats = new HashMap<String, Number>();
-            Element battleStats = XmlUtilities.getElement(battleSprite, "stats");
-            if (battleStats.hasChildNodes()) {
-                NodeList statsList = battleStats.getChildNodes();
-                for (int i = 0; i < statsList.getLength(); i++) {
-                    if (!"#text".equals(statsList.item(i).getNodeName())) {
-                        stats.put(statsList.item(i).getNodeName(),
-                                Integer.parseInt(statsList.item(i).getTextContent()));
-                    }
-                }
-            }
+            Map<String, Number> stats = parseBattleStats(battleSprite);
             String name = XmlUtilities.getChildContent(battleSprite, "name");
             BattleObject battleObject =
                     (BattleObject) Reflection.createInstance(className, s.getID(), 
@@ -246,6 +236,21 @@ public class LevelXmlParser {
             return battleObject;
         }
         return null;
+    }
+
+    private Map<String, Number> parseBattleStats (Element battleSprite) {
+        Map<String, Number> stats = new HashMap<String, Number>();
+        Element battleStats = XmlUtilities.getElement(battleSprite, "stats");
+        if (battleStats.hasChildNodes()) {
+            NodeList statsList = battleStats.getChildNodes();
+            for (int i = 0; i < statsList.getLength(); i++) {
+                if (!"#text".equals(statsList.item(i).getNodeName())) {
+                    stats.put(statsList.item(i).getNodeName(),
+                            Integer.parseInt(statsList.item(i).getTextContent()));
+                }
+            }
+        }
+        return stats;
     }
 
     private MapObject parseMapObject (Sprite s, Element sprite) {
