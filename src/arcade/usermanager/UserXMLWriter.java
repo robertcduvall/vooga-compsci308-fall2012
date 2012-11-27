@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import arcade.utility.FileOperation;
+import util.encrypt.Hasher;
 import util.xml.XmlBuilder;
 import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
@@ -57,6 +58,7 @@ public class UserXMLWriter {
 
         Element rootElement = doc.createElement("user");
         doc.appendChild(rootElement);
+
 
         XmlUtilities.appendElement(doc, rootElement, "name", userName);
         XmlUtilities.appendElement(doc, rootElement, "password", password);
