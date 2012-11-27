@@ -19,6 +19,8 @@ import arcade.utility.FileOperation;
  * 
  * @author Difan Zhao
  *         modified by Howard Chung
+ *         TODO:
+ *         Allow user to change profile picture
  */
 public class SocialCenter {
     private User myCurrentUser;

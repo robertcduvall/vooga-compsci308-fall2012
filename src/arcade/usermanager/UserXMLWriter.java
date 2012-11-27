@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import arcade.utility.FileOperation;
+import util.encrypt.Hasher;
 import util.xml.XmlBuilder;
 import util.xml.XmlWriter;
 
@@ -58,7 +59,7 @@ public class UserXMLWriter {
         basicDoc.appendChild(rootElement);
 
         XmlBuilder.appendElement(basicDoc, rootElement, "name", userName);
-        XmlBuilder.appendElement(basicDoc, rootElement, "password", password);
+        XmlBuilder.appendElement(basicDoc, rootElement, "password", Hasher.hashCode(password));
         XmlBuilder.appendElement(basicDoc, rootElement, "picture", myUserImageFilePath+picture);
         XmlBuilder.appendElement(basicDoc, rootElement, "credits", "0");
         XmlWriter.writeXML(basicDoc, basicInfoFilePath);
