@@ -66,9 +66,9 @@ public class ModelInterface {
     public boolean executeNewUser (String username, String password, String fn, String ln) {
 
         // test code
-        if (username.equals("mdeng1990")) { return true; }
+        if (username.equals("mdeng1990")) { return false; }
 
-        return false;
+        return true;
     }
 
 }
