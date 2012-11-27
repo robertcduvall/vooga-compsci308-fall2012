@@ -30,6 +30,7 @@
 				<defense>1</defense>
 				<attack>2</attack>
 			</stats>
+			<name>Monster</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/005.png</image>
 		</battle>
 	</sprite>
@@ -67,12 +68,17 @@
 				<defense>1</defense>
 				<attack>2</attack>
 			</stats>
+			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
 		</battle>
 	</sprite>
 	<staticSprite>
 		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
 		<event>NO_ACTION</event>
+		<location>
+			<x>10</x>
+			<y>10</y>
+		</location>
 		<image>src/vooga/turnbased/resources/image/mapobject/L1-tile-1.png</image>
 	</staticSprite>
 	</level>
