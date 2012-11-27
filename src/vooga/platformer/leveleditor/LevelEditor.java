@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @SuppressWarnings("serial")
 public class LevelEditor extends JPanel {
-    private static final Dimension BUTTON_BAR_SIZE = new Dimension(50, 150);
+    private static final int BUTTON_BAR_WIDTH = 50;
 //    private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> mySpriteTypes;
@@ -37,10 +37,6 @@ public class LevelEditor extends JPanel {
     private SelectionMouseListener myMouseListener;
     private MouseListener myButtonListener;
     private int myViewOffset;
-
-//    public static void main(String[] args) {
-//        new LevelEditor();
-//    }
 
     /**
      * Frame containing all the elements needed to save, load, and create
@@ -58,14 +54,14 @@ public class LevelEditor extends JPanel {
         createButtonPanel();
         createTopMenu();
         setVisible(true);
-        editLoop();
+//        editLoop();
     }
 
-    private void editLoop() {
-        while (myGameIsRunning) {
-            repaint();
-        }
-    }
+//    private void editLoop() {
+//        while (myGameIsRunning) {
+//            repaint();
+//        }
+//    }
 
 //    private void frameBuild() {
 //        setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -85,7 +81,7 @@ public class LevelEditor extends JPanel {
 //    }
 
     private void createListeners() {
-        LevelBoard board = new LevelBoard(myContainer.getSize());
+        LevelBoard board = new LevelBoard(myContainer.getPreferredSize());
         myBoard = board;
         myContainer.add(board);
         myMouseListener = myBoard.getMouseListener();
@@ -150,7 +146,8 @@ public class LevelEditor extends JPanel {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
         subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
-        subpanel.setPreferredSize(BUTTON_BAR_SIZE);
+        subpanel.setPreferredSize(new Dimension(BUTTON_BAR_WIDTH, 
+                BUTTON_BAR_WIDTH * mySpriteTypes.size()));
         for (String sprite : mySpriteTypes.keySet()) {
             subpanel.add(createButton(sprite));
         }
@@ -164,6 +161,7 @@ public class LevelEditor extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        System.out.println("painting");
         myBoard.update();
     }
 

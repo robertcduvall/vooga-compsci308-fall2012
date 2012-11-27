@@ -88,8 +88,7 @@ public class LevelBoard extends JPanel implements ISavable {
                 }
                 else {
                     for (Sprite s : mySprites) {
-                        if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
-                                e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
+                        if (s.contains(e.getPoint())) {
                             if (e.getButton() == MouseEvent.BUTTON3) {
                                 spritePopupMenu(s, e);
                             }
@@ -123,6 +122,7 @@ public class LevelBoard extends JPanel implements ISavable {
             public void mouseMoved(MouseEvent e) {
                 mouseX = e.getX();
                 mouseY = e.getY();
+                System.out.println("repaint board");
             }
         };
         addMouseListener(mouseListener);
@@ -270,17 +270,16 @@ public class LevelBoard extends JPanel implements ISavable {
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-            
+
         }
         private void createAttributeWindow() {
-             JPopupMenu pop = new JPopupMenu();
-
-             for (String att : myAvailableAttributes) {
+            JPopupMenu pop = new JPopupMenu();
+            for (String att : myAvailableAttributes) {
                 JMenuItem j = new JMenuItem(att);
                 j.addActionListener(this);
                 pop.add(j);
-             }
-             pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
+            }
+            pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
 
 
 /*           create a list of attributes from the resource file 

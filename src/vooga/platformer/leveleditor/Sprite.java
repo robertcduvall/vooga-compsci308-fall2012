@@ -5,7 +5,9 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.image.AffineTransformOp;
@@ -68,10 +70,9 @@ public class Sprite {
         myUpdateStrategies = new ArrayList<Map<String, String>>();
         myAttributes = new HashMap<String, String>();
     }
-    
  
     protected Sprite() {
-        
+
     }
 
     private Image getImage(String filename) {
@@ -92,6 +93,17 @@ public class Sprite {
      */
     public String getType() {
         return myType;
+    }
+
+    /**
+     * Returns a boolean of whether or not a point is contained by the sprite.
+     * 
+     * @param p Point of interest
+     * @return boolean of whether the point is inside the bounds of the sprite
+     */
+    public boolean contains(Point p) {
+        return p.x >= myX && p.x <= myX + myWidth &&
+                p.y >= myY && p.y <= myY + myHeight;
     }
 
     /**
