@@ -76,6 +76,7 @@ public class MapMode extends GameMode implements InputAPI {
             addMapObject(mapObject.getLocation(), mapObject);
         }
         configureInputHandling();
+        update();
     }
 
     public void setNumDisplayRows (int numDisplayRows) {
@@ -208,7 +209,7 @@ public class MapMode extends GameMode implements InputAPI {
             while (it.hasNext()) {
                 MapObject nextObject = it.next();
                 if (!nextObject.isVisible()) {
-                    it.remove();
+                    it.remove(); //entire sprite should be removed???
                 }
                 else {
                     nextObject.update();
@@ -341,6 +342,10 @@ public class MapMode extends GameMode implements InputAPI {
 
     public void setPlayer (MapPlayerObject p) {
         myPlayer = p;
+    }
+    
+    public MapPlayerObject getPlayer () {
+        return myPlayer;
     }
 
     public boolean isWithinBounds (Point dest) {

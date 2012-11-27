@@ -15,7 +15,7 @@ import vooga.turnbased.gui.GamePane;
  */
 public class MovingMapObject extends MapObject {
 
-    private static final double SIZE_RELATIVE_TO_TILE = 0.9;
+    private static final double SIZE_RELATIVE_TO_TILE = 1;
     private int myMovementTimePerTile;
     private int myTimePassed;
     private double myXProportion;
@@ -125,7 +125,7 @@ public class MovingMapObject extends MapObject {
         return myPreviousLocation;
     }
 
-    private void finishMovement () {
+    public void finishMovement () {
         setMoving(false);
         myTimePassed = 0;
         myXProportion = 0;

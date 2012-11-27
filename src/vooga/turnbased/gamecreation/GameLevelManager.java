@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
 
@@ -24,6 +26,7 @@ public class GameLevelManager {
     private Map<String, List<Sprite>> myLoadedSprites;
     private GameManager myGameManager;
     private String myCurrentMapModeKey;
+    private MapMode myPreviousMap;
 
     /**
      * Constructor
@@ -35,6 +38,7 @@ public class GameLevelManager {
         myGameManager = gameManager;
         myLoadedMapModes = new HashMap<String, MapMode>();
         myLoadedSprites = new HashMap<String, List<Sprite>>();
+        myPreviousMap = null;
     }
 
     /**
@@ -62,24 +66,41 @@ public class GameLevelManager {
      * @param URI
      * @return
      */
-    public MapMode createLevel (String URI) {
+    public MapMode createLevel (String URI, MapObject enteringObject) {
         MapMode mapMode = new MapMode(myGameManager, MapMode.class);
 
-        File xmlFile = new File(URI);
-        LevelXmlParser test = new LevelXmlParser(xmlFile, mapMode);
+        LevelXmlParser test = new LevelXmlParser(new File(URI), mapMode);
         mapMode.setMapSize(test.parseDimension(GameWindow.importString("MapDimension")));
         Dimension cameraDimension = test.parseDimension(GameWindow.importString("CameraDimension"));
         mapMode.setNumDisplayCols(cameraDimension.width);
         mapMode.setNumDisplayRows(cameraDimension.height);
         List<Sprite> sprites = test.parseSprites();
+        if (enteringObject == null) { //occurs at the start of the game
+            sprites.add(test.parsePlayerSprite());
+        }
+        else { //occurs when someone steps on a portal
+            sprites.add(myGameManager.findSpriteWithID(enteringObject.getID()));            
+            if (enteringObject == myPreviousMap.getPlayer()) {
+                mapMode.setPlayer((MapPlayerObject)enteringObject);
+                myPreviousMap.setPlayer(null);
+            }
+            removeEnteringObject(enteringObject);
+        }
         myLoadedSprites.put(URI, sprites);
 
         return mapMode;
     }
 
-    public void enterMap (String levelFileName) {
+    public void enterMap (String levelFileName, MapObject enteringObject) {
+        myPreviousMap = myLoadedMapModes.get(myCurrentMapModeKey);
         myCurrentMapModeKey = levelFileName;
         if (myCurrentMapModeKey == null) { return; }
-        myLoadedMapModes.put(myCurrentMapModeKey, createLevel(myCurrentMapModeKey));
+        myLoadedMapModes.put(myCurrentMapModeKey, createLevel(myCurrentMapModeKey, enteringObject));
+    }
+    
+    private void removeEnteringObject (MapObject mapObject) {
+        if (myPreviousMap == null) { return; }
+        myPreviousMap.removeMapObject(mapObject);
+        myGameManager.deleteSprite(mapObject.getID());
     }
 }

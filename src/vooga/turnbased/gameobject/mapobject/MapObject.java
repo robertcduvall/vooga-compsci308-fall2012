@@ -129,7 +129,7 @@ public abstract class MapObject extends GameObject {
         paintInProportion(g, myOffset, myTileDimensions, 1);
     }
     
-    public void paintInProportion(Graphics g, Point offset, Dimension tileDimension,
+    protected void paintInProportion(Graphics g, Point offset, Dimension tileDimension,
     		double proportion) {
     	if (getImage() == null || offset == null || tileDimension == null) {
         	return;

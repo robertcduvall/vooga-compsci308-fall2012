@@ -11,6 +11,7 @@ import java.util.List;
 import vooga.turnbased.gamecreation.GameLevelManager;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.InputAPI;
@@ -48,13 +49,14 @@ public class GameManager implements GameLoopMember, InputAPI {
         myEvents = new LinkedList<ModeEvent>();
         myBattleMode = new BattleMode(this, BattleObject.class);
         myLevelManager = new GameLevelManager(this);
-        initializeGameLevel(GameWindow.importString("Entrance"));
+        initializeGameLevel(GameWindow.importString("Entrance"), null);
         configureInputHandling();
     }
 
-    public void initializeGameLevel (String levelFileName) {
-        myLevelManager.enterMap(levelFileName);
+    public void initializeGameLevel (String levelFileName, MapObject enteringObject) {
+        myLevelManager.enterMap(levelFileName, enteringObject);
         myMapMode = myLevelManager.getCurrentMapMode();
+        mySprites.clear();
         addSprites(myLevelManager.getCurrentSprites());
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.initialize();
@@ -102,7 +104,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
-        findSpriteWithID(spriteID).clear();
+        //findSpriteWithID(spriteID).clear(); WHY?????????!!!!!!!
         mySprites.remove(spriteID);
     }
 

@@ -19,6 +19,7 @@ import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapobject.MapTileObject;
+import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
 import vooga.turnbased.sprites.Sprite;
 
 
@@ -91,14 +92,14 @@ public class LevelXmlParser {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
         toReturn.addAll(parseCharacterSprites());
-        Sprite playerSprite = parsePlayerSprite();
+        /*Sprite playerSprite = parsePlayerSprite();
         if (playerSprite != null) {
             toReturn.add(playerSprite);
-        }
+        }*/
         return toReturn;
     }
 
-    private Sprite parsePlayerSprite () {
+    public Sprite parsePlayerSprite () {
         Sprite s = new Sprite();
         MapPlayerObject mapPlayer = parseMapPlayer(s);
         if (mapPlayer == null) { return null; }
@@ -267,13 +268,13 @@ public class LevelXmlParser {
                     (MapObject) Reflection.createInstance(className, s.getID(), event, point,
                                                           image, myMapMode);
             // I'll delete it as soon as possible
-            /*if (point.equals(new Point(10, 10))) {
+            if (point.equals(new Point(10, 10))) {
                 mapObject
                         .setStrategy(new TransportStrategy(
                                                myMapMode,
                                                "src/vooga/turnbased/resources/level/Level-one.xml",
-                                               new Point(0, 0)));
-            }*/
+                                               new Point(8, 8)));
+            }
 
             return mapObject;
         }
