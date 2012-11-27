@@ -44,7 +44,7 @@ public class SocialCenter {
     /*
      * initiate user list
      */
-    private SocialCenter () {
+    public SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
         myUserManager = UserManager.getInstance();
