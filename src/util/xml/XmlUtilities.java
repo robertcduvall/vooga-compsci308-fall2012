@@ -43,7 +43,8 @@ import org.w3c.dom.NodeList;
  * <hr/>
  * 
  * Example of the semantics used here:
- * <pre/>
+ * <pre>
+ * {@code
  * <tag attribute="value"> content </tag>
  * ~or~
  * <tag attributeName="attributeValue"> content </tag>
@@ -51,6 +52,7 @@ import org.w3c.dom.NodeList;
  * <parent>
  * <child></child>
  * </parent>
+ * }
  * </pre>
  * <hr/>
  * 
