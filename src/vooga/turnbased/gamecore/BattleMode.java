@@ -42,6 +42,12 @@ public class BattleMode extends GameMode implements InputAPI {
         super(gm, modeObjectType);
     }
 
+    // need to pass ids of battle participants upon battle creation
+    public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
+                       List<Integer> myInvolvedIDs) {
+       super(gameManager, modeObjectType);
+    }
+
     @Override
     public void pause () {
         myTeams.clear();

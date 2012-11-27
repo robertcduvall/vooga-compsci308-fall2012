@@ -226,7 +226,8 @@ public class MapMode extends GameMode implements InputAPI {
             }
         }
 
-        for (Point p : myMapObjects.keySet()) {
+        // no need - mapobjects report events themselves inside their overriden interact()
+       /* for (Point p : myMapObjects.keySet()) {
             HashMap<String, List<Integer>> myTileEvents = new HashMap<String, List<Integer>>();
             for (MapObject s : getSpritesOnTile(p.x, p.y)) {
                 if (!myTileEvents.containsKey(s.getModeEvent())) {
@@ -237,7 +238,7 @@ public class MapMode extends GameMode implements InputAPI {
             for (String s : myTileEvents.keySet()) {
                 getGameManager().flagEvent(s, myTileEvents.get(s));
             }
-        }
+        }*/
     }
 
     /**

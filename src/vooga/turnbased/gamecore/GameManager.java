@@ -61,9 +61,10 @@ public class GameManager implements GameLoopMember, InputAPI {
         myCurrentGameMode = myMapMode;
         myCurrentGameMode.initialize();
     }
-    
+
     /**
      * find the Sprite with specific ID
+     * 
      * @param ID ID of the Sprite
      * @return the Sprite found (null if no Sprite with that ID was found)
      */
@@ -73,6 +74,7 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     /**
      * add a list of sprites to the GameManager
+     * 
      * @param sprites
      */
     private void addSprites (List<Sprite> sprites) {
@@ -104,7 +106,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
-        //findSpriteWithID(spriteID).clear(); //WHY?????????!!!!!!!
+        // findSpriteWithID(spriteID).clear(); //WHY?????????!!!!!!!
         mySprites.remove(spriteID);
     }
 
@@ -162,10 +164,16 @@ public class GameManager implements GameLoopMember, InputAPI {
         if ("NO_ACTION".equals(eventName)) {
             // do nothing
         }
-        else if ("MAP_COLLISION".equals(eventName)) {
+        // deprecated - gamemanager shouldn't be notified about every single
+        // collision
+        /*else if ("MAP_COLLISION".equals(eventName)) {
             if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
                 changeCurrentMode(myBattleMode);
             }
+        }*/
+        else if ("BATTLE_START".equals(eventName)) {
+            myBattleMode = new BattleMode(this, BattleObject.class, myInvolvedIDs);
+            changeCurrentMode(myBattleMode);
         }
         else if ("BATTLE_OVER".equals(eventName)) {
             changeCurrentMode(myMapMode);
