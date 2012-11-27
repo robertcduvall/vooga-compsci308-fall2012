@@ -15,7 +15,7 @@
 	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
-			<event>MAP_COLLISION</event>
+			<event>BATTLE_START</event>
 			<location>
 				<x>5</x>
 				<y>5</y>

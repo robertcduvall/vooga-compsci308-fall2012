@@ -20,7 +20,7 @@ public class MapEnemyObject extends MapObject {
             List <Integer> involvedSpriteIDs = new ArrayList<Integer>();
             involvedSpriteIDs.add(m.getID());
             involvedSpriteIDs.add(getID());
-            getMapMode().getGameManager().flagEvent("BATTLE_START", involvedSpriteIDs);
+            getMapMode().getGameManager().flagEvent(getModeEvent(), involvedSpriteIDs);
         }
     }
 
