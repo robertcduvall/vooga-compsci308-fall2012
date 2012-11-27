@@ -24,8 +24,8 @@ public class Test {
         
         //setting column name by adding an array
         String [] sarray=new String[2];
-        sarray[0]="favorite color";
-        sarray[1]="favorite band";
+        sarray[0]="favoritecolor";
+        sarray[1]="favoriteband";
         try {
             table.addNewColumn(sarray);
         }
@@ -45,7 +45,7 @@ public class Test {
         
         table.addNewRowEntry(storingData);
         
-        
+
         //retrieving a table entry
         UnmodifiableRowElement re= table.find("name","bob");
         System.out.println(re.getEntry("name"));
@@ -65,7 +65,7 @@ public class Test {
 
         Map<String,Object> newData= new HashMap<String, Object>();
         newData.put("address","LAAZ");
-        newData.put("favorite color", "blue");
+        newData.put("favoritecolor", "blue");
         
         try {
             table.editRowEntry("name","bob",newData);
@@ -78,14 +78,16 @@ public class Test {
         table.viewContents();
        
         //delete row entry
-        table.deleteRowEntry("name","bob");
+      //  table.deleteRowEntry("name","bob");
         
-        UnmodifiableRowElement rowE= table.find("name","bob");
-        System.out.println(rowE);
+       // UnmodifiableRowElement rowE= table.find("name","bob");
+       // System.out.println(rowE + "hi");
         
         //loading and saving
-        table.save("/resources/data.txt");
-        table.load("/resources/data.txt");
+        table.save("src/util/datatable/resources/data.txt");
+        
+        //DataTable 
+       // table.load("src/util/datatable/resources/data.txt");
         
         
         //demo of inserting objects
