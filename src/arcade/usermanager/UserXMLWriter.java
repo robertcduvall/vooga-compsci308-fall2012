@@ -17,6 +17,7 @@ import util.xml.XmlWriter;
  * @author Howard, Difan
  * TODO: message XML should contain sender, not receiver tag
  * TODO: change to use new XMLUtilities
+ * TODO: Write first and last name
  * 
  */
 public class UserXMLWriter {

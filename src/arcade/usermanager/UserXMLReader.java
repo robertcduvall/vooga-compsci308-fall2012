@@ -53,8 +53,9 @@ public class UserXMLReader {
 
         List<Message> messageList = getMessageList(name);
         List<GameData> gameDataList = getGameDataList(name);
-
-        return new User(username, password, picture, credits, messageList, gameDataList);
+        String firstName=XmlUtilities.getChildContent(el, "firstname");
+        String lastName=XmlUtilities.getChildContent(el, "lastname");
+        return new User(username, password, picture, credits, messageList, gameDataList, firstName, lastName);
 
     }
 
