@@ -2,6 +2,7 @@ package util.networking;
 
 import java.util.Map;
 import java.util.TreeMap;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -11,11 +12,10 @@ public class ProtocolXMPP implements ChatProtocol {
         
     private static final String XML_TEMP_PATH = "src/util/networking/serverRequest.xml";
     private static final double ourVersion = 1.0;
-    
+        
     @Override
     public String sendMessage (String dest, String body) {
         Document d = XmlUtilities.makeDocument();
-        
         return body;
     }
 
@@ -29,8 +29,8 @@ public class ProtocolXMPP implements ChatProtocol {
         Document d = XmlUtilities.makeDocument();
         Map<String, String> attributes = new TreeMap<String, String>();
         attributes.put("to", dest);
+        d.setXmlVersion("1.0");
         attributes.put("xlmns", "jabber:client");
-        attributes.put("version", "" + ourVersion);
         Element stream = XmlUtilities.makeElement(d, "stream", attributes);
         d.appendChild(stream);
         XmlUtilities.write(d, "src/util/networking/Tester.xml");
@@ -46,4 +46,5 @@ public class ProtocolXMPP implements ChatProtocol {
             return null;
         }  
     }
+    
 }
