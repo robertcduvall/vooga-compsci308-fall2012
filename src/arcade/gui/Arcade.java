@@ -5,8 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import arcade.datatransfer.GameLink;
-import arcade.datatransfer.UserLink;
+import arcade.datatransfer.ModelInterface;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
@@ -29,17 +28,17 @@ import arcade.usermanager.SocialCenter;
 public class Arcade {
 
     // username (unique key) of the user who is logged in
-    private static String myUser = "";
-    private static Map<String, Serializable> mySharedVariables;
+    private String myUser = "";
+    private Map<String, Serializable> mySharedVariables;
 
-    private static ArcadeFrame myFrame;
+    private ArcadeFrame myFrame;
 
-    private static GameCenter myGameCenter;
-    private static SocialCenter mySocialCenter;
-    private static GameLink myGameManager;
-    private static UserLink myUserManager;
-    private static CreatorFactory myFactory;
-    private static ResourceBundle myResources;
+    private static GameCenter myGameCenter; // deprecated
+    private static SocialCenter mySocialCenter; // deprecated
+    private ModelInterface myModelInterface;
+
+    private CreatorFactory myFactory;
+    private ResourceBundle myResources;
 
     public Arcade () {
         System.out.println("got it!");
@@ -47,9 +46,8 @@ public class Arcade {
         // initialize things
         myFactory = new CreatorFactory(this);
         // myGameCenter = new GameCenter(); // GameCenter is currently broken.
-        mySocialCenter = SocialCenter.getInstance();
-        myGameManager = new GameLink();
-        myUserManager = new UserLink();
+        // mySocialCenter = SocialCenter.getInstance();
+        myModelInterface = new ModelInterface(this);
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
         mySharedVariables = new HashMap<String, Serializable>();
 
@@ -88,17 +86,12 @@ public class Arcade {
 
     /**
      * This method replaces and old panel with a new panel.
-     * 
-     * @param panelNumber the int representing the panel to be replaced
-     * @param newPanel the replacement panel
-     * @return this returns the old panel
+     * @param panelCreatorName
      */
     public void replacePanel (String panelCreatorName) {
         String panelRealName = myResources.getString(panelCreatorName);
-        // myFrame.setVisible(false);
         ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
-        // myFrame.setVisible(true);
         // myFrame.pack();
         myFrame.validate();
     }
@@ -116,30 +109,46 @@ public class Arcade {
         myUser = u;
     }
 
-    public GameLink getGameManager () {
-        return myGameManager;
-    }
-
-    public UserLink getUserManager () {
-        return myUserManager;
-    }
-
+    /**
+     * 
+     * @param varName
+     * @param var
+     */
     public void saveVariable (String varName, Serializable var) {
         mySharedVariables.put(varName, var);
     }
 
+    /**
+     * 
+     * @param varName
+     * @return
+     */
     public Serializable getVariable (String varName) {
         return mySharedVariables.get(varName);
     }
 
+    /**
+     * @deprecated this won't work any more, use getModelInterface
+     * @return
+     */
     public GameCenter getGameCenter () {
         return myGameCenter;
     }
 
     /**
+     * @deprecated this won't work any more, use getModelInterface
      * @return the mySocialCenter
      */
     public SocialCenter getSocialCenter () {
         return mySocialCenter;
     }
+
+    /**
+     * 
+     * @return reference to the modelinterface instance
+     */
+    public ModelInterface getModelInterface () {
+        return myModelInterface;
+    }
+
 }

@@ -1,12 +1,16 @@
 package arcade.gui.panel.user;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
+
 
 /**
  * This is the normal user panel post-login.
@@ -14,7 +18,7 @@ import arcade.gui.panel.ArcadePanel;
  * "Welcome, Michael" and then have 2 buttons: Logout and Exit
  * 
  * @author Michael Deng
- *
+ * 
  */
 public class NormUserPanel extends AUserPanel {
 
@@ -24,42 +28,38 @@ public class NormUserPanel extends AUserPanel {
 
     @Override
     public ArcadePanel createPanel () {
-
         ArcadePanel myPanel = initializeNewPanel();
         System.out.println("NormUserPanel");
 
-        myPanel.setBackground(Color.BLACK);
-    
+        // use the username to pull the user's first name
+        // TODO
+        String user = getArcade().getUsername();
+        
+        
+        
+        JButton logoutBut = new JButton("Logout");
+
         JLabel welcomeLabel = new JLabel("Welcome, REALLYLONGNAME!", JLabel.CENTER);
         welcomeLabel.setForeground(Color.WHITE);
-        JButton button1 = new JButton("Logout");
-          
-          
-          GroupLayout layout = new GroupLayout(myPanel);
-           myPanel.setLayout(layout);
-           layout.setAutoCreateGaps(true);
-           layout.setAutoCreateContainerGaps(true);
-          
-           layout.setHorizontalGroup(layout.createSequentialGroup()
-                                     .addContainerGap(20, 20)
-                                     .addComponent(welcomeLabel)
-                                     .addComponent(button1));
-           
-           layout.setVerticalGroup(layout.createSequentialGroup()
-                                   .addContainerGap(30, 30)
-                                   .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                                             .addComponent(welcomeLabel)
-                                             .addComponent(button1)));
-           
-          
-          
-          return myPanel;
-    
-    
-    
+
+        logoutBut.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                // execute arcade logout
+                // TODO
+                
+//                getArcade().replacePanel("NewUser");
+            }
+
+        });
+
+        myPanel.setLayout(new MigLayout("", "[grow]", "[][b]"));
+
+        myPanel.add(logoutBut, "align center, wrap");
+        myPanel.add(welcomeLabel, "align center");
+
+        return myPanel;
     }
-
-
-    
 
 }

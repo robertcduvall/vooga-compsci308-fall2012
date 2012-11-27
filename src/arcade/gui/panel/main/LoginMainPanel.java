@@ -141,7 +141,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         System.out.println("Attempt Login");
         String username = usernameField.getText();
         char[] password = passwordField.getPassword();
-        if (this.getArcade().getUserManager().loginUser(username, password)) {
+        if (this.getArcade().getUserManager().loginUser(username, password)) { // this is not a valid call anymore
             this.getArcade().replacePanel("MainHome");
             this.getArcade().replacePanel("NormNav");
         }
