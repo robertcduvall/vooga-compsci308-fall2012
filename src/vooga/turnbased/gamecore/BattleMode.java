@@ -155,6 +155,7 @@ public class BattleMode extends GameMode implements InputAPI {
             if (!t.stillAlive()) {
                 teamDead = true;
                 // hardcoded
+                getGameManager().findSpriteWithID(t.getBattleObjects().get(0).getID()).clear();
                 getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
             }
         }
