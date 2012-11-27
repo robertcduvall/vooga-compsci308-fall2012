@@ -24,7 +24,7 @@ import arcade.utility.FileOperation;
  *         Allow user to change profile picture
  */
 public class SocialCenter {
-    private User myCurrentUser;
+    
     private static SocialCenter mySocialCenter;
     // private Map<String, User> myAllUser;
     private String myUserBasicFilePath;
@@ -32,17 +32,13 @@ public class SocialCenter {
     private String myUserGameFilePath;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
-    private final String successString = "Successful";
+//    private final String successString = "Successful";
+//    private final String passwordDoNotMatch = "password do not mat";
+//    private final String userNameExist = "Successful";
     private static ResourceBundle resource;
     private UserManager myUserManager;
 
-    public static SocialCenter getInstance () {
-        if (mySocialCenter == null) {
-            mySocialCenter = new SocialCenter();
-        }
-
-        return mySocialCenter;
-    }
+    
 
     /*
      * initiate user list
@@ -64,11 +60,12 @@ public class SocialCenter {
      */
     public boolean logOnUser (String userName, String password)
             throws Exception {
-        String status = myUserManager.validateUser(userName, password);
+        myUserManager.validateUser(userName, password);
 
-        if (!status.equals(successString)) throw new Exception(status);
+       
         // set current user
-        myCurrentUser = myUserManager.getUser(userName);
+        User newUser = myUserManager.getUser(userName);
+        myUserManager.setCurrentUser(newUser);
 
         return true;
     }
@@ -78,14 +75,20 @@ public class SocialCenter {
      */
     public boolean registerUser (String userName, String password) throws Exception {
         // check validity
-        if (myUserManager.validateUser(userName, "").equals(
-                "This user exists, however password is incorrect"))
-            throw new Exception("This user already exists");
-
-        // valid registration
-        myCurrentUser = myUserManager.addNewUser(userName, password, "default.jpg");
+        
+      try{
+            myUserManager.validateUser(userName, "");
+            }
+        
+       
+        catch(UserNotExistException e){
+        
+        User newUser= myUserManager.addNewUser(userName, password, "default.jpg");
+       myUserManager.setCurrentUser(newUser);
 
         return true;
+        }
+    return false;
     }
 
     /*
@@ -94,8 +97,8 @@ public class SocialCenter {
     public boolean deleteUser (String userName, String password)
             throws Exception {
         // check validity
-        String status = myUserManager.validateUser(userName, password);
-        if (!status.equals(successString)) throw new Exception(status);
+         myUserManager.validateUser(userName, password);
+        
 
         // valid file
         FileOperation.deleteFile(myUserBasicFilePath + userName + ".xml");
@@ -115,7 +118,7 @@ public class SocialCenter {
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         Element message = XmlUtilities.appendElement(doc, root, "message", "");
-        XmlUtilities.appendElement(doc, message, "receiver", receiver);
+        XmlUtilities.appendElement(doc, message, "sender", receiver);
         XmlUtilities.appendElement(doc, message, "content", content);
         XmlUtilities.write(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);
@@ -123,18 +126,9 @@ public class SocialCenter {
         return true;
     }
 
-    /*
-     * return operation status
-     */
-    public List<String> viewMessage (String sender, String receiver,
-            String content) {
-        return myCurrentUser.getMyMessage();
-
-    }
+  
     
-    public GameData getGame(String gameName){
-        return myCurrentUser.getGameData(gameName);
-    }
+   
 
     //
     // /*

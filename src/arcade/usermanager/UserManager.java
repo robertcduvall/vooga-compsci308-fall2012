@@ -25,6 +25,7 @@ public class UserManager {
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
+    private User myCurrentUser;
 
     public static UserManager getInstance () {
         if (myUserManager == null) {
@@ -70,14 +71,15 @@ public class UserManager {
 
     }
 
-    protected String validateUser (String userName, String password) {
+    protected boolean validateUser (String userName, String password) {
         if (!myAllUser.containsKey(userName))
-            return "Such user does not exist";
+            throw new UserNotExistException();
         if (myAllUser.get(userName).getPassword().equals(password))
-            return successString;
+            return true;
         if (myAllUser.containsKey(userName))
-            return "This user exists, however password is incorrect";
-        return "";
+            throw new PasswordNotMatchException();
+        return false;
+        
 
     }
 
@@ -94,6 +96,15 @@ public class UserManager {
     protected void deleteUser (String userName) {
         myAllUser.remove(userName);
 
+    }
+    
+    public User getCurrentUser(){
+        return myCurrentUser;
+    }
+    
+    protected void setCurrentUser(User newUser){
+        myCurrentUser=newUser;
+        
     }
 
 }

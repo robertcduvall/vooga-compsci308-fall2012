@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import arcade.utility.FileOperation;
 import util.encrypt.Hasher;
 import util.xml.XmlBuilder;
+import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
 
 
@@ -53,40 +54,41 @@ public class UserXMLWriter {
     private void makeBasicXml (String userName, String password, String picture) throws IOException {
         String basicInfoFilePath = myUserBasicFilePath + userName + ".xml";
         
-        Document basicDoc = XmlBuilder.createDocument();
+        Document doc = XmlUtilities.makeDocument();
 
-        Element rootElement = basicDoc.createElement("user");
-        basicDoc.appendChild(rootElement);
+        Element rootElement = doc.createElement("user");
+        doc.appendChild(rootElement);
 
-        XmlBuilder.appendElement(basicDoc, rootElement, "name", userName);
-        XmlBuilder.appendElement(basicDoc, rootElement, "password", Hasher.hashCode(password));
-        XmlBuilder.appendElement(basicDoc, rootElement, "picture", myUserImageFilePath+picture);
-        XmlBuilder.appendElement(basicDoc, rootElement, "credits", "0");
-        XmlWriter.writeXML(basicDoc, basicInfoFilePath);
+
+        XmlUtilities.appendElement(doc, rootElement, "name", userName);
+        XmlUtilities.appendElement(doc, rootElement, "password", password);
+        XmlUtilities.appendElement(doc, rootElement, "picture", myUserImageFilePath+picture);
+        XmlUtilities.appendElement(doc, rootElement, "credits", "0");
+        XmlUtilities.write(doc, basicInfoFilePath);
 
     }
 
     private void makeMessageXml (String userName) throws IOException {
         String messageFilePath = myUserMessageFilePath + userName + ".xml";
        
-        Document doc = XmlBuilder.createDocument();
+        Document doc = XmlUtilities.makeDocument();
 
         Element rootElement = doc.createElement("messagelist");
         doc.appendChild(rootElement);
 
-        XmlWriter.writeXML(doc, messageFilePath);
+        XmlUtilities.write(doc, messageFilePath);
 
     }
 
     private void makeGameXml (String userName) throws IOException {
         String gameFilePath = myUserGameFilePath + userName + ".xml";
         
-        Document doc = XmlBuilder.createDocument();
+        Document doc = XmlUtilities.makeDocument();
 
         Element rootElement = doc.createElement("gamelist");
         doc.appendChild(rootElement);
 
-        XmlWriter.writeXML(doc, gameFilePath);
+        XmlUtilities.write(doc, gameFilePath);
 
     }
 
