@@ -183,6 +183,16 @@ public class GameManager implements GameLoopMember, InputAPI {
         else if ("BATTLE_OVER".equals(eventName)) {
             changeCurrentMode(myMapMode);
         }
+        else if ("SWITCH_LEVEL".equals(eventName)) {
+            // Rex can you add code for switching to new level here? smth like:
+            /*
+            Sprite teleportSprite = findSpriteWithID(myInvolvedIDs.get(0));
+            MapTeleportObject teleport = teleportSprite.getObject(MapTeleportObject.class).get(0);
+            String newLevelXML = teleport.getLevelXML();
+            myMapMode = myLevelManager.getLevelBySpecifiedInXML(newLevelXML);
+            changeCurrentMode(myMapMode);
+            */
+        }
         else {
             System.err.println("Unrecognized mode event requested.");
         }
