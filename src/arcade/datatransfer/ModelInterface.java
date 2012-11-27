@@ -29,11 +29,22 @@ public class ModelInterface {
     }
 
     // #############################################################
-    // Implemented by the Game team
+    // To be Implemented by the Game team
     // #############################################################
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // #############################################################
-    // Implemented by the User team
+    // To be Implemented by the User team
     // #############################################################
 
     /**
