@@ -1,10 +1,3 @@
-/**
- * Prints game menu buttons before the game is loaded or the game quits
- * Buttons will responds to user input and the screen will show game, editor or
- * some new menus
- * 
- * @author Rex, Volodymyr
- */
 package vooga.turnbased.gui;
 
 import java.awt.event.ActionEvent;
@@ -15,6 +8,14 @@ import javax.swing.JButton;
 
 
 @SuppressWarnings("serial")
+/**
+ * Prints game menu buttons before the game is loaded or the game quits
+ * Buttons will responds to user input and the screen will show game, editor or
+ * some new menus
+ * 
+ * @author rex, Vo
+ *
+ */
 public class MenuPane extends DisplayPane {
 
     /**

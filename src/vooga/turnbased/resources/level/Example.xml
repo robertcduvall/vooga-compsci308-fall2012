@@ -25,10 +25,13 @@
 		<battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
-			<health>3</health>
-			<defense>2</defense>
-			<attack>1</attack>
-			<image>src/vooga/turnbased/resources/image/enemy/005.png</image>
+			<stats>
+				<health>13</health>
+				<defense>2</defense>
+				<attack>5</attack>
+			</stats>
+			<name>Evil Monster</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/005.png</image>
 		</battle>
 	</sprite>
 	<sprite>
@@ -48,10 +51,13 @@
 		<battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
-			<health>3</health>
-			<defense>2</defense>
-			<attack>1</attack>
-			<image>src/vooga/turnbased/resources/image/enemy/025b.png</image>
+			<stats>
+				<health>10</health>
+				<defense>3</defense>
+				<attack>7</attack>
+			</stats>
+			<name>Pikachu</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
 		</battle>
 	</sprite>
 	<staticSprite>

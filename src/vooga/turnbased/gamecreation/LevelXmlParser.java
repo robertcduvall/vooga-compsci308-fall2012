@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import util.imageprocessing.ImageLoop;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
@@ -226,13 +227,21 @@ public class LevelXmlParser {
         if (battleSprite.hasChildNodes()) {
             String className = XmlUtilities.getChildContent(battleSprite, CLASS);
             String event = XmlUtilities.getChildContent(battleSprite, EVENT);
-            int attack = XmlUtilities.getChildContentAsInt(battleSprite, "attack");
-            int defense = XmlUtilities.getChildContentAsInt(battleSprite, "defense");
-            int health = XmlUtilities.getChildContentAsInt(battleSprite, "health");
             Image image = XmlUtilities.getChildContentAsImage(battleSprite, IMAGE);
+            Map<String, Number> stats = new HashMap<String, Number>();
+            Element battleStats = XmlUtilities.getElement(battleSprite, "stats");
+            if (battleStats.hasChildNodes()) {
+                //is there a way to do this without knowing what the name of each stat?
+                //ie. iterate through the child nodes?
+                stats.put("attack", XmlUtilities.getChildContentAsDouble(battleStats, "attack"));
+                stats.put("defense", XmlUtilities.getChildContentAsDouble(battleStats, "defense"));
+                stats.put("health", XmlUtilities.getChildContentAsDouble(battleStats, "health"));
+                stats.put("maxHealth", XmlUtilities.getChildContentAsDouble(battleStats, "health"));
+            }
+            String name = XmlUtilities.getChildContent(battleSprite, "name");
             BattleObject battleObject =
-                    (BattleObject) Reflection.createInstance(className, s.getID(), event, attack,
-                                                             defense, health, image);
+                    (BattleObject) Reflection.createInstance(className, s.getID(), 
+                            event, stats, name, image);
             return battleObject;
         }
         return null;
@@ -251,8 +260,7 @@ public class LevelXmlParser {
             MapObject mapObject =
                     (MapObject) Reflection.createInstance(className, s.getID(), event, point,
                                                           image, myMapMode);
-            // I'll definitely remember what I've changed and delete it as soon
-            // as possible
+            // I'll delete it as soon as possible
             /*if (point.equals(new Point(10, 10))) {
                 mapObject
                         .setStrategy(new TransportStrategy(
