@@ -161,11 +161,13 @@ public class GameManager implements GameLoopMember, InputAPI {
     private void handleEvents () {
         while (!myEvents.isEmpty()) {
             GameEvent m = myEvents.remove(0);
-            handleEvent(m.getModeEventName(), m.getEventInvolvedIDs());
+            handleEvent(m);
         }
     }
 
-    private void handleEvent (String eventName, List<Integer> myInvolvedIDs) {
+    private void handleEvent (GameEvent event) {
+        String eventName = event.getModeEventName();
+        List<Integer> myInvolvedIDs = event.getEventInvolvedIDs();
         if ("NO_ACTION".equals(eventName)) {
             // do nothing
         }
@@ -191,6 +193,21 @@ public class GameManager implements GameLoopMember, InputAPI {
             String newLevelXML = teleport.getLevelXML();
             myMapMode = myLevelManager.getLevelBySpecifiedInXML(newLevelXML);
             changeCurrentMode(myMapMode);
+            */
+        }
+        else if ("DIALOGUE_START".equals(eventName)) {
+            //myDialogueMode = new DialogueMode(this, BattleObject.class, myInvolvedIDs);
+            //changeCurrentMode(myDialogueMode);
+        }
+        else if ("DIALOGUE_OVER".equals(eventName)) {
+            changeCurrentMode(myMapMode);
+        }
+        else if ("INTERACTION_COMPLETED".equals(eventName)) { 
+            // to win, need to interact with specific (or all) sprites, i.e.
+            // NPCs, Enemies, Pickup-able items, teleports, etc.
+            /*
+            myGameLogic.processInteraction(event);
+            if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
             */
         }
         else {
