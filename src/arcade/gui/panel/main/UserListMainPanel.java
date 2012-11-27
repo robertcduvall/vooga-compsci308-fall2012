@@ -6,24 +6,32 @@ import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+
 /**
  * 
  * @author Michael Deng
- *
+ * 
  */
-public class UserProfileMainPanel extends AMainPanel {
+public class UserListMainPanel extends AMainPanel {
 
-    public UserProfileMainPanel (Arcade a) {
+    /**
+     * 
+     * @param a
+     */
+    public UserListMainPanel (Arcade a) {
         super(a);
     }
 
+    /**
+     * 
+     */
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("UserProfileMainPanel");
+        System.out.println("UserListMainPanel");
 
         JLabel label = new JLabel();
-        label.setText("[User Profile]");
+        label.setText("[User List]");
         label.setForeground(Color.WHITE);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);

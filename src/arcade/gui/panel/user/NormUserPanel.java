@@ -3,10 +3,8 @@ package arcade.gui.panel.user;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -34,24 +32,23 @@ public class NormUserPanel extends AUserPanel {
         // use the username to pull the user's first name
         // TODO
         String user = getArcade().getUsername();
-        
-        
-        
+
         JButton logoutBut = new JButton("Logout");
 
-        JLabel welcomeLabel = new JLabel("Welcome, REALLYLONGNAME!", JLabel.CENTER);
+        JLabel welcomeLabel = new JLabel("You are current logged in as: " + user, JLabel.CENTER);
         welcomeLabel.setForeground(Color.WHITE);
 
         logoutBut.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed (ActionEvent e) {
-                // execute arcade logout
-                // TODO
-                
-//                getArcade().replacePanel("NewUser");
-            }
+                getArcade().setUsername("");
 
+                getArcade().replacePanel("MainDefault");
+                getArcade().replacePanel("UserDefault");
+                getArcade().replacePanel("SearchDefault");
+                getArcade().replacePanel("NavDefault");
+            }
         });
 
         myPanel.setLayout(new MigLayout("", "[grow]", "[][b]"));
