@@ -1,5 +1,6 @@
 package util.ParticleEngine;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,7 +42,7 @@ public class Particle {
                                                    // magic numbers, they're
                                                    // just for testing purposes
     private float[] offsets;
-    //private BufferedImage myImage;
+    private BufferedImage myBufferedImage;
     private Image myImage;
     
     private static final int oneHundred = 100;
@@ -76,17 +77,28 @@ public class Particle {
             int variance, int duration){
     	myPosition = position;
     	myVariance = variance;
-    	durationLimit = duration;
     	durationExisted = 0;
     	myImage = image;
     	
     	myRandomGenerator = new Random();
         offsets = new float[4];
+
+        durationLimit = (int)(myRandomGenerator.nextDouble()*duration);
         
-/*        myImage = new BufferedImage(size.width, size.height,
+        myBufferedImage = new BufferedImage(size.width, size.height,
                 BufferedImage.TYPE_INT_ARGB);
-        myImage.createGraphics().drawImage(image, myPosition.x, myPosition.y,
-                size.width, size.height, null);*/
+        Graphics2D g2d = (Graphics2D) myBufferedImage.createGraphics();
+        g2d.setBackground(new Color(0,0,0,0));
+        g2d.drawImage(image, 0, 0,size.width, size.height, null);
+        for (int y = 0; y < myBufferedImage.getHeight(); ++y) {
+            for (int x = 0; x < myBufferedImage.getWidth(); ++x) {
+                 int argb = myBufferedImage.getRGB(x, y);
+                 if ((argb & 0x00FFFFFF) == 0x00000000)
+                 {
+                     myBufferedImage.setRGB(x, y, 0);
+                 }
+            }
+        }
     }
     
     /**
@@ -106,8 +118,8 @@ public class Particle {
     public void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         RescaleOp rop = new RescaleOp(scales, offsets, null);
-        g2d.drawImage(myImage, myPosition.x, myPosition.y, null);
-        //g2d.drawImage(myImage, rop, myPosition.x, myPosition.y);
+        //g2d.drawImage(myImage, myPosition.x, myPosition.y, null);
+        g2d.drawImage(myBufferedImage, rop, myPosition.x, myPosition.y);
     }
 
     public void update () {
@@ -122,7 +134,7 @@ public class Particle {
         durationExisted++;
 
         // this is the alpha scale
-        scales[3] = (durationLimit - durationExisted) / durationLimit;
+        scales[3] = (float)(durationLimit - durationExisted) / (float)durationLimit;
     }
     
     /**
@@ -131,6 +143,6 @@ public class Particle {
      * @return if the particle still exists
      */
     public boolean stillExists () {
-        return (durationExisted < durationLimit);
+        return (durationExisted < durationLimit*0.8f);
     }
 }

@@ -5,11 +5,14 @@ import arcade.utility.ReadWriter;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
+import util.xml.XmlUtilities;
 
 
 // TODO Replace readwriter with other xml reader
@@ -25,9 +28,8 @@ public class Game {
 
     private GameSaver mySaver;
     private IArcadeGame myGame;
-    private Node myGameNode;
-    private GameXmlParser myXmlParser;
-    private GameXmlWriter myXmlBuilder;
+    private org.w3c.dom.Document myXmlParser;
+    private Element myGameNode;
 
     /**
      * Constructor for Game Manager takes in a specific game, so there is a
@@ -42,14 +44,11 @@ public class Game {
     public Game (IArcadeGame gameObject) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
-        GameXmlParser myXmlParser = new GameXmlParser("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
-        myXmlBuilder = new GameXmlWriter();
-        NodeList allGames = myXmlParser.getElementsByName(
-                myXmlParser.getDocumentElement(), "game");
-        for (int i = 0; i < allGames.getLength(); i++) {
-            if (allGames.item(i).getTextContent().equals(myGame.getName()))
-                myGameNode = allGames.item(i);
-        }
+        XmlUtilities x = new XmlUtilities();
+        myXmlParser = x.makeDocument("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
+        Element e = XmlUtilities.makeElement(myXmlParser, "GameList");
+        myGameNode = XmlUtilities.getElement(e,
+                myGame.getName());
     }
 
     /**
@@ -175,7 +174,7 @@ public class Game {
      * Returns the name of the game.
      */
     public String getGameName () {
-        return myGameNode.getTextContent();
+        return myGame.getName();
     }
 
     /**

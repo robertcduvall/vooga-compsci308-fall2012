@@ -109,7 +109,7 @@ public class Server {
      * concurrent connections.  
      **/
     public Server(OutputStream logStream, int maxConnections) { 
-	this(maxConnections);
+        this(maxConnections);
         setLogStream(logStream);
         log("Starting server");
     }
@@ -146,13 +146,15 @@ public class Server {
      * Set the current Logger and logging level. Pass null to turn logging off.
      **/
     public synchronized void setLogger(Logger logger, Level level) {
-	this.logger = logger;
-	this.logLevel = level;
+        this.logger = logger;
+        this.logLevel = level;
     }
 
     /** Write the specified string to the log */
     protected synchronized void log(String s) { 
-	if (logger != null) logger.log(logLevel, s);
+        if (logger != null) {
+            logger.log(logLevel, s);
+        }
         if (logStream != null) {
             logStream.println("[" + new Date() + "] " + s);
             logStream.flush();
@@ -160,30 +162,30 @@ public class Server {
     }
     /** Write the specified object to the log */
     protected void log(Object o) { log(o.toString()); }
-    
+
     /**
      * This method makes the server start providing a new service.
      * It runs the specified Service object on the specified port.
      **/
     public synchronized void addService(Service service, int port)
-	throws IOException
-    {
+        throws IOException {
         Integer key = new Integer(port);  // the hashtable key
         // Check whether a service is already on that port
-        if (services.get(key) != null) 
+        if (services.get(key) != null)  {
             throw new IllegalArgumentException("Port " + port +
-					       " already in use.");
+                    " already in use.");
+        }
         // Create a Listener object to listen for connections on the port
         Listener listener = new Listener(threadGroup, port, service);
         // Store it in the hashtable
         services.put(key, listener);
         // Log it
         log("Starting service " + service.getClass().getName() + 
-	    " on port " + port);
+            " on port " + port);
         // Start the listener running.
         listener.start();
     }
-    
+
     /**
      * This method makes the server stop providing a service on a port.
      * It does not terminate any pending connections to that service, merely

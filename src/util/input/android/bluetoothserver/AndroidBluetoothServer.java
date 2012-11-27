@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 import javax.bluetooth.UUID;
 import util.input.android.events.AndroidButtonEvent;
-import util.input.android.events.AndroidControllerEvent;
 import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.AndroidServerMessage;
 import util.input.android.events.JoyStickEvent;
@@ -94,20 +93,34 @@ public class AndroidBluetoothServer {
         }
     }
 
-    public void notify (LineSegment l) {
+    /**
+     * Notify all subscribers of the line segment from an android touch screen.
+     * 
+     * @param l the line segment to be shared.
+     */
+    protected void notify (LineSegment l) {
         for (AndroidListener listener : myListeners) {
             listener.onTouchMovement(l);
         }
 
     }
+
+    /**
+     * Notify all subscribers of the sensor event to be shared.
+     * 
+     * @param e the sensor event to be shared
+     */
     public void notify (AndroidSensorEvent e) {
         for (AndroidListener listener : myListeners) {
             listener.onAccelerometerEvent(e);
         }
 
     }
+
     protected UUID getActiveUUID () {
 
+        // as controller numbers are controller numbers, they don't seem very
+        // magical to me.
         switch (myControllerNumber) {
             case 1:
                 return myServerID1;
@@ -117,8 +130,10 @@ public class AndroidBluetoothServer {
                 return myServerID3;
             case 4:
                 return myServerID4;
+            default:
+                return myServerID1;
+
         }
-        return myServerID1;
     }
 
     protected void setMessenger (Messenger messenger) {
@@ -129,6 +144,15 @@ public class AndroidBluetoothServer {
         }
     }
 
+    /**
+     * Send the connected controller a message. If there is no controller
+     * connected, the message is added to a queue to be sent once a connection
+     * is established.
+     * 
+     * @param m the message to send to the controller
+     * @return true if the message was immediately sent. False if it was added
+     *         to the message queue.
+     */
     public boolean notifyController (AndroidServerMessage m) {
         if (myMessenger != null) {
             myMessenger.write(m);
