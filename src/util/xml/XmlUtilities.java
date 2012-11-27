@@ -25,17 +25,20 @@ import org.w3c.dom.NodeList;
 
 
 /**
+ * <p>
  * A general-use xml utility class.
+ * </p>
  * 
+ * <p>
  * IMPORTANT: There are other xml utilities but this is the one that everyone
  * should use. The 5-6 of us got together to make one Utility class that has
  * the best from all the others and is more robust. All other xml utilities
  * have been deprecated.
+ * </p>
  * 
- * TODO: Include more robust error checking and throw an XmlException when
- * appropriate.
- * 
+ * <p>
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
+ * </p>
  * 
  * <hr/>
  * 
@@ -54,6 +57,9 @@ import org.w3c.dom.NodeList;
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov,
  *         Difan Zhao, Mark Hoffman
  */
+
+// TODO: Include more robust error checking and throw an XmlException when
+// appropriate.
 
 public class XmlUtilities {
 
