@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
+import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
 import arcade.utility.FileOperation;
 
@@ -110,13 +111,13 @@ public class SocialCenter {
     public boolean sendMessage (String sender, String receiver, String content) {
         String filePath = myUserMessageFilePath + receiver + ".xml";
         File f = new File(filePath);
-        XmlParser parser = new XmlParser(f);
-        Document doc = parser.getDocument();
-        Element root = parser.getDocumentElement();
-        Element message = XmlBuilder.appendElement(doc, root, "message", "");
-        XmlBuilder.appendElement(doc, message, "receiver", receiver);
-        XmlBuilder.appendElement(doc, message, "content", content);
-        XmlWriter.writeXML(doc, filePath);
+        
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "receiver", receiver);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.write(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);
 
         return true;
