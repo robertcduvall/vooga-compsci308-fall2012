@@ -14,20 +14,20 @@ import util.datatable.exceptions.UnrecognizedColumnNameException;
  */
 public class RowElement {
 
-    private Map<String , String> myData;
+    private Map<String , Object> myData;
 
     /**
      * Instantiating an empty row element.
      */
     public RowElement() {
-        myData = new HashMap<String, String>();
+        myData = new HashMap<String, Object>();
     }
 
     /**
      * Instantiating a row element with initial values from a map.
      * @param map - initial data values
      */
-    public RowElement(Map<String , String> map) {
+    public RowElement(Map<String , Object> map) {
         this();
         myData.putAll(map);
     }
@@ -38,7 +38,7 @@ public class RowElement {
      * @param value - Specific Value
      * @throws UnrecognizedColumnNameException - column name doesnt exist
      */
-    public void setEntry(String col , String value) throws
+    public void setEntry(String col , Object value) throws
         UnrecognizedColumnNameException {
         if (myData.containsKey(col)) {
             myData.put(col, value);
@@ -51,9 +51,9 @@ public class RowElement {
     /**
      * Write to specific column of the row element.
      * @param  map - map of values to be written
-     * @throws UnrecognizedColumnNameException - column name doesnt exist
+     * @throws UnrecognizedColumnNameException - column name does not exist
      */
-    public void setEntry (Map<String, String> map) throws
+    public void setEntry (Map<String, Object> map) throws
         UnrecognizedColumnNameException {
         Set<String> keySet = map.keySet();
         Iterator<String> it = keySet.iterator();
@@ -74,7 +74,7 @@ public class RowElement {
      * @param col - column key
      * @return
      */
-    public String getEntry(String col) {
+    public Object getEntry(String col) {
         return myData.get(col);
     }
 
@@ -83,8 +83,8 @@ public class RowElement {
      * Retrieve all keys and data.
      * @return - map of all the keys and data
      */
-    protected Map<String , String> getAllData() {
-        Map<String , String> cpmap = new HashMap<String , String>();
+    protected Map<String , Object> getAllData() {
+        Map<String , Object> cpmap = new HashMap<String , Object>();
         cpmap.putAll(myData);
         return cpmap;
     }
