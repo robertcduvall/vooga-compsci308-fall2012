@@ -231,12 +231,13 @@ public class LevelXmlParser {
             Map<String, Number> stats = new HashMap<String, Number>();
             Element battleStats = XmlUtilities.getElement(battleSprite, "stats");
             if (battleStats.hasChildNodes()) {
-                //is there a way to do this without knowing what the name of each stat?
-                //ie. iterate through the child nodes?
-                stats.put("attack", XmlUtilities.getChildContentAsDouble(battleStats, "attack"));
-                stats.put("defense", XmlUtilities.getChildContentAsDouble(battleStats, "defense"));
-                stats.put("health", XmlUtilities.getChildContentAsDouble(battleStats, "health"));
-                stats.put("maxHealth", XmlUtilities.getChildContentAsDouble(battleStats, "health"));
+                NodeList statsList = battleStats.getChildNodes();
+                for (int i = 0; i < statsList.getLength(); i++) {
+                    if (!"#text".equals(statsList.item(i).getNodeName())) {
+                        stats.put(statsList.item(i).getNodeName(),
+                                Integer.parseInt(statsList.item(i).getTextContent()));
+                    }
+                }
             }
             String name = XmlUtilities.getChildContent(battleSprite, "name");
             BattleObject battleObject =

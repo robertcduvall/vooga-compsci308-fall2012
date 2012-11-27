@@ -26,6 +26,7 @@
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
 			<stats>
+				<maxHealth>13</maxHealth>
 				<health>13</health>
 				<defense>2</defense>
 				<attack>5</attack>
@@ -52,6 +53,7 @@
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
 			<stats>
+				<maxHealth>10</maxHealth>
 				<health>10</health>
 				<defense>3</defense>
 				<attack>7</attack>
