@@ -9,15 +9,23 @@ import java.io.Serializable;
  * @author Ben Schwab
  * 
  */
-public class JoyStickEvent extends AndroidControllerEvent {
+public class JoyStickEvent implements Serializable {
+
     /**
-     * Constant representing the right joystick.
+     * Constant representing that this is the right joystick
      */
     public static final int RIGHT = 1;
     /**
-     * Constant representing the left joystick.
+     * Constant representing that this is the left joystick, or if there is only
+     * one
+     * joystick.
      */
     public static final int LEFT = 2;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5632816923987042393L;
+
     private double myAngle;
     private double myMagnitude;
     private int myID;
@@ -26,8 +34,9 @@ public class JoyStickEvent extends AndroidControllerEvent {
      * Create a new joystick event.
      * 
      * @param angle an angle in degrees from 0 to 360
-     * @param magnitude The magnitude of the displacment of the joystick from
+     * @param magnitude The magnitude of the displacement of the joystick from
      *        the center of the pad. Ranges from 0 to 1.
+     * @param joyStickId the id of the joystick the event originated from
      */
     public JoyStickEvent (double angle, double magnitude, int joyStickID) {
         myAngle = angle;

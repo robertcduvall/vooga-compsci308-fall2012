@@ -1,16 +1,22 @@
 package util.input.android.events;
 
+import java.io.Serializable;
+
+
 /**
- * A class wrapping data from a draw event on an andrid screen. If you are using
- * this data on a screen different from the one it is drawn on
- * you should use getRelative methods and multiply by the width or height of
- * your screen.
+ * A data wrapper that represents a line segment drawn on an android touch
+ * controller. Provides methods that give relative locations to translate to
+ * screens of different sizes than the touch screen of the android device.
  * 
- * @author Ben
+ * @author Ben Schwab
  * 
  */
-public class LineSegment extends AndroidControllerEvent {
+public class LineSegment implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -570200229732755260L;
     private int myStartX;
     private int myStartY;
     private int myEndX;
@@ -19,14 +25,13 @@ public class LineSegment extends AndroidControllerEvent {
     private int myParentHeight;
 
     /**
-     * Create a new line segment.
-     * 
-     * @param startX
-     * @param startY
-     * @param endX
-     * @param endY
-     * @param parentWidth
-     * @param parentHeight
+     * Create a new line segment
+     * @param startX the starting x location of the line
+     * @param startY the starting y location of the line
+     * @param endX the ending x location of the line
+     * @param endY the ending y location of the line
+     * @param parentWidth the width of the screen the line originated on
+     * @param parentHeight the height of the screen the line originated on
      */
     public LineSegment (int startX, int startY, int endX, int endY, int parentWidth,
                         int parentHeight) {
@@ -37,62 +42,58 @@ public class LineSegment extends AndroidControllerEvent {
         myParentWidth = parentWidth;
         myParentHeight = parentHeight;
     }
-
     /**
      * 
-     * @return returns the relative starting X coordinate of the segment
-     *         (between 0 and 1)
+     * @return
      */
     public double getRelativeStartX () {
         return myStartX / (double) myParentWidth;
     }
-
     /**
      * 
-     * @return returns the relative starting Y coordinate of the segment
-     *         (between 0 and 1)
+     * @return
      */
     public double getRelativeStartY () {
         return myStartY / (double) myParentHeight;
     }
     /**
      * 
-     * @return returns the relative ending X coordinate of the segment (between 0 and 1)
+     * @return
      */
     public double getRelativeEndX () {
         return myEndX / (double) myParentWidth;
     }
     /**
      * 
-     * @return returns the relative ending Y coordinate of the segment (between 0 and 1)
+     * @return
      */
     public double getRelativeEndY () {
         return myEndY / (double) myParentHeight;
     }
     /**
      * 
-     * @return returns the starting x coordinate in terms of the originating screen.
+     * @return
      */
     public int getStartX () {
         return myStartX;
     }
     /**
      * 
-     * @return returns the starting y coordinate in terms of the originating screen.
+     * @return
      */
     public int getStartY () {
         return myStartY;
     }
     /**
      * 
-     * @return returns the ending x coordinate in terms of the originating screen.
+     * @return
      */
     public int getEndX () {
         return myEndX;
     }
     /**
      * 
-     * @return returns the ending y coordinate in terms of the originating screen.
+     * @return
      */
     public int getEndY () {
         return myEndY;

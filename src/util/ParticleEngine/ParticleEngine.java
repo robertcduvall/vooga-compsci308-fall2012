@@ -35,6 +35,8 @@ public class ParticleEngine {
     private Point mainVelocity;
     private int variance;
     private int duration;
+    private Boolean loop;
+    private double angleSpan;
 
     private List<Particle> particles;
 
@@ -45,9 +47,9 @@ public class ParticleEngine {
      * 
      * @param particleImage the image to use as the particle
      */
-    public ParticleEngine (Image particleImage, Point initialPosition) {
+    public ParticleEngine (Image particleImage, Point initialPosition, Boolean loopValue) {
         this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
-                DEFAULT_VARIANCE, DEFAULT_DURATION, DEFAULT_ANGLESPAN, DEFAULT_NUMBEROFDIRECTIONS);
+                DEFAULT_VARIANCE, DEFAULT_DURATION, DEFAULT_ANGLESPAN, DEFAULT_NUMBEROFDIRECTIONS, loopValue);
     }
 
     /**
@@ -60,9 +62,9 @@ public class ParticleEngine {
      * @param numberOfDirections The total number of different directions given to the collection of particles (the different
      * directions will be calculated using the given or default direction, angleSpan, and the numberOfDirections)
      */
-    public ParticleEngine (Image particleImage, Point initialPosition, double angleSpan, int numberOfDirections){
+    public ParticleEngine (Image particleImage, Point initialPosition, double inputAngleSpan, int numberOfDirections, Boolean loopValue){
     	this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
-                DEFAULT_VARIANCE, DEFAULT_DURATION, angleSpan, numberOfDirections);
+                DEFAULT_VARIANCE, DEFAULT_DURATION, inputAngleSpan, numberOfDirections, loopValue);
     }
     
     /**
@@ -76,23 +78,24 @@ public class ParticleEngine {
      * @param length how long the particles will exist before being reset
      */
     public ParticleEngine(int density, Image particleImage, Point position, Point velocity,
-            int tolerance, int length, double angleSpan, int numberOfDirections) {
+            int tolerance, int length, double inputAngleSpan, int numberOfDirections, Boolean loopValue) {
     	spriteCount = density;
         spriteImage = particleImage;
         initialPosition = position;
         mainVelocity = velocity;
         variance = tolerance;
         duration = length;
+        loop = loopValue;
         
         particles = new ArrayList<Particle>();
         
         createParticles(angleSpan, numberOfDirections);
     }
     
-    private void createParticles(double angleSpan, int numberOfDirections){
+    private void createParticles(double inputAngleSpan, int numberOfDirections){
     	Dimension particleSize = new Dimension(spriteImage.getWidth(null),spriteImage.getHeight(null));
     	int numberOfOriginLines = Math.max(1,numberOfDirections-1);
-    	double angleInterval = angleSpan/ (double) numberOfOriginLines * Math.PI/180;
+    	double angleInterval = inputAngleSpan/ (double) numberOfOriginLines * Math.PI/180;
     	int approxNumberOfSpritesPerOriginLine = spriteCount/numberOfOriginLines+numberOfOriginLines;
     	double velocityMagnitude = vcalculator.calculateMagnitude(mainVelocity);
     	double velocityAngle = vcalculator.calculateAngle(mainVelocity);
@@ -118,9 +121,17 @@ public class ParticleEngine {
     }
 
     public void update() {
+        ArrayList<Particle> remove = new ArrayList<Particle>();
     	for (Particle p: particles){
     		if (p.stillExists())
     			p.update();
+    		else if(loop) {
+    		    remove.add(p);
+    		}
+    	}
+    	for(Particle p : remove) {
+    	    particles.remove(p);
+    	    createParticles(angleSpan,1);
     	}
     }
 
@@ -134,6 +145,11 @@ public class ParticleEngine {
 
     public void setVelocity(Point v) {
         mainVelocity = v;
+    }
+    
+    public void setLoop(Boolean doLoop)
+    {
+        loop = doLoop;
     }
     
 }

@@ -37,8 +37,9 @@ public class Test {
         //get table's column names
         List<String> columnNames=table.getColumnNames();
 
+        
         //adding a new row --null value will be stored in place of undefined entry
-        Map<String,String> storingData= new HashMap<String, String>();
+        Map<String,Object> storingData= new HashMap<String, Object>();
         storingData.put("address","LA");
         storingData.put("name", "bob");
         
@@ -57,12 +58,12 @@ public class Test {
         catch (UnrecognizedColumnNameException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }   
-        
-        
+        }
+
+
         table.viewContents();
-        
-        Map<String,String> newData= new HashMap<String, String>();
+
+        Map<String,Object> newData= new HashMap<String, Object>();
         newData.put("address","LAAZ");
         newData.put("favorite color", "blue");
         
@@ -85,5 +86,39 @@ public class Test {
         //loading and saving
         table.save("/resources/data.txt");
         table.load("/resources/data.txt");
+        
+        
+        //demo of inserting objects
+        RowElement rey= new RowElement();
+        try {
+            rey.addNewColumn("phone");
+        }
+        catch (RepeatedColumnNameException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            rey.setEntry("phone","09090");
+        }
+        catch (UnrecognizedColumnNameException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        try {
+            table.addNewColumn("ObjectTest");
+        }
+        catch (RepeatedColumnNameException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Map<String,Object> myMap=new HashMap<String,Object>();
+        myMap.put("ObjectTest", rey);
+        myMap.put("address","DC");
+        table.addNewRowEntry(myMap);
+        
+        table.viewContents();
+        UnmodifiableRowElement mmrey=table.find("address", "DC");
+        ((RowElement) mmrey.getEntry("ObjectTest")).printData();
     }
 }

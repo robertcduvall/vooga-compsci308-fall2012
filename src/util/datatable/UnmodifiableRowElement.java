@@ -6,19 +6,19 @@ import java.util.Map;
 
 public class UnmodifiableRowElement {
 
-    protected Map<String,String> myData;
+    protected Map<String , Object> myData;
     
     public UnmodifiableRowElement (RowElement re) {
-        myData=new HashMap<String,String>();
+        myData=new HashMap<String , Object>();
         myData.putAll(re.getAllData());
     }
     
-    public String getEntry(String s) {
+    public Object getEntry(String s) {
         return myData.get(s);
     }
    
-    protected Map<String,String> getAllData(){
-        Map<String,String> cpmap= new HashMap<String, String> ();
+    protected Map <String , Object> getAllData(){
+        Map<String , Object> cpmap= new HashMap<String, Object> ();
         cpmap.putAll(myData);
         return cpmap;
     }

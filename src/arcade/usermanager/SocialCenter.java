@@ -73,15 +73,14 @@ public class SocialCenter {
     /*
      * return log on status
      */
-    public boolean registerUser (String userName, String password,
-            String picture) throws Exception {
+    public boolean registerUser (String userName, String password) throws Exception {
         // check validity
         if (myUserManager.validateUser(userName, "").equals(
                 "This user exists, however password is incorrect"))
             throw new Exception("This user already exists");
 
         // valid registration
-        myCurrentUser = myUserManager.addNewUser(userName, password, picture);
+        myCurrentUser = myUserManager.addNewUser(userName, password, "default.jpg");
 
         return true;
     }

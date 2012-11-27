@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Queue;
 import javax.swing.JPanel;
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 import util.input.core.AndroidController;
@@ -57,6 +58,8 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
             testController.setControl(AndroidButtonEvent.TouchController.X, AndroidButtonEvent.BUTTON_RELEASED, this, "changeToBlue");
             testController.setControl(AndroidButtonEvent.TouchController.Y, AndroidButtonEvent.BUTTON_RELEASED, this, "changeToGreen");
             testController.subscribe(this);
+            testController.setControlOptions(true, false, true, true);
+            //testController.setControlOptions(false, false, true, false);
         }
         catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
@@ -145,6 +148,7 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
 
     public void changeToRed(){
         myPenColor = Color.RED;
+        testController.messageServer();
     }
 
     public void clearScreen(){
@@ -182,6 +186,12 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
     @Override
     public void onTouchMovement (LineSegment l) {
         addLine(l);
+    }
+    @Override
+    public void onAccelerometerEvent (AndroidSensorEvent e) {
+       float[] accel= e.getAccelerationValues();
+       System.out.println("acceleration: "+ accel.length);
+        
     }
 
 }
