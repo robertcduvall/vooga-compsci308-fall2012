@@ -109,7 +109,13 @@ public class ModelInterface {
     public boolean executeNewUser (String username, String password, String fn, String ln) {
 
         // test code
-        if (username.equals("mdeng1990")) { return false; }
+        //if (username.equals("mdeng1990")) { return false; }
+        try{
+           return mySocialCenter.registerUser(username, password);
+        }
+        catch(Exception e){
+            
+        }
 
         return true;
     }
