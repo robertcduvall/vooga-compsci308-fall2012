@@ -2,7 +2,6 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class GameManager implements GameLoopMember, InputAPI {
     private GameMode myCurrentGameMode;
     private boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
-    private List<ModeEvent> myEvents;
+    private List<GameEvent> myEvents;
 
     /**
      * Constructor of GameManager
@@ -46,7 +45,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         myGamePane = gameCanvas;
         isOver = false;
         mySprites = new HashMap<Integer, Sprite>();
-        myEvents = new LinkedList<ModeEvent>();
+        myEvents = new LinkedList<GameEvent>();
         myBattleMode = new BattleMode(this, BattleObject.class);
         myLevelManager = new GameLevelManager(this);
         initializeGameLevel(GameWindow.importString("Entrance"), null);
@@ -144,8 +143,15 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @param involvedSpriteIDs List of integer IDs of sprites involved in given
      *        action.
      */
+    // deprecated - use the one below
     public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
-        myEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
+        myEvents.add(new GameEvent(eventName, involvedSpriteIDs));
+    }
+    
+    // gamemodes collect their local events, then decide which ones should be
+    // reported to gamemanager, then report at the end of update cycle using this method
+    public void flagEvent (GameEvent m) {
+        myEvents.add(m);
     }
 
     /**
@@ -154,7 +160,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     private void handleEvents () {
         while (!myEvents.isEmpty()) {
-            ModeEvent m = myEvents.remove(0);
+            GameEvent m = myEvents.remove(0);
             handleEvent(m.getModeEventName(), m.getEventInvolvedIDs());
         }
     }
@@ -215,23 +221,5 @@ public class GameManager implements GameLoopMember, InputAPI {
         // handle actions that shouldn't be passed down to individual gamemodes,
         // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
         // KeyboardController.PRESSED, this, "gameOver");
-    }
-
-    private class ModeEvent {
-        private final String myName;
-        private final List<Integer> myInvolvedIDs;
-
-        public ModeEvent (String eventName, List<Integer> involvedIDs) {
-            myName = eventName;
-            myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
-        }
-
-        public String getModeEventName () {
-            return myName;
-        }
-
-        public List<Integer> getEventInvolvedIDs () {
-            return myInvolvedIDs;
-        }
     }
 }

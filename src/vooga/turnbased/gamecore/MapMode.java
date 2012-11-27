@@ -218,13 +218,21 @@ public class MapMode extends GameMode implements InputAPI {
         }
     }
 
-    private void processGameEvents () { // this can be optimized A LOT, only
+    private void processGameEvents () { 
+        while (!getModeEvents().isEmpty()) {
+            GameEvent m = getModeEvents().remove(0);
+            // decide here if event needs to be reported to gamemanager
+            getGameManager().flagEvent(m);
+        }
+        
+        // this can be optimized A LOT, only
         // check mapobjects that did something last turn
-        for (MapObject m : getSpritesOnTile(myPlayer.getLocation().x, myPlayer.getLocation().y)) {
+        /*for (MapObject m : getSpritesOnTile(myPlayer.getLocation().x, myPlayer.getLocation().y)) {
             if (m != myPlayer) {
                 m.interact(myPlayer);
             }
-        }
+        }*/
+        
 
         // no need - mapobjects report events themselves inside their overriden interact()
        /* for (Point p : myMapObjects.keySet()) {
@@ -239,6 +247,10 @@ public class MapMode extends GameMode implements InputAPI {
                 getGameManager().flagEvent(s, myTileEvents.get(s));
             }
         }*/
+    }
+
+    public void flagEvent (String modeEvent, List<Integer> involvedSpriteIDs) {
+        getModeEvents().add(new GameEvent(modeEvent, involvedSpriteIDs));
     }
 
     /**

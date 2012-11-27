@@ -1,11 +1,10 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import util.input.core.KeyboardController;
-import util.input.core.MouseController;
+import java.util.LinkedList;
+import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
 
 
@@ -20,7 +19,7 @@ import vooga.turnbased.gameobject.GameObject;
 public abstract class GameMode implements GameLoopMember {
     private final GameManager myGameManager;
     private final Class myObjectType;
-
+    private List<GameEvent> myModeEvents;
     private ArrayList<GameObject> myObjects;
 
     /**
@@ -34,6 +33,7 @@ public abstract class GameMode implements GameLoopMember {
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
         myObjectType = modeObjectType;
+        myModeEvents = new LinkedList<GameEvent>();
     }
 
     public GameManager getGameManager () {
@@ -53,6 +53,10 @@ public abstract class GameMode implements GameLoopMember {
      */
     public ArrayList<GameObject> getObjects () {
         return myObjects;
+    }
+    
+    public List<GameEvent> getModeEvents() {
+        return myModeEvents;
     }
 
     /**
