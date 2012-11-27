@@ -1,17 +1,13 @@
 package arcade.gui.panel.main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -82,7 +78,7 @@ public class GameProfileMainPanel extends AMainPanel {
 
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                getArcade().getGameCenter().getGame(gameName).runGame();
+                getArcade().getModelInterface().getGame(gameName).runGame();
             }
 
         });
@@ -103,7 +99,7 @@ public class GameProfileMainPanel extends AMainPanel {
 
     private ArcadePanel addAverageRating (ArcadePanel myPanel) {
 
-        JLabel label = new JLabel("Average Rating: " + getArcade().getGameCenter().getGame(gameName).getAverageRatings());
+        JLabel label = new JLabel("Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings());
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;
         c.gridy = 2;
