@@ -2,6 +2,7 @@ package util.datatable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -190,13 +191,7 @@ public class DataTable {
             re.printData();
         }
     }
-    
-    //tag name cant have space
-    //deal with null "" issue
-    //set constants for tags
-    //returning a collection
-    //write email to duvall about grant 
-    
+
     public void save (String location) {
         // TODO Auto-generated method stub
         Document doc= XmlUtilities.makeDocument();
@@ -217,13 +212,11 @@ public class DataTable {
                 XmlUtilities.appendElement(doc, parentRow, colName, writeElement);
             }
         }
-        
         XmlUtilities.write(doc , location);
-        
     }
 
-    public void load (String location) {
-        Map <String, Object> colValueMap; 
+    public void load (String location) throws RepeatedColumnNameException {
+        Map <String, Object> colValueMap = null; 
         Document doc = XmlUtilities.makeDocument(location);
         Element topDT = doc.getDocumentElement();
         Collection <Element> dataC = XmlUtilities.getElements(topDT, "Row");
