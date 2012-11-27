@@ -1,11 +1,16 @@
 package util.datatable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
+import util.xml.XmlUtilities;
 
 /**
  * Data Table that can do standard store, retrieve, edit and delete.
@@ -187,14 +192,45 @@ public class DataTable {
         }
     }
 
-    public void save (String string) {
+    public void save (String location) {
         // TODO Auto-generated method stub
-
+        Document doc= XmlUtilities.makeDocument();
+        Element header = XmlUtilities.makeElement(doc, "DataTable");
+        doc.appendChild(header);
+        //loop
+        int i=0;
+        for (RowElement re : getDataRows()){
+            Element parentRow = XmlUtilities.makeElement(doc, "Row", "number" , String.valueOf(i));
+            header.appendChild(parentRow);
+            i++;
+            for (String colName: getColumnNames()){
+                String writeElement=(String) re.getEntry(colName);
+                if (re.getEntry(colName)==null){
+                    writeElement="";
+                }
+                System.out.println(colName + " " + writeElement);
+                XmlUtilities.appendElement(doc, parentRow, colName, writeElement);
+            }
+        }
+        XmlUtilities.write(doc , location);
     }
 
-    public void load (String string) {
-        // TODO Auto-generated method stub
-
+    public void load (String location) throws RepeatedColumnNameException {
+        Map <String, Object> colValueMap = null; 
+        Document doc = XmlUtilities.makeDocument(location);
+        Element topDT = doc.getDocumentElement();
+        Collection <Element> dataC = XmlUtilities.getElements(topDT, "Row");
+        for (Element rowEl : dataC){
+            Collection <Element> colTags = XmlUtilities.getElements(rowEl);
+            for (Element colVal: colTags){
+                colValueMap = new HashMap <String , Object>();
+                String colName = XmlUtilities.getTagName(colVal);
+                Object value = XmlUtilities.getContent(colVal);
+                colValueMap.put(colName, value);
+                addNewColumn(colName);
+            }
+            addNewRowEntry(colValueMap);
+        }
     }
 
 }
