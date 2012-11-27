@@ -1,5 +1,6 @@
 package vooga.platformer.level;
 
+import java.util.Map;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
 
@@ -28,4 +29,11 @@ public interface Condition {
      * NEXT_LEVEL if it's a win condition or GAME_OVER if it's a loss condition
      */
     PlayState getStatus();
+    
+    /**
+     * Return a map with information about the param tags (keys) and descriptions of the
+     * params (values), just like GameObject.
+     * @return the map
+     */
+    Map<String, String> getConfigStringParams();
 }

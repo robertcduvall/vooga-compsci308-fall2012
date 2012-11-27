@@ -1,13 +1,14 @@
 package vooga.platformer.level;
 
 import java.awt.Graphics;
+import java.util.Map;
 import util.camera.Camera;
 import vooga.platformer.gameobject.GameObject;
 
 /**
  * A plugin that operates on a Level's list of GameObjects and has updating
  * and painting functionality.
- * @author Niel
+ * @author Niel Lebeck
  *
  */
 public abstract class LevelPlugin implements Comparable<LevelPlugin> {
@@ -26,6 +27,13 @@ public abstract class LevelPlugin implements Comparable<LevelPlugin> {
      * @param cam the Level's current Camera
      */
     public abstract void paint(Graphics pen, Iterable<GameObject> objList, Camera cam);
+    
+    /**
+     * Return a map with information about the param tags (keys) and descriptions of the
+     * params (values), just like GameObject.
+     * @return the map
+     */
+    public abstract Map<String, String> getConfigStringParams();
     
     /**
      * Compares this LevelPlugin to another based on their priorities.
