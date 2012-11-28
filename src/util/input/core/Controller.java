@@ -24,6 +24,13 @@ import util.input.inputhelpers.UKeyCode;
 public abstract class Controller<T> {
 
     protected static final int NO_ACTION = -1;
+    protected final String BUTTON_DESCRIPTION = "Button Description";
+    protected final String ACTION_DESCRIPTION = "Action Description";    
+    protected final String KEYCODE = "KeyCode";
+    protected final String TUPLE = "Tuple";
+    
+    private String [] columnName;
+    
     private List<T> mySubscribedElements;
     private DataTable myDataTable;
 
@@ -33,8 +40,14 @@ public abstract class Controller<T> {
     public Controller () {
         mySubscribedElements = new ArrayList<T>();
         myDataTable = new DataTable();
-
+        columnName = new String[4];
+        columnName[0] = BUTTON_DESCRIPTION;
+        columnName[1] = ACTION_DESCRIPTION;
+        columnName[2] = KEYCODE;
+        columnName[4] = TUPLE;
         createTable();
+        
+        
     }
 
     /**
@@ -74,9 +87,7 @@ public abstract class Controller<T> {
      *         the specified class, field, method or constructor"
      */
     public void setControl (int action, int type, Object o, String method)
-                                                                          throws NoSuchMethodException,
-                                                                          IllegalAccessException {
-
+            throws NoSuchMethodException, IllegalAccessException {
         setControl(action, type, o, method, null, null);
     }
 
@@ -102,9 +113,7 @@ public abstract class Controller<T> {
      */
     @SuppressWarnings("rawtypes")
     public void setControl (int action, int type, Class c, String method)
-                                                                         throws NoSuchMethodException,
-                                                                         IllegalAccessException,
-                                                                         InstantiationException {
+               throws NoSuchMethodException, IllegalAccessException, InstantiationException {
         setControl(action, type, c, method, null, null);
     }
 
@@ -129,21 +138,16 @@ public abstract class Controller<T> {
      *         the specified class, field, method or constructor"
      */
     public void setControl (int action, int type, Object o, String method, String describeButton,
-                            String describeAction) throws NoSuchMethodException,
-                                                  IllegalAccessException {
-
-        Method m;
-        m = retrieveMethod(o, method);
+          String describeAction) throws NoSuchMethodException, IllegalAccessException {
+        Method m = retrieveMethod(o, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put("Button Description", describeButton);
-        dataIn.put("Action Description", describeAction);
-        dataIn.put("KeyCode", UKeyCode.codify(type, action));
-        dataIn.put("Tuple", new BoolTuple<Object, Method>(o, m));
+        dataIn.put(TUPLE, new BoolTuple<Object, Method>(o, m));
+        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
 
         myDataTable.addNewRowEntry(dataIn);
 
-        myDataTable.viewContents();
+        //myDataTable.viewContents();
     }
 
     /**
@@ -172,17 +176,17 @@ public abstract class Controller<T> {
      */
     @SuppressWarnings("rawtypes")
     public void setControl (int action, int type, Class c, String method, String describeButton,
-                            String describeAction) throws NoSuchMethodException,
-                                                  IllegalAccessException, InstantiationException {
+         String describeAction) throws NoSuchMethodException, IllegalAccessException, InstantiationException {
         Method m = retrieveMethod(c, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put("Button Description", describeButton);
-        dataIn.put("Action Description", describeButton);
-        dataIn.put("KeyCode", UKeyCode.codify(type, action));
-        dataIn.put("Tuple", new BoolTuple<Object, Method>(c, m));
+        dataIn.put(TUPLE, new BoolTuple<Object, Method>(c, m));
+        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
+        
+        myDataTable.addNewRowEntry(dataIn);
     }
 
+    
     /**
      * Set the desired action on or off.
      * 
@@ -316,10 +320,17 @@ public abstract class Controller<T> {
 
     private void createTable () {
         try {
-            myDataTable.addNewColumn("Button Description,Action Description,KeyCode,Tuple");
+            myDataTable.addNewColumn(columnName);
         }
         catch (RepeatedColumnNameException e) {
             e.printStackTrace();
         }
+    }
+    
+
+    private void insertInMap (Map<String, Object> dataIn, String describeButton, String describeAction, int keyCode){
+        dataIn.put(BUTTON_DESCRIPTION, describeButton);
+        dataIn.put(ACTION_DESCRIPTION, describeAction);
+        dataIn.put(KEYCODE, keyCode);
     }
 }
