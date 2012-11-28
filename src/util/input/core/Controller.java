@@ -17,9 +17,9 @@ import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class represents an abstract controller to provide input.
- *
+ * 
  * @author Amay, Lance
- *
+ * 
  * @param <T>
  */
 public abstract class Controller<T> {
@@ -45,7 +45,7 @@ public abstract class Controller<T> {
         columnName[0] = BUTTON_DESCRIPTION;
         columnName[1] = ACTION_DESCRIPTION;
         columnName[2] = KEYCODE;
-        columnName[4] = TUPLE;
+        columnName[3] = TUPLE;
         createTable();
     }
 
@@ -209,7 +209,7 @@ public abstract class Controller<T> {
         ActivatablePair<Object, Method> rowElement = getObjectMethodPair(action, type);
         rowElement.activate();
     }
-    
+
     /**
      * Set the desired action on or off.
      * 
@@ -221,7 +221,6 @@ public abstract class Controller<T> {
         ActivatablePair<Object, Method> rowElement = getObjectMethodPair(action, type);
         rowElement.deactivate();
     }
-
 
     /**
      * @param e
@@ -243,18 +242,16 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
 
-    
-    
     // PRIVATE METHODS
-    
+
     @SuppressWarnings("unchecked")
     private ActivatablePair<Object, Method> getObjectMethodPair (int action, int type) {
         UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        ActivatablePair<Object, Method> rowElement = (ActivatablePair<Object, Method>) r.getEntry("Tuple");
+        ActivatablePair<Object, Method> rowElement =
+                (ActivatablePair<Object, Method>) r.getEntry("Tuple");
         return rowElement;
     }
-    
-    
+
     /**
      * broadcasts the method to all subscribed elements.
      * 

@@ -64,7 +64,7 @@ public class WaitThread implements Runnable {
             return;
         }
         catch (IOException e) {
-            //Never occurs
+            // Never occurs
             return;
         }
 

@@ -42,6 +42,7 @@ public class AndroidVibration implements Serializable {
         myVibrationTime = time;
         myOnTime = time;
     }
+
     /**
      * 
      * @return
@@ -49,6 +50,7 @@ public class AndroidVibration implements Serializable {
     public int getVibrationTime () {
         return myVibrationTime;
     }
+
     /**
      * 
      * @return
@@ -56,6 +58,7 @@ public class AndroidVibration implements Serializable {
     public int getOnTime () {
         return myOnTime;
     }
+
     /**
      * 
      * @return

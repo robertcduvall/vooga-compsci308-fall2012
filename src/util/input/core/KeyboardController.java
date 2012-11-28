@@ -9,12 +9,11 @@ import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class allows users to enter input through the keyboard.
- *
+ * 
  * @author Amay
- *
+ * 
  */
-public class KeyboardController extends Controller<KeyListener> implements
-        KeyListener {
+public class KeyboardController extends Controller<KeyListener> implements KeyListener {
 
     /**
      * Specify action occur on key pressed.
@@ -26,10 +25,9 @@ public class KeyboardController extends Controller<KeyListener> implements
      */
     public static final int RELEASED = KeyEvent.KEY_RELEASED;
 
-
     /**
      * Create a new keyboard controller.
-     *
+     * 
      * @param comp - The component to which we add the KeyListener
      */
     public KeyboardController (Component comp) {
@@ -40,8 +38,7 @@ public class KeyboardController extends Controller<KeyListener> implements
     @Override
     public void keyTyped (KeyEvent e) {
         try {
-            performReflections(e, "keyTyped",
-                    UKeyCode.codify(KeyEvent.KEY_TYPED, e.getKeyCode()));
+            performReflections(e, "keyTyped", UKeyCode.codify(KeyEvent.KEY_TYPED, e.getKeyCode()));
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -59,7 +56,7 @@ public class KeyboardController extends Controller<KeyListener> implements
     public void keyPressed (KeyEvent e) {
         try {
             performReflections(e, "keyPressed",
-                    UKeyCode.codify(KeyEvent.KEY_PRESSED, e.getKeyCode()));
+                               UKeyCode.codify(KeyEvent.KEY_PRESSED, e.getKeyCode()));
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -76,7 +73,7 @@ public class KeyboardController extends Controller<KeyListener> implements
     public void keyReleased (KeyEvent e) {
         try {
             performReflections(e, "keyReleased",
-                    UKeyCode.codify(KeyEvent.KEY_RELEASED, e.getKeyCode()));
+                               UKeyCode.codify(KeyEvent.KEY_RELEASED, e.getKeyCode()));
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously

@@ -26,6 +26,7 @@ public class LineSegment implements Serializable {
 
     /**
      * Create a new line segment
+     * 
      * @param startX the starting x location of the line
      * @param startY the starting y location of the line
      * @param endX the ending x location of the line
@@ -42,6 +43,7 @@ public class LineSegment implements Serializable {
         myParentWidth = parentWidth;
         myParentHeight = parentHeight;
     }
+
     /**
      * 
      * @return
@@ -49,6 +51,7 @@ public class LineSegment implements Serializable {
     public double getRelativeStartX () {
         return myStartX / (double) myParentWidth;
     }
+
     /**
      * 
      * @return
@@ -56,6 +59,7 @@ public class LineSegment implements Serializable {
     public double getRelativeStartY () {
         return myStartY / (double) myParentHeight;
     }
+
     /**
      * 
      * @return
@@ -63,6 +67,7 @@ public class LineSegment implements Serializable {
     public double getRelativeEndX () {
         return myEndX / (double) myParentWidth;
     }
+
     /**
      * 
      * @return
@@ -70,6 +75,7 @@ public class LineSegment implements Serializable {
     public double getRelativeEndY () {
         return myEndY / (double) myParentHeight;
     }
+
     /**
      * 
      * @return
@@ -77,6 +83,7 @@ public class LineSegment implements Serializable {
     public int getStartX () {
         return myStartX;
     }
+
     /**
      * 
      * @return
@@ -84,6 +91,7 @@ public class LineSegment implements Serializable {
     public int getStartY () {
         return myStartY;
     }
+
     /**
      * 
      * @return
@@ -91,6 +99,7 @@ public class LineSegment implements Serializable {
     public int getEndX () {
         return myEndX;
     }
+
     /**
      * 
      * @return

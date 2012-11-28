@@ -4,7 +4,7 @@ package util.input.exceptions;
  * A general exception framework for user input.
  * 
  * @author Robert C. Duvall
- * Modified by Ben Schwab
+ *         Modified by Ben Schwab
  */
 @SuppressWarnings("serial")
 public final class UserInputException extends Exception {
@@ -22,7 +22,8 @@ public final class UserInputException extends Exception {
     }
 
     /**
-     * Create exception with given message, appending the message provided by the given
+     * Create exception with given message, appending the message provided by
+     * the given
      * cause to this message.
      * 
      * @param cause original cause of this exception

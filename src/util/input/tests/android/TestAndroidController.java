@@ -9,37 +9,40 @@ import util.input.core.Controller;
 import util.input.factories.ControllerFactory;
 import util.input.interfaces.listeners.AndroidListener;
 
+
 /**
  * A class to test the android controller code.
+ * 
  * @author Ben Schwab
- *
+ * 
  */
 public class TestAndroidController implements AndroidListener {
 
     private AndroidController myController;
     private AndroidDrawGame myGame;
-    public static void main(String [] args){
-       
-        
+
+    public static void main (String[] args) {
+
     }
-    
-    public TestAndroidController(AndroidDrawGame parent){
+
+    public TestAndroidController (AndroidDrawGame parent) {
         myGame = parent;
         Controller<AndroidListener> testController = ControllerFactory.createAndroidController(1);
         myController = (AndroidController) testController;
         System.out.println("you are running a test android controller");
         testController.subscribe(this);
-       
-        
+
     }
 
-    public void jump(){
+    public void jump () {
         System.out.println("I Jumped!");
     }
-    public void duck(){
+
+    public void duck () {
         System.out.println("I ducked");
     }
-    public void stopDuck(){
+
+    public void stopDuck () {
         System.out.println("I stoped ducking");
     }
 
@@ -57,23 +60,22 @@ public class TestAndroidController implements AndroidListener {
 
     @Override
     public void onControllerDisconnect () {
-       //myController.restartController();
+        // myController.restartController();
         System.out.println("controller was disconected! game paused");
-        
+
     }
 
     @Override
     public void onTouchMovement (LineSegment l) {
         myGame.addLine(l);
         System.out.println("received touch movement");
-        
+
     }
 
     @Override
     public void onAccelerometerEvent (AndroidSensorEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
-    
 
 }
