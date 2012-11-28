@@ -52,7 +52,7 @@ public abstract class Controller<T> {
     /**
      * Create a new Controller with an element that
      * subscribes to its raw data.
-     * 
+     *
      * @param element - The subscribing element
      */
     public Controller (T element) {
@@ -62,7 +62,7 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events.
-     * 
+     *
      * @param subscriber - The subscribing class
      */
     public void subscribe (T subscriber) {
@@ -80,7 +80,7 @@ public abstract class Controller<T> {
 
     /**
      * Object invokes a method every time action and type occur.
-     * 
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -102,7 +102,7 @@ public abstract class Controller<T> {
 
     /**
      * Class invokes a static method every time action and type occur.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -132,7 +132,7 @@ public abstract class Controller<T> {
      * Object invokes a method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <object, method> tuple into DataTable
-     * 
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -166,7 +166,7 @@ public abstract class Controller<T> {
      * Class invokes a static method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <class, method> tuple into DataTable
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -252,9 +252,10 @@ public abstract class Controller<T> {
         return rowElement;
     }
 
+
     /**
      * broadcasts the method to all subscribed elements.
-     * 
+     *
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
