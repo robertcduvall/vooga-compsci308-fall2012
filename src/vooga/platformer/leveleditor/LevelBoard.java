@@ -151,7 +151,6 @@ public class LevelBoard extends JPanel implements ISavable {
                 myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         for (Sprite s : mySprites) {
             s.paint(myBufferGraphics, this);
-            myBufferGraphics.setColor(Color.WHITE);
         }
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
@@ -165,8 +164,8 @@ public class LevelBoard extends JPanel implements ISavable {
      * @param g Graphics attached to level.
      */
     public void paint(Graphics g) {
-        super.paint(g);
-        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
+//        super.paint(g);
+//        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
     }
 
     @Override

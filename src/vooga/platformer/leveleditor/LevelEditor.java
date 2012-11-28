@@ -26,7 +26,6 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class LevelEditor extends JPanel {
     private static final int BUTTON_BAR_WIDTH = 50;
-//    private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> mySpriteTypes;
     private JFrame myContainer;
@@ -46,44 +45,18 @@ public class LevelEditor extends JPanel {
     public LevelEditor(JFrame parent) {
         myContainer = parent;
         myContainer.setTitle("Level Editor");
-        myGameIsRunning = true;
-//        frameBuild();
         fillMap();
         createListeners();
         createEditPane();
         createButtonPanel();
         createTopMenu();
+        add(myViewPane);
         setVisible(true);
-//        editLoop();
     }
-
-//    private void editLoop() {
-//        while (myGameIsRunning) {
-//            repaint();
-//        }
-//    }
-
-//    private void frameBuild() {
-//        setPreferredSize(DEFAULT_FRAME_SIZE);
-//        setResizable(false);
-//        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        try {
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (UnsupportedLookAndFeelException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private void createListeners() {
         LevelBoard board = new LevelBoard(myContainer.getPreferredSize());
         myBoard = board;
-        myContainer.add(board);
         myMouseListener = myBoard.getMouseListener();
         myKeyListener = new KeyAdapter() {
             @Override 
@@ -117,14 +90,13 @@ public class LevelEditor extends JPanel {
             }
         };
     }
-
     private void createEditPane() {
-        JPanel panel = new JPanel() {
+        JPanel panel = new JPanel()
+        {
             @Override
             public void paint(Graphics g) {
-                g.clearRect(0, 0, myContainer.getSize().width, myContainer.getSize().height);
-                myBoard.paint(g);
                 super.paintComponents(g);
+                //                myBoard.paint(g);
             }
         };
         panel.setLayout(new BorderLayout());
@@ -132,7 +104,7 @@ public class LevelEditor extends JPanel {
         panel.addMouseListener(myMouseListener);
         panel.addMouseMotionListener(myMouseListener);
         panel.addKeyListener(myKeyListener);
-        myContainer.add(panel);
+//        myViewPane.add(myBoard);
         myViewOffset = 0;
     }
 
@@ -158,11 +130,14 @@ public class LevelEditor extends JPanel {
         myViewPane.add(panel, BorderLayout.WEST);
     }
 
+    public void update() {
+        myBoard.update();
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        System.out.println("painting");
-        myBoard.update();
+        myViewPane.paint(g);
     }
 
     private void createPopupMenu(final Component comp, final int x,
@@ -226,7 +201,8 @@ public class LevelEditor extends JPanel {
         });
         bar.add(levelMenu);
         bar.add(spriteMenu);
-        myViewPane.add(bar, BorderLayout.NORTH);
+//        myViewPane.add(bar, BorderLayout.NORTH);
+
     }
 
     protected void save() {

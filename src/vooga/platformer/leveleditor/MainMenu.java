@@ -1,7 +1,9 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,26 +15,34 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainMenu extends JFrame{
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
+    private static final int ONE_SECOND = 1000;
+    private static final int FRAMES_PER_SECOND = 20;
+    private Timer myTimer;
     private ActionListener myActionListener;
-    private JPanel myMenu;
-    private JPanel myContentPane;
-    private LevelEditor myEditor;
+    private JPanel myContent;
     public static void main(String[] args) {
         new MainMenu();
     }
     public MainMenu () {
         frameBuild();
         createListener();
-        myContentPane = new JPanel();
-        myContentPane.add(addGameMenu());
-        add(myContentPane);
+        myContent = createMenu();
+        add(createMenu());
         pack();
         setVisible(true);
+        myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed (ActionEvent e) {
+                        repaint();
+                    }
+                });
     }
 
     private void createListener () {
@@ -52,12 +62,11 @@ public class MainMenu extends JFrame{
         };
     }
     protected void goLevelEditor () {
-        myEditor = new LevelEditor(this);
-        //        myContentPane.remove(myMenu);
-//        myEditor = new LevelEditor(this);
-        myContentPane.add(myEditor, BorderLayout.CENTER);
+        removeAll();
+        myContent = new LevelEditor(this);
+        add(myContent);
         repaint();
-        myEditor.paint(getGraphics());
+        myTimer.start();
     }
     private void frameBuild() {
         setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -75,18 +84,33 @@ public class MainMenu extends JFrame{
             e.printStackTrace();
         }
     }
-    private JPanel addGameMenu() {
-        myMenu = new JPanel();
-        myMenu.setLayout(new GridLayout(3, 1));
+    private JPanel createMenu() {
+        JPanel menu = new JPanel()
+        {
+            @Override
+            public void paint(Graphics g) {
+                MainMenu.super.paint(g);
+                super.paint(g);
+            }
+        };
+        menu.setLayout(new GridLayout(3, 1));
         JButton b = new JButton("Level Editor");
         b.addActionListener(myActionListener);
-        myMenu.add(b);
+        menu.add(b);
         b = new JButton("New Game");
         b.addActionListener(myActionListener);
-        myMenu.add(b);
+        menu.add(b);
         b = new JButton("Quit");
         b.addActionListener(myActionListener);
-        myMenu.add(b);
-        return myMenu;
+        menu.add(b);
+        return menu;
+    }
+    @Override
+    public void paint (Graphics g) {
+        g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
+        myContent.paint(g);
+        //      myEditor.update();
+//      myEditor.repaint();
+//      repaint();
     }
 }
