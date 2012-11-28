@@ -26,6 +26,7 @@ public abstract class GameObject {
     protected static final String WIDTH_TAG = "width";
     protected static final String HEIGHT_TAG = "height";
     protected static final String DEFAULT_IMAGE_TAG = "imagePath";
+    private static final String ID_TAG = "id";
 
     private boolean removeFlag;
     private List<UpdateStrategy> strategyList;
@@ -90,6 +91,7 @@ public abstract class GameObject {
         params.put(Y_TAG, "y position of the object");
         params.put(WIDTH_TAG, "width of the object");
         params.put(HEIGHT_TAG, "height of the object");
+        params.put(ID_TAG, "ID for sprite. Should be unique.");
         params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
         return params;
     }

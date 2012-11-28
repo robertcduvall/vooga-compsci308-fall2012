@@ -1,6 +1,5 @@
 package vooga.platformer.leveleditor;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 import javax.imageio.ImageIO;
 import vooga.platformer.levelfileio.XmlTags;
 
@@ -39,6 +37,7 @@ public class Sprite {
     private int myY;
     private int myWidth;
     private int myHeight;
+    private String myID;
     private String myImagePath;
     private Image myImage;
     private Collection<Map<String, String>> myUpdateStrategies;
@@ -48,21 +47,23 @@ public class Sprite {
      * Creates a new instance of Sprite of the type, position, size, and
      * appearance specified.
      * 
-     * @param clazz fully qualified class name of the GameObject this Srite
+     * @param className fully qualified class name of the GameObject this Sprite
      *        represents
      * @param x x position of the sprite at level load
      * @param y y position of the sprite at level load
      * @param width width of the sprite in pixels
      * @param height height of the sprite in pixels
+     * @param spriteID TODO
      * @param imagePath location of the image in the file system representing
      *        the sprite
      */
-    public Sprite (String clazz, int x, int y, int width, int height, String imagePath) {
-        myClass = clazz;
+    public Sprite (String className, int x, int y, int width, int height, String spriteID, String imagePath) {
+        myClass = className;
         myX = x;
         myY = y;
         myWidth = width;
         myHeight = height;
+        myID = spriteID;
         myImagePath = imagePath;
         myImage = getImage(myImagePath);
         myUpdateStrategies = new ArrayList<Map<String, String>>();
@@ -100,7 +101,7 @@ public class Sprite {
      * paints it to whatever component Graphics g is connected to.
      * 
      * @param g Graphics of a Component, Image, or Canvas
-     * @param c Compnent containing sprite so the sprite knows where it is in
+     * @param c Component containing sprite so the sprite knows where it is in
      *        the window.
      */
     public void paint (Graphics g, Component c) {
@@ -190,6 +191,15 @@ public class Sprite {
      */
     public void setHeight (int height) {
         myHeight = height;
+    }
+
+    /**
+     * Gets the ID specified in Sprite's constructor.
+     * 
+     * @return string value representing and ID value for the Sprite
+     */
+    public String getID () {
+        return myID;
     }
 
     /**

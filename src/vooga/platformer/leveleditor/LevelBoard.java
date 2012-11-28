@@ -259,7 +259,7 @@ public class LevelBoard extends JPanel implements ISavable {
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
                 Sprite ns = new Sprite(mySprite.getClassName(), mySprite.getX(), mySprite.getY(),
-                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getImagePath());
+                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getID(), mySprite.getImagePath());
                 LevelBoard.this.add(ns);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
