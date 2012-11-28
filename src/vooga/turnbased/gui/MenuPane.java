@@ -40,7 +40,7 @@ public class MenuPane extends DisplayPane {
             }
         });
         add(startButton);
-        
+
         ImageIcon editorIcon = new ImageIcon(GameWindow.importImage("EditorButtonImage"));
         JButton editorButton = new JButton(editorIcon);
         editorButton.addActionListener(new ActionListener() {

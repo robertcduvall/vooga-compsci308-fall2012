@@ -44,18 +44,12 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param modeObjectType The object type this mode uses, i.e.
      *        BattleObject.java
      */
-    
-    // no need for this one any more. use the one below
-    /*public BattleMode (GameManager gm, Class modeObjectType) {
-        super(gm, modeObjectType);
-    }
-    */
 
     // need to pass ids of battle participants upon battle creation
     public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
-                       List<Integer> involvedIDs) {
-       super(gameManager, modeObjectType);
-       myInvolvedIDs = involvedIDs;
+            List<Integer> involvedIDs) {
+        super(gameManager, modeObjectType);
+        myInvolvedIDs = involvedIDs;
     }
 
     @Override
@@ -91,19 +85,19 @@ public class BattleMode extends GameMode implements InputAPI {
     private void makeTeams () {
         // BAD BAD TEST CODE
         myTeams = new ArrayList<Team>();
-        
+
         // adding player
         List<BattleObject> team1BattleObjects = new ArrayList<BattleObject>();
         Sprite s1 = getGameManager().findSpriteWithID(myInvolvedIDs.get(0));
         BattleObject bo1 = s1.getObject(BattleObject.class).get(0);
         team1BattleObjects.add(bo1);
-        
+
         // adding enemy
         List<BattleObject> team2BattleObjects = new ArrayList<BattleObject>();
         Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
         BattleObject bo2 = s2.getObject(BattleObject.class).get(0);
         team2BattleObjects.add(bo2);
-        
+
         myTeams.add(new Team(team2BattleObjects));
         myTeams.add(new Team(team1BattleObjects));
     }
@@ -170,7 +164,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private void endBattle () {
         System.out.println("End battle!");
         getGameManager().flagEvent("BATTLE_OVER", new ArrayList());
-        //getGameManager().removeMode(this);
+        // getGameManager().removeMode(this);
     }
 
     private boolean isBattleOver () {
@@ -190,54 +184,64 @@ public class BattleMode extends GameMode implements InputAPI {
     public void triggerAttackEvent () {
         // for now, player attacks enemy player
         // by difference in defense
-        myPlayerObject.attackEnemy(myEnemy);
         System.out.println("You use ATTACK");
+        myPlayerObject.attackEnemy(myEnemy);
         displayBattleStats();
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
-        // pause while enemy "thinks"
         // opposing team makes some predetermined action
-        myEnemy.attackEnemy(myPlayerObject);
-        System.out.println("Your enemy uses ATTACK");
-        displayBattleStats();
+        generateEnemyMove();
     }
 
     public void triggerIncreaseHealthEvent () {
         // for now, increases player health by 1
         // by difference in defense
-        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue()+1);
         System.out.println("You use ATTACK");
+        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 1);
         displayBattleStats();
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
-        // pause while enemy "thinks"
         // opposing team makes some predetermined action
-        myEnemy.attackEnemy(myPlayerObject);
-        System.out.println("Your enemy uses ATTACK");
-        displayBattleStats();
+        generateEnemyMove();
     }
 
     public void triggerDefenseEvent () {
         // for now, increases player defense by one; other team still attacks
-        myPlayerObject.attackEnemy(myEnemy);
         System.out.println("You use DEFENSE");
         myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
         displayBattleStats();
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
-        // pause while enemy "thinks"
         // opposing team makes some predetermined action
-        myEnemy.attackEnemy(myPlayerObject);
-        System.out.println("Your enemy uses ATTACK");
+        generateEnemyMove();
+    }
+
+    private void generateEnemyMove () {
+        double random = Math.random();
+        if (random >= 0 && random < .6) {
+            // attack
+            myEnemy.attackEnemy(myPlayerObject);
+            System.out.println("Your enemy uses ATTACK");
+        }
+        if (random >= .6 && random < .9) {
+            // defend
+            myEnemy.changeStat("defense", myEnemy.getStat("defense").intValue() + 1);
+            System.out.println("Your enemy uses DEFEND");
+        }
+        if (random >= .9 && random < 1) {
+            // increase health
+            myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 1);
+            System.out.println("Your enemy uses HEALTH INCREASE");
+        }
         displayBattleStats();
     }
 
     // for debugging etc
     private void displayBattleStats () {
-        // System.out.println("My health: " + myPlayerObject.getHealth());
-        // System.out.println("My defense: " + myPlayerObject.getDefense());
-        // System.out.println("Enemy health: " + myEnemy.getHealth());
-        // System.out.println("Enemy defense: " + myEnemy.getDefense());
+        System.out.println("My health: " + myPlayerObject.getStat("health"));
+        System.out.println("My defense: " + myPlayerObject.getStat("defense"));
+        System.out.println("Enemy health: " + myEnemy.getStat("health"));
+        System.out.println("Enemy defense: " + myEnemy.getStat("defense"));
     }
 
     /**
