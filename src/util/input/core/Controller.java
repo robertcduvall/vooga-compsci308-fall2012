@@ -7,30 +7,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.dataStructures.FlagPair;
 import util.datatable.DataTable;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
-import util.input.inputhelpers.ActivatablePair;
 import util.input.inputhelpers.UKeyCode;
 
 
 /**
  * This class represents an abstract controller to provide input.
- * 
+ *
  * @author Amay, Lance
- * 
+ *
  * @param <T>
  */
 public abstract class Controller<T> {
 
     protected static final int NO_ACTION = -1;
-    protected final String BUTTON_DESCRIPTION = "Button Description";
-    protected final String ACTION_DESCRIPTION = "Action Description";
-    protected final String KEYCODE = "KeyCode";
-    protected final String TUPLE = "Tuple";
+    private static final String BUTTON_DESCRIPTION = "Button Description";
+    private static final String ACTION_DESCRIPTION = "Action Description";
+    private static final String KEYCODE = "KeyCode";
+    private static final String TUPLE = "Tuple";
+    private static int NUM_COLUMNS = 4;
 
-    private String[] columnName;
+    private String[] myColumnName;
 
     private List<T> mySubscribedElements;
     private DataTable myDataTable;
@@ -41,11 +42,11 @@ public abstract class Controller<T> {
     public Controller () {
         mySubscribedElements = new ArrayList<T>();
         myDataTable = new DataTable();
-        columnName = new String[4];
-        columnName[0] = BUTTON_DESCRIPTION;
-        columnName[1] = ACTION_DESCRIPTION;
-        columnName[2] = KEYCODE;
-        columnName[3] = TUPLE;
+        myColumnName = new String[NUM_COLUMNS];
+        myColumnName[0] = BUTTON_DESCRIPTION;
+        myColumnName[1] = ACTION_DESCRIPTION;
+        myColumnName[2] = KEYCODE;
+        myColumnName[3] = TUPLE;
         createTable();
     }
 
@@ -71,8 +72,8 @@ public abstract class Controller<T> {
 
     /**
      * Unsubscribes a class to this controller's events.
-     * 
-     * @param subscriber - The unsubscribing class
+     *
+     * @param unsubscriber - The unsubscribing class
      */
     public void unSubscribe (T unsubscriber) {
         mySubscribedElements.remove(unsubscriber);
@@ -154,7 +155,7 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(o, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new ActivatablePair<Object, Method>(o, m));
+        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
 
         myDataTable.addNewRowEntry(dataIn);
@@ -193,32 +194,32 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(c, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new ActivatablePair<Class, Method>(c, m));
+        dataIn.put(TUPLE, new FlagPair<Class, Method>(c, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
         myDataTable.addNewRowEntry(dataIn);
     }
 
     /**
      * Set the desired action on or off.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      */
     @SuppressWarnings("unchecked")
     public void activateAction (int action, int type) {
-        ActivatablePair<Object, Method> rowElement = getObjectMethodPair(action, type);
+        FlagPair<Object, Method> rowElement = getObjectMethodPair(action, type);
         rowElement.activate();
     }
 
     /**
      * Set the desired action on or off.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      */
     @SuppressWarnings("unchecked")
     public void deactivateAction (int action, int type) {
-        ActivatablePair<Object, Method> rowElement = getObjectMethodPair(action, type);
+        FlagPair<Object, Method> rowElement = getObjectMethodPair(action, type);
         rowElement.deactivate();
     }
 
@@ -245,10 +246,10 @@ public abstract class Controller<T> {
     // PRIVATE METHODS
 
     @SuppressWarnings("unchecked")
-    private ActivatablePair<Object, Method> getObjectMethodPair (int action, int type) {
+    private FlagPair<Object, Method> getObjectMethodPair (int action, int type) {
         UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        ActivatablePair<Object, Method> rowElement =
-                (ActivatablePair<Object, Method>) r.getEntry("Tuple");
+        FlagPair<Object, Method> rowElement =
+                (FlagPair<Object, Method>) r.getEntry("Tuple");
         return rowElement;
     }
 
@@ -296,8 +297,8 @@ public abstract class Controller<T> {
 
         if (r != null) {
 
-            ActivatablePair<Object, Method> retrieveTuple =
-                    (ActivatablePair<Object, Method>) r.getEntry("Tuple");
+            FlagPair<Object, Method> retrieveTuple =
+                    (FlagPair<Object, Method>) r.getEntry("Tuple");
 
             if (retrieveTuple != null && retrieveTuple.isActive()) {
                 retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
@@ -345,7 +346,7 @@ public abstract class Controller<T> {
 
     private void createTable () {
         try {
-            myDataTable.addNewColumn(columnName);
+            myDataTable.addNewColumn(myColumnName);
         }
         catch (RepeatedColumnNameException e) {
             e.printStackTrace();
