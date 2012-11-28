@@ -28,13 +28,13 @@
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
 			<stats>
-				<maxHealth>10</maxHealth>
-				<health>10</health>
-				<defense>1</defense>
-				<attack>4</attack>
+				<maxHealth>100</maxHealth>
+				<health>100</health>
+				<defense>10</defense>
+				<attack>10</attack>
 			</stats>
-			<name>Monster</name>
-			<image>src/vooga/turnbased/resources/image/battleobject/005.png</image>
+			<name>Da Bozz</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/trainer066.png</image>
 		</battle>
 	</sprite>
 	<sprite>

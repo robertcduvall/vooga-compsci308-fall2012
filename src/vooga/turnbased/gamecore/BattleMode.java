@@ -40,8 +40,8 @@ public class BattleMode extends GameMode implements InputAPI {
     
     private final int MESSAGE_NUM = 4;
     private final int ATTACK_KEY = KeyEvent.VK_A;
-    private final int DEFENSE_KEY = KeyEvent.VK_D;
-    private final int INCREASE_HEALTH_KEY = KeyEvent.VK_H;
+    private final int DEFEND_KEY = KeyEvent.VK_D;
+    private final int HEAL_KEY = KeyEvent.VK_H;
     private final int CHARGE_KEY = KeyEvent.VK_C;
     
     /**
@@ -83,10 +83,10 @@ public class BattleMode extends GameMode implements InputAPI {
         try {
             GamePane.keyboardController.setControl(ATTACK_KEY, KeyboardController.RELEASED, this,
                     "triggerAttackEvent");
-            GamePane.keyboardController.setControl(DEFENSE_KEY, KeyboardController.RELEASED, this,
-                    "triggerDefenseEvent");
-            GamePane.keyboardController.setControl(INCREASE_HEALTH_KEY,
-                    KeyboardController.RELEASED, this, "triggerIncreaseHealthEvent");
+            GamePane.keyboardController.setControl(DEFEND_KEY, KeyboardController.RELEASED, this,
+                    "triggerDefendEvent");
+            GamePane.keyboardController.setControl(HEAL_KEY,
+                    KeyboardController.RELEASED, this, "triggerHealEvent");
             GamePane.keyboardController.setControl(CHARGE_KEY, KeyboardController.RELEASED,
                     this, "triggerChargeEvent");
         }
@@ -226,7 +226,7 @@ public class BattleMode extends GameMode implements InputAPI {
         generateEnemyMove();
     }
 
-    public void triggerIncreaseHealthEvent () {
+    public void triggerHealEvent () {
         // for now, increases player health by 1
         // by difference in defense
         //System.out.println("You use HEAL");
@@ -242,7 +242,7 @@ public class BattleMode extends GameMode implements InputAPI {
         generateEnemyMove();
     }
 
-    public void triggerDefenseEvent () {
+    public void triggerDefendEvent () {
         // for now, increases player defense by one; other team still attacks
         //System.out.println("You use DEFEND");
         myMessages.add(myPlayerObject.getName() + " used DEFEND");
