@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
 import util.input.core.Controller;
@@ -22,6 +23,8 @@ import vooga.platformer.util.enums.PlayState;
 
 public abstract class Level {
     private List<GameObject> objectList;
+    private List<LevelPlugin> pluginList;
+    private List<Condition> conditionList;
     private Camera cam;
     private Dimension myDimension;
     private String myNextLevelName;
@@ -35,6 +38,9 @@ public abstract class Level {
      */
     public void paint(Graphics pen) {
         paintBackground(pen);
+        for (LevelPlugin lp : pluginList) {
+            lp.paint(pen, objectList, cam);
+        }
         for (GameObject go : objectList) {
             go.paint(pen, cam);
         }
@@ -42,9 +48,27 @@ public abstract class Level {
 
     public Level(Dimension dim, CollisionChecker inChecker, Camera inCam) {
         objectList = new ArrayList<GameObject>();
+        pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
         myCollisionChecker = inChecker;
         cam = inCam;
+    }
+    
+    /**
+     * Add a LevelPlugin to the level.
+     * @param lp LevelPlugin to add
+     */
+    public void addPlugin(LevelPlugin lp) {
+        pluginList.add(lp);
+        Collections.sort(pluginList);
+    }
+    
+    /**
+     * Add a Condition to the level.
+     * @param c Condition to add
+     */
+    public void addCondition(Condition c) {
+        conditionList.add(c);
     }
 
     /**
@@ -108,8 +132,16 @@ public abstract class Level {
             objectList.remove(removeObj);
         }
         
+<<<<<<< HEAD
+        myCollisionChecker.checkCollisions(this);
+=======
         //modified here
         myCollisionChecker.checkCollisions(this);
+                
+        for (LevelPlugin lp : pluginList) {
+            lp.update(objectList);
+        }
+>>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
         
     }
 
@@ -133,7 +165,15 @@ public abstract class Level {
      * @return a PlayState representing the progress of the player
      *         through the level.
      */
-    public abstract PlayState getLevelStatus();
+    public PlayState getLevelStatus() {
+        for (Condition c : conditionList) {
+            if (c.isSatisfied(objectList)) {
+                setNextLevelName(c.getNextLevelName());
+                return c.getStatus();
+            }
+        }
+        return PlayState.IS_PLAYING;
+    }
 
     public void setNextLevelName(String lvlName) {
         myNextLevelName = lvlName;

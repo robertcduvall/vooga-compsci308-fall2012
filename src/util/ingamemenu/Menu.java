@@ -1,5 +1,6 @@
 package util.ingamemenu;
 
+import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +14,12 @@ import javax.swing.JComponent;
 
 
 /**
+ * This class is an in-game menu that can be brought up when game is running.
+ * However pausing the game when menu is out is not and cannot be implemented by
+ * this class. The size of the menu is proportionally to the initial size of the
+ * initial game canvas.
+ * 
  * @author Yaqi Zhang
- * @author Xi Du
  */
 public class Menu extends JComponent {
     /**
@@ -22,42 +27,44 @@ public class Menu extends JComponent {
      */
     private static final long serialVersionUID = 1L;
     private static final double MENU_SIZE_RATIO = 0.66;
+    private static final Color TRANSP_COLOR = new Color(160, 100, 100, 100);
     private double myRatio = MENU_SIZE_RATIO;
     private Map<String, GameButton> myButtonMap = new HashMap<String, GameButton>();
-    private Dimension myGameCanvasSize;
+    private JComponent myGameCanvas;
 
     /**
      * @param gameCanvas JComponent where the game painted
      */
     public Menu (JComponent gameCanvas) {
-        myGameCanvasSize = gameCanvas.getSize();
-        Dimension size = new Dimension((int) (myGameCanvasSize.width),
-                (int) (myGameCanvasSize.height));
-        setPreferredSize(size);
-        gameCanvas.setLayout(new GridBagLayout());
-        gameCanvas.add(this, new GridBagConstraints());
+        myGameCanvas = gameCanvas;
+        setSize(myGameCanvas.getSize());
+        gameCanvas.add(this, BorderLayout.CENTER);
         setLayout(new GridBagLayout());
         gameCanvas.repaint();
     }
 
     @Override
     protected void paintComponent (Graphics pen) {
-        pen.setColor(Color.WHITE);
-        double myWidth = (myGameCanvasSize.width * myRatio);
-        double myHeight = (myGameCanvasSize.height * myRatio);
-        pen.fillRect((int) ((myGameCanvasSize.width / 2) - (myWidth / 2)),
-                (int) ((myGameCanvasSize.height / 2) - (myHeight / 2)),
+        pen.setColor(TRANSP_COLOR);
+        double myWidth = getSize().width * myRatio;
+        double myHeight = getSize().height * myRatio;
+        pen.fillRect((int) ((getSize().width / 2) - (myWidth / 2)),
+                (int) ((getSize().height / 2) - (myHeight / 2)),
                 (int) (myWidth - 2), (int) (myHeight - 2));
         pen.setColor(Color.BLACK);
-        pen.drawRect((int) ((myGameCanvasSize.width / 2) - (myWidth / 2)),
-                (int) ((myGameCanvasSize.height / 2) - (myHeight / 2)),
+        pen.drawRect((int) ((getSize().width / 2) - (myWidth / 2)),
+                (int) ((getSize().height / 2) - (myHeight / 2)),
                 (int) (myWidth - 2), (int) (myHeight - 2));
+    }
+
+    @Override
+    public Dimension getSize () {
+        return myGameCanvas.getSize();
     }
 
     /**
      * @param fileName of the button image
      * @param command name of this button
-     * @param gl GameListener to listen to this button.
      */
     public void addButtons (String fileName, String command, MouseListener ml) {
         GameButton gb = new GameButton(fileName, command, ml);

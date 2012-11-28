@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -36,11 +37,10 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     private List<Image> myGameProfilePictures;
     private String gameSelected;
     private JList gameList;
-    private GridBagConstraints c;
     
     public GameListMainPanel (Arcade a) {
         super(a);
-         //myGameList = a.getGameManager().getListOfGames();
+         myGameList = a.getModelInterface().getGameList();
          /*myGameProfilePictures = new ArrayList<Image>();
          for (int i = 0; i < myGameList.size(); i++) {
              myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
@@ -51,47 +51,37 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.GREEN);
-        /*String[] arrayOfGames = new String[myGameList.size()];
+        String[] arrayOfGames = new String[myGameList.size()];
         for (int i = 0; i < myGameList.size(); i++) {
+            System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
-        }*/
-        String[] theList = new String[10];
+        }
+        /*String[] theList = new String[10];
         for (int i = 0; i < 10; i++) {
             theList[i] = "" + i;
-        }
+        }*/
         
-        
-        myPanel.setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        MigLayout layout = new MigLayout();
+        myPanel.setLayout(layout);
 
-        JList listOfGames = new JList(theList);
+        JList listOfGames = new JList(arrayOfGames);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
         gameList = listOfGames;
         gameList.setPreferredSize(new Dimension(300, 300));
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
-
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 1;
-        myPanel.add(listScroller, c);
+        
         
         JLabel label = new JLabel("Select a Game to View: ");
+        label.setForeground(Color.WHITE);
         label.setLabelFor(listScroller);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
-        myPanel.add(label, c);
+        myPanel.add(label, "dock center");
+        myPanel.add(listScroller, "wrap");
+        
         
         JButton goButton = new JButton("Go!");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 3;
-        
+
         goButton.setActionCommand("Go!");
         goButton.addActionListener(new ActionListener(){
 
@@ -106,7 +96,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
               
           });
         
-        myPanel.add(goButton, c);
+        myPanel.add(goButton, "grow");
 
         return myPanel;
     }

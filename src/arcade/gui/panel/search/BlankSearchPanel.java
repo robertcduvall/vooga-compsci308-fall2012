@@ -14,13 +14,11 @@ public class BlankSearchPanel extends ASearchPanel {
 
     public BlankSearchPanel (Arcade a) {
         super(a);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("BlankSearchPanel");
         
         return myPanel;
     }

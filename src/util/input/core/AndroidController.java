@@ -15,10 +15,11 @@ import util.input.interfaces.listeners.AndroidListener;
 /**
  * This class allows users to enter input through an Android app.
  * 
- * @author Ben, Lance
+ * @author Ben, Lance, Amay
  * 
  */
 public class AndroidController extends Controller<AndroidListener> implements AndroidListener {
+
 
     /**
      * Create a new android controller.
@@ -29,6 +30,11 @@ public class AndroidController extends Controller<AndroidListener> implements An
     private int myControllerNum;
     private AndroidBluetoothServer myServer;
 
+    /**
+     * Create a new Android controller.
+     *
+     * @param controllerNum - The controller number
+     */
     public AndroidController (int controllerNum) {
         super();
         myControllerNum = controllerNum;
@@ -69,6 +75,7 @@ public class AndroidController extends Controller<AndroidListener> implements An
         }
     }
 
+    @Override
     public void onControllerDisconnect () {
         try {
             performReflections("onControllerDisconnect", Controller.NO_ACTION);
@@ -111,17 +118,30 @@ public class AndroidController extends Controller<AndroidListener> implements An
 
     }
 
-    public void setControlOptions (boolean isGameBoyActive, boolean isPlaystationActive,
-                                   boolean isTouchControlActive, boolean isAccelerometerActive) {
-        AndroidServerMessage settings = new AndroidServerMessage();
-        settings.putControllerConfigMessage(isGameBoyActive, isPlaystationActive,
-                                            isTouchControlActive, isAccelerometerActive);
-        myServer.notifyController(settings);
-    }
-
+    /**
+     * Send a message from your game to an android controller.
+     * @param message the message to send.
+     */
     public void messageServer (AndroidServerMessage message) {
         myServer.notifyController(message);
     }
+    /**
+     * Set what controllers are shown to a user.
+     * @param isGameBoyActive show the gameboy?
+     * @param isPlaystationActive show the playstation controller?
+     * @param isTouchControlActive show the touch controller?
+     * @param isAccelerometerActive enable the accelerometer?
+     */
+    public void setControlOptions (boolean isGameBoyActive,
+            boolean isPlaystationActive, boolean isTouchControlActive,
+            boolean isAccelerometerActive) {
+        AndroidControllerConfigMessage settings =
+                new AndroidControllerConfigMessage(
+                isGameBoyActive, isPlaystationActive, isTouchControlActive,
+                isAccelerometerActive);
+        myServer.notifyController(settings);
+    }
+
 
     @Override
     public void onAccelerometerEvent (AndroidSensorEvent e) {

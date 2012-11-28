@@ -42,7 +42,7 @@ public class UserXMLReader {
      */
     public User getUser (String name) {
         name = name + ".xml";
-        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath+name);
+        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + name);
         Element el = doc.getDocumentElement();
         String username = XmlUtilities.getChildContent(el, "name");
         String password = XmlUtilities.getChildContent(el, "password");
@@ -50,12 +50,13 @@ public class UserXMLReader {
                 XmlUtilities.fileNameToImage(myUserImageFilePath +
                                              XmlUtilities.getChildContent(el, "picture"));
         int credits = XmlUtilities.getChildContentAsInt(el, "credits");
-        // later, hash basic user info?
 
         List<Message> messageList = getMessageList(name);
         List<GameData> gameDataList = getGameDataList(name);
-
-        return new User(username, password, picture, credits, messageList, gameDataList);
+        String firstName = XmlUtilities.getChildContent(el, "firstname");
+        String lastName = XmlUtilities.getChildContent(el, "lastname");
+        return new User(username, password, picture, credits, messageList, gameDataList, firstName,
+                        lastName);
 
     }
 
@@ -66,7 +67,7 @@ public class UserXMLReader {
      * @return
      */
     public List<GameData> getGameDataList (String name) {
-        Document doc = XmlUtilities.makeDocument(myUserGameFilePath+name);
+        Document doc = XmlUtilities.makeDocument(myUserGameFilePath + name);
         Element el = doc.getDocumentElement();
         List<GameData> gameDataList = new ArrayList<GameData>();
         NodeList nl = el.getElementsByTagName("game");
@@ -91,7 +92,7 @@ public class UserXMLReader {
      * @return
      */
     public List<Message> getMessageList (String name) {
-        Document doc = XmlUtilities.makeDocument(myUserMessageFilePath+name);
+        Document doc = XmlUtilities.makeDocument(myUserMessageFilePath + name);
         Element el = doc.getDocumentElement();
         List<Message> messageList = new ArrayList<Message>();
         NodeList nl = el.getElementsByTagName("message");

@@ -21,7 +21,6 @@ public class JobsMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("JobsMainPanel");
 
         JLabel label = new JLabel();
         label.setText("This is the Jobs page.");

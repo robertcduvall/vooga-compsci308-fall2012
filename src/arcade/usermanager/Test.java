@@ -23,16 +23,16 @@ public class Test {
 
     public static void main (String[] args) throws Exception {
 
-        mySocialCenter = SocialCenter.getInstance();
-        testLogOn();
+        mySocialCenter = new SocialCenter();
+        //testLogOn();
         //testRegister();
 
-        //testSendMessage();
+        testSendMessage();
 
     }
 
     private static void testSendMessage () {
-        mySocialCenter.sendMessage("Howard", "testuser2", "Hi");
+        mySocialCenter.sendMessage("Howard", "mdeng1990", "Hi");
     }
 
     private static void testRegister () throws Exception {

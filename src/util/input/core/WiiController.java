@@ -175,7 +175,7 @@ public class WiiController extends Controller<WiimoteListener> implements
 
     @Override
     public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
-      //method will never be called
+        //method will never be called
     }
 
     @Override

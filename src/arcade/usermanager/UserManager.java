@@ -25,6 +25,7 @@ public class UserManager {
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
+    private User myCurrentUser;
 
     public static UserManager getInstance () {
         if (myUserManager == null) {
@@ -40,7 +41,7 @@ public class UserManager {
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
-       
+
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
 
@@ -53,14 +54,12 @@ public class UserManager {
             if (listOfFile.isFile()) {
                 String name = FileOperation.stripExtension(listOfFile.getName());
                 User newUser = myXMLReader.getUser(name);
-                
+
                 myAllUser.put(name, newUser);
 
             }
-            
+
         }
-        
-       
 
     }
 
@@ -70,20 +69,18 @@ public class UserManager {
 
     }
 
-    protected String validateUser (String userName, String password) {
-        if (!myAllUser.containsKey(userName))
-            return "Such user does not exist";
-        if (myAllUser.get(userName).getPassword().equals(password))
-            return successString;
-        if (myAllUser.containsKey(userName))
-            return "This user exists, however password is incorrect";
-        return "";
+    protected boolean validateUser (String userName, String password) {
+        if (!myAllUser.containsKey(userName)) throw new UserNotExistException();
+        if (myAllUser.get(userName).getPassword().equals(password)) return true;
+        if (myAllUser.containsKey(userName)) throw new PasswordNotMatchException();
+        return false;
 
     }
 
-    protected User addNewUser (String userName, String password, String picture) throws IOException {
+    protected User addNewUser (String userName, String password, String picture, String firstName,
+                               String lastName) throws IOException {
         // write an xml file
-        myXMLWriter.makeUserXML(userName, password, picture);
+        myXMLWriter.makeUserXML(userName, password, picture, firstName, lastName);
         // make new user class
         User newUser = myXMLReader.getUser(userName);
         myAllUser.put(userName, newUser);
@@ -93,6 +90,15 @@ public class UserManager {
 
     protected void deleteUser (String userName) {
         myAllUser.remove(userName);
+
+    }
+
+    public User getCurrentUser () {
+        return myCurrentUser;
+    }
+
+    protected void setCurrentUser (User newUser) {
+        myCurrentUser = newUser;
 
     }
 

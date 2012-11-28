@@ -1,5 +1,7 @@
 package arcade.gui.frame;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Map;
 import javax.swing.JFrame;
 import arcade.gui.Arcade;
@@ -22,6 +24,10 @@ public class ArcadeFrame extends JFrame {
         myArcade = a;
         myPanels = m;
         System.out.println("main FRAME created");
+
+        addWindowListener(new WindowExitAdapter() {
+
+        });
     }
 
     /**
@@ -34,9 +40,21 @@ public class ArcadeFrame extends JFrame {
      * @return
      */
     public ArcadePanel getPanel (String panelType) {
-        if (myPanels.containsKey(panelType))
+        if (myPanels.containsKey(panelType)) {
             return myPanels.get(panelType);
-        else return null;
+        }
+        else {
+            return null;
+        }
     }
 
+    private class WindowExitAdapter extends WindowAdapter {
+
+        @Override
+        public void windowClosing (WindowEvent e) {
+            myArcade.setUsername("");
+            System.out.println("username set to null");
+            System.exit(0);
+        }
+    }
 }
