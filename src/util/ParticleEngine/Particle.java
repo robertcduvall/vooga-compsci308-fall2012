@@ -128,10 +128,10 @@ public class Particle {
     	double angleVariation = (r-myVariance)/oneHundred;
     	
     	double tempNewAngle = myAngle + radiansPerCircle*angleVariation;
-    	int newX = (int) (Math.cos(tempNewAngle)*maxDistanceTraveledPerUpdate);
-    	int newY = (int) (Math.sin(tempNewAngle)*maxDistanceTraveledPerUpdate);
-        myPosition.x += newX * k;
-        myPosition.y -= newY * k;
+    	int newX = (int) (Math.cos(tempNewAngle)*maxDistanceTraveledPerUpdate * k);
+    	int newY = (int) (Math.sin(tempNewAngle)*maxDistanceTraveledPerUpdate * k);
+        myPosition.x += newX;
+        myPosition.y -= newY;
         durationExisted++;
 
         // this is the alpha scale
