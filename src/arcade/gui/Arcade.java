@@ -5,11 +5,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import arcade.datatransfer.ModelInterface;
 import arcade.gamemanager.GameCenter;
-import arcade.datatransfer.GameLink;
-import arcade.datatransfer.UserLink;
 import arcade.gui.frame.ArcadeFrame;
-import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.SocialCenter;
 
@@ -30,27 +28,20 @@ import arcade.usermanager.SocialCenter;
 public class Arcade {
 
     // username (unique key) of the user who is logged in
-    private static String myUser = "";
-    private static Map<String, Serializable> mySharedVariables;
+    private String myUser = "";
+    private Map<String, Serializable> mySharedVariables;
 
-    private static ArcadeFrame myFrame;
-    
-    private static GameCenter myGameCenter;
-    private static SocialCenter mySocialCenter;
-    private static GameLink myGameManager;
-    private static UserLink myUserManager;
-    private static PanelCreatorFactory myFactory;
-    private static ResourceBundle myResources;
+    private ArcadeFrame myFrame;
+    private ModelInterface myModelInterface;
+    private CreatorFactory myFactory;
+    private ResourceBundle myResources;
 
     public Arcade () {
         System.out.println("got it!");
 
         // initialize things
-        myFactory = new PanelCreatorFactory(this);
-        myGameCenter = new GameCenter();
-        mySocialCenter = SocialCenter.getInstance();
-        myGameManager = new GameLink();
-        myUserManager = new UserLink();
+        myFactory = new CreatorFactory(this);
+        myModelInterface = new ModelInterface(this);
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
         mySharedVariables = new HashMap<String, Serializable>();
 
@@ -59,10 +50,12 @@ public class Arcade {
 
     }
 
+    /**
+     * Creates the frame and populates it with the default panels
+     */
     private void frameSetup () {
         // create the frame
-        MainFrameCreator frameCreator = new MainFrameCreator(this);
-        myFrame = frameCreator.createFrame();
+        myFrame = myFactory.createFrameCreator(myResources.getString("Frame")).createFrame();
 
         // fill it with default panels
         replacePanel("FootDefault");
@@ -79,6 +72,7 @@ public class Arcade {
 
     private void updatePanelinFrame (ArcadePanel newPanel) {
         ArcadePanel panelHolder = myFrame.getPanel(newPanel.getPanelType());
+
         panelHolder.removeAll();
         panelHolder.setLayout(new BorderLayout());
         panelHolder.add(newPanel, BorderLayout.CENTER);
@@ -87,17 +81,14 @@ public class Arcade {
     /**
      * This method replaces and old panel with a new panel.
      * 
-     * @param panelNumber the int representing the panel to be replaced
-     * @param newPanel the replacement panel
-     * @return this returns the old panel
+     * @param panelCreatorName
      */
     public void replacePanel (String panelCreatorName) {
         String panelRealName = myResources.getString(panelCreatorName);
-//        myFrame.setVisible(false);
         ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
-//        myFrame.setVisible(true);
-        myFrame.pack();
+        // myFrame.pack();
+        myFrame.validate();
     }
 
     public String getUsername () {
@@ -112,31 +103,31 @@ public class Arcade {
     public void setUsername (String u) {
         myUser = u;
     }
-    
-    public GameLink getGameManager () {
-        return myGameManager;
-    }
 
-    public UserLink getUserManager () {
-        return myUserManager;
-    }
-
+    /**
+     * 
+     * @param varName
+     * @param var
+     */
     public void saveVariable (String varName, Serializable var) {
         mySharedVariables.put(varName, var);
     }
 
+    /**
+     * 
+     * @param varName
+     * @return
+     */
     public Serializable getVariable (String varName) {
         return mySharedVariables.get(varName);
     }
 
-    public GameCenter getGameCenter () {
-        return myGameCenter;
-    }
-    
     /**
-     * @return the mySocialCenter
+     * 
+     * @return reference to the modelinterface instance
      */
-    public SocialCenter getSocialCenter () {
-        return mySocialCenter;
+    public ModelInterface getModelInterface () {
+        return myModelInterface;
     }
+
 }
