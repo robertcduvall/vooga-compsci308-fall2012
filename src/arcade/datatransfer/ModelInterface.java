@@ -1,7 +1,7 @@
 package arcade.datatransfer;
 
 import java.util.List;
-import util.encrypt.Hasher;
+import util.encrypt.Encrypter;
 import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
@@ -90,7 +90,7 @@ public class ModelInterface {
          * return false;
          */
         try {
-            return mySocialCenter.logOnUser(username, Hasher.hashCode(password));
+            return mySocialCenter.logOnUser(username, Encrypter.hashCode(password));
         }
         catch (Exception e) {
             e.printStackTrace();

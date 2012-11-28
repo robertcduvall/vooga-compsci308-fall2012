@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import arcade.utility.FileOperation;
-import util.encrypt.Hasher;
+import util.encrypt.Encrypter;
 import util.xml.XmlBuilder;
 import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
