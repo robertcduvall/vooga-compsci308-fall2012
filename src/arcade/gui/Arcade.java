@@ -32,11 +32,7 @@ public class Arcade {
     private Map<String, Serializable> mySharedVariables;
 
     private ArcadeFrame myFrame;
-
-    private static GameCenter myGameCenter; // deprecated
-    private static SocialCenter mySocialCenter; // deprecated
     private ModelInterface myModelInterface;
-
     private CreatorFactory myFactory;
     private ResourceBundle myResources;
 
@@ -45,8 +41,6 @@ public class Arcade {
 
         // initialize things
         myFactory = new CreatorFactory(this);
-        // myGameCenter = new GameCenter(); // GameCenter is currently broken.
-        // mySocialCenter = SocialCenter.getInstance();
         myModelInterface = new ModelInterface(this);
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
         mySharedVariables = new HashMap<String, Serializable>();
@@ -86,6 +80,7 @@ public class Arcade {
 
     /**
      * This method replaces and old panel with a new panel.
+     * 
      * @param panelCreatorName
      */
     public void replacePanel (String panelCreatorName) {
@@ -125,22 +120,6 @@ public class Arcade {
      */
     public Serializable getVariable (String varName) {
         return mySharedVariables.get(varName);
-    }
-
-    /**
-     * @deprecated this won't work any more, use getModelInterface
-     * @return
-     */
-    public GameCenter getGameCenter () {
-        return myGameCenter;
-    }
-
-    /**
-     * @deprecated this won't work any more, use getModelInterface
-     * @return the mySocialCenter
-     */
-    public SocialCenter getSocialCenter () {
-        return mySocialCenter;
     }
 
     /**

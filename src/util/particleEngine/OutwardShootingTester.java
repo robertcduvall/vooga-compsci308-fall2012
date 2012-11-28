@@ -1,4 +1,4 @@
-package util.ParticleEngine;
+package util.particleEngine;
 
 import java.awt.Image;
 import java.awt.Point;

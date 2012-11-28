@@ -1,7 +1,8 @@
 package arcade.datatransfer;
 
-import java.awt.Image;
 import java.util.List;
+import util.encrypt.Hasher;
+import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
 import arcade.usermanager.SocialCenter;
@@ -20,20 +21,54 @@ public class ModelInterface {
     private GameCenter myGameCenter;
     private SocialCenter mySocialCenter;
 
+    /**
+     * 
+     * @param a
+     */
     public ModelInterface (Arcade a) {
         myArcade = a;
-
+        mySocialCenter=new SocialCenter();
         // myGameCenter = new GameCenter(); // GameCenter is currently broken.
         // mySocialCenter = SocialCenter.getInstance();
 
     }
 
     // #############################################################
-    // Implemented by the Game team
+    // To be Implemented by the Game team
     // #############################################################
 
+    /**
+     * returns the list of available games.
+     * 
+     * @return list of available games
+     */
+    public List<String> getGameList () {
+        return myGameCenter.getGameList();
+    }
+
+    /**
+     * returns Game object specified by the game's name. If no game is found,
+     * returns null.
+     * 
+     * @param gameName name of requested game
+     * @return requested Game object or null if no such game is found
+     */
+    public Game getGame (String gameName) {
+        return myGameCenter.getGame(gameName);
+    }
+
+    /**
+     * returns a list of games that have the tag.
+     * 
+     * @param tag a tag that games have in common
+     * @return list of games that have the tag.
+     */
+    public List<String> getGameListByTagName (String tag) {
+        return myGameCenter.getGameListByTagName(tag);
+    }
+
     // #############################################################
-    // Implemented by the User team
+    // To be Implemented by the User team
     // #############################################################
 
     /**
@@ -47,10 +82,19 @@ public class ModelInterface {
     public boolean executeLogin (String username, String password) {
         // TODO Implement this. Return true if login successful, false if
         // unsuccessful.
-
-        // test code
-        if (username.equals("mdeng1990") && password.equals("pswd")) { return true; }
-
+        /*
+         * // test code
+         * if (username.equals("mdeng1990") && password.equals("pswd")) { return
+         * true; }
+         * 
+         * return false;
+         */
+        try {
+            return mySocialCenter.logOnUser(username, Hasher.hashCode(password));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -66,9 +110,15 @@ public class ModelInterface {
     public boolean executeNewUser (String username, String password, String fn, String ln) {
 
         // test code
-        if (username.equals("mdeng1990")) { return true; }
+        //if (username.equals("mdeng1990")) { return false; }
+        try{
+           return mySocialCenter.registerUser(username, password);
+        }
+        catch(Exception e){
+            
+        }
 
-        return false;
+        return true;
     }
 
 }

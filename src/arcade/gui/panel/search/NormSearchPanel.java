@@ -2,10 +2,10 @@ package arcade.gui.panel.search;
 
 import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
+
 
 /**
  * 
@@ -22,8 +22,7 @@ public class NormSearchPanel extends ASearchPanel {
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         System.out.println("NormSearchPanel");
-        
-        
+
         JLabel label = new JLabel();
         label.setText("This is the Norm Search page.");
         label.setForeground(Color.WHITE);
@@ -32,12 +31,8 @@ public class NormSearchPanel extends ASearchPanel {
 
         myPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         myPanel.add(label, "align center");
-        
-        
+
         return myPanel;
     }
-
-
-    
 
 }

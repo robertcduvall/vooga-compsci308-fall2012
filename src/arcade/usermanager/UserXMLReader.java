@@ -33,7 +33,7 @@ public class UserXMLReader {
         myUserGameFilePath = ourResources.getString("GameFilePath");
         myUserImageFilePath = ourResources.getString("ImageFilePath");
     }
-
+    
     /**
      * Creates a user object from XML data.
      * 
@@ -50,12 +50,12 @@ public class UserXMLReader {
                 XmlUtilities.fileNameToImage(myUserImageFilePath +
                                              XmlUtilities.getChildContent(el, "picture"));
         int credits = XmlUtilities.getChildContentAsInt(el, "credits");
-        // later, hash basic user info?
 
         List<Message> messageList = getMessageList(name);
         List<GameData> gameDataList = getGameDataList(name);
-
-        return new User(username, password, picture, credits, messageList, gameDataList);
+        String firstName=XmlUtilities.getChildContent(el, "firstname");
+        String lastName=XmlUtilities.getChildContent(el, "lastname");
+        return new User(username, password, picture, credits, messageList, gameDataList, firstName, lastName);
 
     }
 
