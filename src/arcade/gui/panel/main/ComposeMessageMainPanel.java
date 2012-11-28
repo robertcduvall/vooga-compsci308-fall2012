@@ -21,7 +21,6 @@ public class ComposeMessageMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("ComposeMessageMainPanel");
 
         JLabel label = new JLabel();
         label.setText("[Compose Message]");

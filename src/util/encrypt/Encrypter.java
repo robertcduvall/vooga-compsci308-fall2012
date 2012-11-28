@@ -23,10 +23,6 @@ public final class Encrypter {
      */
     public static String hashCode (String str) {
         Integer hash = str.hashCode();
-        System.out.println(str);
-        System.out.println(encode(str));
-        System.out.println(decode(encode(str)));
-        System.out.println(Integer.toHexString(hash));
         return Integer.toHexString(hash);
     }
 

@@ -38,7 +38,6 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("LoginMainPanel");
 
 
         myPanel.setLayout(new GridBagLayout());
