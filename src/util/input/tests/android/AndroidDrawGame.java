@@ -186,7 +186,7 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
 
     public void addLine (LineSegment l) {
         mySegments.add(l);
-
+        
     };
 
     public void changeToRed () {
@@ -200,6 +200,8 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
 
     public void changeToBlue () {
         myPenColor = Color.BLUE;
+        //testController.setActionActive(action, type, isActive)
+        testController.unSubscribe(this);
     }
 
     public void changeToGreen () {

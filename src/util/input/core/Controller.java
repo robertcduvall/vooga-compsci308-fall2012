@@ -70,12 +70,12 @@ public abstract class Controller<T> {
     }
 
     /**
-     * Subscribes a class to this controller's events.
+     * Unsubscribes a class to this controller's events.
      * 
-     * @param subscriber - The subscribing class
+     * @param subscriber - The unsubscribing class
      */
-    public void unSubscribe (T subscriber) {
-        mySubscribedElements.remove(subscriber);
+    public void unSubscribe (T unsubscriber) {
+        mySubscribedElements.remove(unsubscriber);
     }
 
     /**
@@ -195,7 +195,6 @@ public abstract class Controller<T> {
         Map<String, Object> dataIn = new HashMap<String, Object>();
         dataIn.put(TUPLE, new BoolTuple<Class, Method>(c, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-
         myDataTable.addNewRowEntry(dataIn);
     }
 

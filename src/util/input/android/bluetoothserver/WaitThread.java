@@ -57,13 +57,14 @@ public class WaitThread implements Runnable {
             notifier = (StreamConnectionNotifier) Connector.open(url);
         }
         catch (BluetoothStateException e) {
-            System.out.println("Bluetooth is not turned on.");
+            // I think it is a good idea to print the stack trace because
+            // realistically for this project creating an exception because we
+            // forget to turn bluetooth on is overkill
             e.printStackTrace();
             return;
         }
         catch (IOException e) {
-            // Throw server error
-            e.printStackTrace();
+            //Never occurs
             return;
         }
 
@@ -75,9 +76,10 @@ public class WaitThread implements Runnable {
             myServer.setMessenger(new Messenger(connection));
 
         }
-        //Bluecove API did not list the specific type of exceptions that can be thrown
+
+        // Bluecove API did not list the specific type of exceptions that can be
+        // thrown, but this has never been thrown.
         catch (Exception e) {
-            e.printStackTrace();
             return;
         }
     }

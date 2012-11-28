@@ -36,7 +36,8 @@ public class AndroidBluetoothServer {
     private Queue<AndroidServerMessage> myMessageQueue = new LinkedList<AndroidServerMessage>();
 
     /**
-     * Create a new bluetooth server. You must
+     * Create a new bluetooth server. You must specify the number of the
+     * controller it will listen to.
      * 
      * @param controllerNumber the number of this controller. Use class
      *        constants.
