@@ -41,7 +41,7 @@ public class UserManager {
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
-       
+
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
 
@@ -54,14 +54,12 @@ public class UserManager {
             if (listOfFile.isFile()) {
                 String name = FileOperation.stripExtension(listOfFile.getName());
                 User newUser = myXMLReader.getUser(name);
-                
+
                 myAllUser.put(name, newUser);
 
             }
-            
+
         }
-        
-       
 
     }
 
@@ -72,20 +70,17 @@ public class UserManager {
     }
 
     protected boolean validateUser (String userName, String password) {
-        if (!myAllUser.containsKey(userName))
-            throw new UserNotExistException();
-        if (myAllUser.get(userName).getPassword().equals(password))
-            return true;
-        if (myAllUser.containsKey(userName))
-            throw new PasswordNotMatchException();
+        if (!myAllUser.containsKey(userName)) throw new UserNotExistException();
+        if (myAllUser.get(userName).getPassword().equals(password)) return true;
+        if (myAllUser.containsKey(userName)) throw new PasswordNotMatchException();
         return false;
-        
 
     }
 
-    protected User addNewUser (String userName, String password, String picture) throws IOException {
+    protected User addNewUser (String userName, String password, String picture, String firstName,
+                               String lastName) throws IOException {
         // write an xml file
-        myXMLWriter.makeUserXML(userName, password, picture);
+        myXMLWriter.makeUserXML(userName, password, picture, firstName, lastName);
         // make new user class
         User newUser = myXMLReader.getUser(userName);
         myAllUser.put(userName, newUser);
@@ -97,14 +92,14 @@ public class UserManager {
         myAllUser.remove(userName);
 
     }
-    
-    public User getCurrentUser(){
+
+    public User getCurrentUser () {
         return myCurrentUser;
     }
-    
-    protected void setCurrentUser(User newUser){
-        myCurrentUser=newUser;
-        
+
+    protected void setCurrentUser (User newUser) {
+        myCurrentUser = newUser;
+
     }
 
 }

@@ -21,7 +21,6 @@ public class NormSearchPanel extends ASearchPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("NormSearchPanel");
 
         JLabel label = new JLabel();
         label.setText("This is the Norm Search page.");

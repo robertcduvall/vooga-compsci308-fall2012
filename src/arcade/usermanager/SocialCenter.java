@@ -73,7 +73,7 @@ public class SocialCenter {
     /*
      * return log on status
      */
-    public boolean registerUser (String userName, String password) throws Exception {
+    public boolean registerUser (String userName, String password, String firstName, String lastName) throws Exception {
         // check validity
         
       try{
@@ -83,7 +83,7 @@ public class SocialCenter {
        
         catch(UserNotExistException e){
         
-        User newUser= myUserManager.addNewUser(userName, password, "default.jpg");
+        User newUser= myUserManager.addNewUser(userName, password, "default.jpg", firstName, lastName);
        myUserManager.setCurrentUser(newUser);
 
         return true;
@@ -118,7 +118,7 @@ public class SocialCenter {
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         Element message = XmlUtilities.appendElement(doc, root, "message", "");
-        XmlUtilities.appendElement(doc, message, "sender", receiver);
+        XmlUtilities.appendElement(doc, message, "sender", sender);
         XmlUtilities.appendElement(doc, message, "content", content);
         XmlUtilities.write(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);

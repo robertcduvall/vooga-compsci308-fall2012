@@ -99,9 +99,12 @@ public class Test {
             newtable = new DataTable();
             newtable.load("src/util/datatable/resources/data.txt");
         }
-        catch (RepeatedColumnNameException | InvalidXMLTagException e1) {
+        catch (RepeatedColumnNameException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
+        }
+        catch ( InvalidXMLTagException e2){
+            e2.printStackTrace();
         }
         System.out.println("new table");
         newtable.viewContents(); 

@@ -28,7 +28,6 @@ public class LoginUserPanel extends AUserPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("LoginUserPanel");
 
         JButton loginBut = new JButton("Login");
         JButton newuserBut = new JButton("New User");
