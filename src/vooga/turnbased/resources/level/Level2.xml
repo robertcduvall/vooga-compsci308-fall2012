@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <level>
+	<levelid>2</levelid>
 	<dimension>
 		<width>50</width>
 		<height>50</height>
@@ -9,7 +10,6 @@
 		<height>11</height>
 	</cameraDimension>
 	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
-
 	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
@@ -27,7 +27,7 @@
 				<maxHealth>10</maxHealth>
 				<health>10</health>
 				<defense>1</defense>
-				<attack>2</attack>
+				<attack>4</attack>
 			</stats>
 			<name>Monster</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/005.png</image>

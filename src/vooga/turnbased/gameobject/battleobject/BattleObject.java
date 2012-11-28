@@ -29,9 +29,8 @@ public abstract class BattleObject extends GameObject {
      * @param id the ID number of the object.
      * @param event The action that this object can pass to the GameManager,
      * can be GameEvent.NO_ACTION if no action needed
-     * @param defense The amount of defense that mitigates losses to health.
-     * @param attack The amount of damage the sprite/monster does with each attack.
-     * @param health The amount of health that must be destroyed for the sprite/monster to die.
+     * @param stats the battle stats of the object, including its defense, attack, and health
+     * @param name the name of the object
      * @param image The image of this BattleObject
      */
     public BattleObject(int id, String event, Map<String, Number> stats, String name, Image image) {
@@ -97,8 +96,9 @@ public abstract class BattleObject extends GameObject {
             Number health = myStats.get("health");
             return health.doubleValue() > 0;
         }
-        else
+        else {
             return false;
+        }
     }
 
     /**
@@ -111,12 +111,12 @@ public abstract class BattleObject extends GameObject {
      */
     // see comments in battlemode.paint(g) explaining why this was renamed
     public void paintBattleObject (Graphics g, int x, int y, int width, int height) {
-        super.drawRectangularImage(g, x, y, width/2, height);
-        paintStats(g, x+width/2, y, width/2, height);
+        super.drawRectangularImage(g, x, y, width / 2, height);
+        paintStats(g, x + width / 2, y, width / 2, height);
     }
 
+    //fix this at some point...
     private void paintStats (Graphics g, int x, int y, int width, int height) {
-
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(Color.CYAN);
         g2d.draw3DRect(x, y, width, height, true);
