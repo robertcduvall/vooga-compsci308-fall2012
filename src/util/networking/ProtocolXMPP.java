@@ -29,7 +29,7 @@ public class ProtocolXMPP implements ChatProtocol {
         Document d = XmlUtilities.makeDocument();
         Map<String, String> attributes = new TreeMap<String, String>();
         attributes.put("to", dest);
-        d.setXmlVersion("1.0");
+        attributes.put("version", "1.0");
         attributes.put("xlmns", "jabber:client");
         Element stream = XmlUtilities.makeElement(d, "stream", attributes);
         d.appendChild(stream);
