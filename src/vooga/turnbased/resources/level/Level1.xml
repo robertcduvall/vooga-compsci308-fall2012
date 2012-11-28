@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <level>
+	<levelid>1</levelid>
 	<dimension>
 		<width>20</width>
 		<height>30</height>
@@ -44,12 +45,6 @@
 		</map>
 		<battle/>
 	</sprite>
-    <!-- THIS IS HARDCODED AND WOULD NOT BE NECESSARY IN FUTURE. IGNORE IT FOR LEVELEDITOR -->
-	<staticSprite>
-		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
-		<event>NO_ACTION</event>
-		<image>src/vooga/turnbased/resources/image/grass.png</image>
-	</staticSprite>
 	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
@@ -62,4 +57,10 @@
 		</map>
 		<battle />
 	</sprite>
+    <!-- THIS IS HARDCODED AND WOULD NOT BE NECESSARY IN FUTURE. IGNORE IT FOR LEVELEDITOR -->
+	<staticSprite>
+		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
+		<event>NO_ACTION</event>
+		<image>src/vooga/turnbased/resources/image/grass.png</image>
+	</staticSprite>
 </level>
