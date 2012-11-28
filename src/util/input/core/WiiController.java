@@ -43,7 +43,6 @@ public class WiiController extends Controller<WiimoteListener> implements
     public static final int WIIMOTE_BUTTON_DOWN = 1024;
     public static final int WIIMOTE_BUTTON_LEFT = 256;
     public static final int WIIMOTE_BUTTON_RIGHT = 512;
-    //public stat
 
     /**
      * Create a new Wii controller.
@@ -93,8 +92,6 @@ public class WiiController extends Controller<WiimoteListener> implements
 
     @Override
     public void onMotionSensingEvent(MotionSensingEvent arg0) {
-        // Based on the data invoke up motion, down motion, left motion or right
-        // motion
         try {
             performReflections(arg0, "onMotionSensingEvent", -1);
         }
@@ -112,13 +109,35 @@ public class WiiController extends Controller<WiimoteListener> implements
     @Override
     public void onClassicControllerInsertedEvent(
             ClassicControllerInsertedEvent arg0) {
-        //method will never be called as classic controller is not supported
+        try {
+            performReflections(arg0, "onClassicControllerInsertedEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onClassicControllerRemovedEvent(
             ClassicControllerRemovedEvent arg0) {
-        //method will never be called as classic controller is not supported
+        try {
+            performReflections(arg0, "onClassicControllerRemovedEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
@@ -139,17 +158,51 @@ public class WiiController extends Controller<WiimoteListener> implements
 
     @Override
     public void onExpansionEvent(ExpansionEvent arg0) {
-        //method will never be called as other controllers are not supported
+        try {
+            performReflections(arg0, "onExpansionEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+
     }
 
     @Override
     public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
-        //method will never be called as guitar hero is not supported
+        try {
+            performReflections(arg0, "onGuitarHeroInsertedEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
-      //method will never be called
+        try {
+            performReflections(arg0, "onGuitarHeroRemovedEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
@@ -170,12 +223,35 @@ public class WiiController extends Controller<WiimoteListener> implements
 
     @Override
     public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
-        //method will never be called
+        try {
+            performReflections(arg0, "onNunchukInsertedEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
-        //method will never be called
+        try {
+            performReflections(arg0, "onNunchukRemovedEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+
     }
 
     @Override

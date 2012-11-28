@@ -77,7 +77,6 @@ public abstract class Controller<T> {
     public void setControl (int action, int type, Object o, String method)
                                                                           throws NoSuchMethodException,
                                                                           IllegalAccessException {
-
         setControl(action, type, o, method, null, null);
     }
 
@@ -189,20 +188,25 @@ public abstract class Controller<T> {
      * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
-     * @param isActive - Whether the action should be active or not
      */
     @SuppressWarnings("unchecked")
-    public void setActionActive (int action, int type, boolean isActive) {
-        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        BoolTuple<Object, Method> rowElement = (BoolTuple<Object, Method>) r.getEntry("Tuple");
-
-        if (isActive) {
-            rowElement.activate();
-        }
-        else {
-            rowElement.deactivate();
-        }
+    public void activateAction (int action, int type) {
+        BoolTuple<Object, Method> rowElement = getObjectMethodPair(action, type);
+        rowElement.activate();
     }
+    
+    /**
+     * Set the desired action on or off.
+     * 
+     * @param action - The controller button/key to listen for
+     * @param type - Pressed or released
+     */
+    @SuppressWarnings("unchecked")
+    public void deactivateAction (int action, int type) {
+        BoolTuple<Object, Method> rowElement = getObjectMethodPair(action, type);
+        rowElement.deactivate();
+    }
+
 
     /**
      * @param e
@@ -224,7 +228,18 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
 
+    
+    
     // PRIVATE METHODS
+    
+    @SuppressWarnings("unchecked")
+    private BoolTuple<Object, Method> getObjectMethodPair (int action, int type) {
+        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
+        BoolTuple<Object, Method> rowElement = (BoolTuple<Object, Method>) r.getEntry("Tuple");
+        return rowElement;
+    }
+    
+    
     /**
      * broadcasts the method to all subscribed elements.
      * 
