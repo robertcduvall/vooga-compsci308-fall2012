@@ -35,7 +35,6 @@ public class ProtocolXMPP implements ChatProtocol {
         d.appendChild(stream);
         XmlUtilities.write(d, "src/util/networking/Tester.xml");
         return docToString(d);
-            
     }
     
     private String docToString(Document d){
