@@ -124,13 +124,14 @@ public class Particle {
 
     public void update () {
     	double r = myRandomGenerator.nextInt(2*myVariance+1);
+    	double k = myRandomGenerator.nextDouble();
     	double angleVariation = (r-myVariance)/oneHundred;
     	
     	double tempNewAngle = myAngle + radiansPerCircle*angleVariation;
     	int newX = (int) (Math.cos(tempNewAngle)*maxDistanceTraveledPerUpdate);
     	int newY = (int) (Math.sin(tempNewAngle)*maxDistanceTraveledPerUpdate);
-        myPosition.x += newX;
-        myPosition.y -= newY;
+        myPosition.x += newX * k;
+        myPosition.y -= newY * k;
         durationExisted++;
 
         // this is the alpha scale
