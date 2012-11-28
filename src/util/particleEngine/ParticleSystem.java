@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * implemented by any class that extends ParticleEngineTetingUnit; this method
  * creates the ParticleEngine objects that are stored in the List.
  * 
- * @author Kathleen
+ * @author Kathleen/David Spruill
  * 
  */
 
@@ -73,8 +74,13 @@ public abstract class ParticleSystem {
     }
 
     public void update () {
+        Stack<ParticleEngine> remove = new Stack<ParticleEngine>();
         for (ParticleEngine p : myParticleEngines) {
+            if(!p.stillExists())  remove.add(p);
             p.update();
+        }
+        for(ParticleEngine p:remove) {
+            myParticleEngines.remove(p);
         }
     }
 
@@ -91,6 +97,10 @@ public abstract class ParticleSystem {
         }
     }
 
+    public Boolean stillExists() {
+        return myParticleEngines.size()>0;
+    }
+    
     public void draw (Graphics2D g) {
         for (ParticleEngine p : myParticleEngines)
             p.draw(g);

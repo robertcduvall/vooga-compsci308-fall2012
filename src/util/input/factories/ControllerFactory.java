@@ -43,7 +43,7 @@ public class ControllerFactory {
     }
 
     /**
-     * Use the mouse as a controller.
+     * Use the Wii as a controller.
      *
      * @return - The Controller object
      */
@@ -54,7 +54,7 @@ public class ControllerFactory {
     }
 
     /**
-     * Use the mouse as a controller.
+     * Use the Android as a controller.
      *
      * @return - The Controller object
      */

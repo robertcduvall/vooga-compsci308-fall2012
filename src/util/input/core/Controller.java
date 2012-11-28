@@ -11,15 +11,15 @@ import util.datatable.DataTable;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
-import util.input.inputhelpers.BoolTuple;
+import util.input.inputhelpers.ActivatablePair;
 import util.input.inputhelpers.UKeyCode;
 
 
 /**
  * This class represents an abstract controller to provide input.
- * 
+ *
  * @author Amay, Lance
- * 
+ *
  * @param <T>
  */
 public abstract class Controller<T> {
@@ -154,7 +154,7 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(o, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new BoolTuple<Object, Method>(o, m));
+        dataIn.put(TUPLE, new ActivatablePair<Object, Method>(o, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
 
         myDataTable.addNewRowEntry(dataIn);
@@ -193,7 +193,7 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(c, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new BoolTuple<Class, Method>(c, m));
+        dataIn.put(TUPLE, new ActivatablePair<Class, Method>(c, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
         myDataTable.addNewRowEntry(dataIn);
     }
@@ -203,20 +203,25 @@ public abstract class Controller<T> {
      * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
-     * @param isActive - Whether the action should be active or not
      */
     @SuppressWarnings("unchecked")
-    public void setActionActive (int action, int type, boolean isActive) {
-        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        BoolTuple<Object, Method> rowElement = (BoolTuple<Object, Method>) r.getEntry("Tuple");
-
-        if (isActive) {
-            rowElement.activate();
-        }
-        else {
-            rowElement.deactivate();
-        }
+    public void activateAction (int action, int type) {
+        ActivatablePair<Object, Method> rowElement = getObjectMethodPair(action, type);
+        rowElement.activate();
     }
+    
+    /**
+     * Set the desired action on or off.
+     * 
+     * @param action - The controller button/key to listen for
+     * @param type - Pressed or released
+     */
+    @SuppressWarnings("unchecked")
+    public void deactivateAction (int action, int type) {
+        ActivatablePair<Object, Method> rowElement = getObjectMethodPair(action, type);
+        rowElement.deactivate();
+    }
+
 
     /**
      * @param e
@@ -238,7 +243,18 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
 
+    
+    
     // PRIVATE METHODS
+    
+    @SuppressWarnings("unchecked")
+    private ActivatablePair<Object, Method> getObjectMethodPair (int action, int type) {
+        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
+        ActivatablePair<Object, Method> rowElement = (ActivatablePair<Object, Method>) r.getEntry("Tuple");
+        return rowElement;
+    }
+    
+    
     /**
      * broadcasts the method to all subscribed elements.
      * 
@@ -282,8 +298,8 @@ public abstract class Controller<T> {
 
         if (r != null) {
 
-            BoolTuple<Object, Method> retrieveTuple =
-                    (BoolTuple<Object, Method>) r.getEntry("Tuple");
+            ActivatablePair<Object, Method> retrieveTuple =
+                    (ActivatablePair<Object, Method>) r.getEntry("Tuple");
 
             if (retrieveTuple != null && retrieveTuple.isActive()) {
                 retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
