@@ -1,4 +1,4 @@
-package util.networking;
+package util.networking.jabber;
 
 import java.io.IOException;
 import java.io.Reader;

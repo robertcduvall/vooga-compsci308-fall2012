@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import util.datatable.DataTable;
 import util.datatable.UnmodifiableRowElement;
+import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.input.inputhelpers.BoolTuple;
 import util.input.inputhelpers.UKeyCode;
@@ -323,6 +324,9 @@ public abstract class Controller<T> {
             myDataTable.addNewColumn(columnName);
         }
         catch (RepeatedColumnNameException e) {
+            e.printStackTrace();
+        }
+        catch (InvalidXMLTagException e){
             e.printStackTrace();
         }
     }

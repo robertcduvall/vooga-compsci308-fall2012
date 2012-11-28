@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.util.ConfigStringParser;
 
 
 /**
@@ -25,7 +26,7 @@ public class MovingObject extends GameObject {
     public MovingObject (String configString) {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
-        String imagePath = parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
+        String imagePath = ConfigStringParser.parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
         try {
             myImg = ImageIO.read(new File(imagePath));
         }

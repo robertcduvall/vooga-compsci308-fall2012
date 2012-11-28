@@ -25,22 +25,27 @@ import org.w3c.dom.NodeList;
 
 
 /**
+ * <p>
  * A general-use xml utility class.
+ * </p>
  * 
+ * <p>
  * IMPORTANT: There are other xml utilities but this is the one that everyone
- * should use. The 5-6 of us got together to make one Utility class that has
- * the best from all the others and is more robust. All other xml utilities
- * have been deprecated.
+ * should use. The 5-6 of us got together to make one Utility class that has the
+ * best from all the others and is more robust. All other xml utilities have
+ * been deprecated.
+ * </p>
  * 
- * TODO: Include more robust error checking and throw an XmlException when
- * appropriate.
- * 
+ * <p>
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
+ * </p>
  * 
- * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * <hr/>
  * 
  * Example of the semantics used here:
  * 
+ * <pre>
+ * {@code
  * <tag attribute="value"> content </tag>
  * ~or~
  * <tag attributeName="attributeValue"> content </tag>
@@ -48,12 +53,16 @@ import org.w3c.dom.NodeList;
  * <parent>
  * <child></child>
  * </parent>
- * 
- * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * }
+ * </pre>
+ * <hr/>
  * 
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov,
  *         Difan Zhao, Mark Hoffman
  */
+
+// TODO: Include more robust error checking and throw an XmlException when
+// appropriate.
 
 public class XmlUtilities {
 
@@ -534,7 +543,7 @@ public class XmlUtilities {
      * @param element element for which to find the tag name
      * @return value of this element's tag
      */
-    
+
     public static String getTagName (Element element) {
         return element.getTagName();
     }
@@ -822,8 +831,16 @@ public class XmlUtilities {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 list.add((Element) node);
             }
+            else if (node.getNodeType() == Node.TEXT_NODE &&
+                     (node.getNodeValue().trim().length() == 0)) {
+                /*
+                 * Do nothing. This is a bug fix to keep the warning from being
+                 * thrown for row returns.
+                 */
+            }
             else {
-                System.err.println("WARNING: Node could not be converted to element!");
+                System.err.println("WARNING: The Node " + node.getNodeName() +
+                                   " could not be converted to element!");
             }
         }
         return list;

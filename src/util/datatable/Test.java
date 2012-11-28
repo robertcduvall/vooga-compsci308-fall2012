@@ -2,6 +2,7 @@ package util.datatable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
@@ -21,11 +22,13 @@ public class Test {
             // exception thrown when column already exists
             e.printStackTrace();
         } 
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
         
         //setting column name by adding an array
-        String [] sarray=new String[2];
+        String [] sarray=new String[1];
         sarray[0]="favoritecolor";
-        sarray[1]="favoriteband";
         try {
             table.addNewColumn(sarray);
         }
@@ -33,11 +36,13 @@ public class Test {
             // exception thrown when column already exists
             e.printStackTrace();
         }
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
         
         //get table's column names
-        List<String> columnNames=table.getColumnNames();
+        List<String> columnNames=(List<String>) table.getColumnNames();
 
-        
         //adding a new row --null value will be stored in place of undefined entry
         Map<String,Object> storingData= new HashMap<String, Object>();
         storingData.put("address","LA");
@@ -75,6 +80,7 @@ public class Test {
             e.printStackTrace();
         }
         
+        System.out.println("oldtable");
         table.viewContents();
        
         //delete row entry
@@ -84,10 +90,29 @@ public class Test {
        // System.out.println(rowE + "hi");
         
         //loading and saving
+        
         table.save("src/util/datatable/resources/data.txt");
         
         //DataTable 
-       // table.load("src/util/datatable/resources/data.txt");
+        DataTable newtable = null;
+        try {
+            newtable = new DataTable();
+            newtable.load("src/util/datatable/resources/data.txt");
+        }
+        catch (RepeatedColumnNameException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        catch ( InvalidXMLTagException e2){
+            e2.printStackTrace();
+        }
+        System.out.println("new table");
+        newtable.viewContents(); 
+        
+        //retrieving a null entry from newly loaded table
+        UnmodifiableRowElement rt = newtable.find("address", "LAAZ");
+        System.out.println(rt.getEntry("gender").equals(""));
+        
         
         
         //demo of inserting objects
@@ -99,6 +124,10 @@ public class Test {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
+        
         try {
             rey.setEntry("phone","09090");
         }
@@ -114,6 +143,10 @@ public class Test {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
+        
         Map<String,Object> myMap=new HashMap<String,Object>();
         myMap.put("ObjectTest", rey);
         myMap.put("address","DC");

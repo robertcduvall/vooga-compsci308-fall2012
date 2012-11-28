@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import util.camera.Camera;
 import vooga.platformer.level.Level;
+import vooga.platformer.util.ConfigStringParser;
 
 
 /**
@@ -62,7 +63,7 @@ public abstract class GameObject {
      */
     public GameObject (String configString) {
         this();
-        Map<String, String> configMap = parseConfigString(configString);
+        Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
         x = Double.parseDouble(configMap.get(X_TAG));
         y = Double.parseDouble(configMap.get(Y_TAG));
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
@@ -93,15 +94,6 @@ public abstract class GameObject {
         return params;
     }
 
-    protected Map<String, String> parseConfigString (String configString) {
-        Map<String, String> configMap = new HashMap<String, String>();
-        String[] pairs = configString.split(",");
-        for (String entry : pairs) {
-            String[] entrySplit = entry.split("=");
-            configMap.put(entrySplit[0], entrySplit[1]);
-        }
-        return configMap;
-    }
 
     public double getX () {
         return x;

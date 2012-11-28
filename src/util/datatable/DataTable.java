@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 import util.xml.XmlUtilities;
@@ -22,6 +23,10 @@ public class DataTable {
 
     private List<RowElement> myDataRows;
     private List<String> myColumnNames;
+    
+    private final String XMLPARENTTAG= "DataTable";
+    private final String XMLROWTAG= "Row";
+    private final String XMLROWTAGATTR = "number";
 
 
     /**
@@ -46,9 +51,11 @@ public class DataTable {
      * @param strKey - string of column names separated with commas
      * @throws RepeatedColumnNameException - thrown
      * if a repeated column name is detected
+     * @throws InvalidXMLTagException - thrown if column name is
+     * an invalid XML tag
      */
     public void addNewColumn (String strKey) throws
-        RepeatedColumnNameException {
+        RepeatedColumnNameException, InvalidXMLTagException {
         String[] strArray = strKey.split(",");
         addNewColumn(strArray);
     }
@@ -58,9 +65,11 @@ public class DataTable {
      * @param strArray - String array of column names
      * @throws RepeatedColumnNameException - thrown
      * if a repeated column name is detected
+     * @throws InvalidXMLTagException - thrown if column name is
+     * an invalid XML tag
      */
     public void addNewColumn (String[] strArray) throws
-        RepeatedColumnNameException  {
+        RepeatedColumnNameException, InvalidXMLTagException  {
         for (String strName : strArray) {
             for  (RowElement rowE: myDataRows) {
                 rowE.addNewColumn(strName);
@@ -111,7 +120,7 @@ public class DataTable {
      * Returns an unmodifiable list of column names.
      * @return - List of column names
      */
-    public List<String> getColumnNames () {
+    public Collection<String> getColumnNames () {
         return Collections.unmodifiableList(myColumnNames);
     }
 
@@ -124,8 +133,9 @@ public class DataTable {
      * @param valueNew - specific value to write to the table
      * @throws UnrecognizedColumnNameException - unrecognized column name
      */
-    public void editRowEntry (String strKeyRef, Object valueRef, String strKeyNew,
-            Object valueNew) throws UnrecognizedColumnNameException {
+    public void editRowEntry (String strKeyRef, Object valueRef, 
+            String strKeyNew, Object valueNew) throws 
+            UnrecognizedColumnNameException {
         Iterator<RowElement> it = myDataRows.iterator();
         while (it.hasNext()) {
             RowElement re = it.next();
@@ -157,7 +167,7 @@ public class DataTable {
      * Returns an unmodifiable list of all the row elements.
      * @return - unmodifiable list of row elements
      */
-    public List<RowElement> getDataRows(){
+    public Collection <RowElement> getDataRows(){
         return Collections.unmodifiableList(myDataRows);
     }
 
@@ -191,16 +201,19 @@ public class DataTable {
             re.printData();
         }
     }
-
+    
+    /**
+     * Saves DataTable on an XML file for later use.
+     * @param location - location where file is saved
+     */
     public void save (String location) {
-        // TODO Auto-generated method stub
-        Document doc= XmlUtilities.makeDocument();
-        Element header = XmlUtilities.makeElement(doc, "DataTable");
+        Document doc = XmlUtilities.makeDocument();
+        Element header = XmlUtilities.makeElement(doc, XMLPARENTTAG);
         doc.appendChild(header);
-        //loop
-        int i=0;
-        for (RowElement re : getDataRows()){
-            Element parentRow = XmlUtilities.makeElement(doc, "Row", "number" , String.valueOf(i));
+        int i = 0;
+        for (RowElement re : getDataRows()) {
+            Element parentRow = 
+                    XmlUtilities.makeElement(doc, XMLROWTAG, XMLROWTAGATTR, String.valueOf(i));
             header.appendChild(parentRow);
             i++;
             for (String colName: getColumnNames()){
@@ -208,25 +221,40 @@ public class DataTable {
                 if (re.getEntry(colName)==null){
                     writeElement="";
                 }
-                System.out.println(colName + " " + writeElement);
                 XmlUtilities.appendElement(doc, parentRow, colName, writeElement);
             }
         }
         XmlUtilities.write(doc , location);
     }
 
-    public void load (String location) throws RepeatedColumnNameException {
+    
+    
+    /**
+     * Loads DataTable from a previously saved XML file.
+     * @param location - location of file name
+     * @throws RepeatedColumnNameException - thrown if a column name is repeated
+     * @throws InvalidXMLTagException - invalid column name tag
+     */
+    public void load (String location) throws
+        RepeatedColumnNameException, InvalidXMLTagException {
         Map <String, Object> colValueMap = null; 
         Document doc = XmlUtilities.makeDocument(location);
         Element topDT = doc.getDocumentElement();
-        Collection <Element> dataC = XmlUtilities.getElements(topDT, "Row");
-        for (Element rowEl : dataC){
+        Collection <Element> dataC = XmlUtilities.getElements(topDT, XMLROWTAG);
+        for (Element rowEl : dataC) {
             Collection <Element> colTags = XmlUtilities.getElements(rowEl);
-            for (Element colVal: colTags){
-                colValueMap = new HashMap <String , Object>();
+            colValueMap = new HashMap <String , Object>();
+            
+            for (Element colVal: colTags) {
+                
+
                 String colName = XmlUtilities.getTagName(colVal);
+                System.out.println("printing: " + XmlUtilities.getContent(colVal));
+                
                 Object value = XmlUtilities.getContent(colVal);
                 colValueMap.put(colName, value);
+                
+                System.out.println("printing map :" + colValueMap);
                 addNewColumn(colName);
             }
             addNewRowEntry(colValueMap);

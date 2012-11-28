@@ -84,10 +84,10 @@ public class InputTester extends Applet implements MouseInputListener {
             InstantiationException {
         try {
             myMouseController.setControl(MouseEvent.BUTTON1,
-                    MouseController.PRESSED, mainPlayer, "move", "Left Pressed", "Main player moves");
+                    MouseController.PRESSED, mainPlayer, "move");
             // myMouseController.setControl(WiiController.WIIMOTE_BUTTON_LEFT,
             // WiiController.BUTTON_PRESSED, mainPlayer, "jump");
-            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, mainPlayer, "jump", "Key Up Press", "Main player jumps");
+            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, mainPlayer, "jump");
         }
         catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
