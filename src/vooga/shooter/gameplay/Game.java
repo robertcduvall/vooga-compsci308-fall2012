@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import vooga.shooter.gameObjects.Bullet;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
@@ -64,12 +65,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      */
     public Game () {
         myFrame = new JFrame(GAME_NAME);
-        myFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing (WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         myCanvas = new Canvas(this);
         initializeGame(myCanvas, false);
         myCanvas.start();

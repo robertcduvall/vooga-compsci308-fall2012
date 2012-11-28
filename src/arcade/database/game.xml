@@ -9,7 +9,7 @@
 	<game id="2">
 		<name>Space Invaders</name>
 		<rating>4 2 2 3 1</rating>
-		<filepath>arcade.Sample1</filepath>
+		<filepath>vooga.shooter.gameplay.Game</filepath>
 		<review>shooter game. haha.</review>
 		<preferences></preferences>
 	</game>
