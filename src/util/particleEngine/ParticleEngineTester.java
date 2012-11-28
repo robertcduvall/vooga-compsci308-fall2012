@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 import vooga.shooter.gameplay.Game;
@@ -38,7 +39,7 @@ import vooga.shooter.gameplay.Game;
  * ****Work-in-progress: This class is subject to change.***
  * 
  * @author Kathleen, JApplet code borrowed from Professor Duvall
- *      edited by David Spruill
+ *      extensively edited by David Spruill
  * 
  */
 
@@ -46,16 +47,14 @@ public class ParticleEngineTester extends JApplet {
     private static final Dimension defaultSize = new Dimension(800, 800);
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 30;
+    
     private Timer myTimer;
-    private Game myGame;
-    private List<ParticleEngine> myParticleEngines = new ArrayList<ParticleEngine>();
     private List<ParticleSystem> mySystems = new ArrayList<ParticleSystem>();
     private int myLastKeyPressed;
     private int NO_KEY_PRESSED = -1;
     private Font font;
     private long lastTime=0;
-    private Point position = new Point(defaultSize.width/2,defaultSize.height/2);
-
+    
     /**
      * Initializes the applet --- called by the browser.
      */
@@ -173,7 +172,13 @@ public class ParticleEngineTester extends JApplet {
      * the start method.
      */
     public void update () {
-        for (ParticleSystem e : mySystems)
-            e.update();
+        Stack<ParticleSystem> remove = new Stack<ParticleSystem>();
+        for (ParticleSystem p : mySystems) {
+            if(!p.stillExists())  remove.add(p);
+            p.update();
+        }
+        for(ParticleSystem p:remove) {
+            mySystems.remove(p);
+        }
     }
 }
