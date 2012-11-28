@@ -1,8 +1,10 @@
 <players>
 	<player>
-		<map>
+		<sprite>
+		  <map>
 			<class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
 			<event>NO_ACTION</event>
+			<!-- HARDCODED. PLAYERS INITIAL LOCATION IS SPECIFIED IN EACH LEVEL -->
 			<location>
 				<x>8</x>
 				<y>8</y>
@@ -55,8 +57,8 @@
 				<source>src/vooga/turnbased/resources/image/player/Up2.png</source>
 				<direction>up2</direction>
 			</image>
-		</map>
-		<battle>
+		  </map>
+		  <battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
 			<stats>
@@ -67,6 +69,7 @@
 			</stats>
 			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
-		</battle>
+		  </battle>
+		</sprite>  
 	</player>
 </players>

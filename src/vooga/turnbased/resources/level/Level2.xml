@@ -10,6 +10,10 @@
 		<height>11</height>
 	</cameraDimension>
 	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+	<player_entry_point>
+		<x>8</x>
+		<y>8</y>
+	</player_entry_point>
 	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
