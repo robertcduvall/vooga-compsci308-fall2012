@@ -70,6 +70,14 @@ public abstract class BattleObject extends GameObject {
             myStats.put(statName, value);
         }
     }
+    
+    /**
+     * Get the name of the object
+     * @return
+     */
+    public String getName() {
+        return myName;
+    }
 
     /**
      * Implement this method to determine how much of the attack done to this monster
@@ -117,9 +125,9 @@ public abstract class BattleObject extends GameObject {
     //fix this at some point...
     private void paintStats (Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setPaint(Color.CYAN);
-        g2d.draw3DRect(x, y, width, height, true);
-        g2d.fill(new Rectangle2D.Double(x, y, width, height));
+        //g2d.setPaint(Color.CYAN);
+        //g2d.draw3DRect(x, y, width, height, true);
+        //g2d.fill(new Rectangle2D.Double(x, y, width, height));
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);

@@ -2,10 +2,13 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +36,12 @@ public class BattleMode extends GameMode implements InputAPI {
     private int myTurnCount;
     private int myTeamStartRandomizer;
     private List<Integer> myInvolvedIDs;
-
+    private List<String> myMessages;
+    
+    private final int MESSAGE_NUM = 4;
     private final int ATTACK_KEY = KeyEvent.VK_A;
     private final int DEFENSE_KEY = KeyEvent.VK_D;
-    private final int INCREASE_HEALTH_KEY = KeyEvent.VK_I;
+    private final int INCREASE_HEALTH_KEY = KeyEvent.VK_H;
     private final int CHARGE_KEY = KeyEvent.VK_C;
     
     /**
@@ -54,6 +59,7 @@ public class BattleMode extends GameMode implements InputAPI {
             List<Integer> involvedIDs) {
         super(gameManager, modeObjectType);
         myInvolvedIDs = involvedIDs;
+        myMessages = new ArrayList<String>();
     }
 
     @Override
@@ -65,7 +71,8 @@ public class BattleMode extends GameMode implements InputAPI {
     public void resume () {
         makeTeams();
         initialize();
-        System.out.println("BattleStarting!");
+        //System.out.println("BattleStarting!");
+        myMessages.add(myEnemy.getName() + " encountered!");
         configureInputHandling();
         // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
         // ArrayList<Integer>());
@@ -143,6 +150,7 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     public void paintMenu (Graphics g) {
+        //paint the message box/battle option menu
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
@@ -151,7 +159,22 @@ public class BattleMode extends GameMode implements InputAPI {
         //g2d.fillRect(0, 2 * height / 3, width, height / 3);
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Message_Sign.png");
         Image box = new ImageIcon(imageFile.getAbsolutePath()).getImage();
-        g.drawImage(box, 0, 0, width, height, null);        
+        g.drawImage(box, 0, 0, width, height, null);
+        
+        //draw the messages
+        int counter = 0;
+        if (myMessages.size() > MESSAGE_NUM) {
+            counter = myMessages.size() - MESSAGE_NUM;
+        }
+        Graphics2D g2d = (Graphics2D) g;
+        Font font = new Font("Sans_Serif", Font.PLAIN, 25);
+        FontRenderContext frc = g2d.getFontRenderContext();
+        g2d.setColor(Color.BLACK);
+        for (int i = 0; counter + i < myMessages.size(); i++) {
+            String currentMessage = myMessages.get(counter+i);
+            GlyphVector gv = font.createGlyphVector(frc, currentMessage);
+            g2d.drawGlyphVector(gv, 65, 2*height/3+70+30*i);
+        }
     }
 
     /**
@@ -193,7 +216,8 @@ public class BattleMode extends GameMode implements InputAPI {
     public void triggerAttackEvent () {
         // for now, player attacks enemy player
         // by difference in defense
-        System.out.println("You use ATTACK");
+        //System.out.println("You use ATTACK");
+        myMessages.add(myPlayerObject.getName() + " used ATTACK");
         myPlayerObject.attackEnemy(myEnemy);
         //displayBattleStats();
         // check if enemy/opposing team is dead
@@ -205,7 +229,8 @@ public class BattleMode extends GameMode implements InputAPI {
     public void triggerIncreaseHealthEvent () {
         // for now, increases player health by 1
         // by difference in defense
-        System.out.println("You use ATTACK");
+        //System.out.println("You use HEAL");
+        myMessages.add(myPlayerObject.getName() + " used HEAL");
         myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 3);
         if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth").intValue()) {
             myPlayerObject.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
@@ -219,7 +244,8 @@ public class BattleMode extends GameMode implements InputAPI {
 
     public void triggerDefenseEvent () {
         // for now, increases player defense by one; other team still attacks
-        System.out.println("You use DEFEND");
+        //System.out.println("You use DEFEND");
+        myMessages.add(myPlayerObject.getName() + " used DEFEND");
         myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
         //displayBattleStats();
         // check if enemy/opposing team is dead
@@ -230,7 +256,8 @@ public class BattleMode extends GameMode implements InputAPI {
     
     public void triggerChargeEvent () {
      // for now, increases player attack by one; other team still attacks
-        System.out.println("You use CHARGE");
+        //System.out.println("You use CHARGE");
+        myMessages.add(myPlayerObject.getName() + " used CHARGE");
         myPlayerObject.changeStat("attack", myPlayerObject.getStat("attack").intValue() + 1);
         //displayBattleStats();
         // check if enemy/opposing team is dead
@@ -244,25 +271,29 @@ public class BattleMode extends GameMode implements InputAPI {
         if (random >= 0 && random < .5) {
             // attack
             myEnemy.attackEnemy(myPlayerObject);
-            System.out.println("Your enemy uses ATTACK");
+            myMessages.add(myEnemy.getName()+" used ATTACK");
+            //System.out.println("Your enemy uses ATTACK");
         }
         if (random >= .5 && random < .7) {
             // defend
             myEnemy.changeStat("defense", myEnemy.getStat("defense").intValue() + 1);
-            System.out.println("Your enemy uses DEFEND");
+            myMessages.add(myEnemy.getName()+" used DEFEND");
+            //System.out.println("Your enemy uses DEFEND");
         }
         if (random >= .7 && random < .9) {
             // charge
             myEnemy.changeStat("attack", myEnemy.getStat("attack").intValue() + 1);
-            System.out.println("Your enemy uses CHARGE");
+            myMessages.add(myEnemy.getName()+" used CHARGE");
+            //System.out.println("Your enemy uses CHARGE");
         }
         if (random >= .9 && random < 1) {
             // increase health
             myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 3);
             if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth").intValue()) {
-                myPlayerObject.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
+                myEnemy.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
             }
-            System.out.println("Your enemy uses HEALTH INCREASE");
+            myMessages.add(myEnemy.getName()+" used HEAL");
+            //System.out.println("Your enemy uses HEALTH INCREASE");
         }
         //displayBattleStats();
     }
