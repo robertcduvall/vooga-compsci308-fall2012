@@ -95,5 +95,6 @@ public class SampleMenu extends JComponent {
         pen.drawString(
                 "Assume this is the game canvas. Press M to bring up the menu.",
                 (getSize().width / 4), (getSize().height / 2));
+
     }
 }
