@@ -6,12 +6,10 @@
 	</dimension>
 	<cameraDimension>
 		<width>15</width>
-		<height>11</height></cameraDimension><backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
-	<!-- <event type="collision"></event> -->
-	<event>
-    	<name>collision</name>
-    	<destination>BattleMode</destination>
-	</event>
+		<height>11</height>
+	</cameraDimension>
+	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+
 	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
@@ -59,6 +57,7 @@
 		</map>
 		<battle/>
 	</sprite>
+	<!-- TAG BELOW SHOULD GO. BATTLE OBJECT OF PLAYER SHUOLD BE BESIDE MAPOBJECT OF PLAYER INSIDE PLAYER.XML-->
 	<sprite>
 		<map/>
 		<battle>
@@ -74,6 +73,7 @@
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
 		</battle>
 	</sprite>
+	<!-- THIS IS HARDCODED AND WOULD NOT BE NECESSARY IN FUTURE. IGNORE IT FOR LEVELEDITOR -->
 	<staticSprite>
 		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
 		<event>NO_ACTION</event>
