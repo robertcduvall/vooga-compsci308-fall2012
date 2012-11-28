@@ -33,7 +33,8 @@ public class Sample1 implements IArcadeGame {
     @Override
     public String getName () {
         // TODO Auto-generated method stub
-        return null;
+        
+        return "Sample1";
     }
 
 }
