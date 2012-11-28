@@ -28,8 +28,7 @@ public class ModelInterface {
     public ModelInterface (Arcade a) {
         myArcade = a;
         mySocialCenter = new SocialCenter();
-        // myGameCenter = new GameCenter(); // GameCenter is currently broken.
-        // mySocialCenter = SocialCenter.getInstance();
+//        myGameCenter = new GameCenter(); // GameCenter is currently broken.
 
     }
 
@@ -99,7 +98,13 @@ public class ModelInterface {
     }
 
     /**
-     * method creates a new user
+     * method creates a new user.
+     * if the request is trying to create a user that ALREADY EXISTS, this
+     * method
+     * should return false, and the new user should not be created
+     * 
+     * if the new user is created successfully, the new user is automatically
+     * logged in (do not need to go through login screen).
      * 
      * @param username
      * @param password
