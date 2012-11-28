@@ -290,7 +290,7 @@ public class BattleMode extends GameMode implements InputAPI {
             // increase health
             myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 3);
             if (myEnemy.getStat("health").intValue() > myEnemy.getStat("maxHealth").intValue()) {
-                myEnemy.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
+                myEnemy.changeStat("health", myEnemy.getStat("maxHealth").intValue());
             }
             myMessages.add(myEnemy.getName()+" used HEAL");
             //System.out.println("Your enemy uses HEALTH INCREASE");
