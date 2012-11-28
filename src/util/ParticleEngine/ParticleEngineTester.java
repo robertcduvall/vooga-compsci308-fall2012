@@ -1,35 +1,45 @@
-package util.ParticleEngine;
+package util.particleEngine;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.Timer;
-
 import vooga.shooter.gameplay.Game;
 
+
 /**
- * Some code borrowed from Canvas class in graphics package of shooter game package (which, in turn, was borrowed from Professor Duvall's code).
+ * Some code borrowed from Canvas class in graphics package of shooter game
+ * package (which, in turn, was borrowed from Professor Duvall's code).
  * 
- *  This JApplet updates a set of particle engines that are created by a "Tester" class (e.g. DensityTester) which implements the abstract class 
- *  ParticleEngineTestingUnit. For example, The DensityTester stores a List of particle engines which have the same parameters except
- *  for density, which is varied across the particle engines. 
- *  
- *  To determine which parameter or feature is tested, the user specifies which type of ParticleEngineTestingUnit to instantiate in the 
- *  setUpParticleEngines method (see below). The "Tester" classes are not limited to testing a single parameter. The user can create 
- *  a "Tester" class that holds any number of particle engine objects with any variations of parameters desired.
- *  
- *  ****Work-in-progress: This class is subject to change.***
- *  
+ * This JApplet updates a set of particle engines that are created by a "Tester"
+ * class (e.g. DensityTester) which implements the abstract class
+ * ParticleEngineTestingUnit. For example, The DensityTester stores a List of
+ * particle engines which have the same parameters except
+ * for density, which is varied across the particle engines.
+ * 
+ * To determine which parameter or feature is tested, the user specifies which
+ * type of ParticleEngineTestingUnit to instantiate in the
+ * setUpParticleEngines method (see below). The "Tester" classes are not limited
+ * to testing a single parameter. The user can create
+ * a "Tester" class that holds any number of particle engine objects with any
+ * variations of parameters desired.
+ * 
+ * ****Work-in-progress: This class is subject to change.***
+ * 
  * @author Kathleen, JApplet code borrowed from Professor Duvall
- *
+ *      edited by David Spruill
+ * 
  */
 
 public class ParticleEngineTester extends JApplet {
@@ -39,13 +49,19 @@ public class ParticleEngineTester extends JApplet {
     private Timer myTimer;
     private Game myGame;
     private List<ParticleEngine> myParticleEngines = new ArrayList<ParticleEngine>();
-    
+    private int myLastKeyPressed;
+    private int NO_KEY_PRESSED = -1;
+    private Font font;
+    private long lastTime=0;
+    private Point position = new Point(defaultSize.width/2,defaultSize.height/2);
+
     /**
      * Initializes the applet --- called by the browser.
      */
     @Override
-	public void init() {
+    public void init() {
         init(defaultSize);
+        font = new Font("Times New Roman", Font.PLAIN, 12);
     }
 
     /**
@@ -53,45 +69,84 @@ public class ParticleEngineTester extends JApplet {
      * 
      * @param size the window size
      */
-    public void init(Dimension size) {
-        // set dimensions for animation area
-        // note, applet's size is not actually set until after this method
+    public void init (Dimension size) {
         setSize(size);
         setPreferredSize(size);
-        
+
         setFocusable(true);
         requestFocus();
         
-        setUpParticleEngines();
-    }
- 
-    /**
-     * Instantiates myParticleEngines as a copy of the List of ParticleEngine objects in the specified ParticleEngineTestingUnit subclass.
-     */
-    public void setUpParticleEngines(){
-    	//ParticleEngineTestingUnit myTestingUnit = new AngleDistributionTester(); //THIS IS THE ONLY LINE THAT NEEDS TO BE CHANGED BY USER.
-    	ParticleEngineTestingUnit myTestingUnit = new OutwardShootingTester(); //uncomment this line and comment the 
-    	                                                                         //previous line to run the OutwardShootingTester
-    	myParticleEngines = myTestingUnit.getParticleEngines();
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed (KeyEvent e) {
+                myLastKeyPressed = e.getKeyCode();
+                manageEngine(myLastKeyPressed);
+            }
+
+            @Override
+            public void keyReleased (KeyEvent e) {
+                myLastKeyPressed = NO_KEY_PRESSED;
+            }
+        });
+
     }
 
+    /**
+     * Allows for the user to alter the simulation as it goes.
+     * It's kinda crude in that it uses if statements, but keep
+     * in mind that this class' sole use is for testing...
+     * 
+     * @param myLastKeyPressed the last key pressed
+     */
+    private void manageEngine (int myLastKeyPressed) {
+
+        if (myLastKeyPressed == KeyEvent.VK_A)
+            myParticleEngines.addAll(particleExplosion());
+        if (myLastKeyPressed == KeyEvent.VK_S)
+            myParticleEngines.addAll(particleTrail());
+        if (myLastKeyPressed == KeyEvent.VK_DOWN)
+            for(ParticleEngine p:myParticleEngines) {p.initialPosition.y++; p.setVelocity(new Point(0,3));}
+        if (myLastKeyPressed == KeyEvent.VK_UP)
+            for(ParticleEngine p:myParticleEngines) {p.initialPosition.y--; p.setVelocity(new Point(0,-3));}
+        if (myLastKeyPressed == KeyEvent.VK_RIGHT)
+            for(ParticleEngine p:myParticleEngines) {p.initialPosition.x++; p.setVelocity(new Point(-3,0));}
+        if (myLastKeyPressed == KeyEvent.VK_LEFT)
+            for(ParticleEngine p:myParticleEngines) {p.initialPosition.x--; p.setVelocity(new Point(3,0));}
+
+    }
+
+    /**
+     * Instantiates myParticleEngines as a list of particles representing an explosion.
+     */
+    public List<ParticleEngine> particleExplosion () {
+        ParticleSystem myTestingUnit = new Explosion();
+
+        return myTestingUnit.getParticleEngines();
+    }
     
+    /**
+     * Instantiates myParticleEngines as a list of particles representing a trail of sparkly particles.
+     */
+    public List<ParticleEngine> particleTrail () {
+        ParticleSystem myTestingUnit = new Trail(); 
+
+       return myTestingUnit.getParticleEngines();
+    }
+
     /**
      * Starts the applet's action, i.e., starts the animation.
      */
     @Override
-    public void start() {
+    public void start () {
         // create a timer to animate the canvas
-        myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
-            new ActionListener()
-            {
-                @Override
-                public void actionPerformed (ActionEvent e)
-                {
-                	update();
-                    repaint();
-                }
-            });
+        myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND,
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed (ActionEvent e) {
+                        update();
+                        repaint();
+                    }
+                });
         myTimer.start();
     }
 
@@ -99,30 +154,43 @@ public class ParticleEngineTester extends JApplet {
      * Stops the applet's action, i.e., the animation.
      */
     @Override
-    public void stop() {
+    public void stop () {
         myTimer.stop();
     }
 
     /**
-     * Called by Java to paint the frame
+     * Called by Java to paint the frame.  I've found that by 
+     * drawing the frame onto a buffer and then drawing that buffer
+     * all at once, much smoother graphics can be obtained.
      * 
      * @param g The graphics object passed by Java, will be cast as
      *        SpecialGraphics
      */
     @Override
-	public void paint(Graphics g) {
-    	g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getSize().width, getSize().height);
-    	for (ParticleEngine e : myParticleEngines)
-    		e.draw(g);
+    public void paint (Graphics g) {
+        BufferedImage buff = new BufferedImage(getSize().width, getSize().height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = (Graphics2D) buff.getGraphics();
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, getSize().width, getSize().height);
+        
+        g2d.setFont(font);
+        g2d.setColor(Color.WHITE);
+        g2d.drawString(""+(1/((System.currentTimeMillis()-lastTime)/1000.0f))+" fps",100,100);
+        lastTime = System.currentTimeMillis();
+        
+        for (ParticleEngine e : myParticleEngines)
+            e.draw(g2d);
+        
+        Graphics2D graphics = (Graphics2D) g;
+        graphics.drawImage(buff, null, 0, 0);
     }
 
     /**
      * Called at regular intervals set up by the action listener instantiated in
      * the start method.
      */
-    public void update() {
-    	for (ParticleEngine e : myParticleEngines)
-    		e.update();
+    public void update () {
+        for (ParticleEngine e : myParticleEngines)
+            e.update();
     }
 }

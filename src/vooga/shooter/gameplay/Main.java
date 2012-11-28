@@ -21,6 +21,6 @@ public class Main extends JFrame {
      */
     public static void main(String [] args) {
         Game myGame = new Game();
-        //myGame.runGame(null, null);
+        myGame.runGame(null, null);
     }
 }
