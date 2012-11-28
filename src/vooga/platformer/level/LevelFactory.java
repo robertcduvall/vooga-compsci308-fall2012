@@ -113,7 +113,7 @@ public final class LevelFactory {
 
         // TODO strategy instantiation
 
-        return (GameObject) Reflection.createInstance(s.getType(), configString);
+        return (GameObject) Reflection.createInstance(s.getClassName(), configString);
     }
 
     private static GameObject findPlayerGameObject (Collection<GameObject> gameObjects,

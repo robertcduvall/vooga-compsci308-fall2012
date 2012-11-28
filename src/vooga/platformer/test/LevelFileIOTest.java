@@ -102,7 +102,7 @@ public class LevelFileIOTest {
 
     @Test
     public void testGetSpriteType () throws Exception {
-        Assert.assertEquals(TYPE, getFirstSprite().getType());
+        Assert.assertEquals(TYPE, getFirstSprite().getClassName());
     }
 
     @Test
