@@ -18,23 +18,40 @@ import javax.swing.JComponent;
  * 
  */
 public class GameButton extends JComponent {
+    /**
+     * String locates at the bottom of the button
+     */
+    public static final int BOTTOM = 1;
+
+    /**
+     * String locates at the center of the button
+     */
+    public static final int CENTER = 0;
+    /**
+     * String locates at the top of the button
+     */
+    public static final int TOP = 2;
     private static final long serialVersionUID = 1L;
     private static final int DEFAULT_BUTTON_WIDTH = 130;
     private static final int DEFAULT_BUTTON_HEIGHT = 40;
+
     private Image myImg;
     private String myImgName;
     private String myCommand = "";
     private MouseListener myMouseListener;
+    private Dimension mySize;
+    private int myStringLocation = CENTER;
 
     /**
      * Create a game button that allows to customize the image of the button.
      * 
      * @param fileName of the button image
      */
-    public GameButton(String fileName) {
+    public GameButton (String fileName) {
         setName(fileName);
         setImage(fileName);
-        setSize(new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT));
+        mySize = new Dimension(DEFAULT_BUTTON_WIDTH, DEFAULT_BUTTON_HEIGHT);
+        setPreferredSize(mySize);
         setMouseListener();
     }
 
@@ -44,7 +61,7 @@ public class GameButton extends JComponent {
      * @param fileName of the button image
      * @param command String appears on the button.
      */
-    public GameButton(String fileName, String command) {
+    public GameButton (String fileName, String command) {
         this(fileName);
         setString(command);
     }
@@ -56,7 +73,7 @@ public class GameButton extends JComponent {
      * @param command String appears on the button.
      * @param ml MouseListener
      */
-    public GameButton(String fileName, String command, MouseListener ml) {
+    public GameButton (String fileName, String command, MouseListener ml) {
         this(fileName);
         addMouseListener(ml);
     }
@@ -66,49 +83,74 @@ public class GameButton extends JComponent {
      * 
      * @param command String appears on the button
      */
-    public void setString(String command) {
+    public void setString (String command) {
+        myCommand = command;
+    }
+
+    /**
+     * Set String appears on the button.
+     * 
+     * @param command String appears on the button
+     * @param location of the String appear on the button
+     */
+    public void setString (String command, int location) {
+        myStringLocation = location;
         myCommand = command;
     }
 
     @Override
-    protected void paintComponent(Graphics pen) {
+    protected void paintComponent (Graphics pen) {
         Dimension myButtonSize = getSize();
         pen.drawImage(myImg, 0, 0, myButtonSize.width, myButtonSize.height,
                 null);
         pen.setColor(Color.BLACK);
-        pen.drawString(myCommand, (getSize().width / 4), (int) (getSize()
-                .getHeight() / 2));
+        if (myStringLocation == CENTER) {
+            pen.drawString(myCommand, (getSize().width / 4), (int) (getSize()
+                    .getHeight() / 2));
+        }
+        else if (myStringLocation == BOTTOM) {
+            pen.drawString(myCommand, (getSize().width / 4), (int) (getSize()
+                    .getHeight() - 10));
+        }
+        else if (myStringLocation == TOP) {
+            pen.drawString(myCommand, (getSize().width / 4), 10);
+        }
+    }
+
+    @Override
+    public void paint (Graphics pen) {
+        paintComponent(pen);
     }
 
     /**
      * @param img image
      */
-    public void setImage(Image img) {
+    public void setImage (Image img) {
         myImg = img;
     }
 
     /**
      * @param fileName in String
      */
-    public void setImage(String fileName) {
+    public void setImage (String fileName) {
         myImgName = fileName;
         setImage(fileName, "normal");
     }
 
-    private void changeImage(String state) {
+    private void changeImage (String state) {
         setImage(myImgName, state);
     }
 
-    private void setMouseListener() {
+    private void setMouseListener () {
         removeMouseListener(myMouseListener);
         myMouseListener = new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent arg0) {
+            public void mousePressed (MouseEvent arg0) {
                 changeImage("pressed");
             }
 
             @Override
-            public void mouseReleased(MouseEvent arg0) {
+            public void mouseReleased (MouseEvent arg0) {
                 changeImage("normal");
             }
         };
@@ -116,19 +158,20 @@ public class GameButton extends JComponent {
     }
 
     /**
-     * @param width
-     * @param height
+     * @param width 
+     * @param height 
      */
-    public void setButtonSize(int width, int height) {
-        setPreferredSize(new Dimension(width, height));
+    public void setButtonSize (int width, int height) {
+        mySize = new Dimension(width, height);
+        setPreferredSize(mySize);
     }
 
-    private void setImage(String fileName, String state) {
+    private void setImage (String fileName, String state) {
         try {
-            myImg = ImageIO.read(new File(
-                    "src/util/ingamemenu/buttonimg/" + fileName + "."
-                            + state + ".png"));
-        } catch (IOException e) {
+            myImg = ImageIO.read(new File("src/util/ingamemenu/buttonimg/"
+                    + fileName + "." + state + ".png"));
+        }
+        catch (IOException e) {
             System.out.println("src/vooga/platformer/gui/menu/buttonimg/"
                     + fileName + "." + state + ".png was not found");
             e.printStackTrace();
@@ -140,7 +183,13 @@ public class GameButton extends JComponent {
      * @param size of the menu
      */
     @Override
-    public void setSize(Dimension size) {
+    public void setSize (Dimension size) {
+        mySize = size;
         setPreferredSize(size);
+    }
+
+    @Override
+    public Dimension getSize () {
+        return mySize;
     }
 }
