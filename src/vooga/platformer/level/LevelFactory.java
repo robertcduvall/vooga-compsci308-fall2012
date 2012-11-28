@@ -93,7 +93,8 @@ public final class LevelFactory {
             throw e;
         }
         catch (Exception e) {
-            throw new LevelFileIOException("Failed to load level");
+            e.printStackTrace();
+            throw new LevelFileIOException("Failed to load level", e.getCause());
         }
     }
 
