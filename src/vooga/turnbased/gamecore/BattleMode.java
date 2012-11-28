@@ -19,7 +19,7 @@ import vooga.turnbased.sprites.Sprite;
  * This is gamemode that will run a battle given two lists of BattleObjects that
  * will fight each other.
  * 
- * @author David Howdyshell, Michael Elgart, Kevin Gao, Jenni Mercado
+ * @author David Howdyshell, Michael Elgart, Kevin Gao, Jenni Mercado, Tony
  * 
  */
 public class BattleMode extends GameMode implements InputAPI {
@@ -34,7 +34,8 @@ public class BattleMode extends GameMode implements InputAPI {
     private final int ATTACK_KEY = KeyEvent.VK_A;
     private final int DEFENSE_KEY = KeyEvent.VK_D;
     private final int INCREASE_HEALTH_KEY = KeyEvent.VK_I;
-
+    private final int CHARGE_KEY = KeyEvent.VK_C;
+    
     /**
      * Constructor for a Battle.
      * 
@@ -76,6 +77,8 @@ public class BattleMode extends GameMode implements InputAPI {
                     "triggerDefenseEvent");
             GamePane.keyboardController.setControl(INCREASE_HEALTH_KEY,
                     KeyboardController.RELEASED, this, "triggerIncreaseHealthEvent");
+            GamePane.keyboardController.setControl(CHARGE_KEY, KeyboardController.RELEASED,
+                    this, "triggerChargeEvent");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -186,7 +189,7 @@ public class BattleMode extends GameMode implements InputAPI {
         // by difference in defense
         System.out.println("You use ATTACK");
         myPlayerObject.attackEnemy(myEnemy);
-        displayBattleStats();
+        //displayBattleStats();
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
         // opposing team makes some predetermined action
@@ -197,8 +200,11 @@ public class BattleMode extends GameMode implements InputAPI {
         // for now, increases player health by 1
         // by difference in defense
         System.out.println("You use ATTACK");
-        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 1);
-        displayBattleStats();
+        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 3);
+        if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth").intValue()) {
+            myPlayerObject.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
+        }
+        //displayBattleStats();
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
         // opposing team makes some predetermined action
@@ -207,9 +213,20 @@ public class BattleMode extends GameMode implements InputAPI {
 
     public void triggerDefenseEvent () {
         // for now, increases player defense by one; other team still attacks
-        System.out.println("You use DEFENSE");
+        System.out.println("You use DEFEND");
         myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
-        displayBattleStats();
+        //displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) { return; }
+        // opposing team makes some predetermined action
+        generateEnemyMove();
+    }
+    
+    public void triggerChargeEvent () {
+     // for now, increases player attack by one; other team still attacks
+        System.out.println("You use CHARGE");
+        myPlayerObject.changeStat("attack", myPlayerObject.getStat("attack").intValue() + 1);
+        //displayBattleStats();
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
         // opposing team makes some predetermined action
@@ -218,22 +235,30 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void generateEnemyMove () {
         double random = Math.random();
-        if (random >= 0 && random < .6) {
+        if (random >= 0 && random < .5) {
             // attack
             myEnemy.attackEnemy(myPlayerObject);
             System.out.println("Your enemy uses ATTACK");
         }
-        if (random >= .6 && random < .9) {
+        if (random >= .5 && random < .7) {
             // defend
             myEnemy.changeStat("defense", myEnemy.getStat("defense").intValue() + 1);
             System.out.println("Your enemy uses DEFEND");
         }
+        if (random >= .7 && random < .9) {
+            // charge
+            myEnemy.changeStat("attack", myEnemy.getStat("attack").intValue() + 1);
+            System.out.println("Your enemy uses CHARGE");
+        }
         if (random >= .9 && random < 1) {
             // increase health
-            myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 1);
+            myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 3);
+            if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth").intValue()) {
+                myPlayerObject.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
+            }
             System.out.println("Your enemy uses HEALTH INCREASE");
         }
-        displayBattleStats();
+        //displayBattleStats();
     }
 
     // for debugging etc

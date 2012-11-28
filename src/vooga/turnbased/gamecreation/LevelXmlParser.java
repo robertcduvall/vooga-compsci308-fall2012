@@ -262,7 +262,7 @@ public class LevelXmlParser {
             for (int i = 0; i < statsList.getLength(); i++) {
                 if (!"#text".equals(statsList.item(i).getNodeName())) {
                     stats.put(statsList.item(i).getNodeName(),
-                            Integer.parseInt(statsList.item(i).getTextContent()));
+                            Double.parseDouble(statsList.item(i).getTextContent()));
                 }
             }
         }

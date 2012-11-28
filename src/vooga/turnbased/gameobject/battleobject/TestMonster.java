@@ -27,8 +27,9 @@ public class TestMonster extends BattleObject {
     @Override
     public void takeDamage (int damageDone) {
         int healthLost =  damageDone - getStat("defense").intValue();
-        //System.out.println(healthLost);
-        changeStat("health", getStat("health").intValue() - healthLost);
+        if (healthLost > 0) {
+            changeStat("health", getStat("health").intValue() - healthLost);
+        }
     }
 
     @Override

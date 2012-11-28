@@ -19,7 +19,6 @@ import vooga.turnbased.gameobject.GameObject;
  *
  */
 public abstract class BattleObject extends GameObject {
-
     private Map<String, Number> myStats;
     private String myName;
 
@@ -131,6 +130,14 @@ public abstract class BattleObject extends GameObject {
         String health = "Health: " + myHealth + "/" + myMaxHealth;
         gv = font.createGlyphVector(frc, health);
         g2d.drawGlyphVector(gv, x+10, y+60);
+        int myAttack = myStats.get("attack").intValue();
+        String attack = "Attack: " + myAttack;
+        gv = font.createGlyphVector(frc, attack);
+        g2d.drawGlyphVector(gv, x+10, y+90);
+        int myDefense = myStats.get("defense").intValue();
+        String defense = "Defense: " + myDefense;
+        gv = font.createGlyphVector(frc, defense);
+        g2d.drawGlyphVector(gv, x+10, y+120);
     }
     
     @Override 
