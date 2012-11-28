@@ -44,7 +44,7 @@ public class SampleMenu extends JComponent {
         jp.setUpMenu();
     }
 
-    public void setUpMenu () {
+    private void setUpMenu () {
         // ---This is what you need to do to add this menu---
         myFrame.addKeyListener(new KeyAdapter() {
             @Override
