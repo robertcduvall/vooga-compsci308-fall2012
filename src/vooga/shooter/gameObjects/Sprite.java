@@ -41,6 +41,8 @@ public abstract class Sprite implements SpriteActionInterface {
     private List<Bullet> myBulletsFired;
     private int myHealth;
     private SpriteMethodMap myMapper;
+    private boolean isDead = false;
+
 
     /**
      * Construct a sprite initializing only position, size, and image.
@@ -220,7 +222,9 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void die() {
         myImage = null;
+        setDead(true);
     }
+    
 
     /**
      * Has the player fire a bullet.
@@ -379,5 +383,19 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public Dimension getSize() {
         return mySize;
+    }
+
+    /**
+     * @return the isDead
+     */
+    public boolean isDead () {
+        return isDead;
+    }
+
+    /**
+     * @param isDead the isDead to set
+     */
+    public void setDead (boolean isDead) {
+        this.isDead = isDead;
     }
 }
