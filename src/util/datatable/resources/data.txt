@@ -5,6 +5,5 @@
 <password>newpassword</password>
 <address>LAAZ</address>
 <favoritecolor>blue</favoritecolor>
-<favoriteband/>
 </Row>
 </DataTable>

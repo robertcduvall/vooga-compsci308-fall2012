@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -36,7 +37,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     private List<Image> myGameProfilePictures;
     private String gameSelected;
     private JList gameList;
-    private GridBagConstraints c;
     
     public GameListMainPanel (Arcade a) {
         super(a);
@@ -60,10 +60,8 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             theList[i] = "" + i;
         }
         
-        
-        myPanel.setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        MigLayout layout = new MigLayout();
+        myPanel.setLayout(layout);
 
         JList listOfGames = new JList(theList);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -72,26 +70,17 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         gameList = listOfGames;
         gameList.setPreferredSize(new Dimension(300, 300));
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
-
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 1;
-        myPanel.add(listScroller, c);
+        
         
         JLabel label = new JLabel("Select a Game to View: ");
         label.setForeground(Color.WHITE);
         label.setLabelFor(listScroller);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
-        myPanel.add(label, c);
+        myPanel.add(label, "dock center");
+        myPanel.add(listScroller, "wrap");
+        
         
         JButton goButton = new JButton("Go!");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 2;
-        c.gridy = 3;
-        
+
         goButton.setActionCommand("Go!");
         goButton.addActionListener(new ActionListener(){
 
@@ -106,7 +95,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
               
           });
         
-        myPanel.add(goButton, c);
+        myPanel.add(goButton, "span 2");
 
         return myPanel;
     }

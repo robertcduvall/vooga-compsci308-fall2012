@@ -8,9 +8,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+<<<<<<< HEAD
+import vooga.platformer.core.Controller;
+import vooga.platformer.core.GameInitializer;
+=======
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
 import vooga.platformer.core.PlatformerController;
+>>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
 
 /**
  * A class that creates a JFrame to hold the Game object
