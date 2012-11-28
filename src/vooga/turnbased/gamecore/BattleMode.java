@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import util.input.core.KeyboardController;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
@@ -143,9 +146,12 @@ public class BattleMode extends GameMode implements InputAPI {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.GREEN);
-        g2d.fillRect(0, 2 * height / 3, width, height / 3);
+        //Graphics2D g2d = (Graphics2D) g;
+        //g2d.setColor(Color.GREEN);
+        //g2d.fillRect(0, 2 * height / 3, width, height / 3);
+        File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Message_Sign.png");
+        Image box = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        g.drawImage(box, 0, 0, width, height, null);        
     }
 
     /**
