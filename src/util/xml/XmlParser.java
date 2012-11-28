@@ -1,16 +1,19 @@
 package util.xml;
 
-
 import java.awt.Image;
 import java.io.File;
-import java.net.URL;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 
 /**
+ * @deprecated Please use XmlUtilities instead.
  * Parses Xml to get data from the file.
  * 
  * @author Mark Hoffman
@@ -22,8 +25,10 @@ public class XmlParser {
     private Document myXmlDocument;
 
     /**
+     * @deprecated use static methods in XmlUtilities instead.
+     * 
      * Initiates the process for parsing an Xml file.
-     *
+     * 
      * @param file The Xml file that will be parsed.
      */
     public XmlParser (File file) {
@@ -32,21 +37,39 @@ public class XmlParser {
     }
 
     /**
-     * Enables parsing of the Xml file.  myXmlDocument is then the basis
+     * @deprecated Use the makeDocument method in XmlUtilities instead.
+     * 
+     * Enables parsing of the Xml file. myXmlDocument is then the basis
      * for the rest of the parsing.
      */
     private void makeDocument () {
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             myXmlDocument = dbFactory.newDocumentBuilder().parse(myXmlFile);
-            myXmlDocument.normalize();
         }
-        catch (Exception e) {
+        catch (SAXException e) {
             e.printStackTrace();
         }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        myXmlDocument.normalize();
     }
 
     /**
+     * @deprecated call getDocumentElement on a doc directly instead.
+     * 
+     * @return Document (Root) Element
+     */
+    public Element getDocumentElement () {
+        return myXmlDocument.getDocumentElement();
+    }
+
+    /**
+     * @deprecated Use the getElements method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param name The string name of the desired elements
@@ -59,36 +82,38 @@ public class XmlParser {
     }
 
     /**
+     * @deprecated Use the getContent method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired text
      * @return The text contained in these desired tag
      */
-    public String getTextContent (Element element, String tagName) {
+    public static String getTextContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
         return list.item(0).getTextContent();
     }
 
     /**
+     * @deprecated Use the getContentAsImage method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired image
      * @return The image in the desired tag
      */
-    public Image getImageContent(Element element, String tagName) {
+    public Image getImageContent (Element element, String tagName) {
         String pathName = getTextContent(element, tagName);
         Image image = null;
-        URL path = getClass().getResource(pathName);
         try {
-            image = ImageIO.read(new File(path.toURI()));
+            image = ImageIO.read(new File(pathName));
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return image;
     }
 
     /**
+     * @deprecated Use the getContentAsInt method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired int
@@ -96,10 +121,11 @@ public class XmlParser {
      */
     public int getIntContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        return Integer.parseInt(list.item(0).toString());
+        return Integer.parseInt(list.item(0).getTextContent());
     }
 
     /**
+     * @deprecated Use the getContentAsDouble method in XmlUtilities instead.
      * 
      * @param element The tag that contains a section of XML to look through
      * @param tagName The string name of the element containing desired double
@@ -107,6 +133,17 @@ public class XmlParser {
      */
     public double getDoubleContent (Element element, String tagName) {
         NodeList list = element.getElementsByTagName(tagName);
-        return Double.parseDouble(list.item(0).toString());
+        return Double.parseDouble(list.item(0).getTextContent());
     }
+
+    /**
+     * @deprecated use static methods in XmlUtilities instead.
+     * 
+     * @return document
+     * @author difan
+     */
+    public Document getDocument () {
+        return myXmlDocument;
+    }
+
 }

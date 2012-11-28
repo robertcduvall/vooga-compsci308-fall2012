@@ -1,131 +1,109 @@
 package arcade.usermanager;
 
-import java.io.IOException;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
+import util.xml.XmlUtilities;
 
 
 /**
  * Reads in user data from an XML file and creates User objects
  * 
  * @author Howard
- * minor modification by difan
+ *         minor modification by difan
  */
 public class UserXMLReader {
-    private static Document dom;
+    private static ResourceBundle ourResources;
+    private String myUserMessageFilePath;
+    private String myUserGameFilePath;
+    private String myUserImageFilePath;
+    private String myUserBasicFilePath;
 
-    private   void parseXmlFile (String filePath) {
-        // get the factory
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        try {
-            // Using factory get an instance of document builder
-            DocumentBuilder db = dbf.newDocumentBuilder();
-
-            // parse using builder to get DOM representation of the XML file
-
-            dom = db.parse(filePath);
-
-        } catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-        } catch (SAXException se) {
-            se.printStackTrace();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
+    /**
+     * Constructs a UserXMLReader.
+     */
+    public UserXMLReader () {
+        ourResources = ResourceBundle.getBundle("arcade.usermanager.filePath");
+        myUserBasicFilePath = ourResources.getString("BasicFilePath");
+        myUserMessageFilePath = ourResources.getString("MessageFilePath");
+        myUserGameFilePath = ourResources.getString("GameFilePath");
+        myUserImageFilePath = ourResources.getString("ImageFilePath");
     }
-
+    
     /**
      * Creates a user object from XML data.
      * 
+     * @param name name of the user to create object for
      * @return
      */
-    private User getUser () {
-        Element el = dom.getDocumentElement();
-        String name = getTextValue(el, "name");
-        String password = getTextValue(el, "password");
-        String picture = getTextValue(el, "picture");
-        
-        // provide hashed version in separate file for credits?
-        int credits = getIntValue(el, "credits");
-        List<Message> messageList = new ArrayList<Message>();
-        List<GameData> gameDataList = new ArrayList<GameData>();
+    public User getUser (String name) {
+        name = name + ".xml";
+        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath+name);
+        Element el = doc.getDocumentElement();
+        String username = XmlUtilities.getChildContent(el, "name");
+        String password = XmlUtilities.getChildContent(el, "password");
+        Image picture =
+                XmlUtilities.fileNameToImage(myUserImageFilePath +
+                                             XmlUtilities.getChildContent(el, "picture"));
+        int credits = XmlUtilities.getChildContentAsInt(el, "credits");
 
-        // split into separate method
+        List<Message> messageList = getMessageList(name);
+        List<GameData> gameDataList = getGameDataList(name);
+        String firstName=XmlUtilities.getChildContent(el, "firstname");
+        String lastName=XmlUtilities.getChildContent(el, "lastname");
+        return new User(username, password, picture, credits, messageList, gameDataList, firstName, lastName);
+
+    }
+
+    /**
+     * Gets a list of GameData objects
+     * 
+     * @param name with extension of user file
+     * @return
+     */
+    public List<GameData> getGameDataList (String name) {
+        Document doc = XmlUtilities.makeDocument(myUserGameFilePath+name);
+        Element el = doc.getDocumentElement();
+        List<GameData> gameDataList = new ArrayList<GameData>();
+        NodeList nl = el.getElementsByTagName("game");
+        if (nl != null && nl.getLength() > 0) {
+            for (int i = 0; i < nl.getLength(); i++) {
+                // get an element
+                Element ele = (Element) nl.item(i);
+                String gameName = XmlUtilities.getChildContent(ele, "name");
+                String gameInfo = XmlUtilities.getChildContent(ele, "gameinfo");
+                String highScore = XmlUtilities.getChildContent(ele, "highscore");
+                String timesPlayed = XmlUtilities.getChildContent(ele, "timesplayed");
+                gameDataList.add(new GameData(gameName, gameInfo, highScore, timesPlayed));
+            }
+        }
+        return gameDataList;
+    }
+
+    /**
+     * Gets a list of Message objects
+     * 
+     * @param name name with extension of user file
+     * @return
+     */
+    public List<Message> getMessageList (String name) {
+        Document doc = XmlUtilities.makeDocument(myUserMessageFilePath+name);
+        Element el = doc.getDocumentElement();
+        List<Message> messageList = new ArrayList<Message>();
         NodeList nl = el.getElementsByTagName("message");
         if (nl != null && nl.getLength() > 0) {
             for (int i = 0; i < nl.getLength(); i++) {
                 // get an element
                 Element ele = (Element) nl.item(i);
-                String sender = getTextValue(ele, "sender");
-                String message = getTextValue(ele, "content");
+                String sender = XmlUtilities.getChildContent(ele, "sender");
+                String message = XmlUtilities.getChildContent(ele, "content");
                 messageList.add(new Message(sender, message));
             }
         }
-        // split into separate method
-        nl = el.getElementsByTagName("game");
-        if (nl != null && nl.getLength() > 0) {
-            for (int i = 0; i < nl.getLength(); i++) {
-                // get an element
-                Element ele = (Element) nl.item(i);
-                String gameName = getTextValue(ele, "name");
-                String gameInfo = getTextValue(ele, "gameinfo");
-                int highScore = getIntValue(ele, "highscore");
-                int timesPlayed = getIntValue(ele, "timesplayed");
-                gameDataList.add(new GameData(gameName, gameInfo, highScore, timesPlayed));
-            }
-        }
-
-       return new User(name, password, picture, credits, messageList, gameDataList);
-
+        return messageList;
     }
-
-    /**
-     * I take a xml element and the tag name, look for the tag and get
-     * the text content
-     * i.e for <employee><name>John</name></employee> xml snippet if
-     * the Element points to employee node and tagName is name I will return
-     * John
-     * 
-     * @param ele
-     * @param tagName
-     * @return
-     */
-    private   String getTextValue (Element ele, String tagName) {
-        String textVal = null;
-        NodeList nl = ele.getElementsByTagName(tagName);
-        if (nl != null && nl.getLength() > 0) {
-            Element el = (Element) nl.item(0);
-            textVal = el.getFirstChild().getNodeValue();
-        }
-
-        return textVal;
-    }
-
-    /**
-     * Calls getTextValue and returns a int value
-     * 
-     * @param ele
-     * @param tagName
-     * @return
-     */
-    private   int getIntValue (Element ele, String tagName) {
-        // in production application you would catch the exception
-        return Integer.parseInt(getTextValue(ele, tagName));
-    }
-
-    public static void main (String[] args) {
-        // create an instance
-        UserXMLReader dpe = new UserXMLReader();
-        // call run example
-        dpe.parseXmlFile("src/arcade/database/Howard.xml");
-        dpe.getUser();
-    }
-
 }

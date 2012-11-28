@@ -3,7 +3,10 @@ package games.platformerdemo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import util.camera.Camera;
+import util.input.core.Controller;
+import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
@@ -42,5 +45,18 @@ public class TestLevel extends Level {
         if (myPlayer.checkForRemoval()) return PlayState.GAME_OVER;
         if (numEnemies == 0) return PlayState.NEXT_LEVEL;
         return PlayState.IS_PLAYING;
+    }
+
+    @Override
+    public void setInputController (KeyboardController ic) {
+        try {
+            ic.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myPlayer, "moveLeft()");
+        }
+        catch (NoSuchMethodException e) {
+            System.out.println("Error setting up input");
+        }
+        catch (IllegalAccessException e) {
+            System.out.println("Error setting up input.");
+        }
     }
 }

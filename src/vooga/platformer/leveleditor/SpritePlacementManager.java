@@ -1,10 +1,11 @@
 package vooga.platformer.leveleditor;
 
+
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.Collections;
 
 /**
  * Responsible for placing sprites on the LevelBoard. This class
@@ -33,8 +34,7 @@ public class SpritePlacementManager implements ISpritePlacementManager {
         mySelectedSprites = new ArrayList<Sprite>();
     }
 
-    @Override
-    public void positionSprite (Sprite sprite) {
+    private void positionSprite (Sprite sprite) {
         if (isValidPosition(sprite)) {
             myLevelBoard.add(sprite);
         }
@@ -69,7 +69,7 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     public void selectRegion (Rectangle region) {
         for (Sprite currentlyPlacedSprites : myLevelBoard.getSprites()) {
             if (currentlyPlacedSprites.isIntersecting(region)) {
-                mySelectedSprites.add(currentlyPlacedSprites);
+                selectSprite(currentlyPlacedSprites);
             }
         }
 
@@ -78,7 +78,7 @@ public class SpritePlacementManager implements ISpritePlacementManager {
     @Override
     public boolean isValidPosition (Sprite sprite) {
         for (Sprite currentlyPlacedSprites : myLevelBoard.getSprites()) {
-            if (sprite.isIntersecting(currentlyPlacedSprites.getOutline())) { return false; }
+            if (sprite.isIntersecting(currentlyPlacedSprites)) return false;
         }
         return true;
 
@@ -91,6 +91,22 @@ public class SpritePlacementManager implements ISpritePlacementManager {
             s.setY(y);
         }
 
+    }
+
+    @Override
+    public void positionSprites () {
+        for (Sprite s : mySelectedSprites) {
+            positionSprite(s);
+        }
+    }
+
+    /**
+     * 
+     * @return An unmodifiable Iterable over the currently selected
+     *         sprites.
+     */
+    protected Iterable<Sprite> getSelectedSprites () {
+        return Collections.unmodifiableCollection(mySelectedSprites);
     }
 
 }

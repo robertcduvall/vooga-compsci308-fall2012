@@ -1,14 +1,15 @@
 package arcade.gui;
 
+import java.awt.BorderLayout;
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import arcade.datatransfer.GameManager;
-import arcade.datatransfer.UserManager;
+import arcade.datatransfer.ModelInterface;
+import arcade.gamemanager.GameCenter;
 import arcade.gui.frame.ArcadeFrame;
-import arcade.gui.frame.MainFrameCreator;
 import arcade.gui.panel.ArcadePanel;
+import arcade.usermanager.SocialCenter;
 
 
 /**
@@ -27,83 +28,106 @@ import arcade.gui.panel.ArcadePanel;
 public class Arcade {
 
     // username (unique key) of the user who is logged in
-    private static String myUser = "";
+    private String myUser = "";
+    private Map<String, Serializable> mySharedVariables;
 
-    private static ArcadeFrame myFrame;
-    private static Map<String, JPanel> myPanels;
-
-    private static GameManager myGameManager;
-    private static UserManager myUserManager;
-    private static GUIFactory myFactory;
-    private static ResourceBundle myResources;
+    private ArcadeFrame myFrame;
+    private ModelInterface myModelInterface;
+    private CreatorFactory myFactory;
+    private ResourceBundle myResources;
 
     public Arcade () {
-        // System.out.println("got it!");
+        System.out.println("got it!");
 
         // initialize things
-        myFactory = new GUIFactory(this);
-        myGameManager = new GameManager();
-        myUserManager = new UserManager();
+        myFactory = new CreatorFactory(this);
+        myModelInterface = new ModelInterface(this);
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
+        mySharedVariables = new HashMap<String, Serializable>();
 
         // set up frame
         frameSetup();
 
     }
 
+    /**
+     * Creates the frame and populates it with the default panels
+     */
     private void frameSetup () {
         // create the frame
-        MainFrameCreator frameCreator = new MainFrameCreator(this);
-        myFrame = frameCreator.createFrame();
+        myFrame = myFactory.createFrameCreator(myResources.getString("Frame")).createFrame();
 
         // fill it with default panels
-        replacePanel(myResources.getString("DefaultMain"));
-        replacePanel(myResources.getString("DefaultLogo"));
-        replacePanel(myResources.getString("DefaultNav"));
-        replacePanel(myResources.getString("DefaultSearch"));
-        replacePanel(myResources.getString("DefaultUser"));
-        replacePanel(myResources.getString("DefaultFoot"));
+        replacePanel("FootDefault");
+        replacePanel("MainDefault");
+        replacePanel("LogoDefault");
+        replacePanel("NavDefault");
+        replacePanel("SearchDefault");
+        replacePanel("UserDefault");
     }
 
     private ArcadePanel createPanel (String panelCreatorName) {
         return myFactory.createPanelCreator(panelCreatorName).createPanel();
     }
 
-    private void updateFrame () {
-        // clear frame
-        myFrame.removeAll();
+    private void updatePanelinFrame (ArcadePanel newPanel) {
+        ArcadePanel panelHolder = myFrame.getPanel(newPanel.getPanelType());
 
-        // reload everything in into the frame from the map
-        // based on the panel's location
-        // TODO
-
+        panelHolder.removeAll();
+        panelHolder.setLayout(new BorderLayout());
+        panelHolder.add(newPanel, BorderLayout.CENTER);
     }
 
     /**
      * This method replaces and old panel with a new panel.
      * 
-     * @param panelNumber the int representing the panel to be replaced
-     * @param newPanel the replacement panel
-     * @return this returns the old panel
+     * @param panelCreatorName
      */
     public void replacePanel (String panelCreatorName) {
-        myFrame.setVisible(false);
-        ArcadePanel newPanel = createPanel(panelCreatorName);
-        myPanels.put(newPanel.getPanelType(), newPanel);
-        updateFrame();
-        myFrame.setVisible(true);
+        String panelRealName = myResources.getString(panelCreatorName);
+        ArcadePanel newPanel = createPanel(panelRealName);
+        updatePanelinFrame(newPanel);
+        // myFrame.pack();
+        myFrame.validate();
     }
 
     public String getUsername () {
         return myUser;
     }
 
-    public GameManager getGameManager () {
-        return myGameManager;
+    /**
+     * Sets the username
+     * 
+     * @param u
+     */
+    public void setUsername (String u) {
+        myUser = u;
     }
 
-    public UserManager getUserManager () {
-        return myUserManager;
+    /**
+     * 
+     * @param varName
+     * @param var
+     */
+    public void saveVariable (String varName, Serializable var) {
+        mySharedVariables.put(varName, var);
+    }
+
+    /**
+     * 
+     * @param varName
+     * @return
+     */
+    public Serializable getVariable (String varName) {
+        return mySharedVariables.get(varName);
+    }
+
+    /**
+     * 
+     * @return reference to the modelinterface instance
+     */
+    public ModelInterface getModelInterface () {
+        return myModelInterface;
     }
 
 }

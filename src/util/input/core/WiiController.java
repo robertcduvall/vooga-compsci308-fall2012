@@ -1,11 +1,28 @@
 package util.input.core;
 
-import util.input.input_utils.UKeyCode;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
+import util.input.inputhelpers.UKeyCode;
+import wiiusej.WiiUseApiManager;
+import wiiusej.Wiimote;
+import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
+import wiiusej.wiiusejevents.physicalevents.IREvent;
+import wiiusej.wiiusejevents.physicalevents.MotionSensingEvent;
+import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
+import wiiusej.wiiusejevents.utils.WiimoteListener;
+import wiiusej.wiiusejevents.wiiuseapievents.ClassicControllerInsertedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.ClassicControllerRemovedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.DisconnectionEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.GuitarHeroInsertedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.GuitarHeroRemovedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
+import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 
 /**
- * This class allows users to enter input through the Wiimote
- * 
+ * This class allows users to enter input through the Wiimote.
+ *
  * @author Amay
  *
  */
@@ -26,14 +43,17 @@ public class WiiController extends Controller<WiimoteListener> implements
     public static final int WIIMOTE_BUTTON_DOWN = 1024;
     public static final int WIIMOTE_BUTTON_LEFT = 256;
     public static final int WIIMOTE_BUTTON_RIGHT = 512;
-    
+    //public stat
+
     /**
-     * Create a new Wii controller
-     * 
-     * @param wii - The Wiimote object to which we add the event listeners
+     * Create a new Wii controller.
+     *
      */
-    public WiiController(Wiimote wii) {
-        wii.addWiiMoteEventListeners(this);
+    public WiiController() {
+        super();
+        Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
+        Wiimote wiimote = wiimotes[0];
+        wiimote.addWiiMoteEventListeners(this);
     }
 
     @Override
@@ -59,8 +79,15 @@ public class WiiController extends Controller<WiimoteListener> implements
                 performReflections(arg0, "onButtonsEvent",
                         UKeyCode.codify(BUTTON_HELD, arg0.getButtonsHeld()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
         }
     }
 
@@ -68,67 +95,102 @@ public class WiiController extends Controller<WiimoteListener> implements
     public void onMotionSensingEvent(MotionSensingEvent arg0) {
         // Based on the data invoke up motion, down motion, left motion or right
         // motion
+        try {
+            performReflections(arg0, "onMotionSensingEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onClassicControllerInsertedEvent(
             ClassicControllerInsertedEvent arg0) {
-        // TODO Auto-generated method stub
-
+        //method will never be called as classic controller is not supported
     }
 
     @Override
     public void onClassicControllerRemovedEvent(
             ClassicControllerRemovedEvent arg0) {
-        // TODO Auto-generated method stub
-
+        //method will never be called as classic controller is not supported
     }
 
     @Override
     public void onDisconnectionEvent(DisconnectionEvent arg0) {
-        // TODO Auto-generated method stub
-
+        try {
+            performReflections(arg0, "onDisconnectionEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onExpansionEvent(ExpansionEvent arg0) {
-        // TODO Auto-generated method stub
-
+        //method will never be called as other controllers are not supported
     }
 
     @Override
     public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
-        // TODO Auto-generated method stub
-
+        //method will never be called as guitar hero is not supported
     }
 
     @Override
     public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
-        // TODO Auto-generated method stub
-
+      //method will never be called
     }
 
     @Override
     public void onIrEvent(IREvent arg0) {
-        // TODO Auto-generated method stub
-
+        try {
+            performReflections(arg0, "onIrEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 
     @Override
     public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
-        // TODO Auto-generated method stub
-
+        //method will never be called
     }
 
     @Override
-    public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) {
-        // TODO Auto-generated method stub
-
+    public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
+        //method will never be called
     }
 
     @Override
     public void onStatusEvent(StatusEvent arg0) {
-        // TODO Auto-generated method stub
-
+        try {
+            performReflections(arg0, "onStatusEvent", -1);
+        }
+        catch (IllegalAccessException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (InvocationTargetException e1) {
+            //this will never be thrown because it was checked for previously
+        }
+        catch (NoSuchMethodException e1) {
+            //this will never be thrown because it was checked for previously
+        }
     }
 }

@@ -1,8 +1,15 @@
 package arcade.usermanager;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import util.xml.XmlBuilder;
+import util.xml.XmlParser;
+import util.xml.XmlUtilities;
+import util.xml.XmlWriter;
+import arcade.utility.FileOperation;
 
 
 /**
@@ -12,127 +19,183 @@ import java.util.List;
  * user game history
  * 
  * @author Difan Zhao
- * 
+ *         modified by Howard Chung
+ *         TODO:
+ *         Allow user to change profile picture
  */
-
 public class SocialCenter {
-    private User myCurrentUser;
-    private List<String> availableUserName;
-    private List<User> myAllUser;
-    private final String myUserFilePath="src/arcade/database/";
+    
+    private static SocialCenter mySocialCenter;
+    // private Map<String, User> myAllUser;
+    private String myUserBasicFilePath;
+    private String myUserMessageFilePath;
+    private String myUserGameFilePath;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
+//    private final String successString = "Successful";
+//    private final String passwordDoNotMatch = "password do not mat";
+//    private final String userNameExist = "Successful";
+    private static ResourceBundle resource;
+    private UserManager myUserManager;
+
     
 
     /*
      * initiate user list
      */
-    public void initiateUser () {
-        myXMLReader=new UserXMLReader();
-        myXMLWriter=new UserXMLWriter();
-        
-        availableUserName=new ArrayList<String>();
-        myAllUser=new ArrayList<User>();
-        
-        File folder = new File(myUserFilePath);
-        File[] listOfFiles = folder.listFiles();
+    public SocialCenter () {
+        myXMLReader = new UserXMLReader();
+        myXMLWriter = new UserXMLWriter();
+        myUserManager = UserManager.getInstance();
+        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
+        myUserBasicFilePath = resource.getString("BasicFilePath");
+        myUserMessageFilePath = resource.getString("MessageFilePath");
+        myUserGameFilePath = resource.getString("GameFilePath");
 
-        for (int i = 0; i < listOfFiles.length; i++) {
-        if (listOfFiles[i].isFile()) {
-        availableUserName.add(listOfFiles[i].getName());
-      }
+    }
+
+    /*
+     * 
+     * return log on status
+     */
+    public boolean logOnUser (String userName, String password)
+            throws Exception {
+        myUserManager.validateUser(userName, password);
+
+       
+        // set current user
+        User newUser = myUserManager.getUser(userName);
+        myUserManager.setCurrentUser(newUser);
+
+        return true;
+    }
+
+    /*
+     * return log on status
+     */
+    public boolean registerUser (String userName, String password) throws Exception {
+        // check validity
         
-        for(String name:availableUserName){
-            User newUser= myXMLReader.initiateUser(myUserFilePath+name+".xml");
-            myAllUser.add(newUser);
+      try{
+            myUserManager.validateUser(userName, "");
+            }
+        
+       
+        catch(UserNotExistException e){
+        
+        User newUser= myUserManager.addNewUser(userName, password, "default.jpg");
+       myUserManager.setCurrentUser(newUser);
+
+        return true;
         }
+    return false;
     }
+
+    /*
+     * return operation status
+     */
+    public boolean deleteUser (String userName, String password)
+            throws Exception {
+        // check validity
+         myUserManager.validateUser(userName, password);
         
 
+        // valid file
+        FileOperation.deleteFile(myUserBasicFilePath + userName + ".xml");
+        FileOperation.deleteFile(myUserMessageFilePath + userName + ".xml");
+        FileOperation.deleteFile(myUserGameFilePath + userName + ".xml");
+        myUserManager.deleteUser(userName);
+        return true;
     }
-    
-    private void addNewUser(String userName, String password, String picture){
-        //write an xml file
-        UserXMLWriter.makeUserXML(userName, password, picture);
-        availableUserName.add(userName);
-        User newUser= myXMLReader.initiateUser(myUserFilePath+userName+".xml");
-        myAllUser.add(newUser);
+
+    /*
+     * return operation status
+     */
+    public boolean sendMessage (String sender, String receiver, String content) {
+        String filePath = myUserMessageFilePath + receiver + ".xml";
+        File f = new File(filePath);
         
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "sender", receiver);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.write(doc, filePath);
+        myUserManager.getUser(receiver).updateMyMessage(sender, content);
+
+        return true;
     }
+
+  
     
    
-    
 
-    /*
-     * return log on status
-     */
-    public String logOnUser (String username, String password) {
-        //set current user
-    }
-
-    /*
-     * return log on status
-     */
-    public String registerUser (String username, String password, String picture) {
-      //write file
-        //initiate class
-        //add the the available list
-        //set current user
-
-    }
-
-    /*
-     * return operation status
-     */
-    public String deleteUser (String username, String password) {
-        //delete from file
-        //delete from available list
-        //set current user to null
-
-    }
-
-    /*
-     * return current user
-     */
-    public User getCurrentUser() {
-
-        return myCurrentUser;
-
-    }
-
-    /*
-     * edit user info
-     */
-    public void editCurrentUser() {
-
-    }
-
-    /*
-     * return operation status
-     */
-    public String sendMessage(String sender, String receiver, String content) {
-
-    }
-
-    /*
-     * return operation status
-     */
-    public String receiveMessage(String sender, String receiver, String content) {
-
-    }
-
-    /*
-     * return game history for certain game
-     */
-    public String readGameHistory (String gameName, String tagName) {
-
-    }
-
-    /*
-     * return whether the operation is successful
-     */
-    public boolean writeGameHistory (String gameName, String tagName, String content) {
-
-    }
+    //
+    // /*
+    // * return whether the operation is successful
+    // */
+    //
+    // public boolean writeGameScore (String gameName, int score) {
+    // myCurrentUser.getGameData(gameName).setMyHighScore(score);
+    //
+    // // write xml
+    // String filePath = "myUserGameFilePath" + myCurrentUser.getName() +
+    // ".xml";
+    // File f = new File(filePath);
+    // XmlParser parser = new XmlParser(f);
+    // Document doc = parser.getDocument();
+    // Element root = (Element) parser.getDocumentElement();
+    // NodeList children = root.getChildNodes();
+    // for (int i = 0; i < children.getLength(); i++) {
+    // Element child = (Element) children.item(i);
+    // if (parser.getTextContent(child, "name").equals(gameName)) {
+    // XmlBuilder.modifyTag(child, "highscore", Integer.toString(score));
+    // }
+    // }
+    //
+    // XmlWriter.writeXML(doc, filePath);
+    //
+    // return true;
+    //
+    // }
+    //
+    // public boolean writeGameInfo (String gameName, String info) {
+    // myCurrentUser.getGameData(gameName).setMyGameInfo(info);
+    //
+    // String filePath = "myUserGameFilePath" + myCurrentUser.getName() +
+    // ".xml";
+    // File f = new File(filePath);
+    // XmlParser parser = new XmlParser(f);
+    // Document doc = parser.getDocument();
+    // Element root = (Element) parser.getDocumentElement();
+    // NodeList children = root.getChildNodes();
+    // for (int i = 0; i < children.getLength(); i++) {
+    // Element child = (Element) children.item(i);
+    // if (parser.getTextContent(child, "name").equals(gameName)) {
+    // XmlBuilder.modifyTag(child, "gameinfo", info);
+    // }
+    // }
+    //
+    // XmlWriter.writeXML(doc, filePath);
+    //
+    // return true;
+    //
+    // }
+    //
+    // /*
+    // * return game history for certain game
+    // */
+    //
+    // public int readGameScore (String gameName) {
+    // return myCurrentUser.getGameData(gameName).getMyHighScore();
+    //
+    // }
+    //
+    // public String readGameInfo (String gameName) {
+    // return myCurrentUser.getGameData(gameName).getMyGameInfo();
+    //
+    // }
+    //
+    //
 
 }

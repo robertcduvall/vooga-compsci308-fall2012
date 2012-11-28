@@ -27,11 +27,9 @@ public class ImageReader {
 
         }
         catch (IllegalArgumentException e) {
-            // happens when trying to load a null image file (imageless sprites)
             System.out.println("Illegal Argument");
         }
         catch (IOException e) {
-            // also happens when trying to load a null image file
             System.out.println("IOException");
         }
         return null;

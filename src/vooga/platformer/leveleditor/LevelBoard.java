@@ -1,13 +1,15 @@
 package vooga.platformer.leveleditor;
 
-import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.MouseInfo;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,7 +17,13 @@ import java.util.Collection;
 import java.util.Collections;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.levelfileio.LevelFileReader;
+import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /*
@@ -33,18 +41,27 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * Represents the main window for the level editor. Will display a collection
  * of Sprites and will oversee the results of all user actions.
  * 
- * @author Paul Dannenberg
+ * @author Paul Dannenberg, Sam Rang
  * 
  */
-public class LevelBoard extends Canvas implements ISavable {
+public class LevelBoard extends JPanel implements ISavable {
 
     private static final long serialVersionUID = -3528519211577278934L;
     private Collection<Sprite> mySprites;
+    private Collection<String> myAvailableAttributes;
     private ISpritePlacementManager myPlacementManager;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
+    private SelectionMouseListener myMouseListener;
     private Image myBackground;
     private Sprite myCurrentSprite;
+    private int myWidth;
+    private int myHeight;
+    private String myLevelName;
+    private String myLevelType;
+    private String myBackgroundPath;
+    private int mouseX;
+    private int mouseY;
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
@@ -52,10 +69,14 @@ public class LevelBoard extends Canvas implements ISavable {
      */
     public LevelBoard(Dimension d) {
         mySprites = new ArrayList<Sprite>();
+        myAvailableAttributes = new ArrayList<String>();
+        myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
+        myAvailableAttributes.add("Patrolling"); myAvailableAttributes.add("Teammate");
         myPlacementManager = new SpritePlacementManager(this);
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
+        
         setupMouseInput();
     }
 
@@ -65,68 +86,137 @@ public class LevelBoard extends Canvas implements ISavable {
             public void mousePressed(MouseEvent e) {
                 if (myCurrentSprite != null) {
                     myCurrentSprite = null;
-                    System.out.println("null");
                 }
-                else if (e.getButton() == MouseEvent.BUTTON3) {
+                else {
                     for (Sprite s : mySprites) {
                         if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
                                 e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
-                            //Something with sprites (Popup maybe?)
+                            if (e.getButton() == MouseEvent.BUTTON3) {
+                                spritePopupMenu(s, e);
+                            }
+                            else if (e.getButton() == MouseEvent.BUTTON1) {
+                                myCurrentSprite = s;
+                            }
+                            return;
                         }
-                        //                        else {
-                        //                            JFileChooser chooser = new JFileChooser();
-                        //                            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        //                                    "JPG & GIF Images", "jpg", "gif");
-                        //                            chooser.setFileFilter(filter);
-                        //                            int returnVal = chooser.showOpenDialog(myContainer);
-                        //                            if (returnVal == JFileChooser.APPROVE_OPTION)  {
-                        //                                try {
-                        //                                    myBackground = ImageIO.read(chooser.getSelectedFile());
-                        //                                }
-                        //                                catch (IOException io) {
-                        //                                    System.out.println("File not found. Try again");
-                        //                                    myBackground = null;
-                        //                                }
-                        //                            }
-                        //                        }
                     }
+                    if (e.getButton() == MouseEvent.BUTTON3) {
+                        JFileChooser chooser = new JFileChooser();
+                        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                                "JPG & GIF Images", "jpg", "gif");
+                        chooser.setFileFilter(filter);
+                        int returnVal = chooser.showOpenDialog(chooser);
+                        if (returnVal == JFileChooser.APPROVE_OPTION)  {
+                            try {
+                                myBackground = ImageIO.read(chooser.getSelectedFile());
+                                myBackgroundPath = chooser.getSelectedFile().getPath();
+                            }
+                            catch (IOException io) {
+                                System.out.println("File not found. Try again");
+                                myBackground = null;
+                            }
+                        }
+                    }
+
                 }
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                mouseX = e.getX();
+                mouseY = e.getY();
             }
         };
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
+        myMouseListener = mouseListener;
+
     }
 
+
+
+    /**
+     * Passes the MouseListener to any components that need it.
+     * 
+     * @return MouseListener attached to component
+     */
+    public SelectionMouseListener getMouseListener() {
+        return myMouseListener;
+    }
+
+    /**
+     * Updates the buffer preparing for the next paint call.
+     */
     public void update() {
+        myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(
-                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
-        if (myCurrentSprite != null) {
-            myCurrentSprite.setX(MouseInfo.getPointerInfo().getLocation().x);
-            myCurrentSprite.setY(MouseInfo.getPointerInfo().getLocation().y);
-        }
+                myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         for (Sprite s : mySprites) {
-            s.paint(myBufferGraphics);
+            s.paint(myBufferGraphics, this);
+            myBufferGraphics.setColor(Color.WHITE);
         }
-
+        if (myCurrentSprite != null) {
+            myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
+            myCurrentSprite.setY(mouseY - myCurrentSprite.getHeight() / 2);
+        }
     }
 
-    @Override
-    public void paint(Graphics pen) {
-        pen.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), null);
+    /**
+     * Paints the most recent iteration of the buffer to the Canvas.
+     * 
+     * @param g Graphics attached to level.
+     */
+    public void paint(Graphics g) {
+        super.paint(g);
+        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
     }
 
     @Override
     public void save() {
-        // TODO Auto-generated method stub
+        JFileChooser fc = new JFileChooser();
+        FileFilter filter = new FileNameExtensionFilter("XML file", "xml");
+        fc.addChoosableFileFilter(filter);
 
+        int returnVal = fc.showSaveDialog(this);
+        File saveFile = null;
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            saveFile = fc.getSelectedFile();
+            //This is where a real application would save the file.
+
+//            log.append("Saving: " + file.getName() + "." + newline);
+        } else {
+            saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
+//            log.append("Save command cancelled by user." + newline);
+        }
+        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", myWidth, myHeight,
+                myBackgroundPath, mySprites, "myCollision", "myCamera");
     }
 
     @Override
     public void load(URL path) {
-        // TODO Auto-generated method stub
-
+        new LevelFileReader(path.getPath());
     }
 
+    public void clear() {
+        mySprites.clear();
+    }
+
+    protected void spritePopupMenu (Sprite s, MouseEvent e) {
+        JPopupMenu pop = new JPopupMenu();
+        SelectionHelper sh = new SelectionHelper(s);
+        JMenuItem j = new JMenuItem("Flip");
+        j.addActionListener(sh);
+        pop.add(j);
+        JMenuItem j2 = new JMenuItem("Duplicate");
+        j2.addActionListener(sh);
+        pop.add(j2);
+        JMenuItem j3 = new JMenuItem("Add attribute");
+        j3.addActionListener(sh);
+        pop.add(j3);
+        JMenuItem j4 = new JMenuItem("Delete");
+        j4.addActionListener(sh);
+        pop.add(j4);
+        pop.show(this.getParent(), e.getX(), e.getY());
+    }
     /**
      * @return An unmodifiable Collection of the sprites
      *         currently positioned on the board.
@@ -157,4 +247,46 @@ public class LevelBoard extends Canvas implements ISavable {
         mySprites.remove(sprite);
     }
 
+    private class SelectionHelper implements ActionListener {
+        private Sprite mySprite;
+        public SelectionHelper(Sprite s) {
+            mySprite = s;
+        }
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            if ("Flip".equals(event.getActionCommand())) {
+                mySprite.flipImage();
+            }
+            else if ("Duplicate".equals(event.getActionCommand())) {
+                Sprite ns = new Sprite(mySprite.getType(), mySprite.getX(), mySprite.getY(),
+                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getImagePath());
+                LevelBoard.this.add(ns);
+            }
+            else if ("Add attribute".equals(event.getActionCommand())) {
+                createAttributeWindow();
+            }
+            else if ("Delete".equals(event.getActionCommand())) {
+                mySprites.remove(mySprite);
+            }
+            else {
+                System.out.println("Added " + event.getActionCommand() + " as an attribute");
+            }
+            
+        }
+        private void createAttributeWindow() {
+             JPopupMenu pop = new JPopupMenu();
+
+             for (String att : myAvailableAttributes) {
+                JMenuItem j = new JMenuItem(att);
+                j.addActionListener(this);
+                pop.add(j);
+             }
+             pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
+
+
+/*           create a list of attributes from the resource file 
+             and get appropriate values for certain attributes.
+*/
+        }
+    }
 }

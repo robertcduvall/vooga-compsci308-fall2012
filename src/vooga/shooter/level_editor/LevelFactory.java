@@ -17,8 +17,15 @@ import vooga.shooter.gameObjects.Sprite;
 
 
 /**
+ * @deprecated Use the Packable interface and
+ * the pack() and unpack() methods on level
+ * instead of this.
+ * 
  * Level Factory.java
  * Instantiates Levels from an XML file
+ * 
+ * NOTE: This is going to be subject heavy modification since
+ * I've decided to go with the Packable interface.
  * 
  * @author Alex Browne
  */
@@ -26,6 +33,7 @@ public abstract class LevelFactory {
 
 
     /**
+     * @deprecated
      * Creates Level object from XML file
      * 
      * @param f XML file input
@@ -152,7 +160,7 @@ public abstract class LevelFactory {
     }
 
     /**
-     * 
+     * @deprecated
      * @param path the path to the xml file relative to the
      *        project root directory (e.g. levels/level1.xml).
      * 

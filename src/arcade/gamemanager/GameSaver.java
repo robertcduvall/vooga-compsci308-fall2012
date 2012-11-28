@@ -1,7 +1,6 @@
 package arcade.gamemanager;
 
 import arcade.IArcadeGame;
-import arcade.usermanager.GameData;
 import arcade.usermanager.User;
 
 
@@ -9,7 +8,7 @@ import arcade.usermanager.User;
  * Class that the games use to save preferences and score.
  * GameSaver will update User object.
  * 
- * @author Jei Min Yoo
+ * @author Seon Kang
  * 
  */
 public class GameSaver {
@@ -21,49 +20,47 @@ public class GameSaver {
      * Constructor for GameSaver.
      */
     public GameSaver(User user, IArcadeGame game) {
-        myUser = user;
+    	setMyUser(user);
         myGame = game;
     }
 
+    protected void setMyUser(User user) {
+    	myUser = user;
+	}
+
     /**
+     * @author Seon Kang
+     * 
+     * @param property
+     * @param value
+     */
+    public void saveUserProperty(String property, String value) {
+    	myUser.getGameData(myGame.getName()).setGameInfo(property, value);
+    }
+    
+    public void saveUserProperty(String property, int i) {
+    	saveUserProperty(property, ((Integer) i).toString());
+    }
+    
+	/**
      * Used by the game, this method updates gameInfo in User's GameData
      * 
+     * @author Seon Kang
      * @param userGameInfo preferences
      */
     public void saveGameInfo (String userGameInfo) {
-//        /*
-        for (GameData gameData : myUser.getGameData()) {
-            if (gameData.getMyGameName() == myGame.getName()) {
-                gameData.setMyGameInfo(userGameInfo);
-                return;
-            }
-        }
-        
-        // gameData does not exist in the user: create a new GameData
-        GameData gameData = new GameData(myGame.getName(), userGameInfo, 0, 0);
-        myUser.getGameData().add(gameData);
-//        */
-
+    	saveUserProperty(myUser.getGameData(myGame.getName()).getGameInfoKeyString(),
+    			userGameInfo);
     }
 
     /**
      * Used by the game, this method updates high score for a game in User's
      * GameData.
-     * 
+     * @author Seon Kang
      * @param score score to be saved
      */
     public void saveHighScore (int score) {
-//        /*
-        for (GameData gameData : myUser.getGameData()) {
-            if (gameData.getMyGameName() == myGame.getName()) {
-                gameData.setMyHighScore(score);
-                return;
-            }
-        }
-        
-        // gameData does not exist in the user: create a new GameData
-        GameData gameData = new GameData(myGame.getName(), "", score, 0);
-        myUser.getGameData().add(gameData);
-//        */
+    	saveUserProperty(myUser.getGameData(myGame.getName()).getHighScoreKeyString(), 
+    			score);
     }
 }

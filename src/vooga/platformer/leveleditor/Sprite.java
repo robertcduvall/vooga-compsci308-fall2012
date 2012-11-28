@@ -1,15 +1,24 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 import javax.imageio.ImageIO;
+import vooga.platformer.levelfileio.XmlTags;
 
 
 /**
@@ -39,8 +48,8 @@ public class Sprite {
      * Creates a new instance of Sprite of the type, position, size, and
      * appearance specified.
      * 
-     * @param type attribute of the sprite describing what its role in the game
-     *        is
+     * @param clazz fully qualified class name of the GameObject this Srite
+     *        represents
      * @param x x position of the sprite at level load
      * @param y y position of the sprite at level load
      * @param width width of the sprite in pixels
@@ -48,8 +57,9 @@ public class Sprite {
      * @param imagePath location of the image in the file system representing
      *        the sprite
      */
-    public Sprite (String type, int x, int y, int width, int height, String imagePath) {
-        myType = type;
+    public Sprite(String clazz, int x, int y, int width, int height,
+            String imagePath) {
+        myType = clazz;
         myX = x;
         myY = y;
         myWidth = width;
@@ -59,13 +69,17 @@ public class Sprite {
         myUpdateStrategies = new ArrayList<Map<String, String>>();
         myAttributes = new HashMap<String, String>();
     }
+    
+ 
+    protected Sprite() {
+        
+    }
 
-    private Image getImage (String filename) {
+    private Image getImage(String filename) {
         Image ret = null;
         try {
             ret = ImageIO.read(new File(filename));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("file was not found");
             e.printStackTrace();
         }
@@ -77,7 +91,7 @@ public class Sprite {
      * 
      * @return String representation of the sprites type
      */
-    public String getType () {
+    public String getType() {
         return myType;
     }
 
@@ -86,10 +100,25 @@ public class Sprite {
      * paints it to whatever component Graphics g is connected to.
      * 
      * @param g Graphics of a Component, Image, or Canvas
+     * @param c Compnent containing sprite so the sprite knows where it is in
+     *        the window.
      */
-    public void paint (Graphics g) {
-        g.drawImage(getImage(myImagePath), myX, myY, myX + myWidth, myY + myHeight, 0, 0, myWidth,
-                    myHeight, null);
+    public void paint(Graphics g, Component c) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 0, 0,
+                myImage.getWidth(null), myImage.getHeight(null), c);
+    }
+
+    /**
+     * Flips the sprites image across it's vertical axis.
+     * 
+     */
+    public void flipImage() {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-myImage.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        myImage = op.filter((BufferedImage) myImage, null);
     }
 
     /**
@@ -97,7 +126,7 @@ public class Sprite {
      * 
      * @return x location in pixels
      */
-    public int getX () {
+    public int getX() {
         return myX;
     }
 
@@ -106,7 +135,7 @@ public class Sprite {
      * 
      * @param x starting x location of the sprite in pixels
      */
-    public void setX (int x) {
+    public void setX(int x) {
         myX = x;
     }
 
@@ -115,7 +144,7 @@ public class Sprite {
      * 
      * @return y location in pixels
      */
-    public int getY () {
+    public int getY() {
         return myY;
     }
 
@@ -124,7 +153,7 @@ public class Sprite {
      * 
      * @param y starting y location of the sprite in pixels
      */
-    public void setY (int y) {
+    public void setY(int y) {
         myY = y;
     }
 
@@ -133,7 +162,7 @@ public class Sprite {
      * 
      * @return width of the sprite in pixels
      */
-    public int getWidth () {
+    public int getWidth() {
         return myWidth;
     }
 
@@ -142,7 +171,7 @@ public class Sprite {
      * 
      * @param width new width of the sprite in pixels
      */
-    public void setWidth (int width) {
+    public void setWidth(int width) {
         myWidth = width;
     }
 
@@ -151,7 +180,7 @@ public class Sprite {
      * 
      * @return height of the sprite in pixels
      */
-    public int getHeight () {
+    public int getHeight() {
         return myHeight;
     }
 
@@ -160,7 +189,7 @@ public class Sprite {
      * 
      * @param height new height of the sprite in pixels
      */
-    public void setHeight (int height) {
+    public void setHeight(int height) {
         myHeight = height;
     }
 
@@ -170,7 +199,7 @@ public class Sprite {
      * @return Image rendered using the file path specified in the Sprite's
      *         constructor
      */
-    public Image getImage () {
+    public Image getImage() {
         return getImage(myImagePath);
     }
 
@@ -180,7 +209,7 @@ public class Sprite {
      * 
      * @return path to the Sprite's image as a String
      */
-    public String getImagePath () {
+    public String getImagePath() {
         // TODO support animations
         return myImagePath;
     }
@@ -188,12 +217,15 @@ public class Sprite {
     /**
      * Adds update strategy to the Sprite. This is added as Map.
      * 
+     * @param strategyType Name of the update strategy type to use. Must be
+     *        subclass of Strategy.
      * @param strategy Map representing the update strategy. Each key is a
      *        String representing a parameter name for the update strategy. This
      *        should map to the value of this parameter, also a String.
      */
-    public void addUpdateStrategy (Map<String, String> strategy) {
-        // TODO consider type parameter. Rewrite signature
+    public void addUpdateStrategy(String strategyType,
+            Map<String, String> strategy) {
+        strategy.put(XmlTags.CLASS_NAME, strategyType);
         myUpdateStrategies.add(strategy);
     }
 
@@ -207,7 +239,7 @@ public class Sprite {
      * @return collection of maps representing the parameters of the update
      *         strategy
      */
-    public Collection<Map<String, String>> getUpdateStrategies () {
+    public Collection<Map<String, String>> getUpdateStrategies() {
         return myUpdateStrategies;
     }
 
@@ -217,7 +249,7 @@ public class Sprite {
      * @param tag name for the attribute
      * @param value value for the attribute
      */
-    public void addAttribute (String tag, String value) {
+    public void addAttribute(String tag, String value) {
         myAttributes.put(tag, value);
     }
 
@@ -228,7 +260,7 @@ public class Sprite {
      * 
      * @return Map of the sprite's attributes
      */
-    public Map<String, String> getAttributes () {
+    public Map<String, String> getAttributes() {
         return myAttributes;
     }
 
@@ -239,7 +271,7 @@ public class Sprite {
      * @return Returns true if the rectangle intersects, and false if there is
      *         no intersection
      */
-    public boolean isIntersecting (Rectangle region) {
+    public boolean isIntersecting(Rectangle region) {
         Rectangle boundingBox = getOutline();
         return boundingBox.intersects(region);
     }
@@ -249,7 +281,54 @@ public class Sprite {
      * 
      * @return Returns a Rectangle representing the bounding region of a sprite.
      */
-    public Rectangle getOutline () {
+    public Rectangle getOutline() {
         return new Rectangle(myX, myY, myWidth, myHeight);
+    }
+
+    /**
+     * Tests to see if this sprite intersects with any other sprite.
+     * 
+     * @param other The sprite to test for overlap with.
+     * @return true if this object intersects with the other sprite.
+     *         false otherwise.
+     */
+    public boolean isIntersecting(Sprite other) {
+        PathIterator outlineIterator = other.getOutline().getPathIterator(null);
+        return intersects(outlineIterator);
+    }
+
+    /**
+     * Tests to see whether any point specified by the PathIterator lies within
+     * this object's outline.
+     * 
+     * @param iterator The PathIterator specifying the points to check.
+     * @return true if any single point lies within the outline of this object.
+     *         false otherwise.
+     */
+    private boolean intersects(PathIterator iterator) {
+        while (!iterator.isDone()) {
+            double[] coords = new double[2];
+            iterator.currentSegment(coords);
+            if (getOutline().contains(coords[0], coords[1])) { return true; }
+            iterator.next();
+        }
+        return false;
+    }
+
+    /**
+     * Checks to see whether the coordinates x and y are contained
+     * within the sprite's outline.
+     * 
+     * @param x The x coordinate.
+     * @param y The y coordinate.
+     * @return true if x and y are contained within the sprite's outline.
+     *         false otherwise.
+     */
+    public boolean contains(int x, int y) {
+        return isIntersecting(new Rectangle(x, y));
+    }
+    
+    protected void setImage (Image img) {
+        myImage = img;
     }
 }

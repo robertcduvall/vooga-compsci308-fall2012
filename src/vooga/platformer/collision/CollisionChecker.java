@@ -4,6 +4,7 @@ import java.awt.geom.Rectangle2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import util.reflection.Reflection;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
 
@@ -30,7 +31,11 @@ public abstract class CollisionChecker {
      * @param level
      * @return
      */
+<<<<<<< HEAD
     public abstract void checkCollisions (Level level);
+=======
+    public abstract void checkCollisions(Level level);
+>>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
 
     /**
      * This method takes two colliding objects and return the corresponding
@@ -46,10 +51,11 @@ public abstract class CollisionChecker {
         myObjA = a;
         myObjB = b;
 
-        if (a.getClass().getCanonicalName()
-                .compareTo(b.getClass().getCanonicalName()) < 0) {
+        if (collisionEventsMap.containsKey(a.getClass().getCanonicalName()) &&
+                collisionEventsMap.get(a.getClass().getCanonicalName()).containsKey(b.getClass().getCanonicalName())) {
             className = collisionEventsMap.get(a.getClass().getCanonicalName())
                     .get(b.getClass().getCanonicalName());
+<<<<<<< HEAD
         }
         else {
             className = collisionEventsMap.get(b.getClass().getCanonicalName())
@@ -89,10 +95,35 @@ public abstract class CollisionChecker {
         catch (InvocationTargetException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+=======
+        } 
+        else if (collisionEventsMap.containsKey(b.getClass().getCanonicalName()) && 
+                collisionEventsMap.get(b.getClass().getCanonicalName()).containsKey(a.getClass().getCanonicalName())) {
+            className = collisionEventsMap.get(b.getClass().getCanonicalName())
+                    .get(a.getClass().getCanonicalName());
         }
-
-        return c;
+        else {
+            return null;
+>>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
+        }
+        
+        
+        if (className != null) {
+            CollisionEvent ce = (CollisionEvent) Reflection.createInstance(className, a, b);
+            return ce;
+        }
+        else {
+            return null;
+        }
     }
+    
+    public void addCollisionEvents(String a, String b, String ab) {
+        if (!collisionEventsMap.containsKey(a)) {
+            collisionEventsMap.put(a, new HashMap<String, String>());
+        }
+        collisionEventsMap.get(a).put(b, ab);
+    }
+<<<<<<< HEAD
 
     /**
      * @author Yaqi Zhang
@@ -101,4 +132,7 @@ public abstract class CollisionChecker {
         if (myObjB.getShape().intersects(myObjA.getShape())) { return true; }
         return false;
     }
+=======
+   
+>>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
 }

@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import util.input.exceptions.InvalidControllerActionException;
-import util.input.input_utils.BoolTuple;
-import util.input.input_utils.UKeyCode;
+import util.datatable.DataTable;
+import util.datatable.UnmodifiableRowElement;
+import util.datatable.exceptions.InvalidXMLTagException;
+import util.datatable.exceptions.RepeatedColumnNameException;
+import util.input.inputhelpers.BoolTuple;
+import util.input.inputhelpers.UKeyCode;
+
 
 /**
  * This class represents an abstract controller to provide input.
@@ -20,102 +24,183 @@ import util.input.input_utils.UKeyCode;
  */
 public abstract class Controller<T> {
 
-    List<T> subscribedElements;
-    Map<String, String> objectMethodMap;
-    Map<Integer, BoolTuple<Object, Method>> menuPlate;
+    protected static final int NO_ACTION = -1;
+    private List<T> mySubscribedElements;
+    private DataTable myDataTable;
 
     /**
      * Create a new Controller.
      */
-    Controller() {
-        objectMethodMap = new HashMap<String, String>();
-        subscribedElements = new ArrayList<T>();
-        menuPlate = new HashMap<Integer, BoolTuple<Object, Method>>();
+    public Controller () {
+        mySubscribedElements = new ArrayList<T>();
+        myDataTable = new DataTable();
+
+        createTable();
     }
 
     /**
-     * Create a new Controller with an elements that
+     * Create a new Controller with an element that
      * subscribes to its raw data.
      * 
      * @param element - The subscribing element
      */
-    Controller(T element) {
+    public Controller (T element) {
         this();
         subscribe(element);
     }
 
     /**
-     * Subscribes a class to this controller's events
+     * Subscribes a class to this controller's events.
      * 
      * @param element - The subscribing class
      */
-    public void subscribe(T element) {
-        subscribedElements.add(element);
+    public void subscribe (T element) {
+        mySubscribedElements.add(element);
     }
 
     /**
-     * Object invokes a method every time action and type occur
+     * Object invokes a method every time action and type occur.
      * 
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
      * @param method - The method to be invoked
-     * @throws NoSuchMethodException
+     * @throws NoSuchMethodException - thrown if the
+     *         string method passed in is not a method of Object o
+     * @throws IllegalAccessException -" thrown when an
+     *         application tries to reflectively create an instance (other than
+     *         an array),
+     *         set or get a field, or invoke a method, but the currently
+     *         executing method does not have access to the definition of
+     *         the specified class, field, method or constructor"
      */
-    public void setControl(int action, int type, Object o, String method)
-            throws NoSuchMethodException {
-        // InvalidControllerType, InvalidControllerActionException {
-        Method m = retrieveMethod(o, method);
-        // actionValidate(action);//make sure to check for codify decodify
-        // typeValidate(type);
-        menuPlate.put(UKeyCode.codify(type, action),
-                new BoolTuple<Object, Method>(o, m));
+    public void setControl (int action, int type, Object o, String method)
+                                                                          throws NoSuchMethodException,
+                                                                          IllegalAccessException {
+
+        setControl(action, type, o, method, null, null);
     }
 
     /**
-     * Class invokes a static method every time action and type occur
+     * Class invokes a static method every time action and type occur.
      * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
      * @param method - The static method to be invoked
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
+     * @throws NoSuchMethodException - thrown if the string method passed in is
+     *         not a method of Object o
+     * @throws InstantiationException- "thrown when an application tries to
+     *         create an instance of a class
+     *         using the newInstance method in class Class, but the specified
+     *         class object cannot be instantiated because it is an
+     *         interface or is an abstract class."
+     * @throws IllegalAccessException -" thrown when an application tries to
+     *         reflectively create an instance (other than an array),
+     *         set or get a field, or invoke a method, but the currently
+     *         executing method does not have access to the definition of
+     *         the specified class, field, method or constructor"
      */
-    public void setControl(int action, int type, Class c, String method)
-            throws NoSuchMethodException, IllegalAccessException,
-            InstantiationException {
-        // InvalidControllerType, InvalidControllerActionException {
-
-        Method m = retrieveMethod(c, method);
-        // actionValidate(action);//make sure to check for codify decodify
-        // typeValidate(type);
-        menuPlate.put(UKeyCode.codify(type, action),
-                new BoolTuple<Object, Method>(c, m));
+    @SuppressWarnings("rawtypes")
+    public void setControl (int action, int type, Class c, String method)
+                                                                         throws NoSuchMethodException,
+                                                                         IllegalAccessException,
+                                                                         InstantiationException {
+        setControl(action, type, c, method, null, null);
     }
 
-    // protected abstract void typeValidate(int type) throws
-    // InvalidControllerType;
+    /**
+     * Object invokes a method every time action and type occur.
+     * Inserts button description, action description, keycode, and
+     * <object, method> tuple into DataTable
+     * 
+     * @param action - The button to listen for
+     * @param type - Pressed or released
+     * @param o - The invoking object
+     * @param method - The method to be invoked
+     * @param describeButton - Button description
+     * @param describeAction - Action description invoked upon button
+     * @throws NoSuchMethodException - thrown if the
+     *         string method passed in is not a method of Object o
+     * @throws IllegalAccessException -" thrown when an
+     *         application tries to reflectively create an instance (other than
+     *         an array),
+     *         set or get a field, or invoke a method, but the currently
+     *         executing method does not have access to the definition of
+     *         the specified class, field, method or constructor"
+     */
+    public void setControl (int action, int type, Object o, String method, String describeButton,
+                            String describeAction) throws NoSuchMethodException,
+                                                  IllegalAccessException {
 
-    // public abstract void actionValidate(int action) throws
-    // InvalidControllerActionException;
+        Method m;
+        m = retrieveMethod(o, method);
+
+        Map<String, Object> dataIn = new HashMap<String, Object>();
+        dataIn.put("Button Description", describeButton);
+        dataIn.put("Action Description", describeAction);
+        dataIn.put("KeyCode", UKeyCode.codify(type, action));
+        dataIn.put("Tuple", new BoolTuple<Object, Method>(o, m));
+
+        myDataTable.addNewRowEntry(dataIn);
+
+        myDataTable.viewContents();
+    }
 
     /**
-     * Set the desired action on or off
+     * Class invokes a static method every time action and type occur.
+     * Inserts button description, action description, keycode, and
+     * <class, method> tuple into DataTable
+     * 
+     * @param action - The controller button/key to listen for
+     * @param type - Pressed or released
+     * @param c - The invoking Class
+     * @param method - The static method to be invoked
+     * @param describeButton - Button description
+     * @param describeAction - Action description invoked upon button
+     * @throws NoSuchMethodException - thrown if the string method passed in is
+     *         not a method of Object o
+     * @throws InstantiationException- "thrown when an application tries to
+     *         create an instance of a class
+     *         using the newInstance method in class Class, but the specified
+     *         class object cannot be instantiated because it is an
+     *         interface or is an abstract class."
+     * @throws IllegalAccessException -" thrown when an application tries to
+     *         reflectively create an instance (other than an array),
+     *         set or get a field, or invoke a method, but the currently
+     *         executing method does not have access to the definition of
+     *         the specified class, field, method or constructor"
+     */
+    @SuppressWarnings("rawtypes")
+    public void setControl (int action, int type, Class c, String method, String describeButton,
+                            String describeAction) throws NoSuchMethodException,
+                                                  IllegalAccessException, InstantiationException {
+        Method m = retrieveMethod(c, method);
+
+        Map<String, Object> dataIn = new HashMap<String, Object>();
+        dataIn.put("Button Description", describeButton);
+        dataIn.put("Action Description", describeButton);
+        dataIn.put("KeyCode", UKeyCode.codify(type, action));
+        dataIn.put("Tuple", new BoolTuple<Object, Method>(c, m));
+    }
+
+    /**
+     * Set the desired action on or off.
      * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param isActive - Whether the action should be active or not
-     * @throws InvalidControllerActionException
      */
-    public void setActionActive(int action, int type, boolean isActive)
-            throws InvalidControllerActionException {
-        // actionValidate(action);
+    @SuppressWarnings("unchecked")
+    public void setActionActive (int action, int type, boolean isActive) {
+        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
+        BoolTuple<Object, Method> rowElement = (BoolTuple<Object, Method>) r.getEntry("Tuple");
+
         if (isActive) {
-            menuPlate.get(UKeyCode.codify(type, action)).activate();
-        } else {
-            menuPlate.get(UKeyCode.codify(type, action)).deactivate();
+            rowElement.activate();
+        }
+        else {
+            rowElement.deactivate();
         }
     }
 
@@ -125,16 +210,23 @@ public abstract class Controller<T> {
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    protected void performReflections(Object inputEvent, String method,
-            int actionID) throws IllegalAccessException,
-            InvocationTargetException, NoSuchMethodException {
+    protected void performReflections (Object inputEvent, String method, int actionID)
+                                                                                      throws IllegalAccessException,
+                                                                                      InvocationTargetException,
+                                                                                      NoSuchMethodException {
         broadcastToSubscribers(method, inputEvent);
         invokeMethod(actionID);
     }
 
+    protected void performReflections (String method, int actionID) throws IllegalAccessException,
+                                                                   InvocationTargetException,
+                                                                   NoSuchMethodException {
+        performReflections(null, method, actionID);
+    }
+
     // PRIVATE METHODS
     /**
-     * broadcasts the method to all subscribed elements
+     * broadcasts the method to all subscribed elements.
      * 
      * @param methodName
      * @param inputEvent
@@ -144,11 +236,20 @@ public abstract class Controller<T> {
      * @throws SecurityException
      * @throws NoSuchMethodException
      */
-    private void broadcastToSubscribers(String methodName, Object inputEvent)
-            throws IllegalAccessException, IllegalArgumentException,
-            InvocationTargetException, NoSuchMethodException, SecurityException {
-        for (T subscribedElement : subscribedElements) {
-            Method method = subscribedElement.getClass().getMethod(methodName, inputEvent.getClass());
+    @SuppressWarnings("rawtypes")
+    private void broadcastToSubscribers (String methodName, Object inputEvent)
+                                                                              throws IllegalAccessException,
+                                                                              IllegalArgumentException,
+                                                                              InvocationTargetException,
+                                                                              NoSuchMethodException,
+                                                                              SecurityException {
+        // Make inputEvent null and we no longer need broadcast
+        Class inputType = null;
+        if (inputEvent != null) {
+            inputType = inputEvent.getClass();
+        }
+        for (T subscribedElement : mySubscribedElements) {
+            Method method = subscribedElement.getClass().getMethod(methodName, inputType);
             System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
@@ -160,33 +261,69 @@ public abstract class Controller<T> {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    private void invokeMethod(int actionID) throws IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
-        BoolTuple<Object, Method> retrieveTuple = menuPlate.get(actionID);
-        if (retrieveTuple != null && retrieveTuple.isActive()) {
-            retrieveTuple.getLast().invoke(retrieveTuple.getFirst(),
-                    new Object[0]);
+    @SuppressWarnings("unchecked")
+    private void invokeMethod (int actionID) throws IllegalAccessException,
+                                            IllegalArgumentException, InvocationTargetException {
+        UnmodifiableRowElement r = myDataTable.find("KeyCode", actionID);
+
+        if (r != null) {
+
+            BoolTuple<Object, Method> retrieveTuple =
+                    (BoolTuple<Object, Method>) r.getEntry("Tuple");
+
+            if (retrieveTuple != null && retrieveTuple.isActive()) {
+                retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
+            }
         }
     }
 
-    private Method retrieveMethod(Object o, String method)
-            throws NoSuchMethodException {
+    @SuppressWarnings("rawtypes")
+    private Method retrieveMethod (Object o, String method) throws NoSuchMethodException,
+                                                           IllegalAccessException {
+        Class oc = o.getClass();
+        Method[] allMethods = oc.getMethods();
+        for (Method m : allMethods) {
+            if (m.getName().equals(method)) { return m; }
+        }
+        accessLegalityCheck(o, method);
+        throw new NoSuchMethodException();
+    }
+
+    @SuppressWarnings("rawtypes")
+    private Method retrieveMethod (Class c, String method) throws NoSuchMethodException,
+                                                          IllegalAccessException,
+                                                          InstantiationException {
+        for (Method m : c.getMethods()) {
+            if (m.getName().equals(method) && Modifier.isStatic(m.getModifiers())) { return m; }
+        }
+        accessLegalityCheck(c, method);
+        instantiationLegalityCheck(c, method);
+        throw new NoSuchMethodException();
+    }
+
+    @SuppressWarnings("rawtypes")
+    private void accessLegalityCheck (Object o, String method) throws IllegalAccessException {
         Class oc = o.getClass();
         Method[] allMethods = oc.getDeclaredMethods();
         for (Method m : allMethods) {
-            if (m.getName().equals(method)) // ask TA return boolean or
-                                            // exception handle
-                return m;
+            if (!m.isAccessible()) { throw new IllegalAccessException(); }
         }
-        throw new NoSuchMethodException();
     }
 
-    private Method retrieveMethod(Class c, String method)
-            throws NoSuchMethodException {
-        for (Method m : c.getMethods()) {
-            if (m.getName().equals(method)
-                    && Modifier.isStatic(m.getModifiers())) return m;
+    @SuppressWarnings("rawtypes")
+    private void instantiationLegalityCheck (Class c, String method) throws InstantiationException {
+        if (Modifier.ABSTRACT == c.getModifiers() || Modifier.ABSTRACT == Modifier.INTERFACE) { throw new InstantiationException(); }
+    }
+
+    private void createTable () {
+        try {
+            myDataTable.addNewColumn("Button Description,Action Description,KeyCode,Tuple");
         }
-        throw new NoSuchMethodException();
+        catch (RepeatedColumnNameException e) {
+            e.printStackTrace();
+        }
+        catch (InvalidXMLTagException e){
+            e.printStackTrace();
+        }
     }
 }
