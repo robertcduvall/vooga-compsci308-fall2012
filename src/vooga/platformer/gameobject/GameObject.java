@@ -4,10 +4,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import util.camera.Camera;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.ConfigStringParser;
@@ -33,7 +36,7 @@ public abstract class GameObject {
     private double y;
     private double width;
     private double height;
-    private String defaultImage;
+    private Image defaultImage;
 
     private GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
@@ -68,7 +71,14 @@ public abstract class GameObject {
         y = Double.parseDouble(configMap.get(Y_TAG));
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
         height = Double.parseDouble(configMap.get(HEIGHT_TAG));
-        defaultImage = configMap.get(DEFAULT_IMAGE_TAG);
+        String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
+        try {
+            defaultImage = ImageIO.read(new File(defaultImageName));
+        }
+        catch (IOException E) {
+            System.out.println("could not load image " + defaultImageName);
+            System.exit(0);
+        }
     }
 
     /**
@@ -171,7 +181,9 @@ public abstract class GameObject {
     /**
      * @return the current Image of this GameObject
      */
-    public abstract Image getCurrentImage ();
+    public Image getCurrentImage () {
+        return defaultImage;
+    }
 
     /**
      * Mark the GameObject for removal by the Level. The level should delete
