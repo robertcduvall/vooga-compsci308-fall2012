@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import vooga.turnbased.gamecreation.GameLevelManager;
@@ -28,7 +29,6 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
     private GameLevelManager myLevelManager;
-    private BattleMode myBattleMode;
     private boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
     private List<GameEvent> myEvents;
@@ -122,7 +122,6 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     @Override
     public void update () {
-        //myCurrentGameMode.update();
         for (GameMode mode: myActiveModes) {
             mode.update();
         }
@@ -139,7 +138,6 @@ public class GameManager implements GameLoopMember, InputAPI {
         for (GameMode mode: myActiveModes) {
             mode.paint(g);
         }
-        //myCurrentGameMode.paint(g);
     }
 
     /**
@@ -177,20 +175,13 @@ public class GameManager implements GameLoopMember, InputAPI {
         if ("NO_ACTION".equals(eventName)) {
             // do nothing
         }
-        // deprecated - gamemanager shouldn't be notified about every single
-        // collision
-        /*else if ("MAP_COLLISION".equals(eventName)) {
-            if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
-                changeCurrentMode(myBattleMode);
-            }
-        }*/
         else if ("BATTLE_START".equals(eventName)) {
-            myBattleMode = new BattleMode(this, BattleObject.class, myInvolvedIDs);
-            myActiveModes.add(myBattleMode);
-            changeCurrentMode(myBattleMode);
+            BattleMode battleMode = new BattleMode(this, BattleObject.class, myInvolvedIDs);
+            myActiveModes.add(battleMode);
+            changeCurrentMode(battleMode);
         }
         else if ("BATTLE_OVER".equals(eventName)) {
-            myActiveModes.remove(myBattleMode);
+            removeInactiveModes();
             resumeModes();
         }
         else if ("SWITCH_LEVEL".equals(eventName)) {
@@ -269,7 +260,11 @@ public class GameManager implements GameLoopMember, InputAPI {
         // KeyboardController.PRESSED, this, "gameOver");
     }
     
-    protected void removeMode(GameMode mode) {
-        myActiveModes.remove(mode);
+    private void removeInactiveModes() {
+        Iterator<GameMode> iterator = myActiveModes.iterator();
+        while (iterator.hasNext()) {
+            GameMode mode = iterator.next();
+            if (!mode.isActive()) { iterator.remove(); }
+        }
     }
 }
