@@ -48,7 +48,8 @@ public class BattleMode extends GameMode implements InputAPI {
     // no need for this one any more. use the one below
     /*public BattleMode (GameManager gm, Class modeObjectType) {
         super(gm, modeObjectType);
-    }*/
+    }
+    */
 
     // need to pass ids of battle participants upon battle creation
     public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
