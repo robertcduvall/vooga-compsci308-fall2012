@@ -43,6 +43,7 @@ public class WiiController extends Controller<WiimoteListener> implements
     public static final int WIIMOTE_BUTTON_DOWN = 1024;
     public static final int WIIMOTE_BUTTON_LEFT = 256;
     public static final int WIIMOTE_BUTTON_RIGHT = 512;
+    //public stat
 
     /**
      * Create a new Wii controller.
@@ -174,7 +175,7 @@ public class WiiController extends Controller<WiimoteListener> implements
 
     @Override
     public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) { 
-      //method will never be called
+        //method will never be called
     }
 
     @Override

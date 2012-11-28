@@ -176,8 +176,9 @@ public class LevelEditor extends JFrame {
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
+                    // TODO replace null value for spriteID with a unique id value
                     Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40,
-                            IMAGE_PATH + event.getActionCommand() + ".png");
+                            null, IMAGE_PATH + event.getActionCommand() + ".png");
                     myBoard.add(s);
                 }
             });

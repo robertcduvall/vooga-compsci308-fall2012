@@ -4,12 +4,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import util.camera.Camera;
 import vooga.platformer.level.Level;
+import vooga.platformer.util.ConfigStringParser;
 
 
 /**
@@ -25,6 +29,7 @@ public abstract class GameObject {
     protected static final String WIDTH_TAG = "width";
     protected static final String HEIGHT_TAG = "height";
     protected static final String DEFAULT_IMAGE_TAG = "imagePath";
+    private static final String ID_TAG = "id";
 
     private boolean removeFlag;
     private List<UpdateStrategy> strategyList;
@@ -32,7 +37,7 @@ public abstract class GameObject {
     private double y;
     private double width;
     private double height;
-    private String defaultImage;
+    private Image defaultImage;
 
     private GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
@@ -62,12 +67,19 @@ public abstract class GameObject {
      */
     public GameObject (String configString) {
         this();
-        Map<String, String> configMap = parseConfigString(configString);
+        Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
         x = Double.parseDouble(configMap.get(X_TAG));
         y = Double.parseDouble(configMap.get(Y_TAG));
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
         height = Double.parseDouble(configMap.get(HEIGHT_TAG));
-        defaultImage = configMap.get(DEFAULT_IMAGE_TAG);
+        String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
+        try {
+            defaultImage = ImageIO.read(new File(defaultImageName));
+        }
+        catch (IOException E) {
+            System.out.println("could not load image " + defaultImageName);
+            System.exit(0);
+        }
     }
 
     /**
@@ -89,19 +101,11 @@ public abstract class GameObject {
         params.put(Y_TAG, "y position of the object");
         params.put(WIDTH_TAG, "width of the object");
         params.put(HEIGHT_TAG, "height of the object");
+        params.put(ID_TAG, "ID for sprite. Should be unique.");
         params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
         return params;
     }
 
-    protected Map<String, String> parseConfigString (String configString) {
-        Map<String, String> configMap = new HashMap<String, String>();
-        String[] pairs = configString.split(",");
-        for (String entry : pairs) {
-            String[] entrySplit = entry.split("=");
-            configMap.put(entrySplit[0], entrySplit[1]);
-        }
-        return configMap;
-    }
 
     public double getX () {
         return x;
@@ -179,7 +183,9 @@ public abstract class GameObject {
     /**
      * @return the current Image of this GameObject
      */
-    public abstract Image getCurrentImage ();
+    public Image getCurrentImage () {
+        return defaultImage;
+    }
 
     /**
      * Mark the GameObject for removal by the Level. The level should delete

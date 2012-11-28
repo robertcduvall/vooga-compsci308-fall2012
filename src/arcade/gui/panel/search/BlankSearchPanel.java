@@ -14,7 +14,6 @@ public class BlankSearchPanel extends ASearchPanel {
 
     public BlankSearchPanel (Arcade a) {
         super(a);
-        // TODO Auto-generated constructor stub
     }
 
     @Override

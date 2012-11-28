@@ -18,11 +18,5 @@ abstract public class AFootPanel extends AbstractPanelCreator {
         super.setPanelType(PANEL_TYPE);
 
     }
-    
-//    @Override
-//    public void creatorSetup (Arcade a) {
-//        super.creatorSetup(a);
-//        super.setPanelType(PANEL_TYPE);
-//    }
 
 }

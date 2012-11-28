@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import util.input.android.events.AndroidButtonEvent;
-import util.input.android.events.AndroidControllerEvent;
 import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;

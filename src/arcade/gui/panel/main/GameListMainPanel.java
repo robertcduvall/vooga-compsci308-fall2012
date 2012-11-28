@@ -51,7 +51,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.GREEN);
         /*String[] arrayOfGames = new String[myGameList.size()];
         for (int i = 0; i < myGameList.size(); i++) {
             arrayOfGames[i] = myGameList.get(i);
@@ -81,6 +80,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         myPanel.add(listScroller, c);
         
         JLabel label = new JLabel("Select a Game to View: ");
+        label.setForeground(Color.WHITE);
         label.setLabelFor(listScroller);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 1;

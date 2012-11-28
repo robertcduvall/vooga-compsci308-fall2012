@@ -1,5 +1,8 @@
 package util.datatable.exceptions;
 
+
+
+
 /**
  * Exception thrown for repeated column name.
  * @author Lance
