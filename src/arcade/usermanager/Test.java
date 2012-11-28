@@ -23,7 +23,7 @@ public class Test {
 
     public static void main (String[] args) throws Exception {
 
-        mySocialCenter = SocialCenter.getInstance();
+        mySocialCenter = new SocialCenter();
         testLogOn();
         //testRegister();
 
