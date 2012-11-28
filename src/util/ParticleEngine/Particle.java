@@ -1,5 +1,6 @@
 package util.ParticleEngine;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +9,8 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Random;
+
+import util.calculator.VectorCalculator;
 
 
 /**
@@ -25,20 +28,21 @@ import java.util.Random;
 public class Particle {
     private int durationLimit;
     private int durationExisted;
-    private Point myPosition;
-    private Point myVelocity;
+    public Point myPosition;
+    public Point myVelocity;
     private int myVariance;
     private double myAngle;
-    private double maxDistanceTraveledPerUpdate;
+    public double maxDistanceTraveledPerUpdate;
     
-    private Random myRandomGenerator = new Random();
+    private Random myRandomGenerator;
+    private VectorCalculator vcalculator = new VectorCalculator();
     
     private float[] scales = { 1f, 1f, 1f, 0.1f }; // before somebody comments,
                                                    // I know that these are
                                                    // magic numbers, they're
                                                    // just for testing purposes
     private float[] offsets;
-    //private BufferedImage myImage;
+    private BufferedImage myBufferedImage;
     private Image myImage;
     
     private static final int oneHundred = 100;
@@ -57,60 +61,54 @@ public class Particle {
      */
     public Particle (Point position, Dimension size, Image image,
             Point velocity, int variance, int duration) {
-        myVelocity = velocity;
-        myPosition = position;
-        myVariance = variance;
+    	declareVariables(position, size, image, variance, duration);
+    	myVelocity = velocity;
         setupRadianMode();
-        
-        offsets = new float[4];
-        durationLimit = duration;
-        durationExisted = 0;
-
-        myImage = image;
-/*        myImage = new BufferedImage(size.width, size.height,
-                BufferedImage.TYPE_INT_ARGB);
-        myImage.createGraphics().drawImage(image, myPosition.x, myPosition.y,
-                size.width, size.height, null);*/
     }
 
-    /**
-     * Stores the angle and magnitude of the velocty vector.
-     */
-    private void setupRadianMode(){
-    	double[] normalizedVelocity = normalizeVector(myVelocity);
-    	//System.out.println("x "+normalizedVelocity[0]);
-    	//System.out.println("y "+normalizedVelocity[1]);
+    public Particle (Point position, Dimension size, Image image, 
+    		Double velocityMagnitude, Double velocityAngle, int variance, int duration){
+    	declareVariables(position, size, image, variance, duration);
+    	myAngle = velocityAngle;
+    	maxDistanceTraveledPerUpdate = velocityMagnitude;
+    }
+    
+    private void declareVariables(Point position, Dimension size, Image image,
+            int variance, int duration){
+    	myPosition = position;
+    	myVariance = variance;
+    	durationExisted = 0;
+    	myImage = image;
     	
-    	if (normalizedVelocity[0] == 0) {
-			myAngle = Math.PI/2;
-		}
-    	else {
-			myAngle = Math.atan(normalizedVelocity[1]/normalizedVelocity[0]);
-		}
-    	if (myVelocity.y < 0) {
-			myAngle += Math.PI;
-		}
-    	//System.out.println("My Angle "+myAngle);
-    	maxDistanceTraveledPerUpdate = Math.max(calculateMagnitude(myVelocity),1);
-    	//System.out.println("Max distance" +maxDistanceTraveledPerUpdate);
+    	myRandomGenerator = new Random();
+        offsets = new float[4];
+
+        durationLimit = (int)(myRandomGenerator.nextDouble()*duration);
+        
+        myBufferedImage = new BufferedImage(size.width, size.height,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = (Graphics2D) myBufferedImage.createGraphics();
+        g2d.setBackground(new Color(0,0,0,0));
+        g2d.drawImage(image, 0, 0,size.width, size.height, null);
+        for (int y = 0; y < myBufferedImage.getHeight(); ++y) {
+            for (int x = 0; x < myBufferedImage.getWidth(); ++x) {
+                 int argb = myBufferedImage.getRGB(x, y);
+                 if ((argb & 0x00FFFFFF) == 0x00000000)
+                 {
+                     myBufferedImage.setRGB(x, y, 0);
+                 }
+            }
+        }
     }
     
     /**
-     * Normalizes the vector v (which is represented as a Point).
+     * Stores the angle and magnitude of the velocity vector.
      */
-    private double[] normalizeVector(Point v){
-    	double magnitude = Math.sqrt(v.x*v.x+v.y*v.y);
-    	//System.out.println("Magnitude "+magnitude);
-    	double[] normalizedVector = {((double) v.x)/magnitude, ((double) v.y)/magnitude};
-    	return normalizedVector;
+    private void setupRadianMode(){
+    	myAngle = vcalculator.calculateAngle(myVelocity);
+    	maxDistanceTraveledPerUpdate = Math.max(1, vcalculator.calculateMagnitude(myVelocity));
     }
-  
-    /**
-     * Returns the magnitude of the vector represented by Point p. 
-     */
-    private double calculateMagnitude(Point p){
-    	return Math.sqrt(p.x*p.x+p.y*p.y);
-    }
+
     
     /**
      * Draws the particle
@@ -120,28 +118,23 @@ public class Particle {
     public void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         RescaleOp rop = new RescaleOp(scales, offsets, null);
-        g2d.drawImage(myImage, myPosition.x, myPosition.y, null);
-        //g2d.drawImage(myImage, rop, myPosition.x, myPosition.y);
+        //g2d.drawImage(myImage, myPosition.x, myPosition.y, null);
+        g2d.drawImage(myBufferedImage, rop, myPosition.x, myPosition.y);
     }
 
     public void update () {
     	double r = myRandomGenerator.nextInt(2*myVariance+1);
     	double angleVariation = (r-myVariance)/oneHundred;
-    	//System.out.println("Angle variation: "+angleVariation);
     	
     	double tempNewAngle = myAngle + radiansPerCircle*angleVariation;
-    	//System.out.println("New Angle: "+tempNewAngle);
     	int newX = (int) (Math.cos(tempNewAngle)*maxDistanceTraveledPerUpdate);
     	int newY = (int) (Math.sin(tempNewAngle)*maxDistanceTraveledPerUpdate);
-    	//System.out.println("X-Movement: "+newX);
-    	//System.out.println("Y-Movement: "+newY);
         myPosition.x += newX;
-        myPosition.y += newY;
+        myPosition.y -= newY;
         durationExisted++;
 
         // this is the alpha scale
-        scales[3] = (durationLimit - durationExisted) / durationLimit;
-        //System.out.println("("+myPosition.x+", "+myPosition.y+")");
+        scales[3] = (float)(durationLimit - durationExisted) / (float)durationLimit;
     }
     
     /**
@@ -150,6 +143,6 @@ public class Particle {
      * @return if the particle still exists
      */
     public boolean stillExists () {
-        return (durationExisted < durationLimit);
+        return (durationExisted < durationLimit*0.8f);
     }
 }

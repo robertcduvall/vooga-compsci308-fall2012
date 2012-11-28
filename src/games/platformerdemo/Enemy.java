@@ -1,5 +1,7 @@
 package games.platformerdemo;
 
+import vooga.platformer.gameobject.MovingObject;
+
 public class Enemy extends MovingObject {
     
     /**

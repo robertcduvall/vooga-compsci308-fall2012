@@ -258,8 +258,8 @@ public class LevelBoard extends JPanel implements ISavable {
                 mySprite.flipImage();
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
-                Sprite ns = new Sprite(mySprite.getType(), mySprite.getX(), mySprite.getY(),
-                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getImagePath());
+                Sprite ns = new Sprite(mySprite.getClassName(), mySprite.getX(), mySprite.getY(),
+                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getID(), mySprite.getImagePath());
                 LevelBoard.this.add(ns);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {

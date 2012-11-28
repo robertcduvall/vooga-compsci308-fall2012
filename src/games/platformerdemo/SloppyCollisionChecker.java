@@ -16,8 +16,8 @@ import util.reflection.*;
 public class SloppyCollisionChecker extends BasicCollisionChecker {
     
     public SloppyCollisionChecker() {
-        this.addCollisionEvents("games.platformerdemo.Brick", "games.platformerdemo.Enemy", "games.platformerdemo.BrickEnemy");
-        this.addCollisionEvents("games.platformerdemo.Brick", "games.platformerdemo.Player", "games.platformerdemo.BrickMovingObject");   
+        this.addCollisionEvents("vooga.platformer.gameobject.Brick", "games.platformerdemo.Enemy", "games.platformerdemo.BrickEnemy");
+        this.addCollisionEvents("vooga.platformer.gameobject.Brick", "games.platformerdemo.Player", "games.platformerdemo.BrickMovingObject");   
         this.addCollisionEvents("games.platformerdemo.Enemy", "games.platformerdemo.Player", "games.platformerdemo.EnemyPlayer");
 
     }

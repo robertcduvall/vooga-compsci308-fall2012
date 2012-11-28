@@ -19,10 +19,4 @@ abstract public class AMainPanel extends AbstractPanelCreator {
 
     }
 
-    
-//    @Override
-//    public void creatorSetup (Arcade a) {
-//        super.creatorSetup(a);
-//        super.setPanelType(PANEL_TYPE);
-//    }
 }

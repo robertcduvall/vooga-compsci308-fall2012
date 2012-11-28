@@ -10,7 +10,11 @@ import vooga.platformer.util.camera.FollowingCamera;
 public class DemoLevelFactory {
 
     public Level loadLevel (String levelName) {
+<<<<<<< HEAD
         //return LevelFactory.loadLevel("src/vooga/platformer/test/testLevelFactory.xml", "games.platformerdemo.Player");
+=======
+        return LevelFactory.loadLevel("src/games/platformerdemo/demoLevel.xml", "games.platformerdemo.Player");
+>>>>>>> 089bcd58edaa388127f334cc84f1609b21a303b2
         
         /*
          * The level name "level1" corresponds to an instance of TestLevel with the listed GameObjects added to it. Multiple

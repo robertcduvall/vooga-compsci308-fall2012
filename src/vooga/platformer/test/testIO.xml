@@ -1,23 +1,22 @@
-<level type="someLevelType">
-<id>Level Name</id>
+<level class="vooga.platformer.someGameObjectClass">
+<levelName>Level Name</levelName>
 <width>20</width>
 <height>20</height>
 <backgroundImage>src/vooga/platformer/test/testImage.jpg</backgroundImage>
-<collisionChecker>someCollisionChecker</collisionChecker>
-<camera>someCamera</camera>
-<gameObject type="enemy">
+<collisionChecker>vooga.platformer.someCollisionChecker</collisionChecker>
+<camera>vooga.platformer.someCamera</camera>
+<gameObject class="vooga.platformer.enemy">
 <x>1</x>
 <y>1</y>
 <width>1</width>
 <height>1</height>
+<id>myId</id>
 <imagePath>src/vooga/platformer/test/testImage.jpg</imagePath>
-<strategies>
-<strategy type="movement">
+<strategy class="vooga.platformer.movement">
 <distance>10</distance>
 </strategy>
-</strategies>
-<attr>
+<config>
 <hp>10</hp>
-</attr>
+</config>
 </gameObject>
 </level>

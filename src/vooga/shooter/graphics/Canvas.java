@@ -1,5 +1,6 @@
 package vooga.shooter.graphics;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -16,9 +17,9 @@ import util.input.core.MouseController;
  *         Applet initialization code by Robert Duvall
  */
 public class Canvas extends JApplet {
-    private static final Dimension DEFAULT_SIZE = new Dimension(800, 800);
+    private static final Dimension DEFAULT_SIZE = new Dimension(600, 400);
     private static final int ONE_SECOND = 1000;
-    private static final int FRAMES_PER_SECOND = 30;
+    private static final int FRAMES_PER_SECOND = 15;
     private Timer myTimer;
     private DrawableComponent myScreen;
 
@@ -41,7 +42,7 @@ public class Canvas extends JApplet {
 
     /**
      * Initilizes the applet, but is called by the main method
-     * 
+     *
      * @param size the window size
      */
     public void init (Dimension size) {
@@ -103,6 +104,8 @@ public class Canvas extends JApplet {
      *        SpecialGraphics
      */
     public void paint (Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getSize().width, getSize().height);
         myScreen.paint(g);
     }
 

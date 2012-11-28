@@ -1,6 +1,7 @@
 package util.input.tests.android;
 
 import util.input.android.events.AndroidButtonEvent;
+import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 import util.input.core.AndroidController;
@@ -28,20 +29,7 @@ public class TestAndroidController implements AndroidListener {
         myController = (AndroidController) testController;
         System.out.println("you are running a test android controller");
         testController.subscribe(this);
-        try {
-            testController.setControl(AndroidButtonEvent.Playstation.X, AndroidButtonEvent.BUTTON_PRESSED, this, "jump");
-            testController.setControl(AndroidButtonEvent.Playstation.CIRCLE, AndroidButtonEvent.BUTTON_PRESSED, this, "duck");
-            testController.setControl(AndroidButtonEvent.Playstation.CIRCLE, AndroidButtonEvent.BUTTON_RELEASED, this, "stopDuck");
-        }
-        catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        catch (IllegalAccessException e){
-
-            e.printStackTrace();
-        }
+       
         
     }
 
@@ -78,6 +66,12 @@ public class TestAndroidController implements AndroidListener {
     public void onTouchMovement (LineSegment l) {
         myGame.addLine(l);
         System.out.println("received touch movement");
+        
+    }
+
+    @Override
+    public void onAccelerometerEvent (AndroidSensorEvent e) {
+        // TODO Auto-generated method stub
         
     }
     

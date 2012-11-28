@@ -12,7 +12,10 @@ import javax.swing.JTextField;
  * This class allows a user to enter text that will, in real time
  * match items in a JList. Any items that match the user entered
  * text will remain available to the user in the list. All items
- * that do not match the user input text will be filtered out.
+ * that do not match the user input text will be filtered out. To 
+ * use this class, create a JList. Then, instantiate this class.
+ * Since this class extends JTextField, it will appear as a text
+ * box in your display.
  * 
  * @author Paul Dannenberg
  * 

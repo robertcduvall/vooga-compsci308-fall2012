@@ -1,5 +1,6 @@
 package games.platformerdemo;
 
+import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.gameobject.UpdateStrategy;
 
 /**

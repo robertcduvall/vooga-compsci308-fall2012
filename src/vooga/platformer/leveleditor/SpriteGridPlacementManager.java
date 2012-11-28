@@ -1,11 +1,7 @@
 package vooga.platformer.leveleditor;
 
-import grid.Grid;
 import java.awt.Dimension;
 import java.awt.Point;
-import leveleditor.LevelBoard;
-import leveleditor.Sprite;
-import leveleditor.SpritePlacementManager;
 
 
 /**
