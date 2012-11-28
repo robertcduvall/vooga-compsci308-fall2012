@@ -47,8 +47,6 @@ public abstract class Controller<T> {
         columnName[2] = KEYCODE;
         columnName[4] = TUPLE;
         createTable();
-        
-        
     }
 
     /**
@@ -181,7 +179,7 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(c, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new BoolTuple<Object, Method>(c, m));
+        dataIn.put(TUPLE, new BoolTuple<Class, Method>(c, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
         
         myDataTable.addNewRowEntry(dataIn);
