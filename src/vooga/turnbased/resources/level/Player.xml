@@ -56,5 +56,17 @@
 				<direction>up2</direction>
 			</image>
 		</map>
+		<battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<stats>
+				<maxHealth>10</maxHealth>
+				<health>10</health>
+				<defense>3</defense>
+				<attack>7</attack>
+			</stats>
+			<name>Pikachu</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
+		</battle>
 	</player>
 </players>

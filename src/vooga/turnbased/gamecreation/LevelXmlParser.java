@@ -275,7 +275,7 @@ public class LevelXmlParser {
                 mapObject
                         .setStrategy(new TransportStrategy(
                                                myMapMode,
-                                               "src/vooga/turnbased/resources/level/Level-one.xml",
+                                               "src/vooga/turnbased/resources/level/Level2.xml",
                                                new Point(8, 8)));
             }
 
