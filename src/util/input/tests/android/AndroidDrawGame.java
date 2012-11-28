@@ -43,12 +43,12 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
 
     public AndroidDrawGame () {
         mySegments = new ArrayList<LineSegment>();
-       testController = (AndroidController) ControllerFactory.createAndroidController(1);
+        testController = (AndroidController) ControllerFactory.createAndroidController(1);
         setControls();
         setDoubleBuffered(true);
         this.setFocusable(true);
         myGameLoop = new Thread(this);
-        
+
     }
 
     /**
@@ -65,43 +65,48 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
             testController.setControl(AndroidButtonEvent.TouchController.Y,
                                       AndroidButtonEvent.BUTTON_RELEASED, this, "changeToGreen");
             testController.subscribe(this);
-            /*testController.subscribe(new AndroidListener(){
-
-                @Override
-                public void onScreenPress (AndroidButtonEvent b) {
-                    // TODO Auto-generated method stub
-                    
-                }
-
-                @Override
-                public void onJoyStickMove (JoyStickEvent j) {
-                    // TODO Auto-generated method stub
-                    
-                }
-
-                @Override
-                public void onControllerDisconnect () {
-                    // TODO Auto-generated method stub
-                    
-                }
-
-                @Override
-                public void onTouchMovement (LineSegment l) {
-                    // TODO Auto-generated method stub
-                    
-                }
-
-                @Override
-                public void onAccelerometerEvent (AndroidSensorEvent e) {
-                    // TODO Auto-generated method stub
-                    
-                }
-                
-            }); */
+            /*
+             * testController.subscribe(new AndroidListener(){
+             * 
+             * @Override
+             * public void onScreenPress (AndroidButtonEvent b) {
+             * // TODO Auto-generated method stub
+             * 
+             * }
+             * 
+             * @Override
+             * public void onJoyStickMove (JoyStickEvent j) {
+             * // TODO Auto-generated method stub
+             * 
+             * }
+             * 
+             * @Override
+             * public void onControllerDisconnect () {
+             * // TODO Auto-generated method stub
+             * 
+             * }
+             * 
+             * @Override
+             * public void onTouchMovement (LineSegment l) {
+             * // TODO Auto-generated method stub
+             * 
+             * }
+             * 
+             * @Override
+             * public void onAccelerometerEvent (AndroidSensorEvent e) {
+             * // TODO Auto-generated method stub
+             * 
+             * }
+             * 
+             * });
+             */
             testController.setControlOptions(true, true, true, true);
             AndroidServerMessage controllerInfo = new AndroidServerMessage();
-            controllerInfo.putStringMessage(controllerInfo.PLAYSTATION_DESCRIPTION, "this is a description of the playstation controller");
-            //controllerInfo.putControllerConfigMessage(gameBoyEnabled, playstationEnabled, touchControllerEnabled, accelerometerEnabled);
+            controllerInfo.putStringMessage(controllerInfo.PLAYSTATION_DESCRIPTION,
+                                            "this is a description of the playstation controller");
+            // controllerInfo.putControllerConfigMessage(gameBoyEnabled,
+            // playstationEnabled, touchControllerEnabled,
+            // accelerometerEnabled);
             testController.messageServer(controllerInfo);
             // testController.setControlOptions(false, false, true, false);
         }
@@ -191,15 +196,22 @@ public class AndroidDrawGame extends JPanel implements Runnable, AndroidListener
 
     public void changeToRed () {
         myPenColor = Color.RED;
-        //testController.messageServer();
+        // testController.messageServer();
     }
 
     public void clearScreen () {
         mySegments.clear();
+        testController.unSubscribe(this);
+        testController.activateAction(AndroidButtonEvent.TouchController.X,
+                                      AndroidButtonEvent.BUTTON_RELEASED);
     }
 
     public void changeToBlue () {
         myPenColor = Color.BLUE;
+        // testController.setActionActive(action, type, isActive)
+        // testController.unSubscribe(this);
+        // testController.deactivateAction(AndroidButtonEvent.TouchController.X,
+        // AndroidButtonEvent.BUTTON_RELEASED);
     }
 
     public void changeToGreen () {

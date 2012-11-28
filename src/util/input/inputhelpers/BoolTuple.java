@@ -6,19 +6,19 @@ package util.input.inputhelpers;
  * @param <T>
  * @param <E>
  */
-public class ActivatablePair<T, E> {
+public class BoolTuple<T, E> {
 
     private T myElem1;
     private E myElem2;
     private Boolean myActiveState;
 
-    public ActivatablePair (T elem1, E elem2) {
+    public BoolTuple (T elem1, E elem2) {
         this.myElem1 = elem1;
         this.myElem2 = elem2;
         myActiveState = true;
     }
 
-    public ActivatablePair (T elem1, E elem2, boolean b) {
+    public BoolTuple (T elem1, E elem2, boolean b) {
         this(elem1, elem2);
         myActiveState = b;
     }

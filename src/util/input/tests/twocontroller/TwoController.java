@@ -285,16 +285,16 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
     }
 
     @Override
-    public void onJoyStickMove (JoyStickEvent j) {   
-        if(j.getID()==JoyStickEvent.LEFT){
+    public void onJoyStickMove (JoyStickEvent j) {
+        if (j.getID() == JoyStickEvent.LEFT) {
             double mag = j.getMyMagnitude() * 4;
             double angle = j.getMyAngle();
             int x = (int) (mag * Math.cos(Math.toRadians(angle)));
             int y = (int) (-mag * Math.sin(Math.toRadians(angle)));
             squareOne.setNextMove(x, y);
         }
-        //it is the right joystick
-        else{
+        // it is the right joystick
+        else {
             double mag = j.getMyMagnitude() * 2;
             double angle = j.getMyAngle();
             int x = (int) (mag * Math.cos(Math.toRadians(angle)));

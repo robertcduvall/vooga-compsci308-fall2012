@@ -93,7 +93,8 @@ public class AndroidServerMessage implements Serializable {
     /***
      * 
      * @return a boolean array representing which controls are active, and if
-     *         the accelerometer is active, or null if the message does not contain
+     *         the accelerometer is active, or null if the message does not
+     *         contain
      *         controllerConfigSettings
      */
     public boolean[] getControllerConfigSettings () {
