@@ -106,13 +106,13 @@ public class ParticleEngineTester extends JApplet {
         if (myLastKeyPressed == KeyEvent.VK_S)
             mySystems.add(new Trail());
         if (myLastKeyPressed == KeyEvent.VK_DOWN)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.y+=5; p.setVelocity(new Point(0,3));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(0,5)); p.setVelocity(new Point(0,3));}
         if (myLastKeyPressed == KeyEvent.VK_UP)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.y-=5; p.setVelocity(new Point(0,-3));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(0,-5)); p.setVelocity(new Point(0,-3));}
         if (myLastKeyPressed == KeyEvent.VK_RIGHT)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.x+=5; p.setVelocity(new Point(-3,0));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(5,0)); p.setVelocity(new Point(-3,0));}
         if (myLastKeyPressed == KeyEvent.VK_LEFT)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.x-=5; p.setVelocity(new Point(3,0));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(-5,0)); p.setVelocity(new Point(3,0));}
 
     }
 
@@ -160,8 +160,8 @@ public class ParticleEngineTester extends JApplet {
         g2d.setColor(Color.WHITE);
         g2d.drawString(""+(1/((System.currentTimeMillis()-lastTime)/1000.0f))+" fps",100,100);
         lastTime = System.currentTimeMillis();
-        
-        for (ParticleEngine e : myParticleEngines)
+
+        for (ParticleSystem e : mySystems)
             e.draw(g2d);
         
         Graphics2D graphics = (Graphics2D) g;
@@ -173,8 +173,6 @@ public class ParticleEngineTester extends JApplet {
      * the start method.
      */
     public void update () {
-        for (ParticleEngine e : myParticleEngines)
-            e.update();
         for (ParticleSystem e : mySystems)
             e.update();
     }
