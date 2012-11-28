@@ -61,7 +61,7 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
      * Use this method as a guide on how to initialize multiple controllers.
      */
     public void intializeControllers () {
-        
+
         // create a android controller for player 1
         AndroidController myAndroidController =
                 (AndroidController) ControllerFactory.createAndroidController(1);
@@ -70,28 +70,28 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
         try {
             myAndroidController.setControl(AndroidButtonEvent.Playstation.UP,
                                            AndroidButtonEvent.BUTTON_PRESSED, squareOne,
-                                           "enableMoveUp");
+                    "enableMoveUp");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.DOWN,
                                            AndroidButtonEvent.BUTTON_PRESSED, squareOne,
-                                           "enableMoveDown");
+                    "enableMoveDown");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.LEFT,
                                            AndroidButtonEvent.BUTTON_PRESSED, squareOne,
-                                           "enableMoveLeft");
+                    "enableMoveLeft");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.RIGHT,
                                            AndroidButtonEvent.BUTTON_PRESSED, squareOne,
-                                           "enableMoveRight");
+                    "enableMoveRight");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.UP,
                                            AndroidButtonEvent.BUTTON_RELEASED, squareOne,
-                                           "disableMoveUp");
+                    "disableMoveUp");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.DOWN,
                                            AndroidButtonEvent.BUTTON_RELEASED, squareOne,
-                                           "disableMoveDown");
+                    "disableMoveDown");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.LEFT,
                                            AndroidButtonEvent.BUTTON_RELEASED, squareOne,
-                                           "disableMoveLeft");
+                    "disableMoveLeft");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.RIGHT,
                                            AndroidButtonEvent.BUTTON_RELEASED, squareOne,
-                                           "disableMoveRight");
+                    "disableMoveRight");
             myAndroidController.subscribe(this);
 
         }
@@ -103,35 +103,35 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
 
             e.printStackTrace();
         }
-        
+
         // create an android controller for player 2
         AndroidController myAndroidControllerTwo =
                 (AndroidController) ControllerFactory.createAndroidController(2);
         try {
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.UP,
                                               AndroidButtonEvent.BUTTON_PRESSED, squareTwo,
-                                              "enableMoveUp");
+                    "enableMoveUp");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.DOWN,
                                               AndroidButtonEvent.BUTTON_PRESSED, squareTwo,
-                                              "enableMoveDown");
+                    "enableMoveDown");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.LEFT,
                                               AndroidButtonEvent.BUTTON_PRESSED, squareTwo,
-                                              "enableMoveLeft");
+                    "enableMoveLeft");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.RIGHT,
                                               AndroidButtonEvent.BUTTON_PRESSED, squareTwo,
-                                              "enableMoveRight");
+                    "enableMoveRight");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.UP,
                                               AndroidButtonEvent.BUTTON_RELEASED, squareTwo,
-                                              "disableMoveUp");
+                    "disableMoveUp");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.DOWN,
                                               AndroidButtonEvent.BUTTON_RELEASED, squareTwo,
-                                              "disableMoveDown");
+                    "disableMoveDown");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.LEFT,
                                               AndroidButtonEvent.BUTTON_RELEASED, squareTwo,
-                                              "disableMoveLeft");
+                    "disableMoveLeft");
             myAndroidControllerTwo.setControl(AndroidButtonEvent.Playstation.RIGHT,
                                               AndroidButtonEvent.BUTTON_RELEASED, squareTwo,
-                                              "disableMoveRight");
+                    "disableMoveRight");
         }
         catch (NoSuchMethodException e1) {
             // TODO Auto-generated catch block
@@ -143,34 +143,34 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
         }
 
         // create and android controller for player three
-        
+
         AndroidController myAndroidControllerThree =
                 (AndroidController) ControllerFactory.createAndroidController(3);
         try {
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.UP,
                                                 AndroidButtonEvent.BUTTON_PRESSED, squareFour,
-                                                "enableMoveUp");
+                    "enableMoveUp");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.DOWN,
                                                 AndroidButtonEvent.BUTTON_PRESSED, squareFour,
-                                                "enableMoveDown");
+                    "enableMoveDown");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.LEFT,
                                                 AndroidButtonEvent.BUTTON_PRESSED, squareFour,
-                                                "enableMoveLeft");
+                    "enableMoveLeft");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.RIGHT,
                                                 AndroidButtonEvent.BUTTON_PRESSED, squareFour,
-                                                "enableMoveRight");
+                    "enableMoveRight");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.UP,
                                                 AndroidButtonEvent.BUTTON_RELEASED, squareFour,
-                                                "disableMoveUp");
+                    "disableMoveUp");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.DOWN,
                                                 AndroidButtonEvent.BUTTON_RELEASED, squareFour,
-                                                "disableMoveDown");
+                    "disableMoveDown");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.LEFT,
                                                 AndroidButtonEvent.BUTTON_RELEASED, squareFour,
-                                                "disableMoveLeft");
+                    "disableMoveLeft");
             myAndroidControllerThree.setControl(AndroidButtonEvent.Playstation.RIGHT,
                                                 AndroidButtonEvent.BUTTON_RELEASED, squareFour,
-                                                "disableMoveRight");
+                    "disableMoveRight");
         }
         catch (NoSuchMethodException e1) {
             // TODO Auto-generated catch block
@@ -285,12 +285,22 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
     }
 
     @Override
-    public void onJoyStickMove (JoyStickEvent j) {    
-        double mag = j.getMyMagnitude() * 4;
-        double angle = j.getMyAngle();
-        int x = (int) (mag * Math.cos(Math.toRadians(angle)));
-        int y = (int) (-mag * Math.sin(Math.toRadians(angle)));
-        squareOne.setNextMove(x, y);
+    public void onJoyStickMove (JoyStickEvent j) {   
+        if(j.getID()==JoyStickEvent.LEFT){
+            double mag = j.getMyMagnitude() * 4;
+            double angle = j.getMyAngle();
+            int x = (int) (mag * Math.cos(Math.toRadians(angle)));
+            int y = (int) (-mag * Math.sin(Math.toRadians(angle)));
+            squareOne.setNextMove(x, y);
+        }
+        //it is the right joystick
+        else{
+            double mag = j.getMyMagnitude() * 2;
+            double angle = j.getMyAngle();
+            int x = (int) (mag * Math.cos(Math.toRadians(angle)));
+            int y = (int) (-mag * Math.sin(Math.toRadians(angle)));
+            squareOne.setNextMove(x, y);
+        }
     }
 
     @Override
@@ -307,7 +317,7 @@ public class TwoController extends JPanel implements Runnable, AndroidListener {
     @Override
     public void onAccelerometerEvent (AndroidSensorEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

@@ -1,4 +1,4 @@
-package util.networking;
+package util.networking.jabber;
 
 public interface ChatProtocol{
         String sendMessage(String to, String dest, String body);
