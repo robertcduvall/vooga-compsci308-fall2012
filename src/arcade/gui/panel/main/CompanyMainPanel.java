@@ -21,7 +21,6 @@ public class CompanyMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("CompanyMainPanel");
 
         JLabel label = new JLabel();
         label.setText("This is the Company page.");

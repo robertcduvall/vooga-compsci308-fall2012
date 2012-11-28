@@ -1,7 +1,7 @@
 package arcade.datatransfer;
 
 import java.util.List;
-import util.encrypt.Hasher;
+import util.encrypt.Encrypter;
 import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
@@ -27,7 +27,7 @@ public class ModelInterface {
      */
     public ModelInterface (Arcade a) {
         myArcade = a;
-        mySocialCenter=new SocialCenter();
+        mySocialCenter = new SocialCenter();
         // myGameCenter = new GameCenter(); // GameCenter is currently broken.
         // mySocialCenter = SocialCenter.getInstance();
 
@@ -90,7 +90,7 @@ public class ModelInterface {
          * return false;
          */
         try {
-            return mySocialCenter.logOnUser(username, Hasher.hashCode(password));
+            return mySocialCenter.logOnUser(username, Encrypter.hashCode(password));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -110,12 +110,12 @@ public class ModelInterface {
     public boolean executeNewUser (String username, String password, String fn, String ln) {
 
         // test code
-        //if (username.equals("mdeng1990")) { return false; }
-        try{
-           return mySocialCenter.registerUser(username, password);
+        // if (username.equals("mdeng1990")) { return false; }
+        try {
+            return mySocialCenter.registerUser(username, Encrypter.hashCode(password), fn, ln);
         }
-        catch(Exception e){
-            
+        catch (Exception e) {
+
         }
 
         return true;

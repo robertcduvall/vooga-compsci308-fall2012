@@ -5,13 +5,9 @@ import arcade.utility.ReadWriter;
 import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import util.xml.XmlBuilder;
-import util.xml.XmlParser;
 import util.xml.XmlUtilities;
 
 
@@ -44,10 +40,9 @@ public class Game {
     public Game (IArcadeGame gameObject) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
-        XmlUtilities x = new XmlUtilities();
-        myXmlParser = x.makeDocument("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
-        Element e = XmlUtilities.makeElement(myXmlParser, "GameList");
-        myGameNode = XmlUtilities.getElement(e,
+        myXmlParser = XmlUtilities
+                .makeDocument("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
+        myGameNode = XmlUtilities.makeElement(myXmlParser, "GameList",
                 myGame.getName());
     }
 
@@ -69,12 +64,10 @@ public class Game {
      */
     public String getUserPreferences () {
         NodeList gameInfo = myGameNode.getChildNodes();
-        if(gameInfo == null) return null;
+        if (gameInfo == null) return null;
         for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("preferences".equals(gameInfo.item(i))) {
-                return gameInfo.item(
-                    i).getTextContent();
-            }
+            if ("preferences".equals(gameInfo.item(i))) { return gameInfo.item(
+                    i).getTextContent(); }
         }
         return null;
     }

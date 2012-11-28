@@ -21,7 +21,6 @@ public class HelpMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("HelpMainPanel");
 
         JLabel label = new JLabel();
         label.setText("This is the Help page.");

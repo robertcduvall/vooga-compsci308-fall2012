@@ -21,7 +21,6 @@ public class MessageCenterMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("MessageCenterMainPanel");
 
         JLabel label = new JLabel();
         label.setText("[Message Center]");
