@@ -19,10 +19,10 @@ import vooga.turnbased.gameobject.GameObject;
  *
  */
 public abstract class BattleObject extends GameObject {
-    
+
     private Map<String, Number> myStats;
     private String myName;
-    
+
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
@@ -116,7 +116,7 @@ public abstract class BattleObject extends GameObject {
     }
 
     private void paintStats (Graphics g, int x, int y, int width, int height) {
-        
+
         Graphics2D g2d = (Graphics2D) g;
         g2d.setPaint(Color.CYAN);
         g2d.draw3DRect(x, y, width, height, true);

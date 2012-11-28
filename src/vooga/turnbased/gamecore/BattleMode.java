@@ -12,6 +12,7 @@ import util.input.core.KeyboardController;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.InputAPI;
+import vooga.turnbased.sprites.Sprite;
 
 
 /**
@@ -28,6 +29,11 @@ public class BattleMode extends GameMode implements InputAPI {
     private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
+    private List<Integer> myInvolvedIDs;
+
+    private final int ATTACK_KEY = KeyEvent.VK_A;
+    private final int DEFENSE_KEY = KeyEvent.VK_D;
+    private final int INCREASE_HEALTH_KEY = KeyEvent.VK_I;
 
     /**
      * Constructor for a Battle.
@@ -38,14 +44,18 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param modeObjectType The object type this mode uses, i.e.
      *        BattleObject.java
      */
-    public BattleMode (GameManager gm, Class modeObjectType) {
+    
+    // no need for this one any more. use the one below
+    /*public BattleMode (GameManager gm, Class modeObjectType) {
         super(gm, modeObjectType);
     }
+    */
 
     // need to pass ids of battle participants upon battle creation
     public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
-                       List<Integer> myInvolvedIDs) {
+                       List<Integer> involvedIDs) {
        super(gameManager, modeObjectType);
+       myInvolvedIDs = involvedIDs;
     }
 
     @Override
@@ -66,29 +76,36 @@ public class BattleMode extends GameMode implements InputAPI {
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_A, KeyboardController.RELEASED, this, "hardcodeAttack");
+            GamePane.keyboardController.setControl(ATTACK_KEY, KeyboardController.RELEASED, this,
+                    "triggerAttackEvent");
+            GamePane.keyboardController.setControl(DEFENSE_KEY, KeyboardController.RELEASED, this,
+                    "triggerDefenseEvent");
+            GamePane.keyboardController.setControl(INCREASE_HEALTH_KEY,
+                    KeyboardController.RELEASED, this, "triggerIncreaseHealthEvent");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    // input api only supports invoking methods w/t parameters
-    public void hardcodeAttack() {
-        myPlayerObject.attackEnemy(myEnemy);
-    }
 
     private void makeTeams () {
         // BAD BAD TEST CODE
-        setObjects();
         myTeams = new ArrayList<Team>();
+        
+        // adding player
         List<BattleObject> team1BattleObjects = new ArrayList<BattleObject>();
-        team1BattleObjects.add((BattleObject) getObjects().get(0));
+        Sprite s1 = getGameManager().findSpriteWithID(myInvolvedIDs.get(0));
+        BattleObject bo1 = s1.getObject(BattleObject.class).get(0);
+        team1BattleObjects.add(bo1);
+        
+        // adding enemy
         List<BattleObject> team2BattleObjects = new ArrayList<BattleObject>();
-        team2BattleObjects.add((BattleObject) getObjects().get(1));
-        // BAD BAD BAD
-        myTeams.add(new Team(team1BattleObjects));
+        Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
+        BattleObject bo2 = s2.getObject(BattleObject.class).get(0);
+        team2BattleObjects.add(bo2);
+        
         myTeams.add(new Team(team2BattleObjects));
+        myTeams.add(new Team(team1BattleObjects));
     }
 
     @Override
@@ -169,26 +186,59 @@ public class BattleMode extends GameMode implements InputAPI {
         return teamDead;
     }
 
-    /*@Override
-    public void handleKeyPressed (KeyEvent e) {
-        // use configureInputHandling() instead. see InputAPI.java interface for usage
+    // methods used in input api should be public
+    public void triggerAttackEvent () {
+        // for now, player attacks enemy player
+        // by difference in defense
+        myPlayerObject.attackEnemy(myEnemy);
+        System.out.println("You use ATTACK");
+        displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) { return; }
+        // pause while enemy "thinks"
+        // opposing team makes some predetermined action
+        myEnemy.attackEnemy(myPlayerObject);
+        System.out.println("Your enemy uses ATTACK");
+        displayBattleStats();
     }
-    
-    @Override
-    public void handleKeyReleased (KeyEvent e) {
-        // use configureInputHandling() instead
-        int keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.VK_A:
-                myPlayerObject.attackEnemy(myEnemy);
-                // System.out.println("My health: " +
-                // myPlayerObject.getHealth());
-                // System.out.println("Enemy health: " + myEnemy.getHealth());
-                break;
-            default:
-                break;
-        }
-    }*/
+
+    public void triggerIncreaseHealthEvent () {
+        // for now, increases player health by 1
+        // by difference in defense
+        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue()+1);
+        System.out.println("You use ATTACK");
+        displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) { return; }
+        // pause while enemy "thinks"
+        // opposing team makes some predetermined action
+        myEnemy.attackEnemy(myPlayerObject);
+        System.out.println("Your enemy uses ATTACK");
+        displayBattleStats();
+    }
+
+    public void triggerDefenseEvent () {
+        // for now, increases player defense by one; other team still attacks
+        myPlayerObject.attackEnemy(myEnemy);
+        System.out.println("You use DEFENSE");
+        myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
+        displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) { return; }
+        // pause while enemy "thinks"
+        // opposing team makes some predetermined action
+        myEnemy.attackEnemy(myPlayerObject);
+        System.out.println("Your enemy uses ATTACK");
+        displayBattleStats();
+    }
+
+    // for debugging etc
+    private void displayBattleStats () {
+        // System.out.println("My health: " + myPlayerObject.getHealth());
+        // System.out.println("My defense: " + myPlayerObject.getDefense());
+        // System.out.println("Enemy health: " + myEnemy.getHealth());
+        // System.out.println("Enemy defense: " + myEnemy.getDefense());
+    }
 
     /**
      * Returns the team that should make the next move and increments

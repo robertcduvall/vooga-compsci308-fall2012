@@ -2,7 +2,7 @@
 	<player>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
-			<event>MAP_COLLISION</event>
+			<event>NO_ACTION</event>
 			<location>
 				<x>8</x>
 				<y>8</y>
@@ -63,7 +63,7 @@
 				<maxHealth>10</maxHealth>
 				<health>10</health>
 				<defense>3</defense>
-				<attack>7</attack>
+				<attack>5</attack>
 			</stats>
 			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>

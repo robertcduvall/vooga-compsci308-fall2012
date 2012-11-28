@@ -110,6 +110,8 @@ public class LevelXmlParser {
         mapPlayer.setImageLoops(imageLoops);
         myMapMode.setPlayer(mapPlayer);
         s.addGameObject(mapPlayer);
+        BattleObject playerBattleObject = parseBattleObject(s, getListOfPlayerElements().get(0));
+        s.addGameObject(playerBattleObject);
         return s;
     }
 
@@ -181,6 +183,15 @@ public class LevelXmlParser {
                                                            imageMap, myMapMode);
     }
 
+    private List<Element> getListOfPlayerElements () {
+        Element playerRoot = myPlayerXmlDocument.getDocumentElement();
+        List<Element> playerList =
+                (List<Element>) XmlUtilities.getElements(playerRoot, "player");
+        if (playerList.isEmpty()) { return null; }
+        return playerList;
+    }
+
+    
     private Element isolateMapPlayer () {
         Element playerRoot = myPlayerXmlDocument.getDocumentElement();
         List<Element> playerList =
@@ -191,6 +202,7 @@ public class LevelXmlParser {
         Element mapPlayer = mapList.get(0);
         return mapPlayer;
     }
+
 
     private Point parseLocation (Element element) {
         List<Element> locationList = (List<Element>) XmlUtilities.getElements(element, LOCATION);
