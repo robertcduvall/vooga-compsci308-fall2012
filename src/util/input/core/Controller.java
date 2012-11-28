@@ -59,9 +59,10 @@ public abstract class Controller<T> {
      * @param o - The invoking object
      * @param method - The method to be invoked
      * @throws NoSuchMethodException
+     * @throws IllegalAccessException 
      */
     public void setControl(int action, int type, Object o, String method)
-            throws NoSuchMethodException {
+            throws NoSuchMethodException, IllegalAccessException {
         // InvalidControllerType, InvalidControllerActionException {
         Method m = retrieveMethod(o, method);
         // actionValidate(action);//make sure to check for codify decodify
@@ -172,9 +173,9 @@ public abstract class Controller<T> {
 
     @SuppressWarnings("rawtypes")
     private Method retrieveMethod(Object o, String method)
-            throws NoSuchMethodException {
+            throws NoSuchMethodException, IllegalAccessException {
         Class oc = o.getClass();
-        Method[] allMethods = oc.getDeclaredMethods();
+        Method[] allMethods = oc.getMethods();
         for (Method m : allMethods) {
             if (m.getName().equals(method)) {
                 return m;

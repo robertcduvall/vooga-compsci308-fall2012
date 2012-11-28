@@ -1,28 +1,27 @@
+package vooga.turnbased.gui;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import vooga.turnbased.gamecore.GameLoopMember;
+import vooga.turnbased.gamecore.GameManager;
+
+
+@SuppressWarnings("serial")
 /**
  * The canvas that paints game objects every for every myDelayTime milliseconds
  * Responds to input events
  * 
  * @author Rex, Vo
  */
-package vooga.turnbased.gui;
-
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import util.input.core.Controller;
-import vooga.turnbased.gamecore.GameManager;
-import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
-
-
-@SuppressWarnings("serial")
-public class GamePane extends DisplayPane implements Runnable {
+public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
     private GameManager myGameManager;
     private Thread myGameThread;
-    private int myDelayTime;
+    private static int delayBetweenGameLoopCycles;
 
     // InfoPanel infoPanel;
 
@@ -35,12 +34,10 @@ public class GamePane extends DisplayPane implements Runnable {
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
         myGameThread = new Thread(this);
-        myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
-        addKeyListener(this);
+        delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
         addMouseListener(new GameMouseListener());
         myGameManager = new GameManager(this);
         enableFocus();
-        configureInputHandling();
     }
 
     /**
@@ -54,7 +51,7 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * update game
      */
-    //@Override
+    @Override
     public void update () {
        myGameManager.update();
     }
@@ -62,12 +59,13 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * Paint gameobjects and background to the canvas using double buffering
      */
-    // @Override
+    @Override
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
         Graphics nextFrameGraphics = nextFrameImage.getGraphics();
+        Graphics2D g2d = (Graphics2D) g;
         myGameManager.paint(nextFrameGraphics);
-        g.drawImage(nextFrameImage, 0, 0, null);
+        g2d.drawImage(nextFrameImage, 0, 0, null);
     }
 
     /**
@@ -81,7 +79,7 @@ public class GamePane extends DisplayPane implements Runnable {
             update();
             repaint();
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = myDelayTime - timeDiff;
+            sleep = delayBetweenGameLoopCycles - timeDiff;
             if (sleep < 0) {
                 sleep = 0;
             }
@@ -93,39 +91,9 @@ public class GamePane extends DisplayPane implements Runnable {
             }
         }
     }
-
-    public void configureInputHandling () {
-        // handle actions that shouldn't be passed down to gamemanager
-    }
-
-    /**
-     * event handling when user types anything
-     */
-    @Override
-    public void keyTyped (KeyEvent e) {
-        // System.out.println("Typed " + e.getKeyCode());
-    }
-
-    /**
-     * event handling when any key is pressed
-     */
-    @Override
-    public void keyPressed (KeyEvent e) {
-        // System.out.println("Pressed " + e.getKeyCode());
-        myGameManager.handleKeyPressed(e);
-    }
-
-    /**
-     * event handling when any key is released
-     */
-    @Override
-    public void keyReleased (KeyEvent e) {
-        // System.out.println("Released " + e.getKeyCode());
-        myGameManager.handleKeyReleased(e);
-    }
-
-    public int getDelayTime () {
-        return myDelayTime;
+    
+    public static int getDelayTime () {
+        return delayBetweenGameLoopCycles;
     }
 
     private class GameMouseListener extends MouseAdapter {

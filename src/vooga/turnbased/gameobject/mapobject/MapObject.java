@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -6,6 +6,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
+import vooga.turnbased.gameobject.mapstrategy.NullStrategy;
 
 
 /**
@@ -15,15 +18,15 @@ import vooga.turnbased.gamecore.MapMode;
  * 
  */
 public abstract class MapObject extends GameObject {
-    // checkstyle does not like that these are protected
     protected Dimension myTileDimensions;
     protected Point myCameraOrigin;
     protected Point myOffset;
 
     private Point myLocation;
     private boolean myIsVisible;
-    private boolean myIsMoving;
     private MapMode myMapMode;
+    
+    private MapStrategy myMapStrategy; //addition of Strategy hardcoded right now
 
     /**
      * Creates the MapObject that will be used in MapMode.
@@ -39,6 +42,7 @@ public abstract class MapObject extends GameObject {
         setLocation(location);
         setVisible(true);
         setMapMode(mapMode);
+        myMapStrategy = new NullStrategy(mapMode);
     }
 
     private void setMapMode (MapMode mapMode) {
@@ -70,7 +74,7 @@ public abstract class MapObject extends GameObject {
     }
 
     // ...this is poorly named
-    public Point getLocation (Point p) {
+    public Point IncrementLocation (Point p) {
         int x = getLocation().x + p.x;
         int y = getLocation().y + p.y;
         return new Point(x, y);
@@ -93,33 +97,22 @@ public abstract class MapObject extends GameObject {
     }
 
     /**
-     * Sets whether the object is moving or not.
-     * @param b Boolean to set state of "moving".
-     */
-    public void setMoving (boolean b) {
-        myIsMoving = b;
-    }
-
-    /**
-     * Checks whether the object is moving or not.
-     * @return myIsMoving True if moving, false if not.
-     */
-    public boolean isMoving () {
-        return myIsMoving;
-    }
-
-    /**
      * 
      * @param target MapObject to be interacted with.
      */
     public void interact (MapObject target) {
+        myMapStrategy.performStrategy(target);
+    }
+    
+    public void setStrategy (MapStrategy mapStrategy) {
+        myMapStrategy = mapStrategy;
     }
 
     /**
      * Updates MapObject; delayTime not used.
      * @param delayTime Not used.
      */
-    public void update (int delayTime) {
+    public void update () {
         myTileDimensions = new Dimension(myMapMode.getTileDimensions());
         myCameraOrigin = new Point(myMapMode.getOrigin());
         Rectangle camera = myMapMode.getCamera();
@@ -133,8 +126,23 @@ public abstract class MapObject extends GameObject {
      * @param g Graphics object.
      */
     public void paint (Graphics g) {
-        if (getImage() == null || myOffset == null || myTileDimensions == null) { return; }
-        g.drawImage(getImage(), myOffset.x, myOffset.y, myTileDimensions.width,
-                myTileDimensions.height, null);
+        paintInProportion(g, myOffset, myTileDimensions, 1);
+    }
+    
+    protected void paintInProportion(Graphics g, Point offset, Dimension tileDimension,
+    		double proportion) {
+    	if (getImage() == null || offset == null || tileDimension == null) {
+        	return;
+        }
+    	offset.x += (1 - proportion) / 2 * tileDimension.width;
+    	offset.y += (1 - proportion) / 2 * tileDimension.height;
+    	int imageWidth = (int)Math.round(tileDimension.width * proportion);
+    	int imageHeight = (int)Math.round(tileDimension.height * proportion);
+        g.drawImage(getImage(), offset.x, offset.y, imageWidth, imageHeight, null);
+    }
+    
+    @Override
+    public void clear() {
+        myMapMode.removeMapObject(this);
     }
 }

@@ -1,11 +1,17 @@
 package vooga.turnbased.gamecore;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import vooga.turnbased.gameobject.BattleObject;
+import util.input.core.KeyboardController;
+import vooga.turnbased.gameobject.battleobject.BattleObject;
+import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.gui.InputAPI;
 
 
 /**
@@ -15,16 +21,17 @@ import vooga.turnbased.gameobject.BattleObject;
  * @author David Howdyshell, Michael Elgart, Kevin Gao, Jenni Mercado
  * 
  */
-public class BattleMode extends GameMode {
+public class BattleMode extends GameMode implements InputAPI {
     private List<Team> myTeams;
     private BattleObject myPlayerObject;
     private BattleObject myEnemy;
     private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
-    
+
     private final int ATTACK_KEY = KeyEvent.VK_A;
     private final int DEFENSE_KEY = KeyEvent.VK_D;
+    private final int INCREASE_HEALTH_KEY = KeyEvent.VK_I;
 
     /**
      * Constructor for a Battle.
@@ -39,6 +46,12 @@ public class BattleMode extends GameMode {
         super(gm, modeObjectType);
     }
 
+    // need to pass ids of battle participants upon battle creation
+    public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
+            List<Integer> myInvolvedIDs) {
+        super(gameManager, modeObjectType);
+    }
+
     @Override
     public void pause () {
         myTeams.clear();
@@ -49,8 +62,29 @@ public class BattleMode extends GameMode {
         makeTeams();
         initialize();
         System.out.println("BattleStarting!");
+        configureInputHandling();
         // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
         // ArrayList<Integer>());
+    }
+
+    public void configureInputHandling () {
+        // use input api for key handling. notice how you can only invoke methods w/t parameters...
+        try {
+            GamePane.keyboardController.setControl(ATTACK_KEY, KeyboardController.RELEASED, this,
+                    "triggerAttackEvent");
+            GamePane.keyboardController.setControl(DEFENSE_KEY, KeyboardController.RELEASED, this,
+                    "triggerDefenseEvent");
+            GamePane.keyboardController.setControl(INCREASE_HEALTH_KEY,
+                    KeyboardController.RELEASED, this, "triggerIncreaseHealthEvent");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // input api only supports invoking methods w/t parameters
+    public void hardcodeAttack () {
+        myPlayerObject.attackEnemy(myEnemy);
     }
 
     private void makeTeams () {
@@ -83,18 +117,36 @@ public class BattleMode extends GameMode {
     // this needs to be generalized
     @Override
     public void paint (Graphics g) {
-        int i = -300; // fix painting this stuff...
+        Dimension myWindow = getGameManager().getPaneDimension();
+        int height = myWindow.height;
+        int width = myWindow.width;
+        int teamNumber = 0;
         for (Team t : myTeams) {
-            i += 300;
             for (BattleObject b : t.getBattleObjects()) {
-                b.paint(g, 0, 0 + i, 800, 300);
+                b.paintBattleObject(g, 0, (teamNumber) * height / 3, width, height / 3);
+                // can this be done via b.paint(g)? i.e. let battleobject do
+                // it's own paint/update work
+                // trying to keep paint/update signature consistent across
+                // project..
             }
+            teamNumber += 1;
         }
+        paintMenu(g);
+    }
+
+    public void paintMenu (Graphics g) {
+        Dimension myWindow = getGameManager().getPaneDimension();
+        int height = myWindow.height;
+        int width = myWindow.width;
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.GREEN);
+        g2d.fillRect(0, 2 * height / 3, width, height / 3);
     }
 
     /**
      * Initializes a battle with the current lists of BattleObjects
      */
+    @Override
     public void initialize () {
         myState = BattleState.WAITING_FOR_MOVE;
         myTurnCount = 0;
@@ -113,48 +165,26 @@ public class BattleMode extends GameMode {
     }
 
     private boolean isBattleOver () {
-        boolean allDead = false;
+        boolean teamDead = false;
         for (Team t : myTeams) {
             if (!t.stillAlive()) {
-                allDead = true;
+                teamDead = true;
                 // hardcoded
+                getGameManager().findSpriteWithID(t.getBattleObjects().get(0).getID()).clear();
                 getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
             }
         }
-        return allDead;
+        return teamDead;
     }
 
-    @Override
-    public void handleKeyPressed (KeyEvent e) {
-        // TODO Auto-generated method stub
-    }
-
-    @Override
-    public void handleKeyReleased (KeyEvent e) {
-        // should some of this be handled in update?
-        int keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case ATTACK_KEY: 
-                triggerAttackEvent();
-                break;
-            case DEFENSE_KEY:
-                triggerDefenseEvent();
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void triggerAttackEvent() {
+    private void triggerAttackEvent () {
         // for now, player attacks enemy player
         // by difference in defense
         myPlayerObject.attackEnemy(myEnemy);
         System.out.println("You use ATTACK");
         displayBattleStats();
         // check if enemy/opposing team is dead
-        if (isBattleOver()) {
-            return;
-        }
+        if (isBattleOver()) { return; }
         // pause while enemy "thinks"
         // opposing team makes some predetermined action
         myEnemy.attackEnemy(myPlayerObject);
@@ -162,16 +192,29 @@ public class BattleMode extends GameMode {
         displayBattleStats();
     }
 
-    private void triggerDefenseEvent() {
+    private void triggerIncreaseHealthEvent () {
+        // for now, increases player health by 1
+        // by difference in defense
+        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue()+1);
+        System.out.println("You use ATTACK");
+        displayBattleStats();
+        // check if enemy/opposing team is dead
+        if (isBattleOver()) { return; }
+        // pause while enemy "thinks"
+        // opposing team makes some predetermined action
+        myEnemy.attackEnemy(myPlayerObject);
+        System.out.println("Your enemy uses ATTACK");
+        displayBattleStats();
+    }
+
+    private void triggerDefenseEvent () {
         // for now, increases player defense by one; other team still attacks
         myPlayerObject.attackEnemy(myEnemy);
         System.out.println("You use DEFENSE");
-        myPlayerObject.setDefense(myPlayerObject.getDefense() + 1);
+        myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
         displayBattleStats();
         // check if enemy/opposing team is dead
-        if (isBattleOver()) {
-            return;
-        }
+        if (isBattleOver()) { return; }
         // pause while enemy "thinks"
         // opposing team makes some predetermined action
         myEnemy.attackEnemy(myPlayerObject);
@@ -181,15 +224,15 @@ public class BattleMode extends GameMode {
 
     // for debugging etc
     private void displayBattleStats () {
-        System.out.println("My health: " + myPlayerObject.getHealth());
+        // System.out.println("My health: " + myPlayerObject.getHealth());
         // System.out.println("My defense: " + myPlayerObject.getDefense());
-        System.out.println("Enemy health: " + myEnemy.getHealth());
+        // System.out.println("Enemy health: " + myEnemy.getHealth());
         // System.out.println("Enemy defense: " + myEnemy.getDefense());
     }
 
     /**
      * Returns the team that should make the next move and increments
-     * myTurnCount by 1. 
+     * myTurnCount by 1.
      * 
      * @return Team that should make next move.
      */
@@ -232,16 +275,5 @@ public class BattleMode extends GameMode {
 
     private enum BattleState {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
-    }
-
-    @Override
-    public void configureInputHandling () {
-        // handle inputs
-    }
-
-    @Override
-    public void init () {
-        // TODO Auto-generated method stub
-
     }
 }

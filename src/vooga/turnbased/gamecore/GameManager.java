@@ -2,28 +2,18 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import util.imageprocessing.ImageLoop;
-import util.input.core.KeyboardController;
-import util.input.core.MouseController;
-import vooga.turnbased.gameobject.BattleObject;
+import vooga.turnbased.gamecreation.GameLevelManager;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gameobject.MapPlayerObject;
-import vooga.turnbased.gameobject.MapTileObject;
-import vooga.turnbased.gameobject.MovingMapObject;
-import vooga.turnbased.gameobject.TestMonster;
+import vooga.turnbased.gameobject.battleobject.BattleObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
+import vooga.turnbased.gui.InputAPI;
 import vooga.turnbased.sprites.Sprite;
 
 
@@ -34,19 +24,16 @@ import vooga.turnbased.sprites.Sprite;
  * @author Turnbased team
  * 
  */
-public class GameManager {
+public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
-    private MapMode myMapMode; // Fix me once the factory opens!s
+    private GameLevelManager myLevelManager;
+    private MapMode myMapMode;
     private BattleMode myBattleMode;
     private GameMode myCurrentGameMode;
-    // private Factory myFactory;
-    // private MapObject myPlayer;
-    private final boolean isOver;
+    private boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
-    private List<ModeEvent> myEvents;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
+    private List<GameEvent> myEvents;
 
     /**
      * Constructor of GameManager
@@ -56,102 +43,43 @@ public class GameManager {
      */
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
-        myKeyboardController = gameCanvas.getKeyboardController();
-        myMouseController = gameCanvas.getMouseController();
         isOver = false;
-        // mySprites =
-        // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
         mySprites = new HashMap<Integer, Sprite>();
-        myEvents = new LinkedList<ModeEvent>();
-        myMapMode = new MapMode(this, MapObject.class);
+        myEvents = new LinkedList<GameEvent>();
         myBattleMode = new BattleMode(this, BattleObject.class);
-        generateHardcodedLevel();
-        myCurrentGameMode = myMapMode;
-        myCurrentGameMode.init();
+        myLevelManager = new GameLevelManager(this);
+        initializeGameLevel(GameWindow.importString("Entrance"), null);
         configureInputHandling();
     }
 
-    private void generateHardcodedLevel () { // factory will do this job
-        // eventually...
-        myMapMode.setNumDisplayRows(Integer.parseInt(GameWindow.importString("CameraHeight")));
-        myMapMode.setNumDisplayCols(Integer.parseInt(GameWindow.importString("CameraWidth")));
-        myMapMode.setBottomRight(new Point(20, 30));
-        Sprite s = new Sprite();
-        for (int i = 0; i < myMapMode.getBottomRight().x; i++) {
-            for (int j = 0; j < myMapMode.getBottomRight().y; j++) {
-                Point p = new Point(i, j);
-                s = new Sprite();
-                s.addGameObject(new MapTileObject(s.getID(), "NO_ACTION", p, GameWindow
-                        .importImage("GrassImage"), myMapMode));
-                mySprites.put(s.getID(), s);
-            }
+    public void initializeGameLevel (String levelFileName, MapObject enteringObject) {
+        myLevelManager.enterMap(levelFileName, enteringObject);
+        myMapMode = myLevelManager.getCurrentMapMode();
+        mySprites.clear();
+        addSprites(myLevelManager.getCurrentSprites());
+        myCurrentGameMode = myMapMode;
+        myCurrentGameMode.initialize();
+    }
+
+    /**
+     * find the Sprite with specific ID
+     * 
+     * @param ID ID of the Sprite
+     * @return the Sprite found (null if no Sprite with that ID was found)
+     */
+    public Sprite findSpriteWithID (int ID) {
+        return mySprites.get(ID);
+    }
+
+    /**
+     * add a list of sprites to the GameManager
+     * 
+     * @param sprites
+     */
+    private void addSprites (List<Sprite> sprites) {
+        for (Sprite s : sprites) {
+            mySprites.put(s.getID(), s);
         }
-
-        s = new Sprite();
-        s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3, GameWindow
-                .importImage("something")));
-        Point center = new Point(5, 5);
-        MovingMapObject test1 =
-                new MovingMapObject(0, "MAP_COLLISION", center,
-                                    GameWindow.importImage("something"), myMapMode);
-
-        s.addGameObject(test1);
-
-        mySprites.put(s.getID(), s);
-
-        s = new Sprite();
-        s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3, GameWindow
-                .importImage("PlayerImage")));
-
-        mySprites.put(s.getID(), s);
-
-        center = new Point(8, 8);
-        Map<String, Image> images = new HashMap<String, Image>();
-        images.put("left", GameWindow.importImage("PlayerLeft"));
-        images.put("right", GameWindow.importImage("PlayerRight"));
-        images.put("down", GameWindow.importImage("PlayerDown"));
-        images.put("up", GameWindow.importImage("PlayerUp"));
-        Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
-        Image left = GameWindow.importImage("PlayerLeft");
-        Image left1 = GameWindow.importImage("PlayerLeft1");
-        Image left2 = GameWindow.importImage("PlayerLeft2");
-        Image right = GameWindow.importImage("PlayerRight");
-        Image right1 = GameWindow.importImage("PlayerRight1");
-        Image right2 = GameWindow.importImage("PlayerRight2");
-        Image up = GameWindow.importImage("PlayerUp");
-        Image up1 = GameWindow.importImage("PlayerUp1");
-        Image up2 = GameWindow.importImage("PlayerUp2");
-        Image down = GameWindow.importImage("PlayerDown");
-        Image down1 = GameWindow.importImage("PlayerDown1");
-        Image down2 = GameWindow.importImage("PlayerDown2");
-        List<Image> leftList = new ArrayList<Image>();
-        leftList.add(left);
-        leftList.add(left1);
-        leftList.add(left2);
-        imageLoops.put("left", new ImageLoop(leftList));
-        List<Image> rightList = new ArrayList<Image>();
-        rightList.add(right);
-        rightList.add(right1);
-        rightList.add(right2);
-        imageLoops.put("right", new ImageLoop(rightList));
-        List<Image> upList = new ArrayList<Image>();
-        upList.add(up);
-        upList.add(up1);
-        upList.add(up2);
-        imageLoops.put("up", new ImageLoop(upList));
-        List<Image> downList = new ArrayList<Image>();
-        downList.add(down);
-        downList.add(down1);
-        downList.add(down2);
-        imageLoops.put("down", new ImageLoop(downList));
-
-        s = new Sprite();
-        MapPlayerObject player =
-                new MapPlayerObject(s.getID(), "MAP_COLLISION", center, images, myMapMode);
-        player.setImageLoops(imageLoops);
-        myMapMode.setPlayer(player);
-        s.addGameObject(player);
-        mySprites.put(s.getID(), s);
     }
 
     /**
@@ -172,12 +100,12 @@ public class GameManager {
 
     /**
      * Removes the sprite with the given ID from the list of sprites in the
-     * game.
+     * game. Trigger removal of corresponding gameobjects inside each sprite.
      * 
      * @param spriteID Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
-        mySprites.remove(spriteID);
+        findSpriteWithID(spriteID).clear();
     }
 
     /**
@@ -192,6 +120,7 @@ public class GameManager {
     /**
      * Updates the actve game mode and handles any events occurring.
      */
+    @Override
     public void update () {
         myCurrentGameMode.update();
         handleEvents();
@@ -202,6 +131,7 @@ public class GameManager {
      * 
      * @param g The Graphics object of the offScreenImage.
      */
+    @Override
     public void paint (Graphics g) {
         myCurrentGameMode.paint(g);
     }
@@ -213,8 +143,15 @@ public class GameManager {
      * @param involvedSpriteIDs List of integer IDs of sprites involved in given
      *        action.
      */
+    // deprecated - use the one below
     public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
-        myEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
+        myEvents.add(new GameEvent(eventName, involvedSpriteIDs));
+    }
+    
+    // gamemodes collect their local events, then decide which ones should be
+    // reported to gamemanager, then report at the end of update cycle using this method
+    public void flagEvent (GameEvent m) {
+        myEvents.add(m);
     }
 
     /**
@@ -223,22 +160,55 @@ public class GameManager {
      */
     private void handleEvents () {
         while (!myEvents.isEmpty()) {
-            ModeEvent m = myEvents.remove(0);
-            handleEvent(m.getModeEventName(), m.getEventInvolvedIDs());
+            GameEvent m = myEvents.remove(0);
+            handleEvent(m);
         }
     }
 
-    private void handleEvent (String eventName, List<Integer> myInvolvedIDs) {
+    private void handleEvent (GameEvent event) {
+        String eventName = event.getModeEventName();
+        List<Integer> myInvolvedIDs = event.getEventInvolvedIDs();
         if ("NO_ACTION".equals(eventName)) {
             // do nothing
         }
-        else if ("MAP_COLLISION".equals(eventName)) {
+        // deprecated - gamemanager shouldn't be notified about every single
+        // collision
+        /*else if ("MAP_COLLISION".equals(eventName)) {
             if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
                 changeCurrentMode(myBattleMode);
             }
+        }*/
+        else if ("BATTLE_START".equals(eventName)) {
+            myBattleMode = new BattleMode(this, BattleObject.class, myInvolvedIDs);
+            changeCurrentMode(myBattleMode);
         }
         else if ("BATTLE_OVER".equals(eventName)) {
             changeCurrentMode(myMapMode);
+        }
+        else if ("SWITCH_LEVEL".equals(eventName)) {
+            // Rex can you add code for switching to new level here? smth like:
+            /*
+            Sprite teleportSprite = findSpriteWithID(myInvolvedIDs.get(0));
+            MapTeleportObject teleport = teleportSprite.getObject(MapTeleportObject.class).get(0);
+            String newLevelXML = teleport.getLevelXML();
+            myMapMode = myLevelManager.getLevelBySpecifiedInXML(newLevelXML);
+            changeCurrentMode(myMapMode);
+            */
+        }
+        else if ("DIALOGUE_START".equals(eventName)) {
+            //myDialogueMode = new DialogueMode(this, BattleObject.class, myInvolvedIDs);
+            //changeCurrentMode(myDialogueMode);
+        }
+        else if ("DIALOGUE_OVER".equals(eventName)) {
+            changeCurrentMode(myMapMode);
+        }
+        else if ("INTERACTION_COMPLETED".equals(eventName)) { 
+            // to win, need to interact with specific (or all) sprites, i.e.
+            // NPCs, Enemies, Pickup-able items, teleports, etc.
+            /*
+            myGameLogic.processInteraction(event);
+            if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
+            */
         }
         else {
             System.err.println("Unrecognized mode event requested.");
@@ -254,24 +224,6 @@ public class GameManager {
         myCurrentGameMode.pause();
         myCurrentGameMode = mode;
         myCurrentGameMode.resume();
-    }
-
-    /**
-     * Passes key input to the GameMode.
-     * 
-     * @param e KeyEvent to be handled.
-     */
-    public void handleKeyPressed (KeyEvent e) {
-        myCurrentGameMode.handleKeyPressed(e);
-    }
-
-    /**
-     * Passes key input to the GameMode.
-     * 
-     * @param e KeyEvent to be handled.
-     */
-    public void handleKeyReleased (KeyEvent e) {
-        myCurrentGameMode.handleKeyReleased(e);
     }
 
     /**
@@ -292,53 +244,9 @@ public class GameManager {
         return myGamePane.getSize();
     }
 
-    /**
-     * Returns the current time delay for the game window.
-     * 
-     * @return Current time delay.
-     */
-    public int getDelayTime () {
-        return myGamePane.getDelayTime();
-    }
-
-    /**
-     * Returns the current KeyboardController.
-     * 
-     * @return KeyboardController in use.
-     */
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
-    }
-
-    /**
-     * Returns the current MouseController.
-     * 
-     * @return MouseController in use.
-     */
-    public MouseController getMouseController () {
-        return myMouseController;
-    }
-
-    private void configureInputHandling () {
+    public void configureInputHandling () {
         // handle actions that shouldn't be passed down to individual gamemodes,
-        // i.e. game pause
-    }
-
-    private class ModeEvent {
-        private final String myName;
-        private final List<Integer> myInvolvedIDs;
-
-        public ModeEvent (String eventName, List<Integer> involvedIDs) {
-            myName = eventName;
-            myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
-        }
-
-        public String getModeEventName () {
-            return myName;
-        }
-
-        public List<Integer> getEventInvolvedIDs () {
-            return myInvolvedIDs;
-        }
+        // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
+        // KeyboardController.PRESSED, this, "gameOver");
     }
 }

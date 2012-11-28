@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,6 +13,8 @@ import vooga.turnbased.gamecore.MapMode;
  * 
  */
 public class MapItemObject extends MapObject {
+	
+	private static final double SIZE_RELATIVE_TO_TILE = 0.34;
 
     /**
      * Creates the MapItemObject that will be used in MapMode.
@@ -40,9 +42,6 @@ public class MapItemObject extends MapObject {
 
     @Override
     public void paint (Graphics g) {
-        int x = (myTileDimensions.width - getImage().getWidth(null)) / 2;
-        int y = (myTileDimensions.height - getImage().getHeight(null)) / 2;
-        g.drawImage(getImage(), myOffset.x + x, myOffset.y + y, getImage().getWidth(null),
-                getImage().getHeight(null), null);
+        paintInProportion(g, myOffset, myTileDimensions, SIZE_RELATIVE_TO_TILE);
     }
 }

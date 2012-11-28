@@ -26,7 +26,7 @@ public class Factory {
      * Needed to support primitives in constructors b/c Java autoboxes generics.
      */
     @SuppressWarnings("serial")
-    private HashMap<Class<?>, Class<?>> myUnboxedPrimitives = new HashMap<Class<?>, Class<?>>() {
+    private static HashMap<Class<?>, Class<?>> myUnboxedPrimitives = new HashMap<Class<?>, Class<?>>() {
         {
             put(Byte.class, byte.class);
             put(Short.class, short.class);
@@ -46,7 +46,7 @@ public class Factory {
      * @return returns instance of class
      */
     @SuppressWarnings("unchecked")
-    public <T, E> E instantiate (String className, T ... args) {
+    public static <T, E> E instantiate (String className, T ... args) {
         try {
             Class<?>[] paramTypes = new Class<?>[args.length];
             for (int i = 0; i < args.length; i++) {
@@ -62,7 +62,7 @@ public class Factory {
         }
     }
 
-    private <T> Class<?> parseClass (T obj) {
+    private static <T> Class<?> parseClass (T obj) {
         Class<?> clazz = obj.getClass();
         Class<?> primitiveVersion = myUnboxedPrimitives.get(clazz);
         return (primitiveVersion == null) ? clazz : primitiveVersion;

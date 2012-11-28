@@ -53,11 +53,11 @@ public class Sprite {
         }
         return relevantObjects;
     }
-
-    public Iterator<GameObject> getGameObjectsIterator () {
-        return myGameObjects.iterator();
+    
+    public void clear () {
+        for (GameObject go : myGameObjects) {
+            go.clear();
+        }
+        myGameObjects.clear();
     }
-    
-    
-
 }

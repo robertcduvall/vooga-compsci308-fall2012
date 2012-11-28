@@ -1,11 +1,10 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import util.input.core.KeyboardController;
-import util.input.core.MouseController;
+import java.util.LinkedList;
+import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
 
 
@@ -17,13 +16,11 @@ import vooga.turnbased.gameobject.GameObject;
  * @author rex, Volodymyr
  */
 // public abstract class GameMode extends Observable {
-public abstract class GameMode {
+public abstract class GameMode implements GameLoopMember {
     private final GameManager myGameManager;
     private final Class myObjectType;
-
+    private List<GameEvent> myModeEvents;
     private ArrayList<GameObject> myObjects;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
 
     /**
      * Constructor for GameMode.
@@ -36,38 +33,10 @@ public abstract class GameMode {
     public GameMode (GameManager gm, Class modeObjectType) {
         myGameManager = gm;
         myObjectType = modeObjectType;
-        setControllers();
-        configureInputHandling();
-        // myObjects = new
-        // ArrayList<GameObject>(myGameManager.getModesObjects(modeObjectType));
+        myModeEvents = new LinkedList<GameEvent>();
     }
 
-    private void setControllers () {
-        myKeyboardController = getGameManager().getKeyboardController();
-        myMouseController = getGameManager().getMouseController();
-    }
-
-    // these methods already exist in game manager...isn't one of them redundant?
-
-    /**
-     * Returns the current KeyboardController.
-     * 
-     * @return KeyboardController in use.
-     */
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
-    }
-
-    /**
-     * Returns the current MouseController.
-     * 
-     * @return MouseController in use.
-     */
-    public MouseController getMouseController () {
-        return myMouseController;
-    }
-
-    protected GameManager getGameManager () {
+    public GameManager getGameManager () {
         return myGameManager;
     }
 
@@ -84,6 +53,10 @@ public abstract class GameMode {
      */
     public ArrayList<GameObject> getObjects () {
         return myObjects;
+    }
+    
+    public List<GameEvent> getModeEvents() {
+        return myModeEvents;
     }
 
     /**
@@ -108,37 +81,25 @@ public abstract class GameMode {
      */
     public abstract void resume ();
     
-    public abstract void init ();
+    /**
+     * Call when gamemode if first created
+     */
+    public abstract void initialize ();
 
     /**
      * Method that will paint the different objects in the mode.
      * @param g Graphics.
      */
+    @Override
     public abstract void paint (Graphics g);
 
     /**
      * Method that will update the objects in the GameMode when called.
      */
+    @Override
     public abstract void update ();
 
     // public abstract void processGameEvents ();
-
-    /**
-     * Method that will handle key pressed.
-     * @param e KeyEvent to be handled.
-     */
-    public abstract void handleKeyPressed (KeyEvent e);
-
-    /**
-     * Method that will handle keys released.
-     * @param e KeyEvent to be handled.
-     */
-    public abstract void handleKeyReleased (KeyEvent e);
-
-    /**
-     * Method to configure how inputs will be handled (possibly using input API?)
-     */
-    public abstract void configureInputHandling ();
 
     /**
      * Override if any sub-mode needs to handle MouseClicked events.

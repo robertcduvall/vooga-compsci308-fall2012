@@ -1,4 +1,4 @@
-package vooga.turnbased.gameobject;
+package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -51,7 +51,7 @@ public class MapPlayerObject extends MovingMapObject {
      * @param mapMode MapMode in which the object exists.
      */
     public MapPlayerObject (int id, String event, Point coord, Map<String, Image> mapImages,
-            MapMode mapMode) {
+                            MapMode mapMode) {
         super(id, event, coord, mapImages.get(0), mapMode);
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
@@ -81,8 +81,8 @@ public class MapPlayerObject extends MovingMapObject {
     }
 
     @Override
-    public void update (int delayTime) {
-        super.update(delayTime);
+    public void update () {
+        super.update();
 
         myFrameCount++;
         if (myFrameCount >= ANIMATION_FRAME_RATE) {

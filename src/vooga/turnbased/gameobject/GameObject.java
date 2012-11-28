@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import vooga.turnbased.gamecore.GameLoopMember;
 
 
 /**
@@ -14,11 +15,11 @@ import javax.swing.ImageIcon;
  * @author Michael Elgart
  * 
  */
-public abstract class GameObject {
+public abstract class GameObject implements GameLoopMember {
 
     private int myID;
     private final String myModeEvent;
-    private Image myImage;
+    protected Image myImage;
 
     /**
      * Construct the new game object.
@@ -68,7 +69,7 @@ public abstract class GameObject {
      * @param width Width of image.
      * @param height Height of image.
      */
-    public void paint (Graphics g, int x, int y, int width, int height) {
+    public void drawRectangularImage (Graphics g, int x, int y, int width, int height) {
         g.drawImage(myImage, x, y, width, height, null);
     }
 
@@ -99,7 +100,14 @@ public abstract class GameObject {
 
     /**
      * Updates game after some time delay (to be implemented by child classes).
-     * @param delayTime Int amount of time to wait between updates.
      */
-    public abstract void update (int delayTime);
+    public abstract void update ();
+    
+    public abstract void paint (Graphics g);
+    
+
+    /**
+     * Remove all occurences of this object in the program.
+     */
+    public abstract void clear();
 }
