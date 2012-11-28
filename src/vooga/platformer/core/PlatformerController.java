@@ -11,10 +11,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import util.ingamemenu.GameButton;
+import util.ingamemenu.Menu;
 import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import vooga.platformer.level.Level;
@@ -150,6 +153,39 @@ public class PlatformerController extends JPanel implements Runnable {
             @Override
             public void mouseClicked (MouseEvent e) {
                 //not used so far
+            }
+        };
+        return kl;
+    }
+    
+    private PlatformerController myCanvas = this;
+    
+    public KeyListener setMenuKeyListener(){
+        KeyListener kl = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_M) {
+                    final Menu menu = new Menu(myCanvas);
+                    GameButton gb1 = new GameButton("greenbutton", "Back");
+                    MouseListener gl = new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent arg0) {
+                            myCanvas.remove(menu);
+                            myCanvas.repaint();
+                        }
+                    };
+                    gb1.addMouseListener(gl);
+                    GameButton gb2 = new GameButton("button", "Exit");
+                    gb2.addMouseListener(new MouseAdapter(){
+                        @Override
+                        public void mouseClicked(MouseEvent arg0) {
+                            System.exit(0);
+                        }
+                    });
+                    gb2.setSize(new Dimension(130, 130));
+                    menu.addButtons(gb1);
+                    menu.addButtons(gb2);
+                }
             }
         };
         return kl;

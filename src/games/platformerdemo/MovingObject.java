@@ -29,7 +29,7 @@ public class MovingObject extends GameObject {
         try {
             myImg = ImageIO.read(new File(imagePath));
         }
-        catch (IOException e) {
+        catch (Exception e) {
             System.out.println("no file find");
             e.printStackTrace();
         }

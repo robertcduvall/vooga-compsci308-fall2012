@@ -89,7 +89,8 @@ public abstract class GameObject {
         params.put(Y_TAG, "y position of the object");
         params.put(WIDTH_TAG, "width of the object");
         params.put(HEIGHT_TAG, "height of the object");
-        params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
+        params.put(DEFAULT_IMAGE_TAG,
+                "file name of the image to the be the default image.");
         return params;
     }
 
@@ -122,7 +123,7 @@ public abstract class GameObject {
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
-     * @param strat
+     * @param strat strategy
      */
     public void addStrategy (UpdateStrategy strat) {
         strategyList.add(strat);
@@ -131,7 +132,7 @@ public abstract class GameObject {
     /**
      * Remove a strategy from the list.
      * 
-     * @param strat
+     * @param strat strategy
      */
     public void removeStrategy (UpdateStrategy strat) {
         strategyList.remove(strat);
@@ -161,6 +162,7 @@ public abstract class GameObject {
      * Paints the GameObject to the given Graphics object.
      * 
      * @param pen Graphics object to paint on
+     * @param cam camera
      */
     public void paint (Graphics pen, Camera cam) {
         double x = getX();
@@ -170,9 +172,10 @@ public abstract class GameObject {
         double yOffset = rect.getY();
 
         if (getShape().intersects(rect)) {
-            pen.drawImage(getCurrentImage().getScaledInstance((int) width, (int) height,
-                                                              Image.SCALE_DEFAULT),
-                          (int) (x - xOffset), (int) (y - yOffset), null);
+            pen.drawImage(
+                    getCurrentImage().getScaledInstance((int) width,
+                            (int) height, Image.SCALE_DEFAULT),
+                    (int) (x - xOffset), (int) (y - yOffset), null);
         }
     }
 
