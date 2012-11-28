@@ -289,7 +289,7 @@ public class BattleMode extends GameMode implements InputAPI {
         if (random >= .9 && random < 1) {
             // increase health
             myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 3);
-            if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth").intValue()) {
+            if (myEnemy.getStat("health").intValue() > myPlayerObject.getStat("maxHealth").intValue()) {
                 myEnemy.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
             }
             myMessages.add(myEnemy.getName()+" used HEAL");
