@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Random;
@@ -32,8 +33,12 @@ public class Particle {
     public Point myVelocity;
     private int myVariance;
     private double myAngle;
-    public double maxDistanceTraveledPerUpdate;
+    private double maxDistanceTraveledPerUpdate;
     
+    private boolean rotate = true;
+    private double rotationAngle = 0;
+    private double dtheta = 0.1;
+    		
     private Random myRandomGenerator;
     private VectorCalculator vcalculator = new VectorCalculator();
     
@@ -119,9 +124,32 @@ public class Particle {
         Graphics2D g2d = (Graphics2D) g;
         RescaleOp rop = new RescaleOp(scales, offsets, null);
         //g2d.drawImage(myImage, myPosition.x, myPosition.y, null);
+        if (rotate){
+        	rotateImage(g2d);
+        }
         g2d.drawImage(myBufferedImage, rop, myPosition.x, myPosition.y);
     }
 
+    private void rotateImage(Graphics2D pen){
+    	//code borrowed from Professor Duvall's Bouncer class
+        // save current state of the graphics area
+        AffineTransform old = new AffineTransform(pen.getTransform());
+        // move graphics area to center of this shape
+        pen.translate(myPosition.x, myPosition.y);
+        // rotate area about this shape
+        pen.rotate(rotationAngle);
+        rotationAngle += dtheta;
+        // move graphics area back to original position
+        pen.translate(-myPosition.x, -myPosition.y);
+        // draw as usual (i.e., rotated)
+        pen.drawImage(myImage,
+                      getLeft(), getTop(), 
+                      getWidth(), getHeight(),
+                      null);
+        // restore graphics area to its old state, our changes have no lasting effects
+        pen.setTransform(old);
+    }
+	
     public void update () {
     	double r = myRandomGenerator.nextInt(2*myVariance+1);
     	double angleVariation = (r-myVariance)/oneHundred;
@@ -145,4 +173,24 @@ public class Particle {
     public boolean stillExists () {
         return (durationExisted < durationLimit*0.8f);
     }
+    
+    private int getLeft(){
+    	return myPosition.x-getWidth()/2;
+    }
+    
+    private int getTop(){
+    	return myPosition.y-getHeight()/2;
+    }
+    
+	private int getWidth(){
+		return myBufferedImage.getWidth();
+	}
+	
+	private int getHeight(){
+		return myBufferedImage.getHeight();
+	}
+	
+	public void setRotation(Boolean r){
+		rotate = r;
+	}
 }

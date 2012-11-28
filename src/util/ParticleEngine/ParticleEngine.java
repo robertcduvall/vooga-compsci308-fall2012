@@ -28,7 +28,7 @@ public class ParticleEngine {
     private static final int DEFAULT_DURATION = 10000;
     private static final double DEFAULT_ANGLESPAN = 0;
     private static final int DEFAULT_NUMBEROFDIRECTIONS = 1;
-    
+
     private int spriteCount;
     private Image spriteImage;
     private Point initialPosition;
@@ -39,7 +39,8 @@ public class ParticleEngine {
     private double angleSpan;
 
     private List<Particle> particles;
-
+    private boolean ParticlesRotate = false;
+    	
     private VectorCalculator vcalculator = new VectorCalculator();
     
     /**
@@ -152,4 +153,10 @@ public class ParticleEngine {
         loop = doLoop;
     }
     
+    public void setParticleRotation(Boolean rotate){
+    	ParticlesRotate = rotate;
+    	for (Particle p : particles){
+    		p.setRotation(ParticlesRotate);
+    	}
+    }
 }
