@@ -23,7 +23,7 @@ import vooga.platformer.util.ConfigStringParser;
  * @author Grant Oakley (modified)
  * 
  */
-public abstract class GameObject {
+public abstract class GameObject implements Comparable<GameObject> {
     protected static final String X_TAG = "x";
     protected static final String Y_TAG = "y";
     protected static final String WIDTH_TAG = "width";
@@ -38,6 +38,7 @@ public abstract class GameObject {
     private double width;
     private double height;
     private Image defaultImage;
+    private int id;
 
     private GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
@@ -73,6 +74,7 @@ public abstract class GameObject {
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
         height = Double.parseDouble(configMap.get(HEIGHT_TAG));
         String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
+        id = Integer.parseInt(configMap.get(ID_TAG));
         try {
             defaultImage = ImageIO.read(new File(defaultImageName));
         }
@@ -121,6 +123,24 @@ public abstract class GameObject {
 
     public void setY (double inY) {
         y = inY;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    /**
+     * Sort GameObjects by ID
+     * @param go GameObject
+     */
+    public int compareTo(GameObject go) {
+        int diff = this.getId() - go.getId();
+        if (diff != 0) {
+            return diff;
+        }
+        else {
+            return this.hashCode() - go.hashCode();
+        }
     }
 
     /**
