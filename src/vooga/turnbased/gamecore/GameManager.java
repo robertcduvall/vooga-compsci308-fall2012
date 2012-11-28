@@ -28,12 +28,11 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
     private GameLevelManager myLevelManager;
-    private MapMode myMapMode;
     private BattleMode myBattleMode;
-    private GameMode myCurrentGameMode;
     private boolean isOver;
     private HashMap<Integer, Sprite> mySprites;
     private List<GameEvent> myEvents;
+    private List<GameMode> myActiveModes;
 
     /**
      * Constructor of GameManager
@@ -46,19 +45,20 @@ public class GameManager implements GameLoopMember, InputAPI {
         isOver = false;
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<GameEvent>();
-        myBattleMode = new BattleMode(this, BattleObject.class);
+        myActiveModes = new LinkedList<GameMode>();
         myLevelManager = new GameLevelManager(this);
         initializeGameLevel(GameWindow.importString("Entrance"), null);
         configureInputHandling();
     }
 
     public void initializeGameLevel (String levelFileName, MapObject enteringObject) {
+        myActiveModes.remove(myLevelManager.getCurrentMapMode());
         myLevelManager.enterMap(levelFileName, enteringObject);
-        myMapMode = myLevelManager.getCurrentMapMode();
+        MapMode mapMode = myLevelManager.getCurrentMapMode();
+        myActiveModes.add(0, mapMode);
         mySprites.clear();
         addSprites(myLevelManager.getCurrentSprites());
-        myCurrentGameMode = myMapMode;
-        myCurrentGameMode.initialize();
+        mapMode.initialize();
     }
 
     /**
@@ -122,7 +122,10 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     @Override
     public void update () {
-        myCurrentGameMode.update();
+        //myCurrentGameMode.update();
+        for (GameMode mode: myActiveModes) {
+            mode.update();
+        }
         handleEvents();
     }
 
@@ -133,7 +136,10 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     @Override
     public void paint (Graphics g) {
-        myCurrentGameMode.paint(g);
+        for (GameMode mode: myActiveModes) {
+            mode.paint(g);
+        }
+        //myCurrentGameMode.paint(g);
     }
 
     /**
@@ -180,10 +186,12 @@ public class GameManager implements GameLoopMember, InputAPI {
         }*/
         else if ("BATTLE_START".equals(eventName)) {
             myBattleMode = new BattleMode(this, BattleObject.class, myInvolvedIDs);
+            myActiveModes.add(myBattleMode);
             changeCurrentMode(myBattleMode);
         }
         else if ("BATTLE_OVER".equals(eventName)) {
-            changeCurrentMode(myMapMode);
+            myActiveModes.remove(myBattleMode);
+            resumeModes();
         }
         else if ("SWITCH_LEVEL".equals(eventName)) {
             // Rex can you add code for switching to new level here? smth like:
@@ -200,7 +208,7 @@ public class GameManager implements GameLoopMember, InputAPI {
             //changeCurrentMode(myDialogueMode);
         }
         else if ("DIALOGUE_OVER".equals(eventName)) {
-            changeCurrentMode(myMapMode);
+            
         }
         else if ("INTERACTION_COMPLETED".equals(eventName)) { 
             // to win, need to interact with specific (or all) sprites, i.e.
@@ -211,28 +219,39 @@ public class GameManager implements GameLoopMember, InputAPI {
             */
         }
         else {
-            System.err.println("Unrecognized mode event requested.");
+            //System.err.println("Unrecognized mode event requested.");
         }
     }
 
     /**
-     * Pauses current mode, switches to given GameMode, and begins that mode.
+     * Pauses current modes, resume the active mode
      * 
-     * @param mode GameMode type to be switched to.
+     * @param mode GameMode object to be switched to.
      */
-    public void changeCurrentMode (GameMode mode) {
-        myCurrentGameMode.pause();
-        myCurrentGameMode = mode;
-        myCurrentGameMode.resume();
+    protected void changeCurrentMode (GameMode activeMode) {
+        for (GameMode mode: myActiveModes) {
+            if (mode == activeMode) { continue; }
+            mode.pause();
+        }
+        activeMode.resume();
     }
 
+    protected void resumeModes() {
+        for (GameMode mode: myActiveModes) {
+            mode.resume();
+        }
+    }
+    
     /**
      * Passes mouse input to the GameMode.
      * 
      * @param e MouseEvent to be handled.
      */
     public void handleMouseClicked (MouseEvent e) {
-        myCurrentGameMode.handleMouseClicked(e);
+        //myCurrentGameMode.handleMouseClicked(e);
+        for (GameMode mode: myActiveModes) {
+            mode.handleMouseClicked(e);
+        }
     }
 
     /**
@@ -248,5 +267,9 @@ public class GameManager implements GameLoopMember, InputAPI {
         // handle actions that shouldn't be passed down to individual gamemodes,
         // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
         // KeyboardController.PRESSED, this, "gameOver");
+    }
+    
+    protected void removeMode(GameMode mode) {
+        myActiveModes.remove(mode);
     }
 }

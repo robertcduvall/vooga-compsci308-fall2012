@@ -43,6 +43,7 @@ public class MapMode extends GameMode implements InputAPI {
     private Rectangle myCurrentCamera;
     private PathFinder myPathFinder;
     private Point myTopLeftCoord;
+    private boolean myIsPaused;
 
     /**
      * Constructor of MapMode
@@ -52,6 +53,7 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public MapMode (GameManager gm, Class modeObjectType) {
         super(gm, modeObjectType);
+        myIsPaused = false;
     }
 
     @Override
@@ -60,12 +62,14 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public void pause () {
         // myMapObjects.clear();
+        myIsPaused = true;
     }
 
     @Override
     public void resume () {
         // do stuff when back to map mode
         configureInputHandling();
+        myIsPaused = false;
     }
 
     @Override
@@ -118,6 +122,7 @@ public class MapMode extends GameMode implements InputAPI {
      */
     @Override
     public void paint (Graphics g) {
+        if (myIsPaused) { return; }
         paintMapBackgroung(g);
         List<MapObject> visibleSprites = getSpritesWithinCamera();
         for (MapObject s : visibleSprites) {
@@ -150,6 +155,7 @@ public class MapMode extends GameMode implements InputAPI {
      * update the map
      */
     public void update () {
+        if (myIsPaused) { return; }
         updateTileInfo();
         updateCameraPosition();
         updateMapObjects();
