@@ -8,7 +8,7 @@
  * For a commercial use license, or to purchase the book, 
  * please visit http://www.davidflanagan.com/javaexamples3.
  */
-package util.networking;
+package util.networking.jabber;
 import java.io.*;
 import java.net.*;
 

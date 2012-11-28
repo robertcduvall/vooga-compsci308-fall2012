@@ -25,38 +25,28 @@ import util.calculator.VectorCalculator;
  * 
  */
 public class Particle {
-    private static final int ONEHUNDRED = 100;
-    private static final double RADIANSPERCIRCLE = 2 * Math.PI;
-    
-    /**
-     * Position of the particle.
-     */
+    private int durationLimit;
+    private int durationExisted;
     public Point myPosition;
-    /**
-     * Velocity of the particle.
-     */
     public Point myVelocity;
-    /**
-     * The maximum distance traveled per update.
-     */
-    public double myMaxDistanceTraveledPerUpdate;
-
-    private int myDurationLimit;
-    private int myDurationExisted;
     private int myVariance;
-    // radians
-    private float myRotation; 
-    // radians/frame
-    private float myRotationalVelocity;
+    private float myRotation; // radians
+    private float myRotationalVelocity; // radians/frame
     private double myAngle;
+    public double maxDistanceTraveledPerUpdate;
+
     private Random myRandomGenerator;
-    private VectorCalculator myVcalculator = new VectorCalculator();
+    private VectorCalculator vcalculator = new VectorCalculator();
+
     // These values were found after extensive testing,
     // and scale the sprite's red, green, blue, and alpha values
-    private float[] myRGBAscales = {3f, 1.8f, 2.4f, 0.2f };
-    private float[] myOffsets;
+    private float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.2f };
+
+    private float[] offsets;
     private BufferedImage myBufferedImage;
 
+    private static final int oneHundred = 100;
+    private static final double radiansPerCircle = 2 * Math.PI;
 
     /**
      * Creates a particle to use in the particle effect implemented by
@@ -68,11 +58,9 @@ public class Particle {
      * @param size the size of the image to use
      * @param image the image to use
      * @param velocity the velocity of the particle
-     * @variance how far from original position particle can be
-     * @duration how long particle lasts
      */
-    public Particle (Point position, Dimension size, Image image, Point velocity, int variance,
-                     int duration) {
+    public Particle (Point position, Dimension size, Image image,
+            Point velocity, int variance, int duration) {
         declareVariables(position, size, image, variance, duration);
         myVelocity = velocity;
         setupRadianMode();
@@ -91,11 +79,12 @@ public class Particle {
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
      */
-    public Particle (Point position, Dimension size, Image image, Double velocityMagnitude,
-                     Double velocityAngle, int variance, int duration) {
+    public Particle (Point position, Dimension size, Image image,
+            Double velocityMagnitude, Double velocityAngle, int variance,
+            int duration) {
         declareVariables(position, size, image, variance, duration);
         myAngle = velocityAngle;
-        myMaxDistanceTraveledPerUpdate = velocityMagnitude;
+        maxDistanceTraveledPerUpdate = velocityMagnitude;
     }
 
     /**
@@ -108,19 +97,20 @@ public class Particle {
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
      */
-    private void declareVariables (Point position, Dimension size, Image image, int variance,
-                                   int duration) {
+    private void declareVariables (Point position, Dimension size, Image image,
+            int variance, int duration) {
         myPosition = position;
         myVariance = variance;
-        myDurationExisted = 0;
+        durationExisted = 0;
 
         myRandomGenerator = new Random();
-        myOffsets = new float[4];
+        offsets = new float[4];
 
-        myDurationLimit = (int) (myRandomGenerator.nextDouble() * duration);
-        myRotation = (float) (myRandomGenerator.nextFloat() * RADIANSPERCIRCLE);
+        durationLimit = (int) (myRandomGenerator.nextDouble() * duration);
+        myRotation = (float) (myRandomGenerator.nextFloat() * radiansPerCircle);
         myRotationalVelocity = (float) (myRandomGenerator.nextFloat() * 0.5);
-        myBufferedImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+        myBufferedImage = new BufferedImage(size.width, size.height,
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = (Graphics2D) myBufferedImage.createGraphics();
         g2d.setBackground(new Color(0, 0, 0, 0));
         g2d.drawImage(image, 0, 0, size.width, size.height, null);
@@ -130,8 +120,9 @@ public class Particle {
      * Stores the angle and magnitude of the velocity vector.
      */
     private void setupRadianMode () {
-        myAngle = myVcalculator.calculateAngle(myVelocity);
-        myMaxDistanceTraveledPerUpdate = Math.max(1, myVcalculator.calculateMagnitude(myVelocity));
+        myAngle = vcalculator.calculateAngle(myVelocity);
+        maxDistanceTraveledPerUpdate = Math.max(1,
+                vcalculator.calculateMagnitude(myVelocity));
     }
 
     /**
@@ -141,12 +132,12 @@ public class Particle {
      */
     public void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        RescaleOp rop = new RescaleOp(myRGBAscales, myOffsets, null);
+        RescaleOp rop = new RescaleOp(RGBAscales, offsets, null);
         g2d.rotate(myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
-                   myPosition.y + myBufferedImage.getHeight() / 2);
+                myPosition.y + myBufferedImage.getHeight() / 2);
         g2d.drawImage(myBufferedImage, rop, myPosition.x, myPosition.y);
         g2d.rotate(-myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
-                   myPosition.y + myBufferedImage.getHeight() / 2);
+                myPosition.y + myBufferedImage.getHeight() / 2);
     }
 
     /**
@@ -154,25 +145,26 @@ public class Particle {
      */
     public void update () {
         double r = myRandomGenerator.nextInt(2 * myVariance + 1);
-        double angleVariation = (r - myVariance) / ONEHUNDRED;
+        double angleVariation = (r - myVariance) / oneHundred;
 
-        double tempNewAngle = myAngle + RADIANSPERCIRCLE * angleVariation;
-        int newX = (int) (Math.cos(tempNewAngle) * myMaxDistanceTraveledPerUpdate);
-        int newY = (int) (Math.sin(tempNewAngle) * myMaxDistanceTraveledPerUpdate);
+        double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
+        int newX = (int) (Math.cos(tempNewAngle) * maxDistanceTraveledPerUpdate);
+        int newY = (int) (Math.sin(tempNewAngle) * maxDistanceTraveledPerUpdate);
         myPosition.x += newX;
         myPosition.y -= newY;
-        myDurationExisted++;
+        durationExisted++;
 
         myRotation += myRotationalVelocity;
 
         // this is the alpha scale
-        myRGBAscales[3] = (float) (myDurationLimit - myDurationExisted) / (float) myDurationLimit;
+        RGBAscales[3] = (float) (durationLimit - durationExisted)
+                / (float) durationLimit;
     }
 
     /**
      * @return if the particle still exists
      */
     public boolean stillExists () {
-        return myDurationExisted < myDurationLimit * 0.8f;
+        return (durationExisted < durationLimit * 0.8f);
     }
 }

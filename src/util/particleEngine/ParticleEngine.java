@@ -7,9 +7,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import util.calculator.VectorCalculator;
+import vooga.shooter.gameObjects.Sprite;
 
-
-// import vooga.shooter.gameObjects.Sprite;
 
 /**
  * This class enables the game creators to create, draw, and update a particle
@@ -25,39 +24,34 @@ import util.calculator.VectorCalculator;
 public class ParticleEngine {
     private static final int DEFAULT_COUNT = 1;
     private static final Point DEFAULT_DIRECTION = new Point(0, 10);
-    private static final int DEFAULT_VARIANCE = 15;
-    // i.e. 15%
+    private static final int DEFAULT_VARIANCE = 15; // i.e. 15%
     private static final int DEFAULT_DURATION = 10000;
     private static final double DEFAULT_ANGLESPAN = 0;
     private static final int DEFAULT_NUMBEROFDIRECTIONS = 1;
-/**
- * Inital position of the particle
- */
-    public Point myInitialPosition;
 
-    private int mySpriteCount;
-    private Image mySpriteImage;
-    private Point myMainVelocity;
-    private int myVariance;
-    private int myDuration;
-    private Boolean myLoop;
-    private double myAngleSpan;
+    private int spriteCount;
+    private Image spriteImage;
+    public Point initialPosition;
+    private Point mainVelocity;
+    private int variance;
+    private int duration;
+    private Boolean loop;
+    private double angleSpan;
 
-    private List<Particle> myParticles;
+    private List<Particle> particles;
 
-    private VectorCalculator myVcalculator = new VectorCalculator();
+    private VectorCalculator vcalculator = new VectorCalculator();
 
     /**
      * Construct the ParticleEngine object using default values
      * 
      * @param particleImage the image to use as the particle
-     * @param loopValue whether the "animation" should be done again
-     * @param initialPosition Initial position of the particles in this particle
-     *        engine
      */
-    public ParticleEngine (Image particleImage, Point initialPosition, Boolean loopValue) {
-        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION, DEFAULT_VARIANCE,
-             DEFAULT_DURATION, DEFAULT_ANGLESPAN, DEFAULT_NUMBEROFDIRECTIONS, loopValue);
+    public ParticleEngine (Image particleImage, Point initialPosition,
+            Boolean loopValue) {
+        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
+                DEFAULT_VARIANCE, DEFAULT_DURATION, DEFAULT_ANGLESPAN,
+                DEFAULT_NUMBEROFDIRECTIONS, loopValue);
     }
 
     /**
@@ -67,8 +61,7 @@ public class ParticleEngine {
      *        particle engine
      * @param initialPosition Initial position of the particles in this particle
      *        engine
-     * @param inputAngleSpan The angle through which the collection of particles
-     *        are
+     * @param angleSpan The angle through which the collection of particles are
      *        distributed;
      *        e.g. if angleSpan = 360, then the particles are constructed with
      *        varying directions
@@ -78,50 +71,45 @@ public class ParticleEngine {
      *        to the collection of particles (the different
      *        directions will be calculated using the given or default
      *        direction, angleSpan, and the numberOfDirections)
-     * @param loopValue whether the "animation" should be done again
      */
-    public ParticleEngine (Image particleImage, Point initialPosition, double inputAngleSpan,
-                           int numberOfDirections, Boolean loopValue) {
-        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION, DEFAULT_VARIANCE,
-             DEFAULT_DURATION, inputAngleSpan, numberOfDirections, loopValue);
+    public ParticleEngine (Image particleImage, Point initialPosition,
+            double inputAngleSpan, int numberOfDirections, Boolean loopValue) {
+        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
+                DEFAULT_VARIANCE, DEFAULT_DURATION, inputAngleSpan,
+                numberOfDirections, loopValue);
     }
 
     /**
      * Constructs the ParticleEngine object with custom values
      * 
-     * @param position position of the particle
      * @param density defines the number of particles in the engine
      * @param particleImage the image to use for the particles
+     * @param direction the general direction in which the particles will
      *        travel, (0,0) will travel in all directions
      * @param tolerance (%) how much the particles can vary from the given
      *        direction
      * @param length how long the particles will exist before being reset
-     * @param loopValue whether the "animation" should be done again
-     * @param numberOfDirections direction particles should move in
-     * @param velocity the velocity of the particle
-     * @param inputAngleSpan how far away from original trajectory the particles
-     *        can be
      */
-    public ParticleEngine (int density, Image particleImage, Point position, Point velocity,
-                           int tolerance, int length, double inputAngleSpan,
-                           int numberOfDirections, Boolean loopValue) {
-        mySpriteCount = density;
-        mySpriteImage = particleImage;
-        myInitialPosition = position;
-        myMainVelocity = velocity;
-        myVariance = tolerance;
-        myDuration = length;
-        myLoop = loopValue;
+    public ParticleEngine (int density, Image particleImage, Point position,
+            Point velocity, int tolerance, int length, double inputAngleSpan,
+            int numberOfDirections, Boolean loopValue) {
+        spriteCount = density;
+        spriteImage = particleImage;
+        initialPosition = position;
+        mainVelocity = velocity;
+        variance = tolerance;
+        duration = length;
+        loop = loopValue;
 
-        myParticles = new ArrayList<Particle>();
+        particles = new ArrayList<Particle>();
 
-        createParticles(myAngleSpan, numberOfDirections);
+        createParticles(angleSpan, numberOfDirections);
     }
 
     private void createParticles (double inputAngleSpan, int numberOfDirections) {
         int numberOfOriginLines = Math.max(1, numberOfDirections - 1);
-        int approxNumberOfSpritesPerOriginLine =
-                mySpriteCount / numberOfOriginLines + numberOfOriginLines;
+        int approxNumberOfSpritesPerOriginLine = spriteCount
+                / numberOfOriginLines + numberOfOriginLines;
 
         for (int i = 0; i < numberOfOriginLines; i++) {
             for (int j = 0; j < approxNumberOfSpritesPerOriginLine; j++) {
@@ -135,85 +123,58 @@ public class ParticleEngine {
      * @param numberOfOriginLines
      * @param i
      */
-    private void createParticle (double inputAngleSpan, int numberOfOriginLines, int i) {
-        Dimension particleSize =
-                new Dimension(mySpriteImage.getWidth(null), mySpriteImage.getHeight(null));
-        double angleInterval = inputAngleSpan / (double) numberOfOriginLines * Math.PI / 180;
-        double velocityMagnitude = myVcalculator.calculateMagnitude(myMainVelocity);
-        double velocityAngle = myVcalculator.calculateAngle(myMainVelocity);
-        myParticles.add(new Particle(new Point(myInitialPosition), particleSize, mySpriteImage,
-                                     velocityMagnitude, velocityAngle + angleInterval * i,
-                                     myVariance, myDuration));
+    private void createParticle (double inputAngleSpan,
+            int numberOfOriginLines, int i) {
+        Dimension particleSize = new Dimension(spriteImage.getWidth(null),
+                spriteImage.getHeight(null));
+        double angleInterval = inputAngleSpan / (double) numberOfOriginLines
+                * Math.PI / 180;
+        double velocityMagnitude = vcalculator.calculateMagnitude(mainVelocity);
+        double velocityAngle = vcalculator.calculateAngle(mainVelocity);
+        particles.add(new Particle(new Point(initialPosition), particleSize,
+                spriteImage, velocityMagnitude, velocityAngle + angleInterval
+                        * i, variance, duration));
     }
 
-    /**
-     * Draw method for particle engine. Draws all the particles in list
-     * particles.
-     * 
-     * @param g graphcis for drawing
-     */
     public void draw (Graphics g) {
-        for (Particle p : myParticles) {
-            if (p.stillExists()) {
-                p.draw(g);
-            }
+        for (Particle p : particles) {
+            if (p.stillExists()) p.draw(g);
         }
     }
 
-    /**
-     * Update method for particle engine. Also checks to see if particles need
-     * to be looped again.
-     */
     public void update () {
         ArrayList<Particle> remove = new ArrayList<Particle>();
-        for (Particle p : myParticles) {
-            if (p.stillExists()) {
+        for (Particle p : particles) {
+            if (p.stillExists())
                 p.update();
-            }
-            else if (myLoop) {
+            else if (loop) {
                 remove.add(p);
             }
         }
         for (Particle p : remove) {
-            myParticles.remove(p);
-            createParticle(myAngleSpan, 1, 0);
+            particles.remove(p);
+            createParticle(angleSpan, 1, 0);
         }
     }
 
-    /**
-     * Sets how long the particle engine runs
-     * 
-     * @param length length of time
-     */
     public void setDuration (int length) {
-        myDuration = length;
+        duration = length;
     }
 
-    /**
-     * Sets density for the particle
-     * 
-     * @param density the amount of particles
-     */
     public void setDensity (int density) {
-        mySpriteCount = density;
+        spriteCount = density;
     }
 
-    /**
-     * Sets the velocity
-     * 
-     * @param v point velocity for the particle
-     */
     public void setVelocity (Point v) {
-        myMainVelocity = v;
+        mainVelocity = v;
     }
 
-    /**
-     * Sets boolean for looping the particle engine.
-     * 
-     * @param doLoop information to set looping
-     */
     public void setLoop (Boolean doLoop) {
-        myLoop = doLoop;
+        loop = doLoop;
+    }
+    
+    public Boolean stillExists() {
+        return (particles.size()>0);
     }
 
 }

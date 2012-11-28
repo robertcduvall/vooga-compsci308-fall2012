@@ -5,6 +5,7 @@ import util.input.android.bluetoothserver.AndroidBluetoothServer;
 import util.input.android.events.AndroidButtonEvent;
 import util.input.android.events.AndroidControllerConfigMessage;
 import util.input.android.events.AndroidSensorEvent;
+import util.input.android.events.AndroidServerMessage;
 import util.input.android.events.JoyStickEvent;
 import util.input.android.events.LineSegment;
 import util.input.inputhelpers.UKeyCode;
@@ -13,20 +14,16 @@ import util.input.interfaces.listeners.AndroidListener;
 
 /**
  * This class allows users to enter input through an Android app.
- *
- * @author Ben, Lance
- *
+ * 
+ * @author Ben, Lance, Amay
+ * 
  */
-/**
- * @author Amay
- *
- */
-public class AndroidController extends Controller<AndroidListener> implements
-        AndroidListener {
+public class AndroidController extends Controller<AndroidListener> implements AndroidListener {
+
 
     /**
      * Create a new android controller.
-     *
+     * 
      * @param controllerNum
      */
 
@@ -49,8 +46,7 @@ public class AndroidController extends Controller<AndroidListener> implements
     @Override
     public void onScreenPress (AndroidButtonEvent b) {
         try {
-            performReflections(b, "onScreenPress",
-                    UKeyCode.codify(b.getPressType(), b.getID()));
+            performReflections(b, "onScreenPress", UKeyCode.codify(b.getPressType(), b.getID()));
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -100,8 +96,7 @@ public class AndroidController extends Controller<AndroidListener> implements
      * to connect in app before connection is reestablished.
      */
     public void restartController () {
-        AndroidBluetoothServer server = new AndroidBluetoothServer(
-                myControllerNum);
+        AndroidBluetoothServer server = new AndroidBluetoothServer(myControllerNum);
         server.subscribe(this);
         server.startServer();
     }
@@ -124,10 +119,18 @@ public class AndroidController extends Controller<AndroidListener> implements
     }
 
     /**
-     * @param isGameBoyActive -
-     * @param isPlaystationActive -
-     * @param isTouchControlActive -
-     * @param isAccelerometerActive -
+     * Send a message from your game to an android controller.
+     * @param message the message to send.
+     */
+    public void messageServer (AndroidServerMessage message) {
+        myServer.notifyController(message);
+    }
+    /**
+     * Set what controllers are shown to a user.
+     * @param isGameBoyActive show the gameboy?
+     * @param isPlaystationActive show the playstation controller?
+     * @param isTouchControlActive show the touch controller?
+     * @param isAccelerometerActive enable the accelerometer?
      */
     public void setControlOptions (boolean isGameBoyActive,
             boolean isPlaystationActive, boolean isTouchControlActive,
@@ -139,12 +142,6 @@ public class AndroidController extends Controller<AndroidListener> implements
         myServer.notifyController(settings);
     }
 
-    /**
-     * Send message to server.
-     */
-    public void messageServer () {
-        // myServer.notifyController(new AndroidButtonEvent(4, 8));
-    }
 
     @Override
     public void onAccelerometerEvent (AndroidSensorEvent e) {

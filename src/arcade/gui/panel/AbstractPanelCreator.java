@@ -16,6 +16,7 @@ public abstract class AbstractPanelCreator {
     private Arcade myArcade;
 
      public AbstractPanelCreator (Arcade a) {
+     System.out.println(this.getClass().toString());
      myArcade = a;
      }
 
