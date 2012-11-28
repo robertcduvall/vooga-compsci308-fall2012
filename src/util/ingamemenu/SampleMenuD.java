@@ -24,22 +24,22 @@ import javax.swing.WindowConstants;
  * 
  */
 
-public class SampleMenu extends JComponent {
-    private static JComponent myPanel;
-    private static JFrame myFrame;
+public class SampleMenuD extends JComponent {
+    private JComponent myPanel;
+    private JFrame myFrame;
 
     public static void main (String[] args) {
         // ---Assume these exist for original game.---
-        JFrame frame = new JFrame("Menu Demo");
-        myFrame = frame;
+        SampleMenuD jp = new SampleMenuD();
+        jp.myFrame = new JFrame("Menu Demo");
         // jp is the Component to paint game
-        SampleMenu jp = new SampleMenu();
-        myPanel = jp;
+        
+        jp.myPanel = jp;
         jp.setPreferredSize(new Dimension(1000, 800));
-        frame.getContentPane().add(jp);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jp.myFrame.getContentPane().add(jp);
+        jp.myFrame.pack();
+        jp.myFrame.setVisible(true);
+        jp.myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         jp.setUpMenu();
     }
@@ -95,6 +95,6 @@ public class SampleMenu extends JComponent {
         pen.drawString(
                 "Assume this is the game canvas. Press M to bring up the menu.",
                 (getSize().width / 4), (getSize().height / 2));
-
     }
+    
 }
