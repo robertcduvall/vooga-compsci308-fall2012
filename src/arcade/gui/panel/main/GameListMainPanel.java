@@ -40,7 +40,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     
     public GameListMainPanel (Arcade a) {
         super(a);
-         //myGameList = a.getGameManager().getListOfGames();
+         myGameList = a.getModelInterface().getGameList();
          /*myGameProfilePictures = new ArrayList<Image>();
          for (int i = 0; i < myGameList.size(); i++) {
              myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
@@ -51,19 +51,20 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        /*String[] arrayOfGames = new String[myGameList.size()];
+        String[] arrayOfGames = new String[myGameList.size()];
         for (int i = 0; i < myGameList.size(); i++) {
+            System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
-        }*/
-        String[] theList = new String[10];
+        }
+        /*String[] theList = new String[10];
         for (int i = 0; i < 10; i++) {
             theList[i] = "" + i;
-        }
+        }*/
         
         MigLayout layout = new MigLayout();
         myPanel.setLayout(layout);
 
-        JList listOfGames = new JList(theList);
+        JList listOfGames = new JList(arrayOfGames);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
@@ -95,7 +96,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
               
           });
         
-        myPanel.add(goButton, "span 2");
+        myPanel.add(goButton, "grow");
 
         return myPanel;
     }
