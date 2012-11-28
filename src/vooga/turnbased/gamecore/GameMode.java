@@ -20,7 +20,6 @@ public abstract class GameMode implements GameLoopMember {
     private final GameManager myGameManager;
     private final Class myObjectType;
     private List<GameEvent> myModeEvents;
-    private ArrayList<GameObject> myObjects;
 
     /**
      * Constructor for GameMode.
@@ -38,21 +37,6 @@ public abstract class GameMode implements GameLoopMember {
 
     public GameManager getGameManager () {
         return myGameManager;
-    }
-
-    public void setObjects () { // to be deleted later, really only want sprites
-                                // correlating to involvedSpriteIDs in
-                                // gamemanager's handleEvent
-        myObjects = new ArrayList<GameObject>(
-                myGameManager.getGameObjectsOfSpecificMode(myObjectType));
-    }
-
-    /**
-     * Returns list of GameObjects associated with current mode.
-     * @return List of mode's GameObjects.
-     */
-    public ArrayList<GameObject> getObjects () {
-        return myObjects;
     }
     
     public List<GameEvent> getModeEvents() {

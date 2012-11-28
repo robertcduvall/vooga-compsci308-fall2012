@@ -24,8 +24,8 @@
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 			<event>NO_ACTION</event>
 			<stats>
-				<maxHealth>3</maxHealth>
-				<health>3</health>
+				<maxHealth>10</maxHealth>
+				<health>10</health>
 				<defense>1</defense>
 				<attack>2</attack>
 			</stats>
@@ -56,22 +56,6 @@
 			<image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.png</image>
 		</map>
 		<battle/>
-	</sprite>
-	<!-- TAG BELOW SHOULD GO. BATTLE OBJECT OF PLAYER SHUOLD BE BESIDE MAPOBJECT OF PLAYER INSIDE PLAYER.XML-->
-	<sprite>
-		<map/>
-		<battle>
-			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-			<event>NO_ACTION</event>
-			<stats>
-				<maxHealth>3</maxHealth>
-				<health>3</health>
-				<defense>1</defense>
-				<attack>2</attack>
-			</stats>
-			<name>Pikachu</name>
-			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
-		</battle>
 	</sprite>
 	<!-- THIS IS HARDCODED AND WOULD NOT BE NECESSARY IN FUTURE. IGNORE IT FOR LEVELEDITOR -->
 	<staticSprite>

@@ -12,6 +12,7 @@ import util.input.core.KeyboardController;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.InputAPI;
+import vooga.turnbased.sprites.Sprite;
 
 
 /**
@@ -28,6 +29,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
+    private List<Integer> myInvolvedIDs;
 
     /**
      * Constructor for a Battle.
@@ -38,14 +40,17 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param modeObjectType The object type this mode uses, i.e.
      *        BattleObject.java
      */
-    public BattleMode (GameManager gm, Class modeObjectType) {
+    
+    // no need for this one any more. use the one below
+    /*public BattleMode (GameManager gm, Class modeObjectType) {
         super(gm, modeObjectType);
-    }
+    }*/
 
     // need to pass ids of battle participants upon battle creation
     public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
-                       List<Integer> myInvolvedIDs) {
+                       List<Integer> involvedIDs) {
        super(gameManager, modeObjectType);
+       myInvolvedIDs = involvedIDs;
     }
 
     @Override
@@ -80,15 +85,22 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void makeTeams () {
         // BAD BAD TEST CODE
-        setObjects();
         myTeams = new ArrayList<Team>();
+        
+        // adding player
         List<BattleObject> team1BattleObjects = new ArrayList<BattleObject>();
-        team1BattleObjects.add((BattleObject) getObjects().get(0));
+        Sprite s1 = getGameManager().findSpriteWithID(myInvolvedIDs.get(0));
+        BattleObject bo1 = s1.getObject(BattleObject.class).get(0);
+        team1BattleObjects.add(bo1);
+        
+        // adding enemy
         List<BattleObject> team2BattleObjects = new ArrayList<BattleObject>();
-        team2BattleObjects.add((BattleObject) getObjects().get(1));
-        // BAD BAD BAD
-        myTeams.add(new Team(team1BattleObjects));
+        Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
+        BattleObject bo2 = s2.getObject(BattleObject.class).get(0);
+        team2BattleObjects.add(bo2);
+        
         myTeams.add(new Team(team2BattleObjects));
+        myTeams.add(new Team(team1BattleObjects));
     }
 
     @Override

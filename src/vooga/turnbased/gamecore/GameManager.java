@@ -46,7 +46,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         isOver = false;
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<GameEvent>();
-        myBattleMode = new BattleMode(this, BattleObject.class);
+        // myBattleMode = new BattleMode(this, BattleObject.class);
         myLevelManager = new GameLevelManager(this);
         initializeGameLevel(GameWindow.importString("Entrance"), null);
         configureInputHandling();
