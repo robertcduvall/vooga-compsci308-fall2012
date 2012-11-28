@@ -170,7 +170,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private void endBattle () {
         System.out.println("End battle!");
         getGameManager().flagEvent("BATTLE_OVER", new ArrayList());
-        //getGameManager().removeMode(this);
+        setActive(false);
     }
 
     private boolean isBattleOver () {

@@ -20,6 +20,7 @@ public abstract class GameMode implements GameLoopMember {
     private final GameManager myGameManager;
     private final Class myObjectType;
     private List<GameEvent> myModeEvents;
+    private boolean myIsActive;
 
     /**
      * Constructor for GameMode.
@@ -33,6 +34,7 @@ public abstract class GameMode implements GameLoopMember {
         myGameManager = gm;
         myObjectType = modeObjectType;
         myModeEvents = new LinkedList<GameEvent>();
+        myIsActive = true;
     }
 
     public GameManager getGameManager () {
@@ -90,5 +92,13 @@ public abstract class GameMode implements GameLoopMember {
      * @param e MouseEvent to be handled.
      */
     public void handleMouseClicked (MouseEvent e) {
+    }
+    
+    protected void setActive(boolean b) {
+        myIsActive = b;
+    }
+    
+    protected boolean isActive() {
+        return myIsActive;
     }
 }
