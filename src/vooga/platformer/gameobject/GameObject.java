@@ -101,13 +101,8 @@ public abstract class GameObject {
         params.put(Y_TAG, "y position of the object");
         params.put(WIDTH_TAG, "width of the object");
         params.put(HEIGHT_TAG, "height of the object");
-<<<<<<< HEAD
-        params.put(DEFAULT_IMAGE_TAG,
-                "file name of the image to the be the default image.");
-=======
         params.put(ID_TAG, "ID for sprite. Should be unique.");
         params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
->>>>>>> 089bcd58edaa388127f334cc84f1609b21a303b2
         return params;
     }
 

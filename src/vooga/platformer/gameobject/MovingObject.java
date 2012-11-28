@@ -25,18 +25,6 @@ public class MovingObject extends GameObject {
     public MovingObject (String configString) {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
-<<<<<<< HEAD:src/games/platformerdemo/MovingObject.java
-        String imagePath = parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
-        try {
-            myImg = ImageIO.read(new File(imagePath));
-        }
-        catch (Exception e) {
-            System.out.println("no file find");
-            e.printStackTrace();
-        }
-=======
-        String imagePath = ConfigStringParser.parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
->>>>>>> 089bcd58edaa388127f334cc84f1609b21a303b2:src/vooga/platformer/gameobject/MovingObject.java
     }
 
     /**
