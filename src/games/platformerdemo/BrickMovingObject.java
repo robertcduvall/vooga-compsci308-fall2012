@@ -2,6 +2,8 @@ package games.platformerdemo;
 
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.collision.CollisionEvent;
+import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.CollisionDirection;
 

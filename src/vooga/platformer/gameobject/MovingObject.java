@@ -1,4 +1,4 @@
-package games.platformerdemo;
+package vooga.platformer.gameobject;
 
 import java.awt.Image;
 import java.awt.geom.Point2D;
@@ -6,17 +6,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.ConfigStringParser;
 
 
 /**
  * @author Yaqi Zhang
+ * @modified Niel Lebeck
  * 
  */
 public class MovingObject extends GameObject {
 
-    private Image myImg;
     private Point2D myVelocity;
     private boolean onGround = false;
 
@@ -27,13 +26,6 @@ public class MovingObject extends GameObject {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
         String imagePath = ConfigStringParser.parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
-        try {
-            myImg = ImageIO.read(new File(imagePath));
-        }
-        catch (IOException e) {
-            System.out.println("no file find");
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -51,10 +43,6 @@ public class MovingObject extends GameObject {
         myVelocity = new Point2D.Double(x, y);
     }
 
-    @Override
-    public Image getCurrentImage () {
-        return myImg;
-    }
 
     /**
      * set status of this moving object to be on the ground
