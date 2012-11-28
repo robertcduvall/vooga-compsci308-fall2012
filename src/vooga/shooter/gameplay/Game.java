@@ -65,15 +65,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      */
     public Game () {
         myFrame = new JFrame(GAME_NAME);
-//        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        // you can delete the entire addWindowListener section.
-        myFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing (WindowEvent e) {
-                System.exit(0);
-            }
-        });
-        // up to here.
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         myCanvas = new Canvas(this);
         initializeGame(myCanvas, false);
         myCanvas.start();
