@@ -277,7 +277,6 @@ public abstract class Controller<T> {
         }
         for (T subscribedElement : mySubscribedElements) {
             Method method = subscribedElement.getClass().getMethod(methodName, inputType);
-            System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
     }

@@ -1,4 +1,4 @@
-fpackage util.input.core;
+package util.input.core;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;
