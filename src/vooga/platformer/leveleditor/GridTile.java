@@ -1,5 +1,6 @@
 package vooga.platformer.leveleditor;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -8,23 +9,21 @@ import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import vooga.platformer.leveleditor.Sprite;
+import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 
 
 /**
- * A class representing a rectangular tile used for dragging and dropping
- * sprites
- * in the level editor. The tile automatically positions the sprite in the
- * middle of the tile if a sprite is dropped onto it.
+ * A class representing a grid tile.
  * 
  * @author Paul Dannenberg
  * 
  */
-public class GridTile extends Sprite {
+public class GridTile extends Sprite implements IEditorObject {
 
     private Image myDefaultImage, myHighLightedImage;
-    private final URL myDefaultImagePath = getClass().getResource(
+    private final URL myDefaultImageURL = getClass().getResource(
             "/images/TransparentBlue.png");
-    private final URL myHighlightedImagePath = getClass().getResource(
+    private final URL myHighlightedImageURL = getClass().getResource(
             "/images/OpaqueBlue.png");
     private static final String UNFOUND_IMAGE_MESSAGE = "GridTile image file not found";
     private int myWidth, myHeight;
@@ -51,10 +50,10 @@ public class GridTile extends Sprite {
      *        the tile.
      */
     private void initializeImages(int width, int height) {
-        myDefaultImage = resizeImage(readImage(myDefaultImagePath), width,
+        myDefaultImage = resizeImage(readImage(myDefaultImageURL), width,
                 height);
         setImage(myDefaultImage);
-        myHighLightedImage = resizeImage(readImage(myHighlightedImagePath),
+        myHighLightedImage = resizeImage(readImage(myHighlightedImageURL),
                 width, height);
     }
 
@@ -92,12 +91,11 @@ public class GridTile extends Sprite {
      * Places a sprite on the grid tile. This will
      * place the sprite in the center of the tile.
      * 
-     * @param sprite The sprite to be placed
+     * @param toPosition The sprite to be placed
      */
-    public void placeSprite(Sprite sprite) {
+    public void position(IEditorObject toPosition) {
         Point2D center = findCenter(getOutline().getBounds());
-        sprite.setX((int) center.getX());
-        sprite.setY((int) center.getY());
+        toPosition.setCenter((int) center.getX(), (int) center.getY());
     }
 
     /**
@@ -111,20 +109,32 @@ public class GridTile extends Sprite {
      * Make the tile's image revert to its
      * default unhighlighted appearance.
      */
-    public void unHighLight() {
+    public void unHighlight() {
         setImage(myDefaultImage);
     }
 
-    /**
-     * Given a rectangle, finds its center.
-     * 
-     * @param rectangle The shape of which to find its center.
-     * @return A Point2D representing the position of the
-     *         center of the rectangle.
-     */
     private Point2D findCenter(Rectangle rectangle) {
-        return new Point((rectangle.x + (rectangle.x + rectangle.width)) / 2,
-                (rectangle.y + (rectangle.y + rectangle.height)) / 2);
+        return new Point(rectangle.x + rectangle.width / 2, rectangle.y
+                + rectangle.height / 2);
     }
 
+    @Override
+    public void paint(Graphics2D pen) {
+        super.paint(pen, null);
+        // This needs to be standardized.
+    }
+
+    @Override
+    public Point2D getCenter() {
+        Rectangle tileShape = getOutline().getBounds();
+        return findCenter(tileShape);
+    }
+
+    @Override
+    public void setCenter(int x, int y) {
+        //TODO 
+    }
+    
+
+    
 }
