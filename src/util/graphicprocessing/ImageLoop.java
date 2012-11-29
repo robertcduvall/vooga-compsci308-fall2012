@@ -12,7 +12,7 @@ import java.util.List;
  * @author rex, Tony
  * 
  */
-public class ImageLoop implements Iterator {
+public class ImageLoop implements Iterator<Image> {
 
     private List<Image> myImages;
     private int myCurrentIndex;
@@ -32,7 +32,7 @@ public class ImageLoop implements Iterator {
     }
 
     @Override
-    public Object next () {
+    public Image next () {
         myCurrentIndex++;
         if (myCurrentIndex >= myImages.size()) {
             myCurrentIndex = 0;

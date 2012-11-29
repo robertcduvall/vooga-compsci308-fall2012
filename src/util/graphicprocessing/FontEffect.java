@@ -5,12 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 
 
 /**
@@ -111,6 +105,7 @@ public class FontEffect {
      */
     public void setFont (Font font) {
         myFont = font;
+        myGraphics.setFont(myFont);
     }
 
     private int ShiftNorth (int p, int distance) {

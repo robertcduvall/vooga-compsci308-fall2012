@@ -2,26 +2,22 @@ package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
-
 import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gameobject.mapstrategy.BlockStrategy;
+
 
 /**
  * obstacles that blocks player
+ * sorry I have no time to eliminate it
+ * because it involves changes in PathFinder
+ * 
  * @author rex
- *
+ * 
  */
-public class MapObstacleObject extends MapObject{
+public class MapObstacleObject extends MapObject {
 
-	public MapObstacleObject (int id, String event, Point location, Image mapImage,
-            MapMode mapMode) {
+    public MapObstacleObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
         super(id, event, location, mapImage, mapMode);
-    }
-
-	@Override
-    public void interact (MapObject m) {
-	super.interact(m);
-    	if (m instanceof MovingMapObject) {
-    		((MovingMapObject) m).setCanMove(false);
-    	}
+        addStrategy(new BlockStrategy(mapMode));
     }
 }
