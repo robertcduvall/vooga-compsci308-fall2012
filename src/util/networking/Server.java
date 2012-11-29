@@ -10,16 +10,13 @@
  */
 package util.networking;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.*;
 import java.util.*;
-import java.util.logging.*;
 
 
 /**
@@ -28,6 +25,9 @@ import java.util.logging.*;
  * connection on a port, passes input and output streams to a specified Service
  * object which provides the actual service. It can limit the number of
  * concurrent connections, and logs activity to a specified stream.
+ * 
+ * @author Copyright (c) 2004 David Flanagan
+ * @author Simplified and modified by Connor Gordon and Oren Bukspan
  **/
 public class Server {
 
@@ -43,33 +43,6 @@ public class Server {
     // The threadgroup for all our threads
     private ThreadGroup myThreadGroup;
 
-    // This class was originally written to send logging output to a stream.
-    // It has been retrofitted to also support the java.util.logging API of
-    // Java 1.4. You can use either, neither, or both.
-    PrintWriter logStream;          // Where we send our logging output to
-    Logger logger;                  // A Java 1.4 logging destination
-    Level logLevel;                 // the level to log messages at
-
-    /**
-     * This is the Server() constructor. It must be passed a stream
-     * to send log output to (may be null), and the limit on the number of
-     * concurrent connections.
-     **/
-    public Server (OutputStream logStream, int maxConnections) {
-        this(maxConnections);
-        setLogStream(logStream);
-        log("Starting server");
-    }
-
-    /**
-     * This constructor added to support logging with the Java 1.4 Logger class
-     **/
-    public Server (Logger logger, Level logLevel, int maxConnections) {
-        this(maxConnections);
-        setLogger(logger, logLevel);
-        log("Starting server");
-    }
-
     /**
      * This constructor supports no logging
      **/
@@ -78,48 +51,6 @@ public class Server {
         this.myMaxConnections = maxConnections;
         myServices = new HashMap<Integer, Listener>();
         myConnections = new HashSet<Connection>(maxConnections);
-    }
-
-    /**
-     * A public method to set the current logging stream. Pass null
-     * to turn logging off.
-     * 
-     * @param out
-     **/
-    public synchronized void setLogStream (OutputStream out) {
-        if (out != null) {
-            logStream = new PrintWriter(out);
-        }
-        else {
-            logStream = null;
-        }
-    }
-
-    /**
-     * Set the current Logger and logging level. Pass null to turn logging off.
-     * 
-     * @param logger
-     * @param level
-     **/
-    public synchronized void setLogger (Logger logger, Level level) {
-        this.logger = logger;
-        this.logLevel = level;
-    }
-
-    /** Write the specified string to the log */
-    protected synchronized void log (String s) {
-        if (logger != null) {
-            logger.log(logLevel, s);
-        }
-        if (logStream != null) {
-            logStream.println("[" + new Date() + "] " + s);
-            logStream.flush();
-        }
-    }
-
-    /** Write the specified object to the log */
-    protected void log (Object o) {
-        log(o.toString());
     }
 
     /**
@@ -133,15 +64,12 @@ public class Server {
         // the hashtable key
         Integer key = new Integer(port);
         // Check whether a service is already on that port
-        if (myServices.get(key) != null) { 
-            throw new IllegalArgumentException("Port " + port + " already in use.");
-        }
+        if (myServices.get(key) != null) { throw new IllegalArgumentException("Port " + port +
+                                                                              " already in use."); }
         // Create a Listener object to listen for connections on the port
         Listener listener = new Listener(myThreadGroup, port, service);
         // Store it in the hashtable
         myServices.put(key, listener);
-        // Log it
-        log("Starting service " + service.getClass().getName() + " on port " + port);
         // Start the listener running.
         listener.start();
     }
@@ -158,15 +86,11 @@ public class Server {
         Integer key = new Integer(port);
         // Look up the Listener object for the port in the hashtable
         final Listener LISTENER = (Listener) myServices.get(key);
-        if (LISTENER == null) {
-            return;
-        }
+        if (LISTENER == null) { return; }
         // Ask the listener to stop
         LISTENER.pleaseStop();
         // Remove it from the hashtable
         myServices.remove(key);
-        // And log it.
-        log("Stopping service " + LISTENER.service.getClass().getName() + " on port " + port);
     }
 
     /**
@@ -206,8 +130,10 @@ public class Server {
          * connections
          ***/
         public void pleaseStop () {
-            this.stop = true;              // Set the stop flag
-            this.interrupt();              // Stop blocking in accept()
+            // Set the stop flag
+            this.stop = true;
+            // Stop blocking in accept()
+            this.interrupt();
             try {
                 listen_socket.close();
             } // Stop listening.
@@ -221,7 +147,8 @@ public class Server {
          * to the addConnection method of the server.
          **/
         public void run () {
-            while (!stop) {      // loop until we're asked to stop.
+            // loop until we're asked to stop.
+            while (!stop) {
                 try {
                     Socket client = listen_socket.accept();
                     addConnection(client, service);
@@ -229,7 +156,8 @@ public class Server {
                 catch (InterruptedIOException e) {
                 }
                 catch (IOException e) {
-                    log(e);
+                    System.out.println("Cannot add connection.");
+                    System.out.println(e.getStackTrace());
                 }
             }
         }
@@ -253,22 +181,18 @@ public class Server {
                 out.flush();
                 // And close the connection to the rejected client.
                 s.close();
-                // And log it, of course
-                log("Connection refused to " + s.getInetAddress().getHostAddress() + ":" +
-                    s.getPort() + ": max connections reached.");
             }
             catch (IOException e) {
-                log(e);
+                System.out.println("Cannot create PrintWriter from socket's OutputStream");
+                System.out.println(e.getStackTrace());
             }
         }
-        else {  // Otherwise, if the limit has not been reached
+        // Otherwise, if the limit has not been reached
+        else {
             // Create a Connection thread to handle this connection
             Connection c = new Connection(s, service);
             // Add it to the list of current connections
             myConnections.add(c);
-            // Log this new connection
-            log("Connected to " + s.getInetAddress().getHostAddress() + ":" + s.getPort() +
-                " on port " + s.getLocalPort() + " for service " + service.getClass().getName());
             // And start the Connection thread to provide the service
             c.start();
         }
@@ -280,8 +204,6 @@ public class Server {
      **/
     protected synchronized void endConnection (Connection c) {
         myConnections.remove(c);
-        log("Connection to " + c.client.getInetAddress().getHostAddress() + ":" +
-            c.client.getPort() + " closed.");
     }
 
     /** Change the current connection limit */
@@ -311,9 +233,9 @@ public class Server {
         Iterator<Connection> conns = myConnections.iterator();
         while (conns.hasNext()) {
             Connection c = (Connection) conns.next();
-            out.print("CONNECTED TO " + c.client.getInetAddress().getHostAddress() + ":" +
-                      c.client.getPort() + " ON PORT " + c.client.getLocalPort() + " FOR SERVICE " +
-                      c.service.getClass().getName() + "\r\n");
+            out.print("CONNECTED TO " + c.myClient.getInetAddress().getHostAddress() + ":" +
+                      c.myClient.getPort() + " ON PORT " + c.myClient.getLocalPort() + " FOR SERVICE " +
+                      c.myService.getClass().getName() + "\r\n");
         }
     }
 
@@ -326,8 +248,10 @@ public class Server {
      * multi-threaded server implementation.
      **/
     public class Connection extends Thread {
-        Socket client;     // The socket to talk to the client through
-        Service service;   // The service being provided to that client
+     // The socket to talk to the client through
+        private Socket myClient;
+     // The service being provided to that client
+        private Service myService;
 
         /**
          * This constructor just saves some state and calls the superclass
@@ -339,8 +263,8 @@ public class Server {
         public Connection (Socket client, Service service) {
             super("Server.Connection:" + client.getInetAddress().getHostAddress() + ":" +
                   client.getPort());
-            this.client = client;
-            this.service = service;
+            this.myClient = client;
+            this.myService = service;
         }
 
         /**
@@ -357,194 +281,17 @@ public class Server {
          **/
         public void run () {
             try {
-                InputStream in = client.getInputStream();
-                OutputStream out = client.getOutputStream();
-                service.serve(in, out);
+                InputStream in = myClient.getInputStream();
+                OutputStream out = myClient.getOutputStream();
+                myService.serve(in, out);
             }
             catch (IOException e) {
-                log(e);
+                System.out.println("Socket Input or Output Stream in non-blocking mode.");
+                System.out.println(e.getStackTrace());
             }
             finally {
                 endConnection(this);
             }
-        }
-    }
-
-    /**
-     * This service demonstrates how to maintain state across connections by
-     * saving it in instance variables and using synchronized access to those
-     * variables. It maintains a count of how many clients have connected and
-     * tells each client what number it is
-     **/
-    public static class UniqueID implements Service {
-        public int id = 0;
-
-        public synchronized int nextId () {
-            return id++;
-        }
-
-        public void serve (InputStream i, OutputStream o) throws IOException {
-            PrintWriter out = new PrintWriter(o);
-            out.print("You are client #: " + nextId() + "\r\n");
-            out.close();
-            i.close();
-        }
-    }
-
-    /**
-     * This is a non-trivial service. It implements a command-based protocol
-     * that gives password-protected runtime control over the operation of the
-     * server. See the main() method of the Server class to see how this
-     * service is started.
-     * 
-     * The recognized commands are:
-     * password: give password; authorization is required for most commands
-     * add: dynamically add a named service on a specified port
-     * remove: dynamically remove the service running on a specified port
-     * max: change the current maximum connection limit.
-     * status: display current services, connections, and connection limit
-     * help: display a help message
-     * quit: disconnect
-     * 
-     * This service displays a prompt, and sends all of its output to the user
-     * in capital letters. Only one client is allowed to connect to this
-     * service at a time.
-     **/
-    public static class Control implements Service {
-        Server server;             // The server we control
-        String password;           // The password we require
-        boolean connected = false; // Whether a client is already connected
-
-        /**
-         * Create a new Control service. It will control the specified Server
-         * object, and will require the specified password for authorization
-         * Note that this Service does not have a no argument constructor,
-         * which means that it cannot be dynamically instantiated and added as
-         * the other, generic services above can be.
-         **/
-        public Control (Server server, String password) {
-            this.server = server;
-            this.password = password;
-        }
-
-        /**
-         * This is the serve method that provides the service. It reads a
-         * line the client, and uses java.util.StringTokenizer to parse it
-         * into commands and arguments. It does various things depending on
-         * the command.
-         **/
-        public void serve (InputStream i, OutputStream o) throws IOException {
-            // Setup the streams
-            BufferedReader in = new BufferedReader(new InputStreamReader(i));
-            PrintWriter out = new PrintWriter(o);
-            String line;  // For reading client input lines
-            // Has the user has given the password yet?
-            boolean authorized = false;
-
-            // If there is already a client connected to this service, display
-            // a message to this client and close the connection. We use a
-            // synchronized block to prevent a race condition.
-            synchronized (this) {
-                if (connected) {
-                    out.print("ONLY ONE CONTROL CONNECTION ALLOWED.\r\n");
-                    out.close();
-                    return;
-                }
-                else connected = true;
-            }
-
-            // This is the main loop: read a command, parse it, and handle it
-            for (;;) {  // infinite loop
-                out.print("> ");           // Display a prompt
-                out.flush();               // Make it appear right away
-                line = in.readLine();      // Get the user's input
-                if (line == null) break;   // Quit if we get EOF.
-                try {
-                    // Use a StringTokenizer to parse the user's command
-                    StringTokenizer t = new StringTokenizer(line);
-                    if (!t.hasMoreTokens()) continue;  // if input was empty
-                    // Get first word of the input and convert to lower case
-                    String command = t.nextToken().toLowerCase();
-                    // Now compare to each of the possible commands, doing the
-                    // appropriate thing for each command
-                    if (command.equals("password")) {  // Password command
-                        String p = t.nextToken();      // Get the next word
-                        if (p.equals(this.password)) { // Is it the password?
-                            out.print("OK\r\n");       // Say so
-                            authorized = true;         // Grant authorization
-                        }
-                        else out.print("INVALID PASSWORD\r\n");
-                    }
-                    else if (command.equals("add")) {  // Add Service command
-                        // Check whether password has been given
-                        if (!authorized)
-                            out.print("PASSWORD REQUIRED\r\n");
-                        else {
-                            // Get the name of the service and try to
-                            // dynamically load and instantiate it.
-                            // Exceptions will be handled below
-                            String serviceName = t.nextToken();
-                            Class serviceClass = Class.forName(serviceName);
-                            Service service;
-                            try {
-                                service = (Service) serviceClass.newInstance();
-                            }
-                            catch (NoSuchMethodError e) {
-                                throw new IllegalArgumentException("Service must have a "
-                                                                   + "no-argument constructor");
-                            }
-                            int port = Integer.parseInt(t.nextToken());
-                            // If no exceptions occurred, add the service
-                            server.addService(service, port);
-                            out.print("SERVICE ADDED\r\n");    // acknowledge
-                        }
-                    }
-                    else if (command.equals("remove")) { // Remove service
-                        if (!authorized)
-                            out.print("PASSWORD REQUIRED\r\n");
-                        else {
-                            int port = Integer.parseInt(t.nextToken());
-                            server.removeService(port); // remove the service
-                            out.print("SERVICE REMOVED\r\n"); // acknowledge
-                        }
-                    }
-                    else if (command.equals("max")) { // Set connection limit
-                        if (!authorized)
-                            out.print("PASSWORD REQUIRED\r\n");
-                        else {
-                            int max = Integer.parseInt(t.nextToken());
-                            server.setMaxConnections(max);
-                            out.print("MAX CONNECTIONS CHANGED\r\n");
-                        }
-                    }
-                    else if (command.equals("status")) { // Status Display
-                        if (!authorized)
-                            out.print("PASSWORD REQUIRED\r\n");
-                        else server.displayStatus(out);
-                    }
-                    else if (command.equals("help")) {  // Help command
-                        // Display command syntax. Password not required
-                        out.print("COMMANDS:\r\n" + "\tpassword <password>\r\n"
-                                  + "\tadd <service> <port>\r\n" + "\tremove <port>\r\n"
-                                  + "\tmax <max-connections>\r\n" + "\tstatus\r\n" + "\thelp\r\n"
-                                  + "\tquit\r\n");
-                    }
-                    else if (command.equals("quit"))
-                        break; // Quit command.
-                    else out.print("UNRECOGNIZED COMMAND\r\n"); // Error
-                }
-                catch (Exception e) {
-                    // If an exception occurred during the command, print an
-                    // error message, then output details of the exception.
-                    out.print("ERROR WHILE PARSING OR EXECUTING COMMAND:\r\n" + e + "\r\n");
-                }
-            }
-            // Finally, when the loop command loop ends, close the streams
-            // and set our connected flag to false so that other clients can
-            // now connect.
-            connected = false;
-            out.close();
-            in.close();
         }
     }
 }
