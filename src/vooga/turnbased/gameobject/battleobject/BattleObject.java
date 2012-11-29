@@ -21,6 +21,10 @@ import vooga.turnbased.gameobject.GameObject;
 public abstract class BattleObject extends GameObject {
     private Map<String, Number> myStats;
     private String myName;
+    
+    private final double FONT_SCALAR = 18;
+    private final float FONT_SPACING_SCALAR = (float) 1.2;
+    private final float STAT_FONT_SHIFT = 10;
 
     /**
      * Create the BattleObject for this sprite which will be used in
@@ -122,44 +126,51 @@ public abstract class BattleObject extends GameObject {
         paintStats(g, x + width / 2, y, width / 2, height);
     }
 
+    private int calcFontSize(int width, int height) {
+        // current hypotenuse of regular window size is ~965, with font size 25
+        // 965/25 = 37.4
+        return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2)) / FONT_SCALAR);
+    }
+
     //fix this at some point...
     private void paintStats (Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g;
         //g2d.setPaint(Color.CYAN);
         //g2d.draw3DRect(x, y, width, height, true);
         //g2d.fill(new Rectangle2D.Double(x, y, width, height));
-        Font font = new Font("Sans_Serif", Font.PLAIN, 25);
+        int fontSize = calcFontSize(width, height);
+        Font font = new Font("Sans_Serif", Font.PLAIN, fontSize);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
         GlyphVector gv = font.createGlyphVector(frc, myName);
-        g2d.drawGlyphVector(gv, x+10, y+30);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, (y+fontSize*FONT_SPACING_SCALAR));
         int myHealth = myStats.get("health").intValue();
         int myMaxHealth = myStats.get("maxHealth").intValue();
         String health = "Health: " + myHealth + "/" + myMaxHealth;
         gv = font.createGlyphVector(frc, health);
-        g2d.drawGlyphVector(gv, x+10, y+60);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y+2*fontSize*FONT_SPACING_SCALAR);
         int myAttack = myStats.get("attack").intValue();
         String attack = "Attack: " + myAttack;
         gv = font.createGlyphVector(frc, attack);
-        g2d.drawGlyphVector(gv, x+10, y+90);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y+3*fontSize*FONT_SPACING_SCALAR);
         int myDefense = myStats.get("defense").intValue();
         String defense = "Defense: " + myDefense;
         gv = font.createGlyphVector(frc, defense);
-        g2d.drawGlyphVector(gv, x+10, y+120);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y+4*fontSize*FONT_SPACING_SCALAR);
     }
-    
+
     @Override 
     public void clear() {
         // remove all instances of this battleobject in the game
     }
-    
+
     @Override 
     public void update () {
-        
+
     }
-    
+
     @Override 
     public void paint (Graphics g) {
-        
+
     }
 }
