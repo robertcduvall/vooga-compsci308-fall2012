@@ -22,8 +22,10 @@ import vooga.platformer.leveleditor.Sprite;
 public class GridTile extends Sprite {
 
     private Image myDefaultImage, myHighLightedImage;
-    private final URL DEFAULT_IMAGE_URL = getClass().getResource("/images/TransparentBlue.png");
-    private final URL HIGHLIGHTED_IMAGE_URL = getClass().getResource("/images/OpaqueBlue.png");
+    private final URL myDefaultImagePath = getClass().getResource(
+            "/images/TransparentBlue.png");
+    private final URL myHighlightedImagePath = getClass().getResource(
+            "/images/OpaqueBlue.png");
     private static final String UNFOUND_IMAGE_MESSAGE = "GridTile image file not found";
     private int myWidth, myHeight;
 
@@ -33,7 +35,7 @@ public class GridTile extends Sprite {
      * @param width The width of the tile in pixels.
      * @param height The tile height in pixels.
      */
-    public GridTile (int width, int height) {
+    public GridTile(int width, int height) {
         myWidth = width;
         myHeight = height;
         initializeImages(myWidth, myHeight);
@@ -48,10 +50,12 @@ public class GridTile extends Sprite {
      * @param height The height the image should be resized to in order to fit
      *        the tile.
      */
-    private void initializeImages (int width, int height) {
-        myDefaultImage = resizeImage(readImage(DEFAULT_IMAGE_URL), width, height);
+    private void initializeImages(int width, int height) {
+        myDefaultImage = resizeImage(readImage(myDefaultImagePath), width,
+                height);
         setImage(myDefaultImage);
-        myHighLightedImage = resizeImage(readImage(HIGHLIGHTED_IMAGE_URL), width, height);
+        myHighLightedImage = resizeImage(readImage(myHighlightedImagePath),
+                width, height);
     }
 
     /**
@@ -61,11 +65,10 @@ public class GridTile extends Sprite {
      * @return The image that was read out. Returns null if image
      *         was not found, this really shouldn't happen though.
      */
-    private Image readImage (URL path) {
+    private Image readImage(URL path) {
         try {
             return ImageIO.read(path);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.err.println(UNFOUND_IMAGE_MESSAGE + " at " + path);
             e.printStackTrace();
         }
@@ -80,8 +83,9 @@ public class GridTile extends Sprite {
      * @param height The height to resize to.
      * @return The resized image.
      */
-    private Image resizeImage (Image toResize, int width, int height) {
-        return toResize.getScaledInstance(myWidth, myHeight, Image.SCALE_SMOOTH);
+    private Image resizeImage(Image toResize, int width, int height) {
+        return toResize
+                .getScaledInstance(myWidth, myHeight, Image.SCALE_SMOOTH);
     }
 
     /**
@@ -90,7 +94,7 @@ public class GridTile extends Sprite {
      * 
      * @param sprite The sprite to be placed
      */
-    public void placeSprite (Sprite sprite) {
+    public void placeSprite(Sprite sprite) {
         Point2D center = findCenter(getOutline().getBounds());
         sprite.setX((int) center.getX());
         sprite.setY((int) center.getY());
@@ -99,7 +103,7 @@ public class GridTile extends Sprite {
     /**
      * Makes the tile appear highlighted.
      */
-    public void highlight () {
+    public void highlight() {
         setImage(myHighLightedImage);
     }
 
@@ -107,7 +111,7 @@ public class GridTile extends Sprite {
      * Make the tile's image revert to its
      * default unhighlighted appearance.
      */
-    public void unHighLight () {
+    public void unHighLight() {
         setImage(myDefaultImage);
     }
 
@@ -118,9 +122,9 @@ public class GridTile extends Sprite {
      * @return A Point2D representing the position of the
      *         center of the rectangle.
      */
-    private Point2D findCenter (Rectangle rectangle) {
+    private Point2D findCenter(Rectangle rectangle) {
         return new Point((rectangle.x + (rectangle.x + rectangle.width)) / 2,
-                         (rectangle.y + (rectangle.y + rectangle.height)) / 2);
+                (rectangle.y + (rectangle.y + rectangle.height)) / 2);
     }
 
 }
