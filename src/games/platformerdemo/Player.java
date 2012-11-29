@@ -15,7 +15,7 @@ public class Player extends MovingObject {
         super(configString);
         addStrategy(new PlayerMoveStrategy(this));
         addStrategy(new GravityStrategy(this));
-        addStrategy(new ShootingStrategy(this));
+        //addStrategy(new ShootingStrategy(this));
     }
     
 //    public void moveLeft() {
