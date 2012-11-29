@@ -92,8 +92,8 @@ public abstract class ParticleSystem {
      */
     public void move (Point moveBy) {
         for (ParticleEngine p : myParticleEngines) {
-            p.initialPosition.x += moveBy.x;
-            p.initialPosition.y += moveBy.y;
+            p.getStartingPosition().x += moveBy.x;
+            p.getStartingPosition().y += moveBy.y;
         }
     }
 
@@ -109,5 +109,10 @@ public abstract class ParticleSystem {
     public void setVelocity (Point velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(velocity);
+    }
+    
+    public void setPosition (Point position) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setStartingPosition(position);
     }
 }

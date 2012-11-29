@@ -15,9 +15,9 @@ public class Trail extends ParticleSystem{
 	private static int numberOfDirections = 10;
 	private static Point velocity = new Point(0,2);
 	private static int tolerance = 20;
-	private static int length = 50;
+	private static int length = 65;
 
-	private static int density = 10;
+	private static int density = 350;
 	
 	@Override
 	protected void setUpParticleEngines() {

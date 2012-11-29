@@ -21,14 +21,14 @@ public class Explosion extends ParticleSystem{
 	private static int tolerance = 30;
 	private static int length = 20;
 
-	private static int densityStartNum = 20;
+	private static int densityStartNum = 70;
 
 	private VectorCalculator vcalculator;
 	
 	@Override
 	protected void setUpParticleEngines() {
 		ImageIcon temp = new ImageIcon(
-				Explosion.class.getResource("explosion.png"));
+				Explosion.class.getResource("orangeParticle.png"));
 		Image explosionImage = temp.getImage();
                 temp = new ImageIcon(
                         Explosion.class.getResource("smokeParticle.png"));
@@ -37,7 +37,7 @@ public class Explosion extends ParticleSystem{
 		vcalculator = new VectorCalculator();
 		for (int j=0; j<velocities.length; j++){
 			addParticleEngine(densityStartNum+20, explosionImage, position, vcalculator.scaleVelocity(2,velocities[j]), tolerance, length,0.0,5,false);
-			addParticleEngine(densityStartNum, smokeImage, position, vcalculator.scaleVelocity(2,velocities[j]), tolerance, length+15,0.0,1,false);
+			addParticleEngine(densityStartNum-40, smokeImage, position, vcalculator.scaleVelocity(2,velocities[j]), tolerance, length+15,0.0,1,false);
 		}
 
 	}
