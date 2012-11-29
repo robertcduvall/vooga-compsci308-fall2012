@@ -13,11 +13,11 @@ import java.util.List;
  *
  */
 
-public abstract class ParticleSystem {
+public abstract class ParticleEngineTestingUnit {
 
 	private List<ParticleEngine> myParticleEngines;
 	
-	public ParticleSystem(){
+	public ParticleEngineTestingUnit(){
 		myParticleEngines = new ArrayList<ParticleEngine>();
 		setUpParticleEngines();
 	}

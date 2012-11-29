@@ -16,14 +16,16 @@ public class AndroidSensorEvent implements Serializable {
      */
     private static final long serialVersionUID = -2479570115943153542L;
     private float[] myAccelerationValues;
-  
+
     /**
      * Create a new acceleration event
+     * 
      * @param values the values of the acceleration event
      */
     public AndroidSensorEvent (float[] values) {
         myAccelerationValues = values;
     }
+
     /**
      * 
      * @return the acceleration values of the event
@@ -31,6 +33,7 @@ public class AndroidSensorEvent implements Serializable {
     public float[] getAccelerationValues () {
         return myAccelerationValues;
     }
+
     /**
      * 
      * @return the id of the acceleration event

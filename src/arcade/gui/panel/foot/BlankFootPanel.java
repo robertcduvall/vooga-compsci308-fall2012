@@ -17,7 +17,6 @@ public class BlankFootPanel extends AFootPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("BlankFootPanel");
         
         return myPanel;
     }

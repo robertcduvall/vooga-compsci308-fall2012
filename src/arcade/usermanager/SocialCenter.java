@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
@@ -24,7 +25,7 @@ import arcade.utility.FileOperation;
  *         Allow user to change profile picture
  */
 public class SocialCenter {
-    
+
     private static SocialCenter mySocialCenter;
     // private Map<String, User> myAllUser;
     private String myUserBasicFilePath;
@@ -32,13 +33,11 @@ public class SocialCenter {
     private String myUserGameFilePath;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
-//    private final String successString = "Successful";
-//    private final String passwordDoNotMatch = "password do not mat";
-//    private final String userNameExist = "Successful";
+    // private final String successString = "Successful";
+    // private final String passwordDoNotMatch = "password do not mat";
+    // private final String userNameExist = "Successful";
     private static ResourceBundle resource;
     private UserManager myUserManager;
-
-    
 
     /*
      * initiate user list
@@ -58,11 +57,9 @@ public class SocialCenter {
      * 
      * return log on status
      */
-    public boolean logOnUser (String userName, String password)
-            throws Exception {
+    public boolean logOnUser (String userName, String password) throws Exception {
         myUserManager.validateUser(userName, password);
 
-       
         // set current user
         User newUser = myUserManager.getUser(userName);
         myUserManager.setCurrentUser(newUser);
@@ -73,32 +70,35 @@ public class SocialCenter {
     /*
      * return log on status
      */
-    public boolean registerUser (String userName, String password) throws Exception {
+    public boolean registerUser (String userName, String password, String firstName, String lastName)
+                                                                                                     throws IOException {
         // check validity
-        
-      try{
-            myUserManager.validateUser(userName, "");
-            }
-        
-       
-        catch(UserNotExistException e){
-        
-        User newUser= myUserManager.addNewUser(userName, password, "default.jpg");
-       myUserManager.setCurrentUser(newUser);
 
-        return true;
+        try {
+            myUserManager.validateUser(userName, "");
         }
-    return false;
+
+        catch (UserNotExistException e) {
+
+            User newUser =
+                    myUserManager
+                            .addNewUser(userName, password, "default.jpg", firstName, lastName);
+            myUserManager.setCurrentUser(newUser);
+
+            return true;
+        }
+        catch (PasswordNotMatchException e) {
+            return false;
+        }
+        return false;
     }
 
     /*
      * return operation status
      */
-    public boolean deleteUser (String userName, String password)
-            throws Exception {
+    public boolean deleteUser (String userName, String password) throws Exception {
         // check validity
-         myUserManager.validateUser(userName, password);
-        
+        myUserManager.validateUser(userName, password);
 
         // valid file
         FileOperation.deleteFile(myUserBasicFilePath + userName + ".xml");
@@ -114,21 +114,17 @@ public class SocialCenter {
     public boolean sendMessage (String sender, String receiver, String content) {
         String filePath = myUserMessageFilePath + receiver + ".xml";
         File f = new File(filePath);
-        
+
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         Element message = XmlUtilities.appendElement(doc, root, "message", "");
-        XmlUtilities.appendElement(doc, message, "sender", receiver);
+        XmlUtilities.appendElement(doc, message, "sender", sender);
         XmlUtilities.appendElement(doc, message, "content", content);
         XmlUtilities.write(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);
 
         return true;
     }
-
-  
-    
-   
 
     //
     // /*
