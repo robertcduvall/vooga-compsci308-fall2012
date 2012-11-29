@@ -37,12 +37,18 @@ public class BattleMode extends GameMode implements InputAPI {
     private int myTeamStartRandomizer;
     private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
+    private int mySelection = 0;
     
     private final int MESSAGE_NUM = 4;
     private final int ATTACK_KEY = KeyEvent.VK_A;
     private final int DEFEND_KEY = KeyEvent.VK_D;
     private final int HEAL_KEY = KeyEvent.VK_H;
     private final int CHARGE_KEY = KeyEvent.VK_C;
+    private final int SELECT_KEY = KeyEvent.VK_ENTER;
+    private final int LEFT_KEY = KeyEvent.VK_LEFT;
+    private final int RIGHT_KEY = KeyEvent.VK_RIGHT;
+    private final int UP_KEY = KeyEvent.VK_UP;
+    private final int DOWN_KEY = KeyEvent.VK_DOWN;
     
     /**
      * Constructor for a Battle.
@@ -89,6 +95,16 @@ public class BattleMode extends GameMode implements InputAPI {
                     KeyboardController.RELEASED, this, "triggerHealEvent");
             GamePane.keyboardController.setControl(CHARGE_KEY, KeyboardController.RELEASED,
                     this, "triggerChargeEvent");
+            GamePane.keyboardController.setControl(LEFT_KEY, KeyboardController.RELEASED, 
+                    this, "triggerLeftEvent");
+            GamePane.keyboardController.setControl(RIGHT_KEY, KeyboardController.RELEASED, 
+                    this, "triggerRightEvent");
+            GamePane.keyboardController.setControl(UP_KEY, KeyboardController.RELEASED, 
+                    this, "triggerUpEvent");
+            GamePane.keyboardController.setControl(DOWN_KEY, KeyboardController.RELEASED, 
+                    this, "triggerDownEvent");
+            GamePane.keyboardController.setControl(SELECT_KEY, KeyboardController.RELEASED, 
+                    this, "triggerSelectEvent");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -147,16 +163,16 @@ public class BattleMode extends GameMode implements InputAPI {
             teamNumber += 1;
         }
         paintMenu(g);
+        
     }
 
+    //someone please fix this...
     public void paintMenu (Graphics g) {
         //paint the message box/battle option menu
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-        //Graphics2D g2d = (Graphics2D) g;
-        //g2d.setColor(Color.GREEN);
-        //g2d.fillRect(0, 2 * height / 3, width, height / 3);
+        //move this to XML 
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Message_Sign.png");
         Image box = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         g.drawImage(box, 0, 0, width, height, null);
@@ -175,8 +191,51 @@ public class BattleMode extends GameMode implements InputAPI {
             GlyphVector gv = font.createGlyphVector(frc, currentMessage);
             g2d.drawGlyphVector(gv, 65, 2*height/3+70+30*i);
         }
+        
+        g.drawImage(box, width/2, 0, width/2, height, null);
+        drawOptions(g, width/2, 2*height/3, width/2, height/3);
     }
 
+    public void drawOptions (Graphics g, int x, int y, int width, int height) {
+        //format positions based on width and height of the box...maybe?
+        
+        Graphics2D g2d = (Graphics2D) g;
+        Font font = new Font("Sans_Serif", Font.PLAIN, 25);
+        FontRenderContext frc = g2d.getFontRenderContext();
+        g2d.setColor(Color.BLACK);
+        String[] options = {"ATTACK", "DEFEND", "CHARGE", "HEAL"};
+        for (int i = 0; i < 4; i ++) {
+            String s = options[i];
+            GlyphVector gv = font.createGlyphVector(frc, s);
+            if (i == 0) {
+                g2d.drawGlyphVector(gv, x+60, y+80);
+            }
+            else if (i == 1) {
+                g2d.drawGlyphVector(gv, x+220, y+80);
+            }
+            else if (i == 2) {
+                g2d.drawGlyphVector(gv, x+60, y+140);
+            }
+            else if (i == 3) {
+                g2d.drawGlyphVector(gv, x+220, y+140);
+            }
+        }
+        File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
+        Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        if (mySelection == 0) {
+            g.drawImage(arrow, x+40, y+60, 20, 20, null);
+        }
+        else if (mySelection == 1) {
+            g.drawImage(arrow, x+200, y+60, 20, 20, null);
+        }
+        else if (mySelection == 2) {
+            g.drawImage(arrow, x+40, y+120, 20, 20, null);
+        }
+        else if (mySelection == 3) {
+            g.drawImage(arrow, x+200, y+120, 20, 20, null);
+        }
+    }
+    
     /**
      * Initializes a battle with the current lists of BattleObjects
      */
@@ -264,6 +323,54 @@ public class BattleMode extends GameMode implements InputAPI {
         if (isBattleOver()) { return; }
         // opposing team makes some predetermined action
         generateEnemyMove();
+    }
+    
+    //don't even start...i know D:
+    public void triggerLeftEvent () {
+        if (mySelection == 1) {
+            mySelection = 0;
+        }
+        else if (mySelection == 3) {
+            mySelection = 2;
+        }
+    }
+    public void triggerRightEvent () {
+        if (mySelection == 0) {
+            mySelection = 1;
+        }
+        else if (mySelection == 2) {
+            mySelection = 3;
+        }
+    }
+    public void triggerUpEvent () {
+        if (mySelection == 2) {
+            mySelection = 0;
+        }
+        else if (mySelection == 3) {
+            mySelection = 1;
+        }
+    }
+    public void triggerDownEvent () {
+        if (mySelection == 0) {
+            mySelection = 2;
+        }
+        else if (mySelection == 1) {
+            mySelection = 3;
+        }
+    }
+    public void triggerSelectEvent () {
+        if (mySelection == 0) {
+            triggerAttackEvent();
+        }
+        else if (mySelection == 1) {
+            triggerDefendEvent();
+        }
+        else if (mySelection == 2) {
+            triggerChargeEvent();
+        }
+        else if (mySelection == 3) {
+            triggerHealEvent();
+        }
     }
 
     private void generateEnemyMove () {
