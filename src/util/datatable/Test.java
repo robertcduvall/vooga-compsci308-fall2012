@@ -55,7 +55,7 @@ public class Test {
         UnmodifiableRowElement re= table.find("name","bob");
         System.out.println(re.getEntry("name"));
 
-
+        
         //edit row entry data
         try {
             table.editRowEntry("name","bob","password","newpassword");

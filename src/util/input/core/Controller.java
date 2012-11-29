@@ -158,7 +158,7 @@ public abstract class Controller<T> {
         dataIn.put(TUPLE, new FlagPair<Object, Method>(o, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
 
-        myDataTable.addNewRowEntry(dataIn);
+        myDataTable.addNewRow(dataIn);
 
         // myDataTable.viewContents();
     }
@@ -196,7 +196,7 @@ public abstract class Controller<T> {
         Map<String, Object> dataIn = new HashMap<String, Object>();
         dataIn.put(TUPLE, new FlagPair<Class, Method>(c, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-        myDataTable.addNewRowEntry(dataIn);
+        myDataTable.addNewRow(dataIn);
     }
 
     /**
@@ -346,7 +346,7 @@ public abstract class Controller<T> {
 
     private void createTable () {
         try {
-            myDataTable.addNewColumn(myColumnName);
+            myDataTable.addNewColumns(myColumnName);
         }
         catch (RepeatedColumnNameException e) {
             e.printStackTrace();

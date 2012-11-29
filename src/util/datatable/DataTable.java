@@ -23,10 +23,10 @@ public class DataTable {
 
     private List<ModifiableRowElement> myDataRows;
     private List<String> myColumnNames;
-    
-    private final String XMLPARENTTAG= "DataTable";
-    private final String XMLROWTAG= "Row";
-    private final String XMLROWTAGATTR = "number";
+
+    private static final String XMLPARENTTAG= "DataTable";
+    private static final String XMLROWTAG= "Row";
+    private static final String XMLROWTAGATTR = "number";
 
 
     /**
@@ -38,16 +38,17 @@ public class DataTable {
     }
 
     /**
-     * Instantiating a copied data table. 
+     * Instantiating a copied data table.
      * @param dTable new Data Table is a copy of this data table
      */
     public DataTable (DataTable dTable) {
         myColumnNames = new ArrayList<String>(dTable.getColumnNames());
-        myDataRows = new ArrayList<ModifiableRowElement>(RowElement.modifiableRowElement(dTable.getDataRows()));
+        myDataRows = new ArrayList<ModifiableRowElement>(
+                RowElement.modifiableRowElement(dTable.getDataRows()));
     }
 
     /**
-     * Adds new columns to the table. Accepts a comma separated 
+     * Adds new columns to the table. Accepts a comma separated
      * string and adds these as columns.
      * Warning: An exception will be thrown if column names
      * have spaces.
@@ -86,7 +87,7 @@ public class DataTable {
     }
 
     /**
-     * Adds a new row entry to the table via passing in 
+     * Adds a new row entry to the table via passing in
      * a map of column names to values.
      * @param mapEntry - map of column names to data values
      */
@@ -100,7 +101,7 @@ public class DataTable {
         myDataRows.add(rowE);
     }
 
-    
+
     /**
      * Adds a new row entry to the table via passing in
      * a RowElement.
@@ -111,7 +112,7 @@ public class DataTable {
     public void addNewRow (RowElement re) {
         myDataRows.add(new ModifiableRowElement(re));
     }
-    
+
     /**
      * Deletes a row element.
      * @param strKey - column name of key reference to the row to be deleted
@@ -150,16 +151,12 @@ public class DataTable {
      * @param valueNew - specific value to write to the table
      * @throws UnrecognizedColumnNameException - unrecognized column name
      */
-    public void editRowEntry (String strKeyRef, Object valueRef, 
-            String strKeyNew, Object valueNew) throws 
+    public void editRowEntry (String strKeyRef, Object valueRef,
+            String strKeyNew, Object valueNew) throws
             UnrecognizedColumnNameException {
-        Iterator<ModifiableRowElement> it = myDataRows.iterator();
-        while (it.hasNext()) {
-            ModifiableRowElement re = it.next();
-            if (valueRef.equals(re.getEntry(strKeyRef))) {
-                re.setEntry(strKeyNew, valueNew);
-            }
-        }
+        Map<String, Object> incomingData = new HashMap <String, Object> ();
+        incomingData.put(strKeyNew, valueNew);
+        editRowEntry (strKeyRef , valueRef , incomingData);
     }
 
     /**
@@ -184,10 +181,10 @@ public class DataTable {
      * Returns an unmodifiable list of unmodifiable row elements.
      * @return - unmodifiable list of row elements
      */
-    public Collection <UnmodifiableRowElement> getDataRows(){
-        List <UnmodifiableRowElement> unmodList = new ArrayList <UnmodifiableRowElement> ();
+    public Collection <UnmodifiableRowElement> getDataRows() {
+        List <UnmodifiableRowElement> unmodList = new ArrayList <UnmodifiableRowElement>();
         for (ModifiableRowElement re : myDataRows) {
-            UnmodifiableRowElement ure = RowElement.unmodifiableRowElement (re);
+            UnmodifiableRowElement ure = RowElement.unmodifiableRowElement(re);
             unmodList.add(ure);
         }
         return Collections.unmodifiableList(unmodList);
@@ -195,7 +192,8 @@ public class DataTable {
 
 
     /**
-     * Returns an unmodifiableRowElement with the column name and value specified
+     * Returns an unmodifiableRowElement with
+     * the column name and value specified.
      * @param strKey - key to reference row element to be returned
      * @param value - specific value that identifies the row element
      * @return
@@ -217,14 +215,14 @@ public class DataTable {
      */
     public String toString () {
         Iterator<ModifiableRowElement> it = myDataRows.iterator();
-        String aggregateData="";
+        String aggregateData = "";
         while (it.hasNext()) {
             RowElement re = it.next();
-            aggregateData =aggregateData + "\n" + re.toString();
+            aggregateData = aggregateData + "\n" + re.toString();
         }
         return aggregateData;
     }
-    
+
     /**
      * Saves DataTable on an XML file for later use.
      * @param location - location where file is saved
@@ -235,23 +233,24 @@ public class DataTable {
         doc.appendChild(header);
         int i = 0;
         for (RowElement re : getDataRows()) {
-            Element parentRow = 
-                    XmlUtilities.makeElement(doc, XMLROWTAG, XMLROWTAGATTR, String.valueOf(i));
+            Element parentRow =
+                    XmlUtilities.makeElement(
+                            doc, XMLROWTAG, XMLROWTAGATTR, String.valueOf(i));
             header.appendChild(parentRow);
             i++;
-            for (String colName: getColumnNames()){
-                String writeElement=(String) re.getEntry(colName);
-                if (re.getEntry(colName)==null){
-                    writeElement="";
+            for (String colName: getColumnNames()) {
+                String writeElement = (String) re.getEntry(colName);
+                if (re.getEntry(colName)==null) {
+                    writeElement = "";
                 }
-                XmlUtilities.appendElement(doc, parentRow, colName, writeElement);
+                XmlUtilities.appendElement(
+                        doc, parentRow, colName, writeElement);
             }
         }
         XmlUtilities.write(doc , location);
     }
 
-    
-    
+
     /**
      * Loads DataTable from a previously saved XML file.
      * @param location - location of file name
@@ -265,7 +264,8 @@ public class DataTable {
         Collection <Element> dataC = XmlUtilities.getElements(topDT, XMLROWTAG);
         for (Element rowEl : dataC) {
             Collection <Element> colTags = XmlUtilities.getElements(rowEl);
-            Map <String, Object> colValueMap  = new HashMap <String , Object>();          
+            Map <String, Object> colValueMap  =
+                    new HashMap <String , Object>();
             for (Element colVal: colTags) {
                 String colName = XmlUtilities.getTagName(colVal);
                 Object value = XmlUtilities.getContent(colVal);
@@ -275,7 +275,4 @@ public class DataTable {
             addNewRow(colValueMap);
         }
     }
-    
-    
-
 }
