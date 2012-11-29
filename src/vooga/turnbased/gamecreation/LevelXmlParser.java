@@ -11,7 +11,7 @@ import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import util.imageprocessing.ImageLoop;
+import util.graphicprocessing.ImageLoop;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.turnbased.gamecore.MapMode;
