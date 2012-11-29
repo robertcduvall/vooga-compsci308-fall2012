@@ -187,15 +187,15 @@ public class GameManager implements GameLoopMember, InputAPI {
             resumeModes();
         }
         else if ("SWITCH_LEVEL".equals(eventName)) {
-            MapObject enteringObject = findSpriteWithID(myInvolvedIDs.get(0)).getMapObject();
-            initializeGameLevel(myNewMapResource, enteringObject);
+            MapObject enteringMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
+            initializeGameLevel(myNewMapResource, enteringMapObject);
         }
-        else if ("DIALOGUE_START".equals(eventName)) {
-            // myDialogueMode = new DialogueMode(this, BattleObject.class,
-            // myInvolvedIDs);
-            // changeCurrentMode(myDialogueMode);
+        else if ("CONVERSATION_START".equals(eventName)) {
+            MapObject targetMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
+            ConversationMode conversationMode = new ConversationMode(this, MapObject.class, targetMapObject);
+            myActiveModes.add(conversationMode);
         }
-        else if ("DIALOGUE_OVER".equals(eventName)) {
+        else if ("CONVERSATION_OVER".equals(eventName)) {
 
         }
         else if ("INTERACTION_COMPLETED".equals(eventName)) {
@@ -271,5 +271,9 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     public void setNewMapResources (String URI) {
         myNewMapResource = URI;
+    }
+    
+    private MapObject findMapObjectWithID(int ID) {
+        return findSpriteWithID(ID).getMapObject();
     }
 }

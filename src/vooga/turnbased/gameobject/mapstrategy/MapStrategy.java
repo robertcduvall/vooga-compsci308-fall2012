@@ -26,7 +26,7 @@ public abstract class MapStrategy {
     /**
      * perform strategy!
      */
-    public void performStrategy (MapObject m) {
+    public void performStrategy (MapObject target) {
         if (!myIsActive) {
             return;
         }

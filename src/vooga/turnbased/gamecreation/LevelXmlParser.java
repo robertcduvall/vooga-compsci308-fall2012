@@ -19,6 +19,7 @@ import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapobject.MapTileObject;
+import vooga.turnbased.gameobject.mapstrategy.ConversationStrategy;
 import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
 import vooga.turnbased.sprites.Sprite;
 
@@ -92,19 +93,21 @@ public class LevelXmlParser {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
         toReturn.addAll(parseCharacterSprites());
-        /*Sprite playerSprite = parsePlayerSprite();
-        if (playerSprite != null) {
-            toReturn.add(playerSprite);
-        }*/
+        /*
+         * Sprite playerSprite = parsePlayerSprite();
+         * if (playerSprite != null) {
+         * toReturn.add(playerSprite);
+         * }
+         */
         return toReturn;
     }
 
     public Sprite parsePlayerSprite () {
         Sprite s = new Sprite();
         MapPlayerObject mapPlayer = parseMapPlayer(s);
-        if (mapPlayer == null) { 
+        if (mapPlayer == null) {
             System.err.println("No player information found!");
-            return null; 
+            return null;
         }
         Map<String, ImageLoop> imageLoops = parseImageLoops(mapPlayer.getImageMap());
         mapPlayer.setImageLoops(imageLoops);
@@ -185,24 +188,20 @@ public class LevelXmlParser {
 
     private List<Element> getListOfPlayerElements () {
         Element playerRoot = myPlayerXmlDocument.getDocumentElement();
-        List<Element> playerList =
-                (List<Element>) XmlUtilities.getElements(playerRoot, "player");
+        List<Element> playerList = (List<Element>) XmlUtilities.getElements(playerRoot, "player");
         if (playerList.isEmpty()) { return null; }
         return playerList;
     }
 
-    
     private Element isolateMapPlayer () {
         Element playerRoot = myPlayerXmlDocument.getDocumentElement();
-        List<Element> playerList =
-                (List<Element>) XmlUtilities.getElements(playerRoot, "player");
+        List<Element> playerList = (List<Element>) XmlUtilities.getElements(playerRoot, "player");
         if (playerList.isEmpty()) { return null; }
         Element player = playerList.get(0);
         List<Element> mapList = (List<Element>) XmlUtilities.getElements(player, MAP);
         Element mapPlayer = mapList.get(0);
         return mapPlayer;
     }
-
 
     private Point parseLocation (Element element) {
         List<Element> locationList = (List<Element>) XmlUtilities.getElements(element, LOCATION);
@@ -247,8 +246,8 @@ public class LevelXmlParser {
             Map<String, Number> stats = parseBattleStats(battleSprite);
             String name = XmlUtilities.getChildContent(battleSprite, "name");
             BattleObject battleObject =
-                    (BattleObject) Reflection.createInstance(className, s.getID(), 
-                            event, stats, name, image);
+                    (BattleObject) Reflection.createInstance(className, s.getID(), event, stats,
+                                                             name, image);
             return battleObject;
         }
         return null;
@@ -262,7 +261,7 @@ public class LevelXmlParser {
             for (int i = 0; i < statsList.getLength(); i++) {
                 if (!"#text".equals(statsList.item(i).getNodeName())) {
                     stats.put(statsList.item(i).getNodeName(),
-                            Double.parseDouble(statsList.item(i).getTextContent()));
+                              Double.parseDouble(statsList.item(i).getTextContent()));
                 }
             }
         }
@@ -286,9 +285,12 @@ public class LevelXmlParser {
             if (point.equals(new Point(10, 10))) {
                 mapObject
                         .setStrategy(new TransportStrategy(
-                                               myMapMode,
-                                               "src/vooga/turnbased/resources/level/Level2.xml",
-                                               new Point(8, 8)));
+                                                           myMapMode,
+                                                           "src/vooga/turnbased/resources/level/Level2.xml",
+                                                           new Point(8, 8)));
+            }
+            if (point.equals(new Point(9, 3))) {
+                mapObject.setStrategy(new ConversationStrategy(myMapMode));
             }
 
             return mapObject;

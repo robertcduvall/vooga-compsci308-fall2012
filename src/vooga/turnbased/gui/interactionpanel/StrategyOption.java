@@ -12,7 +12,11 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import util.graphicprocessing.FontEffect;
 
-
+/**
+ * Options on the InteractionPanel used to display Strategies available
+ * @author rex
+ *
+ */
 public class StrategyOption {
 
     private static final int FONT_SIZE = 16;
