@@ -18,7 +18,6 @@ public class ProtocolXMPP implements ChatProtocol {
     @Override
     public String sendMessage (String from, String dest, String body) {
         Document d = XmlUtilities.makeDocument();
-        d.setXmlVersion("1.0");
         Element message = d.createElement("message");
         Map<String, String> attributes = new TreeMap<String, String>();
         attributes.put("from", from);

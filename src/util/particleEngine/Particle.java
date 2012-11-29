@@ -59,7 +59,7 @@ public class Particle {
      * @param image the image to use
      * @param velocity the velocity of the particle
      */
-    public Particle (Point position, Dimension size, Image image,
+    protected Particle (Point position, Dimension size, Image image,
             Point velocity, int variance, int duration) {
         declareVariables(position, size, image, variance, duration);
         myVelocity = velocity;
@@ -79,7 +79,7 @@ public class Particle {
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
      */
-    public Particle (Point position, Dimension size, Image image,
+    protected Particle (Point position, Dimension size, Image image,
             Double velocityMagnitude, Double velocityAngle, int variance,
             int duration) {
         declareVariables(position, size, image, variance, duration);
@@ -130,7 +130,7 @@ public class Particle {
      * 
      * @param g the graphics entity to draw to
      */
-    public void draw (Graphics g) {
+    protected void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         RescaleOp rop = new RescaleOp(RGBAscales, offsets, null);
         g2d.rotate(myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
@@ -143,7 +143,7 @@ public class Particle {
     /**
      * update the particle's position, rotation, velocity, and transparency
      */
-    public void update () {
+    protected void update () {
         double r = myRandomGenerator.nextInt(2 * myVariance + 1);
         double angleVariation = (r - myVariance) / oneHundred;
 
@@ -164,7 +164,7 @@ public class Particle {
     /**
      * @return if the particle still exists
      */
-    public boolean stillExists () {
+    protected boolean stillExists () {
         return (durationExisted < durationLimit * 0.8f);
     }
 }
