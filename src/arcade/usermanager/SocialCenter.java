@@ -86,9 +86,6 @@ public class SocialCenter {
 
             return true;
         }
-        catch (PasswordNotMatchException e) {
-            System.out.println("USER ALREADY EXISTS");
-        }
         return false;
     }
 
