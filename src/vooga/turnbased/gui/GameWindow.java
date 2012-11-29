@@ -9,6 +9,7 @@ package vooga.turnbased.gui;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Image;
+import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
