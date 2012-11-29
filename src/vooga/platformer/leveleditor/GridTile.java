@@ -21,9 +21,9 @@ import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 public class GridTile extends Sprite implements IEditorObject {
 
     private Image myDefaultImage, myHighLightedImage;
-    private final URL myDefaultImageURL = getClass().getResource(
+    private final URL myDefaultImagePath = getClass().getResource(
             "/images/TransparentBlue.png");
-    private final URL myHighlightedImageURL = getClass().getResource(
+    private final URL myHighlightedImagePath = getClass().getResource(
             "/images/OpaqueBlue.png");
     private static final String UNFOUND_IMAGE_MESSAGE = "GridTile image file not found";
     private int myWidth, myHeight;
@@ -50,10 +50,10 @@ public class GridTile extends Sprite implements IEditorObject {
      *        the tile.
      */
     private void initializeImages(int width, int height) {
-        myDefaultImage = resizeImage(readImage(myDefaultImageURL), width,
+        myDefaultImage = resizeImage(readImage(myDefaultImagePath), width,
                 height);
         setImage(myDefaultImage);
-        myHighLightedImage = resizeImage(readImage(myHighlightedImageURL),
+        myHighLightedImage = resizeImage(readImage(myHighlightedImagePath),
                 width, height);
     }
 
