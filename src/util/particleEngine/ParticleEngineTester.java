@@ -104,6 +104,8 @@ public class ParticleEngineTester extends JApplet {
             mySystems.add(new Explosion(new Point(400,400)));
         if (myLastKeyPressed == KeyEvent.VK_S)
             mySystems.add(new Trail(new Point(400,400)));
+        if (myLastKeyPressed ==KeyEvent.VK_SPACE)
+            for(ParticleSystem p:mySystems) p.setLoop(false);
         if (myLastKeyPressed == KeyEvent.VK_DOWN)
             for(ParticleSystem p:mySystems) {p.move(new Point(0,5)); p.setParticleVelocity(new Point(0,3));}
         if (myLastKeyPressed == KeyEvent.VK_UP)

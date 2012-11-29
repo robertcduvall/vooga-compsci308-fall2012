@@ -40,7 +40,7 @@ public abstract class ParticleSystem {
      * 
      * @return
      */
-    public List<ParticleEngine> getParticleEngines () {
+    protected List<ParticleEngine> getParticleEngines () {
         return new ArrayList<ParticleEngine>(myParticleEngines);
     }
 
@@ -115,5 +115,10 @@ public abstract class ParticleSystem {
     public void setPosition (Point position) {
         for (ParticleEngine p : myParticleEngines)
             p.setStartingPosition(position);
+    }
+    
+    public void setLoop(Boolean setLoopValue) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setLoop(setLoopValue);
     }
 }
