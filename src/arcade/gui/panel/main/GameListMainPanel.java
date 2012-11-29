@@ -45,7 +45,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
          for (int i = 0; i < myGameList.size(); i++) {
              myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
          }*/
-         createPanel();
+
     }
 
     @Override
@@ -61,7 +61,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             theList[i] = "" + i;
         }*/
         
-        MigLayout layout = new MigLayout();
+        MigLayout layout = new MigLayout("wrap 2");
         myPanel.setLayout(layout);
 
         JList listOfGames = new JList(arrayOfGames);
@@ -69,15 +69,15 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
         gameList = listOfGames;
-        gameList.setPreferredSize(new Dimension(300, 300));
+        //gameList.setPreferredSize(new Dimension(150, 150));
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         
         
         JLabel label = new JLabel("Select a Game to View: ");
         label.setForeground(Color.WHITE);
         label.setLabelFor(listScroller);
-        myPanel.add(label, "dock center");
-        myPanel.add(listScroller, "wrap");
+        myPanel.add(label, "split 2");
+        myPanel.add(listScroller, "dock center");
         
         
         JButton goButton = new JButton("Go!");

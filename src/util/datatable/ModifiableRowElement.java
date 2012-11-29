@@ -1,6 +1,5 @@
 package util.datatable;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -9,11 +8,11 @@ import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
 /**
- * Container for a modifiable row 
- * in the datatable.
+ * A modifiable row element that allows users
+ * to do standard store, retrieve, edit and delete.
  * @author Lance
  */
-public class ModifiableRowElement extends RowElement{
+public class ModifiableRowElement extends RowElement {
 
     /**
      * Instantiating an empty row element.
@@ -21,16 +20,15 @@ public class ModifiableRowElement extends RowElement{
     public ModifiableRowElement() {
         super();
     }
-    
-    
+
     /**
      * Instantiating a row element with initial values from a row element.
-     * @param re
+     * @param re - RowElement to be copied
      */
     public ModifiableRowElement(RowElement re) {
         super(re);
     }
-    
+
     /**
      * Instantiating a row element with initial values from a map.
      * @param map - initial data values

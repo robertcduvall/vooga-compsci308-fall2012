@@ -31,7 +31,7 @@ public class ParticleEngine {
 
     private int spriteCount;
     private Image spriteImage;
-    public Point initialPosition;
+    private Point initialPosition;
     private Point mainVelocity;
     private int variance;
     private int duration;
@@ -172,9 +172,17 @@ public class ParticleEngine {
     public void setLoop (Boolean doLoop) {
         loop = doLoop;
     }
-    
-    public Boolean stillExists() {
-        return (particles.size()>0);
+
+    public Boolean stillExists () {
+        return (particles.size() > 0);
+    }
+
+    public void setStartingPosition (Point position) {
+        initialPosition = position;
+    }
+
+    public Point getStartingPosition () {
+        return initialPosition;
     }
 
 }
