@@ -25,7 +25,6 @@ public class MovingObject extends GameObject {
     public MovingObject (String configString) {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
-        String imagePath = ConfigStringParser.parseConfigString(configString).get(DEFAULT_IMAGE_TAG);
     }
 
     /**

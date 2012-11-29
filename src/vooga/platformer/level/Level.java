@@ -99,10 +99,11 @@ public abstract class Level {
     /**
      * Add a GameObject to the level.
      * 
-     * @param go
+     * @param go GameObject to add
      */
     public void addGameObject(GameObject go) {
         objectList.add(go);
+        Collections.sort(objectList);
     }
 
     /**

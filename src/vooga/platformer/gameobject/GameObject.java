@@ -23,7 +23,7 @@ import vooga.platformer.util.ConfigStringParser;
  * @author Grant Oakley (modified)
  * 
  */
-public abstract class GameObject {
+public abstract class GameObject implements Comparable<GameObject> {
     protected static final String X_TAG = "x";
     protected static final String Y_TAG = "y";
     protected static final String WIDTH_TAG = "width";
@@ -38,6 +38,7 @@ public abstract class GameObject {
     private double width;
     private double height;
     private Image defaultImage;
+    private int id;
 
     private GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
@@ -73,6 +74,7 @@ public abstract class GameObject {
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
         height = Double.parseDouble(configMap.get(HEIGHT_TAG));
         String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
+        id = Integer.parseInt(configMap.get(ID_TAG));
         try {
             defaultImage = ImageIO.read(new File(defaultImageName));
         }
@@ -122,11 +124,29 @@ public abstract class GameObject {
     public void setY (double inY) {
         y = inY;
     }
+    
+    public int getId() {
+        return id;
+    }
+    
+    /**
+     * Sort GameObjects by ID
+     * @param go GameObject
+     */
+    public int compareTo(GameObject go) {
+        int diff = this.getId() - go.getId();
+        if (diff != 0) {
+            return diff;
+        }
+        else {
+            return this.hashCode() - go.hashCode();
+        }
+    }
 
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
-     * @param strat
+     * @param strat strategy
      */
     public void addStrategy (UpdateStrategy strat) {
         strategyList.add(strat);
@@ -135,7 +155,7 @@ public abstract class GameObject {
     /**
      * Remove a strategy from the list.
      * 
-     * @param strat
+     * @param strat strategy
      */
     public void removeStrategy (UpdateStrategy strat) {
         strategyList.remove(strat);
@@ -165,6 +185,7 @@ public abstract class GameObject {
      * Paints the GameObject to the given Graphics object.
      * 
      * @param pen Graphics object to paint on
+     * @param cam camera
      */
     public void paint (Graphics pen, Camera cam) {
         double x = getX();
@@ -174,9 +195,10 @@ public abstract class GameObject {
         double yOffset = rect.getY();
 
         if (getShape().intersects(rect)) {
-            pen.drawImage(getCurrentImage().getScaledInstance((int) width, (int) height,
-                                                              Image.SCALE_DEFAULT),
-                          (int) (x - xOffset), (int) (y - yOffset), null);
+            pen.drawImage(
+                    getCurrentImage().getScaledInstance((int) width,
+                            (int) height, Image.SCALE_DEFAULT),
+                    (int) (x - xOffset), (int) (y - yOffset), null);
         }
     }
 
