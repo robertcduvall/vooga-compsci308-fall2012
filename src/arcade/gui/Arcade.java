@@ -28,7 +28,7 @@ import arcade.usermanager.SocialCenter;
 public class Arcade {
 
     // username (unique key) of the user who is logged in
-    private String myUser = "";
+    private String myUsername = "";
     private Map<String, Serializable> mySharedVariables;
 
     private ArcadeFrame myFrame;
@@ -92,7 +92,7 @@ public class Arcade {
     }
 
     public String getUsername () {
-        return myUser;
+        return myUsername;
     }
 
     /**
@@ -101,7 +101,7 @@ public class Arcade {
      * @param u
      */
     public void setUsername (String u) {
-        myUser = u;
+        myUsername = u;
     }
 
     /**
