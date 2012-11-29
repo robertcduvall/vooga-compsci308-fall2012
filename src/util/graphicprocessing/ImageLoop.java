@@ -1,4 +1,4 @@
-package util.imageprocessing;
+package util.graphicprocessing;
 
 import java.awt.Image;
 import java.util.Iterator;
