@@ -22,7 +22,6 @@ import vooga.turnbased.gui.InputAPI;
 
 /**
  * Map Mode on which players move around and interact with other game objects
- * for now, the mastermind behind map mode...does just about everything
  * 
  * @author Tony, Rex
  **/
@@ -230,29 +229,6 @@ public class MapMode extends GameMode implements InputAPI {
             // decide here if event needs to be reported to gamemanager
             getGameManager().flagEvent(m);
         }
-        
-        // this can be optimized A LOT, only
-        // check mapobjects that did something last turn
-        /*for (MapObject m : getSpritesOnTile(myPlayer.getLocation().x, myPlayer.getLocation().y)) {
-            if (m != myPlayer) {
-                m.interact(myPlayer);
-            }
-        }*/
-        
-
-        // no need - mapobjects report events themselves inside their overriden interact()
-       /* for (Point p : myMapObjects.keySet()) {
-            HashMap<String, List<Integer>> myTileEvents = new HashMap<String, List<Integer>>();
-            for (MapObject s : getSpritesOnTile(p.x, p.y)) {
-                if (!myTileEvents.containsKey(s.getModeEvent())) {
-                    myTileEvents.put(s.getModeEvent(), new ArrayList<Integer>());
-                }
-                myTileEvents.get(s.getModeEvent()).add(s.getID());
-            }
-            for (String s : myTileEvents.keySet()) {
-                getGameManager().flagEvent(s, myTileEvents.get(s));
-            }
-        }*/
     }
 
     public void flagEvent (String modeEvent, List<Integer> involvedSpriteIDs) {

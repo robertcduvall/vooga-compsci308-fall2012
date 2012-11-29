@@ -12,12 +12,12 @@ import vooga.turnbased.gameobject.mapstrategy.NullStrategy;
 
 
 /**
- * Abstract class that is extended to create objects to exist in the MapMode.
+ * Map Object class that is extended to create objects to exist in the MapMode.
  * 
  * @author TurnBased team
  * 
  */
-public abstract class MapObject extends GameObject {
+public class MapObject extends GameObject {
     protected Dimension myTileDimensions;
     protected Point myCameraOrigin;
     protected Point myOffset;

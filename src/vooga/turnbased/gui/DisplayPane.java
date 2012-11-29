@@ -28,7 +28,7 @@ public abstract class DisplayPane extends JPanel {
                 (KeyboardController) ControllerFactory.createKeyboardController(this);
         mouseController = (MouseController) ControllerFactory.createMouseController(this);
     }
-    
+
     public GameWindow getGameWindow () {
         return myGameWindow;
     }

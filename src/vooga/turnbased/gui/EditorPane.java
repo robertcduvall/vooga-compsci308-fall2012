@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -26,11 +24,10 @@ public class EditorPane extends DisplayPane {
      */
     public EditorPane (GameWindow gameWindow) {
         super(gameWindow);
-        addButtons();
-        addMouseListener(new GameMouseListener());
+        addInitialButtons();
     }
 
-    private void addButtons () {
+    private void addInitialButtons () {
         JButton menuButton = new JButton("Back to menu");
         menuButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
@@ -42,6 +39,7 @@ public class EditorPane extends DisplayPane {
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 LevelEditor l = new LevelEditor();
+                editDocument(l);
             }
         });
         add(newLevelButton);
@@ -49,6 +47,7 @@ public class EditorPane extends DisplayPane {
         modifyLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 LevelEditor l = modifyExistingLevel(selectFile());
+                editDocument(l);
             }
         });
         add(modifyLevelButton);
@@ -89,30 +88,8 @@ public class EditorPane extends DisplayPane {
         return null;
     }
 
-    private class GameMouseListener extends MouseAdapter {
-        @Override
-        public void mouseClicked (MouseEvent e) {
-            System.out.println(e);
-        }
-
-        @Override
-        public void mouseEntered (MouseEvent e) {
-            System.out.println(e);
-        }
-
-        @Override
-        public void mouseExited (MouseEvent e) {
-            System.out.println(e);
-        }
-
-        @Override
-        public void mousePressed (MouseEvent e) {
-            System.out.println(e);
-        }
-
-        @Override
-        public void mouseReleased (MouseEvent e) {
-            System.out.println(e);
-        }
+    private void editDocument (LevelEditor l) {
+        removeAll();
+        repaint();
     }
 }

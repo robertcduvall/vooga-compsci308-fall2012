@@ -33,6 +33,7 @@ public class GameManager implements GameLoopMember, InputAPI {
     private HashMap<Integer, Sprite> mySprites;
     private List<GameEvent> myEvents;
     private List<GameMode> myActiveModes;
+    private String myNewMapResource;
 
     /**
      * Constructor of GameManager
@@ -122,7 +123,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     @Override
     public void update () {
-        for (GameMode mode: myActiveModes) {
+        for (GameMode mode : myActiveModes) {
             mode.update();
         }
         handleEvents();
@@ -135,7 +136,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     @Override
     public void paint (Graphics g) {
-        for (GameMode mode: myActiveModes) {
+        for (GameMode mode : myActiveModes) {
             mode.paint(g);
         }
     }
@@ -151,9 +152,10 @@ public class GameManager implements GameLoopMember, InputAPI {
     public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
         myEvents.add(new GameEvent(eventName, involvedSpriteIDs));
     }
-    
+
     // gamemodes collect their local events, then decide which ones should be
-    // reported to gamemanager, then report at the end of update cycle using this method
+    // reported to gamemanager, then report at the end of update cycle using
+    // this method
     public void flagEvent (GameEvent m) {
         myEvents.add(m);
     }
@@ -185,32 +187,27 @@ public class GameManager implements GameLoopMember, InputAPI {
             resumeModes();
         }
         else if ("SWITCH_LEVEL".equals(eventName)) {
-            // Rex can you add code for switching to new level here? smth like:
-            /*
-            Sprite teleportSprite = findSpriteWithID(myInvolvedIDs.get(0));
-            MapTeleportObject teleport = teleportSprite.getObject(MapTeleportObject.class).get(0);
-            String newLevelXML = teleport.getLevelXML();
-            myMapMode = myLevelManager.getLevelBySpecifiedInXML(newLevelXML);
-            changeCurrentMode(myMapMode);
-            */
+            MapObject enteringMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
+            initializeGameLevel(myNewMapResource, enteringMapObject);
         }
-        else if ("DIALOGUE_START".equals(eventName)) {
-            //myDialogueMode = new DialogueMode(this, BattleObject.class, myInvolvedIDs);
-            //changeCurrentMode(myDialogueMode);
+        else if ("CONVERSATION_START".equals(eventName)) {
+            MapObject targetMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
+            ConversationMode conversationMode = new ConversationMode(this, MapObject.class, targetMapObject);
+            myActiveModes.add(conversationMode);
         }
-        else if ("DIALOGUE_OVER".equals(eventName)) {
-            
+        else if ("CONVERSATION_OVER".equals(eventName)) {
+
         }
-        else if ("INTERACTION_COMPLETED".equals(eventName)) { 
+        else if ("INTERACTION_COMPLETED".equals(eventName)) {
             // to win, need to interact with specific (or all) sprites, i.e.
             // NPCs, Enemies, Pickup-able items, teleports, etc.
             /*
-            myGameLogic.processInteraction(event);
-            if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
-            */
+             * myGameLogic.processInteraction(event);
+             * if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
+             */
         }
         else {
-            //System.err.println("Unrecognized mode event requested.");
+            // System.err.println("Unrecognized mode event requested.");
         }
     }
 
@@ -220,27 +217,29 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @param mode GameMode object to be switched to.
      */
     protected void changeCurrentMode (GameMode activeMode) {
-        for (GameMode mode: myActiveModes) {
-            if (mode == activeMode) { continue; }
+        for (GameMode mode : myActiveModes) {
+            if (mode == activeMode) {
+                continue;
+            }
             mode.pause();
         }
         activeMode.resume();
     }
 
-    protected void resumeModes() {
-        for (GameMode mode: myActiveModes) {
+    protected void resumeModes () {
+        for (GameMode mode : myActiveModes) {
             mode.resume();
         }
     }
-    
+
     /**
      * Passes mouse input to the GameMode.
      * 
      * @param e MouseEvent to be handled.
      */
     public void handleMouseClicked (MouseEvent e) {
-        //myCurrentGameMode.handleMouseClicked(e);
-        for (GameMode mode: myActiveModes) {
+        // myCurrentGameMode.handleMouseClicked(e);
+        for (GameMode mode : myActiveModes) {
             mode.handleMouseClicked(e);
         }
     }
@@ -259,12 +258,22 @@ public class GameManager implements GameLoopMember, InputAPI {
         // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
         // KeyboardController.PRESSED, this, "gameOver");
     }
-    
-    private void removeInactiveModes() {
+
+    private void removeInactiveModes () {
         Iterator<GameMode> iterator = myActiveModes.iterator();
         while (iterator.hasNext()) {
             GameMode mode = iterator.next();
-            if (!mode.isActive()) { iterator.remove(); }
+            if (!mode.isActive()) {
+                iterator.remove();
+            }
         }
+    }
+
+    public void setNewMapResources (String URI) {
+        myNewMapResource = URI;
+    }
+    
+    private MapObject findMapObjectWithID(int ID) {
+        return findSpriteWithID(ID).getMapObject();
     }
 }
