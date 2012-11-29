@@ -48,8 +48,8 @@ public abstract class CollisionEvent {
     private void computeDirection () {
         Rectangle2D intersection = a.getShape()
                 .createIntersection(b.getShape());
-        myIntersectSize.setSize(intersection.getHeight(),
-                intersection.getWidth());
+        myIntersectSize.setSize(intersection.getWidth(),
+                intersection.getHeight());
         // lateral collision ?
         if (myIntersectSize.getHeight() > myIntersectSize.getWidth()) {
             if (a.getX() > b.getX()) { // determine collision direction
