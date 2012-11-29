@@ -3,9 +3,12 @@ package vooga.turnbased.gui;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import vooga.turnbased.gamecore.GameLoopMember;
 import vooga.turnbased.gamecore.GameManager;
 
@@ -21,6 +24,7 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
     private GameManager myGameManager;
     private Thread myGameThread;
+    private Point myMousePressedPosition;
     private static int delayBetweenGameLoopCycles;
 
     // InfoPanel infoPanel;
@@ -35,7 +39,7 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
         super(gameWindow);
         myGameThread = new Thread(this);
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
-        addMouseListener(new GameMouseListener());
+        addMouseListeners();
         myGameManager = new GameManager(this);
         enableFocus();
     }
@@ -53,7 +57,7 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
      */
     @Override
     public void update () {
-       myGameManager.update();
+        myGameManager.update();
     }
 
     /**
@@ -91,15 +95,51 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
             }
         }
     }
-    
+
     public static int getDelayTime () {
         return delayBetweenGameLoopCycles;
     }
 
-    private class GameMouseListener extends MouseAdapter {
+    private class GameMouseListener implements MouseListener {
         @Override
         public void mouseClicked (MouseEvent e) {
             myGameManager.handleMouseClicked(e);
         }
+
+        @Override
+        public void mouseEntered (MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited (MouseEvent e) {
+        }
+
+        @Override
+        public void mousePressed (MouseEvent e) {
+            myMousePressedPosition = e.getPoint();
+        }
+
+        @Override
+        public void mouseReleased (MouseEvent e) {
+        }
+    }
+
+    private void addMouseListeners () {
+        addMouseListener(new GameMouseListener());
+        addMouseMotionListener(new MouseMotionListener() {
+
+            @Override
+            public void mouseDragged (MouseEvent e) {
+                myGameManager.handleMouseDragged(e);
+            }
+
+            @Override
+            public void mouseMoved (MouseEvent arg0) {
+            }
+        });
+    }
+
+    public Point getMousePressedPosition () {
+        return myMousePressedPosition;
     }
 }

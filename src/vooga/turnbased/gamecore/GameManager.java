@@ -303,4 +303,12 @@ public class GameManager implements GameLoopMember, InputAPI {
     private MapObject findMapObjectWithID (int ID) {
         return findSpriteWithID(ID).getMapObject();
     }
+    
+    public void handleMouseDragged(MouseEvent e) {
+        for (GameMode mode : myActiveModes) {
+            if (mode.isActive()) {
+                mode.changeDisplayPosition(e.getPoint(), myGamePane.getMousePressedPosition());
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@ package vooga.turnbased.gamecore;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,20 +26,26 @@ public class ConversationMode extends GameMode {
     private MapObject myPlayer;
     private InteractionPanel myPanel;
     private Image myPanelImage;
+    private Point myOrigin;
     private Map<String, MapStrategy> myDisplayedStrategies;
 
     public ConversationMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
         super(gm, modeObjectType);
         myDisplayedStrategies = new HashMap<String, MapStrategy>();
-        myNPC = gm.findSpriteWithID(involvedIDs.get(NPC_INDEX)).getMapObject();
-        myPlayer = gm.findSpriteWithID(involvedIDs.get(PLAYER_INDEX)).getMapObject();
+        myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
+        myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
         List<MapStrategy> optionStrategies = myNPC.getDisplayableStrategies();
         for (MapStrategy strategy: optionStrategies) {
             myDisplayedStrategies.put(strategy.getDisplayMessage(), strategy);
         }
         myPanel = new InteractionPanel(myDisplayedStrategies.keySet());
+        myOrigin = getDefaultPosition();
     }
 
+    private MapObject findMapObjectByIndex(List<Integer> involvedIDs, int index) {
+        return getGameManager().findSpriteWithID(involvedIDs.get(index)).getMapObject();
+    }
+    
     @Override
     public void pause () {
     }
@@ -62,8 +69,7 @@ public class ConversationMode extends GameMode {
     @Override
     public void paint (Graphics g) {
         myPanelImage = myPanel.renderImage();
-        Point position = getDefaultPosition();
-        g.drawImage(myPanelImage, position.x, position.y, null);
+        g.drawImage(myPanelImage, myOrigin.x, myOrigin.y, null);
     }
 
     private Point getDefaultPosition () {
@@ -77,6 +83,17 @@ public class ConversationMode extends GameMode {
     @Override
     public void update () {
 
+    }
+    
+    @Override
+    /**
+     * change the position of the conversation box
+     */
+    protected void changeDisplayPosition(Point currentPosition, Point pressedPosition) {
+        Rectangle myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
+        if (myBounds.contains(pressedPosition)) {
+            myOrigin = new Point(currentPosition);
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package vooga.turnbased.gamecore;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -40,13 +41,14 @@ public abstract class GameMode implements GameLoopMember {
     public GameManager getGameManager () {
         return myGameManager;
     }
-    
-    public List<GameEvent> getModeEvents() {
+
+    public List<GameEvent> getModeEvents () {
         return myModeEvents;
     }
 
     /**
      * Returns type of GameObject associated with current mode.
+     * 
      * @return Type of object that current mode uses.
      */
     public Class getObjectType () {
@@ -66,7 +68,7 @@ public abstract class GameMode implements GameLoopMember {
      * Method that will initialize the game mode from a paused state.
      */
     public abstract void resume ();
-    
+
     /**
      * Call when gamemode if first created
      */
@@ -74,6 +76,7 @@ public abstract class GameMode implements GameLoopMember {
 
     /**
      * Method that will paint the different objects in the mode.
+     * 
      * @param g Graphics.
      */
     @Override
@@ -89,16 +92,27 @@ public abstract class GameMode implements GameLoopMember {
 
     /**
      * Override if any sub-mode needs to handle MouseClicked events.
+     * 
      * @param e MouseEvent to be handled.
      */
     public void handleMouseClicked (MouseEvent e) {
     }
-    
-    protected void setActive(boolean b) {
+
+    protected void setActive (boolean b) {
         myIsActive = b;
     }
-    
-    protected boolean isActive() {
+
+    protected boolean isActive () {
         return myIsActive;
+    }
+
+    /**
+     * sub classes will decide whether they need to change display position in
+     * the game window
+     * 
+     * @param currentPosition the current position of the mouse
+     * @param pressedPosition the position at which the mouse was pressed
+     */
+    protected void changeDisplayPosition (Point currentPosition, Point pressedPosition) {
     }
 }
