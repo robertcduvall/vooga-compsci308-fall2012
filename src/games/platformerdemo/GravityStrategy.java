@@ -1,6 +1,7 @@
 package games.platformerdemo;
 
 import java.awt.geom.Point2D;
+import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.gameobject.UpdateStrategy;
 
 /**
