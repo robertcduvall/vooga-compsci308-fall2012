@@ -21,7 +21,7 @@ import util.xml.XmlUtilities;
  */
 public class DataTable {
 
-    private List<RowElement> myDataRows;
+    private List<ModifiableRowElement> myDataRows;
     private List<String> myColumnNames;
     
     private final String XMLPARENTTAG= "DataTable";
@@ -34,16 +34,16 @@ public class DataTable {
      */
     public DataTable () {
         myColumnNames = new ArrayList<String>();
-        myDataRows = new ArrayList<RowElement>();
+        myDataRows = new ArrayList<ModifiableRowElement>();
     }
 
     /**
      * Used for copying a data table.
-     * @param dataT new Data Table is a copy of this data table
+     * @param dTable new Data Table is a copy of this data table
      */
-    public DataTable (DataTable dataT) {
-        myColumnNames = new ArrayList<String>(dataT.getColumnNames());
-        myDataRows = new ArrayList<RowElement>(dataT.getDataRows());
+    public DataTable (DataTable dTable) {
+        myColumnNames = new ArrayList<String>(dTable.getColumnNames());
+        myDataRows = new ArrayList<ModifiableRowElement>(RowElement.modifiableRowElement(dTable.getDataRows()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class DataTable {
     public void addNewColumn (String[] strArray) throws
         RepeatedColumnNameException, InvalidXMLTagException  {
         for (String strName : strArray) {
-            for  (RowElement rowE: myDataRows) {
+            for  (ModifiableRowElement rowE: myDataRows) {
                 rowE.addNewColumn(strName);
             }
             if (myColumnNames.contains(strName)) {
@@ -91,7 +91,7 @@ public class DataTable {
                 mapEntry.put(key, null);
             }
         }
-        RowElement rowE = new RowElement(mapEntry);
+        ModifiableRowElement rowE = new ModifiableRowElement(mapEntry);
         myDataRows.add(rowE);
     }
     
@@ -101,7 +101,7 @@ public class DataTable {
      * @param value - specific value of the row element to be deleted
      */
     public void deleteRowEntry (String strKey, Object value) {
-        Iterator<RowElement> it= myDataRows.iterator();
+        Iterator<ModifiableRowElement> it= myDataRows.iterator();
         while (it.hasNext()) {
             if (value.equals(it.next().getEntry(strKey))) {
                 it.remove();
@@ -136,9 +136,9 @@ public class DataTable {
     public void editRowEntry (String strKeyRef, Object valueRef, 
             String strKeyNew, Object valueNew) throws 
             UnrecognizedColumnNameException {
-        Iterator<RowElement> it = myDataRows.iterator();
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
         while (it.hasNext()) {
-            RowElement re = it.next();
+            ModifiableRowElement re = it.next();
             if (valueRef.equals(re.getEntry(strKeyRef))) {
                 re.setEntry(strKeyNew, valueNew);
             }
@@ -154,9 +154,9 @@ public class DataTable {
      */
     public void editRowEntry (String strKeyRef, Object valueRef,
             Map<String, Object> map) throws UnrecognizedColumnNameException {
-        Iterator<RowElement> it = myDataRows.iterator();
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
         while (it.hasNext()) {
-            RowElement re = it.next();
+            ModifiableRowElement re = it.next();
             if (valueRef.equals(re.getEntry(strKeyRef))) {
                 re.setEntry(map);
             }
@@ -164,11 +164,16 @@ public class DataTable {
     }
 
     /**
-     * Returns an unmodifiable list of all the row elements.
+     * Returns an unmodifiable list of unmodifiable row elements.
      * @return - unmodifiable list of row elements
      */
-    public Collection <RowElement> getDataRows(){
-        return Collections.unmodifiableList(myDataRows);
+    public Collection <UnmodifiableRowElement> getDataRows(){
+        List <UnmodifiableRowElement> unmodList = new ArrayList <UnmodifiableRowElement> ();
+        for (ModifiableRowElement re : myDataRows) {
+            UnmodifiableRowElement ure = RowElement.unmodifiableRowElement (re);
+            unmodList.add(ure);
+        }
+        return Collections.unmodifiableList(unmodList);
     }
 
 
@@ -179,7 +184,7 @@ public class DataTable {
      * @return
      */
     public UnmodifiableRowElement find (String strKey, Object value) {
-        Iterator<RowElement> it = myDataRows.iterator();
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
         while (it.hasNext()) {
             RowElement re = it.next();
             if (value.equals(re.getEntry(strKey))) {
@@ -191,15 +196,16 @@ public class DataTable {
 
 
     /**
-     * Prints contents of the data table.
+     * Returns the contents of the data table in a String.
      */
-    public void viewContents() {
-        System.out.println("Table Contents: ");
-        Iterator<RowElement> it = myDataRows.iterator();
+    public String toString () {
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
+        String aggregateData="";
         while (it.hasNext()) {
             RowElement re = it.next();
-            re.printData();
+            aggregateData =aggregateData + "\n" + re.toString();
         }
+        return aggregateData;
     }
     
     /**
@@ -237,28 +243,22 @@ public class DataTable {
      */
     public void load (String location) throws
         RepeatedColumnNameException, InvalidXMLTagException {
-        Map <String, Object> colValueMap = null; 
         Document doc = XmlUtilities.makeDocument(location);
         Element topDT = doc.getDocumentElement();
         Collection <Element> dataC = XmlUtilities.getElements(topDT, XMLROWTAG);
         for (Element rowEl : dataC) {
             Collection <Element> colTags = XmlUtilities.getElements(rowEl);
-            colValueMap = new HashMap <String , Object>();
-            
+            Map <String, Object> colValueMap  = new HashMap <String , Object>();          
             for (Element colVal: colTags) {
-                
-
                 String colName = XmlUtilities.getTagName(colVal);
-                System.out.println("printing: " + XmlUtilities.getContent(colVal));
-                
                 Object value = XmlUtilities.getContent(colVal);
                 colValueMap.put(colName, value);
-                
-                System.out.println("printing map :" + colValueMap);
                 addNewColumn(colName);
             }
             addNewRowEntry(colValueMap);
         }
     }
+    
+    
 
 }

@@ -66,7 +66,7 @@ public class Test {
         }
 
 
-        table.viewContents();
+        System.out.println(table);
 
         Map<String,Object> newData= new HashMap<String, Object>();
         newData.put("address","LAAZ");
@@ -81,7 +81,7 @@ public class Test {
         }
         
         System.out.println("oldtable");
-        table.viewContents();
+        System.out.println(table);
        
         //delete row entry
       //  table.deleteRowEntry("name","bob");
@@ -107,7 +107,7 @@ public class Test {
             e2.printStackTrace();
         }
         System.out.println("new table");
-        newtable.viewContents(); 
+        System.out.println(newtable);
         
         //retrieving a null entry from newly loaded table
         UnmodifiableRowElement rt = newtable.find("address", "LAAZ");
@@ -116,7 +116,7 @@ public class Test {
         
         
         //demo of inserting objects
-        RowElement rey= new RowElement();
+        ModifiableRowElement rey= new ModifiableRowElement();
         try {
             rey.addNewColumn("phone");
         }
@@ -152,8 +152,8 @@ public class Test {
         myMap.put("address","DC");
         table.addNewRowEntry(myMap);
         
-        table.viewContents();
+        System.out.println(table);
         UnmodifiableRowElement mmrey=table.find("address", "DC");
-        ((RowElement) mmrey.getEntry("ObjectTest")).printData();
+        System.out.println((RowElement) mmrey.getEntry("ObjectTest"));
     }
 }

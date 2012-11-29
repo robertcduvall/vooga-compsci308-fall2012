@@ -1,118 +1,90 @@
 package util.datatable;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
-import util.datatable.exceptions.InvalidXMLTagException;
-import util.datatable.exceptions.RepeatedColumnNameException;
-import util.datatable.exceptions.UnrecognizedColumnNameException;
 
 /**
- * Container for a row in the datatable.
+ * Abstract class that describes a generic RowElement
+ * containing only the basic functionality of
+ * retrieving data.
+ *
  * @author Lance
  *
  */
-public class RowElement {
-
+abstract class RowElement {
     private Map<String , Object> myData;
-
+    
     /**
      * Instantiating an empty row element.
      */
-    public RowElement() {
-        myData = new HashMap<String, Object>();
+    protected RowElement (){
+        myData = new HashMap<String , Object>();
     }
-
+    
     /**
-     * Instantiating a row element with initial values from a map.
+     * Instantiating a row element with initial values from a row element.
      * @param map - initial data values
      */
-    public RowElement(Map<String , Object> map) {
+    protected RowElement (RowElement re) {
         this();
-        myData.putAll(map);
+        myData.putAll(re.getAllEntries());
     }
-
-    /**
-     * Write to specific column of the row element.
-     * @param  col - Column key
-     * @param value - Specific Value
-     * @throws UnrecognizedColumnNameException - column name doesnt exist
-     */
-    public void setEntry(String col , Object value) throws
-        UnrecognizedColumnNameException {
-        if (myData.containsKey(col)) {
-            myData.put(col, value);
-        }
-        else {
-            throw new UnrecognizedColumnNameException(col);
-        }
-    }
-
-    /**
-     * Write to specific column of the row element.
-     * @param  map - map of values to be written
-     * @throws UnrecognizedColumnNameException - column name does not exist
-     */
-    public void setEntry (Map<String, Object> map) throws
-        UnrecognizedColumnNameException {
-        Set<String> keySet = map.keySet();
-        Iterator<String> it = keySet.iterator();
-        while (it.hasNext()) {
-            String pKey = (String) it.next();
-            if (myData.containsKey(pKey)) {
-                myData.put(pKey , map.get(pKey));
-            }
-            else {
-                throw new UnrecognizedColumnNameException(pKey);
-            }
-        }
-    }
-
 
     /**
      * Retrieve an entry in row element.
      * @param col - column key
      * @return
      */
-    public Object getEntry(String col) {
-        return myData.get(col);
+    public Object getEntry(String s) {
+        return myData.get(s);
     }
-
 
     /**
      * Retrieve all keys and data.
      * @return - map of all the keys and data
      */
-    public Map<String , Object> getAllData() {
-        Map<String , Object> cpmap = new HashMap<String , Object>();
+    public Map <String , Object> getAllEntries() {
+        Map<String , Object> cpmap = new HashMap<String, Object>();
         cpmap.putAll(myData);
         return cpmap;
     }
-
+    
     /**
-     * Adds a new column.
-     * @param col - new column to be added
-     * @throws RepeatedColumnNameException
-     * @throws InvalidXMLTagException 
+     * Returns contents of row element in a string.
+     * @return 
      */
-    public void addNewColumn(String col) throws
-        RepeatedColumnNameException, InvalidXMLTagException  {
-        if(myData.containsKey(col)){
-            throw new RepeatedColumnNameException(col);
+    public String toString () {
+        return myData.toString();
+    }
+    
+    
+    public static UnmodifiableRowElement unmodifiableRowElement (RowElement re) {
+        return new UnmodifiableRowElement (re);       
+    }
+    
+    public static Collection<UnmodifiableRowElement> unmodifiableRowElement (Collection <ModifiableRowElement> colRe) {
+        Collection <UnmodifiableRowElement> modifiedColRe = new ArrayList <UnmodifiableRowElement> ();
+        for (RowElement re : colRe) {
+            modifiedColRe.add(new UnmodifiableRowElement (re));
         }
-        else if(col.split(" ").length != 1){
-            throw new InvalidXMLTagException(col);
+        return modifiedColRe;       
+    }
+    
+    public static ModifiableRowElement modifiableRowElement (RowElement re) {
+        return new ModifiableRowElement (re);       
+    }
+    
+    public static Collection<ModifiableRowElement> modifiableRowElement (Collection <UnmodifiableRowElement> colRe) {
+        Collection <ModifiableRowElement> modifiedColRe = new ArrayList <ModifiableRowElement> ();
+        for (RowElement re : colRe) {
+            modifiedColRe.add(new ModifiableRowElement (re));
         }
-        else{
-            myData.put(col, null);
-        }
+        return modifiedColRe;       
+    }
+    protected Map<String , Object > getUnderlyingData() {
+        return myData;
     }
 
-    /**
-     * Prints contents of row element.
-     */
-    public void printData () {
-        System.out.println(myData);
-    }
 }

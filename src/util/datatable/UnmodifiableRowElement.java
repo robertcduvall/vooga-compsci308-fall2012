@@ -1,26 +1,18 @@
 package util.datatable;
 
-import java.util.HashMap;
-import java.util.Map;
 
-
-public class UnmodifiableRowElement {
-
-    protected Map<String , Object> myData;
-
+/**
+ * An unmodifiable row element that only
+ * allows user to retrieve entries.
+ * @author Lance
+ *
+ */
+public class UnmodifiableRowElement extends RowElement {
+    /**
+     * Instantiating an unmodifiable row element.
+     * @param re
+     */
     public UnmodifiableRowElement (RowElement re) {
-        myData=new HashMap<String , Object>();
-        myData.putAll(re.getAllData());
+        super(re);
     }
-
-    public Object getEntry(String s) {
-        return myData.get(s);
-    }
-
-    protected Map <String , Object> getAllData(){
-        Map<String , Object> cpmap= new HashMap<String, Object> ();
-        cpmap.putAll(myData);
-        return cpmap;
-    }
-
 }
