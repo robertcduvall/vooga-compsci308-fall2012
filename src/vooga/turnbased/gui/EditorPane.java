@@ -41,14 +41,14 @@ public class EditorPane extends DisplayPane {
         JButton newLevelButton = new JButton("Create New Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                createNewLevel();
+                LevelEditor l = new LevelEditor();
             }
         });
         add(newLevelButton);
         JButton modifyLevelButton = new JButton("Modify Existing Level");
         modifyLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                modifyExistingLevel(selectFile());
+                LevelEditor l = modifyExistingLevel(selectFile());
             }
         });
         add(modifyLevelButton);
@@ -66,15 +66,9 @@ public class EditorPane extends DisplayPane {
         g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
     }
 
-    private void createNewLevel () {
-        System.out.println("Action performed to create a new Level");
-        LevelEditor l = new LevelEditor();
-    }
-
-    private void modifyExistingLevel (File f) {
+    private LevelEditor modifyExistingLevel (File f) {
         Document xmlDocument = createXmlFromFile(f);
-        System.out.println("Action performed to modify existing level");
-        System.out.println(xmlDocument.getDocumentElement().getNodeName());
+        return new LevelEditor(xmlDocument, f.toString());
     }
 
     private Document createXmlFromFile (File f) {

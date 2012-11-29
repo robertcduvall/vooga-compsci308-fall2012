@@ -13,7 +13,7 @@ import util.xml.XmlUtilities;
  */
 public class LevelEditor {
 
-    public LevelEditor(File f) {
+    public LevelEditor(Document xmlDocument, String fileName) {
         
     }
     
