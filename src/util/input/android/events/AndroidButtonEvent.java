@@ -1,10 +1,15 @@
 package util.input.android.events;
+
+import java.io.Serializable;
+
+
 /**
  * This class wraps information from an Android controller button event.
+ * 
  * @author Ben Schwab
- *
+ * 
  */
-public class AndroidButtonEvent extends AndroidControllerEvent {
+public class AndroidButtonEvent implements Serializable {
     /**
      * A constant representing that a button was just pushed.
      */
@@ -13,10 +18,14 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
      * A constant representing that a button was just released.
      */
     public static final int BUTTON_RELEASED = 402;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3905344106141040518L;
     private int myButtonID;
     private int myButtonAction;
     private int myEventCode;
-    
+
     /**
      * 
      * @param buttonID The ID of the button
@@ -28,15 +37,19 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
         myButtonID = buttonID;
         myButtonAction = buttonAction;
     }
+
     /**
      * Get the ID of the button event.
+     * 
      * @return The ID of the button event
      */
     public int getID () {
         return myButtonID;
     }
+
     /**
      * Get the type of button event (press/release)
+     * 
      * @return an integer representing the type of button event (press/release).
      */
     public int getPressType () {
@@ -45,6 +58,7 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
 
     /**
      * Get the combined button type / press type code
+     * 
      * @return the combined integer of the button press type and id
      */
     public int getEventCode () {
@@ -130,7 +144,45 @@ public class AndroidButtonEvent extends AndroidControllerEvent {
          * Start button
          */
         public static final int START = 106;
-        
+        /**
+         * Select button
+         */
+        public static final int SELECT = 107;
+
     }
-   
+
+    /**
+     * 
+     * A data wrapper class for the components in a TouchController.
+     * 
+     */
+    public static final class TouchController {
+
+        /**
+         * A Button.
+         */
+        public static final int A = 200;
+        /**
+         * B Button
+         */
+        public static final int B = 201;
+        /**
+         * X Button
+         */
+        public static final int X = 202;
+        /**
+         * Y Button
+         */
+        public static final int Y = 203;
+        /**
+         * Start button
+         */
+        public static final int START = 204;
+        /**
+         * Select button
+         */
+        public static final int SELECT = 204;
+
+    }
+
 }

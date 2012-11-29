@@ -93,7 +93,8 @@ public final class LevelFactory {
             throw e;
         }
         catch (Exception e) {
-            throw new LevelFileIOException("Failed to load level");
+            e.printStackTrace();
+            throw new LevelFileIOException("Failed to load level", e.getCause());
         }
     }
 
@@ -113,7 +114,7 @@ public final class LevelFactory {
 
         // TODO strategy instantiation
 
-        return (GameObject) Reflection.createInstance(s.getType(), configString);
+        return (GameObject) Reflection.createInstance(s.getClassName(), configString);
     }
 
     private static GameObject findPlayerGameObject (Collection<GameObject> gameObjects,

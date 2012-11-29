@@ -1,199 +1,86 @@
 package arcade.gui.frame;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.JFrame;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
 
 /**
- * This class creates the frame for
+ * 
+ * Primary frame creator. Creates the frame for the arcade.
  * 
  * @author Michael Deng
  * 
  */
-public class MainFrameCreator {
-
-    private static final String ARCADE_NAME = "Duke CS 308 Arcade";
-    private static final int FRAME_HEIGHT = 650;
-    private static final int FRAME_WIDTH = 1100;
-    private static final boolean FRAME_RESIZABLE = false;
-
-    private Arcade myArcade;
-    private ArcadePanel myContentPanel;
-    private Map<String, ArcadePanel> myPanels;
-    private GridBagConstraints c;
+public class MainFrameCreator extends AbstractFrameCreator {
 
     public MainFrameCreator (Arcade a) {
-        myArcade = a;
-        myContentPanel = new ArcadePanel(myArcade, "super");
-        myPanels = new HashMap<String, ArcadePanel>();
-
+        super(a);
     }
 
-    /**
-     * this method is the main method that will
-     * set up the jframe.. and get it read to add
-     * 
-     * @return
-     */
-    public ArcadeFrame createFrame () {
+    @Override
+    protected void layoutContentPanel () {
+        super.layoutContentPanel();
 
-        prepareContentPanel();
+        // set contentpanel layout
+        getContentPanel().setLayout(new MigLayout("", "[]0[grow]0[]", "[]0[]0[grow]0[]"));
 
-        ArcadeFrame myFrame = new ArcadeFrame(myArcade, ARCADE_NAME, myPanels);
+        // create subpanels
+        ArcadePanel panel1 = new ArcadePanel(getArcade(), "panel1");
+        ArcadePanel panel2 = new ArcadePanel(getArcade(), "panel2");
+        ArcadePanel panel3 = new ArcadePanel(getArcade(), "panel3");
+        ArcadePanel panel4 = new ArcadePanel(getArcade(), "panel4");
+        ArcadePanel panel5 = new ArcadePanel(getArcade(), "panel5");
+        ArcadePanel panel6 = new ArcadePanel(getArcade(), "panel6");
+        ArcadePanel panel7 = new ArcadePanel(getArcade(), "panel7");
 
-        // set size
-        myFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        myFrame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        myFrame.setResizable(FRAME_RESIZABLE);
+        // size subpanels
+        panel1.setMinimumSize(new Dimension(300, 100));
+        panel1.setPreferredSize(new Dimension(300, 100));
+        panel1.setMaximumSize(new Dimension(300, 100));
 
-        // add myContentPanel
-        myFrame.getContentPane().removeAll();
-        myFrame.getContentPane().add(myContentPanel);
+        panel2.setMinimumSize(new Dimension(500, 100));
+        panel2.setPreferredSize(new Dimension(500, 100));
+        panel2.setMaximumSize(new Dimension(10000, 100));
 
-        // set other things
-        myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myFrame.setLocationRelativeTo(null);
+        panel3.setMinimumSize(new Dimension(300, 100));
+        panel3.setPreferredSize(new Dimension(300, 100));
+        panel3.setMaximumSize(new Dimension(300, 100));
 
-        // myFrame.pack();
-        myFrame.setVisible(true);
-        return myFrame;
-    }
+        panel4.setMinimumSize(new Dimension(1100, 50));
+        panel4.setPreferredSize(new Dimension(1100, 50));
+        panel4.setMaximumSize(new Dimension(10000, 50));
 
-    private void prepareContentPanel () {
-        myContentPanel.removeAll();
-        myContentPanel.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        myContentPanel.setBackground(Color.BLACK);
+        panel5.setMinimumSize(new Dimension(800, 450));
+        panel5.setPreferredSize(new Dimension(800, 450));
+        panel5.setMaximumSize(new Dimension(10000, 10000));
 
-        // TEST CODE BELOW
-        // myContentPanel.setLayout(new BorderLayout());
-        // JButton j = new JButton("the message");
-        // j.setPreferredSize(new Dimension(100, 100));
-        // myContentPanel.add(j, BorderLayout.CENTER);
-        // TEST CODE ENDS
+        panel6.setMinimumSize(new Dimension(300, 450));
+        panel6.setPreferredSize(new Dimension(300, 450));
+        panel6.setMaximumSize(new Dimension(300, 10000));
 
-        myContentPanel.setLayout(new GridBagLayout());
+        panel7.setMinimumSize(new Dimension(1100, 50));
+        panel7.setPreferredSize(new Dimension(1100, 50));
+        panel7.setMaximumSize(new Dimension(10000, 50));
 
-        // position all sub panels in content panel (use layout)
-        ArcadePanel logoHolder = new ArcadePanel(myArcade, "logoholder");
-        logoHolder.setBackground(Color.BLUE);
-        logoHolder.setPreferredSize(new Dimension(300, 100));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.weightx = 0.5;
-        c.weighty = .15;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(logoHolder, c);
+        // setup subpanels
+        setupPanel("logo", panel1);
+        setupPanel("blank", panel2);
+        setupPanel("user", panel3);
+        setupPanel("nav", panel4);
+        setupPanel("main", panel5);
+        setupPanel("search", panel6);
+        setupPanel("foot", panel7);
 
-        ArcadePanel blankHolder = new ArcadePanel(myArcade, "blankholder");
-        blankHolder.setBackground(Color.BLACK);
-        blankHolder.setPreferredSize(new Dimension(500, 100));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = GridBagConstraints.RELATIVE;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.weightx = 0.5;
-        c.weighty = .15;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(blankHolder, c);
-
-        ArcadePanel userHolder = new ArcadePanel(myArcade, "userholder");
-        userHolder.setBackground(Color.GREEN);
-        userHolder.setPreferredSize(new Dimension(300, 100));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = GridBagConstraints.RELATIVE;
-        c.gridy = 0;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.weightx = 0.3;
-        c.weighty = .15;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(userHolder, c);
-
-        ArcadePanel navHolder = new ArcadePanel(myArcade, "navholder");
-        navHolder.setBackground(Color.ORANGE);
-        navHolder.setPreferredSize(new Dimension(1100, 100));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
-        c.gridy = GridBagConstraints.RELATIVE;
-        c.gridwidth = 6;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.weighty = .1;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(navHolder, c);
-
-        ArcadePanel mainHolder = new ArcadePanel(myArcade, "mainholder");
-        mainHolder.setBackground(Color.RED);
-        mainHolder.setPreferredSize(new Dimension(800, 350));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
-        c.gridy = GridBagConstraints.RELATIVE;
-        c.gridwidth = 4;
-        c.gridheight = 1;
-        c.weightx = .7;
-        c.weighty = .1;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(mainHolder, c);
-
-        ArcadePanel searchHolder = new ArcadePanel(myArcade, "searchholder");
-        searchHolder.setBackground(Color.PINK);
-        searchHolder.setPreferredSize(new Dimension(300, 350));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = GridBagConstraints.RELATIVE;
-        c.gridy = 2;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.weightx = .3;
-        c.weighty = .65;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(searchHolder, c);
-
-        ArcadePanel footHolder = new ArcadePanel(myArcade, "footholder");
-        footHolder.setBackground(Color.GRAY);
-        footHolder.setPreferredSize(new Dimension(1100, 100));
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
-        c.gridy = GridBagConstraints.RELATIVE;
-        c.gridwidth = 6;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.weighty = .1;
-        // c.ipadx = ;
-        // c.ipady = ;
-        myContentPanel.add(footHolder, c);
-
-        // add all sub panels to the map
-        myPanels.put("main", mainHolder);
-        myPanels.put("foot", footHolder);
-        myPanels.put("logo", logoHolder);
-        myPanels.put("search", searchHolder);
-        myPanels.put("user", userHolder);
-        myPanels.put("nav", navHolder);
-        myPanels.put("blank", blankHolder);
+        // add subpanels to contentpanel
+        getContentPanel().add(panel1, "align center");
+        getContentPanel().add(panel2, "growx, align center");
+        getContentPanel().add(panel3, "align center, wrap");
+        getContentPanel().add(panel4, "span, growx, wrap");
+        getContentPanel().add(panel5, "span 2, grow");
+        getContentPanel().add(panel6, "growy, wrap");
+        getContentPanel().add(panel7, "span, growx");
 
     }
 

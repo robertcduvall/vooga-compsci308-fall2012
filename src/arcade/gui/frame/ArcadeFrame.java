@@ -1,5 +1,7 @@
 package arcade.gui.frame;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Map;
 import javax.swing.JFrame;
 import arcade.gui.Arcade;
@@ -22,11 +24,17 @@ public class ArcadeFrame extends JFrame {
         myArcade = a;
         myPanels = m;
         System.out.println("main FRAME created");
+
+        addWindowListener(new WindowExitAdapter() {
+
+        });
     }
 
     /**
      * Method to return a 'holder' panel. This panel is one of
-     * the panels in the frame. You can put things in this panel.
+     * the holder panels in the frame. You can place place things in this
+     * panel. To do so, first clear the panel, and then add the new
+     * component.
      * 
      * @param panelType the name of the holder panel
      * @return
@@ -40,4 +48,13 @@ public class ArcadeFrame extends JFrame {
         }
     }
 
+    private class WindowExitAdapter extends WindowAdapter {
+
+        @Override
+        public void windowClosing (WindowEvent e) {
+            myArcade.setUsername("");
+            System.out.println("username set to null");
+            System.exit(0);
+        }
+    }
 }

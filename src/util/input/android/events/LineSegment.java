@@ -1,9 +1,22 @@
 package util.input.android.events;
 
+import java.io.Serializable;
 
 
-public class LineSegment extends AndroidControllerEvent {
+/**
+ * A data wrapper that represents a line segment drawn on an android touch
+ * controller. Provides methods that give relative locations to translate to
+ * screens of different sizes than the touch screen of the android device.
+ * 
+ * @author Ben Schwab
+ * 
+ */
+public class LineSegment implements Serializable {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -570200229732755260L;
     private int myStartX;
     private int myStartY;
     private int myEndX;
@@ -11,7 +24,18 @@ public class LineSegment extends AndroidControllerEvent {
     private int myParentWidth;
     private int myParentHeight;
 
-    public LineSegment(int startX, int startY, int endX, int endY, int parentWidth, int parentHeight){
+    /**
+     * Create a new line segment
+     * 
+     * @param startX the starting x location of the line
+     * @param startY the starting y location of the line
+     * @param endX the ending x location of the line
+     * @param endY the ending y location of the line
+     * @param parentWidth the width of the screen the line originated on
+     * @param parentHeight the height of the screen the line originated on
+     */
+    public LineSegment (int startX, int startY, int endX, int endY, int parentWidth,
+                        int parentHeight) {
         myStartX = startX;
         myStartY = startY;
         myEndX = endX;
@@ -19,30 +43,68 @@ public class LineSegment extends AndroidControllerEvent {
         myParentWidth = parentWidth;
         myParentHeight = parentHeight;
     }
-     
-    public double getRelativeStartX(){
-        return myStartX/(double)myParentWidth;
+
+    /**
+     * 
+     * @return
+     */
+    public double getRelativeStartX () {
+        return myStartX / (double) myParentWidth;
     }
-    public double getRelativeStartY(){
-        return myStartY/(double)myParentHeight;
+
+    /**
+     * 
+     * @return
+     */
+    public double getRelativeStartY () {
+        return myStartY / (double) myParentHeight;
     }
-    public double getRelativeEndX(){
-        return myEndX/(double)myParentWidth;
+
+    /**
+     * 
+     * @return
+     */
+    public double getRelativeEndX () {
+        return myEndX / (double) myParentWidth;
     }
-    public double getRelativeEndY(){
-        return myEndY/(double)myParentHeight;
+
+    /**
+     * 
+     * @return
+     */
+    public double getRelativeEndY () {
+        return myEndY / (double) myParentHeight;
     }
-    
-    public int getStartX(){
+
+    /**
+     * 
+     * @return
+     */
+    public int getStartX () {
         return myStartX;
     }
-    public int getStartY(){
+
+    /**
+     * 
+     * @return
+     */
+    public int getStartY () {
         return myStartY;
     }
-    public int getEndX(){
+
+    /**
+     * 
+     * @return
+     */
+    public int getEndX () {
         return myEndX;
     }
-    public int getEndY(){
+
+    /**
+     * 
+     * @return
+     */
+    public int getEndY () {
         return myEndY;
     }
 

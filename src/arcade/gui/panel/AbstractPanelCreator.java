@@ -1,5 +1,6 @@
 package arcade.gui.panel;
 
+import java.awt.Color;
 import arcade.gui.Arcade;
 
 
@@ -15,6 +16,7 @@ public abstract class AbstractPanelCreator {
     private Arcade myArcade;
 
      public AbstractPanelCreator (Arcade a) {
+     System.out.println(this.getClass().toString());
      myArcade = a;
      }
 
@@ -33,7 +35,9 @@ public abstract class AbstractPanelCreator {
      * @return a new ArcadePanel
      */
     protected ArcadePanel initializeNewPanel () {
-        return new ArcadePanel(myArcade, myPanelType);
+        ArcadePanel newPanel = new ArcadePanel(myArcade, myPanelType);
+        newPanel.setBackground(Color.BLACK);
+        return newPanel;
     }
 
     /**

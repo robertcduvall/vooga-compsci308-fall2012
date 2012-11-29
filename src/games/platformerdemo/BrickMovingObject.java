@@ -2,18 +2,20 @@ package games.platformerdemo;
 
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.collision.CollisionEvent;
+import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.CollisionDirection;
 
 
+/**
+ * @author Niel, modified by Yaqi
+ */
 public class BrickMovingObject extends CollisionEvent {
-
     private Brick myBrick;
     private MovingObject myMovingObject;
-
     public BrickMovingObject (Brick a, MovingObject b) {
         super(a, b);
-        myBrick = (Brick) this.a();
         myMovingObject = (MovingObject) this.b();
     }
 

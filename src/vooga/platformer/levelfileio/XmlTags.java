@@ -37,5 +37,7 @@ public interface XmlTags {
     public static final String CLASS_NAME = "class";
 
     public static final String CONFIG = "config";
+    
+    public static final String ID = "id";
 
 }

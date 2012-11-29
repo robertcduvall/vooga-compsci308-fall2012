@@ -22,10 +22,10 @@ import javax.microedition.io.StreamConnectionNotifier;
 public class WaitThread implements Runnable {
 
     private AndroidBluetoothServer myServer;
-   
 
     /**
      * Create a thread to wait for a connection
+     * 
      * @param controllerNumber the number of the connected controller
      * @param server the server this thread belongs to
      */
@@ -45,40 +45,43 @@ public class WaitThread implements Runnable {
     private void waitForConnection () {
         LocalDevice local = null;
         StreamConnectionNotifier notifier;
-        StreamConnection connection = null; 
+        StreamConnection connection = null;
         try {
             local = LocalDevice.getLocalDevice();
             local.setDiscoverable(DiscoveryAgent.GIAC);
-            String url = "btspp://localhost:" + myServer.getActiveUUID().toString() + ";name=RemoteBluetooth";
-            System.out.println("btspp://localhost:" + myServer.getActiveUUID().toString() + ";name=RemoteBluetooth");
+            String url =
+                    "btspp://localhost:" + myServer.getActiveUUID().toString() +
+                            ";name=RemoteBluetooth";
+            System.out.println("btspp://localhost:" + myServer.getActiveUUID().toString() +
+                               ";name=RemoteBluetooth");
             notifier = (StreamConnectionNotifier) Connector.open(url);
         }
         catch (BluetoothStateException e) {
-            System.out.println("Bluetooth is not turned on.");
+            // I think it is a good idea to print the stack trace because
+            // realistically for this project creating an exception because we
+            // forget to turn bluetooth on is overkill
             e.printStackTrace();
             return;
         }
         catch (IOException e) {
-            // Throw server error
-            e.printStackTrace();
+            // Never occurs
             return;
         }
 
         // waiting for connection
         try {
-            //System.out.println("waiting for connection...");
             connection = notifier.acceptAndOpen();
             Thread processThread = new Thread(new ProcessConnectionThread(connection, myServer));
             processThread.start();
-            //AndroidBluetoothServer.connectedControllers++;
-
+            myServer.setMessenger(new Messenger(connection));
 
         }
+
+        // Bluecove API did not list the specific type of exceptions that can be
+        // thrown, but this has never been thrown.
         catch (Exception e) {
-            e.printStackTrace();
             return;
         }
     }
 
-   
 }

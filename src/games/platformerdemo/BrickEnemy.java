@@ -1,5 +1,6 @@
 package games.platformerdemo;
 
+import vooga.platformer.gameobject.Brick;
 import vooga.platformer.level.Level;
 
 /**

@@ -17,9 +17,9 @@ import util.input.core.MouseController;
  *         Applet initialization code by Robert Duvall
  */
 public class Canvas extends JApplet {
-    private static final Dimension DEFAULT_SIZE = new Dimension(800, 800);
+    private static final Dimension DEFAULT_SIZE = new Dimension(600, 400);
     private static final int ONE_SECOND = 1000;
-    private static final int FRAMES_PER_SECOND = 30;
+    private static final int FRAMES_PER_SECOND = 15;
     private Timer myTimer;
     private DrawableComponent myScreen;
 

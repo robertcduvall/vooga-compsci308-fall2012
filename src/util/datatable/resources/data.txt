@@ -1,0 +1,9 @@
+<DataTable>
+<Row number="0">
+<name>bob</name>
+<gender/>
+<password>newpassword</password>
+<address>LAAZ</address>
+<favoritecolor>blue</favoritecolor>
+</Row>
+</DataTable>

@@ -20,7 +20,8 @@ public class User {
     private int myCredits;
     private List<Message> myMessages;
     private List<GameData> myGameData;
-  
+    private String myFirstName;
+    private String myLastName;
 
     /**
      * Constructs a new User
@@ -28,18 +29,18 @@ public class User {
      * @param name
      * @param picture
      */
-    public User (String name, String password, Image picture, int credits,
-            List<Message> messages, List<GameData> gameData) {
+    public User (String name, String password, Image picture, int credits, List<Message> messages,
+                 List<GameData> gameData, String firstName, String lastName) {
         myName = name;
         myPassword = password;
         myPicture = picture;
         myCredits = credits;
         myMessages = messages;
         myGameData = gameData;
-        
-    }
+        myFirstName = firstName;
+        myLastName = lastName;
 
-   
+    }
 
     protected String getPassword () {
         return myPassword;
@@ -64,8 +65,6 @@ public class User {
         }
         return null;
     }
-
-    
 
     protected List<String> getMyMessage () {
         List<String> myMessage = new ArrayList<String>();

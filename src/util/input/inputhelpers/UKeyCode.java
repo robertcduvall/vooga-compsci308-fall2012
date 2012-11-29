@@ -9,7 +9,7 @@ package util.input.inputhelpers;
  */
 public class UKeyCode {
 
-    public static int codify(int segOne, int segTwo) {
+    public static int codify (int segOne, int segTwo) {
         String sCode = "" + segOne + segTwo;
         return Integer.parseInt(sCode);
     }
