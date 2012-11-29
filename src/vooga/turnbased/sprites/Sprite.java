@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
 
 /**
  * This class is bucket. It holds several GameObjects, one for each mode this sprite
@@ -59,5 +60,16 @@ public class Sprite {
             go.clear();
         }
         myGameObjects.clear();
+    }
+    
+    /**
+     * find the MapObject which represents the Sprite in the maps
+     * @return the MapObject of the Sprite
+     */
+    public MapObject getMapObject() {
+        for (GameObject object: myGameObjects) {
+            if (object instanceof MapObject) { return (MapObject)object; }
+        }
+        return null;
     }
 }

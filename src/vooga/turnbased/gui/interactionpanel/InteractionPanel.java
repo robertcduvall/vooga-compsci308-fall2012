@@ -24,14 +24,12 @@ import vooga.turnbased.gamecore.GameLoopMember;
  */
 public class InteractionPanel {
 
-    private static final int WIDTH = 200;
-    private static final int HEIGHT = 100;
     private static final int ROW_NUMBER = 3;
     private static final int COLUMN_NUMBER = 2;
     private static final double MARGIN_PROPORTION = 0.1;
     private static Image myBulletPointImage = Toolkit.getDefaultToolkit()
             .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
-    private static Dimension ourBulletSize = new Dimension(50, 50);
+    private static Dimension ourBulletSize = new Dimension(40, 40);
 
     private int myBulletPointIndex = 0;
 

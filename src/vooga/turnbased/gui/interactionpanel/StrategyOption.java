@@ -15,8 +15,8 @@ import util.graphicprocessing.FontEffect;
 
 public class StrategyOption {
 
-    private static final int FONT_SIZE = 20;
-    private static final int EPSILON = 5;
+    private static final int FONT_SIZE = 16;
+    private static final int EPSILON = 10;
     // Amount of change in x, y coordinates when highlighted
     private static final Point DISPLACEMENT = new Point(2, 3);
     private static final Color HIGHLIGHT_COLOR = Color.CYAN;
@@ -44,10 +44,10 @@ public class StrategyOption {
         if (myRespondRegion == null) {
             calculateRespondRegion();
         }
-        // myGameFont.shodow(myOptionMessage, myColor, myPosition);
         Color topColor = new Color(0, 10, 115);
         Color sideColor = new Color(60, 0, 115);
-        myGameFont.threeDimensionEffect(myOptionMessage, myColor, topColor, sideColor, 5,
+        int layer = 4;
+        myGameFont.threeDimensionEffect(myOptionMessage, myColor, topColor, sideColor, layer,
                                         myPosition);
     }
 
