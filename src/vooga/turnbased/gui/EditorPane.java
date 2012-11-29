@@ -6,12 +6,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import org.w3c.dom.Document;
+import util.xml.XmlUtilities;
+import vooga.turnbased.gamecreation.LevelEditor;
 
-
+/**
+ * @author s
+ *
+ */
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
+    /**
+     * 
+     * @param gameWindow
+     */
     public EditorPane (GameWindow gameWindow) {
         super(gameWindow);
         addButtons();
@@ -29,14 +41,14 @@ public class EditorPane extends DisplayPane {
         JButton newLevelButton = new JButton("Create New Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                System.out.println("Action performed to create a new Level");
+                createNewLevel();
             }
         });
         add(newLevelButton);
         JButton modifyLevelButton = new JButton("Modify Existing Level");
         modifyLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                System.out.println("Action performed to modify existing level");
+                modifyExistingLevel(selectFile());
             }
         });
         add(modifyLevelButton);
@@ -44,6 +56,8 @@ public class EditorPane extends DisplayPane {
 
     /**
      * paint components of the Canvas
+     * 
+     * @param g Graphics
      */
     @Override
     public void paintComponent (Graphics g) {
@@ -51,7 +65,33 @@ public class EditorPane extends DisplayPane {
         Image background = GameWindow.importImage("EditorBackgroundImage");
         g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
     }
-    
+
+    private void createNewLevel () {
+        System.out.println("Action performed to create a new Level");
+        LevelEditor l = new LevelEditor();
+    }
+
+    private void modifyExistingLevel (File f) {
+        Document xmlDocument = createXmlFromFile(f);
+        System.out.println("Action performed to modify existing level");
+        System.out.println(xmlDocument.getDocumentElement().getNodeName());
+    }
+
+    private Document createXmlFromFile (File f) {
+        // TODO Checking to make sure file is valid
+        Document xml = XmlUtilities.makeDocument(f);
+        return xml;
+    }
+
+    private File selectFile () {
+        JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return fc.getSelectedFile();
+        }
+        return null;
+    }
+
     private class GameMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked (MouseEvent e) {
