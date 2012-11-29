@@ -122,7 +122,6 @@ public class LevelBoard extends JPanel implements ISavable {
             public void mouseMoved(MouseEvent e) {
                 mouseX = e.getX();
                 mouseY = e.getY();
-                System.out.println("repaint board");
             }
         };
         addMouseListener(mouseListener);
@@ -165,7 +164,7 @@ public class LevelBoard extends JPanel implements ISavable {
      */
     public void paint(Graphics g) {
 //        super.paint(g);
-//        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
+        g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
     }
 
     @Override
@@ -213,7 +212,7 @@ public class LevelBoard extends JPanel implements ISavable {
         JMenuItem j4 = new JMenuItem("Delete");
         j4.addActionListener(sh);
         pop.add(j4);
-        pop.show(this.getParent(), e.getX(), e.getY());
+        pop.show(this.getParent(), e.getXOnScreen(), e.getYOnScreen());
     }
     /**
      * @return An unmodifiable Collection of the sprites

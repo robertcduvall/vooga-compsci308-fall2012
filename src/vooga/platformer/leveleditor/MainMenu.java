@@ -109,8 +109,5 @@ public class MainMenu extends JFrame{
     public void paint (Graphics g) {
         g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
         myContent.paint(g);
-        //      myEditor.update();
-//      myEditor.repaint();
-//      repaint();
     }
 }

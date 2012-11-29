@@ -30,12 +30,13 @@ public class LevelEditor extends JPanel {
     private Map<String, List<String>> mySpriteTypes;
     private JFrame myContainer;
     private JPanel myViewPane;
-    private boolean myGameIsRunning;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
     private SelectionMouseListener myMouseListener;
     private MouseListener myButtonListener;
     private int myViewOffset;
+    private JPanel myButtonPanel;
+    private JMenuBar myMenuBar;
 
     /**
      * Frame containing all the elements needed to save, load, and create
@@ -61,6 +62,7 @@ public class LevelEditor extends JPanel {
         myKeyListener = new KeyAdapter() {
             @Override 
             public void keyPressed (KeyEvent arg0) {
+                System.out.println(arg0.getKeyCode());
                 switch (arg0.getKeyCode()) {
                     case KeyEvent.VK_LEFT:
                         if (myViewOffset == 0) {
@@ -89,14 +91,25 @@ public class LevelEditor extends JPanel {
                 createPopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
             }
         };
+        addMouseListener(myMouseListener);
+        addKeyListener(myKeyListener);
+        myContainer.addMouseListener(myMouseListener);
+        myContainer.addMouseMotionListener(myMouseListener);
+        myContainer.addKeyListener(myKeyListener);
     }
     private void createEditPane() {
         JPanel panel = new JPanel()
         {
             @Override
             public void paint(Graphics g) {
-                super.paintComponents(g);
-                //                myBoard.paint(g);
+                g.clearRect(0, 0, myContainer.getWidth(), myContainer.getHeight());
+                myBoard.paint(g);
+                myBoard.update();
+                g.setColor(Color.WHITE);
+                g.drawOval(111, 111, 111, 111);
+//                myButtonPanel.paint(g);
+                myMenuBar.paint(g);
+                
             }
         };
         panel.setLayout(new BorderLayout());
@@ -127,16 +140,13 @@ public class LevelEditor extends JPanel {
         panel.add(subpanel, BorderLayout.CENTER);
         panel.setOpaque(false);
         panel.addMouseMotionListener(myBoard.getMouseListener());
+        myButtonPanel = panel;
         myViewPane.add(panel, BorderLayout.WEST);
-    }
-
-    public void update() {
-        myBoard.update();
     }
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+//        super.paint(g);
         myViewPane.paint(g);
     }
 
@@ -159,7 +169,7 @@ public class LevelEditor extends JPanel {
     }
 
     private void createTopMenu() {
-        JMenuBar bar = new JMenuBar();
+        myMenuBar = new JMenuBar();
         JMenu levelMenu = new JMenu("Level");
         levelMenu.add(new AbstractAction("Load") {
             @Override
@@ -199,10 +209,11 @@ public class LevelEditor extends JPanel {
                 //newLevel();
             }
         });
-        bar.add(levelMenu);
-        bar.add(spriteMenu);
-//        myViewPane.add(bar, BorderLayout.NORTH);
-
+        myMenuBar.add(levelMenu);
+        myMenuBar.add(spriteMenu);
+        myViewPane.add(myMenuBar, BorderLayout.NORTH);
+//        myContainer.add(myMenuBar);
+//        add(myMenuBar,BorderLayout.NORTH);
     }
 
     protected void save() {
