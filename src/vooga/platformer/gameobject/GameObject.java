@@ -68,7 +68,8 @@ public abstract class GameObject implements Comparable<GameObject> {
      */
     public GameObject (String configString) {
         this();
-        Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
+        Map<String, String> configMap = ConfigStringParser
+                .parseConfigString(configString);
         x = Double.parseDouble(configMap.get(X_TAG));
         y = Double.parseDouble(configMap.get(Y_TAG));
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
@@ -78,7 +79,7 @@ public abstract class GameObject implements Comparable<GameObject> {
         try {
             defaultImage = ImageIO.read(new File(defaultImageName));
         }
-        catch (IOException E) {
+        catch (IOException e) {
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
@@ -104,10 +105,10 @@ public abstract class GameObject implements Comparable<GameObject> {
         params.put(WIDTH_TAG, "width of the object");
         params.put(HEIGHT_TAG, "height of the object");
         params.put(ID_TAG, "ID for sprite. Should be unique.");
-        params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
+        params.put(DEFAULT_IMAGE_TAG,
+                "file name of the image to the be the default image.");
         return params;
     }
-
 
     public double getX () {
         return x;
@@ -124,16 +125,17 @@ public abstract class GameObject implements Comparable<GameObject> {
     public void setY (double inY) {
         y = inY;
     }
-    
-    public int getId() {
+
+    public int getId () {
         return id;
     }
-    
+
     /**
      * Sort GameObjects by ID
+     * 
      * @param go GameObject
      */
-    public int compareTo(GameObject go) {
+    public int compareTo (GameObject go) {
         int diff = this.getId() - go.getId();
         if (diff != 0) {
             return diff;
@@ -207,6 +209,13 @@ public abstract class GameObject implements Comparable<GameObject> {
      */
     public Image getCurrentImage () {
         return defaultImage;
+    }
+
+    /**
+     * @param img of the obj
+     */
+    public void setImage (Image img) {
+        defaultImage = img;
     }
 
     /**

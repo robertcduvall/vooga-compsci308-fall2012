@@ -61,6 +61,24 @@
 </gameObject>
 
 <gameObject class="vooga.platformer.gameobject.Brick">
+<x>350</x>
+<y>250</y>
+<width>50</width>
+<height>50</height>
+<id>0</id>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
+</gameObject>
+
+<gameObject class="vooga.platformer.gameobject.Brick">
+<x>350</x>
+<y>300</y>
+<width>50</width>
+<height>50</height>
+<id>0</id>
+<imagePath>src/games/platformerdemo/brick-small.png</imagePath>
+</gameObject>
+
+<gameObject class="vooga.platformer.gameobject.Brick">
 <x>400</x>
 <y>300</y>
 <width>50</width>

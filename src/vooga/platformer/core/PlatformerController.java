@@ -2,6 +2,7 @@ package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
 import games.platformerdemo.Player;
+import games.platformerdemo.ShootingStrategy;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -142,6 +143,12 @@ public class PlatformerController extends JPanel implements Runnable {
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
                     myPlayer.getMovingStragety().jump();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_UP){
+                    ShootingStrategy ss = myPlayer.getShootingStrategy();
+                    if(ss !=null){
+                        ss.shoot();
+                    }
                 }
             }
 

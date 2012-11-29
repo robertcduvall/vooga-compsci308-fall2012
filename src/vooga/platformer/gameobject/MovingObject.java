@@ -42,7 +42,6 @@ public class MovingObject extends GameObject {
         myVelocity = new Point2D.Double(x, y);
     }
 
-
     /**
      * set status of this moving object to be on the ground
      */

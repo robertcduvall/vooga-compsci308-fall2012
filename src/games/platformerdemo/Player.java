@@ -15,6 +15,7 @@ public class Player extends MovingObject {
         super(configString);
         addStrategy(new PlayerMoveStrategy(this));
         addStrategy(new GravityStrategy(this));
+        addStrategy(new ShootingStrategy(this));
     }
     
 //    public void moveLeft() {
@@ -25,6 +26,15 @@ public class Player extends MovingObject {
         for (UpdateStrategy s: getStrategyList()){
             if(s.getClass() == PlayerMoveStrategy.class){
                 return (PlayerMoveStrategy) s;
+            }
+        }
+        return null;
+    }
+    
+    public ShootingStrategy getShootingStrategy(){
+        for (UpdateStrategy s: getStrategyList()){
+            if(s.getClass() == ShootingStrategy.class){
+                return (ShootingStrategy) s;
             }
         }
         return null;
