@@ -102,7 +102,6 @@ public class ParticleEngineTester extends JApplet {
             p.update();
         }
         for (ParticleSystem p : remove) {
-            System.out.println("removed");
             mySystems.remove(p);
         }
     }
