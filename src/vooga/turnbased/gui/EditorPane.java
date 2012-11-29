@@ -22,7 +22,7 @@ public class EditorPane extends DisplayPane {
 
     /**
      * 
-     * @param gameWindow
+     * @param gameWindow The game window that calls this editor pane
      */
     public EditorPane (GameWindow gameWindow) {
         super(gameWindow);
@@ -78,9 +78,12 @@ public class EditorPane extends DisplayPane {
     }
 
     private Document createXmlFromFile (File f) {
-        // TODO Checking to make sure file is valid
-        Document xml = XmlUtilities.makeDocument(f);
-        return xml;
+        int extensionStart = f.toString().lastIndexOf(".");
+        String extension = f.toString().substring(extensionStart);
+        if (".xml".equals(extension)) {
+            return XmlUtilities.makeDocument(f);
+        }
+        return null;
     }
 
     private File selectFile () {
