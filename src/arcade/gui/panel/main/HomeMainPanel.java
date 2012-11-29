@@ -20,7 +20,6 @@ public class HomeMainPanel extends AMainPanel{
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("HomeMainPanel");
 
         JLabel label = new JLabel();
         label.setText("Welcome to the Arcade! Please select an option above.");

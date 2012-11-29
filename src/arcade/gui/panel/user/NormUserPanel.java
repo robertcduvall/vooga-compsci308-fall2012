@@ -27,7 +27,6 @@ public class NormUserPanel extends AUserPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("NormUserPanel");
 
         // use the username to pull the user's first name
         // TODO

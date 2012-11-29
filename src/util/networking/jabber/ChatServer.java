@@ -1,9 +1,10 @@
-package util.networking;
+package util.networking.jabber;
 
 import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.networking.Server;
 
 /**
  *
@@ -40,6 +41,8 @@ public class ChatServer extends Server {
         super(logger, logLevel, maxConnections);
     }
 
+    
+    
     
     
 }

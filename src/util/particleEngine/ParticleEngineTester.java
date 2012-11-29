@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 import vooga.shooter.gameplay.Game;
@@ -25,7 +26,7 @@ import vooga.shooter.gameplay.Game;
  * This JApplet updates a set of particle engines that are created by a "Tester"
  * class (e.g. DensityTester) which implements the abstract class
  * ParticleEngineTestingUnit. For example, The DensityTester stores a List of
- * particle engines which have the same parameters except
+ * particle engines which have the same parameters except 
  * for density, which is varied across the particle engines.
  * 
  * To determine which parameter or feature is tested, the user specifies which
@@ -38,7 +39,7 @@ import vooga.shooter.gameplay.Game;
  * ****Work-in-progress: This class is subject to change.***
  * 
  * @author Kathleen, JApplet code borrowed from Professor Duvall
- *      edited by David Spruill
+ *      extensively edited by David Spruill
  * 
  */
 
@@ -46,15 +47,14 @@ public class ParticleEngineTester extends JApplet {
     private static final Dimension defaultSize = new Dimension(800, 800);
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 30;
+    
     private Timer myTimer;
-    private Game myGame;
-    private List<ParticleEngine> myParticleEngines = new ArrayList<ParticleEngine>();
+    private List<ParticleSystem> mySystems = new ArrayList<ParticleSystem>();
     private int myLastKeyPressed;
     private int NO_KEY_PRESSED = -1;
     private Font font;
     private long lastTime=0;
-    private Point position = new Point(defaultSize.width/2,defaultSize.height/2);
-
+    
     /**
      * Initializes the applet --- called by the browser.
      */
@@ -101,36 +101,18 @@ public class ParticleEngineTester extends JApplet {
     private void manageEngine (int myLastKeyPressed) {
 
         if (myLastKeyPressed == KeyEvent.VK_A)
-            myParticleEngines.addAll(particleExplosion());
+            mySystems.add(new Explosion());
         if (myLastKeyPressed == KeyEvent.VK_S)
-            myParticleEngines.addAll(particleTrail());
+            mySystems.add(new Trail());
         if (myLastKeyPressed == KeyEvent.VK_DOWN)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.y++; p.setVelocity(new Point(0,3));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(0,5)); p.setVelocity(new Point(0,3));}
         if (myLastKeyPressed == KeyEvent.VK_UP)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.y--; p.setVelocity(new Point(0,-3));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(0,-5)); p.setVelocity(new Point(0,-3));}
         if (myLastKeyPressed == KeyEvent.VK_RIGHT)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.x++; p.setVelocity(new Point(-3,0));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(5,0)); p.setVelocity(new Point(-3,0));}
         if (myLastKeyPressed == KeyEvent.VK_LEFT)
-            for(ParticleEngine p:myParticleEngines) {p.initialPosition.x--; p.setVelocity(new Point(3,0));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(-5,0)); p.setVelocity(new Point(3,0));}
 
-    }
-
-    /**
-     * Instantiates myParticleEngines as a list of particles representing an explosion.
-     */
-    public List<ParticleEngine> particleExplosion () {
-        ParticleSystem myTestingUnit = new Explosion();
-
-        return myTestingUnit.getParticleEngines();
-    }
-    
-    /**
-     * Instantiates myParticleEngines as a list of particles representing a trail of sparkly particles.
-     */
-    public List<ParticleEngine> particleTrail () {
-        ParticleSystem myTestingUnit = new Trail(); 
-
-       return myTestingUnit.getParticleEngines();
     }
 
     /**
@@ -177,8 +159,8 @@ public class ParticleEngineTester extends JApplet {
         g2d.setColor(Color.WHITE);
         g2d.drawString(""+(1/((System.currentTimeMillis()-lastTime)/1000.0f))+" fps",100,100);
         lastTime = System.currentTimeMillis();
-        
-        for (ParticleEngine e : myParticleEngines)
+
+        for (ParticleSystem e : mySystems)
             e.draw(g2d);
         
         Graphics2D graphics = (Graphics2D) g;
@@ -190,7 +172,13 @@ public class ParticleEngineTester extends JApplet {
      * the start method.
      */
     public void update () {
-        for (ParticleEngine e : myParticleEngines)
-            e.update();
+        Stack<ParticleSystem> remove = new Stack<ParticleSystem>();
+        for (ParticleSystem p : mySystems) {
+            if(!p.stillExists())  remove.add(p);
+            p.update();
+        }
+        for(ParticleSystem p:remove) {
+            mySystems.remove(p);
+        }
     }
 }

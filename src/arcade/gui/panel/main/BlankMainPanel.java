@@ -21,7 +21,6 @@ public class BlankMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("BlankMainPanel");
 
         JLabel label = new JLabel();
         label.setText("Please login to begin.");

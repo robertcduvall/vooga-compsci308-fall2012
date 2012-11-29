@@ -27,9 +27,8 @@ public class Test {
         }
         
         //setting column name by adding an array
-        String [] sarray=new String[2];
+        String [] sarray=new String[1];
         sarray[0]="favoritecolor";
-        sarray[1]="favoriteband";
         try {
             table.addNewColumn(sarray);
         }
@@ -42,9 +41,8 @@ public class Test {
         }
         
         //get table's column names
-        List<String> columnNames=table.getColumnNames();
+        List<String> columnNames=(List<String>) table.getColumnNames();
 
-        
         //adding a new row --null value will be stored in place of undefined entry
         Map<String,Object> storingData= new HashMap<String, Object>();
         storingData.put("address","LA");
@@ -101,12 +99,21 @@ public class Test {
             newtable = new DataTable();
             newtable.load("src/util/datatable/resources/data.txt");
         }
-        catch (RepeatedColumnNameException | InvalidXMLTagException e1) {
+        catch (RepeatedColumnNameException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+        catch ( InvalidXMLTagException e2){
+            e2.printStackTrace();
+        }
         System.out.println("new table");
         newtable.viewContents(); 
+        
+        //retrieving a null entry from newly loaded table
+        UnmodifiableRowElement rt = newtable.find("address", "LAAZ");
+        System.out.println(rt.getEntry("gender").equals(""));
+        
+        
         
         //demo of inserting objects
         RowElement rey= new RowElement();

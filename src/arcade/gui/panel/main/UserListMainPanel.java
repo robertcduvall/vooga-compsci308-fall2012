@@ -28,7 +28,6 @@ public class UserListMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("UserListMainPanel");
 
         JLabel label = new JLabel();
         label.setText("[User List]");

@@ -38,7 +38,6 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("LoginMainPanel");
 
 
         myPanel.setLayout(new GridBagLayout());
@@ -49,7 +48,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel = addUserNameField(myPanel);
         myPanel = addPasswordField(myPanel);
         myPanel = addWrongPasswordLabel(myPanel);
-        // myPanel = addBypassButton(myPanel);
+        myPanel = addBypassButton(myPanel);
 
 
         return myPanel;
@@ -81,7 +80,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
     }
 
     /**
-     * @deprecated
+     * @deprecated Was used for testing.
      * @param myPanel
      * @return
      */
@@ -172,7 +171,9 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
      * @deprecated
      */
     private void bypass () {
-        this.getArcade().replacePanel("NormNav");
-        this.getArcade().replacePanel("MainHome");
+        usernameField.setText("Howard");
+        passwordField.setText("password");
+        login();
+        // Auto-logs in user: mdeng1990, pswd: pswd.
     }
 }

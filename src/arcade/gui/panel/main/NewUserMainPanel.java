@@ -14,25 +14,26 @@ import arcade.gui.panel.ArcadePanel;
 /**
  * 
  * @author Michael Deng
+ * @author Robert Bruce
  *
  */
 public class NewUserMainPanel extends AMainPanel implements ActionListener {
 
     ArcadePanel myPanel;
 
-    private HintTextField username;
-    private HintTextField pswd1;
-    private HintTextField pswd2;
-    private HintTextField fn;
-    private HintTextField ln;
+    private HintTextField usernameField;
+    private HintTextField passwordField1;
+    private HintTextField passwordField2;
+    private HintTextField firstNameField;
+    private HintTextField lastNameField;
 
     private JLabel message;
 
-    private String usernameStr;
-    private String pswd1Str;
-    private String pswd2Str;
-    private String fnStr;
-    private String lnStr;
+    private String username;
+    private String password1;
+    private String password2;
+    private String firstName;
+    private String lastName;
 
     public NewUserMainPanel (Arcade a) {
         super(a);
@@ -41,20 +42,19 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
     @Override
     public ArcadePanel createPanel () {
         myPanel = initializeNewPanel();
-        System.out.println("NewUserMainPanel");
 
         JLabel blank = new JLabel("");
 
-        username = new HintTextField("Username");
-        username.setPreferredSize(new Dimension(200, 20));
-        pswd1 = new HintTextField("Password");
-        pswd1.setPreferredSize(new Dimension(200, 20));
-        pswd2 = new HintTextField("Re-enter Password");
-        pswd2.setPreferredSize(new Dimension(200, 20));
-        fn = new HintTextField("First Name");
-        fn.setPreferredSize(new Dimension(200, 20));
-        ln = new HintTextField("Last Name");
-        ln.setPreferredSize(new Dimension(200, 20));
+        usernameField = new HintTextField("Username");
+        usernameField.setPreferredSize(new Dimension(200, 20));
+        passwordField1 = new HintTextField("Password");
+        passwordField1.setPreferredSize(new Dimension(200, 20));
+        passwordField2 = new HintTextField("Re-enter Password");
+        passwordField2.setPreferredSize(new Dimension(200, 20));
+        firstNameField = new HintTextField("First Name");
+        firstNameField.setPreferredSize(new Dimension(200, 20));
+        lastNameField = new HintTextField("Last Name");
+        lastNameField.setPreferredSize(new Dimension(200, 20));
 
         JButton submit = new JButton("Submit");
         submit.addActionListener(this);
@@ -65,11 +65,11 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
         myPanel.setLayout(new MigLayout("", "[grow]", "[60][]10[]10[]10[]10[]30[]5[]"));
 
         myPanel.add(blank, "align center, wrap");
-        myPanel.add(username, "align center, wrap");
-        myPanel.add(pswd1, "align center, wrap");
-        myPanel.add(pswd2, "align center, wrap");
-        myPanel.add(fn, "align center, wrap");
-        myPanel.add(ln, "align center, wrap");
+        myPanel.add(usernameField, "align center, wrap");
+        myPanel.add(passwordField1, "align center, wrap");
+        myPanel.add(passwordField2, "align center, wrap");
+        myPanel.add(firstNameField, "align center, wrap");
+        myPanel.add(lastNameField, "align center, wrap");
         myPanel.add(submit, "wrap, align center");
         myPanel.add(message, "align center");
 
@@ -80,25 +80,25 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
     public void actionPerformed (ActionEvent e) {
 
         // get input data
-        usernameStr = username.getText();
-        pswd1Str = pswd1.getText();
-        pswd2Str = pswd2.getText();
-        fnStr = fn.getText();
-        lnStr = ln.getText();
+        username = usernameField.getText();
+        password1 = passwordField1.getText();
+        password2 = passwordField2.getText();
+        firstName = firstNameField.getText();
+        lastName = lastNameField.getText();
 
         // check that all data is filled
-        if (!usernameStr.isEmpty() && !pswd1Str.isEmpty() && !pswd2Str.isEmpty() &&
-            !fnStr.isEmpty() && !lnStr.isEmpty()) {
+        if (!username.isEmpty() && !password1.isEmpty() && !password2.isEmpty() &&
+            !firstName.isEmpty() && !lastName.isEmpty()) {
 
             // check password match
-            if (pswd1Str.equals(pswd2Str) && !pswd1Str.isEmpty() && !pswd2Str.isEmpty()) {
+            if (password1.equals(password2) && !password1.isEmpty() && !password2.isEmpty()) {
                 message.setText("Processing...");
 
                 // execute server call
-                if (getArcade().getModelInterface().executeNewUser(usernameStr, pswd1Str, fnStr, lnStr)){
+                if (getArcade().getModelInterface().executeNewUser(username, password1, firstName, lastName)){
                     
                     // new user created
-                    getArcade().setUsername(usernameStr);
+                    getArcade().setUsername(username);
                     
                     getArcade().replacePanel("NormUser");
                     getArcade().replacePanel("NormMain");

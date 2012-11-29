@@ -172,5 +172,9 @@ public class ParticleEngine {
     public void setLoop (Boolean doLoop) {
         loop = doLoop;
     }
+    
+    public Boolean stillExists() {
+        return (particles.size()>0);
+    }
 
 }

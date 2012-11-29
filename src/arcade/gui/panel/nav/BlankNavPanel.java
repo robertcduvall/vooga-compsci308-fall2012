@@ -21,7 +21,6 @@ public class BlankNavPanel extends ANavPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("BlankNavPanel");
         
         return myPanel;
     }

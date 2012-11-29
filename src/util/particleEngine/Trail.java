@@ -10,7 +10,6 @@ import util.calculator.VectorCalculator;
 public class Trail extends ParticleSystem{
 
 	private static Image particleImage;
-	private static Point position = new Point (300,300);
 	private static VectorCalculator vcalculator;
 	private static double angleSpan = 90;
 	private static int numberOfDirections = 10;

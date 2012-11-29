@@ -1,4 +1,4 @@
-package util.networking;
+package util.networking.jabber;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,9 +14,17 @@ public class ProtocolXMPP implements ChatProtocol {
     private static final double ourVersion = 1.0;
         
     @Override
-    public String sendMessage (String dest, String body) {
+    public String sendMessage (String from, String dest, String body) {
         Document d = XmlUtilities.makeDocument();
-        return body;
+        d.setXmlVersion("1.0");
+        Element message = d.createElement("message");
+        Map<String, String> attributes = new TreeMap<String, String>();
+        attributes.put("from", from);
+        attributes.put("to", dest);
+        XmlUtilities.addAttributes(message, attributes);
+        d.appendChild(message);
+        XmlUtilities.appendElement(d, message, "body", body);
+        return docToString(d);
     }
 
     @Override
@@ -27,15 +35,16 @@ public class ProtocolXMPP implements ChatProtocol {
     @Override
     public String openStream(String dest) {
         Document d = XmlUtilities.makeDocument();
+        d.setXmlVersion("1.0");
         Map<String, String> attributes = new TreeMap<String, String>();
         attributes.put("to", dest);
-        d.setXmlVersion("1.0");
+        attributes.put("version", "1.0");
         attributes.put("xlmns", "jabber:client");
         Element stream = XmlUtilities.makeElement(d, "stream", attributes);
+        d.appendChild(d.createComment("hi"));
         d.appendChild(stream);
         XmlUtilities.write(d, "src/util/networking/Tester.xml");
         return docToString(d);
-            
     }
     
     private String docToString(Document d){

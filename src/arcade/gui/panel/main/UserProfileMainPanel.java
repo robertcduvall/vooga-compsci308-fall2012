@@ -20,7 +20,6 @@ public class UserProfileMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("UserProfileMainPanel");
 
         JLabel label = new JLabel();
         label.setText("[User Profile]");

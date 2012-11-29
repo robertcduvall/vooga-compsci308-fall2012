@@ -1,6 +1,5 @@
 package util.input.tests;
 
-
 /*
  * This applet demonstrates Focus events and Key events. A colored square
  * is drawn on the applet. By pressing the arrow keys, the user can move
@@ -74,20 +73,19 @@ public class InputTester extends Applet implements MouseInputListener {
     }
 
     private void setControllers () {
-        myMouseController = (MouseController) ControllerFactory
-                .createMouseController(this);
-        //myMouseController.subscribe(this);
+        myMouseController = (MouseController) ControllerFactory.createMouseController(this);
+        // myMouseController.subscribe(this);
         myKeyController = (KeyboardController) ControllerFactory.createKeyboardController(this);
     }
 
-    public void configureActions () throws IllegalAccessException,
-            InstantiationException {
+    public void configureActions () throws IllegalAccessException, InstantiationException {
         try {
-            myMouseController.setControl(MouseEvent.BUTTON1,
-                    MouseController.PRESSED, mainPlayer, "move");
+            myMouseController.setControl(MouseEvent.BUTTON1, MouseController.PRESSED, mainPlayer,
+                                         "move");
             // myMouseController.setControl(WiiController.WIIMOTE_BUTTON_LEFT,
             // WiiController.BUTTON_PRESSED, mainPlayer, "jump");
-            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, mainPlayer, "jump");
+            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, mainPlayer,
+                                       "jump");
         }
         catch (NoSuchMethodException e) {
             // TODO Auto-generated catch block
