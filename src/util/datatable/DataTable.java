@@ -38,7 +38,7 @@ public class DataTable {
     }
 
     /**
-     * Used for copying a data table.
+     * Instantiating a copied data table. 
      * @param dTable new Data Table is a copy of this data table
      */
     public DataTable (DataTable dTable) {
@@ -47,28 +47,32 @@ public class DataTable {
     }
 
     /**
-     * Adds new columns to the table.
+     * Adds new columns to the table. Accepts a comma separated 
+     * string and adds these as columns.
+     * Warning: An exception will be thrown if column names
+     * have spaces.
      * @param strKey - string of column names separated with commas
      * @throws RepeatedColumnNameException - thrown
      * if a repeated column name is detected
      * @throws InvalidXMLTagException - thrown if column name is
      * an invalid XML tag
      */
-    public void addNewColumn (String strKey) throws
+    public void addNewColumns (String strKey) throws
         RepeatedColumnNameException, InvalidXMLTagException {
         String[] strArray = strKey.split(",");
-        addNewColumn(strArray);
+        addNewColumns(strArray);
     }
 
     /**
-     * Adds new columns to the table.
+     * Adds new columns to the table. This method
+     * accepts an array of strings.
      * @param strArray - String array of column names
      * @throws RepeatedColumnNameException - thrown
      * if a repeated column name is detected
      * @throws InvalidXMLTagException - thrown if column name is
      * an invalid XML tag
      */
-    public void addNewColumn (String[] strArray) throws
+    public void addNewColumns (String[] strArray) throws
         RepeatedColumnNameException, InvalidXMLTagException  {
         for (String strName : strArray) {
             for  (ModifiableRowElement rowE: myDataRows) {
@@ -82,10 +86,11 @@ public class DataTable {
     }
 
     /**
-     * Adds a new row entry to the table.
+     * Adds a new row entry to the table via passing in 
+     * a map of column names to values.
      * @param mapEntry - map of column names to data values
      */
-    public void addNewRowEntry(Map<String , Object> mapEntry) {
+    public void addNewRow (Map<String , Object> mapEntry) {
         for (String key:getColumnNames()) {
             if (!mapEntry.containsKey(key)) {
                 mapEntry.put(key, null);
@@ -93,6 +98,18 @@ public class DataTable {
         }
         ModifiableRowElement rowE = new ModifiableRowElement(mapEntry);
         myDataRows.add(rowE);
+    }
+
+    
+    /**
+     * Adds a new row entry to the table via passing in
+     * a RowElement.
+     * Note: a copy of the row element is added not
+     * the row element itself.
+     * @param re
+     */
+    public void addNewRow (RowElement re) {
+        myDataRows.add(new ModifiableRowElement(re));
     }
     
     /**
@@ -178,7 +195,7 @@ public class DataTable {
 
 
     /**
-     * Returns an unmodifiableRowElement with the column name and value
+     * Returns an unmodifiableRowElement with the column name and value specified
      * @param strKey - key to reference row element to be returned
      * @param value - specific value that identifies the row element
      * @return
@@ -253,9 +270,9 @@ public class DataTable {
                 String colName = XmlUtilities.getTagName(colVal);
                 Object value = XmlUtilities.getContent(colVal);
                 colValueMap.put(colName, value);
-                addNewColumn(colName);
+                addNewColumns(colName);
             }
-            addNewRowEntry(colValueMap);
+            addNewRow(colValueMap);
         }
     }
     

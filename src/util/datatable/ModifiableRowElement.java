@@ -9,8 +9,8 @@ import util.datatable.exceptions.RepeatedColumnNameException;
 import util.datatable.exceptions.UnrecognizedColumnNameException;
 
 /**
- * Container for a modifiable row 
- * in the datatable.
+ * A modifiable row element that allows users
+ * to do standard store, retrieve, edit and delete.
  * @author Lance
  */
 public class ModifiableRowElement extends RowElement{

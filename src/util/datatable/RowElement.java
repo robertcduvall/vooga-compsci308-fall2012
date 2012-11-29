@@ -67,7 +67,7 @@ abstract class RowElement {
     public static Collection<UnmodifiableRowElement> unmodifiableRowElement (Collection <ModifiableRowElement> colRe) {
         Collection <UnmodifiableRowElement> modifiedColRe = new ArrayList <UnmodifiableRowElement> ();
         for (RowElement re : colRe) {
-            modifiedColRe.add(new UnmodifiableRowElement (re));
+            modifiedColRe.add(unmodifiableRowElement (re));
         }
         return modifiedColRe;       
     }
@@ -79,7 +79,7 @@ abstract class RowElement {
     public static Collection<ModifiableRowElement> modifiableRowElement (Collection <UnmodifiableRowElement> colRe) {
         Collection <ModifiableRowElement> modifiedColRe = new ArrayList <ModifiableRowElement> ();
         for (RowElement re : colRe) {
-            modifiedColRe.add(new ModifiableRowElement (re));
+            modifiedColRe.add( modifiableRowElement (re));
         }
         return modifiedColRe;       
     }
