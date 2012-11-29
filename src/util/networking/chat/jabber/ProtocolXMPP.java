@@ -10,7 +10,8 @@ import util.networking.chat.ChatProtocol;
 import util.xml.*;
 
 public class ProtocolXMPP implements ChatProtocol {
-        
+
+    public static final int PORT = 5222;
     private static final String XML_TEMP_PATH = "src/util/networking/serverRequest.xml";
     private static final double ourVersion = 1.0;
         

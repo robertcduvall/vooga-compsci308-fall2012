@@ -9,6 +9,8 @@ import util.networking.Server;
 
 public class ProtocolTester {
 
+    private static final int MAX_CONNECTIONS = 100;
+    
     /**
      * A main() method for running the server as a standalone program.  The
      * command-line arguments to the program should be pairs of servicenames
@@ -25,11 +27,9 @@ public class ProtocolTester {
         InetAddress addr = InetAddress.getLocalHost();
         String hostname = addr.getHostName();
         System.out.println(hostname);
-        Server s = new Server(Logger.getLogger(Server.class.getName()),
-                              Level.INFO, 10);
-        int port = 5222;
+        Server s = new Server(MAX_CONNECTIONS);
         /*try {
-            s.addService(new Service(), port);
+            s.addService(new Service(), PORT);
         }
         catch (IOException e) {
             e.printStackTrace();
