@@ -2,10 +2,12 @@ package arcade.gui.panel.main;
 
 import java.awt.Color;
 import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
+import arcade.utility.ImageReader;
 
 /**
  * 
@@ -24,30 +26,23 @@ public class UserProfileMainPanel extends AMainPanel {
                 "It will break stuff until ModelInterface gets implemented.");
         ArcadePanel myPanel = initializeNewPanel();
 
-        Image profilePicture = getArcade().getCurrentUser().getPicture();
-        myPanel = addUserInfo(myPanel);
-        myPanel = addUserGames(myPanel);
+        myPanel.setLayout(new MigLayout("", "[]50[100]", "[]5[]10[]"));
 
+        // Add the profile picture:
+        Image profilePicture = getArcade().getCurrentUser().getPicture();
+        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePicture));
+        myPanel.add(profilePictureLabel, "align center");
+
+        // Add the username:
+        // Add the First & Last name:
         JLabel label = new JLabel();
         label.setText("[User Profile]");
         label.setForeground(Color.WHITE);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
 
-        myPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
         myPanel.add(label, "align center");
 
-        return myPanel;
-    }
-
-
-    private ArcadePanel addUserInfo (ArcadePanel myPanel) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    private ArcadePanel addUserGames (ArcadePanel myPanel) {
-        // TODO Implement this.
         return myPanel;
     }
 
