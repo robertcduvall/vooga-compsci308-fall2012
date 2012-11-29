@@ -83,6 +83,14 @@ public class LevelEditor {
     public void addSprite () {
     }
 
+    /**
+     * 
+     * @param pathName Path from working directory (begin with /src folder)
+     */
+    public void saveXmlDocument(String pathName) {
+        String dir = System.getProperty("user.dir");
+        XmlUtilities.write(myXmlDocument, dir + pathName);
+    }
 
     /**
      * 

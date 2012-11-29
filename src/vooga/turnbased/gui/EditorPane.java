@@ -40,6 +40,12 @@ public class EditorPane extends DisplayPane {
             public void actionPerformed (ActionEvent e) {
                 LevelEditor l = new LevelEditor();
                 editDocument(l);
+                l.addDimensionTag(20, 30);
+                Document xml = l.getXmlDocument();
+                System.out.println(xml.getDocumentElement().getNodeName());
+                System.out.println(xml.getElementsByTagName("width").item(0).getTextContent());
+                System.out.println(xml.getElementsByTagName("height").item(0).getTextContent());
+                //l.saveXmlDocument("/src/vooga/turnbased/resources/level/test.xml");
             }
         });
         add(newLevelButton);
