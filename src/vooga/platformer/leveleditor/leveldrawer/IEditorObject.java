@@ -48,6 +48,7 @@ public interface IEditorObject extends IPaintable {
 
     /**
      * Sets the object's center to a particular location.
+     * 
      * @param x The x coordinate.
      * @param y The y coordinate.
      */

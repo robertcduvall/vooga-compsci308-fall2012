@@ -43,6 +43,7 @@ public class Vertex implements IEditorObject {
     /**
      * Draws this object using a Graphics2D object.
      */
+    @Override
     public void paint(Graphics2D pen) {
         Color savedColor = pen.getColor();
         drawCircle(pen, myColor);
@@ -64,10 +65,11 @@ public class Vertex implements IEditorObject {
     }
 
     /**
-     * If x and y lie inside the region defined by 
-     * the radius of this object, switches this 
+     * If x and y lie inside the region defined by
+     * the radius of this object, switches this
      * object's color to red. Otherwise the object
      * will appear black.
+     * 
      * @param x The x coordinate.
      * @param y The y coordinate.
      */
@@ -80,7 +82,7 @@ public class Vertex implements IEditorObject {
     }
 
     /**
-     * Returns the center of the circle as it 
+     * Returns the center of the circle as it
      * appears on the screen.
      */
     @Override
@@ -90,7 +92,7 @@ public class Vertex implements IEditorObject {
     }
 
     /**
-     * Returns true if x and y are contained 
+     * Returns true if x and y are contained
      * within this object.
      */
     @Override
@@ -100,14 +102,26 @@ public class Vertex implements IEditorObject {
 
     /**
      * Sets the center of this object to the
-     * coordinates x and y. 
+     * coordinates x and y.
      */
     @Override
     public void setCenter(int x, int y) {
         myLocation.setLocation(x, y);
-        //This isn't quite right. Should 
-        //account for the diameter of this
-        //object, I think.
+        // This isn't quite right. Should
+        // account for the diameter of this
+        // object, I think.
+    }
+
+    /**
+     * Moves the object by a specified amount.
+     * 
+     * @param dx The amount the object should move in the x
+     *        direction.
+     * @param dy The amount the object should move in the y
+     *        direction.
+     */
+    public void move(int dx, int dy) {
+        myLocation.setLocation(myLocation.getX() + dx, myLocation.getY() + dy);
     }
 
     @Override
