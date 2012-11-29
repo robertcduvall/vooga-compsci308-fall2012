@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
@@ -26,7 +28,7 @@ public class MapObject extends GameObject {
     private boolean myIsVisible;
     private MapMode myMapMode;
     
-    private MapStrategy myMapStrategy; //addition of Strategy hardcoded right now
+    private List<MapStrategy> myMapStrategies; //addition of Strategy hardcoded right now
 
     /**
      * Creates the MapObject that will be used in MapMode.
@@ -42,7 +44,8 @@ public class MapObject extends GameObject {
         setLocation(location);
         setVisible(true);
         setMapMode(mapMode);
-        myMapStrategy = new NullStrategy(mapMode);
+        myMapStrategies = new ArrayList<MapStrategy>();
+        myMapStrategies.add(new NullStrategy(mapMode));
     }
 
     private void setMapMode (MapMode mapMode) {
@@ -101,11 +104,13 @@ public class MapObject extends GameObject {
      * @param target MapObject to be interacted with.
      */
     public void interact (MapObject target) {
-        myMapStrategy.performStrategy(target);
+        for (MapStrategy strategy: myMapStrategies) {
+            strategy.performStrategy(target);
+        }
     }
     
-    public void setStrategy (MapStrategy mapStrategy) {
-        myMapStrategy = mapStrategy;
+    public void addStrategy (MapStrategy mapStrategy) {
+        myMapStrategies.add(mapStrategy);
     }
 
     /**

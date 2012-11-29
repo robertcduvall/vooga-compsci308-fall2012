@@ -129,8 +129,8 @@ public class LevelXmlParser {
                 String className = XmlUtilities.getChildContent(staticSprite, CLASS);
                 String event = XmlUtilities.getChildContent(staticSprite, EVENT);
                 Image image = XmlUtilities.getChildContentAsImage(staticSprite, IMAGE);
-                MapTileObject mapTile =
-                        (MapTileObject) Reflection.createInstance(className, s.getID(), event,
+                MapObject mapTile =
+                        (MapObject)Reflection.createInstance(className, s.getID(), event,
                                                                   point, image, myMapMode);
                 s.addGameObject(mapTile);
                 spriteList.add(s);
@@ -284,13 +284,14 @@ public class LevelXmlParser {
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {
                 mapObject
-                        .setStrategy(new TransportStrategy(
+                        .addStrategy(new TransportStrategy(
                                                            myMapMode,
                                                            "src/vooga/turnbased/resources/level/Level2.xml",
                                                            new Point(8, 8)));
             }
             if (point.equals(new Point(9, 3))) {
-                mapObject.setStrategy(new ConversationStrategy(myMapMode));
+                mapObject.addStrategy(new ConversationStrategy(myMapMode));
+                //mapObject.addStrategy(mapStrategy);
             }
 
             return mapObject;

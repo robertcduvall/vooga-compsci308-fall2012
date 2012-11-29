@@ -22,8 +22,7 @@ import javax.swing.JFrame;
  **/
 public class GameWindow extends JFrame {
 
-
-    //denotes the index of the prototype in myCanvases
+    // denotes the index of the prototype in myCanvases
     public static final String MENU = "0";
     public static final String EDITOR = "1";
     public static final String GAME = "2";
@@ -54,25 +53,26 @@ public class GameWindow extends JFrame {
     /**
      * initialize the Canvases as prototypes
      */
-    private void initializeGamePanes() {
-    	myContentPane = getContentPane();
-    	myLayout = new CardLayout();
-    	myContentPane.setLayout(myLayout);
-    	myContentPane.add(new MenuPane(this), MENU);
-    	myContentPane.add(new EditorPane(this), EDITOR);
-    	myContentPane.add(new GamePane(this), GAME);
+    private void initializeGamePanes () {
+        myContentPane = getContentPane();
+        myLayout = new CardLayout();
+        myContentPane.setLayout(myLayout);
+        myContentPane.add(new MenuPane(this), MENU);
+        myContentPane.add(new EditorPane(this), EDITOR);
+        myContentPane.add(new GamePane(this), GAME);
         changeActivePane(MENU);
     }
 
     /**
      * change the current Canvas to a specific canvas specified by canvasIndex
+     * 
      * @param paneName MENU="Menu"; EDITOR="Editor"; GAME="Game"
      */
     public void changeActivePane (String paneName) {
-    	myLayout.show(myContentPane, paneName);
-    	DisplayPane myCurrentPane = (DisplayPane) myContentPane.getComponent(
-    			Integer.parseInt(paneName));
-    	myCurrentPane.initialize();
+        myLayout.show(myContentPane, paneName);
+        DisplayPane myCurrentPane =
+                (DisplayPane) myContentPane.getComponent(Integer.parseInt(paneName));
+        myCurrentPane.initialize();
     }
 
     /**
@@ -82,24 +82,25 @@ public class GameWindow extends JFrame {
      * @param imageName image name under the image folder
      * @return Image object
      */
-    public static Image importImage(String imageName) {
-    	String imageFolder = myResources.getString("ImageFolder");
+    public static Image importImage (String imageName) {
+        String imageFolder = myResources.getString("ImageFolder");
         ImageIcon imageIcon = new ImageIcon(imageFolder + importString(imageName));
-        return imageIcon.getImage();   
+        return imageIcon.getImage();
     }
-    
+
     /**
      * import string from ResourceBundle
      * 
      * @param stringName string name in resource bundle
      * @return
      */
-    public static String importString(String stringName) {
+    public static String importString (String stringName) {
         return myResources.getString(stringName);
     }
-    
+
     /**
      * add the ResourceBundle to the canvas
+     * 
      * @param resource Path to the resource bundle
      */
     private void addResourceBundle (String resource) {

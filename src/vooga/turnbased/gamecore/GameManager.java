@@ -206,7 +206,7 @@ public class GameManager implements GameLoopMember, InputAPI {
             myActiveModes.add(conversationMode);
         }
         else if ("CONVERSATION_OVER".equals(eventName)) {
-
+            MapObject targetMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
         }
         else if ("INTERACTION_COMPLETED".equals(eventName)) {
             // to win, need to interact with specific (or all) sprites, i.e.
