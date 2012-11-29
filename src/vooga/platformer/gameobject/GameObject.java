@@ -39,8 +39,14 @@ public abstract class GameObject implements Comparable<GameObject> {
     private double height;
     private Image defaultImage;
     private int id;
+    private Level myLevel;
 
-    private GameObject () {
+    // Change this to public because no config str provided when creating
+    // GameObject during runtime
+    /**
+     * Create GameObject during runtime of the game
+     */
+    public GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();
     }
 
@@ -130,6 +136,23 @@ public abstract class GameObject implements Comparable<GameObject> {
         return id;
     }
 
+    public Level getLevel () {
+        return myLevel;
+    }
+
+    public double getWidth () {
+        return width;
+    }
+
+    public double getHeight () {
+        return height;
+    }
+
+    public void setSize (double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
     /**
      * Sort GameObjects by ID
      * 
@@ -178,6 +201,7 @@ public abstract class GameObject implements Comparable<GameObject> {
      * @param elapsedTime time duration of the update cycle
      */
     public void update (Level level, long elapsedTime) {
+        myLevel = level;
         for (UpdateStrategy us : strategyList) {
             us.applyAction();
         }

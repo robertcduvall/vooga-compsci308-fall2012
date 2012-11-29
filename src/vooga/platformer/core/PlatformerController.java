@@ -86,9 +86,10 @@ public class PlatformerController extends JPanel implements Runnable {
     public void paint(Graphics pen) {
         myCurrentLevel.paint(pen);
         pen.setColor(Color.BLACK);
-        pen.drawString("Press M to bring up the menu", getSize().width*3/5,getSize().height/4);
-        pen.drawString("If you touch the enemy, you die", getSize().width*3/5,getSize().height/4+10);
-        pen.drawString("If you step on the enemy, the enemy dies", getSize().width*3/5,getSize().height/4+20);
+        pen.drawString("M - Menu", getSize().width*3/5,getSize().height/4);
+        pen.drawString("¡û ¡ú - Move left and right", getSize().width*3/5,getSize().height/4+15);
+        pen.drawString("¡ü - Jump", getSize().width*3/5,getSize().height/4+30);
+        pen.drawString("Space - Shoot", getSize().width*3/5,getSize().height/4+45);
         
         for(Component c: getComponents()){
             c.paint(pen);
@@ -144,7 +145,7 @@ public class PlatformerController extends JPanel implements Runnable {
                 if(e.getKeyCode()==KeyEvent.VK_UP){
                     myPlayer.getMovingStragety().jump();
                 }
-                if(e.getKeyCode()==KeyEvent.VK_UP){
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
                     ShootingStrategy ss = myPlayer.getShootingStrategy();
                     if(ss !=null){
                         ss.shoot();

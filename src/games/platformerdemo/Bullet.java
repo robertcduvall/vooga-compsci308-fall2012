@@ -2,10 +2,13 @@ package games.platformerdemo;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import util.camera.Camera;
 import vooga.platformer.gameobject.MovingObject;
+import vooga.platformer.util.enums.Direction;
 
 
 /**
@@ -16,11 +19,16 @@ import vooga.platformer.gameobject.MovingObject;
  * 
  */
 public class Bullet extends MovingObject {
-    private static final int VELOCITY = 10;
+    private static final int VELOCITY = 3;
+    private static final int SIZE = 8;
 
-    public Bullet (String configString) {
-        super(configString);
+    /**
+     * 
+     */
+    public Bullet () {
+        super();
         setVelocity(VELOCITY, 0);
+        setSize(SIZE, SIZE);
         String defaultImageName = "src/games/platformerdemo/bullet.png";
         try {
             Image img = ImageIO.read(new File(defaultImageName));
@@ -30,12 +38,17 @@ public class Bullet extends MovingObject {
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
+        addStrategy(new SimpleMoveStrategy(this));
     }
 
-    public void setDirection (String direction) {
-        if (direction == "left") {
-            setVelocity(-VELOCITY,0);
-        }else{
+    /**
+     * @param direction of initial velocity
+     */
+    public void setDirection (Direction direction) {
+        if (direction.equals(Direction.LEFT)) {
+            setVelocity(-VELOCITY, 0);
+        }
+        else {
             setVelocity(VELOCITY, 0);
         }
     }

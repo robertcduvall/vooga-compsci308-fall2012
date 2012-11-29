@@ -1,6 +1,5 @@
 package games.platformerdemo;
 
-import java.awt.Graphics;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.gameobject.UpdateStrategy;
@@ -11,10 +10,11 @@ import vooga.platformer.gameobject.UpdateStrategy;
  * 
  */
 public class ShootingStrategy implements UpdateStrategy {
+    private static final int Y_OFFSET = 20;
     private GameObject myGO;
 
     /**
-     * @param go
+     * @param go GameObject holding this strategy
      */
     public ShootingStrategy (GameObject go) {
         myGO = go;
@@ -29,20 +29,12 @@ public class ShootingStrategy implements UpdateStrategy {
      * 
      */
     public void shoot () {
-        Bullet bullet = new Bullet(null);
+        Bullet bullet = new Bullet();
         bullet.setX(myGO.getX());
-        bullet.setY(myGO.getY());
+        bullet.setY(myGO.getY() + Y_OFFSET);
         if (myGO instanceof MovingObject) {
-            String directionOfGO;
-            double xVel = ((MovingObject) myGO).getVelocity().getX();
-            if (xVel > 0) {
-                directionOfGO = "right";
-            }
-            else {
-                directionOfGO = "left";
-            }
-            bullet.setDirection(directionOfGO);
+            bullet.setDirection(((MovingObject) myGO).getFacingDirection());
         }
-        //TODO: add this bullet to gameobject list
+        myGO.getLevel().addToObjectList(bullet);
     }
 }

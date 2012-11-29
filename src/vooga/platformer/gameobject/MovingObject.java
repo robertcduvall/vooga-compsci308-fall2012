@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import vooga.platformer.util.enums.Direction;
 import vooga.platformer.util.ConfigStringParser;
 
 
@@ -18,12 +19,21 @@ public class MovingObject extends GameObject {
 
     private Point2D myVelocity;
     private boolean onGround = false;
+    private Direction myFacingDirection = Direction.RIGHT;
 
     /**
      * @param configString String to parse parameters of this player
      */
     public MovingObject (String configString) {
         super(configString);
+        myVelocity = new Point2D.Double(0, 0);
+    }
+
+    /**
+     * 
+     */
+    public MovingObject () {
+        super();
         myVelocity = new Point2D.Double(0, 0);
     }
 
@@ -61,5 +71,49 @@ public class MovingObject extends GameObject {
      */
     public boolean isOnGround () {
         return onGround;
+    }
+
+    /**
+     * @return the current vertical moving direction of the object
+     */
+    public Direction getVerticalMovingDirection () {
+        if (myVelocity.getY() > 0) {
+            return Direction.DOWN;
+        }
+        else if (myVelocity.getY() < 0) {
+            return Direction.UP;
+        }
+        else {
+            return Direction.STILL;
+        }
+    }
+
+    /**
+     * @return the current horizontal moving direction of the object
+     */
+    public Direction getHorizontalMovingDirection () {
+        if (myVelocity.getX() > 0) {
+            return Direction.RIGHT;
+        }
+        else if (myVelocity.getX() < 0) {
+            return Direction.LEFT;
+        }
+        else {
+            return Direction.STILL;
+        }
+    }
+
+    /**
+     * @return the facing direction of the object
+     */
+    public Direction getFacingDirection () {
+        return myFacingDirection;
+    }
+
+    /**
+     * @param direc Facing Direction of the object
+     */
+    public void setFacingDirection (Direction direc) {
+        myFacingDirection = direc;
     }
 }

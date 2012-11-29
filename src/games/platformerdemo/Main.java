@@ -33,6 +33,5 @@ public class Main {
         frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
         frame.setVisible(true);
-        
     }
 }

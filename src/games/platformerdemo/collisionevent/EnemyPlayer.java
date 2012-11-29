@@ -5,7 +5,7 @@ import games.platformerdemo.Player;
 import vooga.platformer.collision.CollisionEvent;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
+import vooga.platformer.util.enums.Direction;
 
 public class EnemyPlayer extends CollisionEvent{
     private Player myPlayer;
@@ -23,7 +23,7 @@ public class EnemyPlayer extends CollisionEvent{
 
     @Override
     public void applyCollision (Level level) {
-        if (this.direction() == CollisionDirection.DOWN) {
+        if (this.direction() == Direction.DOWN) {
             myEnemy.markForRemoval();
         }
         

@@ -5,7 +5,7 @@ import vooga.platformer.collision.CollisionEvent;
 import vooga.platformer.gameobject.Brick;
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
+import vooga.platformer.util.enums.Direction;
 
 
 public class BrickMovingObject extends CollisionEvent {
@@ -28,18 +28,18 @@ public class BrickMovingObject extends CollisionEvent {
                 myMovingObject.getShape());
         double dy = intersection.getHeight();
         double dx = intersection.getWidth();
-        if (direction() == CollisionDirection.DOWN) {
+        if (direction() == Direction.DOWN) {
             myMovingObject.setY(myMovingObject.getY() - dy);
             // changed here
             myMovingObject.setVelocity(myMovingObject.getVelocity().getX(), 0);
         }
-        else if (direction() == CollisionDirection.UP) {
+        else if (direction() == Direction.UP) {
             myMovingObject.setY(myMovingObject.getY() + dy);
         }
-        if (direction() == CollisionDirection.RIGHT) {
+        if (direction() == Direction.RIGHT) {
             resetCenterRight(dx);
         }
-        else if (direction() == CollisionDirection.LEFT) {
+        else if (direction() == Direction.LEFT) {
             resetCenterLeft(dx);
         }
         myMovingObject.setOnGround();
