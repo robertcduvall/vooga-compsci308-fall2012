@@ -30,14 +30,7 @@ abstract public class ALogoPanel extends AbstractPanelCreator {
     }
 
     protected ArcadePanel addLogo (String fileName, ArcadePanel myPanel) {
-
-        ImageIcon icon = new ImageIcon(ImageReader.loadImage("src/arcade/gui/images", fileName));
-        JLabel picLabel = new JLabel(icon);
-
-        myPanel.setLayout(new MigLayout("", "[c]", "[c]"));
-        myPanel.add(picLabel, "align center");
-
-        return myPanel;
+        return this.addGuiImage(fileName, myPanel, new MigLayout("", "[c]", "[c]"), "align center");
     }
 
 }
