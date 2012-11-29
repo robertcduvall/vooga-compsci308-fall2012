@@ -63,40 +63,6 @@ public abstract class AbstractPanelCreator {
     }
 
     /**
-     * Adds an image loaded from src/arcade/gui/images folder to a panel with given
-     * layout and constraints.
-     * @param fileName src/arcade/gui/images + fileName.
-     * @param myPanel Panel to add image to.
-     * @param layout MigLayout of image & panel.
-     * @param alignment Of image in MigLayout
-     * @return The ArcadePanel with the image inserted.
-     */
-    protected ArcadePanel addGuiImage (String fileName, ArcadePanel myPanel,
-            MigLayout layout, Object constraints) {
-        ImageIcon icon = new ImageIcon(ImageReader.loadImage("src/arcade/gui/images", fileName));
-        JLabel picLabel = new JLabel(icon);
-        myPanel.setLayout(layout);
-        myPanel.add(picLabel, constraints);
-        return myPanel;
-    }
-
-    /**
-     * Adds an image to a panel with given layout and constraints.
-     * @param image Image to be added.
-     * @param myPanel Panel to add image to.
-     * @param layout MigLayout of image & panel.
-     * @param alignment Of image in MigLayout
-     * @return The ArcadePanel with the image inserted.
-     */
-    protected ArcadePanel addImage (Image image, ArcadePanel myPanel,
-            MigLayout layout, Object constraints) {
-        JLabel picLabel = new JLabel(new ImageIcon(image));
-        myPanel.setLayout(layout);
-        myPanel.add(picLabel, constraints);
-        return myPanel;
-    }
-
-    /**
      * Allows subclasses to get reference to the Arcade
      * 
      * @return reference to the Arcade
