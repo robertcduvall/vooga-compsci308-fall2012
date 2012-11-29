@@ -146,6 +146,8 @@ public abstract class BattleObject extends GameObject {
         g2d.setColor(Color.BLACK);
         GlyphVector gv = font.createGlyphVector(frc, myName);
         g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + fontSize * FONT_SPACING_SCALAR);
+        
+        
         int myHealth = myStats.get(HEALTH).intValue();
         int myMaxHealth = myStats.get("maxHealth").intValue();
         String health = "Health: " + myHealth + "/" + myMaxHealth;

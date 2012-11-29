@@ -43,23 +43,22 @@ public class BattleMode extends GameMode implements InputAPI {
     private final int ATTACK_KEY = KeyEvent.VK_A;
     private final int DEFEND_KEY = KeyEvent.VK_D;
     private final int HEAL_KEY = KeyEvent.VK_H;
-    private final int CHARGE_KEY = KeyEvent.VK_C;    
+    private final int CHARGE_KEY = KeyEvent.VK_C;
     private final int SELECT_KEY = KeyEvent.VK_ENTER;
     private final int LEFT_KEY = KeyEvent.VK_LEFT;
     private final int RIGHT_KEY = KeyEvent.VK_RIGHT;
     private final int UP_KEY = KeyEvent.VK_UP;
     private final int DOWN_KEY = KeyEvent.VK_DOWN;
-    
+
     private final double TEXT_SCALAR = 40;
 
     /**
      * Constructor for a Battle.
      * 
-     * @param gm The parent GameManager that is creating this battle. Will be
-     *        alerted
-     *        when battle ends.
-     * @param modeObjectType The object type this mode uses, i.e.
-     *        BattleObject.java
+     * @param gameManager The parent GameManager that is creating this battle. Will be
+     *        alerted when battle ends.
+     * @param modeObjectType The object type this mode uses, i.e. BattleObject.java
+     * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
 
     // need to pass ids of battle participants upon battle creation
@@ -86,6 +85,10 @@ public class BattleMode extends GameMode implements InputAPI {
         // ArrayList<Integer>());
     }
 
+    /**
+     * Allows the battle to receive input from the keyboard.
+     * Controls include Attack, Defend, Heal, and Charge, set as constants.
+     */
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
         try {
@@ -115,6 +118,9 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void makeTeams () {
         // BAD BAD TEST CODE
+        // I don't think this is super bad test code now,
+        // We should eventually add support for a single sprite with multiple battleobjects
+        // (i.e. A single Pokemon trainer with multiple pokemon)
         myTeams = new ArrayList<Team>();
 
         // adding player
@@ -135,7 +141,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void update () {
-        // while(myState != BattleState.WAITING_FOR_MOVE){
+        
         if (isBattleOver()) {
             endBattle();
         }
@@ -156,12 +162,12 @@ public class BattleMode extends GameMode implements InputAPI {
         int teamNumber = 0;
         for (Team t : myTeams) {
             for (BattleObject b : t.getBattleObjects()) {
-                b.paintBattleObject(g, 0, (teamNumber) * height / 3, width, height / 3);
+                b.paintBattleObject(g, 0, teamNumber * height / 3, width, height / 3);
             }
             teamNumber += 1;
         }
         paintMenu(g);
-        
+
     }
 
     //someone please fix this...
