@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
@@ -70,7 +71,7 @@ public class SocialCenter {
      * return log on status
      */
     public boolean registerUser (String userName, String password, String firstName, String lastName)
-                                                                                                     throws Exception {
+                                                                                                     throws IOException {
         // check validity
 
         try {
@@ -85,6 +86,9 @@ public class SocialCenter {
             myUserManager.setCurrentUser(newUser);
 
             return true;
+        }
+        catch (PasswordNotMatchException e) {
+            return false;
         }
         return false;
     }
