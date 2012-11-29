@@ -26,7 +26,7 @@ public class PanelDebugger extends JPanel{
     }
     
     public void paint(Graphics g) {
-        myInteractionPanel.paint(g);
+        g.drawImage(myInteractionPanel.renderImage(), 0, 0, null);
     }
     
     public static void main(String[] args) {

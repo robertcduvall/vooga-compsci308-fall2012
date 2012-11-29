@@ -53,13 +53,13 @@ public class InteractionPanel {
         myOptions.add(new StrategyOption("Even more option!!!", myOptionPositions.get(2)));
     }
 
-    public void paint (Graphics g) {
+    public Image renderImage () {
         initializePanelImage();
         for (StrategyOption option : myOptions) {
             option.paintOption(myImageGraphics);
         }
         drawBulletPoint(myImageGraphics);
-        g.drawImage(myPanelImage, 0, 0, null);
+        return myPanelImage;
     }
     
     private void initializePanelImage() {
@@ -105,5 +105,9 @@ public class InteractionPanel {
             }
         }
         return positions;
+    }
+    
+    public Dimension getPanelSize() {
+        return new Dimension(myPanelImage.getWidth(null), myPanelImage.getHeight(null));
     }
 }
