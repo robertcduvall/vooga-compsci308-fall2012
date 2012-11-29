@@ -1,10 +1,11 @@
-package util.networking;
+package util.networking.jabber;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.networking.Server;
 
 public class ProtocolTester {
 

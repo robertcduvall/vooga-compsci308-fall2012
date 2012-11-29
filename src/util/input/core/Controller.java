@@ -7,24 +7,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.dataStructures.FlagPair;
 import util.datatable.DataTable;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
-import util.input.inputhelpers.BoolTuple;
 import util.input.inputhelpers.UKeyCode;
 
 
 /**
  * This class represents an abstract controller to provide input.
- * 
+ *
  * @author Amay, Lance
- * 
+ *
  * @param <T>
  */
 public abstract class Controller<T> {
 
     protected static final int NO_ACTION = -1;
+    private static final String BUTTON_DESCRIPTION = "Button Description";
+    private static final String ACTION_DESCRIPTION = "Action Description";
+    private static final String KEYCODE = "KeyCode";
+    private static final String TUPLE = "Tuple";
+    private static int NUM_COLUMNS = 4;
+
+    private String[] myColumnName;
+
     private List<T> mySubscribedElements;
     private DataTable myDataTable;
 
@@ -34,14 +42,18 @@ public abstract class Controller<T> {
     public Controller () {
         mySubscribedElements = new ArrayList<T>();
         myDataTable = new DataTable();
-
+        myColumnName = new String[NUM_COLUMNS];
+        myColumnName[0] = BUTTON_DESCRIPTION;
+        myColumnName[1] = ACTION_DESCRIPTION;
+        myColumnName[2] = KEYCODE;
+        myColumnName[3] = TUPLE;
         createTable();
     }
 
     /**
      * Create a new Controller with an element that
      * subscribes to its raw data.
-     * 
+     *
      * @param element - The subscribing element
      */
     public Controller (T element) {
@@ -51,16 +63,25 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events.
-     * 
-     * @param element - The subscribing class
+     *
+     * @param subscriber - The subscribing class
      */
-    public void subscribe (T element) {
-        mySubscribedElements.add(element);
+    public void subscribe (T subscriber) {
+        mySubscribedElements.add(subscriber);
+    }
+
+    /**
+     * Unsubscribes a class to this controller's events.
+     *
+     * @param unsubscriber - The unsubscribing class
+     */
+    public void unSubscribe (T unsubscriber) {
+        mySubscribedElements.remove(unsubscriber);
     }
 
     /**
      * Object invokes a method every time action and type occur.
-     * 
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -77,13 +98,12 @@ public abstract class Controller<T> {
     public void setControl (int action, int type, Object o, String method)
                                                                           throws NoSuchMethodException,
                                                                           IllegalAccessException {
-
         setControl(action, type, o, method, null, null);
     }
 
     /**
      * Class invokes a static method every time action and type occur.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -113,7 +133,7 @@ public abstract class Controller<T> {
      * Object invokes a method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <object, method> tuple into DataTable
-     * 
+     *
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -132,26 +152,22 @@ public abstract class Controller<T> {
     public void setControl (int action, int type, Object o, String method, String describeButton,
                             String describeAction) throws NoSuchMethodException,
                                                   IllegalAccessException {
-
-        Method m;
-        m = retrieveMethod(o, method);
+        Method m = retrieveMethod(o, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put("Button Description", describeButton);
-        dataIn.put("Action Description", describeAction);
-        dataIn.put("KeyCode", UKeyCode.codify(type, action));
-        dataIn.put("Tuple", new BoolTuple<Object, Method>(o, m));
+        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, m));
+        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
 
         myDataTable.addNewRowEntry(dataIn);
 
-        myDataTable.viewContents();
+        // myDataTable.viewContents();
     }
 
     /**
      * Class invokes a static method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <class, method> tuple into DataTable
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -178,30 +194,33 @@ public abstract class Controller<T> {
         Method m = retrieveMethod(c, method);
 
         Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put("Button Description", describeButton);
-        dataIn.put("Action Description", describeButton);
-        dataIn.put("KeyCode", UKeyCode.codify(type, action));
-        dataIn.put("Tuple", new BoolTuple<Object, Method>(c, m));
+        dataIn.put(TUPLE, new FlagPair<Class, Method>(c, m));
+        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
+        myDataTable.addNewRowEntry(dataIn);
     }
 
     /**
      * Set the desired action on or off.
-     * 
+     *
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
-     * @param isActive - Whether the action should be active or not
      */
     @SuppressWarnings("unchecked")
-    public void setActionActive (int action, int type, boolean isActive) {
-        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        BoolTuple<Object, Method> rowElement = (BoolTuple<Object, Method>) r.getEntry("Tuple");
+    public void activateAction (int action, int type) {
+        FlagPair<Object, Method> rowElement = getObjectMethodPair(action, type);
+        rowElement.activate();
+    }
 
-        if (isActive) {
-            rowElement.activate();
-        }
-        else {
-            rowElement.deactivate();
-        }
+    /**
+     * Set the desired action on or off.
+     *
+     * @param action - The controller button/key to listen for
+     * @param type - Pressed or released
+     */
+    @SuppressWarnings("unchecked")
+    public void deactivateAction (int action, int type) {
+        FlagPair<Object, Method> rowElement = getObjectMethodPair(action, type);
+        rowElement.deactivate();
     }
 
     /**
@@ -225,9 +244,19 @@ public abstract class Controller<T> {
     }
 
     // PRIVATE METHODS
+
+    @SuppressWarnings("unchecked")
+    private FlagPair<Object, Method> getObjectMethodPair (int action, int type) {
+        UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
+        FlagPair<Object, Method> rowElement =
+                (FlagPair<Object, Method>) r.getEntry("Tuple");
+        return rowElement;
+    }
+
+
     /**
      * broadcasts the method to all subscribed elements.
-     * 
+     *
      * @param methodName
      * @param inputEvent
      * @throws IllegalAccessException
@@ -268,8 +297,8 @@ public abstract class Controller<T> {
 
         if (r != null) {
 
-            BoolTuple<Object, Method> retrieveTuple =
-                    (BoolTuple<Object, Method>) r.getEntry("Tuple");
+            FlagPair<Object, Method> retrieveTuple =
+                    (FlagPair<Object, Method>) r.getEntry("Tuple");
 
             if (retrieveTuple != null && retrieveTuple.isActive()) {
                 retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
@@ -317,13 +346,20 @@ public abstract class Controller<T> {
 
     private void createTable () {
         try {
-            myDataTable.addNewColumn("Button Description,Action Description,KeyCode,Tuple");
+            myDataTable.addNewColumn(myColumnName);
         }
         catch (RepeatedColumnNameException e) {
             e.printStackTrace();
         }
-        catch (InvalidXMLTagException e){
+        catch (InvalidXMLTagException e) {
             e.printStackTrace();
         }
+    }
+
+    private void insertInMap (Map<String, Object> dataIn, String describeButton,
+                              String describeAction, int keyCode) {
+        dataIn.put(BUTTON_DESCRIPTION, describeButton);
+        dataIn.put(ACTION_DESCRIPTION, describeAction);
+        dataIn.put(KEYCODE, keyCode);
     }
 }
