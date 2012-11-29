@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import util.networking.Server;
+import util.networking.chat.ChatServer;
 
 public class ProtocolTester {
 
@@ -27,13 +28,19 @@ public class ProtocolTester {
         InetAddress addr = InetAddress.getLocalHost();
         String hostname = addr.getHostName();
         System.out.println(hostname);
-        Server s = new Server(MAX_CONNECTIONS);
+        Server s = new ChatServer();
         /*try {
             s.addService(new Service(), PORT);
         }
         catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+        
+        
+        ChatProtocal myProtocol = new COProtocol();
+        ChatServer myChatServer = new ChatServer(myProtocol);
+        
+        */
         
         
         ProtocolXMPP xmpp = new ProtocolXMPP();

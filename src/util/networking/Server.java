@@ -1,13 +1,3 @@
-/*
- * Copyright (c) 2004 David Flanagan. All rights reserved.
- * This code is from the book Java Examples in a Nutshell, 3nd Edition.
- * It is provided AS-IS, WITHOUT ANY WARRANTY either expressed or implied.
- * You may study, use, and modify it for any non-commercial purpose,
- * including teaching and use in open-source projects.
- * You may distribute it non-commercially as long as you retain this notice.
- * For a commercial use license, or to purchase the book,
- * please visit http://www.davidflanagan.com/javaexamples3.
- */
 package util.networking;
 
 import java.io.IOException;
@@ -15,8 +5,12 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.net.*;
-import java.util.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -31,6 +25,9 @@ import java.util.*;
  **/
 public class Server {
 
+    private static final int DEFAULT_MAX_CONNECTIONS = 100;
+    private static final int TIMEOUT = 5000;
+
     // Hashtable mapping ports to Listeners
     private Map<Integer, Listener> myServices;
 
@@ -44,7 +41,16 @@ public class Server {
     private ThreadGroup myThreadGroup;
 
     /**
-     * This constructor supports no logging
+     * Instantiates a server with at most DEFAULT_MAX_CONNECTIONS connections.
+     */
+    public Server () {
+        this(DEFAULT_MAX_CONNECTIONS);
+    }
+
+    /**
+     * Instantiates a new ChatServer with at most maxConnections connections to
+     * the server.
+     * @param maxConnections The maximum number of connections to this server.
      **/
     public Server (int maxConnections) {
         myThreadGroup = new ThreadGroup(Server.class.getName());
@@ -57,8 +63,9 @@ public class Server {
      * This method makes the server start providing a new service.
      * It runs the specified Service object on the specified port.
      * 
-     * @param service
-     * @param port
+     * @param service The Service object to run on the server.
+     * @param port The port on which to run this service.
+     * @throws IOException if the specified port is already in use on this server.
      **/
     public synchronized void addService (Service service, int port) throws IOException {
         // the hashtable key
@@ -79,7 +86,7 @@ public class Server {
      * It does not terminate any pending connections to that service, merely
      * causes the server to stop accepting new connections
      * 
-     * @param port
+     * @param port The port from which to remove a service.
      **/
     public synchronized void removeService (int port) {
         // hashtable key
@@ -91,76 +98,6 @@ public class Server {
         LISTENER.pleaseStop();
         // Remove it from the hashtable
         myServices.remove(key);
-    }
-
-    /**
-     * This nested Thread subclass is a "listener". It listens for
-     * connections on a specified port (using a ServerSocket) and when it gets
-     * a connection request, it calls the servers addConnection() method to
-     * accept (or reject) the connection. There is one Listener for each
-     * Service being provided by the Server.
-     **/
-    public class Listener extends Thread {
-        ServerSocket listen_socket;    // The socket to listen for connections
-        int port;                      // The port we're listening on
-        Service service;               // The service to provide on that port
-        volatile boolean stop = false; // Whether we've been asked to stop
-
-        /**
-         * The Listener constructor creates a thread for itself in the
-         * threadgroup. It creates a ServerSocket to listen for connections
-         * on the specified port. It arranges for the ServerSocket to be
-         * interruptible, so that services can be removed from the server.
-         * 
-         * @param group
-         * @param port
-         * @param service
-         **/
-        public Listener (ThreadGroup group, int port, Service service) throws IOException {
-            super(group, "Listener:" + port);
-            listen_socket = new ServerSocket(port);
-            // give it a non-zero timeout so accept() can be interrupted
-            listen_socket.setSoTimeout(5000);
-            this.port = port;
-            this.service = service;
-        }
-
-        /**
-         * This is the polite way to get a Listener to stop accepting
-         * connections
-         ***/
-        public void pleaseStop () {
-            // Set the stop flag
-            this.stop = true;
-            // Stop blocking in accept()
-            this.interrupt();
-            try {
-                listen_socket.close();
-            } // Stop listening.
-            catch (IOException e) {
-            }
-        }
-
-        /**
-         * A Listener is a Thread, and this is its body.
-         * Wait for connection requests, accept them, and pass the socket on
-         * to the addConnection method of the server.
-         **/
-        public void run () {
-            // loop until we're asked to stop.
-            while (!stop) {
-                try {
-                    Socket client = listen_socket.accept();
-                    addConnection(client, service);
-                }
-                catch (InterruptedIOException e) {
-                }
-                catch (IOException e) {
-                    System.out.println("Cannot add connection.");
-                    System.out.println(e.getStackTrace());
-                }
-            }
-        }
     }
 
     /**
@@ -176,8 +113,8 @@ public class Server {
             try {
                 // Then tell the client it is being rejected.
                 PrintWriter out = new PrintWriter(s.getOutputStream());
-                out.print("Connection refused; "
-                          + "the server is busy; please try again later.\r\n");
+                out.print("Connection refused; " +
+                           "the server is busy; please try again later.\r\n");
                 out.flush();
                 // And close the connection to the rejected client.
                 s.close();
@@ -206,36 +143,87 @@ public class Server {
         myConnections.remove(c);
     }
 
-    /** Change the current connection limit */
+    /** Change the current connection limit 
+     * @param max The maximum number of connections
+     * */
     public synchronized void setMaxConnections (int max) {
         myMaxConnections = max;
     }
 
+
     /**
-     * This method displays status information about the server on the
-     * specified stream. It can be used for debugging, and is used by the
-     * Control service later in this example.
+     * This nested Thread subclass is a "listener". It listens for
+     * connections on a specified port (using a ServerSocket) and when it gets
+     * a connection request, it calls the servers addConnection() method to
+     * accept (or reject) the connection. There is one Listener for each
+     * Service being provided by the Server.
      **/
-    public synchronized void displayStatus (PrintWriter out) {
-        // Display a list of all Services that are being provided
-        Iterator<Integer> keys = myServices.keySet().iterator();
-        while (keys.hasNext()) {
-            Integer port = (Integer) keys.next();
-            Listener listener = (Listener) myServices.get(port);
-            out.print("SERVICE " + listener.service.getClass().getName() + " ON PORT " + port +
-                      "\r\n");
+    public class Listener extends Thread {
+        // The socket to listen for connections
+        private ServerSocket myListenSocket;
+        // The port we're listening on
+        private int myPort;
+        // The service to provide on that port
+        private Service myService;
+        // Whether we've been asked to stop
+        private volatile boolean myStop = false; 
+
+        /**
+         * The Listener constructor creates a thread for itself in the
+         * threadgroup. It creates a ServerSocket to listen for connections
+         * on the specified port. It arranges for the ServerSocket to be
+         * interruptible, so that services can be removed from the server.
+         * 
+         * @param group
+         * @param port
+         * @param service
+         **/
+        public Listener (ThreadGroup group, int port, Service service) throws IOException {
+            super(group, "Listener:" + port);
+            myListenSocket = new ServerSocket(port);
+            // give it a non-zero timeout so accept() can be interrupted
+            myListenSocket.setSoTimeout(TIMEOUT);
+            this.myPort = port;
+            this.myService = service;
         }
 
-        // Display the current connection limit
-        out.print("MAX CONNECTIONS: " + myMaxConnections + "\r\n");
+        /**
+         * This is the polite way to get a Listener to stop accepting
+         * connections
+         ***/
+        public void pleaseStop () {
+            // Set the stop flag
+            this.myStop = true;
+            // Stop blocking in accept()
+            this.interrupt();
+            try {
+                myListenSocket.close();
+            } // Stop listening.
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        // Display a list of all current connections
-        Iterator<Connection> conns = myConnections.iterator();
-        while (conns.hasNext()) {
-            Connection c = (Connection) conns.next();
-            out.print("CONNECTED TO " + c.myClient.getInetAddress().getHostAddress() + ":" +
-                      c.myClient.getPort() + " ON PORT " + c.myClient.getLocalPort() + " FOR SERVICE " +
-                      c.myService.getClass().getName() + "\r\n");
+        /**
+         * A Listener is a Thread, and this is its body.
+         * Wait for connection requests, accept them, and pass the socket on
+         * to the addConnection method of the server.
+         **/
+        public void run () {
+            // loop until we're asked to stop.
+            while (!myStop) {
+                try {
+                    Socket client = myListenSocket.accept();
+                    addConnection(client, myService);
+                }
+                catch (InterruptedIOException e) {
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
+                    System.out.println("Cannot add connection.");
+                    System.out.println(e.getStackTrace());
+                }
+            }
         }
     }
 
@@ -248,9 +236,9 @@ public class Server {
      * multi-threaded server implementation.
      **/
     public class Connection extends Thread {
-     // The socket to talk to the client through
+        // The socket to talk to the client through
         private Socket myClient;
-     // The service being provided to that client
+        // The service being provided to that client
         private Service myService;
 
         /**
