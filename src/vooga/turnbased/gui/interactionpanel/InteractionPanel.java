@@ -1,9 +1,7 @@
 package vooga.turnbased.gui.interactionpanel;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -12,18 +10,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-import vooga.turnbased.gamecore.GameLoopMember;
+
 
 /**
  * A GUI panel for dialogue box etc. to be displayed in game
  * 
  * @author rex
- *
+ * 
  */
 public class InteractionPanel {
 
+    private static final String QUIT_MESSAGE = "Quit";
     private static final int ROW_NUMBER = 3;
     private static final int COLUMN_NUMBER = 2;
     private static final double MARGIN_PROPORTION = 0.1;
@@ -31,7 +30,8 @@ public class InteractionPanel {
             .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
     private static Dimension ourBulletSize = new Dimension(40, 40);
 
-    private int myBulletPointIndex = 0;
+    private int myBulletPointIndex;
+    private int myOptionNumber;
 
     private Image myPanelImage;
 
@@ -40,17 +40,38 @@ public class InteractionPanel {
     private List<StrategyOption> myOptions;
     private List<Point> myOptionPositions;
 
-    public InteractionPanel () {
+    public InteractionPanel (List<String> options) {
+        this();
+        myOptions = addOptions(options);
+    }
+    
+    public InteractionPanel (Set<String> options) {
+        this();
+        myOptions = addOptions(options);
+    }
+    
+    protected InteractionPanel() {
         initializePanelImage();
         myOptionPositions = initializeOptionPositions();
-        myOptions = new ArrayList<StrategyOption>();
-        createHardcodedOptions();
+        myBulletPointIndex = 0;
+        myOptionNumber = 0;
     }
-
-    private void createHardcodedOptions () {
-        myOptions.add(new StrategyOption("option1", myOptionPositions.get(0)));
-        myOptions.add(new StrategyOption("Another boring option", myOptionPositions.get(1)));
-        myOptions.add(new StrategyOption("Even more option!!!", myOptionPositions.get(2)));
+    
+    private List<StrategyOption> addOptions (List<String> options) {
+        List<StrategyOption> strategyOptions = new ArrayList<StrategyOption>();
+        options.add(QUIT_MESSAGE);
+        for (int i = 0; i < options.size(); i++) {
+            strategyOptions.add(new StrategyOption(options.get(i), myOptionPositions.get(i)));
+        }
+        return strategyOptions;
+    }
+    
+    private List<StrategyOption> addOptions (Set<String> options) {
+        List<String> strategyOptions = new ArrayList<String>();
+        for (String option: options) {
+            strategyOptions.add(option);
+        }
+        return addOptions(strategyOptions);
     }
 
     public Image renderImage () {
@@ -61,8 +82,8 @@ public class InteractionPanel {
         drawBulletPoint(myImageGraphics);
         return myPanelImage;
     }
-    
-    private void initializePanelImage() {
+
+    private void initializePanelImage () {
         try {
             myPanelImage =
                     ImageIO.read(new File("src/vooga/turnbased/resources/image/GUI/dialogue1.png"));
@@ -74,7 +95,7 @@ public class InteractionPanel {
     }
 
     public void highlightOption (MouseEvent e) {
-        for (int i=0; i< myOptions.size(); i++) {
+        for (int i = 0; i < myOptions.size(); i++) {
             myOptions.get(i).highlight(e);
             if (myOptions.get(i).optionIsHighlighted()) {
                 myBulletPointIndex = i;
@@ -87,8 +108,8 @@ public class InteractionPanel {
             option.dehighlight(e);
         }
     }
-    
-    private void drawBulletPoint(Graphics g) {
+
+    private void drawBulletPoint (Graphics g) {
         int x = myOptionPositions.get(myBulletPointIndex).x - ourBulletSize.width;
         int y = myOptionPositions.get(myBulletPointIndex).y - ourBulletSize.height / 2;
         g.drawImage(myBulletPointImage, x, y, ourBulletSize.width, ourBulletSize.height, null);
@@ -100,14 +121,15 @@ public class InteractionPanel {
         int height = myPanelImage.getHeight(null);
         for (int i = 1; i <= ROW_NUMBER; i++) {
             for (int j = 0; j < COLUMN_NUMBER; j++) {
-                int xCoordinate = (int) Math.round(MARGIN_PROPORTION * width) + width * j / COLUMN_NUMBER;
+                int xCoordinate =
+                        (int) Math.round(MARGIN_PROPORTION * width) + width * j / COLUMN_NUMBER;
                 positions.add(new Point(xCoordinate, height * i / 4));
             }
         }
         return positions;
     }
-    
-    public Dimension getPanelSize() {
+
+    public Dimension getPanelSize () {
         return new Dimension(myPanelImage.getWidth(null), myPanelImage.getHeight(null));
     }
 }

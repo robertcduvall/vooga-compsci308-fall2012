@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 
 public class ConversationStrategy extends MapStrategy {
@@ -18,9 +19,10 @@ public class ConversationStrategy extends MapStrategy {
     @Override
     public void performStrategy (MapObject target) {
         super.performStrategy(target);
-        List<Integer> involvedSpriteIDs = new ArrayList<Integer>();
-        involvedSpriteIDs.add(target.getID());
-        getMapMode().flagEvent(MODE_EVENT, involvedSpriteIDs);
+        //does nothing if it is not a player
+        if (target instanceof MapPlayerObject) {
+
+        }
     }
 
 }

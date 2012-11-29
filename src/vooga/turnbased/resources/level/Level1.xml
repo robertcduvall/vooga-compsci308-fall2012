@@ -51,7 +51,7 @@
 	</sprite>
         <sprite>
                 <map>
-                        <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
+                        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
                         <event>NO_ACTION</event>
                         <location>
                                 <x>10</x>

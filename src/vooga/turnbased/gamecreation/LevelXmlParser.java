@@ -18,7 +18,6 @@ import vooga.turnbased.gamecore.MapMode;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
-import vooga.turnbased.gameobject.mapobject.MapTileObject;
 import vooga.turnbased.gameobject.mapstrategy.ConversationStrategy;
 import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
 import vooga.turnbased.sprites.Sprite;

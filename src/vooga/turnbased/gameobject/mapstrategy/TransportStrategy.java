@@ -21,6 +21,8 @@ public class TransportStrategy extends MapStrategy {
         super(mapMode);
         myMapModeResource = mapModeResource;
         myNewPlayerLocation = location;
+        setDisplayable(true);
+        setDisplayMessage("Next Level!");
     }
 
     /**

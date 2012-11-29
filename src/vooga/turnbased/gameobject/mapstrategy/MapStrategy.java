@@ -13,6 +13,8 @@ public abstract class MapStrategy {
 
     private MapMode myMapMode;
     private boolean myIsActive;
+    private boolean myIsDisplayable;
+    private String myDisplayMessage;
     
     /**
      * constructor
@@ -21,6 +23,8 @@ public abstract class MapStrategy {
     public MapStrategy(MapMode mapMode) {
         myMapMode = mapMode;
         myIsActive = true;
+        myIsDisplayable = false;
+        myDisplayMessage = null;
     }
     
     /**
@@ -30,6 +34,22 @@ public abstract class MapStrategy {
         if (!myIsActive) {
             return;
         }
+    }
+    
+    public boolean isDisplayable() {
+        return myIsDisplayable;
+    }
+    
+    protected void setDisplayable(boolean isDisplayable) {
+        myIsDisplayable = isDisplayable;
+    }
+    
+    public String getDisplayMessage() {
+        return myDisplayMessage;
+    }
+    
+    protected void setDisplayMessage(String message) {
+        myDisplayMessage = message;
     }
     
     public MapMode getMapMode() {

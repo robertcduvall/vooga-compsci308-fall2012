@@ -55,8 +55,10 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     /**
      * Starts a new level, and puts the RPG in mapMode in that new level.
+     * 
      * @param levelFileName The name of the level that will be initialized
-     * @param enteringObject The MapObject which will used for the MapMode of this level.
+     * @param enteringObject The MapObject which will used for the MapMode of
+     *        this level.
      */
     public void initializeGameLevel (String levelFileName, MapObject enteringObject) {
         myActiveModes.remove(myLevelManager.getCurrentMapMode());
@@ -143,7 +145,9 @@ public class GameManager implements GameLoopMember, InputAPI {
     @Override
     public void paint (Graphics g) {
         for (GameMode mode : myActiveModes) {
-            mode.paint(g);
+            if (mode.isActive()) {
+                mode.paint(g);
+            }
         }
     }
 
@@ -160,10 +164,14 @@ public class GameManager implements GameLoopMember, InputAPI {
     }
 
     /**
-     *  GameModes (mapMode, BattleMode, etc., collect their local events, then decide
-     *  which ones should be reported to GameManager, then report at the end of update
-     *  cycle using this method.
-     *  @param m This is the event that the GameMode is passing in for the GameManager to handle
+     * GameModes (mapMode, BattleMode, etc., collect their local events, then
+     * decide
+     * which ones should be reported to GameManager, then report at the end of
+     * update
+     * cycle using this method.
+     * 
+     * @param m This is the event that the GameMode is passing in for the
+     *        GameManager to handle
      */
     public void flagEvent (GameEvent m) {
         myEvents.add(m);
@@ -200,9 +208,13 @@ public class GameManager implements GameLoopMember, InputAPI {
             initializeGameLevel(myNewMapResource, enteringMapObject);
         }
         else if ("CONVERSATION_START".equals(eventName)) {
-            MapObject targetMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
-            ConversationMode conversationMode = new ConversationMode(this, MapObject.class,
-                    targetMapObject);
+            ConversationMode conversationMode =
+                    new ConversationMode(this, MapObject.class, myInvolvedIDs);
+            // do not add the same conversation twice
+            for (GameMode mode : myActiveModes) {
+                if ((mode instanceof ConversationMode) &&
+                    (conversationMode.equalsTo((ConversationMode) (mode)))) { return; }
+            }
             myActiveModes.add(conversationMode);
         }
         else if ("CONVERSATION_OVER".equals(eventName)) {
@@ -281,13 +293,14 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     /**
      * Calling this functions sets the next level from the input URI.
+     * 
      * @param URI The location string of where to find the new map file.
      */
     public void setNewMapResources (String URI) {
         myNewMapResource = URI;
     }
 
-    private MapObject findMapObjectWithID(int ID) {
+    private MapObject findMapObjectWithID (int ID) {
         return findSpriteWithID(ID).getMapObject();
     }
 }
