@@ -19,9 +19,10 @@ import vooga.turnbased.gameobject.GameObject;
  *
  */
 public abstract class BattleObject extends GameObject {
+    private final String HEALTH = "health";
     private Map<String, Number> myStats;
     private String myName;
-    
+
     private final double FONT_SCALAR = 18;
     private final float FONT_SPACING_SCALAR = (float) 1.2;
     private final float STAT_FONT_SHIFT = 10;
@@ -42,9 +43,10 @@ public abstract class BattleObject extends GameObject {
         setStats(stats);
         myName = name;
     }
+
     /**
      * Set the stats of the battle object
-     * @param stats 
+     * @param stats A map of Attributes (Strings) to values (Numbers)
      */
     public void setStats (Map<String, Number> stats) {
         for (String key:stats.keySet()) {
@@ -74,7 +76,7 @@ public abstract class BattleObject extends GameObject {
             myStats.put(statName, value);
         }
     }
-    
+
     /**
      * Get the name of the object
      * @return
@@ -103,8 +105,8 @@ public abstract class BattleObject extends GameObject {
      * @return True if health > 0.
      */
     public boolean isAlive() {
-        if (myStats.containsKey("health")) {
-            Number health = myStats.get("health");
+        if (myStats.containsKey(HEALTH)) {
+            Number health = myStats.get(HEALTH);
             return health.doubleValue() > 0;
         }
         else {
@@ -143,20 +145,20 @@ public abstract class BattleObject extends GameObject {
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
         GlyphVector gv = font.createGlyphVector(frc, myName);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, (y + fontSize*FONT_SPACING_SCALAR));
-        int myHealth = myStats.get("health").intValue();
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + fontSize * FONT_SPACING_SCALAR);
+        int myHealth = myStats.get(HEALTH).intValue();
         int myMaxHealth = myStats.get("maxHealth").intValue();
         String health = "Health: " + myHealth + "/" + myMaxHealth;
         gv = font.createGlyphVector(frc, health);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 2*fontSize*FONT_SPACING_SCALAR);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 2 * fontSize * FONT_SPACING_SCALAR);
         int myAttack = myStats.get("attack").intValue();
         String attack = "Attack: " + myAttack;
         gv = font.createGlyphVector(frc, attack);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 3*fontSize*FONT_SPACING_SCALAR);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 3 * fontSize * FONT_SPACING_SCALAR);
         int myDefense = myStats.get("defense").intValue();
         String defense = "Defense: " + myDefense;
         gv = font.createGlyphVector(frc, defense);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 4*fontSize*FONT_SPACING_SCALAR);
+        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 4 * fontSize * FONT_SPACING_SCALAR);
     }
 
     @Override 
