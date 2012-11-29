@@ -1,13 +1,15 @@
 package vooga.platformer.leveleditor;
 
 /*
- * I tried to allow LevelBoard to paint everything. Unfortunately this
+ * I initially tried to allow LevelBoard to paint everything. Unfortunately this
  * led to messiness in an initial implementation of DrawingMode since
  * every time I needed to display something I would add it to a local
  * collection for that class's personal use and then ALSO have to add
  * it to the LevelBoard class so it could be displayed on the screen.
  * Delegation of painting to each mode also means that we can remove
  * any reference of LevelBoard from each of the different IEditorModes.
+ * Therefore, I've made this interface extend IPaintble so each manager
+ * now takes care of what needs to be painted.
  */
 
 /**
