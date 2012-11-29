@@ -20,7 +20,7 @@ import vooga.turnbased.sprites.Sprite;
 
 
 /**
- * GameManager class that manages interations between the map and battle modes
+ * GameManager class that manages interactions between the map and battle modes
  * of the game.
  * 
  * @author Turnbased team
@@ -30,7 +30,7 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
     private GameLevelManager myLevelManager;
-    private boolean isOver;
+    private boolean myGameOverCheck;
     private HashMap<Integer, Sprite> mySprites;
     private List<GameEvent> myEvents;
     private List<GameMode> myActiveModes;
@@ -44,7 +44,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
-        isOver = false;
+        myGameOverCheck = false;
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<GameEvent>();
         myActiveModes = new LinkedList<GameMode>();
@@ -53,6 +53,11 @@ public class GameManager implements GameLoopMember, InputAPI {
         configureInputHandling();
     }
 
+    /**
+     * Starts a new level, and puts the RPG in mapMode in that new level.
+     * @param levelFileName The name of the level that will be initialized
+     * @param enteringObject The MapObject which will used for the MapMode of this level.
+     */
     public void initializeGameLevel (String levelFileName, MapObject enteringObject) {
         myActiveModes.remove(myLevelManager.getCurrentMapMode());
         myLevelManager.enterMap(levelFileName, enteringObject);
@@ -66,11 +71,11 @@ public class GameManager implements GameLoopMember, InputAPI {
     /**
      * find the Sprite with specific ID
      * 
-     * @param ID ID of the Sprite
+     * @param id ID of the Sprite
      * @return the Sprite found (null if no Sprite with that ID was found)
      */
-    public Sprite findSpriteWithID (int ID) {
-        return mySprites.get(ID);
+    public Sprite findSpriteWithID (int id) {
+        return mySprites.get(id);
     }
 
     /**
@@ -116,7 +121,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @return isOver True if game is over, false if not.
      */
     public boolean isOver () {
-        return isOver;
+        return myGameOverCheck;
     }
 
     /**
@@ -154,9 +159,12 @@ public class GameManager implements GameLoopMember, InputAPI {
         myEvents.add(new GameEvent(eventName, involvedSpriteIDs));
     }
 
-    // gamemodes collect their local events, then decide which ones should be
-    // reported to gamemanager, then report at the end of update cycle using
-    // this method
+    /**
+     *  GameModes (mapMode, BattleMode, etc., collect their local events, then decide
+     *  which ones should be reported to GameManager, then report at the end of update
+     *  cycle using this method.
+     *  @param m This is the event that the GameMode is passing in for the GameManager to handle
+     */
     public void flagEvent (GameEvent m) {
         myEvents.add(m);
     }
@@ -193,7 +201,8 @@ public class GameManager implements GameLoopMember, InputAPI {
         }
         else if ("CONVERSATION_START".equals(eventName)) {
             MapObject targetMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
-            ConversationMode conversationMode = new ConversationMode(this, MapObject.class, targetMapObject);
+            ConversationMode conversationMode = new ConversationMode(this, MapObject.class,
+                    targetMapObject);
             myActiveModes.add(conversationMode);
         }
         else if ("CONVERSATION_OVER".equals(eventName)) {
@@ -270,10 +279,14 @@ public class GameManager implements GameLoopMember, InputAPI {
         }
     }
 
+    /**
+     * Calling this functions sets the next level from the input URI.
+     * @param URI The location string of where to find the new map file.
+     */
     public void setNewMapResources (String URI) {
         myNewMapResource = URI;
     }
-    
+
     private MapObject findMapObjectWithID(int ID) {
         return findSpriteWithID(ID).getMapObject();
     }
