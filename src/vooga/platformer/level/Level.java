@@ -133,16 +133,12 @@ public abstract class Level {
             objectList.remove(removeObj);
         }
         
-<<<<<<< HEAD
-        myCollisionChecker.checkCollisions(this);
-=======
         //modified here
         myCollisionChecker.checkCollisions(this);
                 
         for (LevelPlugin lp : pluginList) {
             lp.update(objectList);
         }
->>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
         
     }
 

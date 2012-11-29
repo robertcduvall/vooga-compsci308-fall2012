@@ -25,7 +25,6 @@ public class BrickMovingObject extends CollisionEvent {
 
     @Override
     public void applyCollision (Level level) {
-<<<<<<< HEAD
         Rectangle2D intersection = myBrick.getShape().createIntersection(
                 myMovingObject.getShape());
         double dy = intersection.getHeight();

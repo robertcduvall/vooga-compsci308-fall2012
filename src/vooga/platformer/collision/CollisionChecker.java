@@ -1,6 +1,5 @@
 package vooga.platformer.collision;
 
-import java.awt.geom.Rectangle2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,14 +13,11 @@ import vooga.platformer.level.Level;
  * CollisionEvents
  * for each collision detected on the screen
  * 
- * @author Bruce, revised by Yaqi
- * 
+ * @author Bruce
  * 
  */
 public abstract class CollisionChecker {
     private Map<String, HashMap<String, String>> collisionEventsMap = new HashMap<String, HashMap<String, String>>();
-    private GameObject myObjA;
-    private GameObject myObjB;
 
     /**
      * This method detects collisions for all the GameObjects within the Level
@@ -31,11 +27,7 @@ public abstract class CollisionChecker {
      * @param level
      * @return
      */
-<<<<<<< HEAD
-    public abstract void checkCollisions (Level level);
-=======
     public abstract void checkCollisions(Level level);
->>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
 
     /**
      * This method takes two colliding objects and return the corresponding
@@ -46,56 +38,13 @@ public abstract class CollisionChecker {
      * @param b
      * @return
      */
-    public CollisionEvent buildCollisionEvent (GameObject a, GameObject b) {
+    public CollisionEvent buildCollisionEvent(GameObject a, GameObject b) {
         String className;
-        myObjA = a;
-        myObjB = b;
 
         if (collisionEventsMap.containsKey(a.getClass().getCanonicalName()) &&
                 collisionEventsMap.get(a.getClass().getCanonicalName()).containsKey(b.getClass().getCanonicalName())) {
             className = collisionEventsMap.get(a.getClass().getCanonicalName())
                     .get(b.getClass().getCanonicalName());
-<<<<<<< HEAD
-        }
-        else {
-            className = collisionEventsMap.get(b.getClass().getCanonicalName())
-                    .get(a.getClass().getCanonicalName());
-        }
-
-        CollisionEvent c = null;
-
-        try {
-            c = (CollisionEvent) Class.forName(className).getConstructor()
-                    .newInstance(a, b);
-        }
-        catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (InstantiationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-=======
         } 
         else if (collisionEventsMap.containsKey(b.getClass().getCanonicalName()) && 
                 collisionEventsMap.get(b.getClass().getCanonicalName()).containsKey(a.getClass().getCanonicalName())) {
@@ -104,7 +53,6 @@ public abstract class CollisionChecker {
         }
         else {
             return null;
->>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
         }
         
         
@@ -123,16 +71,5 @@ public abstract class CollisionChecker {
         }
         collisionEventsMap.get(a).put(b, ab);
     }
-<<<<<<< HEAD
-
-    /**
-     * @author Yaqi Zhang
-     */
-    public boolean isCollide () {
-        if (myObjB.getShape().intersects(myObjA.getShape())) { return true; }
-        return false;
-    }
-=======
    
->>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
 }

@@ -24,11 +24,7 @@ public class BasicCollisionChecker extends CollisionChecker {
 
                 if (a.getShape().intersects(b.getShape())) {
                     CollisionEvent ce = buildCollisionEvent(a, b);
-<<<<<<< HEAD
-                    if (ce != null) {
-=======
                     if(ce!=null){
->>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
                         ce.applyCollision(level);
                     }
                 }
