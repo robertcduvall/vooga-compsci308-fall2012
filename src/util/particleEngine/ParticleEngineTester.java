@@ -101,17 +101,17 @@ public class ParticleEngineTester extends JApplet {
     private void manageEngine (int myLastKeyPressed) {
 
         if (myLastKeyPressed == KeyEvent.VK_A)
-            mySystems.add(new Explosion());
+            mySystems.add(new Explosion(new Point(400,400)));
         if (myLastKeyPressed == KeyEvent.VK_S)
-            mySystems.add(new Trail());
+            mySystems.add(new Trail(new Point(400,400)));
         if (myLastKeyPressed == KeyEvent.VK_DOWN)
-            for(ParticleSystem p:mySystems) {p.move(new Point(0,5)); p.setVelocity(new Point(0,3));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(0,5)); p.setParticleVelocity(new Point(0,3));}
         if (myLastKeyPressed == KeyEvent.VK_UP)
-            for(ParticleSystem p:mySystems) {p.move(new Point(0,-5)); p.setVelocity(new Point(0,-3));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(0,-5)); p.setParticleVelocity(new Point(0,-3));}
         if (myLastKeyPressed == KeyEvent.VK_RIGHT)
-            for(ParticleSystem p:mySystems) {p.move(new Point(5,0)); p.setVelocity(new Point(-3,0));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(5,0)); p.setParticleVelocity(new Point(-3,0));}
         if (myLastKeyPressed == KeyEvent.VK_LEFT)
-            for(ParticleSystem p:mySystems) {p.move(new Point(-5,0)); p.setVelocity(new Point(3,0));}
+            for(ParticleSystem p:mySystems) {p.move(new Point(-5,0)); p.setParticleVelocity(new Point(3,0));}
 
     }
 

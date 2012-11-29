@@ -21,10 +21,11 @@ import java.util.Stack;
 public abstract class ParticleSystem {
 
     private List<ParticleEngine> myParticleEngines;
-    protected Point position = new Point(400, 400);
+    protected Point position;
 
-    public ParticleSystem () {
+    public ParticleSystem (Point startingPosition) {
         myParticleEngines = new ArrayList<ParticleEngine>();
+        position = startingPosition;
         setUpParticleEngines();
     }
 
@@ -106,7 +107,7 @@ public abstract class ParticleSystem {
             p.draw(g);
     }
 
-    public void setVelocity (Point velocity) {
+    public void setParticleVelocity (Point velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(velocity);
     }

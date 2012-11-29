@@ -17,7 +17,11 @@ import util.calculator.VectorCalculator;
  */
 public class Explosion extends ParticleSystem{
 
-	private static Point[] velocities = {new Point(-1,1), new Point(-1,-1), new Point(1,-1), new Point(1,1), new Point(-1,0), new Point(1,0), new Point(0,-1), new Point(0,1)};
+	public Explosion (Point startingPosition) {
+        super(startingPosition);
+    }
+
+    private static Point[] velocities = {new Point(-1,1), new Point(-1,-1), new Point(1,-1), new Point(1,1), new Point(-1,0), new Point(1,0), new Point(0,-1), new Point(0,1)};
 	private static int tolerance = 30;
 	private static int length = 20;
 
