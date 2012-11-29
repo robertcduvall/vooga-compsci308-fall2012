@@ -43,16 +43,14 @@ public class BattleMode extends GameMode implements InputAPI {
     private final int ATTACK_KEY = KeyEvent.VK_A;
     private final int DEFEND_KEY = KeyEvent.VK_D;
     private final int HEAL_KEY = KeyEvent.VK_H;
-    private final int CHARGE_KEY = KeyEvent.VK_C;
-    
+    private final int CHARGE_KEY = KeyEvent.VK_C;    
     private final int SELECT_KEY = KeyEvent.VK_ENTER;
     private final int LEFT_KEY = KeyEvent.VK_LEFT;
     private final int RIGHT_KEY = KeyEvent.VK_RIGHT;
     private final int UP_KEY = KeyEvent.VK_UP;
     private final int DOWN_KEY = KeyEvent.VK_DOWN;
     
-    private final double TEXT_SCALAR = 37.4;
-
+    private final double TEXT_SCALAR = 40;
 
     /**
      * Constructor for a Battle.
