@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -21,22 +22,22 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class GameProfileMainPanel extends AMainPanel {
 
-    private String gameName = (String) getArcade().getVariable("GameName");
-    private GridBagConstraints c;
+    private String gameName;
 
     public GameProfileMainPanel (Arcade a) {
         super(a);
-        createPanel();
     }
 
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.CYAN);
+        gameName = (String) getArcade().getVariable("GameName");
+        myPanel.setBackground(Color.WHITE);
 
-        myPanel.setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        
+        
+        MigLayout layout = new MigLayout();
+        myPanel.setLayout(layout);
 
         System.out.println(myPanel.getSize());
 
@@ -50,30 +51,20 @@ public class GameProfileMainPanel extends AMainPanel {
 
     private ArcadePanel addGameName (ArcadePanel myPanel) {
         JLabel nameOfGame = new JLabel(gameName);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        myPanel.add(nameOfGame, c);
+        myPanel.add(nameOfGame);
         return myPanel;
     }
     
     private ArcadePanel addGameProfilePicture (ArcadePanel myPanel) {
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
         JLabel profilePic = new JLabel(icon);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 0;
-
-        myPanel.add(profilePic, c);
+        myPanel.add(profilePic, "wrap");
 
         return myPanel;
     }
     
     private ArcadePanel addPlayButton (ArcadePanel myPanel) {
         JButton playButton = new JButton("Play");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
         playButton.addActionListener(new ActionListener() {
 
             @Override
@@ -83,7 +74,7 @@ public class GameProfileMainPanel extends AMainPanel {
 
         });
 
-        myPanel.add(playButton, c);
+        myPanel.add(playButton);
         return myPanel;
     }
 
@@ -100,10 +91,7 @@ public class GameProfileMainPanel extends AMainPanel {
     private ArcadePanel addAverageRating (ArcadePanel myPanel) {
 
         JLabel label = new JLabel("Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings());
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 2;
-        myPanel.add(label, c);
+        myPanel.add(label);
 
         return myPanel;
     }
