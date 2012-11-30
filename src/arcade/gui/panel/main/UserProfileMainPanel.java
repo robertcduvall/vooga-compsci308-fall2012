@@ -29,12 +29,14 @@ public class UserProfileMainPanel extends AMainPanel {
         myPanel.setLayout(new MigLayout("", "[]50[100]", "[]5[]10[]"));
 
         // Add the profile picture:
-        Image profilePicture = getArcade().getCurrentUser().getPicture();
-        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePicture));
+        String profilePictureLocation = getArcade().getCurrentUser().getPicture();
+        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePictureLocation));
         myPanel.add(profilePictureLabel, "align center");
 
         // Add the username:
+        JLabel username = new JLabel(getArcade().getUsername());
         // Add the First & Last name:
+        JLabel userFirstAndLastName = new JLabel(getArcade().getCurrentUser().getFullName());
         JLabel label = new JLabel();
         label.setText("[User Profile]");
         label.setForeground(Color.WHITE);

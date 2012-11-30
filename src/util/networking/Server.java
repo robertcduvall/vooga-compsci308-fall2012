@@ -1,9 +1,7 @@
 package util.networking;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InterruptedIOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -50,6 +48,7 @@ public class Server {
     /**
      * Instantiates a new ChatServer with at most maxConnections connections to
      * the server.
+     * 
      * @param maxConnections The maximum number of connections to this server.
      **/
     public Server (int maxConnections) {
@@ -65,7 +64,8 @@ public class Server {
      * 
      * @param service The Service object to run on the server.
      * @param port The port on which to run this service.
-     * @throws IOException if the specified port is already in use on this server.
+     * @throws IOException if the specified port is already in use on this
+     *         server.
      **/
     public synchronized void addService (Service service, int port) throws IOException {
         // the hashtable key
@@ -113,8 +113,8 @@ public class Server {
             try {
                 // Then tell the client it is being rejected.
                 PrintWriter out = new PrintWriter(s.getOutputStream());
-                out.print("Connection refused; " +
-                           "the server is busy; please try again later.\r\n");
+                out.print("Connection refused; "
+                          + "the server is busy; please try again later.\r\n");
                 out.flush();
                 // And close the connection to the rejected client.
                 s.close();
@@ -127,7 +127,7 @@ public class Server {
         // Otherwise, if the limit has not been reached
         else {
             // Create a Connection thread to handle this connection
-            Connection c = new Connection(s, service);
+            Connection c = new Connection(s, service, this);
             // Add it to the list of current connections
             myConnections.add(c);
             // And start the Connection thread to provide the service
@@ -143,13 +143,14 @@ public class Server {
         myConnections.remove(c);
     }
 
-    /** Change the current connection limit 
+    /**
+     * Change the current connection limit
+     * 
      * @param max The maximum number of connections
      * */
     public synchronized void setMaxConnections (int max) {
         myMaxConnections = max;
     }
-
 
     /**
      * This nested Thread subclass is a "listener". It listens for
@@ -166,7 +167,7 @@ public class Server {
         // The service to provide on that port
         private Service myService;
         // Whether we've been asked to stop
-        private volatile boolean myStop = false; 
+        private volatile boolean myStop = false;
 
         /**
          * The Listener constructor creates a thread for itself in the
@@ -240,7 +241,8 @@ public class Server {
         private Socket myClient;
         // The service being provided to that client
         private Service myService;
-
+        private Server myServer;
+        
         /**
          * This constructor just saves some state and calls the superclass
          * constructor to create a thread to handle the connection. Connection
@@ -248,11 +250,12 @@ public class Server {
          * the server's ThreadGroup, so all Connection threads are part of that
          * group, too.
          **/
-        public Connection (Socket client, Service service) {
+        public Connection (Socket client, Service service, Server server) {
             super("Server.Connection:" + client.getInetAddress().getHostAddress() + ":" +
                   client.getPort());
             this.myClient = client;
             this.myService = service;
+            this.myServer = server;
         }
 
         /**
@@ -268,18 +271,8 @@ public class Server {
          * to remove itself from the set of connections
          **/
         public void run () {
-            try {
-                InputStream in = myClient.getInputStream();
-                OutputStream out = myClient.getOutputStream();
-                myService.serve(in, out);
-            }
-            catch (IOException e) {
-                System.out.println("Socket Input or Output Stream in non-blocking mode.");
-                System.out.println(e.getStackTrace());
-            }
-            finally {
-                endConnection(this);
-            }
+            myService.serve(myClient, myServer);
+            endConnection(this);
         }
     }
 }

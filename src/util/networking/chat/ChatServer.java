@@ -31,7 +31,13 @@ public class ChatServer extends Server {
     public ChatServer (int maxConnections) {
         super(maxConnections);
     }
-    
+
+    /**
+     * 
+     * @param cp
+     * @param maxConnections
+     * @throws IOException
+     */
     public ChatServer (ChatProtocol cp, int maxConnections) throws IOException {
         super(maxConnections);
         ChatService myChatService = new ChatService(cp);

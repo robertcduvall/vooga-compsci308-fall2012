@@ -1,17 +1,14 @@
 package util.networking.chat.jabber;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.networking.Server;
 import util.networking.chat.ChatServer;
 
 public class ProtocolTester {
 
     private static final int MAX_CONNECTIONS = 100;
-    
+
     /**
      * A main() method for running the server as a standalone program.  The
      * command-line arguments to the program should be pairs of servicenames
@@ -35,17 +32,15 @@ public class ProtocolTester {
         catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
+
         ChatProtocal myProtocol = new COProtocol();
         ChatServer myChatServer = new ChatServer(myProtocol);
-        
+
         */
-        
-        
+
         ProtocolXMPP xmpp = new ProtocolXMPP();
         System.out.println(xmpp.openStream("server"));
         System.out.println(xmpp.sendMessage("Connor Gordon", "Oren Bukspan", "goduke."));
     }
-    
+
 }
