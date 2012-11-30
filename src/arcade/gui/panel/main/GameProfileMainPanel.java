@@ -64,6 +64,7 @@ public class GameProfileMainPanel extends AMainPanel {
 
         });
 
+        //ImageIcon icon = new ImageIcon(getArcade().getModelInterface().getGame(gameName).getImage());
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
         JLabel profilePic = new JLabel(icon);
 
