@@ -80,7 +80,7 @@ public final class LevelFileWriter {
                                          Element level) {
         for (Sprite s : levelObjects) {
             Element spriteElement = doc.createElement(XmlTags.GAMEOBJECT);
-            spriteElement.setAttribute(XmlTags.CLASS_NAME, s.getType());
+            spriteElement.setAttribute(XmlTags.CLASS_NAME, s.getClassName());
 
             XmlUtilities.appendElement(doc, spriteElement, XmlTags.X, String.valueOf(s.getX()));
             XmlUtilities.appendElement(doc, spriteElement, XmlTags.Y, String.valueOf(s.getY()));
@@ -88,8 +88,10 @@ public final class LevelFileWriter {
                                        String.valueOf(s.getWidth()));
             XmlUtilities.appendElement(doc, spriteElement, XmlTags.HEIGHT,
                                        String.valueOf(s.getHeight()));
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.ID,
+                                       s.getID());
             XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH,
-                                       String.valueOf(s.getImagePath()));
+                                       s.getImagePath());
 
             for (Map<String, String> strategy : s.getUpdateStrategies()) {
 

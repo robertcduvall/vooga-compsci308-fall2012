@@ -1,5 +1,6 @@
 package arcade.datatransfer;
 
+import java.io.IOException;
 import java.util.List;
 import util.encrypt.Encrypter;
 import arcade.gamemanager.Game;
@@ -7,6 +8,7 @@ import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
+import arcade.usermanager.ValidationException;
 
 
 /**
@@ -120,28 +122,31 @@ public class ModelInterface {
         try {
             return mySocialCenter.registerUser(username, Encrypter.hashCode(password), fn, ln);
         }
-        catch (Exception e) {
-
+        catch (ValidationException e) {
+            return false;
         }
-
-        return true;
+        catch (IOException e) {
+            return false;
+        }
     }
+
     /**
      * TODO: IMPLEMENT THIS
      * This is for listing all the users on the UserListMainPane.
      * 
      * @return A list of all the users in the system.
      */
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers () {
         return null;
     }
-    
+
     /**
      * TODO: Implement this.
+     * 
      * @param username The username of the User we want to access.
      * @return The User class with the corresponding username.
      */
-    public User getUser(String username) {
+    public User getUser (String username) {
         return null;
     }
 

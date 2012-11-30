@@ -2,7 +2,6 @@ package vooga.platformer.leveleditor;
 
 import java.awt.Graphics2D;
 
-
 /**
  * An interface specifying all paintable objects.
  * 

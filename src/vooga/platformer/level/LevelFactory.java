@@ -1,6 +1,6 @@
 package vooga.platformer.level;
 
-import games.platformerdemo.Player;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
@@ -12,6 +12,7 @@ import util.reflection.Reflection;
 import util.reflection.ReflectionException;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.LevelFileReader;
@@ -54,13 +55,13 @@ public final class LevelFactory {
             Dimension levelDimension = new Dimension(lfr.getWidth(), lfr.getHeight());
             CollisionChecker levelCollisionChecker =
                     (CollisionChecker) Reflection.createInstance(lfr.getCollisionCheckerType());
-
+            
             Collection<Sprite> levelSprites = lfr.getSprites();
             ArrayList<GameObject> levelGameObjects = new ArrayList<GameObject>();
             for (Sprite s : levelSprites) {
                 levelGameObjects.add(spriteToGameObject(s));
             }
-
+            
             GameObject player = findPlayerGameObject(levelGameObjects, playerClass);
 
             // TODO Using FollowingCamera by default. This is due to
@@ -87,13 +88,15 @@ public final class LevelFactory {
             return level;
         }
         catch (ReflectionException e) {
+            e.printStackTrace();
             throw new LevelFileIOException("Class name in Level file not found.", e);
         }
         catch (LevelFileIOException e) {
             throw e;
         }
         catch (Exception e) {
-            throw new LevelFileIOException("Failed to load level");
+            e.printStackTrace();
+            throw new LevelFileIOException("Failed to load level", e.getCause());
         }
     }
 
@@ -105,6 +108,7 @@ public final class LevelFactory {
         configString = configString.concat(deliminator + "width=" + s.getWidth());
         configString = configString.concat(deliminator + "height=" + s.getHeight());
         configString = configString.concat(deliminator + "imagePath=" + s.getImagePath());
+        configString = configString.concat(deliminator + "id=" + s.getID());
 
         Map<String, String> spriteAttr = s.getAttributes();
         for (String key : spriteAttr.keySet()) {
@@ -112,8 +116,7 @@ public final class LevelFactory {
         }
 
         // TODO strategy instantiation
-
-        return (GameObject) Reflection.createInstance(s.getType(), configString);
+        return (GameObject) Reflection.createInstance(s.getClassName(), configString);
     }
 
     private static GameObject findPlayerGameObject (Collection<GameObject> gameObjects,
