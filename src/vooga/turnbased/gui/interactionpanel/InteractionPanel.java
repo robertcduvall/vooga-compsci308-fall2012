@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class InteractionPanel {
     private static Dimension ourBulletSize = new Dimension(40, 40);
 
     private int myBulletPointIndex;
-    private int myOptionNumber;
+    private Point myPreviousPosition;
 
     private Image myPanelImage;
 
@@ -54,7 +53,7 @@ public class InteractionPanel {
         initializePanelImage();
         myOptionPositions = initializeOptionPositions();
         myBulletPointIndex = 0;
-        myOptionNumber = 0;
+        myPreviousPosition = null;
     }
     
     private List<StrategyOption> addOptions (List<String> options) {
@@ -95,11 +94,15 @@ public class InteractionPanel {
     }
 
     public void highlightOption (Point mousePosition) {
+        boolean highlighted = false;
         for (int i = 0; i < myOptions.size(); i++) {
-            myOptions.get(i).highlight(mousePosition);
+            highlighted = myOptions.get(i).highlight(mousePosition);
             if (myOptions.get(i).optionIsHighlighted()) {
                 myBulletPointIndex = i;
             }
+        }
+        if (!highlighted) {
+            myPreviousPosition = mousePosition;
         }
     }
 
@@ -107,6 +110,7 @@ public class InteractionPanel {
         for (StrategyOption option : myOptions) {
             option.dehighlight();
         }
+        myPreviousPosition = null;
     }
 
     private void drawBulletPoint (Graphics g) {
@@ -131,5 +135,22 @@ public class InteractionPanel {
 
     public Dimension getPanelSize () {
         return new Dimension(myPanelImage.getWidth(null), myPanelImage.getHeight(null));
+    }
+    
+    /**
+     * get previous position of the mouse on this panel
+     * @return previous position of the mouse
+     */
+    public Point getPreviousPosition() {
+        return myPreviousPosition;
+    }
+    
+    /**
+     * set the previous position to the new position
+     * It is called when the previous position has been processed
+     * @param newPosition new position of the mouse
+     */
+    public void setPreviousPosition(Point newPosition) {
+        myPreviousPosition = newPosition;
     }
 }

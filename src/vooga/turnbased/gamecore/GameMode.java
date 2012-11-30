@@ -22,6 +22,7 @@ public abstract class GameMode implements GameLoopMember {
     private final Class myObjectType;
     private List<GameEvent> myModeEvents;
     private boolean myIsActive;
+    private boolean myHasFocus;
 
     /**
      * Constructor for GameMode.
@@ -36,6 +37,7 @@ public abstract class GameMode implements GameLoopMember {
         myObjectType = modeObjectType;
         myModeEvents = new LinkedList<GameEvent>();
         myIsActive = true;
+        myHasFocus = true;
     }
 
     public GameManager getGameManager () {
@@ -119,5 +121,13 @@ public abstract class GameMode implements GameLoopMember {
     }
     
     protected void mouseReleased (Point releasedPosition) {
+    }
+    
+    protected boolean hasFocus () {
+        return myHasFocus;
+    }
+    
+    protected void setFocus(boolean isFocus) {
+        myHasFocus = isFocus;
     }
 }

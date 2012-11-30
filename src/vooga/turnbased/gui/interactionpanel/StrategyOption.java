@@ -12,10 +12,12 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import util.graphicprocessing.FontEffect;
 
+
 /**
  * Options on the InteractionPanel used to display Strategies available
+ * 
  * @author rex
- *
+ * 
  */
 public class StrategyOption {
 
@@ -63,15 +65,19 @@ public class StrategyOption {
         myRespondRegion = new Rectangle(x, y, width, height);
     }
 
-    public void highlight (Point mousePosition) {
+    protected boolean highlight (Point mousePosition) {
         if (myRespondRegion.contains(mousePosition)) {
             myColor = HIGHLIGHT_COLOR;
             isHighlighted = true;
             myPosition.translate(DISPLACEMENT.x, DISPLACEMENT.y);
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
-    public void dehighlight () {
+    protected void dehighlight () {
         if (isHighlighted) {
             myColor = DEFAULT_COLOR;
             isHighlighted = false;
