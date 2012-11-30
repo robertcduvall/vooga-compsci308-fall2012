@@ -1,32 +1,37 @@
 package arcade.gamemanager;
 
-import arcade.IArcadeGame;
-import arcade.Sample1;
-import arcade.utility.ReadWriter;
 import java.awt.Image;
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import util.xml.XmlUtilities;
+import arcade.IArcadeGame;
 
 
-// TODO Replace readwriter with other xml reader
+// TODO getUserPreferences: maybe we should remove this method and let GUI team
+// call from SocialCenter?
 
 /**
  * Class of the arcade used to start, end, and maintain the relationship with
  * all games in the arcade.
  * 
- * @author Michael Deng, Patrick Royal
+ * @author Michael Deng, Patrick Royal, Jei Min Yoo
  * 
  */
 public class Game {
 
     private GameSaver mySaver;
     private IArcadeGame myGame;
-    private org.w3c.dom.Document myXmlParser;
-    private Element myGameNode;
+    private Document myDocument;
+    private Element myGameElement;
+    private List<String> myGameInfoList;
+    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
 
     /**
      * Constructor for Game Manager takes in a specific game, so there is a
@@ -41,10 +46,62 @@ public class Game {
     public Game (IArcadeGame gameObject) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
-        myXmlParser = XmlUtilities
-                .makeDocument("../vooga-compsci308-fall2012/src/arcade/database/game.xml");
-        myGameNode = XmlUtilities.makeElement(myXmlParser, "GameList",
-                myGame.getName());
+        resetGameInfoSource();
+    }
+
+    private void resetGameInfoSource () {
+        myDocument = XmlUtilities.makeDocument(myGameXml);
+        myGameElement = getGameElement(myDocument);
+        myGameInfoList = makeGameInfoList(myGameElement);
+    }
+
+    private Element getGameElement (Document doc) {
+        Element gameElement = doc.getDocumentElement();
+        Collection<Element> games = XmlUtilities.getElements(doc.getDocumentElement(), "name");
+        for (Element ele : games) {
+            if (ele.getTextContent().equals(myGame.getName())) {
+                gameElement = (Element) ele.getParentNode();
+            }
+        }
+        return gameElement;
+
+    }
+
+    private List<String> makeGameInfoList (Element gameElement) {
+        Collection<Element> gameInfo = XmlUtilities.getElements(myGameElement);
+        Set<String> gameInfoList = new HashSet<String>();
+        for (Element ele : gameInfo) {
+            gameInfoList.add(ele.getNodeName());
+        }
+        return new ArrayList<String>(gameInfoList);
+    }
+
+    /**
+     * returns the list of available information for the game from xml file.
+     * 
+     * @return list of available information
+     */
+    public List<String> getGameInfoList () {
+        return myGameInfoList;
+    }
+
+    /**
+     * returns information requested by infoName parameter
+     * 
+     * @param infoName name of requested information
+     * @return requested information in a list form.
+     */
+    public List<String> getGameInfo (String infoName) {
+        List<String> info = new ArrayList<String>();
+        if (!myGameInfoList.contains(infoName)) {
+            System.out.println("no such information is available!!!");
+            return info;
+        }
+        Collection<Element> infoList = XmlUtilities.getElements(myGameElement, infoName);
+        for (Element ele : infoList) {
+            info.add(ele.getTextContent());
+        }
+        return info;
     }
 
     /**
@@ -61,23 +118,11 @@ public class Game {
     }
 
     /**
-     * Loads the user's preferences for that particular game from User.xml.
-     */
-    public String getUserPreferences () {
-        NodeList gameInfo = myGameNode.getChildNodes();
-        if (gameInfo == null) return null;
-        for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("preferences".equals(gameInfo.item(i))) { return gameInfo.item(
-                    i).getTextContent(); }
-        }
-        return "";
-    }
-    
-    /**
      * returns the game's description.
+     * 
      * @return game description
      */
-    public String getDescription() {
+    public String getDescription () {
         return myGame.getDescription();
     }
 
@@ -86,26 +131,19 @@ public class Game {
      * review first (if it exists).
      */
     public List<String> getReviews () {
-        NodeList gameInfo = myGameNode.getChildNodes();
-        List<String> reviews = new ArrayList<String>();
-        for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("review".equals(gameInfo.item(i))) {
-                reviews.add(gameInfo.item(i).getTextContent());
-            }
-        }
-        return reviews;
+        return getGameInfo("review");
     }
 
     /**
      * Returns the average of all the ratings for the game.
      */
-    public Integer getAverageRatings () {
+    public double getAverageRating () {
+        double total = 0;
         List<Integer> ratings = getRatings();
-        int average = 0;
-        for (int i = 0; i < ratings.size(); i++) {
-            average += ratings.get(i);
+        for (Integer rating : ratings) {
+            total += rating;
         }
-        return average / ratings.size();
+        return total / ratings.size();
     }
 
     /**
@@ -113,12 +151,11 @@ public class Game {
      * rating first (if it exists).
      */
     public List<Integer> getRatings () {
-        NodeList gameInfo = myGameNode.getChildNodes();
+        String ratingData = getGameInfo("rating").get(0);
+        String[] ratingList = ratingData.split(" ");
         List<Integer> ratings = new ArrayList<Integer>();
-        for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("rating".equals(gameInfo.item(i))) {
-                ratings.add(Integer.parseInt(gameInfo.item(i).getTextContent()));
-            }
+        for (String rating : ratingList) {
+            ratings.add(Integer.parseInt(rating));
         }
         return ratings;
     }
@@ -131,23 +168,14 @@ public class Game {
      *        text for the review
      */
     public void setReview (String review) {
-        File f = new File("arcade.database/game.xml");
-        List<String> tags = new ArrayList<String>();
-        tags.add(myGame.getName());
-        tags.add("review");
-        ReadWriter.storeData(f, tags, review);
+        XmlUtilities.appendElement(myDocument, myGameElement, "review", review);
+        saveChanges();
     }
 
-    /**
-     * Returns the review for the game, if it exists.
-     */
-    public String getReview () {
-        NodeList gameInfo = myGameNode.getChildNodes();
-        for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("review".equals(gameInfo.item(i))) { return gameInfo.item(i)
-                    .getTextContent(); }
-        }
-        return "";
+    private void saveChanges () {
+        myDocument.normalizeDocument();
+        XmlUtilities.write(myDocument, myGameXml);
+        resetGameInfoSource();
     }
 
     /**
@@ -158,11 +186,11 @@ public class Game {
      *        rating to be added
      */
     public void setRating (int rating) {
-        File f = new File("arcade.database/game.xml");
-        List<String> tags = new ArrayList<String>();
-        tags.add(myGame.getName());
-        tags.add("rating");
-        ReadWriter.storeData(f, tags, Integer.toString(rating));
+        String ratingData = getGameInfo("rating").get(0) + " " + rating;
+        ratingData.trim();
+        Node ratingElement = myGameElement.getElementsByTagName("rating").item(0);
+        ratingElement.setTextContent(ratingData);
+        saveChanges();
     }
 
     /**
@@ -170,6 +198,15 @@ public class Game {
      */
     public Image getImage () {
         return myGame.getMainImage();
+    }
+
+    /**
+     * Loads the user's preferences for that particular game from User.xml.
+     */
+    public String getUserPreferences () {
+        // user.getGameData(myGame.getName()).getGameInfo("preferences");
+
+        return "";
     }
 
     /**
@@ -183,16 +220,10 @@ public class Game {
      * Returns the genre of the game for the purposes of sorting.
      */
     public String getGenre () {
-        NodeList gameInfo = myGameNode.getChildNodes();
+        NodeList gameInfo = myGameElement.getChildNodes();
         for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("name".equals(gameInfo.item(i))) { return gameInfo.item(i)
-                    .getTextContent(); }
+            if ("name".equals(gameInfo.item(i))) return gameInfo.item(i).getTextContent();
         }
         return null;
-    }
-    public static void main(String args[]) {
-        Game g = new Game(new vooga.turnbased.Start());
-        System.out.println(g.getDescription());
-        System.out.println(g.getReview());
     }
 }
