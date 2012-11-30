@@ -103,16 +103,16 @@ public class GameCenter {
         return gameList;
     }
 
-     public static void main (String args[]) {
-     System.out.println("haha");
-     GameCenter gc = new GameCenter();
-     gc.getGameList();
-     System.out.println(gc.myGames.size());
-     Game rpg = gc.getGame("Turnbased RPG");
-     System.out.println(rpg.getGameInfoList());
-     System.out.println(rpg.getAverageRating());
-     rpg.setRating(3);
-     rpg.getReviews();
-     
-     }
+//     public static void main (String args[]) {
+//     System.out.println("haha");
+//     GameCenter gc = new GameCenter();
+//     gc.getGameList();
+//     System.out.println(gc.myGames.size());
+//     Game rpg = gc.getGame("Turnbased RPG");
+//     System.out.println(rpg.getGameInfoList());
+//     System.out.println(rpg.getAverageRating());
+//     rpg.setRating(3);
+//     rpg.getReviews();
+//     
+//     }
 }
