@@ -1,10 +1,9 @@
 package vooga.platformer.gameobject;
 
-import games.platformerdemo.GravityStrategy;
-import games.platformerdemo.PlayerMoveStrategy;
-import games.platformerdemo.ShootingStrategy;
+import vooga.platformer.gameobject.strategy.GravityStrategy;
+import vooga.platformer.gameobject.strategy.PlayerMoveStrategy;
+import vooga.platformer.gameobject.strategy.ShootingStrategy;
 
-import java.util.Collections;
 
 /**
  * @author Yaqi Zhang
@@ -12,34 +11,33 @@ import java.util.Collections;
  */
 public class Player extends MovingObject {
     /**
-     * @param configString
+     * @param configString 
      */
-    public Player(String configString) {
+    public Player (String configString) {
         super(configString);
-//        addStrategy(new PlayerMoveStrategy(this));
+        // addStrategy(new PlayerMoveStrategy(this));
         addStrategy(new GravityStrategy(this));
         addStrategy(new ShootingStrategy(this));
     }
 
     /**
-     *
-     * @return
+     * 
+     * @return the moving strategy of the player
      */
-    public PlayerMoveStrategy getMovingStrategy(){
+    public PlayerMoveStrategy getMovingStrategy () {
 
-        for (UpdateStrategy s: getStrategyList()){
-            if(s instanceof PlayerMoveStrategy){
-                return (PlayerMoveStrategy) s;
-            }
+        for (UpdateStrategy s : getStrategyList()) {
+            if (s instanceof PlayerMoveStrategy) { return (PlayerMoveStrategy) s; }
         }
         return null;
     }
-    
-    public ShootingStrategy getShootingStrategy(){
-        for (UpdateStrategy s: getStrategyList()){
-            if(s.getClass() == ShootingStrategy.class){
-                return (ShootingStrategy) s;
-            }
+
+    /**
+     * @return the shooting strategy of the player
+     */
+    public ShootingStrategy getShootingStrategy () {
+        for (UpdateStrategy s : getStrategyList()) {
+            if (s.getClass() == ShootingStrategy.class) { return (ShootingStrategy) s; }
         }
         return null;
     }

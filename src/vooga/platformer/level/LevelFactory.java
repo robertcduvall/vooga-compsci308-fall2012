@@ -1,6 +1,6 @@
 package vooga.platformer.level;
 
-import games.platformerdemo.Player;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
@@ -12,6 +12,7 @@ import util.reflection.Reflection;
 import util.reflection.ReflectionException;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.leveleditor.Sprite;
 import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.LevelFileReader;

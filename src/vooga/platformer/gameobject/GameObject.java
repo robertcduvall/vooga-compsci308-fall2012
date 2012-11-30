@@ -44,7 +44,7 @@ public abstract class GameObject implements Comparable<GameObject> {
     // Change this to public because no config str provided when creating
     // GameObject during runtime
     /**
-     * Create GameObject during runtime of the game
+     * Create GameObject during runtime of the 
      */
     public GameObject () {
         strategyList = new ArrayList<UpdateStrategy>();

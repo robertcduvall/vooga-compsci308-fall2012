@@ -26,7 +26,8 @@ public class SimpleMoveStrategy implements UpdateStrategy {
         if (myMoveObj.getHorizontalMovingDirection().equals(Direction.LEFT)) {
             myMoveObj.setFacingDirection(Direction.LEFT);
         }
-        else if (myMoveObj.getHorizontalMovingDirection().equals(Direction.RIGHT)){
+        else if (myMoveObj.getHorizontalMovingDirection().equals(
+                Direction.RIGHT)) {
             myMoveObj.setFacingDirection(Direction.RIGHT);
         }
     }

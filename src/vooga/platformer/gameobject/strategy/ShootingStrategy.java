@@ -22,10 +22,17 @@ public class ShootingStrategy implements UpdateStrategy {
     }
 
     /**
-     * applyAction of ShootingStrategy creates a bullet and fires it
+     * supposed to be empty because shouldn't been updated by level
      */
     @Override
     public void applyAction () {
+
+    }
+
+    /**
+     * shoot a bullet, this will be called by the input, such as keyboard
+     */
+    public void shoot () {
         Bullet bullet = new Bullet();
         bullet.setX(myGO.getX());
         bullet.setY(myGO.getY() + Y_OFFSET);
@@ -34,5 +41,4 @@ public class ShootingStrategy implements UpdateStrategy {
         }
         myGO.getLevel().addToObjectList(bullet);
     }
-
 }

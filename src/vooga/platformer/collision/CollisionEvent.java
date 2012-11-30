@@ -5,7 +5,6 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
 import vooga.platformer.util.enums.Direction;
 
 
@@ -23,7 +22,7 @@ import vooga.platformer.util.enums.Direction;
 public abstract class CollisionEvent {
     private GameObject a;
     private GameObject b;
-    private CollisionDirection myDirection;
+    private Direction myDirection;
     private Dimension2D myIntersectSize = new Dimension();;
 
     public CollisionEvent (GameObject a, GameObject b) {
@@ -42,7 +41,7 @@ public abstract class CollisionEvent {
         return b;
     }
 
-    protected CollisionDirection direction () {
+    protected Direction direction () {
         return myDirection;
     }
 
@@ -54,19 +53,19 @@ public abstract class CollisionEvent {
         // lateral collision ?
         if (myIntersectSize.getHeight() > myIntersectSize.getWidth()) {
             if (a.getX() > b.getX()) { // determine collision direction
-                myDirection = CollisionDirection.RIGHT;
+                myDirection = Direction.RIGHT;
             }
             else {
-                myDirection = CollisionDirection.LEFT;
+                myDirection = Direction.LEFT;
             }
         }
         // vertical collision
         else {
             if (a.getY() > b.getY()) { // determine collision direction
-                myDirection = CollisionDirection.DOWN;
+                myDirection = Direction.DOWN;
             }
             else {
-                myDirection = CollisionDirection.UP;
+                myDirection = Direction.UP;
             }
         }
     }

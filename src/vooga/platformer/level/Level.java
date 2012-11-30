@@ -1,17 +1,15 @@
 package vooga.platformer.level;
 
-import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
-import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.util.enums.PlayState;
 
 

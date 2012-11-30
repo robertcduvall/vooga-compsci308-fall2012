@@ -27,7 +27,7 @@ public abstract class CollisionChecker {
      * @param level
      * @return
      */
-    public abstract void checkCollisions(Level level);
+    public abstract void checkCollisions (Level level);
 
     /**
      * This method takes two colliding objects and return the corresponding
@@ -38,38 +38,41 @@ public abstract class CollisionChecker {
      * @param b
      * @return
      */
-    public CollisionEvent buildCollisionEvent(GameObject a, GameObject b) {
+    public CollisionEvent buildCollisionEvent (GameObject a, GameObject b) {
         String className;
 
-        if (collisionEventsMap.containsKey(a.getClass().getCanonicalName()) &&
-                collisionEventsMap.get(a.getClass().getCanonicalName()).containsKey(b.getClass().getCanonicalName())) {
+        if (collisionEventsMap.containsKey(a.getClass().getCanonicalName())
+                && collisionEventsMap.get(a.getClass().getCanonicalName())
+                        .containsKey(b.getClass().getCanonicalName())) {
             className = collisionEventsMap.get(a.getClass().getCanonicalName())
                     .get(b.getClass().getCanonicalName());
-        } 
-        else if (collisionEventsMap.containsKey(b.getClass().getCanonicalName()) && 
-                collisionEventsMap.get(b.getClass().getCanonicalName()).containsKey(a.getClass().getCanonicalName())) {
+        }
+        else if (collisionEventsMap
+                .containsKey(b.getClass().getCanonicalName())
+                && collisionEventsMap.get(b.getClass().getCanonicalName())
+                        .containsKey(a.getClass().getCanonicalName())) {
             className = collisionEventsMap.get(b.getClass().getCanonicalName())
                     .get(a.getClass().getCanonicalName());
         }
         else {
             return null;
         }
-        
-        
+
         if (className != null) {
-            CollisionEvent ce = (CollisionEvent) Reflection.createInstance(className, a, b);
+            CollisionEvent ce = (CollisionEvent) Reflection.createInstance(
+                    className, a, b);
             return ce;
         }
         else {
             return null;
         }
     }
-    
-    public void addCollisionEvents(String a, String b, String ab) {
+
+    public void addCollisionEvents (String a, String b, String ab) {
         if (!collisionEventsMap.containsKey(a)) {
             collisionEventsMap.put(a, new HashMap<String, String>());
         }
         collisionEventsMap.get(a).put(b, ab);
     }
-   
+
 }

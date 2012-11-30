@@ -1,14 +1,9 @@
 package vooga.platformer.test;
 
-import games.platformerdemo.Enemy;
 import junit.framework.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import util.reflection.Reflection;
 import vooga.platformer.level.LevelFactory;
-import vooga.platformer.leveleditor.Sprite;
-import vooga.platformer.levelfileio.LevelFileReader;
-import vooga.platformer.levelfileio.LevelFileWriter;
 
 
 /**

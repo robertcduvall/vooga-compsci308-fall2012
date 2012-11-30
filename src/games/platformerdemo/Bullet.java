@@ -1,13 +1,11 @@
 package games.platformerdemo;
 
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import util.camera.Camera;
 import vooga.platformer.gameobject.MovingObject;
+import vooga.platformer.gameobject.strategy.SimpleMoveStrategy;
 import vooga.platformer.util.enums.Direction;
 
 
