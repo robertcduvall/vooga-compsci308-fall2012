@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,7 +24,9 @@ import arcade.gui.panel.ArcadePanel;
 public class GameProfileMainPanel extends AMainPanel {
 
     private String gameName;
-
+    private List<String> listOfReviews;
+    private List<Integer> listOfRatings;
+    
     public GameProfileMainPanel (Arcade a) {
         super(a);
     }
@@ -31,8 +34,11 @@ public class GameProfileMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        
         gameName = (String) getArcade().getVariable("GameName");
-        myPanel.setBackground(Color.WHITE);
+        listOfReviews = getArcade().getModelInterface().getGame(gameName).getReviews();
+        listOfRatings = getArcade().getModelInterface().getGame(gameName).getRatings();
+        myPanel.setBackground(Color.YELLOW);
 
         
         
@@ -56,15 +62,31 @@ public class GameProfileMainPanel extends AMainPanel {
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
         JLabel profilePic = new JLabel(icon);
 
-        
-        
+        for (int i = 0; i < listOfReviews.size(); i++) {
+            System.out.println(listOfReviews.get(i));
+        }
 
-        //JLabel averageRating = new JLabel("Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings());
+        //String averageRating = "Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings();
+        String gameDescription = "Game Overview: " + getArcade().getModelInterface().getGame(gameName).getDescription();
+        JLabel descriptionToDisplay = new JLabel("<html>" + gameDescription + "</html>");
         
-        myPanel.add(playButton, "dock east, grow, span");
-        myPanel.add(nameOfGame, "align center, wrap");
+        JButton writeReviewAndRatingBut = new JButton("Review/Rate this Game");
+        
+        writeReviewAndRatingBut.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                
+                    getArcade().replacePanel("EnterReviewRating");
+            }
+              
+          });
+        
+        myPanel.add(descriptionToDisplay);
+        myPanel.add(nameOfGame, "align label, wrap");
+        myPanel.add(playButton, "grow, span");
         myPanel.add(profilePic, "grow");
-        //myPanel.add(averageRating);
+        myPanel.add(writeReviewAndRatingBut);
+        
         
         return myPanel;
 
