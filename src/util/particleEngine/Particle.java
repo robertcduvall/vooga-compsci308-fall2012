@@ -36,7 +36,6 @@ public class Particle {
     public double maxDistanceTraveledPerUpdate;
 
     private Random myRandomGenerator;
-    private VectorCalculator vcalculator = new VectorCalculator();
 
     // These values were found after extensive testing,
     // and scale the sprite's red, green, blue, and alpha values
@@ -120,9 +119,9 @@ public class Particle {
      * Stores the angle and magnitude of the velocity vector.
      */
     private void setupRadianMode () {
-        myAngle = vcalculator.calculateAngle(myVelocity);
+        myAngle = VectorCalculator.calculateAngleInRadians(myVelocity);
         maxDistanceTraveledPerUpdate = Math.max(1,
-                vcalculator.calculateMagnitude(myVelocity));
+                VectorCalculator.calculateMagnitude(myVelocity));
     }
 
     /**

@@ -18,7 +18,7 @@ import util.calculator.VectorCalculator;
  * To use this you simply need to create an object of this type and have it
  * update and draw.
  * 
- * @author David Spruill, modest contributions from Kathleen Lan
+ * @author David Spruill, Kathleen Lan
  */
 public class ParticleEngine {
     private static final int DEFAULT_COUNT = 1;
@@ -38,8 +38,6 @@ public class ParticleEngine {
     private double angleSpan;
 
     private List<Particle> particles;
-
-    private VectorCalculator vcalculator = new VectorCalculator();
 
     /**
      * Construct the ParticleEngine object using default values
@@ -128,8 +126,8 @@ public class ParticleEngine {
                 spriteImage.getHeight(null));
         double angleInterval = inputAngleSpan / (double) numberOfOriginLines
                 * Math.PI / 180;
-        double velocityMagnitude = vcalculator.calculateMagnitude(mainVelocity);
-        double velocityAngle = vcalculator.calculateAngle(mainVelocity);
+        double velocityMagnitude = VectorCalculator.calculateMagnitude(mainVelocity);
+        double velocityAngle = VectorCalculator.calculateAngleInRadians(mainVelocity);
         particles.add(new Particle(new Point(initialPosition), particleSize,
                 spriteImage, velocityMagnitude, velocityAngle + angleInterval
                         * i, variance, duration));
