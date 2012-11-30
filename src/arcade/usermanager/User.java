@@ -84,4 +84,9 @@ public class User {
     protected void updateMyGame () {
 
     }
+
+    public String getFullName () {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
