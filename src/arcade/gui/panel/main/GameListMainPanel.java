@@ -40,7 +40,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     
     public GameListMainPanel (Arcade a) {
         super(a);
-         myGameList = a.getModelInterface().getGameList();
+         //myGameList = a.getModelInterface().getGameList();
          /*myGameProfilePictures = new ArrayList<Image>();
          for (int i = 0; i < myGameList.size(); i++) {
              myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
@@ -51,20 +51,20 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        String[] arrayOfGames = new String[myGameList.size()];
+        /*String[] arrayOfGames = new String[myGameList.size()];
         for (int i = 0; i < myGameList.size(); i++) {
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
-        }
-        /*String[] theList = new String[10];
+        }*/
+        String[] theList = new String[10];
         for (int i = 0; i < 10; i++) {
             theList[i] = "" + i;
-        }*/
+        }
         
-        MigLayout layout = new MigLayout("wrap 2");
+        MigLayout layout = new MigLayout();
         myPanel.setLayout(layout);
 
-        JList listOfGames = new JList(arrayOfGames);
+        JList listOfGames = new JList(theList);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
@@ -76,8 +76,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         JLabel label = new JLabel("Select a Game to View: ");
         label.setForeground(Color.WHITE);
         label.setLabelFor(listScroller);
-        myPanel.add(label, "split 2");
-        myPanel.add(listScroller, "dock center");
         
         
         JButton goButton = new JButton("Go!");
@@ -96,7 +94,10 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
               
           });
         
-        myPanel.add(goButton, "grow");
+        myPanel.add(label, "dock north");
+        //addSeparator(myPanel, "Stuff");
+        myPanel.add(listScroller);
+        myPanel.add(goButton, "dock south");
 
         return myPanel;
     }
