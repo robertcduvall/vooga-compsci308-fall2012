@@ -29,6 +29,7 @@ public class GameProfileMainPanel extends AMainPanel {
     private List<String> listOfReviews;
     private List<Integer> listOfRatings;
     private JTextArea reviewsArea;
+    private int lengthOfAvgRatingTitle = 16;
     
     public GameProfileMainPanel (Arcade a) {
         super(a);
@@ -67,7 +68,7 @@ public class GameProfileMainPanel extends AMainPanel {
         JLabel profilePic = new JLabel(icon);
 
         String averageRating = "Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRating();
-        if (averageRating.length() > 4) {
+        if ((averageRating.length() - lengthOfAvgRatingTitle) > 4) {
             averageRating = averageRating.substring(0, 20);
         }
         JLabel averageRatingToDisplay = new JLabel(averageRating);
