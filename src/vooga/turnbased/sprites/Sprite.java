@@ -1,7 +1,6 @@
 package vooga.turnbased.sprites;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -57,7 +56,8 @@ public class Sprite {
     
     public void clear () {
         for (GameObject go : myGameObjects) {
-            go.clear();
+            //go.clear();
+        	go = null;
         }
         myGameObjects.clear();
     }

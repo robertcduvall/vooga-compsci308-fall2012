@@ -14,12 +14,15 @@ import org.w3c.dom.NodeList;
 import util.graphicprocessing.ImageLoop;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
-import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gamecore.gamemodes.GameMode;
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapstrategy.ConversationStrategy;
 import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
+import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
 
 
@@ -49,6 +52,8 @@ public class LevelXmlParser {
     private Document myPlayerXmlDocument;
     private Element myDocumentElement;
     private MapMode myMapMode;
+    
+    private int myPlayerID;
 
     /**
      * 
@@ -56,10 +61,12 @@ public class LevelXmlParser {
      *        parameters may change in the future.
      * @param mapMode The map mode of the level that is being parsed
      */
-    public LevelXmlParser (File file, MapMode mapMode) {
+    public LevelXmlParser (File file, GameManager gm) {
         myXmlDocument = XmlUtilities.makeDocument(file);
         myDocumentElement = myXmlDocument.getDocumentElement();
-        myMapMode = mapMode;
+        myMapMode = new MapMode(1, gm, MapObject.class); //hardcoded ID :(
+        myMapMode.setMapSize(parseDimension(GameWindow.importString("MapDimension"))); //ahhhhhhhh
+        myMapMode.setCameraSize(parseDimension(GameWindow.importString("CameraDimension")));//gggggggggrrrrgggggllllllllll....aggggggg *dramatic death*
         myPlayerXmlDocument = XmlUtilities.makeDocument(PLAYER_XML_PATH);
     }
 
@@ -92,6 +99,7 @@ public class LevelXmlParser {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
         toReturn.addAll(parseCharacterSprites());
+        toReturn.add(parsePlayerSprite());
         /*
          * Sprite playerSprite = parsePlayerSprite();
          * if (playerSprite != null) {
@@ -114,6 +122,7 @@ public class LevelXmlParser {
         s.addGameObject(mapPlayer);
         BattleObject playerBattleObject = parseBattleObject(s, getListOfPlayerElements().get(0));
         s.addGameObject(playerBattleObject);
+        myPlayerID = s.getID();
         return s;
     }
 
@@ -296,5 +305,13 @@ public class LevelXmlParser {
             return mapObject;
         }
         return null;
+    }
+    
+    public int getPlayerID() {
+    	return myPlayerID;
+    }
+    
+    public GameMode getMapMode() { //TODO: fix...
+    	return myMapMode;
     }
 }

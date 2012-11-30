@@ -44,10 +44,10 @@ public class GameWindow extends JFrame {
         setTitle(title);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(width, height);
-        setVisible(true);
         setResizable(true);
         addResourceBundle(settingsResource);
         initializeGamePanes();
+        setVisible(true);
     }
 
     /**

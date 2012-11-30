@@ -3,7 +3,6 @@ package vooga.turnbased.gameobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-import vooga.turnbased.gamecore.GameLoopMember;
 
 
 /**
@@ -15,7 +14,7 @@ import vooga.turnbased.gamecore.GameLoopMember;
  * @author Michael Elgart
  * 
  */
-public abstract class GameObject implements GameLoopMember {
+public abstract class GameObject {
 
     private int myID;
     private final String myModeEvent;

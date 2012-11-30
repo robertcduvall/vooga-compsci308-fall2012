@@ -3,7 +3,8 @@ package vooga.turnbased.gameobject.mapstrategy;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import vooga.turnbased.gamecore.MapMode;
+
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 

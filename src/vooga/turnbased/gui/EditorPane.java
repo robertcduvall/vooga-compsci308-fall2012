@@ -16,100 +16,107 @@ import vooga.turnbased.gamecreation.LevelEditor;
 
 /**
  * @author s
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
-    /**
-     * 
-     * @param gameWindow The game window that calls this editor pane
-     */
-    public EditorPane (GameWindow gameWindow) {
-        super(gameWindow);
-        addInitialButtons();
-    }
+	/**
+	 * 
+	 * @param gameWindow
+	 *            The game window that calls this editor pane
+	 */
+	public EditorPane(GameWindow gameWindow) {
+		super(gameWindow);
+		addInitialButtons();
+	}
 
-    private void addInitialButtons () {
-        JButton menuButton = new JButton("Back to menu");
-        menuButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                getGameWindow().changeActivePane(GameWindow.MENU);
-            }
-        });
-        add(menuButton);
-        JButton newLevelButton = new JButton("Create New Level");
-        newLevelButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                LevelEditor l = new LevelEditor();
-                editDocument(l);
-                testHardcodedLevelEditor(l);
-            }
-        });
-        add(newLevelButton);
-        JButton modifyLevelButton = new JButton("Modify Existing Level");
-        modifyLevelButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                LevelEditor l = modifyExistingLevel(selectFile());
-                editDocument(l);
-            }
-        });
-        add(modifyLevelButton);
-    }
+	private void addInitialButtons() {
+		JButton menuButton = new JButton("Back to menu");
+		menuButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getGameWindow().changeActivePane(GameWindow.MENU);
+			}
+		});
+		add(menuButton);
+		JButton newLevelButton = new JButton("Create New Level");
+		newLevelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LevelEditor l = new LevelEditor();
+				editDocument(l);
+				testHardcodedLevelEditor(l);
+			}
+		});
+		add(newLevelButton);
+		JButton modifyLevelButton = new JButton("Modify Existing Level");
+		modifyLevelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				File oldLevel = selectFile();
+				if (oldLevel != null) {
+					LevelEditor l = modifyExistingLevel(oldLevel);
+					editDocument(l);
+				}
+			}
+		});
+		add(modifyLevelButton);
+	}
 
-    private void testHardcodedLevelEditor (LevelEditor l) {
-        l.addDimensionTag(20, 30);
-        l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
-        l.addCameraDimension(10, 10);
-        l.addLevelId(1);
-        l.addPlayerEntryPoints(5, 5);
-        Element sprite = l.addSprite();
-        l.addMapObject(sprite, "MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
-        Map<String, Number> stats = new HashMap<String, Number>();
-        stats.put("health", 10);
-        stats.put("attack", 5);
-        stats.put("defense", 8);
-        l.addBattleObject(sprite, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG PATH");
-        l.saveXmlDocument("/src/vooga/turnbased/resources/level/test.xml");
-    }
+	private void testHardcodedLevelEditor(LevelEditor l) {
+		l.addDimensionTag(20, 30);
+		l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
+		l.addCameraDimension(10, 10);
+		l.addLevelId(1);
+		l.addPlayerEntryPoints(5, 5);
+		Element sprite = l.addSprite();
+		l.addMapObject(sprite, "MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
+		Map<String, Number> stats = new HashMap<String, Number>();
+		stats.put("health", 10);
+		stats.put("attack", 5);
+		stats.put("defense", 8);
+		l.addBattleObject(sprite, "BATTLE CLASS", "BATTLE EVENT", stats,
+				"NAME", "BATTLE IMG PATH");
+		l.saveXmlDocument("/src/vooga/turnbased/resources/level/test.xml");
+	}
 
-    /**
-     * paint components of the Canvas
-     * 
-     * @param g Graphics
-     */
-    @Override
-    public void paintComponent (Graphics g) {
-        super.paintComponent(g);
-        Image background = GameWindow.importImage("EditorBackgroundImage");
-        g.drawImage(background, 0, 0, background.getWidth(null), background.getHeight(null), this);
-    }
+	/**
+	 * paint components of the Canvas
+	 * 
+	 * @param g
+	 *            Graphics
+	 */
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Image background = GameWindow.importImage("EditorBackgroundImage");
+		g.drawImage(background, 0, 0, background.getWidth(null),
+				background.getHeight(null), this);
+	}
 
-    private LevelEditor modifyExistingLevel (File f) {
-        Document xmlDocument = createXmlFromFile(f);
-        return new LevelEditor(xmlDocument, f.toString());
-    }
+	private LevelEditor modifyExistingLevel(File f) {
+		Document xmlDocument = createXmlFromFile(f);
+		return new LevelEditor(xmlDocument, f.toString());
+	}
 
-    private Document createXmlFromFile (File f) {
-        int extensionStart = f.toString().lastIndexOf(".");
-        String extension = f.toString().substring(extensionStart);
-        if (".xml".equals(extension)) {
-            return XmlUtilities.makeDocument(f);
-        }
-        return null;
-    }
+	private Document createXmlFromFile(File f) {
+		int extensionStart = f.toString().lastIndexOf(".");
+		String extension = f.toString().substring(extensionStart);
+		if (".xml".equals(extension)) {
+			return XmlUtilities.makeDocument(f);
+		}
+		return null;
+	}
 
-    private File selectFile () {
-        JFileChooser fc = new JFileChooser();
-        int returnVal = fc.showOpenDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            return fc.getSelectedFile();
-        }
-        return null;
-    }
+	private File selectFile() {
+		JFileChooser fc = new JFileChooser();
+		int returnVal = fc.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			return fc.getSelectedFile();
+		}
+		return null;
+	}
 
-    private void editDocument (LevelEditor l) {
-        removeAll();
-        repaint();
-    }
+	private void editDocument(LevelEditor l) {
+		removeAll();
+		repaint();
+	}
 }
