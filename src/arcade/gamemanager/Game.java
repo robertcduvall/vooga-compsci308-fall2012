@@ -71,6 +71,14 @@ public class Game {
         }
         return null;
     }
+    
+    /**
+     * returns the game's description.
+     * @return game description
+     */
+    public String getDescription() {
+        return myGame.getDescription();
+    }
 
     /**
      * Returns all reviews for the given game, displaying the current user's
