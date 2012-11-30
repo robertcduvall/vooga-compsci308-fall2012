@@ -27,26 +27,6 @@ public class ProtocolXMPP implements ChatProtocol {
         XmlUtilities.appendElement(d, message, "body", body);
         return docToString(d);
     }
-
-    @Override
-    public String queryRoomInformation (String roomName) {
-        return roomName;
-    }
-
-    @Override
-    public String openStream(String dest) {
-        Document d = XmlUtilities.makeDocument();
-        d.setXmlVersion("1.0");
-        Map<String, String> attributes = new TreeMap<String, String>();
-        attributes.put("to", dest);
-        attributes.put("version", "1.0");
-        attributes.put("xlmns", "jabber:client");
-        Element stream = XmlUtilities.makeElement(d, "stream", attributes);
-        d.appendChild(d.createComment("hi"));
-        d.appendChild(stream);
-        XmlUtilities.write(d, "src/util/networking/Tester.xml");
-        return docToString(d);
-    }
     
     private String docToString(Document d){
         try {
@@ -60,6 +40,24 @@ public class ProtocolXMPP implements ChatProtocol {
     @Override
     public int getPort () {
         return PORT;
+    }
+
+    @Override
+    public String getUsersOnline () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String login (String userName, String password) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String register (String userName, String password) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }
