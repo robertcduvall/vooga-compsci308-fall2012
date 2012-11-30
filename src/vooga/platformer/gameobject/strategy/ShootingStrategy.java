@@ -8,7 +8,6 @@ import vooga.platformer.gameobject.UpdateStrategy;
 
 /**
  * @author Yaqi Zhang
- * @author Zach Michaelov
  */
 public class ShootingStrategy implements UpdateStrategy {
     private static final int Y_OFFSET = 20;
