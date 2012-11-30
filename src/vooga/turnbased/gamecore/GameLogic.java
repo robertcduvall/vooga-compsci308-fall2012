@@ -53,17 +53,17 @@ public class GameLogic {
             myGameManager.initializeGameLevel(myGameManager.getNewMapResource(), enteringMapObject);
         }
         else if ("CONVERSATION_START".equals(eventName)) {
-            ConversationMode conversationMode =
-                    new ConversationMode(myGameManager, MapObject.class, myInvolvedIDs);
+            OptionMode optionMode =
+                    new OptionMode(myGameManager, MapObject.class, myInvolvedIDs);
             // do not add the same conversation twice
             for (GameMode mode : myGameManager.getActiveModes()) {
-                if ((mode instanceof ConversationMode) &&
-                    (conversationMode.equalsTo((ConversationMode) (mode)))) { return; }
+                if ((mode instanceof OptionMode) &&
+                    (optionMode.equalsTo((OptionMode) (mode)))) { return; }
             }
-            myGameManager.getActiveModes().add(conversationMode);
+            myGameManager.getActiveModes().add(optionMode);
         }
         else if ("CONVERSATION_OVER".equals(eventName)) {
-            MapObject targetMapObject = myGameManager.findSpriteWithID(myInvolvedIDs.get(0)).getMapObject();
+            myGameManager.removeInactiveModes();
         }
         else if ("INTERACTION_COMPLETED".equals(eventName)) {
             // to win, need to interact with specific (or all) sprites, i.e.

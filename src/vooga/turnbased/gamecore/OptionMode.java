@@ -29,6 +29,7 @@ public class OptionMode extends GameMode {
     private Image myPanelImage;
     private Point myOrigin;
     private Map<String, MapStrategy> myDisplayedStrategies;
+    private Rectangle myBounds;
 
     public OptionMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
         super(gm, modeObjectType);
@@ -100,7 +101,7 @@ public class OptionMode extends GameMode {
 
     @Override
     protected void mousePressed (Point pressedPosition) {
-        Rectangle myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
+        myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
         if (myBounds.contains(pressedPosition)) {
             myPanel.highlightOption(getPositionOnPanel(pressedPosition));
             setFocus(true);
@@ -112,6 +113,9 @@ public class OptionMode extends GameMode {
     }
     
     public void handleMouseClicked (MouseEvent e) {
+        if (!myBounds.contains(e.getPoint())) {
+            setActive(false);
+        }
         //work on it tmr
         myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer);
         this.setActive(false);
