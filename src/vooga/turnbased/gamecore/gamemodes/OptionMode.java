@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,31 +100,15 @@ public class OptionMode extends GameMode {
             myPanel.setPreviousPosition(positionOnPanel);
         }
     }
-
-    protected void mousePressed (Point pressedPosition) {
-        myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
-        if (myBounds.contains(pressedPosition)) {
-            myPanel.highlightOption(getPositionOnPanel(pressedPosition));
-            setFocus(true);
-        }
-    }
-    
-    protected void mouseReleased (Point releasedPosition) {
-        myPanel.dehighlightOption();
-    }
-    
-    public void handleMouseClicked (MouseEvent e) {
-//        if (!myBounds.contains(e.getPoint())) {
-//            setActive(false);
-//        }
-//        //work on it tmr
-//        myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer);
-//        this.setActive(false);
-    }
     
     private Point getPositionOnPanel(Point position) {
         int x = position.x - myOrigin.x;
         int y = position.y - myOrigin.y;
         return new Point(x, y);
+    }
+
+    @Override
+    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+        getGameManager().flagEvent("SWITCH_LEVEL", new ArrayList<Integer>());
     }
 }

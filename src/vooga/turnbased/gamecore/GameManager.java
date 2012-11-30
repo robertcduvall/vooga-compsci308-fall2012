@@ -2,6 +2,7 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
+import vooga.turnbased.gamecore.gamemodes.GameOverMode;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
 import vooga.turnbased.gamecreation.GameLevelManager;
 import vooga.turnbased.gamecreation.LevelXmlParser;
@@ -38,6 +40,7 @@ public class GameManager implements InputAPI {
     private HashMap<Integer, Sprite> mySprites;
     private HashMap<Integer, GameMode> myGameModes;
     private List<ModeEvent> myModeEvents;
+    private List<MouseAction> myMouseActions;
     private GameMode myActiveGameMode;
     private String myNewMapResource;
     private int myPlayerSpriteID;
@@ -54,6 +57,7 @@ public class GameManager implements InputAPI {
         mySprites = new HashMap<Integer, Sprite>();
         myGameModes = new HashMap<Integer, GameMode>();
         myModeEvents = new LinkedList<ModeEvent>();
+        myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         // myGameLogic = new GameLogic(this);
         initializeGameLevel(GameWindow.importString("Entrance"));
@@ -148,6 +152,7 @@ public class GameManager implements InputAPI {
      */
     public void update () {
         handleEvents();
+        handleMouseActions();
         myActiveGameMode.update();
     }
 
@@ -191,8 +196,14 @@ public class GameManager implements InputAPI {
     private void handleEvents () {
         while (!myModeEvents.isEmpty()) {
             ModeEvent m = myModeEvents.remove(0);
-            // changeCurrentMode(...);
             handleEvent(m);
+        }
+    }
+    
+    private void handleMouseActions() {
+        while(!myMouseActions.isEmpty()){
+            MouseAction m = myMouseActions.remove(0);
+            myActiveGameMode.processMouseInput(m.myMousePosition,m.myMouseButton);
         }
     }
 
@@ -279,11 +290,24 @@ public class GameManager implements InputAPI {
             // changeCurrentMode(idOfLatestMapMode);
         }
         else if ("SWITCH_LEVEL".equals(eventName)) {
+            myModeEvents.clear();
+            myMouseActions.clear();
+            mySprites.clear();
+            myGameModes.clear();//TODO: Fix this, not how things really happen
+            initializeGameLevel(GameWindow.importString("OtherLevel"));
             // idOfRespectiveLevel = myInvolvedIDs.get(0),
             // e.g. id of teleport sprite is equal to id of target mapmode
             // changeCurrentMode(idOfRespectiveLevel);
         }
-        else if ("CONVERSATION_START".equals(eventName)) { 
+        else if ("CONVERSATION_START".equals(eventName)) {
+            OptionMode conversationMode =
+                new OptionMode(2, this, MapObject.class, myInvolvedIDs);
+        // do not add the same conversation twice
+//        for (GameMode mode : myActiveModes) {
+//            if ((mode instanceof OptionMode) &&
+//                (conversationMode.equalsTo((OptionMode) (mode)))) { return; }
+//        }
+            changeCurrentMode(conversationMode);
             // idOfRespectiveMode = myInvolvedIDs.get(0),
             // e.g. id of NPC sprite is equal to id of target conversation mode
             // changeCurrentMode(idOfRespectiveMode);
@@ -298,10 +322,27 @@ public class GameManager implements InputAPI {
         else if ("GAME_LOST".equals(eventName)) { 
             // this event is thrown to gamemanager by gamelogic
             // changeCurrentMode(idOfGameOverMode);
+            GameOverMode overMode = new GameOverMode(3, this, null);
+            changeCurrentMode(overMode);
         }
         else {
             // please no more new features that don't fit in
             // "mode event -> destination mode" design
         }
     }
+    
+    public void addMouseAction(Point mousePos, int mouseButton){
+        myMouseActions.add(new MouseAction(mousePos, mouseButton));
+        //System.out.println("pos: "+mousePos+", button: "+mouseButton);
+    }
+    
+    private class MouseAction {
+        private Point myMousePosition;
+        private int myMouseButton;
+        
+        public MouseAction(Point mousePos, int mouseButton){
+            myMousePosition = mousePos;
+            myMouseButton = mouseButton;
+        }
+    }    
 }

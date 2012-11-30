@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -274,7 +275,11 @@ public class BattleMode extends GameMode implements InputAPI {
         System.out.println("End battle!");
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
-        getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
+        if(!myPlayerObject.isAlive()){
+            getGameManager().flagEvent("GAME_LOST", new ArrayList<Integer>());
+        } else {
+            getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
+        }
     }
 
     private boolean isBattleOver () {
@@ -475,5 +480,11 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private enum BattleState {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
+    }
+
+    @Override
+    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+        // TODO Auto-generated method stub
+        
     }
 }

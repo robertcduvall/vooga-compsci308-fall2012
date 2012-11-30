@@ -35,7 +35,8 @@ public class GamePane extends DisplayPane implements Runnable {
         super(gameWindow);
         myGameThread = new Thread(this);
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
-        addMouseListener(new GameMouseListener());
+        //addMouseListener(new GameMouseListener());
+        initMouseListener();
         myGameManager = new GameManager(this);
         enableFocus();
     }
@@ -93,30 +94,14 @@ public class GamePane extends DisplayPane implements Runnable {
     public static int getDelayTime () {
         return delayBetweenGameLoopCycles;
     }
-
-    private class GameMouseListener implements MouseListener {
-        @Override
-        public void mouseClicked (MouseEvent e) {
-            //myGameManager.handleMouseClicked(e);
-        }
-
-        @Override
-        public void mouseEntered (MouseEvent e) {
-        }
-
-        @Override
-        public void mouseExited (MouseEvent e) {
-        }
-
-        @Override
-        public void mousePressed (MouseEvent e) {
-            //myGameManager.handleMousePressed(e);
-        }
-
-        @Override
-        public void mouseReleased (MouseEvent e) {
-            //myGameManager.handleMouseReleased(e);
-        }
+    
+    private void initMouseListener() { //TODO: subscribe to input team
+        addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                myGameManager.addMouseAction(e.getPoint(), e.getButton());
+            }
+        });
     }
 
 }
