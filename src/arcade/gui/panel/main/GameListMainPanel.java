@@ -31,6 +31,7 @@ import arcade.gui.panel.ArcadePanel;
  * A subclass of the Main Panel which displays a short, scrolling list
  * of all the Games available in the Arcade. When a Game is selected,
  * the User is taken to the Game's Profile Page.
+ * 
  * @author Kannan
  *
  */

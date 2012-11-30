@@ -15,7 +15,12 @@ import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
-
+/**
+ * This class allows the user to set a rating for a game as well
+ * as write up a review. 
+ * @author Kannan
+ *
+ */
 public class EnterReviewRatingMainPanel extends AMainPanel implements ActionListener {
 
     private String gameName;

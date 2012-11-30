@@ -73,6 +73,7 @@ public class GameProfileMainPanel extends AMainPanel {
         }
         JLabel averageRatingToDisplay = new JLabel(averageRating);
         
+        
         String gameDescription = getArcade().getModelInterface().getGame(gameName).getDescription();
         JTextArea descriptionToDisplay = new JTextArea("Game Overview: " + "\n" + gameDescription, 10, 20);
         descriptionToDisplay.setLineWrap(true);
