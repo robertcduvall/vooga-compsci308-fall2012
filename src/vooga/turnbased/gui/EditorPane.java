@@ -13,6 +13,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
 import vooga.turnbased.gamecreation.LevelEditor;
+import vooga.turnbased.gamecreation.PlayerEditor;
 
 /**
  * @author s
@@ -41,9 +42,14 @@ public class EditorPane extends DisplayPane {
         JButton newLevelButton = new JButton("Create New Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                LevelEditor l = new LevelEditor();
+                String dir = System.getProperty("user.dir");
+                LevelEditor l = new LevelEditor(dir +
+                        "/src/vooga/turnbased/resources/level/testLevel.xml");
                 editDocument(l);
                 testHardcodedLevelEditor(l);
+                PlayerEditor p = new PlayerEditor(dir +
+                        "/src/vooga/turnbased/resources/level/testPlayer.xml");
+                testHardcodedPlayerEditor(p);
             }
         });
         add(newLevelButton);
@@ -70,7 +76,25 @@ public class EditorPane extends DisplayPane {
         stats.put("attack", 5);
         stats.put("defense", 8);
         l.addBattleObject(sprite, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG PATH");
-        l.saveXmlDocument("/src/vooga/turnbased/resources/level/test.xml");
+        l.saveXmlDocument();
+    }
+
+    private void testHardcodedPlayerEditor (PlayerEditor p) {
+        Element player = p.addPlayer();
+        Map<String, String> imagePaths = new HashMap<String,String>();
+        imagePaths.put("source1", "direction1");
+        imagePaths.put("source2", "direction2");
+        p.addPlayerMapObject(player, "MAP CLASS", "MAP EVENT", 4, 4, imagePaths);
+        Map<String, Number> stats = new HashMap<String, Number>();
+        stats.put("health", 3);
+        stats.put("attack", 2);
+        stats.put("defense", 1);
+        p.addBattleObject(player, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG");
+        stats.put("health", 6);
+        stats.put("attack", 5);
+        stats.put("defense", 4);
+        p.modifyBattleStats(player, stats);
+        p.saveXmlDocument();
     }
 
     /**
@@ -100,7 +124,7 @@ public class EditorPane extends DisplayPane {
     }
 
     private File selectFile () {
-        JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile();

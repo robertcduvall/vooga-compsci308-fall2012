@@ -43,6 +43,7 @@ public class LevelXmlParser {
     private final String X = "x";
     private final String Y = "y";
     private final String LOCATION = "location";
+    private final String PLAYER = "player";
     private final String PLAYER_XML_PATH = "src/vooga/turnbased/resources/level/Player.xml";
 
     private Document myXmlDocument;
@@ -92,15 +93,13 @@ public class LevelXmlParser {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
         toReturn.addAll(parseCharacterSprites());
-        /*
-         * Sprite playerSprite = parsePlayerSprite();
-         * if (playerSprite != null) {
-         * toReturn.add(playerSprite);
-         * }
-         */
         return toReturn;
     }
 
+    /**
+     * 
+     * @return The player-controlled sprite.
+     */
     public Sprite parsePlayerSprite () {
         Sprite s = new Sprite();
         MapPlayerObject mapPlayer = parseMapPlayer(s);
@@ -187,14 +186,14 @@ public class LevelXmlParser {
 
     private List<Element> getListOfPlayerElements () {
         Element playerRoot = myPlayerXmlDocument.getDocumentElement();
-        List<Element> playerList = (List<Element>) XmlUtilities.getElements(playerRoot, "player");
+        List<Element> playerList = (List<Element>) XmlUtilities.getElements(playerRoot, PLAYER);
         if (playerList.isEmpty()) { return null; }
         return playerList;
     }
 
     private Element isolateMapPlayer () {
         Element playerRoot = myPlayerXmlDocument.getDocumentElement();
-        List<Element> playerList = (List<Element>) XmlUtilities.getElements(playerRoot, "player");
+        List<Element> playerList = (List<Element>) XmlUtilities.getElements(playerRoot, PLAYER);
         if (playerList.isEmpty()) { return null; }
         Element player = playerList.get(0);
         List<Element> mapList = (List<Element>) XmlUtilities.getElements(player, MAP);

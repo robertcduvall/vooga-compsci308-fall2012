@@ -1,6 +1,5 @@
 <players>
 	<player>
-		<sprite>
 		  <map>
 			<class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
 			<event>NO_ACTION</event>
@@ -70,6 +69,5 @@
 			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
 		  </battle>
-		</sprite>  
 	</player>
 </players>
