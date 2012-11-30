@@ -62,13 +62,13 @@ public class PanelDebugger extends JPanel {
 
         @Override
         public void mousePressed (MouseEvent e) {
-            myInteractionPanel.highlightOption(e);
+            myInteractionPanel.highlightOption(e.getPoint());
             repaint();
         }
 
         @Override
         public void mouseReleased (MouseEvent e) {
-            myInteractionPanel.dehighlightOption(e);
+            myInteractionPanel.dehighlightOption();
             repaint();
         }
     }

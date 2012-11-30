@@ -24,7 +24,6 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
     private GameManager myGameManager;
     private Thread myGameThread;
-    private Point myMousePressedPosition;
     private static int delayBetweenGameLoopCycles;
 
     // InfoPanel infoPanel;
@@ -116,11 +115,12 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
         @Override
         public void mousePressed (MouseEvent e) {
-            myMousePressedPosition = e.getPoint();
+            myGameManager.handleMousePressed(e);
         }
 
         @Override
         public void mouseReleased (MouseEvent e) {
+            myGameManager.handleMouseReleased(e);
         }
     }
 
@@ -134,12 +134,8 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
             }
 
             @Override
-            public void mouseMoved (MouseEvent arg0) {
+            public void mouseMoved (MouseEvent e) {
             }
         });
-    }
-
-    public Point getMousePressedPosition () {
-        return myMousePressedPosition;
     }
 }

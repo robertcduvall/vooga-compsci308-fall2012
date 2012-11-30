@@ -111,8 +111,13 @@ public abstract class GameMode implements GameLoopMember {
      * the game window
      * 
      * @param currentPosition the current position of the mouse
-     * @param pressedPosition the position at which the mouse was pressed
      */
-    protected void changeDisplayPosition (Point currentPosition, Point pressedPosition) {
+    protected void changeDisplayPosition (Point currentPosition) {
+    }
+    
+    protected void mousePressed (Point pressedPosition) {
+    }
+    
+    protected void mouseReleased (Point releasedPosition) {
     }
 }

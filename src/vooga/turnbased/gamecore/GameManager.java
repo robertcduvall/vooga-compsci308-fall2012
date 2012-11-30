@@ -210,12 +210,12 @@ public class GameManager implements GameLoopMember, InputAPI {
             initializeGameLevel(myNewMapResource, enteringMapObject);
         }
         else if ("CONVERSATION_START".equals(eventName)) {
-            ConversationMode conversationMode =
-                    new ConversationMode(this, MapObject.class, myInvolvedIDs);
+            OptionMode conversationMode =
+                    new OptionMode(this, MapObject.class, myInvolvedIDs);
             // do not add the same conversation twice
             for (GameMode mode : myActiveModes) {
-                if ((mode instanceof ConversationMode) &&
-                    (conversationMode.equalsTo((ConversationMode) (mode)))) { return; }
+                if ((mode instanceof OptionMode) &&
+                    (conversationMode.equalsTo((OptionMode) (mode)))) { return; }
             }
             myActiveModes.add(conversationMode);
         }
@@ -309,7 +309,23 @@ public class GameManager implements GameLoopMember, InputAPI {
     public void handleMouseDragged(MouseEvent e) {
         for (GameMode mode : myActiveModes) {
             if (mode.isActive()) {
-                mode.changeDisplayPosition(e.getPoint(), myGamePane.getMousePressedPosition());
+                mode.changeDisplayPosition(e.getPoint());
+            }
+        }
+    }
+    
+    public void handleMousePressed(MouseEvent e) {
+        for (GameMode mode : myActiveModes) {
+            if (mode.isActive()) {
+                mode.mousePressed(e.getPoint());
+            }
+        }
+    }
+    
+    public void handleMouseReleased(MouseEvent e) {
+        for (GameMode mode : myActiveModes) {
+            if (mode.isActive()) {
+                mode.mouseReleased(e.getPoint());
             }
         }
     }

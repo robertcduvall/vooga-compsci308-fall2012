@@ -94,18 +94,18 @@ public class InteractionPanel {
         myImageGraphics = (myPanelImage.getGraphics());
     }
 
-    public void highlightOption (MouseEvent e) {
+    public void highlightOption (Point mousePosition) {
         for (int i = 0; i < myOptions.size(); i++) {
-            myOptions.get(i).highlight(e);
+            myOptions.get(i).highlight(mousePosition);
             if (myOptions.get(i).optionIsHighlighted()) {
                 myBulletPointIndex = i;
             }
         }
     }
 
-    public void dehighlightOption (MouseEvent e) {
+    public void dehighlightOption () {
         for (StrategyOption option : myOptions) {
-            option.dehighlight(e);
+            option.dehighlight();
         }
     }
 

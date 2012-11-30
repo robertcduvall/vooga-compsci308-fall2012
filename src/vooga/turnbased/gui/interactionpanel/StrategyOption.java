@@ -63,15 +63,15 @@ public class StrategyOption {
         myRespondRegion = new Rectangle(x, y, width, height);
     }
 
-    public void highlight (MouseEvent e) {
-        if (myRespondRegion.contains(e.getPoint())) {
+    public void highlight (Point mousePosition) {
+        if (myRespondRegion.contains(mousePosition)) {
             myColor = HIGHLIGHT_COLOR;
             isHighlighted = true;
             myPosition.translate(DISPLACEMENT.x, DISPLACEMENT.y);
         }
     }
 
-    public void dehighlight (MouseEvent e) {
+    public void dehighlight () {
         if (isHighlighted) {
             myColor = DEFAULT_COLOR;
             isHighlighted = false;

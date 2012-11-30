@@ -18,7 +18,7 @@ import vooga.turnbased.gui.interactionpanel.InteractionPanel;
  * @author rex
  * 
  */
-public class ConversationMode extends GameMode {
+public class OptionMode extends GameMode {
 
     private static final int NPC_INDEX = 0;
     private static final int PLAYER_INDEX = 1;
@@ -29,7 +29,7 @@ public class ConversationMode extends GameMode {
     private Point myOrigin;
     private Map<String, MapStrategy> myDisplayedStrategies;
 
-    public ConversationMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
+    public OptionMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
         super(gm, modeObjectType);
         myDisplayedStrategies = new HashMap<String, MapStrategy>();
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
@@ -60,7 +60,7 @@ public class ConversationMode extends GameMode {
         update();
     }
 
-    public boolean equalsTo (ConversationMode conversation) {
+    public boolean equalsTo (OptionMode conversation) {
         if (myNPC == conversation.myNPC)
             System.out.println("equals");
         return myNPC == conversation.myNPC;
@@ -89,11 +89,23 @@ public class ConversationMode extends GameMode {
     /**
      * change the position of the conversation box
      */
-    protected void changeDisplayPosition(Point currentPosition, Point pressedPosition) {
-        Rectangle myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
-        if (myBounds.contains(pressedPosition)) {
-            myOrigin = new Point(currentPosition);
-        }
+    protected void changeDisplayPosition(Point currentPosition) {
+        
     }
 
+    @Override
+    protected void mousePressed (Point pressedPosition) {
+        myPanel.highlightOption(getPositionOnPanel(pressedPosition));
+    }
+    
+    protected void mouseReleased (Point releasedPosition) {
+        myPanel.dehighlightOption();
+        System.out.println("rel");
+    }
+    
+    private Point getPositionOnPanel(Point position) {
+        int x = position.x - myOrigin.x;
+        int y = position.y - myOrigin.y;
+        return new Point(x, y);
+    }
 }
