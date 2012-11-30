@@ -4,6 +4,7 @@ import games.platformerdemo.Enemy;
 import games.platformerdemo.Player;
 import vooga.platformer.collision.CollisionEvent;
 import vooga.platformer.level.Level;
+import vooga.platformer.util.enums.CollisionDirection;
 import vooga.platformer.util.enums.Direction;
 
 /**
@@ -29,16 +30,16 @@ public class PlayerEnemy extends CollisionEvent {
 
     @Override
     public void applyCollision (Level level) {
-        if (this.direction() == Direction.DOWN) {
+        if (this.direction() == CollisionDirection.DOWN) {
             myPlayer.markForRemoval();
         }
-        else if (this.direction() == Direction.UP) {
+        else if (this.direction() == CollisionDirection.UP) {
             myEnemy.markForRemoval();
         }
-        if (this.direction() == Direction.RIGHT) {
+        if (this.direction() == CollisionDirection.RIGHT) {
             myPlayer.markForRemoval();
         }
-        else if (this.direction() == Direction.LEFT) {
+        else if (this.direction() == CollisionDirection.LEFT) {
             myPlayer.markForRemoval();
         }
     }
