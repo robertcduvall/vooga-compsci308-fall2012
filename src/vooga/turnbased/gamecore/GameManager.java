@@ -2,7 +2,6 @@ package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +34,7 @@ public class GameManager implements GameLoopMember, InputAPI {
     private List<GameEvent> myEvents;
     private List<GameMode> myActiveModes;
     private String myNewMapResource;
+    private GameLogic myGameLogic;
 
     /**
      * Constructor of GameManager
@@ -49,6 +49,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         myEvents = new LinkedList<GameEvent>();
         myActiveModes = new LinkedList<GameMode>();
         myLevelManager = new GameLevelManager(this);
+        myGameLogic = new GameLogic();
         initializeGameLevel(GameWindow.importString("Entrance"), null);
         configureInputHandling();
     }
@@ -182,6 +183,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * sprites involved.
      */
     private void handleEvents () {
+        myGameLogic.processEvents(myEvents);
         while (!myEvents.isEmpty()) {
             GameEvent m = myEvents.remove(0);
             handleEvent(m);
