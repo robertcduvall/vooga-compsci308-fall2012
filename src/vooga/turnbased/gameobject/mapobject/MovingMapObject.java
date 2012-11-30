@@ -3,7 +3,6 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gui.GamePane;
 
@@ -174,8 +173,8 @@ public class MovingMapObject extends MapObject {
         return myIsMoving;
     }
 
-    public void tryMove (Point dir) {
-        if (isMoving()) { return; }
+    public boolean tryMove (Point dir) {
+        if (isMoving()) { return false; }
         setDirection(dir); // direction changed even if not going to move
         Point dest = incrementLocation(dir);
         if (getMapMode().isWithinBounds(dest)) {
@@ -185,10 +184,15 @@ public class MovingMapObject extends MapObject {
             }
             if (canMove()) {
                 moveTo(dest);
+                return true;
             }
             else {
                 setCanMove(true); // reset for the next round of movement
+                return false;
             }
+        }
+        else {
+            return false;
         }
     }
 

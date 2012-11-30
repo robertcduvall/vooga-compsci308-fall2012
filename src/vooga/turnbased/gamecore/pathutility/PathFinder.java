@@ -3,13 +3,7 @@ package vooga.turnbased.gamecore.pathutility;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapItemObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -23,13 +17,12 @@ import vooga.turnbased.gui.GameWindow;
  * 
  * @author Rex Ying
  */
-public class PathFinder implements Runnable {
+public class PathFinder {
 
     private static final int ATTEMPT_INTERVAL = 60;
     private List<Point> myPath;
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
-    private boolean[][] myVisited;
     private boolean myCancelMovement;
     private Point myStart;
     private Point myEnd;
@@ -37,6 +30,11 @@ public class PathFinder implements Runnable {
     private Thread myMovementThread;
     private MovingMapObject myMovingObject;
     private PathSearch myPathSearch;
+    private boolean isHighlighted;
+    // for execution of walking along the path
+    private Point myPreviousLocation;
+    private Point myCurrentLocation;
+    private int myPathIndex;
 
     /**
      * constructor
@@ -51,21 +49,23 @@ public class PathFinder implements Runnable {
         myMovingObject = object;
         myStart = object.getLocation();
         myEnd = target;
+        myPreviousLocation = myStart;
+        myPathIndex = 0;
+        isHighlighted = false;
         myHighlightObjects = new ArrayList<MapObject>();
         mySize = new Dimension(mapSize);
         myPath = searchPath();
         if (myPath.isEmpty()) { return; }
-        highlightPath();
-        myMovementThread = new Thread(this);
-        myMovementThread.start();
+
     }
-    
+
     /**
      * use PathSearch for finding path
+     * 
      * @return the path represented by a list of Points
      */
-    private List<Point> searchPath() {
-        //For now, it can either be a DepthFirstSearch, or BreadthFirstSearch
+    private List<Point> searchPath () {
+        // For now, it can either be a DepthFirstSearch, or BreadthFirstSearch
         myPathSearch = new BreadthFirstSearch(myStart, myEnd, mySize);
         checkObstacles();
         myPathSearch.findPath(myStart);
@@ -81,7 +81,7 @@ public class PathFinder implements Runnable {
         for (int i = 0; i < mySize.width; i++) {
             for (int j = 0; j < mySize.height; j++) {
                 for (MapObject m : myMap.getSpritesOnTile(i, j)) {
-                    if (m instanceof MapObstacleObject) { 
+                    if (m instanceof MapObstacleObject) {
                         myPathSearch.markVisited(i, j);
                     }
                 }
@@ -100,35 +100,8 @@ public class PathFinder implements Runnable {
     }
 
     /**
-     * loop that moves the object
-     */
-    @Override
-    public synchronized void run () {
-        if (myPath.isEmpty()) { return; }
-        Point previousPoint = myStart;
-        Point currentPoint;
-        for (int i = 0; i < myPath.size(); i++) {
-            currentPoint = myPath.get(i);
-            Point direction =
-                    new Point(currentPoint.x - previousPoint.x, currentPoint.y - previousPoint.y);
-            previousPoint = currentPoint;
-            while (myMovingObject.isMoving()) {
-                try {
-                    Thread.sleep(ATTEMPT_INTERVAL);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (myCancelMovement) {
-                break;
-            }
-            myMovingObject.tryMove(direction);
-        }
-    }
-
-    /**
      * generate path indicator as MapItemObject
+     * 
      * @param p Position the indicator should be placed
      * @return the MapItemObject representing a path indicator
      */
@@ -144,6 +117,28 @@ public class PathFinder implements Runnable {
             MapObject m = generatePathIndicator(p);
             myMap.addMapObject(p, m);
             myHighlightObjects.add(m);
+        }
+        isHighlighted = true;
+    }
+
+    /**
+     * update the movement along the path (should be called in an update cycle
+     * of the object which has an instance of active PathFinder
+     */
+    public void updatePath () {
+        if ((!isHighlighted) && (myPath != null)) {
+            System.out.println("drawing");
+            highlightPath();
+        }
+        if ((myPathIndex < myPath.size()) && !myCancelMovement) {
+            myCurrentLocation = myPath.get(myPathIndex);
+            Point direction =
+                    new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
+                                                                          myPreviousLocation.y);
+            if (myMovingObject.tryMove(direction)) {
+                myPathIndex++;
+                myPreviousLocation = myCurrentLocation;
+            }
         }
     }
 }

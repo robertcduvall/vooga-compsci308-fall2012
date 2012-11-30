@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import util.input.core.KeyboardController;
-import util.xml.XmlUtilities;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.pathutility.PathFinder;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -163,6 +162,9 @@ public class MapMode extends GameMode implements InputAPI {
     public void update () {
         updateTileInfo();
         updateCameraPosition();
+        if (myPathFinder != null) {
+            myPathFinder.updatePath();
+        }
         updateMapObjects();
     }
 
