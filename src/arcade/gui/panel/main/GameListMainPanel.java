@@ -46,10 +46,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     public GameListMainPanel (Arcade a) {
         super(a);
          myGameList = a.getModelInterface().getGameList();
-         /*myGameProfilePictures = new ArrayList<Image>();
-         for (int i = 0; i < myGameList.size(); i++) {
-             myGameProfilePictures.add(a.getModelInterface().getGame(myGameList.get(i)).getImage());            
-         }*/
 
     }
 
@@ -61,10 +57,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
         }
-        /*String[] theList = new String[10];
-        for (int i = 0; i < 10; i++) {
-            theList[i] = "" + i;
-        }*/
         
         MigLayout layout = new MigLayout("align center, fill");
         myPanel.setLayout(layout);
@@ -105,7 +97,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         JLabel displayPic = new JLabel(icon);
         
         myPanel.add(label, "dock north, span, grow, align center");
-        //addSeparator(myPanel, "Stuff");
         myPanel.add(listScroller, "span, grow");
         myPanel.add(displayPic, "span, grow");
         myPanel.add(goButton, "dock south, span, grow, align center");
