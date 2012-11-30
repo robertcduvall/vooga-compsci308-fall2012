@@ -115,7 +115,24 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         JScrollPane scrollReview = new JScrollPane(reviewArea);
         
         JButton submitBut = new JButton("Submit");
-        submitBut.setActionCommand("Submit");
+        submitBut.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                System.out.println("this is registering");
+                if (ratingToBeSubmitted != null) {
+                    getArcade().getModelInterface().getGame(gameName)
+                            .setRating(Integer.parseInt(ratingToBeSubmitted));
+                }
+                if (reviewArea.getText() != null && reviewArea.getText() != "") {
+                    getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText());
+                }
+                System.out.println(ratingToBeSubmitted);
+                System.out.println(reviewArea.getText());
+                getArcade().replacePanel("GameProfile");
+            }
+              
+          });
 
         myPanel.add(titleLabel, "align center, span, grow");
         myPanel.add(ratingLabel);
@@ -136,16 +153,6 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
     }
 
     public void actionPerformed (ActionEvent e) {
-        if (e.getActionCommand() == "Submit") {
-            if (ratingToBeSubmitted != null) {
-                getArcade().getModelInterface().getGame(gameName)
-                        .setRating(Integer.parseInt(ratingToBeSubmitted));
-            }
-            if (reviewArea.getText() != null && reviewArea.getText() != "") {
-                getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText());
-            }
-            getArcade().replacePanel("GameProfile");
-        }
         if (e.getActionCommand() == "1") {
             ratingToBeSubmitted = "1";
         }
