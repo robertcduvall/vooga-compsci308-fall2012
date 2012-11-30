@@ -35,6 +35,7 @@ public class UserProfileMainPanel extends AMainPanel {
 
         // Add the username:
         JLabel username = new JLabel(getArcade().getUsername());
+        myPanel.add(username, "align center");
         // Add the First & Last name:
         JLabel userFirstAndLastName = new JLabel(getArcade().getCurrentUser().getFullName());
         JLabel label = new JLabel();

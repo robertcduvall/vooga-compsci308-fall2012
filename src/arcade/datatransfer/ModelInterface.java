@@ -29,7 +29,7 @@ public class ModelInterface {
     public ModelInterface (Arcade a) {
         myArcade = a;
         mySocialCenter = new SocialCenter();
-        myGameCenter = new GameCenter(); // GameCenter is currently broken.
+        //myGameCenter = new GameCenter(); // GameCenter is currently broken.
 
     }
 
