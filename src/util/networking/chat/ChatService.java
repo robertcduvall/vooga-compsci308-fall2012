@@ -20,15 +20,17 @@ public class ChatService implements Service {
     private ChatServer myServer;
     private Map<String, Socket> myUsersToSockets;
 
-    public ChatService(ChatProtocol cp) {
-        myProtocol = cp;
+    /**
+     * Creates a chat service with the given ChatProtocol
+     * @param protocol The ChatProtocol to run on this server.
+     */
+    public ChatService(ChatProtocol protocol) {
+        myProtocol = protocol;
     }
 
     @Override
     public void serve (Socket socket, Server server) {
         myServer = (ChatServer) server;
-        
-        
     }
 
     /**

@@ -1,7 +1,6 @@
 package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
-import games.platformerdemo.Player;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -11,14 +10,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import util.input.core.Controller;
+import util.ingamemenu.GameButton;
+import util.ingamemenu.Menu;
 import util.input.core.KeyboardController;
+import vooga.platformer.gameobject.Player;
+import vooga.platformer.gameobject.strategy.ShootingStrategy;
 import vooga.platformer.level.Level;
-import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -82,9 +84,10 @@ public class PlatformerController extends JPanel implements Runnable {
     public void paint(Graphics pen) {
         myCurrentLevel.paint(pen);
         pen.setColor(Color.BLACK);
-        pen.drawString("Press M to bring up the menu", getSize().width*3/5,getSize().height/4);
-        pen.drawString("If you touch the enemy, you die", getSize().width*3/5,getSize().height/4+10);
-        pen.drawString("If you step on the enemy, the enemy dies", getSize().width*3/5,getSize().height/4+20);
+        pen.drawString("M - Menu", getSize().width*3/5,getSize().height/4);
+        pen.drawString("¡û ¡ú - Move left and right", getSize().width*3/5,getSize().height/4+15);
+        pen.drawString("¡ü - Jump", getSize().width*3/5,getSize().height/4+30);
+        pen.drawString("Space - Shoot", getSize().width*3/5,getSize().height/4+45);
         
         for(Component c: getComponents()){
             c.paint(pen);
@@ -131,25 +134,64 @@ public class PlatformerController extends JPanel implements Runnable {
             @Override
             public void keyPressed (KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    myPlayer.getMovingStragety().goLeft();
+                    myPlayer.getMovingStrategy().goLeft();
                     
                 }
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    myPlayer.getMovingStragety().goRight();
+                    myPlayer.getMovingStrategy().goRight();
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.getMovingStragety().jump();
+                    myPlayer.getMovingStrategy().jump();
+                }
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                    ShootingStrategy ss = myPlayer.getShootingStrategy();
+                    if(ss !=null){
+                        ss.shoot();
+                    }
                 }
             }
 
             public void keyReleased (KeyEvent e) {
-                myPlayer.getMovingStragety().stop();
+                myPlayer.getMovingStrategy().stop();
             }
         };
         MouseMotionListener mml = new MouseAdapter() {
             @Override
             public void mouseClicked (MouseEvent e) {
                 //not used so far
+            }
+        };
+        return kl;
+    }
+    
+    private PlatformerController myCanvas = this;
+    
+    public KeyListener setMenuKeyListener(){
+        KeyListener kl = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_M) {
+                    final Menu menu = new Menu(myCanvas);
+                    GameButton gb1 = new GameButton("greenbutton", "Back");
+                    MouseListener gl = new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent arg0) {
+                            myCanvas.remove(menu);
+                            myCanvas.repaint();
+                        }
+                    };
+                    gb1.addMouseListener(gl);
+                    GameButton gb2 = new GameButton("button", "Exit");
+                    gb2.addMouseListener(new MouseAdapter(){
+                        @Override
+                        public void mouseClicked(MouseEvent arg0) {
+                            System.exit(0);
+                        }
+                    });
+                    gb2.setSize(new Dimension(130, 130));
+                    menu.addButtons(gb1);
+                    menu.addButtons(gb2);
+                }
             }
         };
         return kl;

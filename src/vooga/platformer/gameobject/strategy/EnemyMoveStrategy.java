@@ -1,4 +1,7 @@
-package games.platformerdemo;
+package vooga.platformer.gameobject.strategy;
+
+
+import vooga.platformer.gameobject.Enemy;
 
 /**
  * @author Probably Niel, modified by Yaqi
@@ -8,7 +11,7 @@ public class EnemyMoveStrategy extends SimpleMoveStrategy {
     private Enemy myEnemy;
     private Boolean myIsExcused = false;
     
-    public EnemyMoveStrategy (Enemy e) {
+    public EnemyMoveStrategy(Enemy e) {
         super(e);
         myEnemy = e;
     }
