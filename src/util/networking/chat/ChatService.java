@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Map;
+import util.networking.Server;
 import util.networking.Service;
 
 /**
@@ -15,21 +17,26 @@ import util.networking.Service;
 public class ChatService implements Service {
 
     private ChatProtocol myProtocol;
+    private ChatServer myServer;
+    private Map<String, Socket> myUsersToSockets;
 
-    public ChatService(ChatProtocol cp) {
-        myProtocol = cp;
+    /**
+     * Creates a chat service with the given ChatProtocol
+     * @param protocol The ChatProtocol to run on this server.
+     */
+    public ChatService(ChatProtocol protocol) {
+        myProtocol = protocol;
     }
 
     @Override
-    public void serve (InputStream in, OutputStream out) throws IOException {
-
-        while (true) {
-            BufferedReader input = new BufferedReader(new InputStreamReader(in));
-            input.readLine();
-        }
-
+    public void serve (Socket socket, Server server) {
+        myServer = (ChatServer) server;
     }
 
+    /**
+     * Get the requested port for the protocol.
+     * @return Requested port for the protocol.
+     */
     public int getPort () {
         return myProtocol.getPort();
     }

@@ -5,10 +5,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import util.camera.Camera;
-import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
+import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.PlayState;
 

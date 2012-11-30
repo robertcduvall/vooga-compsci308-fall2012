@@ -46,9 +46,10 @@ public class UserXMLReader {
         Element el = doc.getDocumentElement();
         String username = XmlUtilities.getChildContent(el, "name");
         String password = XmlUtilities.getChildContent(el, "password");
-        Image picture =
-                XmlUtilities.fileNameToImage(myUserImageFilePath +
-                                             XmlUtilities.getChildContent(el, "picture"));
+//        Image picture =
+//                XmlUtilities.fileNameToImage(myUserImageFilePath +
+//                                             XmlUtilities.getChildContent(el, "picture"));
+        String picture=XmlUtilities.getChildContent(el, "picture");
         int credits = XmlUtilities.getChildContentAsInt(el, "credits");
 
         List<Message> messageList = getMessageList(name);

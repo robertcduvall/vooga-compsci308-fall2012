@@ -24,8 +24,8 @@ public class Test {
     public static void main (String[] args) throws Exception {
 
         mySocialCenter = new SocialCenter();
-        //testLogOn();
-        //testRegister();
+        // testLogOn();
+        // testRegister();
 
         testSendMessage();
 
@@ -36,7 +36,8 @@ public class Test {
     }
 
     private static void testRegister () throws Exception {
-        boolean status2 = mySocialCenter.registerUser("testuser2", "password");
+        boolean status2 =
+                mySocialCenter.registerUser("testuser2", "password", "firstname", "lastname");
     }
 
     private static void testLogOn () throws Exception {
@@ -47,7 +48,7 @@ public class Test {
 
     private void testXml () throws IOException {
         myXMLWriter = new UserXMLWriter();
-        myXMLWriter.makeUserXML("counter", "clock", "wise");
+        myXMLWriter.makeUserXML("counter", "clock", "wise", "jesus", "fixyourerrors.");
 
     }
 

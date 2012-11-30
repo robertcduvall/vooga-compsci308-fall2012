@@ -31,6 +31,7 @@ import arcade.gui.panel.ArcadePanel;
  * A subclass of the Main Panel which displays a short, scrolling list
  * of all the Games available in the Arcade. When a Game is selected,
  * the User is taken to the Game's Profile Page.
+ * 
  * @author Kannan
  *
  */
@@ -46,10 +47,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     public GameListMainPanel (Arcade a) {
         super(a);
          myGameList = a.getModelInterface().getGameList();
-         /*myGameProfilePictures = new ArrayList<Image>();
-         for (int i = 0; i < myGameList.size(); i++) {
-             myGameProfilePictures.add(a.getModelInterface().getGame(myGameList.get(i)).getImage());            
-         }*/
 
     }
 
@@ -61,10 +58,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
         }
-        /*String[] theList = new String[10];
-        for (int i = 0; i < 10; i++) {
-            theList[i] = "" + i;
-        }*/
         
         MigLayout layout = new MigLayout("align center, fill");
         myPanel.setLayout(layout);
@@ -81,9 +74,9 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         
         
-        JLabel label = new JLabel("Select a Game to View: ");
-        label.setForeground(Color.WHITE);
-        label.setLabelFor(listScroller);
+        JLabel gameSelectLabel = new JLabel("Select a Game to View: ");
+        gameSelectLabel.setForeground(Color.WHITE);
+        gameSelectLabel.setLabelFor(listScroller);
         
         
         JButton goButton = new JButton("Go!");
@@ -104,8 +97,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/ArcadeClassics.jpg");
         JLabel displayPic = new JLabel(icon);
         
-        myPanel.add(label, "dock north, span, grow, align center");
-        //addSeparator(myPanel, "Stuff");
+        myPanel.add(gameSelectLabel, "dock north, span, grow, align center");
         myPanel.add(listScroller, "span, grow");
         myPanel.add(displayPic, "span, grow");
         myPanel.add(goButton, "dock south, span, grow, align center");

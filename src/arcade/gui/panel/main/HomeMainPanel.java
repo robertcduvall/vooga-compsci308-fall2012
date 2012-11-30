@@ -22,7 +22,7 @@ public class HomeMainPanel extends AMainPanel{
         ArcadePanel myPanel = initializeNewPanel();
 
         JLabel label = new JLabel();
-        label.setText("Welcome to the Arcade! Please select an option above.");
+        label.setText("Welcome to the Arcade! Please select an option above, or look below for additional info and help.");
         label.setForeground(Color.WHITE);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);

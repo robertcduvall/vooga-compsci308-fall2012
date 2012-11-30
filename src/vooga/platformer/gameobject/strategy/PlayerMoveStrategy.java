@@ -1,8 +1,11 @@
-package games.platformerdemo;
+package vooga.platformer.gameobject.strategy;
 
+
+import vooga.platformer.gameobject.Player;
 
 /**
  * Any Player Move Strategy Should extends this Strategy.
+ * 
  * @author Yaqi Zhang
  * 
  */
@@ -14,7 +17,7 @@ public class PlayerMoveStrategy extends SimpleMoveStrategy {
     /**
      * @param player GameObject
      */
-    public PlayerMoveStrategy (Player player) {
+    public PlayerMoveStrategy(Player player) {
         super(player);
         myPlayer = player;
     }
@@ -23,8 +26,9 @@ public class PlayerMoveStrategy extends SimpleMoveStrategy {
      * 
      */
     public void jump () {
-        if(myPlayer.isOnGround()){
-            myPlayer.setVelocity(myPlayer.getVelocity().getX(), VERTICAL_VELOCITY);
+        if (myPlayer.isOnGround()) {
+            myPlayer.setVelocity(myPlayer.getVelocity().getX(),
+                    VERTICAL_VELOCITY);
             myPlayer.setNotOnGround();
         }
     }
@@ -33,7 +37,8 @@ public class PlayerMoveStrategy extends SimpleMoveStrategy {
      * 
      */
     public void goLeft () {
-        myPlayer.setVelocity(-HORIZONTAL_VELOCITY, myPlayer.getVelocity().getY());
+        myPlayer.setVelocity(-HORIZONTAL_VELOCITY, myPlayer.getVelocity()
+                .getY());
     }
 
     /**
