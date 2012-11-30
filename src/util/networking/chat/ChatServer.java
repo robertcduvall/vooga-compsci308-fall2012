@@ -1,8 +1,8 @@
 package util.networking.chat;
 
-
 import java.io.IOException;
 import java.util.Map;
+import util.networking.Connection;
 import util.networking.Server;
 
 
