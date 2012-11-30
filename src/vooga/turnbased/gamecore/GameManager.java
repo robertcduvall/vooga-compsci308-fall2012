@@ -260,6 +260,7 @@ public class GameManager implements InputAPI {
 		}
 	}
 
+	// this whole thing to be wrapped into hashmap: event -> destinationModeId
 	private void handleEvent(ModeEvent event) {
 		String eventName = event.myName;
 		List<Integer> myInvolvedIDs = event.myInvolvedIDs;
@@ -269,10 +270,28 @@ public class GameManager implements InputAPI {
 			BattleMode battleMode = new BattleMode(5, this, BattleObject.class,
 					myInvolvedIDs);// magic ID number
 			changeCurrentMode(battleMode);
+			// idOfRespectiveMode = myInvolvedIDs.get(0), 
+	                // e.g. id of enemy sprite is equal to id of target battle mode... ?
+	                // changeCurrentMode(idOfRespectiveMode);
 		} else if ("BATTLE_OVER".equals(eventName)) {
 			changeCurrentMode(1);
+			// changeCurrentMode(idOfLatestMapMode);
+		} else if ("SWITCH_LEVEL".equals(eventName)) {
+		    // idOfRespectiveLevel = myInvolvedIDs.get(0), 
+		    // e.g. id of teleport sprite is equal to id of target mapmode
+                    // changeCurrentMode(idOfRespectiveLevel);  
+		} else if ("CONVERSATION_START".equals(eventName)) { // this event is thrown to gamemanager by gamelogic
+		    // idOfRespectiveMode = myInvolvedIDs.get(0), 
+                    // e.g. id of NPC sprite is equal to id of target conversation mode
+                    // changeCurrentMode(idOfRespectiveMode); 
+		} else if ("CONVERSATION_OVER".equals(eventName)) {
+		    // changeCurrentMode(idOfLatestMapMode);
+		} else if ("GAME_WON".equals(eventName)) { // this event is thrown to gamemanager by gamelogic
+                    // changeCurrentMode(idOfGameWonMode);
+                } else if ("GAME_LOST".equals(eventName)) { // this event is thrown to gamemanager by gamelogic
+                    // changeCurrentMode(idOfGameOverMode);
 		} else {
-			// System.err.println("Unrecognized mode event requested.");
+			// please no more new features that don't fit in "mode event -> destination mode" design
 		}
 	}
 }
