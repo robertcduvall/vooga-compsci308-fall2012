@@ -5,9 +5,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
 import vooga.turnbased.gamecreation.LevelEditor;
 
@@ -40,12 +43,7 @@ public class EditorPane extends DisplayPane {
             public void actionPerformed (ActionEvent e) {
                 LevelEditor l = new LevelEditor();
                 editDocument(l);
-                l.addDimensionTag(20, 30);
-                Document xml = l.getXmlDocument();
-                System.out.println(xml.getDocumentElement().getNodeName());
-                System.out.println(xml.getElementsByTagName("width").item(0).getTextContent());
-                System.out.println(xml.getElementsByTagName("height").item(0).getTextContent());
-                //l.saveXmlDocument("/src/vooga/turnbased/resources/level/test.xml");
+                testHardcodedLevelEditor(l);
             }
         });
         add(newLevelButton);
@@ -57,6 +55,22 @@ public class EditorPane extends DisplayPane {
             }
         });
         add(modifyLevelButton);
+    }
+
+    private void testHardcodedLevelEditor (LevelEditor l) {
+        l.addDimensionTag(20, 30);
+        l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
+        l.addCameraDimension(10, 10);
+        l.addLevelId(1);
+        l.addPlayerEntryPoints(5, 5);
+        Element sprite = l.addSprite();
+        l.addMapObject(sprite, "MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
+        Map<String, Number> stats = new HashMap<String, Number>();
+        stats.put("health", 10);
+        stats.put("attack", 5);
+        stats.put("defense", 8);
+        l.addBattleObject(sprite, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG PATH");
+        l.saveXmlDocument("/src/vooga/turnbased/resources/level/test.xml");
     }
 
     /**

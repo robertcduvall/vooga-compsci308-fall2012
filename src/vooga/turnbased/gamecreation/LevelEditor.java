@@ -1,5 +1,6 @@
 package vooga.turnbased.gamecreation;
 
+import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
@@ -67,6 +68,8 @@ public class LevelEditor {
      * @param imagePath Path to the Background image of the level
      */
     public void addBackgroundImage (String imagePath) {
+        XmlUtilities.appendElement(myXmlDocument, myRootElement,
+                "backgroundImage", imagePath);
     }
 
     /**
@@ -75,12 +78,67 @@ public class LevelEditor {
      * @param y Y-coordinate player entry point
      */
     public void addPlayerEntryPoints (Number x, Number y) {
+        String tagName = "player_entry_point";
+        XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
+        Element dimension = XmlUtilities.getElement(myRootElement, tagName);
+        XmlUtilities.appendElement(myXmlDocument, dimension, "x", x.toString());
+        XmlUtilities.appendElement(myXmlDocument, dimension, "y", y.toString());
     }
 
     /**
      * 
+     * @return The new Sprite element that was just added to the Xml Document
      */
-    public void addSprite () {
+    public Element addSprite () {
+        return XmlUtilities.appendElement(myXmlDocument, myRootElement, "sprite");
+    }
+
+    /**
+     * Creates a map object and adds it to a sprite.
+     * 
+     * @param s Sprite Element to which the mapObject is added
+     * @param mapClass Specific concrete class for the map object
+     * @param event Event for this map object
+     * @param x Map x-coordinate
+     * @param y Map y-coordinate
+     * @param imagePath Path to the Map Image
+     */
+    public void addMapObject (Element s, String mapClass, String event, Number x, Number y,
+            String imagePath) {
+        Element map = XmlUtilities.appendElement(myXmlDocument, s, "map");
+        XmlUtilities.appendElement(myXmlDocument, map, "class", mapClass);
+        XmlUtilities.appendElement(myXmlDocument, map, "event", event);
+        Element location = XmlUtilities.appendElement(myXmlDocument, map, "location");
+        XmlUtilities.appendElement(myXmlDocument, location, "x", x.toString());
+        XmlUtilities.appendElement(myXmlDocument, location, "y", y.toString());
+        XmlUtilities.appendElement(myXmlDocument, map, "image", imagePath);
+    }
+
+    /**
+     * Creates a battle object and adds it to a sprite.
+     * 
+     * @param s Sprite to which the battleObject is added
+     * @param battleClass Specific concrete class for the battle object
+     * @param event Event for the battle object
+     * @param stats map for each battle attribute and value (health, attack, etc.)
+     * @param name Name of the battle object (i.e. Pikachu)
+     * @param imagePath Path to the Battle Image
+     */
+    public void addBattleObject (Element s, String battleClass, String event,
+            Map<String, Number> stats, String name, String imagePath) {
+        Element battle = XmlUtilities.appendElement(myXmlDocument, s, "battle");
+        XmlUtilities.appendElement(myXmlDocument, battle, "class", battleClass);
+        XmlUtilities.appendElement(myXmlDocument, battle, "event", event);
+        Element statsElement = XmlUtilities.appendElement(myXmlDocument, battle, "stats");
+        addStatsMapToXml(statsElement, stats);
+        XmlUtilities.appendElement(myXmlDocument, battle, "name", name);
+        XmlUtilities.appendElement(myXmlDocument, battle, "image", imagePath);
+    }
+
+    private void addStatsMapToXml (Element e, Map<String, Number> m) {
+        for (String key : m.keySet()) {
+            XmlUtilities.appendElement(myXmlDocument, e, key, m.get(key).toString());
+        }
     }
 
     /**
@@ -106,5 +164,4 @@ public class LevelEditor {
         XmlUtilities.appendElement(myXmlDocument, dimension, "width", width.toString());
         XmlUtilities.appendElement(myXmlDocument, dimension, "height", height.toString());
     }
-
 }
