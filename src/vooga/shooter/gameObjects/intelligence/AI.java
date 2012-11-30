@@ -1,5 +1,6 @@
 package vooga.shooter.gameObjects.intelligence;
 
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameplay.Game;
 
@@ -17,16 +18,26 @@ public abstract class AI {
 
     private Sprite mySprite;
     private Game myGame;
+    private Player myPlayer;
     
-    public AI(Sprite owner, Game theGame) {
+    public AI(Sprite owner, Game theGame, Player thePlayer) {
         mySprite = owner;
         myGame = theGame;
+        myPlayer = thePlayer;
+    }
+    
+    /**
+     * Passes mySprite and myGame to subclass.
+     */
+    public void calculate() {
+        subCalculate(mySprite, myPlayer, myGame);
     }
     
     /**
      * Looks at the game state, determines a course of action, and updates the
      * Sprite accordingly.
+     * @param mySprite the Sprite the AI is acting on.
+     * @param myGame the Game the AI is running in.
      */
-    public abstract void calculate();
-    
+    public abstract void subCalculate(Sprite mySprite, Player myPlayer, Game myGame);
 }
