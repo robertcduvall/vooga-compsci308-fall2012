@@ -130,7 +130,7 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
                             .setRating(Integer.parseInt(ratingToBeSubmitted));
                 }
                 if (reviewArea.getText() != null && reviewArea.getText() != "") {
-                    getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText());
+                    getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText() + "- " + getArcade().getUsername());
                 }
                 System.out.println(ratingToBeSubmitted);
                 System.out.println(reviewArea.getText());
