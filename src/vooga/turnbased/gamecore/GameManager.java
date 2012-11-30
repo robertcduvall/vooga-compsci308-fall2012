@@ -244,7 +244,11 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     protected void processGameOver () {
         myGameIsOver = true;
-        myGamePane.getGameWindow().changeActivePane(GameWindow.MENU);
+        mySprites.clear();
+        myActiveModes.clear();
+        GameOverMode gameOver = new GameOverMode(this, this.getClass());
+        myActiveModes.add(gameOver);
+        changeCurrentMode(gameOver);
     }
 
     /**
