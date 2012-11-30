@@ -11,13 +11,13 @@ import vooga.platformer.gameobject.strategy.ShootingStrategy;
  */
 public class Player extends MovingObject {
     /**
-     * @param configString 
+     * @param configString
      */
     public Player (String configString) {
         super(configString);
-        addStrategy(new PlayerMoveStrategy(this));
-        addStrategy(new GravityStrategy(this));
-        addStrategy(new ShootingStrategy(this));
+        addStrategy("PlayerMoveStrategy", new PlayerMoveStrategy(this));
+        addStrategy("GravityStrategy",new GravityStrategy(this));
+        addStrategy("ShootingStrategy",new ShootingStrategy(this));
     }
 
     /**

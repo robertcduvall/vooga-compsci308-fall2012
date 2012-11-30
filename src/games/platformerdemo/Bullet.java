@@ -36,7 +36,7 @@ public class Bullet extends MovingObject {
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
-        addStrategy(new SimpleMoveStrategy(this));
+        addStrategy("SimpleMoveStrategy", new SimpleMoveStrategy(this));
     }
 
     /**

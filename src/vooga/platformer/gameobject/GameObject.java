@@ -32,7 +32,7 @@ public abstract class GameObject implements Comparable<GameObject> {
     private static final String ID_TAG = "id";
 
     private boolean removeFlag;
-    private List<UpdateStrategy> strategyList;
+    private Map<String, UpdateStrategy> strategyMap;
     private double x;
     private double y;
     private double width;
@@ -44,10 +44,10 @@ public abstract class GameObject implements Comparable<GameObject> {
     // Change this to public because no config str provided when creating
     // GameObject during runtime
     /**
-     * Create GameObject during runtime of the 
+     * Create GameObject during runtime of the
      */
     public GameObject () {
-        strategyList = new ArrayList<UpdateStrategy>();
+        strategyMap = new HashMap<String, UpdateStrategy>();
     }
 
     // /**
@@ -171,10 +171,11 @@ public abstract class GameObject implements Comparable<GameObject> {
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
+     * @param StrategyName the Class Name of the Strategy, not includes package name
      * @param strat strategy
      */
-    public void addStrategy (UpdateStrategy strat) {
-        strategyList.add(strat);
+    public void addStrategy (String StrategyName, UpdateStrategy strat) {
+        strategyMap.put(StrategyName, strat);
     }
 
     /**
@@ -183,7 +184,14 @@ public abstract class GameObject implements Comparable<GameObject> {
      * @param strat strategy
      */
     public void removeStrategy (UpdateStrategy strat) {
-        strategyList.remove(strat);
+        strategyMap.remove(strat);
+    }
+
+    /**
+     * @param stratName Strategy Name
+     */
+    public UpdateStrategy getStrategy (String stratName) {
+        return strategyMap.get(stratName);
     }
 
     /**
@@ -192,7 +200,7 @@ public abstract class GameObject implements Comparable<GameObject> {
      * @return the strategy list
      */
     protected Iterable<UpdateStrategy> getStrategyList () {
-        return strategyList;
+        return strategyMap.values();
     }
 
     /**
@@ -202,7 +210,7 @@ public abstract class GameObject implements Comparable<GameObject> {
      */
     public void update (Level level, long elapsedTime) {
         myLevel = level;
-        for (UpdateStrategy us : strategyList) {
+        for (UpdateStrategy us : strategyMap.values()) {
             us.applyAction();
         }
     }
