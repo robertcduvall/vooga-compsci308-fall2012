@@ -100,6 +100,7 @@ public class LevelXmlParser {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
         toReturn.addAll(parseCharacterSprites());
+        toReturn.add(parsePlayerSprite()); //TODO
         return toReturn;
     }
 
