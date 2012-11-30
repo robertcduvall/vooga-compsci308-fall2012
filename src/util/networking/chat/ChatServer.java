@@ -2,6 +2,8 @@ package util.networking.chat;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 import util.networking.Server;
 
 /**
@@ -11,7 +13,10 @@ import util.networking.Server;
 public class ChatServer extends Server {
 
     private static final int DEFAULT_MAX_CONNECTIONS = 100;
-
+    
+    //temporary solution pre-database!!
+    private Map<String, String> myUserInfo;
+    
     /**
      * Instantiates a new ChatServer that uses ChatProtocol protocol and
      * has at most DEFAULT_MAX_CONNECTIONS connections to the server.
@@ -41,5 +46,24 @@ public class ChatServer extends Server {
             System.out.println("Specified port is already in use.");
             e.printStackTrace();
         }
+        myUserInfo = new HashMap<String, String>();
     }
+    
+    public boolean login(String user, String pass) {
+        String stored = myUserInfo.get(user);
+        if (stored != null) {
+            return stored.equals(pass);
+        }    
+        return false;
+    }
+
+    public boolean hasUser (String user) {
+        String stored = myUserInfo.get(user);
+        return stored != null;
+    }
+    
+    public void addUser(String user, String pass) {
+        myUserInfo.put(user, pass);
+    }
+    
 }
