@@ -13,10 +13,10 @@ public class Test {
     
     public static void main(String [] args){
         DataTable table=new DataTable();
-        
+
         //setting column name by string (columns names are separated by comma)
         try {
-            table.addNewColumn("name,gender,password,address");
+            table.addNewColumns ("name,gender,password,address");
         }
         catch (RepeatedColumnNameException e) {
             // exception thrown when column already exists
@@ -25,12 +25,12 @@ public class Test {
         catch (InvalidXMLTagException e){
             e.printStackTrace();
         }
-        
+
         //setting column name by adding an array
         String [] sarray=new String[1];
         sarray[0]="favoritecolor";
         try {
-            table.addNewColumn(sarray);
+            table.addNewColumns (sarray);
         }
         catch (RepeatedColumnNameException e) {
             // exception thrown when column already exists
@@ -39,7 +39,7 @@ public class Test {
         catch (InvalidXMLTagException e){
             e.printStackTrace();
         }
-        
+
         //get table's column names
         List<String> columnNames=(List<String>) table.getColumnNames();
 
@@ -47,15 +47,15 @@ public class Test {
         Map<String,Object> storingData= new HashMap<String, Object>();
         storingData.put("address","LA");
         storingData.put("name", "bob");
-        
-        table.addNewRowEntry(storingData);
-        
+
+        table.addNewRow(storingData);
+
 
         //retrieving a table entry
         UnmodifiableRowElement re= table.find("name","bob");
         System.out.println(re.getEntry("name"));
-        
 
+        
         //edit row entry data
         try {
             table.editRowEntry("name","bob","password","newpassword");
@@ -71,7 +71,7 @@ public class Test {
         Map<String,Object> newData= new HashMap<String, Object>();
         newData.put("address","LAAZ");
         newData.put("favoritecolor", "blue");
-        
+
         try {
             table.editRowEntry("name","bob",newData);
         }
@@ -79,20 +79,20 @@ public class Test {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         System.out.println("oldtable");
         System.out.println(table);
-       
+
         //delete row entry
       //  table.deleteRowEntry("name","bob");
-        
+
        // UnmodifiableRowElement rowE= table.find("name","bob");
        // System.out.println(rowE + "hi");
-        
+
         //loading and saving
-        
+
         table.save("src/util/datatable/resources/data.txt");
-        
+
         //DataTable 
         DataTable newtable = null;
         try {
@@ -108,13 +108,11 @@ public class Test {
         }
         System.out.println("new table");
         System.out.println(newtable);
-        
+
         //retrieving a null entry from newly loaded table
         UnmodifiableRowElement rt = newtable.find("address", "LAAZ");
         System.out.println(rt.getEntry("gender").equals(""));
-        
-        
-        
+
         //demo of inserting objects
         ModifiableRowElement rey= new ModifiableRowElement();
         try {
@@ -137,7 +135,7 @@ public class Test {
         }
         
         try {
-            table.addNewColumn("ObjectTest");
+            table.addNewColumns ("ObjectTest");
         }
         catch (RepeatedColumnNameException e) {
             // TODO Auto-generated catch block
@@ -146,12 +144,12 @@ public class Test {
         catch (InvalidXMLTagException e){
             e.printStackTrace();
         }
-        
+
         Map<String,Object> myMap=new HashMap<String,Object>();
         myMap.put("ObjectTest", rey);
         myMap.put("address","DC");
-        table.addNewRowEntry(myMap);
-        
+        table.addNewRow (myMap);
+
         System.out.println(table);
         UnmodifiableRowElement mmrey=table.find("address", "DC");
         System.out.println((RowElement) mmrey.getEntry("ObjectTest"));

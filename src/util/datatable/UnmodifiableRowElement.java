@@ -9,8 +9,9 @@ package util.datatable;
  */
 public class UnmodifiableRowElement extends RowElement {
     /**
-     * Instantiating an unmodifiable row element.
-     * @param re
+     * Instantiating an unmodifiable row element via passing
+     * in a Row Element
+     * @param re - RowElement to be copied
      */
     public UnmodifiableRowElement (RowElement re) {
         super(re);
