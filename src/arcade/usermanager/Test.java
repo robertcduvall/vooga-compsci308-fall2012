@@ -36,12 +36,19 @@ public class Test {
     }
 
     private static void testRegister () throws Exception {
-        boolean status2 = mySocialCenter.registerUser("testuser2", "password", "test", "user");
+        boolean status2 =
+                mySocialCenter.registerUser("testuser2", "password", "firstname", "lastname");
     }
 
     private static void testLogOn () throws Exception {
         boolean status = mySocialCenter.logOnUser("Howard", "password");
         System.out.println(status);
+
+    }
+
+    private void testXml () throws IOException {
+        myXMLWriter = new UserXMLWriter();
+        myXMLWriter.makeUserXML("counter", "clock", "wise", "jesus", "fixyourerrors.");
 
     }
 

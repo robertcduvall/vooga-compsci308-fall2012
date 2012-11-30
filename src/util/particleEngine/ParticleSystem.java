@@ -21,10 +21,11 @@ import java.util.Stack;
 public abstract class ParticleSystem {
 
     private List<ParticleEngine> myParticleEngines;
-    protected Point position = new Point(400, 400);
+    protected Point position;
 
-    public ParticleSystem () {
+    public ParticleSystem (Point startingPosition) {
         myParticleEngines = new ArrayList<ParticleEngine>();
+        position = startingPosition;
         setUpParticleEngines();
     }
 
@@ -39,7 +40,7 @@ public abstract class ParticleSystem {
      * 
      * @return
      */
-    public List<ParticleEngine> getParticleEngines () {
+    protected List<ParticleEngine> getParticleEngines () {
         return new ArrayList<ParticleEngine>(myParticleEngines);
     }
 
@@ -92,8 +93,8 @@ public abstract class ParticleSystem {
      */
     public void move (Point moveBy) {
         for (ParticleEngine p : myParticleEngines) {
-            p.initialPosition.x += moveBy.x;
-            p.initialPosition.y += moveBy.y;
+            p.getStartingPosition().x += moveBy.x;
+            p.getStartingPosition().y += moveBy.y;
         }
     }
 
@@ -106,8 +107,18 @@ public abstract class ParticleSystem {
             p.draw(g);
     }
 
-    public void setVelocity (Point velocity) {
+    public void setParticleVelocity (Point velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(velocity);
+    }
+    
+    public void setPosition (Point position) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setStartingPosition(position);
+    }
+    
+    public void setLoop(Boolean setLoopValue) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setLoop(setLoopValue);
     }
 }

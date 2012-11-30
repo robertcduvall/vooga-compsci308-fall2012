@@ -33,6 +33,7 @@ public class LevelFileIOTest {
     private static final int Y_POS = 1;
     private static final int SPRITE_WIDTH = 1;
     private static final int SPRITE_HEIGHT = 1;
+    private static final String SPRITE_ID = "myId";
 
     private static final String STRATEGY_CLASS = "vooga.platformer.movement";
     private static final String STRATEGY_PARAM_TAG = "distance";
@@ -50,7 +51,7 @@ public class LevelFileIOTest {
     public void setUp () throws Exception {
         strategy.put(STRATEGY_PARAM_TAG, STRATEGY_PARAM_VALUE);
 
-        sprite = new Sprite(TYPE, X_POS, Y_POS, SPRITE_WIDTH, SPRITE_HEIGHT, TEST_IMAGE);
+        sprite = new Sprite(TYPE, X_POS, Y_POS, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_ID, TEST_IMAGE);
         sprite.addUpdateStrategy(STRATEGY_CLASS, strategy);
         sprite.addAttribute(SPRITE_ATTR_TAG, SPRITE_ATTR_VALUE);
         sprites.add(sprite);
@@ -102,7 +103,7 @@ public class LevelFileIOTest {
 
     @Test
     public void testGetSpriteType () throws Exception {
-        Assert.assertEquals(TYPE, getFirstSprite().getType());
+        Assert.assertEquals(TYPE, getFirstSprite().getClassName());
     }
 
     @Test
@@ -123,6 +124,11 @@ public class LevelFileIOTest {
     @Test
     public void testGetSpriteHeight () throws Exception {
         Assert.assertEquals(SPRITE_HEIGHT, getFirstSprite().getHeight());
+    }
+    
+    @Test
+    public void testGetSpriteID () throws Exception {
+        Assert.assertEquals(SPRITE_ID, getFirstSprite().getID());
     }
 
     @Test

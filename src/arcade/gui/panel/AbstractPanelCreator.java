@@ -1,13 +1,19 @@
 package arcade.gui.panel;
 
 import java.awt.Color;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
+import arcade.utility.ImageReader;
 
 
 /**
  * The is the top-level abstract class for the panel hierarchy.
  * 
  * @author Michael Deng
+ * @author Robert Bruce
  * 
  */
 public abstract class AbstractPanelCreator {
@@ -15,19 +21,19 @@ public abstract class AbstractPanelCreator {
     private String myPanelType;
     private Arcade myArcade;
 
-     public AbstractPanelCreator (Arcade a) {
-     System.out.println(this.getClass().toString());
-     myArcade = a;
-     }
+    public AbstractPanelCreator (Arcade a) {
+        System.out.println(this.getClass().toString());
+        myArcade = a;
+    }
 
-//    /**
-//     * Initializes the PanelCreator
-//     * 
-//     * @param a Arcade
-//     */
-//    public void creatorSetup (Arcade a) {
-//        myArcade = a;
-//    }
+    //    /**
+    //     * Initializes the PanelCreator
+    //     * 
+    //     * @param a Arcade
+    //     */
+    //    public void creatorSetup (Arcade a) {
+    //        myArcade = a;
+    //    }
 
     /**
      * Used by subclasses as the first step in creating a new ArcadePanel

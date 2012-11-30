@@ -1,17 +1,15 @@
 package vooga.platformer.level;
 
-import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
-import util.input.core.Controller;
 import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -36,7 +34,7 @@ public abstract class Level {
      * 
      * @param pen Graphics object to paint on
      */
-    public void paint(Graphics pen) {
+    public void paint (Graphics pen) {
         paintBackground(pen);
         for (LevelPlugin lp : pluginList) {
             lp.paint(pen, objectList, cam);
@@ -46,28 +44,30 @@ public abstract class Level {
         }
     }
 
-    public Level(Dimension dim, CollisionChecker inChecker, Camera inCam) {
+    public Level (Dimension dim, CollisionChecker inChecker, Camera inCam) {
         objectList = new ArrayList<GameObject>();
         pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
         myCollisionChecker = inChecker;
         cam = inCam;
     }
-    
+
     /**
      * Add a LevelPlugin to the level.
+     * 
      * @param lp LevelPlugin to add
      */
-    public void addPlugin(LevelPlugin lp) {
+    public void addPlugin (LevelPlugin lp) {
         pluginList.add(lp);
         Collections.sort(pluginList);
     }
-    
+
     /**
      * Add a Condition to the level.
+     * 
      * @param c Condition to add
      */
-    public void addCondition(Condition c) {
+    public void addCondition (Condition c) {
         conditionList.add(c);
     }
 
@@ -76,7 +76,7 @@ public abstract class Level {
      * 
      * @param d
      */
-    public void setDimension(Dimension d) {
+    public void setDimension (Dimension d) {
         myDimension = d;
     }
 
@@ -85,7 +85,7 @@ public abstract class Level {
      * 
      * @return
      */
-    public Dimension getDimension() {
+    public Dimension getDimension () {
         return myDimension;
     }
 
@@ -94,15 +94,16 @@ public abstract class Level {
      * 
      * @param pen Graphics object
      */
-    public abstract void paintBackground(Graphics pen);
+    public abstract void paintBackground (Graphics pen);
 
     /**
      * Add a GameObject to the level.
      * 
-     * @param go
+     * @param go GameObject to add
      */
-    public void addGameObject(GameObject go) {
+    public void addGameObject (GameObject go) {
         objectList.add(go);
+        Collections.sort(objectList);
     }
 
     /**
@@ -110,8 +111,15 @@ public abstract class Level {
      * 
      * @return
      */
-    public List<GameObject> getObjectList() {
+    public List<GameObject> getObjectList () {
         return objectList;
+    }
+
+    /**
+     * @param go game object
+     */
+    public void addToObjectList (GameObject go) {
+        objectList.add(go);
     }
 
     /**
@@ -119,7 +127,7 @@ public abstract class Level {
      * 
      * @param elapsedTime time since last update cycle
      */
-    public void update(long elapsedTime) {
+    public void update (long elapsedTime) {
         List<GameObject> removalList = new ArrayList<GameObject>();
         for (GameObject go : objectList) {
             go.update(this, elapsedTime);
@@ -127,28 +135,24 @@ public abstract class Level {
                 removalList.add(go);
             }
         }
-        
+
         for (GameObject removeObj : removalList) {
             objectList.remove(removeObj);
         }
-        
-<<<<<<< HEAD
+
+        // modified here
         myCollisionChecker.checkCollisions(this);
-=======
-        //modified here
-        myCollisionChecker.checkCollisions(this);
-                
+
         for (LevelPlugin lp : pluginList) {
             lp.update(objectList);
         }
->>>>>>> dfa01f4364ac425da153d33ce42b92a5417d480b
-        
+
     }
 
     /**
      * @return the current camera of this level
      */
-    public Camera getCamera() {
+    public Camera getCamera () {
         return cam;
     }
 
@@ -157,7 +161,7 @@ public abstract class Level {
      * 
      * @param c
      */
-    public void setCamera(Camera c) {
+    public void setCamera (Camera c) {
         cam = c;
     }
 
@@ -165,7 +169,7 @@ public abstract class Level {
      * @return a PlayState representing the progress of the player
      *         through the level.
      */
-    public PlayState getLevelStatus() {
+    public PlayState getLevelStatus () {
         for (Condition c : conditionList) {
             if (c.isSatisfied(objectList)) {
                 setNextLevelName(c.getNextLevelName());
@@ -175,37 +179,42 @@ public abstract class Level {
         return PlayState.IS_PLAYING;
     }
 
-    public void setNextLevelName(String lvlName) {
+    public void setNextLevelName (String lvlName) {
         myNextLevelName = lvlName;
     }
 
     /**
      * @return a string representing the name of the next level to load
      */
-    public String getNextLevelName() {
+    public String getNextLevelName () {
         return myNextLevelName;
     }
 
     /**
-     * Set up the given InputController to manage input for this level. For instance,
-     * associate keyboard presses with actions directing the player object to move. The
-     * Level subclass should have references to objects controlled by input, so that it
+     * Set up the given InputController to manage input for this level. For
+     * instance,
+     * associate keyboard presses with actions directing the player object to
+     * move. The
+     * Level subclass should have references to objects controlled by input, so
+     * that it
      * can set up the InputController correctly.
+     * 
      * @param myInputController
      */
-    public abstract void setInputController (KeyboardController myInputController);
-    
+    public abstract void setInputController (
+            KeyboardController myInputController);
+
     /**
      * @param pl
      */
-    public void setPlayer(Player pl){
+    public void setPlayer (Player pl) {
         myPlayer = pl;
     }
-    
+
     /**
      * @return Player of the game
      */
-    public Player getPlayer(){
+    public Player getPlayer () {
         return myPlayer;
     }
 }

@@ -88,7 +88,7 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
 
         // check that all data is filled
         if (!username.isEmpty() && !password1.isEmpty() && !password2.isEmpty() &&
-            !firstName.isEmpty() && !lastName.isEmpty()) {
+                !firstName.isEmpty() && !lastName.isEmpty()) {
 
             // check password match
             if (password1.equals(password2) && !password1.isEmpty() && !password2.isEmpty()) {
@@ -96,22 +96,22 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
 
                 // execute server call
                 if (getArcade().getModelInterface().executeNewUser(username, password1, firstName, lastName)){
-                    
+
                     // new user created
                     getArcade().setUsername(username);
-                    
+
                     getArcade().replacePanel("NormUser");
                     getArcade().replacePanel("NormMain");
                     getArcade().replacePanel("NormNav");
                     getArcade().replacePanel("NormSearch");
-                    
-                    
-                    
-                }else {
-                    // new user not created
-                    message.setText("Error. Username is invalid. Please try again.");
+
+
+
                 }
-                
+                else {
+                    // new user not created
+                    message.setText("Error. Username is taken. Please try again.");
+                }
 
             }
             else {
