@@ -710,7 +710,7 @@ public class XmlUtilities {
         String xmlString = sw.toString();
         return xmlString;
     }
-    
+
     /**
      * Returns a String created from an Xml Element. Useful for debugging in
      * the console.

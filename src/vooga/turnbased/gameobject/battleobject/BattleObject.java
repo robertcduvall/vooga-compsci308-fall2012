@@ -146,22 +146,26 @@ public abstract class BattleObject extends GameObject {
         g2d.setColor(Color.BLACK);
         GlyphVector gv = font.createGlyphVector(frc, myName);
         g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + fontSize * FONT_SPACING_SCALAR);
-        
-        
+
+
         int myHealth = myStats.get(HEALTH).intValue();
         int myMaxHealth = myStats.get("maxHealth").intValue();
+        int myAttack = myStats.get("attack").intValue();
+        int myDefense = myStats.get("defense").intValue();
+        
         String health = "Health: " + myHealth + "/" + myMaxHealth;
         gv = font.createGlyphVector(frc, health);
         g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 2 * fontSize * FONT_SPACING_SCALAR);
-        int myAttack = myStats.get("attack").intValue();
+
         String attack = "Attack: " + myAttack;
         gv = font.createGlyphVector(frc, attack);
         g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 3 * fontSize * FONT_SPACING_SCALAR);
-        int myDefense = myStats.get("defense").intValue();
+
         String defense = "Defense: " + myDefense;
         gv = font.createGlyphVector(frc, defense);
         g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 4 * fontSize * FONT_SPACING_SCALAR);
     }
+    
 
     @Override 
     public void clear() {
