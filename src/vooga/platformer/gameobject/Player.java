@@ -25,20 +25,13 @@ public class Player extends MovingObject {
      * @return the moving strategy of the player
      */
     public PlayerMoveStrategy getMovingStrategy () {
-
-        for (UpdateStrategy s : getStrategyList()) {
-            if (s instanceof PlayerMoveStrategy) { return (PlayerMoveStrategy) s; }
-        }
-        return null;
+        return (PlayerMoveStrategy) getStrategy("PlayerMoveStrategy");
     }
 
     /**
      * @return the shooting strategy of the player
      */
     public ShootingStrategy getShootingStrategy () {
-        for (UpdateStrategy s : getStrategyList()) {
-            if (s.getClass() == ShootingStrategy.class) { return (ShootingStrategy) s; }
-        }
-        return null;
+        return (ShootingStrategy) getStrategy("ShootingStrategy");
     }
 }
