@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -20,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -37,13 +40,15 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     private List<Image> myGameProfilePictures;
     private String gameSelected;
     private JList gameList;
+    private ListSelectionModel listSelectionModel;
+    private int listIndexCurrentlySelected;
     
     public GameListMainPanel (Arcade a) {
         super(a);
-         //myGameList = a.getModelInterface().getGameList();
+         myGameList = a.getModelInterface().getGameList();
          /*myGameProfilePictures = new ArrayList<Image>();
          for (int i = 0; i < myGameList.size(); i++) {
-             myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
+             myGameProfilePictures.add(a.getModelInterface().getGame(myGameList.get(i)).getImage());            
          }*/
 
     }
@@ -51,24 +56,27 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        /*String[] arrayOfGames = new String[myGameList.size()];
+        String[] arrayOfGames = new String[myGameList.size()];
         for (int i = 0; i < myGameList.size(); i++) {
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
-        }*/
-        String[] theList = new String[10];
+        }
+        /*String[] theList = new String[10];
         for (int i = 0; i < 10; i++) {
             theList[i] = "" + i;
-        }
+        }*/
         
-        MigLayout layout = new MigLayout();
+        MigLayout layout = new MigLayout("align center, fill");
         myPanel.setLayout(layout);
 
-        JList listOfGames = new JList(theList);
+        JList listOfGames = new JList(arrayOfGames);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
         gameList = listOfGames;
+        /*listSelectionModel = gameList.getSelectionModel();
+        listSelectionModel.addListSelectionListener(
+                                new SharedListSelectionHandler());*/
         //gameList.setPreferredSize(new Dimension(150, 150));
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         
@@ -93,13 +101,41 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             }
               
           });
+        ImageIcon icon = new ImageIcon("src/arcade/gui/images/ArcadeClassics.jpg");
+        JLabel displayPic = new JLabel(icon);
         
-        myPanel.add(label, "dock north");
+        myPanel.add(label, "dock north, span, grow, align center");
         //addSeparator(myPanel, "Stuff");
-        myPanel.add(listScroller);
-        myPanel.add(goButton, "dock south");
+        myPanel.add(listScroller, "span, grow");
+        myPanel.add(displayPic, "span, grow");
+        myPanel.add(goButton, "dock south, span, grow, align center");
 
         return myPanel;
+        /*class SharedListSelectionHandler implements ListSelectionListener {
+            public void valueChanged(ListSelectionEvent e) {
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+
+                int firstIndex = e.getFirstIndex();
+                int lastIndex = e.getLastIndex();
+                boolean isAdjusting = e.getValueIsAdjusting();
+
+                if (lsm.isSelectionEmpty()) {
+                    output.append(" <none>");
+                } else {
+                    // Find out which indexes are selected.
+                    int minIndex = lsm.getMinSelectionIndex();
+                    int maxIndex = lsm.getMaxSelectionIndex();
+                    for (int i = minIndex; i <= maxIndex; i++) {
+                        if (lsm.isSelectedIndex(i)) {
+                            output.append(" " + i);
+                        }
+                    }
+                }
+                output.append(newline);
+            }
+        }*/
     }
     
 }
+
+
