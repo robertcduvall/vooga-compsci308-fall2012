@@ -41,11 +41,15 @@ public class BattleMode extends GameMode implements InputAPI {
     private int myTeamStartRandomizer;
     private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
-    private int mySelection = 0;
+    private OptionSelect mySelection;
 
     private final int MESSAGE_NUM = 4;
     private final double TEXT_SCALAR = 40;
     private int myLooserSpriteID;
+    private final String OPTION1 = "ATTACK";
+    private final String OPTION4 = "HEAL";
+    private final String OPTION2 = "DEFEND";
+    private final String OPTION3 = "CHARGE";
 
     /**
      * Constructor for a Battle.
@@ -96,7 +100,7 @@ public class BattleMode extends GameMode implements InputAPI {
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
+            /*GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
                     "triggerAttackEvent");
             GamePane.keyboardController.setControl(defend, KeyboardController.RELEASED, this,
                     "triggerDefendEvent");
@@ -104,6 +108,7 @@ public class BattleMode extends GameMode implements InputAPI {
                     KeyboardController.RELEASED, this, "triggerHealEvent");
             GamePane.keyboardController.setControl(charge, KeyboardController.RELEASED,
                     this, "triggerChargeEvent");
+            */
             GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, 
                     this, "triggerLeftEvent");
             GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, 
@@ -121,7 +126,6 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     private void makeTeams () {
-        // BAD BAD TEST CODE
         // I don't think this is super bad test code now,
         // We should eventually add support for a single sprite with multiple battleobjects
         // (i.e. A single Pokemon trainer with multiple pokemon)
@@ -211,12 +215,12 @@ public class BattleMode extends GameMode implements InputAPI {
 
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         //format positions based on width and height of the box...maybe?
-        
+
         Graphics2D g2d = (Graphics2D) g;
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
-        String[] options = {"ATTACK", "DEFEND", "CHARGE", "HEAL"};
+        String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
         for (int i = 0; i < 4; i ++) {
             String s = options[i];
             GlyphVector gv = font.createGlyphVector(frc, s);
@@ -235,16 +239,16 @@ public class BattleMode extends GameMode implements InputAPI {
         }
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
         Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
-        if (mySelection == 0) {
+        if (mySelection == OptionSelect.OPTION1) {
             g.drawImage(arrow, x+40, y+60, 20, 20, null);
         }
-        else if (mySelection == 1) {
+        else if (mySelection == OptionSelect.OPTION2) {
             g.drawImage(arrow, x+200, y+60, 20, 20, null);
         }
-        else if (mySelection == 2) {
+        else if (mySelection == OptionSelect.OPTION3) {
             g.drawImage(arrow, x+40, y+120, 20, 20, null);
         }
-        else if (mySelection == 3) {
+        else if (mySelection == OptionSelect.OPTION4) {
             g.drawImage(arrow, x+200, y+120, 20, 20, null);
         }
     }
@@ -261,6 +265,7 @@ public class BattleMode extends GameMode implements InputAPI {
     @Override
     public void initialize () {
         myState = BattleState.WAITING_FOR_MOVE;
+        mySelection = OptionSelect.OPTION1;
         myTurnCount = 0;
         // Initialize myTeamStartRandomizer to 0 to number of teams (exclusive)
         // the seed value is going to determine which team starts where 0 =
@@ -288,28 +293,29 @@ public class BattleMode extends GameMode implements InputAPI {
             if (!t.stillAlive()) {
                 teamDead = true;
                 // hardcoded
-                Sprite looserSprite = getGameManager().findSpriteWithID(t.getBattleObjects().get(0).getID());
+                Sprite loserSprite = getGameManager().findSpriteWithID(
+                        t.getBattleObjects().get(0).getID());
                 // not to be confused with tighterSprite...
-                myLooserSpriteID = looserSprite.getID();
-                looserSprite.clear();
-                getGameManager().deleteSprite(looserSprite.getID());
+                myLooserSpriteID = loserSprite.getID();
+                loserSprite.clear();
+                getGameManager().deleteSprite(loserSprite.getID());
             }
         }
         return teamDead;
     }
 
-    public void triggerAttackEvent () {
+    public void triggerOption1Event () {
         // for now, player attacks enemy player
         // by difference in defense
-        myMessages.add(myPlayerObject.getName() + " used ATTACK");
+        myMessages.add(myPlayerObject.getName() + " used " + OPTION1);
         myPlayerObject.attackEnemy(myEnemy);
         // check if enemy/opposing team is dead
         if (isBattleOver()) { return; }
         generateEnemyMove();
     }
 
-    public void triggerHealEvent () {
-        // for now, increases player health by 1
+    public void triggerOption4Event () {
+        // for now, increases player health by 3
         // by difference in defense
         myMessages.add(myPlayerObject.getName() + " used HEAL");
         myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 3);
@@ -323,7 +329,7 @@ public class BattleMode extends GameMode implements InputAPI {
         generateEnemyMove();
     }
 
-    public void triggerDefendEvent () {
+    public void triggerOption2Event () {
         // for now, increases player defense by one; other team still attacks
         // System.out.println("You use DEFEND");
         myMessages.add(myPlayerObject.getName() + " used DEFEND");
@@ -335,7 +341,7 @@ public class BattleMode extends GameMode implements InputAPI {
         generateEnemyMove();
     }
 
-    public void triggerChargeEvent () {
+    public void triggerOption3Event () {
         // for now, increases player attack by one; other team still attacks
         // System.out.println("You use CHARGE");
         myMessages.add(myPlayerObject.getName() + " used CHARGE");
@@ -349,49 +355,49 @@ public class BattleMode extends GameMode implements InputAPI {
     
     //don't even start...i know D:
     public void triggerLeftEvent () {
-        if (mySelection == 1) {
-            mySelection = 0;
+        if (mySelection == OptionSelect.OPTION2) {
+            mySelection = OptionSelect.OPTION1;
         }
-        else if (mySelection == 3) {
-            mySelection = 2;
+        else if (mySelection == OptionSelect.OPTION4) {
+            mySelection = OptionSelect.OPTION3;
         }
     }
     public void triggerRightEvent () {
-        if (mySelection == 0) {
-            mySelection = 1;
+        if (mySelection == OptionSelect.OPTION1) {
+            mySelection = OptionSelect.OPTION2;
         }
-        else if (mySelection == 2) {
-            mySelection = 3;
+        else if (mySelection == OptionSelect.OPTION3) {
+            mySelection = OptionSelect.OPTION4;
         }
     }
     public void triggerUpEvent () {
-        if (mySelection == 2) {
-            mySelection = 0;
+        if (mySelection == OptionSelect.OPTION3) {
+            mySelection = OptionSelect.OPTION1;
         }
-        else if (mySelection == 3) {
-            mySelection = 1;
+        else if (mySelection == OptionSelect.OPTION4) {
+            mySelection = OptionSelect.OPTION2;
         }
     }
     public void triggerDownEvent () {
-        if (mySelection == 0) {
-            mySelection = 2;
+        if (mySelection == OptionSelect.OPTION1) {
+            mySelection = OptionSelect.OPTION3;
         }
-        else if (mySelection == 1) {
-            mySelection = 3;
+        else if (mySelection == OptionSelect.OPTION2) {
+            mySelection = OptionSelect.OPTION4;
         }
     }
     public void triggerSelectEvent () {
-        if (mySelection == 0) {
-            triggerAttackEvent();
+        if (mySelection == OptionSelect.OPTION1) {
+            triggerOption1Event();
         }
-        else if (mySelection == 1) {
-            triggerDefendEvent();
+        else if (mySelection == OptionSelect.OPTION3) {
+            triggerOption3Event();
         }
-        else if (mySelection == 2) {
-            triggerChargeEvent();
+        else if (mySelection == OptionSelect.OPTION4) {
+            triggerOption4Event();
         }
-        else if (mySelection == 3) {
-            triggerHealEvent();
+        else if (mySelection == OptionSelect.OPTION2) {
+            triggerOption2Event();
         }
     }
 
@@ -482,9 +488,15 @@ public class BattleMode extends GameMode implements InputAPI {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
     }
 
+
+    private enum OptionSelect {
+        OPTION1, OPTION2, OPTION3, OPTION4
+        }
+
     @Override
     public void processMouseInput (Point myMousePosition, int myMouseButton) {
         // TODO Auto-generated method stub
-        
+
+
     }
 }
