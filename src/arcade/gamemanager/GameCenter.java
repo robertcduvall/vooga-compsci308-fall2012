@@ -111,6 +111,7 @@ public class GameCenter {
 //     Game rpg = gc.getGame("Turnbased RPG");
 //     System.out.println(rpg.getGameInfoList());
 //     System.out.println(rpg.getAverageRating());
+//     rpg.setReview("yet another review");
 //     
 //     }
 }

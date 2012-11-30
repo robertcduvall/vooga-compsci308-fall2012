@@ -35,9 +35,9 @@ public interface DocumentManager {
     void appendElement(Document doc, Element parent, String tag, String content);
     
     /**
-     * writes in an appropriate file format.
+     * saves document in an appropriate file format.
      * @param doc document of interest
      * @param filePath location of the save file
      */
-    void write(Document doc, String filePath);
+    void save(Document doc, String filePath);
 }

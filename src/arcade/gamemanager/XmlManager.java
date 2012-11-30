@@ -28,7 +28,8 @@ public class XmlManager implements DocumentManager {
     }
 
     @Override
-    public void write (Document doc, String filePath) {
+    public void save (Document doc, String filePath) {
+        doc.normalizeDocument();
         XmlUtilities.write(doc, filePath);
     }
 

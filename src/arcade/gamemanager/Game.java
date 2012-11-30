@@ -176,8 +176,7 @@ public class Game {
     }
 
     private void saveChanges () {
-        myDocument.normalizeDocument();
-        myDocumentManager.write(myDocument, myGameXml);
+        myDocumentManager.save(myDocument, myGameXml);
         resetGameInfoSource();
     }
 
