@@ -21,12 +21,12 @@ import util.xml.XmlUtilities;
  */
 public class DataTable {
 
-    private List<RowElement> myDataRows;
+    private List<ModifiableRowElement> myDataRows;
     private List<String> myColumnNames;
-    
-    private final String XMLPARENTTAG= "DataTable";
-    private final String XMLROWTAG= "Row";
-    private final String XMLROWTAGATTR = "number";
+
+    private static final String XMLPARENTTAG= "DataTable";
+    private static final String XMLROWTAG= "Row";
+    private static final String XMLROWTAGATTR = "number";
 
 
     /**
@@ -34,44 +34,49 @@ public class DataTable {
      */
     public DataTable () {
         myColumnNames = new ArrayList<String>();
-        myDataRows = new ArrayList<RowElement>();
+        myDataRows = new ArrayList<ModifiableRowElement>();
     }
 
     /**
-     * Used for copying a data table.
-     * @param dataT new Data Table is a copy of this data table
+     * Instantiating a copied data table.
+     * @param dTable new Data Table is a copy of this data table
      */
-    public DataTable (DataTable dataT) {
-        myColumnNames = new ArrayList<String>(dataT.getColumnNames());
-        myDataRows = new ArrayList<RowElement>(dataT.getDataRows());
+    public DataTable (DataTable dTable) {
+        myColumnNames = new ArrayList<String>(dTable.getColumnNames());
+        myDataRows = new ArrayList<ModifiableRowElement>(
+                RowElement.modifiableRowElement(dTable.getDataRows()));
     }
 
     /**
-     * Adds new columns to the table.
+     * Adds new columns to the table. Accepts a comma separated
+     * string and adds these as columns.
+     * Warning: An exception will be thrown if column names
+     * have spaces.
      * @param strKey - string of column names separated with commas
      * @throws RepeatedColumnNameException - thrown
      * if a repeated column name is detected
      * @throws InvalidXMLTagException - thrown if column name is
      * an invalid XML tag
      */
-    public void addNewColumn (String strKey) throws
+    public void addNewColumns (String strKey) throws
         RepeatedColumnNameException, InvalidXMLTagException {
         String[] strArray = strKey.split(",");
-        addNewColumn(strArray);
+        addNewColumns(strArray);
     }
 
     /**
-     * Adds new columns to the table.
+     * Adds new columns to the table. This method
+     * accepts an array of strings.
      * @param strArray - String array of column names
      * @throws RepeatedColumnNameException - thrown
      * if a repeated column name is detected
      * @throws InvalidXMLTagException - thrown if column name is
      * an invalid XML tag
      */
-    public void addNewColumn (String[] strArray) throws
+    public void addNewColumns (String[] strArray) throws
         RepeatedColumnNameException, InvalidXMLTagException  {
         for (String strName : strArray) {
-            for  (RowElement rowE: myDataRows) {
+            for  (ModifiableRowElement rowE: myDataRows) {
                 rowE.addNewColumn(strName);
             }
             if (myColumnNames.contains(strName)) {
@@ -82,26 +87,39 @@ public class DataTable {
     }
 
     /**
-     * Adds a new row entry to the table.
+     * Adds a new row entry to the table via passing in
+     * a map of column names to values.
      * @param mapEntry - map of column names to data values
      */
-    public void addNewRowEntry(Map<String , Object> mapEntry) {
+    public void addNewRow (Map<String , Object> mapEntry) {
         for (String key:getColumnNames()) {
             if (!mapEntry.containsKey(key)) {
                 mapEntry.put(key, null);
             }
         }
-        RowElement rowE = new RowElement(mapEntry);
+        ModifiableRowElement rowE = new ModifiableRowElement(mapEntry);
         myDataRows.add(rowE);
     }
-    
+
+
+    /**
+     * Adds a new row entry to the table via passing in
+     * a RowElement.
+     * Note: a copy of the row element is added not
+     * the row element itself.
+     * @param re
+     */
+    public void addNewRow (RowElement re) {
+        myDataRows.add(new ModifiableRowElement(re));
+    }
+
     /**
      * Deletes a row element.
      * @param strKey - column name of key reference to the row to be deleted
      * @param value - specific value of the row element to be deleted
      */
     public void deleteRowEntry (String strKey, Object value) {
-        Iterator<RowElement> it= myDataRows.iterator();
+        Iterator<ModifiableRowElement> it= myDataRows.iterator();
         while (it.hasNext()) {
             if (value.equals(it.next().getEntry(strKey))) {
                 it.remove();
@@ -133,16 +151,12 @@ public class DataTable {
      * @param valueNew - specific value to write to the table
      * @throws UnrecognizedColumnNameException - unrecognized column name
      */
-    public void editRowEntry (String strKeyRef, Object valueRef, 
-            String strKeyNew, Object valueNew) throws 
+    public void editRowEntry (String strKeyRef, Object valueRef,
+            String strKeyNew, Object valueNew) throws
             UnrecognizedColumnNameException {
-        Iterator<RowElement> it = myDataRows.iterator();
-        while (it.hasNext()) {
-            RowElement re = it.next();
-            if (valueRef.equals(re.getEntry(strKeyRef))) {
-                re.setEntry(strKeyNew, valueNew);
-            }
-        }
+        Map<String, Object> incomingData = new HashMap <String, Object> ();
+        incomingData.put(strKeyNew, valueNew);
+        editRowEntry (strKeyRef , valueRef , incomingData);
     }
 
     /**
@@ -154,9 +168,9 @@ public class DataTable {
      */
     public void editRowEntry (String strKeyRef, Object valueRef,
             Map<String, Object> map) throws UnrecognizedColumnNameException {
-        Iterator<RowElement> it = myDataRows.iterator();
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
         while (it.hasNext()) {
-            RowElement re = it.next();
+            ModifiableRowElement re = it.next();
             if (valueRef.equals(re.getEntry(strKeyRef))) {
                 re.setEntry(map);
             }
@@ -164,22 +178,28 @@ public class DataTable {
     }
 
     /**
-     * Returns an unmodifiable list of all the row elements.
+     * Returns an unmodifiable list of unmodifiable row elements.
      * @return - unmodifiable list of row elements
      */
-    public Collection <RowElement> getDataRows(){
-        return Collections.unmodifiableList(myDataRows);
+    public Collection <UnmodifiableRowElement> getDataRows() {
+        List <UnmodifiableRowElement> unmodList = new ArrayList <UnmodifiableRowElement>();
+        for (ModifiableRowElement re : myDataRows) {
+            UnmodifiableRowElement ure = RowElement.unmodifiableRowElement(re);
+            unmodList.add(ure);
+        }
+        return Collections.unmodifiableList(unmodList);
     }
 
 
     /**
-     * Returns an unmodifiableRowElement with the column name and value
+     * Returns an unmodifiableRowElement with
+     * the column name and value specified.
      * @param strKey - key to reference row element to be returned
      * @param value - specific value that identifies the row element
      * @return
      */
     public UnmodifiableRowElement find (String strKey, Object value) {
-        Iterator<RowElement> it = myDataRows.iterator();
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
         while (it.hasNext()) {
             RowElement re = it.next();
             if (value.equals(re.getEntry(strKey))) {
@@ -191,17 +211,18 @@ public class DataTable {
 
 
     /**
-     * Prints contents of the data table.
+     * Returns the contents of the data table in a String.
      */
-    public void viewContents() {
-        System.out.println("Table Contents: ");
-        Iterator<RowElement> it = myDataRows.iterator();
+    public String toString () {
+        Iterator<ModifiableRowElement> it = myDataRows.iterator();
+        String aggregateData = "";
         while (it.hasNext()) {
             RowElement re = it.next();
-            re.printData();
+            aggregateData = aggregateData + "\n" + re.toString();
         }
+        return aggregateData;
     }
-    
+
     /**
      * Saves DataTable on an XML file for later use.
      * @param location - location where file is saved
@@ -212,23 +233,24 @@ public class DataTable {
         doc.appendChild(header);
         int i = 0;
         for (RowElement re : getDataRows()) {
-            Element parentRow = 
-                    XmlUtilities.makeElement(doc, XMLROWTAG, XMLROWTAGATTR, String.valueOf(i));
+            Element parentRow =
+                    XmlUtilities.makeElement(
+                            doc, XMLROWTAG, XMLROWTAGATTR, String.valueOf(i));
             header.appendChild(parentRow);
             i++;
-            for (String colName: getColumnNames()){
-                String writeElement=(String) re.getEntry(colName);
-                if (re.getEntry(colName)==null){
-                    writeElement="";
+            for (String colName: getColumnNames()) {
+                String writeElement = (String) re.getEntry(colName);
+                if (re.getEntry(colName)==null) {
+                    writeElement = "";
                 }
-                XmlUtilities.appendElement(doc, parentRow, colName, writeElement);
+                XmlUtilities.appendElement(
+                        doc, parentRow, colName, writeElement);
             }
         }
         XmlUtilities.write(doc , location);
     }
 
-    
-    
+
     /**
      * Loads DataTable from a previously saved XML file.
      * @param location - location of file name
@@ -237,28 +259,20 @@ public class DataTable {
      */
     public void load (String location) throws
         RepeatedColumnNameException, InvalidXMLTagException {
-        Map <String, Object> colValueMap = null; 
         Document doc = XmlUtilities.makeDocument(location);
         Element topDT = doc.getDocumentElement();
         Collection <Element> dataC = XmlUtilities.getElements(topDT, XMLROWTAG);
         for (Element rowEl : dataC) {
             Collection <Element> colTags = XmlUtilities.getElements(rowEl);
-            colValueMap = new HashMap <String , Object>();
-            
+            Map <String, Object> colValueMap  =
+                    new HashMap <String , Object>();
             for (Element colVal: colTags) {
-                
-
                 String colName = XmlUtilities.getTagName(colVal);
-                System.out.println("printing: " + XmlUtilities.getContent(colVal));
-                
                 Object value = XmlUtilities.getContent(colVal);
                 colValueMap.put(colName, value);
-                
-                System.out.println("printing map :" + colValueMap);
-                addNewColumn(colName);
+                addNewColumns(colName);
             }
-            addNewRowEntry(colValueMap);
+            addNewRow(colValueMap);
         }
     }
-
 }

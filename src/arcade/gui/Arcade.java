@@ -10,6 +10,7 @@ import arcade.gamemanager.GameCenter;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.SocialCenter;
+import arcade.usermanager.User;
 
 
 /**
@@ -28,7 +29,7 @@ import arcade.usermanager.SocialCenter;
 public class Arcade {
 
     // username (unique key) of the user who is logged in
-    private String myUser = "";
+    private String myUsername = "";
     private Map<String, Serializable> mySharedVariables;
 
     private ArcadeFrame myFrame;
@@ -92,7 +93,7 @@ public class Arcade {
     }
 
     public String getUsername () {
-        return myUser;
+        return myUsername;
     }
 
     /**
@@ -101,7 +102,7 @@ public class Arcade {
      * @param u
      */
     public void setUsername (String u) {
-        myUser = u;
+        myUsername = u;
     }
 
     /**
@@ -128,6 +129,13 @@ public class Arcade {
      */
     public ModelInterface getModelInterface () {
         return myModelInterface;
+    }
+
+    /**
+     * @return The User that is currently logged in.
+     */
+    public User getCurrentUser () {
+        return myModelInterface.getUser(myUsername);
     }
 
 }
