@@ -51,10 +51,10 @@ public class Game {
         myDocumentManager = new XmlManager();
         myDocument = doc;
         myGameElement = getGameElement(doc);
-        resetGameInfoSource();
+        resetGameInfoList();
     }
 
-    private void resetGameInfoSource () {
+    private void resetGameInfoList () {
         myGameInfoList = makeGameInfoList(myGameElement);
     }
 
@@ -98,6 +98,7 @@ public class Game {
         List<String> info = new ArrayList<String>();
         if (!myGameInfoList.contains(infoName)) {
             System.out.println("no such information is available!!!");
+            info.add("");
             return info;
         }
         Collection<Element> infoList = myDocumentManager.getElements(myGameElement, infoName);
@@ -105,6 +106,15 @@ public class Game {
             info.add(ele.getTextContent());
         }
         return info;
+    }
+    
+    /**
+     * adds additional game information
+     * @param tag tag name of new information
+     * @param content new information content
+     */
+    public void setGameInfo (String tag, String content) {
+        myDocumentManager.appendElement(myDocument, myGameElement, tag, content);
     }
 
     /**
@@ -143,6 +153,9 @@ public class Game {
     public double getAverageRating () {
         double total = 0;
         List<Integer> ratings = getRatings();
+        if (ratings.size() == 0) {
+            return 0;
+        }
         for (Integer rating : ratings) {
             total += rating;
         }
@@ -154,11 +167,13 @@ public class Game {
      * rating first (if it exists).
      */
     public List<Integer> getRatings () {
+        List<Integer> ratings = new ArrayList<Integer>();
         String ratingData = getGameInfo("rating").get(0);
         String[] ratingList = ratingData.split(" ");
-        List<Integer> ratings = new ArrayList<Integer>();
         for (String rating : ratingList) {
-            ratings.add(Integer.parseInt(rating));
+            if (!rating.isEmpty()) {
+                ratings.add(Integer.parseInt(rating));
+            }
         }
         return ratings;
     }
@@ -171,13 +186,13 @@ public class Game {
      *        text for the review
      */
     public void setReview (String review) {
-        myDocumentManager.appendElement(myDocument, myGameElement, "review", review);
+        setGameInfo("review", review);
         saveChanges();
     }
 
     private void saveChanges () {
         myDocumentManager.save(myDocument, myGameXml);
-        resetGameInfoSource();
+        resetGameInfoList();
     }
 
     /**
@@ -189,8 +204,12 @@ public class Game {
      */
     public void setRating (int rating) {
         String ratingData = getGameInfo("rating").get(0) + " " + rating;
-        ratingData.trim();
+        ratingData = ratingData.trim();
         Node ratingElement = myGameElement.getElementsByTagName("rating").item(0);
+        if (ratingElement == null) {
+            myDocumentManager.appendElement(myDocument, myGameElement, "rating", "");
+            ratingElement = myGameElement.getElementsByTagName("rating").item(0);
+        }
         ratingElement.setTextContent(ratingData);
         saveChanges();
     }

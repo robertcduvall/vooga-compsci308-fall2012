@@ -26,7 +26,7 @@ public interface DocumentManager {
     Collection<Element> getElements(Element parent, String tag);
     
     /**
-     * appends an element to the document object
+     * appends an element to the document object under parent element
      * @param doc document of interest
      * @param parent element under which the new element will be inserted 
      * @param tag tag of the new element

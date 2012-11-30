@@ -2,13 +2,7 @@
 	<game id="1">
 		<name>Turnbased RPG</name>
 		<filepath>vooga.turnbased.Start</filepath>
-		<review>RPG game. fun fun! #James</review>
-		<review>blew my mind #phil</review>
-<review>it's 3 in the morning</review>
-<rating>3 5 4 3 4 10 7</rating>
-<review>THIS IS A TEST</review>
-<review>10/10 would code again</review>
-<review>final test yea boi</review>
+<rating>3 3 3 3 3</rating>
 </game>
 	<game id="2">
 		<name>Space Invaders</name>
