@@ -19,7 +19,7 @@ import arcade.IArcadeGame;
 public class GameCenter {
 
     private List<Game> myGames;
-    private String myGameXml = "src/arcade/database/game.xml";
+    public static final String GAME_XML_FILE = "src/arcade/database/game.xml";
 
     public GameCenter () {
         initialize();
@@ -39,7 +39,7 @@ public class GameCenter {
      */
     private void refreshGames () {
         myGames.clear();
-        Document doc = XmlUtilities.makeDocument(myGameXml);
+        Document doc = XmlUtilities.makeDocument(GAME_XML_FILE);
         Collection<Element> games = XmlUtilities.getElements(doc.getDocumentElement());
         for (Element ele : games) {
             String filePath = ele.getElementsByTagName("filepath").item(0).getTextContent();

@@ -32,7 +32,6 @@ public class Game {
     private Document myDocument;
     private Element myGameElement;
     private List<String> myGameInfoList;
-    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
     private DocumentManager myDocumentManager;
 
     /**
@@ -191,7 +190,7 @@ public class Game {
     }
 
     private void saveChanges () {
-        myDocumentManager.save(myDocument, myGameXml);
+        myDocumentManager.save(myDocument, GameCenter.GAME_XML_FILE);
         resetGameInfoList();
     }
 

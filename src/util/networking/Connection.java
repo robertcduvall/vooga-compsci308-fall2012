@@ -5,6 +5,9 @@ import java.net.Socket;
 /**
  * This class is a subclass of Thread that handles an individual
  * connection between a client and a Service provided by this server.
+ * 
+ * @author Copyright (c) 2004 David Flanagan
+ * @author Simplified and modified by Connor Gordon and Oren Bukspan
  **/
 public class Connection extends Thread {
     private Socket myClient;
