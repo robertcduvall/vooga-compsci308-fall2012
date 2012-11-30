@@ -107,7 +107,7 @@ public abstract class BattleObject extends GameObject {
     public boolean isAlive() {
         if (myStats.containsKey(HEALTH)) {
             Number health = myStats.get(HEALTH);
-            return health.doubleValue() > 0;
+            return health.intValue() > 0;
         }
         else {
             return false;

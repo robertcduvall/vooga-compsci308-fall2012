@@ -3,6 +3,7 @@ package vooga.turnbased.gamecore.gamemodes;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gui.GameWindow;
@@ -41,6 +42,12 @@ public class GameOverMode extends GameMode {
 
     @Override
     public void update () {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void processMouseInput (Point myMousePosition, int myMouseButton) {
         // TODO Auto-generated method stub
         
     }

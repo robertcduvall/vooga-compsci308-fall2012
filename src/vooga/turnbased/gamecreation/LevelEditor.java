@@ -30,11 +30,14 @@ public class LevelEditor {
 
     /**
      * Creates a LevelEditor for a new Xml document.
+     * 
+     * @param fileName File name (with path) of Xml document
      */
-    public LevelEditor() {
+    public LevelEditor(String fileName) {
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("level");
         myXmlDocument.appendChild(myRootElement);
+        myFileName = fileName;
     }
 
     /**
@@ -44,6 +47,8 @@ public class LevelEditor {
     public void addLevelId (Number id) {
         XmlUtilities.appendElement(myXmlDocument, myRootElement, "levelid", id.toString());
     }
+
+    // public void modifyLevelId, etc. for each of following
 
     /**
      * 
@@ -142,12 +147,10 @@ public class LevelEditor {
     }
 
     /**
-     * 
-     * @param pathName Path from working directory (begin with /src folder)
+     * Saves the xml document.
      */
-    public void saveXmlDocument(String pathName) {
-        String dir = System.getProperty("user.dir");
-        XmlUtilities.write(myXmlDocument, dir + pathName);
+    public void saveXmlDocument() {
+        XmlUtilities.write(myXmlDocument, myFileName);
     }
 
     /**
@@ -159,8 +162,7 @@ public class LevelEditor {
     }
 
     private void addDimension (String tagName, Number width, Number height) {
-        XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
-        Element dimension = XmlUtilities.getElement(myRootElement, tagName);
+        Element dimension = XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
         XmlUtilities.appendElement(myXmlDocument, dimension, "width", width.toString());
         XmlUtilities.appendElement(myXmlDocument, dimension, "height", height.toString());
     }

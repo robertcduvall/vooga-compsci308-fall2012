@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -214,12 +215,12 @@ public class BattleMode extends GameMode implements InputAPI {
 
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         //format positions based on width and height of the box...maybe?
-        
+
         Graphics2D g2d = (Graphics2D) g;
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
-        String[] options = {"ATTACK", "DEFEND", "CHARGE", "HEAL"};
+        String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
         for (int i = 0; i < 4; i ++) {
             String s = options[i];
             GlyphVector gv = font.createGlyphVector(frc, s);
@@ -279,7 +280,11 @@ public class BattleMode extends GameMode implements InputAPI {
         System.out.println("End battle!");
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
-        getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
+        if(!myPlayerObject.isAlive()){
+            getGameManager().flagEvent("GAME_LOST", new ArrayList<Integer>());
+        } else {
+            getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
+        }
     }
 
     private boolean isBattleOver () {
@@ -483,7 +488,15 @@ public class BattleMode extends GameMode implements InputAPI {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
     }
 
+
     private enum OptionSelect {
         OPTION1, OPTION2, OPTION3, OPTION4
+        }
+
+    @Override
+    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+        // TODO Auto-generated method stub
+
+
     }
 }

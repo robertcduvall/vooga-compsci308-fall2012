@@ -339,4 +339,15 @@ public class MapMode extends GameMode implements InputAPI {
     public boolean isWithinBounds (Point dest) {
         return myMapSize.height > dest.y && myMapSize.width > dest.x && dest.x >= 0 && dest.y >= 0;
     }
+
+    @Override
+    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+        if (myPathFinder != null) {
+            myPathFinder.stop();
+        }
+        Point target =
+                new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
+                          (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);
+        myPathFinder = new PathFinder(this, myPlayer, target, myMapSize);
+    }
 }
