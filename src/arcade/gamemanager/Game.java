@@ -2,6 +2,7 @@ package arcade.gamemanager;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Game {
     private Element myGameElement;
     private List<String> myGameInfoList;
     private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
+    private DocumentManager myDocumentManager;
 
     /**
      * Constructor for Game Manager takes in a specific game, so there is a
@@ -43,21 +45,22 @@ public class Game {
      * @param gameObject
      *        the game to be managed
      */
-    public Game (IArcadeGame gameObject) {
+    public Game (IArcadeGame gameObject, Document doc) {
         mySaver = new GameSaver(null, gameObject);
         myGame = gameObject;
+        myDocumentManager = new XmlManager();
+        myDocument = doc;
+        myGameElement = getGameElement(doc);
         resetGameInfoSource();
     }
 
     private void resetGameInfoSource () {
-        myDocument = XmlUtilities.makeDocument(myGameXml);
-        myGameElement = getGameElement(myDocument);
         myGameInfoList = makeGameInfoList(myGameElement);
     }
 
     private Element getGameElement (Document doc) {
         Element gameElement = doc.getDocumentElement();
-        Collection<Element> games = XmlUtilities.getElements(doc.getDocumentElement(), "name");
+        Collection<Element> games = myDocumentManager.getElements(doc.getDocumentElement(), "name");
         for (Element ele : games) {
             if (ele.getTextContent().equals(myGame.getName())) {
                 gameElement = (Element) ele.getParentNode();
@@ -68,7 +71,7 @@ public class Game {
     }
 
     private List<String> makeGameInfoList (Element gameElement) {
-        Collection<Element> gameInfo = XmlUtilities.getElements(myGameElement);
+        Collection<Element> gameInfo = myDocumentManager.getElements(myGameElement);
         Set<String> gameInfoList = new HashSet<String>();
         for (Element ele : gameInfo) {
             gameInfoList.add(ele.getNodeName());
@@ -97,7 +100,7 @@ public class Game {
             System.out.println("no such information is available!!!");
             return info;
         }
-        Collection<Element> infoList = XmlUtilities.getElements(myGameElement, infoName);
+        Collection<Element> infoList = myDocumentManager.getElements(myGameElement, infoName);
         for (Element ele : infoList) {
             info.add(ele.getTextContent());
         }
@@ -168,13 +171,13 @@ public class Game {
      *        text for the review
      */
     public void setReview (String review) {
-        XmlUtilities.appendElement(myDocument, myGameElement, "review", review);
+        myDocumentManager.appendElement(myDocument, myGameElement, "review", review);
         saveChanges();
     }
 
     private void saveChanges () {
         myDocument.normalizeDocument();
-        XmlUtilities.write(myDocument, myGameXml);
+        myDocumentManager.write(myDocument, myGameXml);
         resetGameInfoSource();
     }
 
@@ -219,11 +222,9 @@ public class Game {
     /**
      * Returns the genre of the game for the purposes of sorting.
      */
-    public String getGenre () {
-        NodeList gameInfo = myGameElement.getChildNodes();
-        for (int i = 0; i < gameInfo.getLength(); i++) {
-            if ("name".equals(gameInfo.item(i))) return gameInfo.item(i).getTextContent();
-        }
-        return null;
+    public List<String> getGenre () {
+        String genreData = getGameInfo("genre").get(0);
+        List<String> genre = Arrays.asList(genreData.split(" "));
+        return genre;
     }
 }

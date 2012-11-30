@@ -45,7 +45,7 @@ public class GameCenter {
             String filePath = ele.getElementsByTagName("filepath").item(0).getTextContent();
             try {
                 IArcadeGame arcade = (IArcadeGame) Class.forName(filePath).newInstance();
-                Game game = new Game(arcade);
+                Game game = new Game(arcade, doc);
                 myGames.add(game);
             }
             catch (IllegalAccessException e) {
@@ -103,14 +103,14 @@ public class GameCenter {
         return gameList;
     }
 
-    // public static void main (String args[]) {
-    // System.out.println("haha");
-    // GameCenter gc = new GameCenter();
-    // gc.getGameList();
-    // System.out.println(gc.myGames.size());
-    // Game rpg = gc.getGame("Turnbased RPG");
-    // System.out.println(rpg.getGameInfoList());
-    // System.out.println(rpg.getReviews());
-    // rpg.setRating(4);
-    // }
+//     public static void main (String args[]) {
+//     System.out.println("haha");
+//     GameCenter gc = new GameCenter();
+//     gc.getGameList();
+//     System.out.println(gc.myGames.size());
+//     Game rpg = gc.getGame("Turnbased RPG");
+//     System.out.println(rpg.getGameInfoList());
+//     System.out.println(rpg.getAverageRating());
+//     
+//     }
 }
