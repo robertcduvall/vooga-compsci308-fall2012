@@ -29,12 +29,13 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
     private GameLevelManager myLevelManager;
-    private boolean myGameOverCheck;
+    private boolean myGameIsOver;
     private HashMap<Integer, Sprite> mySprites;
     private List<GameEvent> myEvents;
     private List<GameMode> myActiveModes;
     private String myNewMapResource;
     private GameLogic myGameLogic;
+    private int myPlayerSpriteID;
 
     /**
      * Constructor of GameManager
@@ -44,7 +45,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
-        myGameOverCheck = false;
+        myGameIsOver = false;
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<GameEvent>();
         myActiveModes = new LinkedList<GameMode>();
@@ -69,6 +70,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         mySprites.clear();
         addSprites(myLevelManager.getCurrentSprites());
         mapMode.initialize();
+        myPlayerSpriteID = mapMode.getPlayer().getID();
     }
 
     /**
@@ -124,7 +126,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @return isOver True if game is over, false if not.
      */
     public boolean isOver () {
-        return myGameOverCheck;
+        return myGameIsOver;
     }
 
     /**
@@ -202,6 +204,8 @@ public class GameManager implements GameLoopMember, InputAPI {
             changeCurrentMode(battleMode);
         }
         else if ("BATTLE_OVER".equals(eventName)) {
+            System.out.println(myPlayerSpriteID);
+            if(event.getEventInvolvedIDs().get(0) == myPlayerSpriteID) processGameOver();
             removeInactiveModes();
             resumeModes();
         }
@@ -233,6 +237,11 @@ public class GameManager implements GameLoopMember, InputAPI {
         else {
             // System.err.println("Unrecognized mode event requested.");
         }
+    }
+
+    private void processGameOver () {
+        myGameIsOver = true;
+        myGamePane.getGameWindow().changeActivePane(GameWindow.MENU);
     }
 
     /**
