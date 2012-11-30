@@ -40,7 +40,7 @@ public class HelpMainPanel extends AMainPanel {
                 "located just above the Main Panel - these will lead you to the major features of the Arcade.\n\n" +
                 "These Nav buttons will always be available to use at any time while you are exploring the interface, as well " +
                 "as the informational buttons at the foot of your display.\n\nTo start playing games, go to the 'All Games' page " +
-                "and select a game. Check out the All Users Tab to see what your friends are up to. You've learned the basics " +
+                "and select a game. Check out the All Users Tab to see what your friends are up to. You've learned the basics- " +
                 "the rest is for you to discover.\n\nPEACE\n-The Arcade Gui Team";
 
         helpTextArea = new JTextArea(helpText, 20, 60);
