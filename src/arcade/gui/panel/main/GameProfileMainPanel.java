@@ -1,13 +1,17 @@
 package arcade.gui.panel.main;
 
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
@@ -21,59 +25,36 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class GameProfileMainPanel extends AMainPanel {
 
-    private String gameName = (String) getArcade().getVariable("GameName");
-    private GridBagConstraints c;
-
+    private String gameName;
+    private List<String> listOfReviews;
+    private List<Integer> listOfRatings;
+    private JTextArea reviewsArea;
+    private int lengthOfAvgRatingTitle = 16;
+    
     public GameProfileMainPanel (Arcade a) {
         super(a);
-        createPanel();
     }
 
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        
+        gameName = (String) getArcade().getVariable("GameName");
+        listOfReviews = getArcade().getModelInterface().getGame(gameName).getReviews();
+        listOfRatings = getArcade().getModelInterface().getGame(gameName).getRatings();
+        Collections.sort(listOfRatings);
         myPanel.setBackground(Color.CYAN);
 
-        myPanel.setLayout(new GridBagLayout());
-        c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
+        
+        
+        MigLayout layout = new MigLayout();
+        myPanel.setLayout(layout);
 
         System.out.println(myPanel.getSize());
-
-        myPanel = addPlayButton(myPanel);
-        myPanel = addGameName(myPanel);
-        myPanel = addGameProfilePicture(myPanel);
-        
-        return myPanel;
-
-    }
-
-    private ArcadePanel addGameName (ArcadePanel myPanel) {
+ 
         JLabel nameOfGame = new JLabel(gameName);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        myPanel.add(nameOfGame, c);
-        return myPanel;
-    }
-    
-    private ArcadePanel addGameProfilePicture (ArcadePanel myPanel) {
-        ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
-        JLabel profilePic = new JLabel(icon);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 0;
-
-        myPanel.add(profilePic, c);
-
-        return myPanel;
-    }
-    
-    private ArcadePanel addPlayButton (ArcadePanel myPanel) {
+        
         JButton playButton = new JButton("Play");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 1;
         playButton.addActionListener(new ActionListener() {
 
             @Override
@@ -83,33 +64,74 @@ public class GameProfileMainPanel extends AMainPanel {
 
         });
 
-        myPanel.add(playButton, c);
-        return myPanel;
-    }
+        //ImageIcon icon = new ImageIcon(getArcade().getModelInterface().getGame(gameName).getImage());
+        ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
+        JLabel profilePic = new JLabel(icon);
 
-    /*private ArcadePanel addGameDescription (ArcadePanel myPanel) {
-        JLabel label = new JLabel("<html>" + getArcade().getGameCenter().getGame(gameName). + "</html>");
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 1;
-        myPanel.add(label, c);
-
-        return myPanel;
-    }*/
-
-    private ArcadePanel addAverageRating (ArcadePanel myPanel) {
-
-        JLabel label = new JLabel("Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings());
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 2;
-        myPanel.add(label, c);
-
-        return myPanel;
-    }
-
-    /*private ArcadePanel addListOfRatingsAndReviews (ArcadePanel myPanel) {
+        String averageRating = "Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRating();
+        if ((averageRating.length() - lengthOfAvgRatingTitle) > 4) {
+            averageRating = averageRating.substring(0, 20);
+        }
+        JLabel averageRatingToDisplay = new JLabel(averageRating);
         
+        
+        String gameDescription = getArcade().getModelInterface().getGame(gameName).getDescription();
+        JTextArea descriptionToDisplay = new JTextArea("Game Overview: " + "\n" + gameDescription, 10, 20);
+        descriptionToDisplay.setLineWrap(true);
+        descriptionToDisplay.setWrapStyleWord(true);
+        descriptionToDisplay.setEditable(false);
+        JScrollPane scrollingDescription = new JScrollPane(descriptionToDisplay);
+
+        JButton writeReviewAndRatingBut = new JButton("Review/Rate this Game"); 
+        writeReviewAndRatingBut.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                
+                    getArcade().replacePanel("EnterReviewRating");
+            }
+              
+          });
+        
+        String stringOfRatingsCommas = "";
+        int tenCount = 0;
+        for (int i = 0; i < listOfRatings.size(); i++) {
+            if (listOfRatings.get(i) == 10) {
+                tenCount += 1;
+            }
+            stringOfRatingsCommas += listOfRatings.get(i) + ", ";
+            if (i == listOfRatings.size() -1) {
+                stringOfRatingsCommas = stringOfRatingsCommas.substring(0, listOfRatings.size() + 2*i + tenCount);
+            }
+        }
+        
+        JLabel ratingsTitle = new JLabel("User Ratings for " + gameName + ":");
+        JLabel listOfRatingsToDisplay = new JLabel(stringOfRatingsCommas);
+        
+        
+        String stringOfReviews = "";
+        for (int i = 0; i < listOfReviews.size(); i++) {
+            stringOfReviews += (i + 1) + ". " + listOfReviews.get(i) + "\n";
+        }
+        reviewsArea = new JTextArea(stringOfReviews, 10, 20);
+        reviewsArea.setLineWrap(true);
+        reviewsArea.setWrapStyleWord(true);
+        reviewsArea.setEditable(false);
+        JScrollPane scrollingReviews = new JScrollPane(reviewsArea);
+        JLabel reviewsTitleLabel = new JLabel("User Submitted Reviews of this Game: ");
+        
+        myPanel.add(nameOfGame, "span, grow, align center, wrap");
+        myPanel.add(profilePic);
+        myPanel.add(averageRatingToDisplay, "wrap");
+        myPanel.add(playButton, "grow, span, wrap");
+        myPanel.add(scrollingDescription);
+        myPanel.add(ratingsTitle, "split 2, flowy");
+        myPanel.add(listOfRatingsToDisplay);
+        myPanel.add(writeReviewAndRatingBut, "growx, spanx");
+        myPanel.add(reviewsTitleLabel, "grow, span, wrap");
+        myPanel.add(scrollingReviews, "grow, span");
+        
+        
+        return myPanel;
+
     }
-    */
 }

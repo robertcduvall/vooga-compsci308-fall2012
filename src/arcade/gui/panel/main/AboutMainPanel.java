@@ -1,6 +1,7 @@
 package arcade.gui.panel.main;
 
 import java.awt.Color;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
@@ -22,8 +23,9 @@ public class AboutMainPanel extends AMainPanel {
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
 
-        JLabel label = new JLabel();
-        label.setText("This is the About page.");
+        ImageIcon icon = new ImageIcon("src/arcade/gui/images/rcd.jpg");
+        JLabel label = new JLabel(icon);
+        //label.setText("This is the About page.");
         label.setForeground(Color.WHITE);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);

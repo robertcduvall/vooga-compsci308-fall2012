@@ -1,5 +1,5 @@
 package arcade.usermanager;
 
-public final class UserNotExistException extends RuntimeException{
+public final class UserNotExistException extends ValidationException{
 
 }

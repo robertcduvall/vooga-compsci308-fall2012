@@ -42,7 +42,7 @@ public class GameWindow extends JFrame {
     public GameWindow (String title, String settingsResource, int width, int height) {
 
         setTitle(title);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(width, height);
         setVisible(true);
         setResizable(true);

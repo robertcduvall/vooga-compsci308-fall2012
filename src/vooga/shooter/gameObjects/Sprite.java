@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.intelligence.AI;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
 
@@ -42,6 +43,7 @@ public abstract class Sprite implements SpriteActionInterface {
     private int myHealth;
     private SpriteMethodMap myMapper;
     private boolean isDead = false;
+    private AI myAI;
 
 
     /**
@@ -167,11 +169,12 @@ public abstract class Sprite implements SpriteActionInterface {
     protected abstract void continuePaint(Graphics pen);
 
     /**
-     * This method will update the position for every
-     * sprite, then call an abstract method. This abstract
-     * method will be specific to a certain sprite (only if
-     * they need to do something other than update position).
-     * This allows for easy implementation of new results specific
+     * This method will run the AI if one is present, 
+     * update the position for every sprite, then call
+     * an abstract method. This abstract method will be
+     * specific to a certain sprite (only if they need to
+     * do something other than update position). This
+     * allows for easy implementation of new results specific
      * to each sprite when calling the update method.
      */
     public void update() {
@@ -179,6 +182,9 @@ public abstract class Sprite implements SpriteActionInterface {
             die();
         }
         else {
+            if (myAI != null) {
+                myAI.calculate();
+            }
             myPosition.translate(myVelocity.x, myVelocity.y);
             continueUpdate();
         }
@@ -397,5 +403,13 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void setDead (boolean isDead) {
         this.isDead = isDead;
+    }
+    
+    /**
+     * Sets the AI of the Sprite.
+     * @param newAI the AI to set.
+     */
+    public void setAI (AI newAI) {
+        myAI = newAI;
     }
 }

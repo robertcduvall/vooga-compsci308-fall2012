@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
@@ -56,7 +57,7 @@ public class SocialCenter {
      * 
      * return log on status
      */
-    public boolean logOnUser (String userName, String password) throws Exception {
+    public boolean logOnUser (String userName, String password) throws ValidationException {
         myUserManager.validateUser(userName, password);
 
         // set current user
@@ -70,7 +71,7 @@ public class SocialCenter {
      * return log on status
      */
     public boolean registerUser (String userName, String password, String firstName, String lastName)
-                                                                                                     throws Exception {
+                                                                                                     throws ValidationException, IOException {
         // check validity
 
         try {
@@ -86,16 +87,14 @@ public class SocialCenter {
 
             return true;
         }
-        catch (PasswordNotMatchException e) {
-            System.out.println("USER ALREADY EXISTS");
-        }
+        
         return false;
     }
 
     /*
      * return operation status
      */
-    public boolean deleteUser (String userName, String password) throws Exception {
+    public boolean deleteUser (String userName, String password) throws ValidationException {
         // check validity
         myUserManager.validateUser(userName, password);
 
@@ -121,6 +120,7 @@ public class SocialCenter {
         XmlUtilities.appendElement(doc, message, "content", content);
         XmlUtilities.write(doc, filePath);
         myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        //myUserManager.updateMyMessage(sender, receiver, content)
 
         return true;
     }

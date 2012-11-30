@@ -6,6 +6,7 @@ import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
 import arcade.usermanager.SocialCenter;
+import arcade.usermanager.User;
 
 
 /**
@@ -124,6 +125,24 @@ public class ModelInterface {
         }
 
         return true;
+    }
+    /**
+     * TODO: IMPLEMENT THIS
+     * This is for listing all the users on the UserListMainPane.
+     * 
+     * @return A list of all the users in the system.
+     */
+    public List<User> getAllUsers() {
+        return null;
+    }
+    
+    /**
+     * TODO: Implement this.
+     * @param username The username of the User we want to access.
+     * @return The User class with the corresponding username.
+     */
+    public User getUser(String username) {
+        return null;
     }
 
 }
