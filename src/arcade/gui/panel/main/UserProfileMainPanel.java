@@ -34,6 +34,7 @@ public class UserProfileMainPanel extends AMainPanel {
         myPanel.add(profilePictureLabel, "align center");
 
         // Add the username:
+        JLabel userName = new JLabel(getArcade().getUsername());
         // Add the First & Last name:
         JLabel label = new JLabel();
         label.setText("[User Profile]");
