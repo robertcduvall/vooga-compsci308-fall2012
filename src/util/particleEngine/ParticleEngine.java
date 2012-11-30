@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import util.calculator.VectorCalculator;
-import vooga.shooter.gameObjects.Sprite;
 
 
 /**
@@ -19,7 +18,7 @@ import vooga.shooter.gameObjects.Sprite;
  * To use this you simply need to create an object of this type and have it
  * update and draw.
  * 
- * @author David Spruill, modest contributions from Kathleen Lan
+ * @author David Spruill, Kathleen Lan
  */
 public class ParticleEngine {
     private static final int DEFAULT_COUNT = 1;
@@ -31,7 +30,7 @@ public class ParticleEngine {
 
     private int spriteCount;
     private Image spriteImage;
-    public Point initialPosition;
+    private Point initialPosition;
     private Point mainVelocity;
     private int variance;
     private int duration;
@@ -40,14 +39,12 @@ public class ParticleEngine {
 
     private List<Particle> particles;
 
-    private VectorCalculator vcalculator = new VectorCalculator();
-
     /**
      * Construct the ParticleEngine object using default values
      * 
      * @param particleImage the image to use as the particle
      */
-    public ParticleEngine (Image particleImage, Point initialPosition,
+    protected ParticleEngine (Image particleImage, Point initialPosition,
             Boolean loopValue) {
         this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
                 DEFAULT_VARIANCE, DEFAULT_DURATION, DEFAULT_ANGLESPAN,
@@ -72,7 +69,7 @@ public class ParticleEngine {
      *        directions will be calculated using the given or default
      *        direction, angleSpan, and the numberOfDirections)
      */
-    public ParticleEngine (Image particleImage, Point initialPosition,
+    protected ParticleEngine (Image particleImage, Point initialPosition,
             double inputAngleSpan, int numberOfDirections, Boolean loopValue) {
         this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
                 DEFAULT_VARIANCE, DEFAULT_DURATION, inputAngleSpan,
@@ -90,7 +87,7 @@ public class ParticleEngine {
      *        direction
      * @param length how long the particles will exist before being reset
      */
-    public ParticleEngine (int density, Image particleImage, Point position,
+    protected ParticleEngine (int density, Image particleImage, Point position,
             Point velocity, int tolerance, int length, double inputAngleSpan,
             int numberOfDirections, Boolean loopValue) {
         spriteCount = density;
@@ -129,52 +126,62 @@ public class ParticleEngine {
                 spriteImage.getHeight(null));
         double angleInterval = inputAngleSpan / (double) numberOfOriginLines
                 * Math.PI / 180;
-        double velocityMagnitude = vcalculator.calculateMagnitude(mainVelocity);
-        double velocityAngle = vcalculator.calculateAngle(mainVelocity);
+        double velocityMagnitude = VectorCalculator.calculateMagnitude(mainVelocity);
+        double velocityAngle = VectorCalculator.calculateAngleInRadians(mainVelocity);
         particles.add(new Particle(new Point(initialPosition), particleSize,
                 spriteImage, velocityMagnitude, velocityAngle + angleInterval
                         * i, variance, duration));
     }
 
-    public void draw (Graphics g) {
+    protected void draw (Graphics g) {
         for (Particle p : particles) {
             if (p.stillExists()) p.draw(g);
         }
     }
 
-    public void update () {
+    protected void update () {
         ArrayList<Particle> remove = new ArrayList<Particle>();
         for (Particle p : particles) {
-            if (p.stillExists())
+            if (!p.stillExists()) {
+                    remove.add(p);
+            }
+            else {
                 p.update();
-            else if (loop) {
-                remove.add(p);
             }
         }
         for (Particle p : remove) {
             particles.remove(p);
-            createParticle(angleSpan, 1, 0);
+            if (loop) createParticle(angleSpan, 1, 0);
         }
     }
 
-    public void setDuration (int length) {
+    protected void setDuration (int length) {
         duration = length;
     }
 
-    public void setDensity (int density) {
+    protected void setDensity (int density) {
         spriteCount = density;
     }
 
-    public void setVelocity (Point v) {
+    protected void setVelocity (Point v) {
         mainVelocity = v;
     }
 
-    public void setLoop (Boolean doLoop) {
+    protected void setLoop (Boolean doLoop) {
         loop = doLoop;
     }
-    
-    public Boolean stillExists() {
-        return (particles.size()>0);
+
+    protected Boolean stillExists () {
+        // System.out.println("\t\t" + particles.size());
+        return (particles.size() > 0);
+    }
+
+    protected void setStartingPosition (Point position) {
+        initialPosition = position;
+    }
+
+    protected Point getStartingPosition () {
+        return initialPosition;
     }
 
 }

@@ -1,13 +1,13 @@
-package util.networking.jabber;
+package util.networking.chat.jabber;
 
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import util.networking.Server;
+import util.networking.chat.ChatServer;
 
 public class ProtocolTester {
+
+    private static final int MAX_CONNECTIONS = 100;
 
     /**
      * A main() method for running the server as a standalone program.  The
@@ -25,20 +25,22 @@ public class ProtocolTester {
         InetAddress addr = InetAddress.getLocalHost();
         String hostname = addr.getHostName();
         System.out.println(hostname);
-        Server s = new Server(Logger.getLogger(Server.class.getName()),
-                              Level.INFO, 10);
-        int port = 5222;
+        Server s = new ChatServer();
         /*try {
-            s.addService(new Service(), port);
+            s.addService(new Service(), PORT);
         }
         catch (IOException e) {
             e.printStackTrace();
-        }*/
-        
-        
+        }
+
+        ChatProtocal myProtocol = new COProtocol();
+        ChatServer myChatServer = new ChatServer(myProtocol);
+
+        */
+
         ProtocolXMPP xmpp = new ProtocolXMPP();
         System.out.println(xmpp.openStream("server"));
         System.out.println(xmpp.sendMessage("Connor Gordon", "Oren Bukspan", "goduke."));
     }
-    
+
 }
