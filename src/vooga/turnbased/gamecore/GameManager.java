@@ -3,12 +3,17 @@ package vooga.turnbased.gamecore;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import vooga.turnbased.gamecore.gamemodes.BattleMode;
+import vooga.turnbased.gamecore.gamemodes.GameMode;
+import vooga.turnbased.gamecore.gamemodes.OptionMode;
 import vooga.turnbased.gamecreation.GameLevelManager;
+import vooga.turnbased.gamecreation.LevelXmlParser;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -25,16 +30,16 @@ import vooga.turnbased.sprites.Sprite;
  * @author Turnbased team
  * 
  */
-public class GameManager implements GameLoopMember, InputAPI {
+public class GameManager implements InputAPI {
 
     private final GamePane myGamePane;
-    private GameLevelManager myLevelManager;
+    // private GameLevelManager myLevelManager;
     private boolean myGameIsOver;
     private HashMap<Integer, Sprite> mySprites;
-    private List<GameEvent> myEvents;
-    private List<GameMode> myActiveModes;
+    private HashMap<Integer, GameMode> myGameModes;
+    private List<ModeEvent> myModeEvents;
+    private GameMode myActiveGameMode;
     private String myNewMapResource;
-    private GameLogic myGameLogic;
     private int myPlayerSpriteID;
 
     /**
@@ -47,36 +52,42 @@ public class GameManager implements GameLoopMember, InputAPI {
         myGamePane = gameCanvas;
         myGameIsOver = false;
         mySprites = new HashMap<Integer, Sprite>();
-        myEvents = new LinkedList<GameEvent>();
-        myActiveModes = new LinkedList<GameMode>();
-        myLevelManager = new GameLevelManager(this);
-        myGameLogic = new GameLogic(this);
-        initializeGameLevel(GameWindow.importString("Entrance"), null);
+        myGameModes = new HashMap<Integer, GameMode>();
+        myModeEvents = new LinkedList<ModeEvent>();
+        // myLevelManager = new GameLevelManager(this);
+        // myGameLogic = new GameLogic(this);
+        initializeGameLevel(GameWindow.importString("Entrance"));
         configureInputHandling();
     }
 
     /**
      * Starts a new level, and puts the RPG in mapMode in that new level.
      * 
-     * @param levelFileName The name of the level that will be initialized
-     * @param enteringObject The MapObject which will used for the MapMode of
-     *        this level.
+     * @param levelFileName
+     *        The name of the level that will be initialized
+     * @param enteringObject
+     *        The MapObject which will used for the MapMode of this level.
      */
-    public void initializeGameLevel (String levelFileName, MapObject enteringObject) {
-        myActiveModes.remove(myLevelManager.getCurrentMapMode());
-        myLevelManager.enterMap(levelFileName, enteringObject);
-        MapMode mapMode = myLevelManager.getCurrentMapMode();
-        myActiveModes.add(0, mapMode);
-        mySprites.clear();
-        addSprites(myLevelManager.getCurrentSprites());
-        mapMode.initialize();
-        myPlayerSpriteID = mapMode.getPlayer().getID();
+    public void initializeGameLevel (String levelFileName) {
+        LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
+
+        // need to get mode event mappings too
+
+        myActiveGameMode = test.getMapMode();
+        myGameModes.put(myActiveGameMode.getID(), myActiveGameMode);
+
+        addSprites(test.parseSprites());
+
+        myPlayerSpriteID = test.getPlayerID();
+
+        myActiveGameMode.resume();
     }
 
     /**
      * find the Sprite with specific ID
      * 
-     * @param id ID of the Sprite
+     * @param id
+     *        ID of the Sprite
      * @return the Sprite found (null if no Sprite with that ID was found)
      */
     public Sprite findSpriteWithID (int id) {
@@ -97,8 +108,10 @@ public class GameManager implements GameLoopMember, InputAPI {
     /**
      * Returns a list of GameObjects of the indicated type.
      * 
-     * @param c Class of desired GameObjects.
-     * @param <T> Type of class in the list.
+     * @param c
+     *        Class of desired GameObjects.
+     * @param <T>
+     *        Type of class in the list.
      * @return modeObjects A list of all requested GameObjects within all
      *         sprites.
      */
@@ -114,7 +127,8 @@ public class GameManager implements GameLoopMember, InputAPI {
      * Removes the sprite with the given ID from the list of sprites in the
      * game. Trigger removal of corresponding gameobjects inside each sprite.
      * 
-     * @param spriteID Int ID of sprite to be removed.
+     * @param spriteID
+     *        Int ID of sprite to be removed.
      */
     public void deleteSprite (int spriteID) {
         findSpriteWithID(spriteID).clear();
@@ -132,156 +146,72 @@ public class GameManager implements GameLoopMember, InputAPI {
     /**
      * Updates the actve game mode and handles any events occurring.
      */
-    @Override
     public void update () {
-        for (GameMode mode : myActiveModes) {
-            mode.update();
-        }
         handleEvents();
+        myActiveGameMode.update();
     }
 
     /**
      * Paints the images to the buffer.
      * 
-     * @param g The Graphics object of the offScreenImage.
+     * @param g
+     *        The Graphics object of the offScreenImage.
      */
-    @Override
     public void paint (Graphics g) {
-        for (GameMode mode : myActiveModes) {
-            if (mode.isActive()) {
-                mode.paint(g);
-            }
-        }
+        myActiveGameMode.paint(g);
     }
 
     /**
      * Adds an event to the list of events to handle.
      * 
-     * @param eventName String name of event to add.
-     * @param involvedSpriteIDs List of integer IDs of sprites involved in given
-     *        action.
+     * @param eventName
+     *        String name of event to add.
+     * @param involvedSpriteIDs
+     *        List of integer IDs of sprites involved in given action.
      */
     // deprecated - use the one below
     public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
-        myEvents.add(new GameEvent(eventName, involvedSpriteIDs));
+        myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
     }
 
     /**
      * GameModes (mapMode, BattleMode, etc., collect their local events, then
-     * decide
-     * which ones should be reported to GameManager, then report at the end of
-     * update
-     * cycle using this method.
+     * decide which ones should be reported to GameManager, then report at the
+     * end of update cycle using this method.
      * 
-     * @param m This is the event that the GameMode is passing in for the
+     * @param m
+     *        This is the event that the GameMode is passing in for the
      *        GameManager to handle
      */
-    public void flagEvent (GameEvent m) {
-        myEvents.add(m);
-    }
 
     /**
      * Takes events to be handled and deals with each according to the mode and
      * sprites involved.
      */
     private void handleEvents () {
-        myGameLogic.processEvents(myEvents);
-        /*while (!myEvents.isEmpty()) {
-            GameEvent m = myEvents.remove(0);
+        while (!myModeEvents.isEmpty()) {
+            ModeEvent m = myModeEvents.remove(0);
+            // changeCurrentMode(...);
             handleEvent(m);
-        }*/
-    }
-
-    /*private void handleEvent (GameEvent event) {
-        String eventName = event.getModeEventName();
-        List<Integer> myInvolvedIDs = event.getEventInvolvedIDs();
-        if ("NO_ACTION".equals(eventName)) {
-            // do nothing
         }
-        else if ("BATTLE_START".equals(eventName)) {
-            BattleMode battleMode = new BattleMode(this, BattleObject.class, myInvolvedIDs);
-            myActiveModes.add(battleMode);
-            changeCurrentMode(battleMode);
-        }
-        else if ("BATTLE_OVER".equals(eventName)) {
-            System.out.println(myPlayerSpriteID);
-            if(event.getEventInvolvedIDs().get(0) == myPlayerSpriteID) processGameOver();
-            removeInactiveModes();
-            resumeModes();
-        }
-        else if ("GAME_OVER".equals(eventName)) {
-            processGameOver();
-        }
-        else if ("SWITCH_LEVEL".equals(eventName)) {
-            MapObject enteringMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
-            initializeGameLevel(myNewMapResource, enteringMapObject);
-        }
-        else if ("CONVERSATION_START".equals(eventName)) {
-            OptionMode conversationMode =
-                    new OptionMode(this, MapObject.class, myInvolvedIDs);
-            // do not add the same conversation twice
-            for (GameMode mode : myActiveModes) {
-                if ((mode instanceof OptionMode) &&
-                    (conversationMode.equalsTo((OptionMode) (mode)))) { return; }
-            }
-            myActiveModes.add(conversationMode);
-        }
-        else if ("CONVERSATION_OVER".equals(eventName)) {
-            removeInactiveModes();
-        }
-        else if ("INTERACTION_COMPLETED".equals(eventName)) {
-            // to win, need to interact with specific (or all) sprites, i.e.
-            // NPCs, Enemies, Pickup-able items, teleports, etc.
-            /*
-             * myGameLogic.processInteraction(event);
-             * if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
-             
-        }
-        else {
-            // System.err.println("Unrecognized mode event requested.");
-        }
-    }*/
-
-    protected void processGameOver () {
-        myGameIsOver = true;
-        mySprites.clear();
-        myActiveModes.clear();
-        GameOverMode gameOver = new GameOverMode(this, this.getClass());
-        myActiveModes.add(gameOver);
-        changeCurrentMode(gameOver);
     }
 
     /**
      * Pauses current modes, resume the active mode
      * 
-     * @param mode GameMode object to be switched to.
+     * @param mode
+     *        GameMode object to be switched to.
      */
-    protected void changeCurrentMode (GameMode activeMode) {
-        for (GameMode mode : myActiveModes) {
-            if (mode == activeMode) {
-                continue;
-            }
-            mode.pause();
-        }
-        activeMode.resume();
+    private void changeCurrentMode (GameMode mode) {
+        myActiveGameMode.pause();
+        myActiveGameMode = mode;
+        myActiveGameMode.resume();
     }
 
-    protected void resumeModes () {
-        for (GameMode mode : myActiveModes) {
-            mode.resume();
-        }
-    }
-
-    /**
-     * Passes mouse input to the GameMode.
-     * 
-     * @param e MouseEvent to be handled.
-     */
-    public void handleMouseClicked (MouseEvent e) {
-        // myCurrentGameMode.handleMouseClicked(e);
-        for (GameMode mode : myActiveModes) {
-            mode.handleMouseClicked(e);
-        }
+    private void changeCurrentMode (int modeID) {
+        myActiveGameMode.pause();
+        myActiveGameMode = myGameModes.get(modeID);
+        myActiveGameMode.resume();
     }
 
     /**
@@ -289,7 +219,10 @@ public class GameManager implements GameLoopMember, InputAPI {
      * 
      * @return Size of current GamePane.
      */
-    public Dimension getPaneDimension () {
+    public Dimension getPaneDimension () { // TODO: shouldn't need this, just
+                                           // paint an BufferedImage and then
+                                           // scale it once it gets returned to
+                                           // pane
         return myGamePane.getSize();
     }
 
@@ -299,63 +232,76 @@ public class GameManager implements GameLoopMember, InputAPI {
         // KeyboardController.PRESSED, this, "gameOver");
     }
 
-    protected void removeInactiveModes () {
-        Iterator<GameMode> iterator = myActiveModes.iterator();
-        while (iterator.hasNext()) {
-            GameMode mode = iterator.next();
-            if (!mode.isActive()) {
-                iterator.remove();
-            }
-        }
-    }
-
     /**
      * Calling this functions sets the next level from the input URI.
      * 
-     * @param URI The location string of where to find the new map file.
+     * @param URI
+     *        The location string of where to find the new map file.
      */
     public void setNewMapResources (String URI) {
         myNewMapResource = URI;
-    }
-
-    // hardcoded. use getSpriteById().getObject(MapObject.class) instead
-    /*private MapObject findMapObjectWithID (int ID) {
-        return findSpriteWithID(ID).getMapObject();
-    }*/
-    
-    public void handleMouseDragged(MouseEvent e) {
-        for (GameMode mode : myActiveModes) {
-            if (mode.isActive()) {
-                mode.changeDisplayPosition(e.getPoint());
-            }
-        }
-    }
-    
-    public void handleMousePressed(MouseEvent e) {
-        for (GameMode mode : myActiveModes) {
-            if (mode.isActive()) {
-                mode.mousePressed(e.getPoint());
-            }
-        }
-    }
-    
-    public void handleMouseReleased(MouseEvent e) {
-        for (GameMode mode : myActiveModes) {
-            if (mode.isActive()) {
-                mode.mouseReleased(e.getPoint());
-            }
-        }
     }
 
     public int getPlayerSpriteID () {
         return myPlayerSpriteID;
     }
 
-    protected List<GameMode> getActiveModes () {
-        return myActiveModes;
-    }
-
     protected String getNewMapResource () {
         return myNewMapResource;
+    }
+
+    private class ModeEvent {
+        private final String myName;
+        private final List<Integer> myInvolvedIDs;
+
+        public ModeEvent (String eventName, List<Integer> involvedIDs) {
+            myName = eventName;
+            myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
+        }
+    }
+
+    // this whole thing to be wrapped into hashmap: event -> destinationModeId
+    private void handleEvent (ModeEvent event) {
+        String eventName = event.myName;
+        List<Integer> myInvolvedIDs = event.myInvolvedIDs;
+        if ("NO_ACTION".equals(eventName)) {
+            // do nothing
+        }
+        else if ("BATTLE_START".equals(eventName)) {
+            BattleMode battleMode = new BattleMode(5, this, BattleObject.class, myInvolvedIDs);// magic ID number
+            changeCurrentMode(battleMode);
+            // idOfRespectiveMode = myInvolvedIDs.get(0),
+            // e.g. id of enemy sprite is equal to id of target battle mode... ?
+            // changeCurrentMode(idOfRespectiveMode);
+        }
+        else if ("BATTLE_OVER".equals(eventName)) {
+            changeCurrentMode(1);
+            // changeCurrentMode(idOfLatestMapMode);
+        }
+        else if ("SWITCH_LEVEL".equals(eventName)) {
+            // idOfRespectiveLevel = myInvolvedIDs.get(0),
+            // e.g. id of teleport sprite is equal to id of target mapmode
+            // changeCurrentMode(idOfRespectiveLevel);
+        }
+        else if ("CONVERSATION_START".equals(eventName)) { 
+            // idOfRespectiveMode = myInvolvedIDs.get(0),
+            // e.g. id of NPC sprite is equal to id of target conversation mode
+            // changeCurrentMode(idOfRespectiveMode);
+        }
+        else if ("CONVERSATION_OVER".equals(eventName)) {
+            // changeCurrentMode(idOfLatestMapMode);
+        }
+        else if ("GAME_WON".equals(eventName)) { 
+            // this event is thrown to gamemanager by gamelogic
+            // changeCurrentMode(idOfGameWonMode);
+        }
+        else if ("GAME_LOST".equals(eventName)) { 
+            // this event is thrown to gamemanager by gamelogic
+            // changeCurrentMode(idOfGameOverMode);
+        }
+        else {
+            // please no more new features that don't fit in
+            // "mode event -> destination mode" design
+        }
     }
 }

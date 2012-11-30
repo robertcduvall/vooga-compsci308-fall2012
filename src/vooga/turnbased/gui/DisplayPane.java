@@ -2,7 +2,6 @@ package vooga.turnbased.gui;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.input.core.KeyboardController;

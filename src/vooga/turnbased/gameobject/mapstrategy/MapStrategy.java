@@ -1,7 +1,7 @@
 package vooga.turnbased.gameobject.mapstrategy;
 
 import vooga.turnbased.gamecore.GameManager;
-import vooga.turnbased.gamecore.MapMode;
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 
 /**

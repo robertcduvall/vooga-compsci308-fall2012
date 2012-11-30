@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import vooga.turnbased.gamecore.GameLoopMember;
 import vooga.turnbased.gamecore.GameManager;
 
 
@@ -20,13 +19,11 @@ import vooga.turnbased.gamecore.GameManager;
  * 
  * @author Rex, Vo
  */
-public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
+public class GamePane extends DisplayPane implements Runnable {
 
     private GameManager myGameManager;
     private Thread myGameThread;
     private static int delayBetweenGameLoopCycles;
-
-    // InfoPanel infoPanel;
 
     /**
      * Constructor of the canvas which displays the game
@@ -38,7 +35,7 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
         super(gameWindow);
         myGameThread = new Thread(this);
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
-        addMouseListeners();
+        addMouseListener(new GameMouseListener());
         myGameManager = new GameManager(this);
         enableFocus();
     }
@@ -54,7 +51,6 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
     /**
      * update game
      */
-    @Override
     public void update () {
         myGameManager.update();
     }
@@ -62,7 +58,6 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
     /**
      * Paint gameobjects and background to the canvas using double buffering
      */
-    @Override
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
         Graphics nextFrameGraphics = nextFrameImage.getGraphics();
@@ -102,7 +97,7 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
     private class GameMouseListener implements MouseListener {
         @Override
         public void mouseClicked (MouseEvent e) {
-            myGameManager.handleMouseClicked(e);
+            //myGameManager.handleMouseClicked(e);
         }
 
         @Override
@@ -115,27 +110,13 @@ public class GamePane extends DisplayPane implements Runnable, GameLoopMember {
 
         @Override
         public void mousePressed (MouseEvent e) {
-            myGameManager.handleMousePressed(e);
+            //myGameManager.handleMousePressed(e);
         }
 
         @Override
         public void mouseReleased (MouseEvent e) {
-            myGameManager.handleMouseReleased(e);
+            //myGameManager.handleMouseReleased(e);
         }
     }
 
-    private void addMouseListeners () {
-        addMouseListener(new GameMouseListener());
-        addMouseMotionListener(new MouseMotionListener() {
-
-            @Override
-            public void mouseDragged (MouseEvent e) {
-                myGameManager.handleMouseDragged(e);
-            }
-
-            @Override
-            public void mouseMoved (MouseEvent e) {
-            }
-        });
-    }
 }

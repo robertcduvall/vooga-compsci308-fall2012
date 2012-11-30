@@ -7,7 +7,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import vooga.turnbased.gamecore.MapMode;
+
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 
 /**
  * No heuristic methods unfortunately ...

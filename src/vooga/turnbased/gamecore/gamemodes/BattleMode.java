@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecore.gamemodes;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import util.input.core.KeyboardController;
+import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.InputAPI;
@@ -22,8 +23,10 @@ import vooga.turnbased.sprites.Sprite;
 
 
 /**
- * This is gamemode that will run a battle given two lists of BattleObjects that
+ * This is a gamemode that will run a battle given two lists of BattleObjects that
  * will fight each other.
+ * Currently, 4 battle options are supported: attack, defend, charge, heal.
+ * They can be modified and extended.
  * 
  * @author David Howdyshell, Michael Elgart, Kevin Gao, Jenni Mercado, Tony
  * 
@@ -40,22 +43,13 @@ public class BattleMode extends GameMode implements InputAPI {
     private int mySelection = 0;
 
     private final int MESSAGE_NUM = 4;
-    private final int ATTACK_KEY = KeyEvent.VK_A;
-    private final int DEFEND_KEY = KeyEvent.VK_D;
-    private final int HEAL_KEY = KeyEvent.VK_H;
-    private final int CHARGE_KEY = KeyEvent.VK_C;
-    private final int SELECT_KEY = KeyEvent.VK_ENTER;
-    private final int LEFT_KEY = KeyEvent.VK_LEFT;
-    private final int RIGHT_KEY = KeyEvent.VK_RIGHT;
-    private final int UP_KEY = KeyEvent.VK_UP;
-    private final int DOWN_KEY = KeyEvent.VK_DOWN;
-
     private final double TEXT_SCALAR = 40;
     private int myLooserSpriteID;
 
     /**
      * Constructor for a Battle.
      * 
+     * @param id The ID of the mode
      * @param gameManager The parent GameManager that is creating this battle. Will be
      *        alerted when battle ends.
      * @param modeObjectType The object type this mode uses, i.e. BattleObject.java
@@ -63,9 +57,9 @@ public class BattleMode extends GameMode implements InputAPI {
      */
 
     // need to pass ids of battle participants upon battle creation
-    public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
+    public BattleMode (int id, GameManager gameManager, Class<BattleObject> modeObjectType,
             List<Integer> involvedIDs) {
-        super(gameManager, modeObjectType);
+        super(id, gameManager, modeObjectType);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
     }
@@ -79,7 +73,6 @@ public class BattleMode extends GameMode implements InputAPI {
     public void resume () {
         makeTeams();
         initialize();
-        // System.out.println("BattleStarting!");
         myMessages.add(myEnemy.getName() + " encountered!");
         configureInputHandling();
         // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
@@ -92,24 +85,33 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
+        int attack = KeyEvent.VK_A;
+        int defend = KeyEvent.VK_D;
+        int heal = KeyEvent.VK_H;
+        int charge = KeyEvent.VK_C;
+        int left = KeyEvent.VK_LEFT;
+        int right = KeyEvent.VK_RIGHT;
+        int up = KeyEvent.VK_UP;
+        int down = KeyEvent.VK_DOWN;
+        int select = KeyEvent.VK_ENTER;
         try {
-            GamePane.keyboardController.setControl(ATTACK_KEY, KeyboardController.RELEASED, this,
+            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
                     "triggerAttackEvent");
-            GamePane.keyboardController.setControl(DEFEND_KEY, KeyboardController.RELEASED, this,
+            GamePane.keyboardController.setControl(defend, KeyboardController.RELEASED, this,
                     "triggerDefendEvent");
-            GamePane.keyboardController.setControl(HEAL_KEY,
+            GamePane.keyboardController.setControl(heal,
                     KeyboardController.RELEASED, this, "triggerHealEvent");
-            GamePane.keyboardController.setControl(CHARGE_KEY, KeyboardController.RELEASED,
+            GamePane.keyboardController.setControl(charge, KeyboardController.RELEASED,
                     this, "triggerChargeEvent");
-            GamePane.keyboardController.setControl(LEFT_KEY, KeyboardController.RELEASED, 
+            GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, 
                     this, "triggerLeftEvent");
-            GamePane.keyboardController.setControl(RIGHT_KEY, KeyboardController.RELEASED, 
+            GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, 
                     this, "triggerRightEvent");
-            GamePane.keyboardController.setControl(UP_KEY, KeyboardController.RELEASED, 
+            GamePane.keyboardController.setControl(up, KeyboardController.RELEASED, 
                     this, "triggerUpEvent");
-            GamePane.keyboardController.setControl(DOWN_KEY, KeyboardController.RELEASED, 
+            GamePane.keyboardController.setControl(down, KeyboardController.RELEASED, 
                     this, "triggerDownEvent");
-            GamePane.keyboardController.setControl(SELECT_KEY, KeyboardController.RELEASED, 
+            GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, 
                     this, "triggerSelectEvent");
         }
         catch (Exception e) {
@@ -142,7 +144,6 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void update () {
-        
         if (isBattleOver()) {
             endBattle();
         }
@@ -168,7 +169,6 @@ public class BattleMode extends GameMode implements InputAPI {
             teamNumber += 1;
         }
         paintMenu(g);
-
     }
 
     //someone please fix this...
@@ -275,7 +275,6 @@ public class BattleMode extends GameMode implements InputAPI {
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
         getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
-        setActive(false);
     }
 
     private boolean isBattleOver () {
@@ -285,6 +284,7 @@ public class BattleMode extends GameMode implements InputAPI {
                 teamDead = true;
                 // hardcoded
                 Sprite looserSprite = getGameManager().findSpriteWithID(t.getBattleObjects().get(0).getID());
+                // not to be confused with tighterSprite...
                 myLooserSpriteID = looserSprite.getID();
                 looserSprite.clear();
                 getGameManager().deleteSprite(looserSprite.getID());

@@ -1,14 +1,16 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecore.gamemodes;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+
+import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gui.GameWindow;
 
 public class GameOverMode extends GameMode {
 
-    public GameOverMode (GameManager gm, Class modeObjectType) {
-        super(gm, modeObjectType);
+    public GameOverMode (int ID, GameManager gm, Class modeObjectType) {
+        super(ID, gm, modeObjectType);
         
     }
 

@@ -7,7 +7,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import vooga.turnbased.gamecore.MapMode;
+
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
 import vooga.turnbased.gameobject.mapstrategy.NullStrategy;

@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecore.gamemodes;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import util.input.core.KeyboardController;
+import util.xml.XmlUtilities;
+import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.pathutility.PathFinder;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
@@ -42,7 +44,6 @@ public class MapMode extends GameMode implements InputAPI {
     private Rectangle myCurrentCamera;
     private PathFinder myPathFinder;
     private Point myTopLeftCoord;
-    private boolean myIsPaused;
 
     /**
      * Constructor of MapMode
@@ -50,9 +51,9 @@ public class MapMode extends GameMode implements InputAPI {
      * @param gm
      *        the GameManager which manages the mode
      */
-    public MapMode (GameManager gm, Class modeObjectType) {
-        super(gm, modeObjectType);
-        myIsPaused = false;
+    public MapMode (int ID, GameManager gm, Class modeObjectType) {
+        super(ID, gm, modeObjectType);
+        //initialize();
     }
 
     @Override
@@ -60,15 +61,14 @@ public class MapMode extends GameMode implements InputAPI {
      * pause the game
      */
     public void pause () {
-        // myMapObjects.clear();
-        myIsPaused = true;
+        myMapObjects.clear();
     }
 
     @Override
     public void resume () {
         // do stuff when back to map mode
-        configureInputHandling();
-        myIsPaused = false;
+    	initialize(); //TODO: Shouldn't need to reinitialize map objects
+    	//configureInputHandling();
     }
 
     @Override
@@ -77,16 +77,24 @@ public class MapMode extends GameMode implements InputAPI {
         List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         for (MapObject mapObject : mapObjects) {
             addMapObject(mapObject.getLocation(), mapObject);
+            if (mapObject.getID() == getGameManager().getPlayerSpriteID()){
+            	myPlayer = (MapPlayerObject) mapObject;
+            }
         }
         configureInputHandling();
-        update();
+        //update();
     }
 
-    public void setNumDisplayRows (int numDisplayRows) {
+    public void setCameraSize(Dimension d) {
+        setNumDisplayCols(d.width);
+        setNumDisplayRows(d.height);
+    }
+    
+    private void setNumDisplayRows (int numDisplayRows) {
         this.myNumDisplayRows = numDisplayRows;
     }
 
-    public void setNumDisplayCols (int numDisplayCols) {
+    private void setNumDisplayCols (int numDisplayCols) {
         this.myNumDisplayCols = numDisplayCols;
     }
 
@@ -121,7 +129,6 @@ public class MapMode extends GameMode implements InputAPI {
      */
     @Override
     public void paint (Graphics g) {
-        if (myIsPaused) { return; }
         paintMapBackgroung(g);
         List<MapObject> visibleSprites = getSpritesWithinCamera();
         for (MapObject s : visibleSprites) {
@@ -154,11 +161,9 @@ public class MapMode extends GameMode implements InputAPI {
      * update the map
      */
     public void update () {
-        if (myIsPaused) { return; }
         updateTileInfo();
         updateCameraPosition();
         updateMapObjects();
-        processGameEvents();
     }
 
     /**
@@ -221,18 +226,6 @@ public class MapMode extends GameMode implements InputAPI {
                 }
             }
         }
-    }
-
-    private void processGameEvents () { 
-        while (!getModeEvents().isEmpty()) {
-            GameEvent m = getModeEvents().remove(0);
-            // decide here if event needs to be reported to gamemanager
-            getGameManager().flagEvent(m);
-        }
-    }
-
-    public void flagEvent (String modeEvent, List<Integer> involvedSpriteIDs) {
-        getModeEvents().add(new GameEvent(modeEvent, involvedSpriteIDs));
     }
 
     /**

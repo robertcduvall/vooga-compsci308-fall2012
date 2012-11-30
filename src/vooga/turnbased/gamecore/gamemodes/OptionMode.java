@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecore.gamemodes;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
@@ -31,8 +33,8 @@ public class OptionMode extends GameMode {
     private Map<String, MapStrategy> myDisplayedStrategies;
     private Rectangle myBounds;
 
-    public OptionMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
-        super(gm, modeObjectType);
+    public OptionMode (int ID, GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
+        super(ID, gm, modeObjectType);
         myDisplayedStrategies = new HashMap<String, MapStrategy>();
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
         myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
@@ -85,7 +87,6 @@ public class OptionMode extends GameMode {
 
     }
     
-    @Override
     /**
      * change the position of the conversation box
      */
@@ -99,7 +100,6 @@ public class OptionMode extends GameMode {
         }
     }
 
-    @Override
     protected void mousePressed (Point pressedPosition) {
         myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
         if (myBounds.contains(pressedPosition)) {
@@ -113,12 +113,12 @@ public class OptionMode extends GameMode {
     }
     
     public void handleMouseClicked (MouseEvent e) {
-        if (!myBounds.contains(e.getPoint())) {
-            setActive(false);
-        }
-        //work on it tmr
-        myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer);
-        this.setActive(false);
+//        if (!myBounds.contains(e.getPoint())) {
+//            setActive(false);
+//        }
+//        //work on it tmr
+//        myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer);
+//        this.setActive(false);
     }
     
     private Point getPositionOnPanel(Point position) {

@@ -1,12 +1,9 @@
-package vooga.turnbased.gamecore;
+package vooga.turnbased.gamecore.gamemodes;
 
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import vooga.turnbased.gameobject.GameObject;
+
+import vooga.turnbased.gamecore.GameManager;
 
 
 /**
@@ -17,11 +14,10 @@ import vooga.turnbased.gameobject.GameObject;
  * @author rex, Volodymyr
  */
 // public abstract class GameMode extends Observable {
-public abstract class GameMode implements GameLoopMember {
+public abstract class GameMode {
+	private final int myID;
     private final GameManager myGameManager;
     private final Class myObjectType;
-    private List<GameEvent> myModeEvents;
-    private boolean myIsActive;
     private boolean myHasFocus;
 
     /**
@@ -32,20 +28,19 @@ public abstract class GameMode implements GameLoopMember {
      * @param modeObjectType Type of GameObject associated with GameMode
      *        being constructed.
      */
-    public GameMode (GameManager gm, Class modeObjectType) {
+    public GameMode (int ID, GameManager gm, Class modeObjectType) {
+    	myID = ID;
         myGameManager = gm;
         myObjectType = modeObjectType;
-        myModeEvents = new LinkedList<GameEvent>();
-        myIsActive = true;
         myHasFocus = true;
     }
 
     public GameManager getGameManager () {
         return myGameManager;
     }
-
-    public List<GameEvent> getModeEvents () {
-        return myModeEvents;
+    
+    public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
+        myGameManager.flagEvent(eventName, involvedSpriteIDs);
     }
 
     /**
@@ -56,13 +51,19 @@ public abstract class GameMode implements GameLoopMember {
     public Class getObjectType () {
         return myObjectType;
     }
+    
+    public int getID() {
+    	return myID;
+    }
 
+    
     /**
-     * Each game mode should paint everything that should be currently displayed
-     * 
-     * @param g
-     * @param canvasWidth
-     * @param canvasHeight
+     * Call when gamemode if first created
+     */
+    public abstract void initialize ();
+    
+    /**
+     * Suspend a mode while entering a different mode
      */
     public abstract void pause ();
 
@@ -72,56 +73,16 @@ public abstract class GameMode implements GameLoopMember {
     public abstract void resume ();
 
     /**
-     * Call when gamemode if first created
-     */
-    public abstract void initialize ();
-
-    /**
      * Method that will paint the different objects in the mode.
      * 
      * @param g Graphics.
      */
-    @Override
     public abstract void paint (Graphics g);
 
     /**
      * Method that will update the objects in the GameMode when called.
      */
-    @Override
     public abstract void update ();
-
-    // public abstract void processGameEvents ();
-
-    /**
-     * Override if any sub-mode needs to handle MouseClicked events.
-     * 
-     * @param e MouseEvent to be handled.
-     */
-    public void handleMouseClicked (MouseEvent e) {
-    }
-
-    protected void setActive (boolean b) {
-        myIsActive = b;
-    }
-
-    protected boolean isActive () {
-        return myIsActive;
-    }
-
-    /**
-     * sub classes will decide whether they need to change display position in
-     * the game window
-     * 
-     * @param currentPosition the current position of the mouse
-     */
-    protected void changeDisplayPosition (Point currentPosition) {
-    }
-    
-    protected void mousePressed (Point pressedPosition) {
-    }
-    
-    protected void mouseReleased (Point releasedPosition) {
-    }
     
     protected boolean hasFocus () {
         return myHasFocus;
