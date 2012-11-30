@@ -21,7 +21,7 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
     private String gameName;
     private String ratingToBeSubmitted;
     private JTextArea reviewArea;
-    private Dimension maxReviewBoxSize = new Dimension(300, 300);
+    private Dimension maxReviewBoxSize = new Dimension(600, 300);
     
     public EnterReviewRatingMainPanel (Arcade a) {
         super(a);
@@ -34,7 +34,7 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
 
         gameName = (String) getArcade().getVariable("GameName");
 
-        MigLayout layout = new MigLayout("flowy", "[]150[]");
+        MigLayout layout = new MigLayout("flowy", "[]push[]");
         myPanel.setLayout(layout);
 
         JLabel titleLabel = new JLabel("Leave your feedback for " + gameName + " below!");
@@ -108,11 +108,11 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         tenButton.addActionListener(this);
         
         JLabel reviewPrompt = new JLabel("Write a review/comment:");
-        reviewArea = new JTextArea("", 20, 20);
+        reviewArea = new JTextArea("", 20, 60);
         reviewArea.setLineWrap(true);
         reviewArea.setWrapStyleWord(true);
         reviewArea.setMaximumSize(maxReviewBoxSize);
-        JScrollPane scrollReview = new JScrollPane(reviewArea);
+        JScrollPane scrollingReview = new JScrollPane(reviewArea);
         
         JButton submitBut = new JButton("Submit");
         submitBut.addActionListener(new ActionListener(){
@@ -134,7 +134,7 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
               
           });
 
-        myPanel.add(titleLabel, "align center, span, grow");
+        myPanel.add(titleLabel, "span, grow, align center");
         myPanel.add(ratingLabel);
         myPanel.add(oneButton, "split 10");
         myPanel.add(twoButton);
@@ -146,9 +146,9 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         myPanel.add(eightButton);
         myPanel.add(nineButton);
         myPanel.add(tenButton);
-        myPanel.add(submitBut, "span, grow, dock south");
+        myPanel.add(submitBut, "dock south, span, grow, align center");
         myPanel.add(reviewPrompt, "cell 2 1");
-        myPanel.add(scrollReview, "cell 2 2");
+        myPanel.add(scrollingReview, "cell 2 2");
         return myPanel;
     }
 
