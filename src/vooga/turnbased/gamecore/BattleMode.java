@@ -51,6 +51,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private final int DOWN_KEY = KeyEvent.VK_DOWN;
 
     private final double TEXT_SCALAR = 40;
+    private int myLooserSpriteID;
 
     /**
      * Constructor for a Battle.
@@ -271,7 +272,9 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void endBattle () {
         System.out.println("End battle!");
-        getGameManager().flagEvent("BATTLE_OVER", new ArrayList());
+        List<Integer> battleLooserIDs = new ArrayList<Integer>();
+        battleLooserIDs.add(myLooserSpriteID);
+        getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
         setActive(false);
     }
 
@@ -281,8 +284,10 @@ public class BattleMode extends GameMode implements InputAPI {
             if (!t.stillAlive()) {
                 teamDead = true;
                 // hardcoded
-                getGameManager().findSpriteWithID(t.getBattleObjects().get(0).getID()).clear();
-                getGameManager().deleteSprite(t.getBattleObjects().get(0).getID());
+                Sprite looserSprite = getGameManager().findSpriteWithID(t.getBattleObjects().get(0).getID());
+                myLooserSpriteID = looserSprite.getID();
+                looserSprite.clear();
+                getGameManager().deleteSprite(looserSprite.getID());
             }
         }
         return teamDead;
