@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class User {
     private String myName;
-    private Image myPicture;
+    private String myPicture;
     private String myPassword;
     private int myCredits;
     private List<Message> myMessages;
@@ -29,7 +29,7 @@ public class User {
      * @param name
      * @param picture
      */
-    public User (String name, String password, Image picture, int credits, List<Message> messages,
+    public User (String name, String password, String picture, int credits, List<Message> messages,
                  List<GameData> gameData, String firstName, String lastName) {
         myName = name;
         myPassword = password;
@@ -50,8 +50,12 @@ public class User {
         return myName;
     }
 
-    public Image getPicture () {
+    public String getPicture () {
         return myPicture;
+    }
+    
+    public void setPicture (String picture) {
+        myPicture=picture;
     }
 
     protected void setName (String newName) {

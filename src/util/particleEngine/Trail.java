@@ -28,7 +28,6 @@ public class Trail extends ParticleSystem {
         ImageIcon temp = new ImageIcon(Trail.class.getResource("particle.png"));
         Image particleImage = temp.getImage();
 
-        vcalculator = new VectorCalculator();
         addParticleEngine(density, particleImage, position, velocity,
                 tolerance, length, angleSpan, numberOfDirections, true);
 

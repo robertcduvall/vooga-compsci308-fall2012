@@ -40,30 +40,9 @@ public class GameProfileMainPanel extends AMainPanel {
         myPanel.setLayout(layout);
 
         System.out.println(myPanel.getSize());
-
-        myPanel = addPlayButton(myPanel);
-        myPanel = addGameName(myPanel);
-        myPanel = addGameProfilePicture(myPanel);
-        
-        return myPanel;
-
-    }
-
-    private ArcadePanel addGameName (ArcadePanel myPanel) {
+ 
         JLabel nameOfGame = new JLabel(gameName);
-        myPanel.add(nameOfGame);
-        return myPanel;
-    }
-    
-    private ArcadePanel addGameProfilePicture (ArcadePanel myPanel) {
-        ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
-        JLabel profilePic = new JLabel(icon);
-        myPanel.add(profilePic, "wrap");
-
-        return myPanel;
-    }
-    
-    private ArcadePanel addPlayButton (ArcadePanel myPanel) {
+        
         JButton playButton = new JButton("Play");
         playButton.addActionListener(new ActionListener() {
 
@@ -74,8 +53,21 @@ public class GameProfileMainPanel extends AMainPanel {
 
         });
 
-        myPanel.add(playButton);
+        ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
+        JLabel profilePic = new JLabel(icon);
+
+        
+        
+
+        //JLabel averageRating = new JLabel("Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings());
+        
+        myPanel.add(playButton, "dock east, grow, span");
+        myPanel.add(nameOfGame, "align center, wrap");
+        myPanel.add(profilePic, "grow");
+        //myPanel.add(averageRating);
+        
         return myPanel;
+
     }
 
     /*private ArcadePanel addGameDescription (ArcadePanel myPanel) {
@@ -87,15 +79,6 @@ public class GameProfileMainPanel extends AMainPanel {
 
         return myPanel;
     }*/
-
-    private ArcadePanel addAverageRating (ArcadePanel myPanel) {
-
-        JLabel label = new JLabel("Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRatings());
-        myPanel.add(label);
-
-        return myPanel;
-    }
-
     /*private ArcadePanel addListOfRatingsAndReviews (ArcadePanel myPanel) {
         
     }
