@@ -34,7 +34,7 @@ public class LevelEditor extends JFrame {
     private boolean myGameIsRunning;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
-    private SelectionMouseListener myMouseListener;
+//    private SelectionMouseListener myMouseListener; SEE EMAIL
     private MouseListener myButtonListener;
     private int myViewOffset;
 
@@ -89,7 +89,7 @@ public class LevelEditor extends JFrame {
         LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
         myBoard = board;
         myContainer.add(board);
-        myMouseListener = myBoard.getMouseListener();
+//        myMouseListener = myBoard.getMouseListener();
         myKeyListener = new KeyAdapter() {
             @Override 
             public void keyPressed (KeyEvent arg0) {
@@ -134,8 +134,8 @@ public class LevelEditor extends JFrame {
         };
         panel.setLayout(new BorderLayout());
         myViewPane = panel;
-        panel.addMouseListener(myMouseListener);
-        panel.addMouseMotionListener(myMouseListener);
+//        panel.addMouseListener(myMouseListener); SEE EMAIL
+//        panel.addMouseMotionListener(myMouseListener);
         panel.addKeyListener(myKeyListener);
         myContainer.add(panel);
         myViewOffset = 0;
@@ -176,8 +176,9 @@ public class LevelEditor extends JFrame {
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
+                    // TODO replace null value for spriteID with a unique id value
                     Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40,
-                            IMAGE_PATH + event.getActionCommand() + ".png");
+                            null, IMAGE_PATH + event.getActionCommand() + ".png");
                     myBoard.add(s);
                 }
             });

@@ -19,7 +19,7 @@ import arcade.IArcadeGame;
 public class GameCenter {
 
     private List<Game> myGames;
-    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
+    private String myGameXml = "src/arcade/database/game.xml";
 
     public GameCenter () {
         initialize();
