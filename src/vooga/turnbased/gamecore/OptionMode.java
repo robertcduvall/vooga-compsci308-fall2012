@@ -90,10 +90,11 @@ public class OptionMode extends GameMode {
      */
     protected void changeDisplayPosition(Point currentPosition) {
         if (hasFocus()) {
-            int x = currentPosition.x - myPanel.getPreviousPosition().x;
-            int y = currentPosition.y - myPanel.getPreviousPosition().y;
+            Point positionOnPanel = getPositionOnPanel(currentPosition);
+            int x = positionOnPanel.x - myPanel.getPreviousPosition().x;
+            int y = positionOnPanel.y - myPanel.getPreviousPosition().y;
             myOrigin.translate(x, y);
-            myPanel.setPreviousPosition(currentPosition);
+            myPanel.setPreviousPosition(positionOnPanel);
         }
     }
 
@@ -113,7 +114,7 @@ public class OptionMode extends GameMode {
     public void handleMouseClicked (MouseEvent e) {
         //work on it tmr
         myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer);
-        setActive(false);
+        this.setActive(false);
     }
     
     private Point getPositionOnPanel(Point position) {
