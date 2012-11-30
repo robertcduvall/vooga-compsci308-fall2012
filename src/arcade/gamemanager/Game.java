@@ -1,6 +1,7 @@
 package arcade.gamemanager;
 
 import arcade.IArcadeGame;
+import arcade.Sample1;
 import arcade.utility.ReadWriter;
 import java.awt.Image;
 import java.io.File;
@@ -69,7 +70,7 @@ public class Game {
             if ("preferences".equals(gameInfo.item(i))) { return gameInfo.item(
                     i).getTextContent(); }
         }
-        return null;
+        return "";
     }
     
     /**
@@ -146,7 +147,7 @@ public class Game {
             if ("review".equals(gameInfo.item(i))) { return gameInfo.item(i)
                     .getTextContent(); }
         }
-        return null;
+        return "";
     }
 
     /**
@@ -188,5 +189,10 @@ public class Game {
                     .getTextContent(); }
         }
         return null;
+    }
+    public static void main(String args[]) {
+        Game g = new Game(new vooga.turnbased.Start());
+        System.out.println(g.getDescription());
+        System.out.println(g.getReview());
     }
 }
