@@ -29,12 +29,13 @@ public class GameManager implements GameLoopMember, InputAPI {
 
     private final GamePane myGamePane;
     private GameLevelManager myLevelManager;
-    private boolean myGameOverCheck;
+    private boolean myGameIsOver;
     private HashMap<Integer, Sprite> mySprites;
     private List<GameEvent> myEvents;
     private List<GameMode> myActiveModes;
     private String myNewMapResource;
     private GameLogic myGameLogic;
+    private int myPlayerSpriteID;
 
     /**
      * Constructor of GameManager
@@ -44,12 +45,12 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
-        myGameOverCheck = false;
+        myGameIsOver = false;
         mySprites = new HashMap<Integer, Sprite>();
         myEvents = new LinkedList<GameEvent>();
         myActiveModes = new LinkedList<GameMode>();
         myLevelManager = new GameLevelManager(this);
-        myGameLogic = new GameLogic();
+        myGameLogic = new GameLogic(this);
         initializeGameLevel(GameWindow.importString("Entrance"), null);
         configureInputHandling();
     }
@@ -69,6 +70,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         mySprites.clear();
         addSprites(myLevelManager.getCurrentSprites());
         mapMode.initialize();
+        myPlayerSpriteID = mapMode.getPlayer().getID();
     }
 
     /**
@@ -124,7 +126,7 @@ public class GameManager implements GameLoopMember, InputAPI {
      * @return isOver True if game is over, false if not.
      */
     public boolean isOver () {
-        return myGameOverCheck;
+        return myGameIsOver;
     }
 
     /**
@@ -184,13 +186,13 @@ public class GameManager implements GameLoopMember, InputAPI {
      */
     private void handleEvents () {
         myGameLogic.processEvents(myEvents);
-        while (!myEvents.isEmpty()) {
+        /*while (!myEvents.isEmpty()) {
             GameEvent m = myEvents.remove(0);
             handleEvent(m);
-        }
+        }*/
     }
 
-    private void handleEvent (GameEvent event) {
+    /*private void handleEvent (GameEvent event) {
         String eventName = event.getModeEventName();
         List<Integer> myInvolvedIDs = event.getEventInvolvedIDs();
         if ("NO_ACTION".equals(eventName)) {
@@ -202,8 +204,13 @@ public class GameManager implements GameLoopMember, InputAPI {
             changeCurrentMode(battleMode);
         }
         else if ("BATTLE_OVER".equals(eventName)) {
+            System.out.println(myPlayerSpriteID);
+            if(event.getEventInvolvedIDs().get(0) == myPlayerSpriteID) processGameOver();
             removeInactiveModes();
             resumeModes();
+        }
+        else if ("GAME_OVER".equals(eventName)) {
+            processGameOver();
         }
         else if ("SWITCH_LEVEL".equals(eventName)) {
             MapObject enteringMapObject = findMapObjectWithID(myInvolvedIDs.get(0));
@@ -228,11 +235,20 @@ public class GameManager implements GameLoopMember, InputAPI {
             /*
              * myGameLogic.processInteraction(event);
              * if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
-             */
+             
         }
         else {
             // System.err.println("Unrecognized mode event requested.");
         }
+    }*/
+
+    protected void processGameOver () {
+        myGameIsOver = true;
+        mySprites.clear();
+        myActiveModes.clear();
+        GameOverMode gameOver = new GameOverMode(this, this.getClass());
+        myActiveModes.add(gameOver);
+        changeCurrentMode(gameOver);
     }
 
     /**
@@ -283,7 +299,7 @@ public class GameManager implements GameLoopMember, InputAPI {
         // KeyboardController.PRESSED, this, "gameOver");
     }
 
-    private void removeInactiveModes () {
+    protected void removeInactiveModes () {
         Iterator<GameMode> iterator = myActiveModes.iterator();
         while (iterator.hasNext()) {
             GameMode mode = iterator.next();
@@ -302,9 +318,10 @@ public class GameManager implements GameLoopMember, InputAPI {
         myNewMapResource = URI;
     }
 
-    private MapObject findMapObjectWithID (int ID) {
+    // hardcoded. use getSpriteById().getObject(MapObject.class) instead
+    /*private MapObject findMapObjectWithID (int ID) {
         return findSpriteWithID(ID).getMapObject();
-    }
+    }*/
     
     public void handleMouseDragged(MouseEvent e) {
         for (GameMode mode : myActiveModes) {
@@ -328,5 +345,17 @@ public class GameManager implements GameLoopMember, InputAPI {
                 mode.mouseReleased(e.getPoint());
             }
         }
+    }
+
+    public int getPlayerSpriteID () {
+        return myPlayerSpriteID;
+    }
+
+    protected List<GameMode> getActiveModes () {
+        return myActiveModes;
+    }
+
+    protected String getNewMapResource () {
+        return myNewMapResource;
     }
 }
