@@ -175,4 +175,7 @@ public class ModelInterface {
         
     }
 
+    public void changeAdminStatus (String name, boolean adminStatus) {
+        myUserManager.changeAdminStatus(name, adminStatus);
+    }
 }

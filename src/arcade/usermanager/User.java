@@ -22,6 +22,7 @@ public class User {
     private List<GameData> myGameData;
     private String myFirstName;
     private String myLastName;
+    private boolean myAdminStatus;
 
     /**
      * Constructs a new User
@@ -39,6 +40,7 @@ public class User {
         myGameData = gameData;
         myFirstName = firstName;
         myLastName = lastName;
+        setMyAdminStatus(false);
 
     }
 
@@ -49,10 +51,11 @@ public class User {
     protected String getName () {
         return myName;
     }
-    
+
     protected String getFirstName () {
         return myFirstName;
     }
+
     protected String getLastName () {
         return myLastName;
     }
@@ -60,9 +63,9 @@ public class User {
     public String getPicture () {
         return myPicture;
     }
-    
+
     public void setPicture (String picture) {
-        myPicture=picture;
+        myPicture = picture;
     }
 
     protected void setName (String newName) {
@@ -99,5 +102,13 @@ public class User {
     public String getFullName () {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    public boolean isMyAdminStatus () {
+        return myAdminStatus;
+    }
+
+    public void setMyAdminStatus (boolean myAdminStatus) {
+        this.myAdminStatus = myAdminStatus;
     }
 }
