@@ -149,7 +149,7 @@ public class MapObject extends GameObject {
         List<Integer> involvedSpriteIDs = new ArrayList<Integer>();
         involvedSpriteIDs.add(this.getID());
         involvedSpriteIDs.add(involvedObject.getID());
-        getMapMode().flagCondition("CONVERSATION_START", involvedSpriteIDs);
+        getMapMode().flagCondition(getModeEvent(), involvedSpriteIDs);
     }
 
     public void addStrategy (MapStrategy mapStrategy) {
