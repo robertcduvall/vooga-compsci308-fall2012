@@ -1,5 +1,6 @@
 package vooga.platformer.level.condition;
 
+import java.util.List;
 import java.util.Map;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
@@ -15,7 +16,7 @@ public interface Condition {
      * @param objectList The list of GameObjects in the level
      * @return true if the condition is satisfied and false if the condition is not satisfied
      */
-    boolean isSatisfied(Iterable<GameObject> objectList);
+    boolean isSatisfied(List<GameObject> objectList);
     
     /**
      * @return The next level to load, if any, when this condition is satisfied. If no subsequent

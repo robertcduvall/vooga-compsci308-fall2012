@@ -13,7 +13,8 @@ import vooga.platformer.util.ConfigStringParser;
 
 /**
  * A plugin that paints a message, consisting of a variable number of lines, to the screen
- * starting at the given x and y position and with the given vertical spacing.
+ * starting at the given x and y position and with the given vertical spacing. Paints the message
+ * on top of everything else.
  * @author Niel Lebeck
  *
  */
@@ -57,12 +58,12 @@ public class FixedMessagePainter extends LevelPlugin {
     }
     
     @Override
-    public void update (Iterable<GameObject> objCollection) {
+    public void update (List<GameObject> objectList) {
         
     }
 
     @Override
-    public void paint (Graphics pen, Iterable<GameObject> objList, Camera cam) {
+    public void paint (Graphics pen, List<GameObject> objectList, Camera cam) {
         pen.setColor(myColor);
         for (int i = 0; i < myMessages.size(); i++) {
             String str = myMessages.get(i);

@@ -1,6 +1,7 @@
 package vooga.platformer.level.condition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.ConfigStringParser;
@@ -39,7 +40,7 @@ public class DestroySpecificObjectWinCondition implements Condition {
     }
     
     @Override
-    public boolean isSatisfied (Iterable<GameObject> objectList) {
+    public boolean isSatisfied (List<GameObject> objectList) {
         GameObject go = GameObjectFinder.findGameObject(objectList, myObjectId);
         return go == null;
     }

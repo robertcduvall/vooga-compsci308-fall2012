@@ -1,7 +1,9 @@
 package vooga.platformer.level.condition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.ConfigStringParser;
 import vooga.platformer.util.enums.PlayState;
@@ -35,12 +37,12 @@ public class DefeatAllEnemiesCondition implements Condition {
     }
     
     @Override
-    public boolean isSatisfied (Iterable<GameObject> objectList) {
+    public boolean isSatisfied (List<GameObject> objectList) {
         int numEnemies = 0;
         for (GameObject go : objectList) {
-            //if (go instanceof Enemy) {
-            //    numEnemies++;
-            //}
+            if (go instanceof Enemy) {
+                numEnemies++;
+            }
         }
         return numEnemies <= 0;
     }
