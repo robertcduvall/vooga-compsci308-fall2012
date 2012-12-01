@@ -473,17 +473,21 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
 
+    /**
+     * battle states in a battle
+     * waiting for player to decide, display message, and when animation takes place
+     */
     private enum BattleState {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING
     }
 
-
+    /**
+     * Options to select
+     */
     private enum OptionSelect {
         OPTION1, OPTION2, OPTION3, OPTION4
     }
 
-    @Override
-    public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
-
+    public void processMouseInput (int mousePressed, Point mousePosition, int mouseButton) {
     }
 }
