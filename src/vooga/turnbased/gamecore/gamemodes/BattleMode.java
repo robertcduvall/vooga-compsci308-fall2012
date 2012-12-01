@@ -147,7 +147,7 @@ public class BattleMode extends GameMode implements InputAPI {
             endBattle();
         }
         if (!myPlayerObject.isAlive()) {
-            myMessages.add(myPlayerObject.getName() + " fainted");
+            myMessages.add(myPlayerObject.getDeathMessage());
             myTeam.switchPlayer(myTeam.nextPlayer());
             myPlayerObject = myTeam.getActivePlayer();
             myMessages.add(myPlayerObject.getName() + " sent out");
@@ -156,7 +156,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myPlayerObject.update();
         }
         if (!myEnemyObject.isAlive()) {
-            myMessages.add(myEnemyObject.getName() + " fainted");
+            myMessages.add(myEnemyObject.getDeathMessage());
             myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
             myEnemyObject = myEnemyTeam.getActivePlayer();
             myMessages.add(myEnemyObject.getName() + " appeared");

@@ -36,4 +36,9 @@ public class TestMonster extends BattleObject {
     public void attackEnemy (BattleObject enemy) {
         enemy.takeDamage(getStat("attack").intValue());
     }
+
+    @Override
+    public String getDeathMessage () {
+        return this.getName() + " fainted.";
+    }
 }
