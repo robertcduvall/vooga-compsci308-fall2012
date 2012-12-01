@@ -69,10 +69,6 @@ public class ChatServer extends Server {
     public boolean hasUser (String user) {
         if (myUserInfo !=  null) {
             String stored = myUserInfo.get(user);
-            if (stored != null)
-                System.out.println("USER ALREADY EXISTS!");
-            else
-                System.out.println("USER DOES NOT YET EXIST");
             return stored != null;
         }
         return false;
