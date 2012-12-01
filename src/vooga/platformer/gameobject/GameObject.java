@@ -1,16 +1,15 @@
 package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import util.camera.Camera;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.ConfigStringParser;
@@ -23,7 +22,8 @@ import vooga.platformer.util.ConfigStringParser;
  * @author Grant Oakley (modified)
  * 
  */
-public abstract class GameObject implements Comparable<GameObject> {
+public abstract class GameObject implements Comparable<GameObject>, Serializable {
+    private static final long serialVersionUID = 1L;
     protected static final String X_TAG = "x";
     protected static final String Y_TAG = "y";
     protected static final String WIDTH_TAG = "width";
@@ -37,7 +37,7 @@ public abstract class GameObject implements Comparable<GameObject> {
     private double y;
     private double width;
     private double height;
-    private Image defaultImage;
+    private ImageIcon defaultImage;
     private int id;
     private Level myLevel;
 
@@ -50,20 +50,6 @@ public abstract class GameObject implements Comparable<GameObject> {
         strategyMap = new HashMap<String, UpdateStrategy>();
     }
 
-    // /**
-    // *
-    // * @param inX starting x position
-    // * @param inY starting y position
-    // */
-    // public GameObject (double inX, double inY, double inWidth, double
-    // inHeight) {
-    // this();
-    // x = inX;
-    // y = inY;
-    // width = inWidth;
-    // height = inHeight;
-    // }
-
     /**
      * @param configString containing key-value pairs for the GameObject's
      *        parameters. The
@@ -74,8 +60,7 @@ public abstract class GameObject implements Comparable<GameObject> {
      */
     public GameObject (String configString) {
         this();
-        Map<String, String> configMap = ConfigStringParser
-                .parseConfigString(configString);
+        Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
         x = Double.parseDouble(configMap.get(X_TAG));
         y = Double.parseDouble(configMap.get(Y_TAG));
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
@@ -83,9 +68,11 @@ public abstract class GameObject implements Comparable<GameObject> {
         String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
         id = Integer.parseInt(configMap.get(ID_TAG));
         try {
-            defaultImage = ImageIO.read(new File(defaultImageName));
+            defaultImage = new ImageIcon(ImageIO.read(new File(defaultImageName)));
         }
         catch (IOException e) {
+            // TODO Handle this exception in a more acceptable manner, or do not
+            // use config string instantiation.
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
@@ -111,8 +98,7 @@ public abstract class GameObject implements Comparable<GameObject> {
         params.put(WIDTH_TAG, "width of the object");
         params.put(HEIGHT_TAG, "height of the object");
         params.put(ID_TAG, "ID for sprite. Should be unique.");
-        params.put(DEFAULT_IMAGE_TAG,
-                "file name of the image to the be the default image.");
+        params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
         return params;
     }
 
@@ -171,7 +157,8 @@ public abstract class GameObject implements Comparable<GameObject> {
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
-     * @param StrategyName the Class Name of the Strategy, not includes package name
+     * @param StrategyName the Class Name of the Strategy, not includes package
+     *        name
      * @param strat strategy
      */
     public void addStrategy (String StrategyName, UpdateStrategy strat) {
@@ -229,10 +216,9 @@ public abstract class GameObject implements Comparable<GameObject> {
         double yOffset = rect.getY();
 
         if (getShape().intersects(rect)) {
-            pen.drawImage(
-                    getCurrentImage().getScaledInstance((int) width,
-                            (int) height, Image.SCALE_DEFAULT),
-                    (int) (x - xOffset), (int) (y - yOffset), null);
+            pen.drawImage(getCurrentImage().getScaledInstance((int) width, (int) height,
+                                                              Image.SCALE_DEFAULT),
+                          (int) (x - xOffset), (int) (y - yOffset), null);
         }
     }
 
@@ -240,14 +226,14 @@ public abstract class GameObject implements Comparable<GameObject> {
      * @return the current Image of this GameObject
      */
     public Image getCurrentImage () {
-        return defaultImage;
+        return defaultImage.getImage();
     }
 
     /**
      * @param img of the obj
      */
     public void setImage (Image img) {
-        defaultImage = img;
+        defaultImage = new ImageIcon(img);
     }
 
     /**
