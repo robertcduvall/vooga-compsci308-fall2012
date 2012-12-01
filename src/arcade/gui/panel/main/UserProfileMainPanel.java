@@ -75,7 +75,7 @@ public class UserProfileMainPanel extends AMainPanel {
               
           });
         JButton editButton = new JButton("Edit Profile"); 
-        sendMessageButton.addActionListener(new ActionListener(){
+        editButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("Edit Profile...");
