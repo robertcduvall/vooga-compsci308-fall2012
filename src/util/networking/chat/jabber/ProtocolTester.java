@@ -1,6 +1,7 @@
 package util.networking.chat.jabber;
 
 
+import java.io.File;
 import java.net.UnknownHostException;
 import util.networking.chat.ChatServer;
 
@@ -24,10 +25,11 @@ public final class ProtocolTester {
      **/
     public static void main(String[] args) throws UnknownHostException {
 
-        new ChatServer(new ProtocolXMPP(), MAX_CONNECTIONS);
-
-        ProtocolXMPP xmpp = new ProtocolXMPP();
-        System.out.println(xmpp.sendMessage("Connor Gordon", "Oren Bukspan", "goduke."));
+        File file = new File("src/util/networking/chat/users.xml");
+        new ChatServer(new ProtocolXMPP(), file, MAX_CONNECTIONS);
+        
+        //ProtocolXMPP xmpp = new ProtocolXMPP();
+        //System.out.println(xmpp.sendMessage("Connor Gordon", "Oren Bukspan", "goduke."));
     }
 
 }

@@ -164,7 +164,7 @@ public class Server {
         public Listener (ThreadGroup group, int port, Service service) throws IOException {
             super(group, "Listener:" + port);
             myListenSocket = new ServerSocket(port);
-            myListenSocket.setSoTimeout(TIMEOUT);
+            //myListenSocket.setSoTimeout(TIMEOUT);
             this.myService = service;
         }
 
