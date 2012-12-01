@@ -85,7 +85,7 @@ public class BattleMode extends GameMode implements InputAPI {
     public void resume () {
         makeTeams();
         initialize();
-        myMessages.add(myEnemyObject.getName() + " encountered!");
+        myMessages.add(myEnemyObject.getStartFightingMessage(false));
         configureInputHandling();
         // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
         // ArrayList<Integer>());
@@ -150,7 +150,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myMessages.add(myPlayerObject.getDeathMessage());
             myTeam.switchPlayer(myTeam.nextPlayer());
             myPlayerObject = myTeam.getActivePlayer();
-            myMessages.add(myPlayerObject.getName() + " sent out");
+            myMessages.add(myPlayerObject.getStartFightingMessage(true));
         }
         else {
             myPlayerObject.update();
@@ -159,7 +159,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myMessages.add(myEnemyObject.getDeathMessage());
             myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
             myEnemyObject = myEnemyTeam.getActivePlayer();
-            myMessages.add(myEnemyObject.getName() + " appeared");
+            myMessages.add(myEnemyObject.getStartFightingMessage(false));
         }
 
         // TODO: figure out how this should work. Right now we just give it the
