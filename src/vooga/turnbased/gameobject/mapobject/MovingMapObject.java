@@ -16,6 +16,7 @@ import vooga.turnbased.gui.GamePane;
 public class MovingMapObject extends MapObject {
 
     private static final double SIZE_RELATIVE_TO_TILE = 1;
+    private static final double RUN_MULTIPLIER = 2; 
     private int myMovementTimePerTile;
     private int myTimePassed;
     private double myXProportion;
@@ -26,6 +27,7 @@ public class MovingMapObject extends MapObject {
     private Point myPreviousLocation;
     private boolean myCanMove;
     private boolean myIsMoving;
+    private boolean myIsRunning;
 
     /**
      * Creates the MovingMapObject that will be used in MapMode.
@@ -217,5 +219,16 @@ public class MovingMapObject extends MapObject {
 
     public void moveRight () {
         tryMove(MapMode.RIGHT);
+    }
+    
+    public void toggleRunning() {
+        if (myIsRunning) {
+            myIsRunning = false;
+            myMovementTimePerTile *= RUN_MULTIPLIER;
+        }
+        else {
+            myIsRunning = true;
+            myMovementTimePerTile /= RUN_MULTIPLIER;
+        }
     }
 }
