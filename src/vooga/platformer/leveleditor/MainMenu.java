@@ -107,6 +107,7 @@ public class MainMenu extends JFrame{
     }
     @Override
     public void paint (Graphics g) {
+        super.paint(g);
         g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
         myContent.paint(g);
     }

@@ -14,17 +14,15 @@ import vooga.platformer.level.Level;
  */
 public class BasicCollisionChecker extends CollisionChecker {
 
-
     @Override
-    public void checkCollisions(Level level) {
+    public void checkCollisions (Level level) {
         for (int i = 0; i < level.getObjectList().size(); i++) {
             GameObject a = level.getObjectList().get(i);
             for (int j = i; j < level.getObjectList().size(); j++) {
                 GameObject b = level.getObjectList().get(j);
-
                 if (a.getShape().intersects(b.getShape())) {
                     CollisionEvent ce = buildCollisionEvent(a, b);
-                    if(ce!=null){
+                    if (ce != null) {
                         ce.applyCollision(level);
                     }
                 }

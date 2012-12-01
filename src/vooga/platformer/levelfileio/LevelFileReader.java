@@ -150,9 +150,10 @@ public class LevelFileReader {
         int y = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.Y);
         int width = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.WIDTH);
         int height = XmlUtilities.getChildContentAsInt(spriteElement, XmlTags.HEIGHT);
+        String spriteID = XmlUtilities.getChildContent(spriteElement, XmlTags.ID);
         String imagePath = XmlUtilities.getChildContent(spriteElement, XmlTags.IMAGE_PATH);
 
-        return new Sprite(className, x, y, width, height, imagePath);
+        return new Sprite(className, x, y, width, height, spriteID, imagePath);
     }
 
     private void addUpdateStrategies (Element spriteElement, Sprite builtSprite) {

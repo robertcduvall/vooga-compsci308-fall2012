@@ -46,9 +46,10 @@ public class ProcessConnectionThread implements Runnable {
 
             }
         }
-        //The Bluecove API did not specify the specific type of exceptions that can be thrown.
+        // The Bluecove API did not specify the specific type of exceptions that
+        // can be thrown. But an excpetion should break the conenction and
+        // disconnect the controller.
         catch (Exception e) {
-            e.printStackTrace();
             myServer.notifyDisconnect();
         }
     }

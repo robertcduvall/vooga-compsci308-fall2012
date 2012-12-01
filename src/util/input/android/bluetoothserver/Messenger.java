@@ -28,8 +28,9 @@ public class Messenger {
         try {
             myOutput = stream.openOutputStream();
         }
+        // should never occur
         catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -58,8 +59,9 @@ public class Messenger {
                 out.close();
                 bos.close();
             }
+            // should never occur
             catch (IOException e) {
-                e.printStackTrace();
+
             }
         }
     }

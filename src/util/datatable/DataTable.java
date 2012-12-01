@@ -120,7 +120,7 @@ public class DataTable {
      * Returns an unmodifiable list of column names.
      * @return - List of column names
      */
-    public List<String> getColumnNames () {
+    public Collection<String> getColumnNames () {
         return Collections.unmodifiableList(myColumnNames);
     }
 
@@ -167,7 +167,7 @@ public class DataTable {
      * Returns an unmodifiable list of all the row elements.
      * @return - unmodifiable list of row elements
      */
-    public List<RowElement> getDataRows(){
+    public Collection <RowElement> getDataRows(){
         return Collections.unmodifiableList(myDataRows);
     }
 
@@ -241,13 +241,20 @@ public class DataTable {
         Document doc = XmlUtilities.makeDocument(location);
         Element topDT = doc.getDocumentElement();
         Collection <Element> dataC = XmlUtilities.getElements(topDT, XMLROWTAG);
-        for (Element rowEl : dataC){
+        for (Element rowEl : dataC) {
             Collection <Element> colTags = XmlUtilities.getElements(rowEl);
-            for (Element colVal: colTags){
-                colValueMap = new HashMap <String , Object>();
+            colValueMap = new HashMap <String , Object>();
+            
+            for (Element colVal: colTags) {
+                
+
                 String colName = XmlUtilities.getTagName(colVal);
+                System.out.println("printing: " + XmlUtilities.getContent(colVal));
+                
                 Object value = XmlUtilities.getContent(colVal);
                 colValueMap.put(colName, value);
+                
+                System.out.println("printing map :" + colValueMap);
                 addNewColumn(colName);
             }
             addNewRowEntry(colValueMap);

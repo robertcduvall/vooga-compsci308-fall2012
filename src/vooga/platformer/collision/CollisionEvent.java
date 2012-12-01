@@ -1,9 +1,11 @@
 package vooga.platformer.collision;
 
+import java.awt.Dimension;
+import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
+import vooga.platformer.util.enums.Direction;
 
 
 /**
@@ -20,47 +22,58 @@ import vooga.platformer.util.enums.CollisionDirection;
 public abstract class CollisionEvent {
     private GameObject a;
     private GameObject b;
-    private CollisionDirection myDirection;
+    private Direction myDirection;
+    private Dimension2D myIntersectSize = new Dimension();;
 
-    public CollisionEvent(GameObject a, GameObject b) {
+    public CollisionEvent (GameObject a, GameObject b) {
         this.a = a;
         this.b = b;
         computeDirection();
     }
 
-    public abstract void applyCollision(Level level);
+    public abstract void applyCollision (Level level);
 
-    protected GameObject a() {
+    protected GameObject a () {
         return a;
     }
 
-    protected GameObject b() {
+    protected GameObject b () {
         return b;
     }
 
-    protected CollisionDirection direction() {
+    protected Direction direction () {
         return myDirection;
     }
 
-    private void computeDirection() {
+    private void computeDirection () {
         Rectangle2D intersection = a.getShape()
                 .createIntersection(b.getShape());
-
+        myIntersectSize.setSize(intersection.getWidth(),
+                intersection.getHeight());
         // lateral collision ?
-        if (intersection.getHeight() > intersection.getWidth()) {
+        if (myIntersectSize.getHeight() > myIntersectSize.getWidth()) {
             if (a.getX() > b.getX()) { // determine collision direction
-                myDirection = CollisionDirection.RIGHT;
-            } else {
-                myDirection = CollisionDirection.LEFT;
+                myDirection = Direction.RIGHT;
+            }
+            else {
+                myDirection = Direction.LEFT;
             }
         }
         // vertical collision
         else {
             if (a.getY() > b.getY()) { // determine collision direction
-                myDirection = CollisionDirection.DOWN;
-            } else {
-                myDirection = CollisionDirection.UP;
+                myDirection = Direction.DOWN;
+            }
+            else {
+                myDirection = Direction.UP;
             }
         }
+    }
+
+    /**
+     * @return the size of the intersection rectangular.
+     */
+    public Dimension2D getIntersectSize () {
+        return myIntersectSize;
     }
 }

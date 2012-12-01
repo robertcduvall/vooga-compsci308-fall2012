@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -49,10 +51,10 @@ public class LevelBoard extends JPanel implements ISavable {
     private static final long serialVersionUID = -3528519211577278934L;
     private Collection<Sprite> mySprites;
     private Collection<String> myAvailableAttributes;
-    private ISpritePlacementManager myPlacementManager;
+    private IEditorMode myCurrentMode;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
-    private SelectionMouseListener myMouseListener;
+    private LevelEditorMouseListener myMouseListener;
     private Image myBackground;
     private Sprite myCurrentSprite;
     private int myWidth;
@@ -72,7 +74,7 @@ public class LevelBoard extends JPanel implements ISavable {
         myAvailableAttributes = new ArrayList<String>();
         myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
         myAvailableAttributes.add("Patrolling"); myAvailableAttributes.add("Teammate");
-        myPlacementManager = new SpritePlacementManager(this);
+        myCurrentMode = new PlacementMode();
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
@@ -80,7 +82,7 @@ public class LevelBoard extends JPanel implements ISavable {
     }
 
     private void setupMouseInput() {
-        SelectionMouseListener mouseListener = new SelectionMouseListener(myPlacementManager) {
+        LevelEditorMouseListener mouseListener = new LevelEditorMouseListener() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (myCurrentSprite != null) {
@@ -137,7 +139,7 @@ public class LevelBoard extends JPanel implements ISavable {
      * 
      * @return MouseListener attached to component
      */
-    public SelectionMouseListener getMouseListener() {
+    public LevelEditorMouseListener getMouseListener() {
         return myMouseListener;
     }
 
@@ -255,8 +257,8 @@ public class LevelBoard extends JPanel implements ISavable {
                 mySprite.flipImage();
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
-                Sprite ns = new Sprite(mySprite.getType(), mySprite.getX(), mySprite.getY(),
-                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getImagePath());
+                Sprite ns = new Sprite(mySprite.getClassName(), mySprite.getX(), mySprite.getY(),
+                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getID(), mySprite.getImagePath());
                 LevelBoard.this.add(ns);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
@@ -285,4 +287,55 @@ public class LevelBoard extends JPanel implements ISavable {
 */
         }
     }
+    
+    /**
+     * A TEMPORARY mouse listener for the current modes this level editor supports.
+     * And yes, I realize we have 3 different mouse listeners for this class.
+     * @author Paul Dannenberg
+     *
+     */
+    private class LevelEditorMouseListener implements MouseListener, MouseMotionListener {
+
+        @Override
+        public void mouseDragged (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseMoved (MouseEvent e) {
+            myCurrentMode.sendCursorPosition(e.getX(), e.getY());
+        }
+
+        @Override
+        public void mouseClicked (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed (MouseEvent e) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                myCurrentMode.primaryButtonPress(e.getX(), e.getY());
+            }
+            else if (e.getButton() == MouseEvent.BUTTON3) {
+                myCurrentMode.secondaryButtonPress(e.getX(), e.getY());
+            }
+        }
+
+        @Override
+        public void mouseReleased (MouseEvent e) {
+
+        }
+
+    }
+
 }

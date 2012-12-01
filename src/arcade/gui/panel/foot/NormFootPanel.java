@@ -23,7 +23,6 @@ public class NormFootPanel extends AFootPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        System.out.println("NormFootPanel");
 
         JButton aboutBut = new JButton("About");
         JButton helpBut = new JButton("Help");

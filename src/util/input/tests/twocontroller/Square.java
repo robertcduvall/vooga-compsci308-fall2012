@@ -113,9 +113,9 @@ public class Square {
         }
     }
 
-  /*
-   * This method is used with the joystick input option.
-   */
+    /*
+     * This method is used with the joystick input option.
+     */
     public void setNextMove (int x, int y) {
         nextXMove = x;
         nextYMove = y;

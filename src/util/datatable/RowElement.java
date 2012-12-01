@@ -84,7 +84,7 @@ public class RowElement {
      * Retrieve all keys and data.
      * @return - map of all the keys and data
      */
-    protected Map<String , Object> getAllData() {
+    public Map<String , Object> getAllData() {
         Map<String , Object> cpmap = new HashMap<String , Object>();
         cpmap.putAll(myData);
         return cpmap;
@@ -92,11 +92,11 @@ public class RowElement {
 
     /**
      * Adds a new column.
-     * @param s
+     * @param col - new column to be added
      * @throws RepeatedColumnNameException
      * @throws InvalidXMLTagException 
      */
-    protected void addNewColumn(String col) throws
+    public void addNewColumn(String col) throws
         RepeatedColumnNameException, InvalidXMLTagException  {
         if(myData.containsKey(col)){
             throw new RepeatedColumnNameException(col);
