@@ -1,0 +1,31 @@
+<players>
+<player>
+<map>
+<class>MAP CLASS</class>
+<event>MAP EVENT</event>
+<location>
+<x>4</x>
+<y>4</y>
+</location>
+<image>
+<source>source2</source>
+<direction>direction2</direction>
+</image>
+<image>
+<source>source1</source>
+<direction>direction1</direction>
+</image>
+</map>
+<battle>
+<class>BATTLE CLASS</class>
+<event>BATTLE EVENT</event>
+<stats>
+<defense>4</defense>
+<attack>5</attack>
+<health>6</health>
+</stats>
+<name>NAME</name>
+<image>BATTLE IMG</image>
+</battle>
+</player>
+</players>

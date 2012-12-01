@@ -239,7 +239,6 @@ public class LevelXmlParser {
         List<Image> images = new ArrayList<Image>();
         List<Element> imageList = (List<Element>) XmlUtilities.getElements(element, IMAGE);
         for (Element e : imageList) {
-            System.out.println(XmlUtilities.getContent(e));
             Image img = XmlUtilities.getContentAsImage(e);
             images.add(img);
         }

@@ -303,12 +303,18 @@ public class GameManager implements InputAPI {
             myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again assuming latest is active for now
             Class c = myAvailableModeTypes.get(eventName);
             Constructor[] newC = c.getConstructors();
-            try {
+            /*try {
                 myGameModes.add((GameMode) newC[0]
                         .newInstance(this, MapObject.class, myInvolvedIDs));
             }
             catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {
+                System.out.println("Check XML file for mistyped mode class");
+            }*/
+            try {
+                myGameModes.add((GameMode) newC[0].newInstance(this, MapObject.class, myInvolvedIDs));
+            }
+            catch (Exception e) {
                 System.out.println("Check XML file for mistyped mode class");
             }
         }
