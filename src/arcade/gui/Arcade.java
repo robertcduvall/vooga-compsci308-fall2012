@@ -11,6 +11,7 @@ import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
+import arcade.usermanager.UserProfile;
 
 
 /**
@@ -134,7 +135,7 @@ public class Arcade {
     /**
      * @return The User that is currently logged in.
      */
-    public User getCurrentUser () {
+    public UserProfile getCurrentUser () {
         return myModelInterface.getUser(myUsername);
     }
 
