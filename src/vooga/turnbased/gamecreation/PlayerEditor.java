@@ -11,9 +11,8 @@ import util.xml.XmlUtilities;
  *
  * @author Mark Hoffman
  */
-public class PlayerEditor {
+public class PlayerEditor extends Editor {
     private Document myXmlDocument;
-    private String myFileName;
     private Element myRootElement;
 
     /**
@@ -23,8 +22,8 @@ public class PlayerEditor {
      * @param fileName File name (with path) of Xml document
      */
     public PlayerEditor(Document xmlDocument, String fileName) {
+        super(xmlDocument, fileName);
         myXmlDocument = xmlDocument;
-        myFileName = fileName;
     }
 
     /**
@@ -33,10 +32,10 @@ public class PlayerEditor {
      * @param fileName File name (with path) of Xml document
      */
     public PlayerEditor(String fileName) {
+        super(fileName);
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("players");
         myXmlDocument.appendChild(myRootElement);
-        myFileName = fileName;
     }
 
     /**
@@ -108,12 +107,5 @@ public class PlayerEditor {
             Element current = XmlUtilities.getElement(statsElement, key);
             XmlUtilities.setContent(current, stats.get(key).toString());
         }
-    }
-
-    /**
-     * Save the player Xml Document.
-     */
-    public void saveXmlDocument() {
-        XmlUtilities.write(myXmlDocument, myFileName);
     }
 }
