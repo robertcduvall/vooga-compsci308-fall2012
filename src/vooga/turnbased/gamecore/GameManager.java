@@ -91,12 +91,15 @@ public class GameManager implements InputAPI {
 
         myAvailableModeTypes.put("BATTLE_START", BattleMode.class);
         myAvailableModeTypes.put("CONVERSATION_START", OptionMode.class);
+        myAvailableModeTypes.put("GAME_OVER", GameOverMode.class);
         
         Map<String, List<String>> conditionMap = new HashMap<String, List<String>>();
         conditionMap.put("BATTLE_START", new ArrayList<String>());
         conditionMap.get("BATTLE_START").add("dobattle");
         conditionMap.put("CONVERSATION_START", new ArrayList<String>());
         conditionMap.get("CONVERSATION_START").add("enteroptmode");
+        conditionMap.put("GAME_OVER", new ArrayList<String>());
+        conditionMap.get("GAME_OVER").add("gamelost");
         myGameLogic = new GameLogic(this, conditionMap);
 
         myGameModes.get(0).resume();
@@ -300,7 +303,7 @@ public class GameManager implements InputAPI {
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         System.out.println(eventName);
         if (myAvailableModeTypes.containsKey(eventName)) {
-            myGameModes.get(myGameModes.size() - 1).pause();
+            myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again assuming latest is active for now
             Class c = myAvailableModeTypes.get(eventName);
             Constructor[] newC = c.getConstructors();
             try {
