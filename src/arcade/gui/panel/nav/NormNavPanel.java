@@ -48,6 +48,7 @@ public class NormNavPanel extends ANavPanel {
         myprofileBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
+                getArcade().saveVariable("UserName", getArcade().getUsername());
                 getArcade().replacePanel("UserProfile");
             }
         });
