@@ -49,6 +49,13 @@ public class User {
     protected String getName () {
         return myName;
     }
+    
+    protected String getFirstName () {
+        return myFirstName;
+    }
+    protected String getLastName () {
+        return myLastName;
+    }
 
     public String getPicture () {
         return myPicture;
