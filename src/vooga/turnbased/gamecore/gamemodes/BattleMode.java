@@ -43,13 +43,40 @@ public class BattleMode extends GameMode implements InputAPI {
     private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
+    private int myLooserSpriteID;
     private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
     private OptionSelect mySelection;
 
     private final int MESSAGE_NUM = 4;
+    private final int HEIGHT_SCALAR = 3;
     private final double TEXT_SCALAR = 40;
-    private int myLooserSpriteID;
+
+    private final double OPTION1_LOWER_BOUND = .0;
+    private final double OPTION1_UPPER_BOUND = .5;
+    private final double OPTION2_LOWER_BOUND = .5;
+    private final double OPTION2_UPPER_BOUND = .7;
+    private final double OPTION3_LOWER_BOUND = .7;
+    private final double OPTION3_UPPER_BOUND = .9;
+    private final double OPTION4_LOWER_BOUND = .9;
+    private final double OPTION4_UPPER_BOUND = 1;
+
+    private final double SHIFT_LEFT_SCALAR = .15;
+    private final double SHIFT_RIGHT_SCALAR = .60;
+    private final double SHIFT_TOP_SCALAR = .45;
+    private final double SHIFT_BOTTOM_SCALAR = .75;
+
+    private final double INCREASE_ATTACK_VAL = 1;
+    private final double INCREASE_DEFENSE_VAL = 1;
+    private final double INCREASE_HEALTH_VAL = 3;
+
+    private final String DEATH_TEXT = " fainted";
+    private final String USED = " used ";
+    private final String MENU_FONT = "Sans_Serif";
+    private final String HEALTH_STAT = "health";
+    private final String ATTACK_STAT = "attack";
+    private final String DEFENSE_STAT = "defense";
+    private final String MAX_HEALTH_STAT = "maxHealth";
     private final String OPTION1 = "ATTACK";
     private final String OPTION2 = "DEFEND";
     private final String OPTION3 = "CHARGE";
@@ -58,7 +85,6 @@ public class BattleMode extends GameMode implements InputAPI {
     /**
      * Constructor for a Battle.
      * 
-     * @param id The ID of the mode
      * @param gameManager The parent GameManager that is creating this battle.
      *        Will be
      *        alerted when battle ends.
@@ -69,7 +95,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     // need to pass ids of battle participants upon battle creation
     public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
-                       List<Integer> involvedIDs) {
+            List<Integer> involvedIDs) {
         super(gameManager, modeObjectType, involvedIDs);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
@@ -106,17 +132,17 @@ public class BattleMode extends GameMode implements InputAPI {
         int select = KeyEvent.VK_ENTER;
         try {
             GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
-                                                   "triggerOption1Event");
+                    "triggerOption1Event");
             GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, this,
-                                                   "triggerLeftEvent");
+                    "triggerLeftEvent");
             GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, this,
-                                                   "triggerRightEvent");
+                    "triggerRightEvent");
             GamePane.keyboardController.setControl(up, KeyboardController.RELEASED, this,
-                                                   "triggerUpEvent");
+                    "triggerUpEvent");
             GamePane.keyboardController.setControl(down, KeyboardController.RELEASED, this,
-                                                   "triggerDownEvent");
+                    "triggerDownEvent");
             GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, this,
-                                                   "triggerSelectEvent");
+                    "triggerSelectEvent");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +173,7 @@ public class BattleMode extends GameMode implements InputAPI {
             endBattle();
         }
         if (!myPlayerObject.isAlive()) {
-            myMessages.add(myPlayerObject.getName() + " fainted");
+            myMessages.add(myPlayerObject.getName() + DEATH_TEXT);
             myTeam.switchPlayer(myTeam.nextPlayer());
             myPlayerObject = myTeam.getActivePlayer();
             myMessages.add(myPlayerObject.getName() + " sent out");
@@ -156,18 +182,11 @@ public class BattleMode extends GameMode implements InputAPI {
             myPlayerObject.update();
         }
         if (!myEnemyObject.isAlive()) {
-            myMessages.add(myEnemyObject.getName() + " fainted");
+            myMessages.add(myEnemyObject.getName() + DEATH_TEXT);
             myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
             myEnemyObject = myEnemyTeam.getActivePlayer();
             myMessages.add(myEnemyObject.getName() + " appeared");
         }
-
-        // TODO: figure out how this should work. Right now we just give it the
-        // previous team
-        // TODO: Take into account animating, requesting user input for player
-        // team, etc.
-        // nextTeam().makeMove(myTeams.get(myTurnCount - 1 % myTeams.size()));
-        // }
     }
 
     // this needs to be generalized
@@ -177,14 +196,22 @@ public class BattleMode extends GameMode implements InputAPI {
         int height = myWindow.height;
         int width = myWindow.width;
 
-        myEnemyObject.paintStats(g, 0, 0, width / 2, height / 3);
-        myEnemyObject.paintBattleObject(g, width / 2, 0, width / 2, height / 3);
-        myPlayerObject.paintBattleObject(g, 0, height / 3, width / 2, height / 3);
-        myPlayerObject.paintStats(g, width / 2, height / 3, width / 2, height / 3);
+        myEnemyObject.paintStats(g, 0, 0, width / 2, height / HEIGHT_SCALAR);
+        myEnemyObject.paintBattleObject(g, width / 2, 0, width / 2, height / HEIGHT_SCALAR);
+        myPlayerObject.paintBattleObject(g, 0, height / HEIGHT_SCALAR, width / 2, height /
+                HEIGHT_SCALAR);
+        myPlayerObject.paintStats(g, width / 2, height / HEIGHT_SCALAR, width / 2, height /
+                HEIGHT_SCALAR);
         paintMenu(g);
     }
 
     // someone please fix this...
+    /**
+     * Draws the battle messages that display at the bottom of the screen, showing player and
+     * enemy actions and changes.
+     * 
+     * @param g Graphics
+     */
     public void paintMenu (Graphics g) {
         // paint the message box/battle option menu
         Dimension myWindow = getGameManager().getPaneDimension();
@@ -203,24 +230,24 @@ public class BattleMode extends GameMode implements InputAPI {
         }
         Graphics2D g2d = (Graphics2D) g;
         int fontSize = calculateFontSize(width, height);
-        Font font = new Font("Sans_Serif", Font.PLAIN, fontSize);
+        Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
         FontEffect myFontEffect = new FontEffect(g, font);
         for (int i = 0; counter + i < myMessages.size(); i++) {
             String currentMessage = myMessages.get(counter + i);
             double horizontalShift = (double) ((width / TEXT_SCALAR) * 3);
             double verticalShift = (double) (height / TEXT_SCALAR * 4.5);
-            double spacingBetweenLines = (double) (1.2) * (fontSize) * i;
-            Point paintPosition =
-                    new Point((int) horizontalShift,
-                              (int) ((2 * height / 3 + verticalShift + spacingBetweenLines)));
+            double spacingBetweenLines = (double) 1.2 * fontSize * i;
+            Point paintPosition = new Point((int) horizontalShift, (int) ((2 * height
+                    / HEIGHT_SCALAR + verticalShift + spacingBetweenLines)));
             myFontEffect.shodowEffect(currentMessage, Color.blue, paintPosition);
         }
-        g.drawImage(box, width / 2, 0, width / 2, height, null);
-        drawOptions(g, width / 2, 2 * height / 3, width / 2, height / 3);
+        g2d.drawImage(box, width / 2, 0, width / 2, height, null);
+        drawOptions(g, width / 2, 2 * height / HEIGHT_SCALAR, width / 2, height / HEIGHT_SCALAR);
     }
 
     /**
-     * draw options in a box for the player to choose
+     * Draw options in a box for the player to choose.
+     * 
      * @param g the Graphics context
      * @param x the x coordinate of the origin of this box
      * @param y the y coordinate of the origin of this box
@@ -230,55 +257,71 @@ public class BattleMode extends GameMode implements InputAPI {
     // I would say a point and a dimension, or a rectangle would be more intuitive and readable?
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         // format positions based on width and height of the box...maybe?
-        Font font = new Font("Sans_Serif", Font.PLAIN, 25);
+        int fontSize = calculateFontSize(width, height) * width / height;
+        Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
+
+        System.out.println("height is " + height + " and width is " + width + "and fontsize is " +
+                fontSize);
         FontEffect fontEffect = new FontEffect(g, font);
-        String[] options = { OPTION1, OPTION2, OPTION3, OPTION4 };
+        String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
         // position determines where the strings are painted (need to get rid
         // of the magic numbers)
         Point position = null;
         Color mainColor = Color.GRAY;
         Color outlineColor = Color.BLACK;
+        int leftShift = (int) (width * SHIFT_LEFT_SCALAR);
+        int rightShift = (int) (width * SHIFT_RIGHT_SCALAR);
+        int topShift = (int) (height * SHIFT_TOP_SCALAR);
+        int bottomShift = (int) (height * SHIFT_BOTTOM_SCALAR);
+
         for (int i = 0; i < options.length; i++) {
             String option = options[i];
             if (i == 0) {
-                position = new Point(x + 60, y + 80);
+                position = new Point(x + leftShift, y + topShift);
             }
             else if (i == 1) {
-                position = new Point(x + 220, y + 80);
+                position = new Point(x + rightShift, y + topShift);
             }
             else if (i == 2) {
-                position = new Point(x + 60, y + 140);
+                position = new Point(x + leftShift, y + bottomShift);
             }
             else if (i == 3) {
-                position = new Point(x + 220, y + 140);
+                position = new Point(x + rightShift, y + bottomShift);
             }
             try {
                 fontEffect.outlineEffect(option, mainColor, outlineColor, position);
             }
             catch (NullPointerException e) {
                 System.err.println("option not recognized");
-                e.printStackTrace();
+                // e.printStackTrace();
             }
         }
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
         Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         if (mySelection == OptionSelect.OPTION1) {
-            g.drawImage(arrow, x + 40, y + 60, 20, 20, null);
+            g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
+                    y + topShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
+                    arrow.getHeight(null), null);
         }
         else if (mySelection == OptionSelect.OPTION2) {
-            g.drawImage(arrow, x + 200, y + 60, 20, 20, null);
+            g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
+                    y + topShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
+                    arrow.getHeight(null), null);
         }
         else if (mySelection == OptionSelect.OPTION3) {
-            g.drawImage(arrow, x + 40, y + 120, 20, 20, null);
+            g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
+                    y + bottomShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
+                    arrow.getHeight(null), null);
         }
         else if (mySelection == OptionSelect.OPTION4) {
-            g.drawImage(arrow, x + 200, y + 120, 20, 20, null);
+            g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
+                    y + bottomShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
+                    arrow.getHeight(null), null);
         }
     }
 
     private int calculateFontSize (int width, int height) {
-        // current hypotenuse of regular window size is ~965, with font size 25
-        // 965/25 = 37.4
+        // uses diagonal length of window; kind of faulty sometimes but usually works
         return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2)) / TEXT_SCALAR);
     }
 
@@ -331,10 +374,13 @@ public class BattleMode extends GameMode implements InputAPI {
         return teamDead;
     }
 
+    /**
+     * Triggers the event associated with the player's first option.
+     */
     public void triggerOption1Event () {
         // for now, player attacks enemy player
         // by difference in defense
-        myMessages.add(myPlayerObject.getName() + " used " + OPTION1);
+        myMessages.add(myPlayerObject.getName() + USED + OPTION1);
         myPlayerObject.attackEnemy(myEnemyObject);
         // check if enemy/opposing team is dead
         if (!isBattleOver()) {
@@ -342,33 +388,45 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
 
-    public void triggerOption4Event () {
-        // for now, increases player health by 3
-        myMessages.add(myPlayerObject.getName() + " used HEAL");
-        myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 3);
-        if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth")
-                .intValue()) {
-            myPlayerObject.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
-        }
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
-    }
-
+    /**
+     * Triggers the event associated with the player's second option.
+     */
     public void triggerOption2Event () {
         // for now, increases player defense by one; other team still attacks
-        myMessages.add(myPlayerObject.getName() + " used DEFEND");
-        myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
+        myMessages.add(myPlayerObject.getName() + USED + OPTION2);
+        myPlayerObject.changeStat(DEFENSE_STAT, myPlayerObject.getStat(DEFENSE_STAT).intValue() +
+                INCREASE_DEFENSE_VAL);
         if (!isBattleOver()) {
             generateEnemyMove();
         }
     }
 
+    /**
+     * Triggers the event associated with the player's third option.
+     */
     public void triggerOption3Event () {
         // for now, increases player attack by one; other team still attacks
         // System.out.println("You use CHARGE");
-        myMessages.add(myPlayerObject.getName() + " used CHARGE");
-        myPlayerObject.changeStat("attack", myPlayerObject.getStat("attack").intValue() + 1);
+        myMessages.add(myPlayerObject.getName() + USED + OPTION3);
+        myPlayerObject.changeStat(ATTACK_STAT, myPlayerObject.getStat(ATTACK_STAT).intValue() +
+                INCREASE_ATTACK_VAL);
+        if (!isBattleOver()) {
+            generateEnemyMove();
+        }
+    }
+
+    /**
+     * Triggers the event associated with the player's fourth option.
+     */
+    public void triggerOption4Event () {
+        // for now, increases player health by 3
+        myMessages.add(myPlayerObject.getName() + USED + OPTION4);
+        myPlayerObject.changeStat(HEALTH_STAT, myPlayerObject.getStat(HEALTH_STAT).intValue() +
+                INCREASE_HEALTH_VAL);
+        if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat(MAX_HEALTH_STAT)
+                .intValue()) {
+            myPlayerObject.changeStat("health", myPlayerObject.getStat(MAX_HEALTH_STAT).intValue());
+        }
         if (!isBattleOver()) {
             generateEnemyMove();
         }
@@ -442,43 +500,34 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void generateEnemyMove () {
         double random = Math.random();
-        if (random >= 0 && random < .5) {
+        if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
             // attack
             myEnemyObject.attackEnemy(myPlayerObject);
-            myMessages.add(myEnemyObject.getName() + " used ATTACK");
-            // System.out.println("Your enemy uses ATTACK");
+            myMessages.add(myEnemyObject.getName() + USED + OPTION1);
         }
-        if (random >= .5 && random < .7) {
+        if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
             // defend
-            myEnemyObject.changeStat("defense", myEnemyObject.getStat("defense").intValue() + 1);
-            myMessages.add(myEnemyObject.getName() + " used DEFEND");
-            // System.out.println("Your enemy uses DEFEND");
+            myEnemyObject.changeStat(DEFENSE_STAT, myEnemyObject.getStat(DEFENSE_STAT).intValue() +
+                    INCREASE_DEFENSE_VAL);
+            myMessages.add(myEnemyObject.getName() + USED + OPTION2);
         }
-        if (random >= .7 && random < .9) {
+        if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
             // charge
-            myEnemyObject.changeStat("attack", myEnemyObject.getStat("attack").intValue() + 1);
-            myMessages.add(myEnemyObject.getName() + " used CHARGE");
-            // System.out.println("Your enemy uses CHARGE");
+            myEnemyObject.changeStat(ATTACK_STAT, myEnemyObject.getStat(ATTACK_STAT).intValue() +
+                    INCREASE_ATTACK_VAL);
+            myMessages.add(myEnemyObject.getName() + USED + OPTION3);
         }
-        if (random >= .9 && random < 1) {
+        if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
             // increase health
-            myEnemyObject.changeStat("health", myEnemyObject.getStat("health").intValue() + 3);
-            if (myEnemyObject.getStat("health").intValue() > myEnemyObject.getStat("maxHealth")
-                    .intValue()) {
-                myEnemyObject.changeStat("health", myEnemyObject.getStat("maxHealth").intValue());
+            myEnemyObject.changeStat(HEALTH_STAT, myEnemyObject.getStat(HEALTH_STAT).intValue() + 
+                    INCREASE_HEALTH_VAL);
+            if (myEnemyObject.getStat(HEALTH_STAT).intValue() > myEnemyObject.getStat(
+                    MAX_HEALTH_STAT).intValue()) {
+                myEnemyObject.changeStat(HEALTH_STAT, myEnemyObject.getStat(MAX_HEALTH_STAT)
+                        .intValue());
             }
-            myMessages.add(myEnemyObject.getName() + " used HEAL");
-            // System.out.println("Your enemy uses HEALTH INCREASE");
+            myMessages.add(myEnemyObject.getName() + USED + OPTION4);
         }
-        // displayBattleStats();
-    }
-
-    // for debugging etc
-    private void displayBattleStats () {
-        System.out.println("My health: " + myPlayerObject.getStat("health"));
-        System.out.println("My defense: " + myPlayerObject.getStat("defense"));
-        System.out.println("Enemy health: " + myEnemyObject.getStat("health"));
-        System.out.println("Enemy defense: " + myEnemyObject.getStat("defense"));
     }
 
     private class Team {
@@ -487,7 +536,9 @@ public class BattleMode extends GameMode implements InputAPI {
 
         public Team (List<BattleObject> battleObjs) {
             myBattleObjects = battleObjs;
-            if (myBattleObjects.size() > 0) myActivePlayer = myBattleObjects.get(0);
+            if (myBattleObjects.size() > 0) {
+                myActivePlayer = myBattleObjects.get(0);
+            }
         }
 
         public boolean stillAlive () {
@@ -531,6 +582,8 @@ public class BattleMode extends GameMode implements InputAPI {
         OPTION1, OPTION2, OPTION3, OPTION4
     }
 
+    @Override
     public void processMouseInput (int mousePressed, Point mousePosition, int mouseButton) {
     }
+
 }
