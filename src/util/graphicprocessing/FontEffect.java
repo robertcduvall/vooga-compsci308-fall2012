@@ -30,6 +30,7 @@ public class FontEffect {
     public FontEffect (Graphics g, Font font) {
         myGraphics = (Graphics2D) g;
         myFont = font;
+        g.setFont(font);
     }
 
     /**
@@ -41,6 +42,7 @@ public class FontEffect {
     public FontEffect (Graphics2D g, Font font) {
         myGraphics = g;
         myFont = font;
+        g.setFont(font);
     }
 
     /**

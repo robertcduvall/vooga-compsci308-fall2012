@@ -10,11 +10,13 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javax.swing.ImageIcon;
+import util.graphicprocessing.FontEffect;
 import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
@@ -195,20 +197,17 @@ public class BattleMode extends GameMode implements InputAPI {
             counter = myMessages.size() - MESSAGE_NUM;
         }
         Graphics2D g2d = (Graphics2D) g;
-        int fontSize = calcFontSize(width, height);
-        // System.out.println(fontSize);
+        int fontSize = calculateFontSize(width, height);
         Font font = new Font("Sans_Serif", Font.PLAIN, fontSize);
-        FontRenderContext frc = g2d.getFontRenderContext();
-        g2d.setColor(Color.BLACK);
+        FontEffect myFontEffect = new FontEffect(g, font);
         for (int i = 0; counter + i < myMessages.size(); i++) {
             String currentMessage = myMessages.get(counter + i);
-            GlyphVector gv = font.createGlyphVector(frc, currentMessage);
-            float horizontalShift = (float) ((width/TEXT_SCALAR)*3);
-            float verticalShift = (float) (height/TEXT_SCALAR*4.5);
-            float spacingBetweenLines = (float) (1.2)*(fontSize) * i;
-            g2d.drawGlyphVector(gv, horizontalShift, (2 * height / 3 + verticalShift + spacingBetweenLines));
+            double horizontalShift = (double) ((width/TEXT_SCALAR)*3);
+            double verticalShift = (double) (height/TEXT_SCALAR*4.5);
+            double spacingBetweenLines = (double) (1.2)*(fontSize) * i;
+            Point paintPosition = new Point((int)horizontalShift, (int)((2 * height / 3 + verticalShift + spacingBetweenLines)));
+            myFontEffect.shodowEffect(currentMessage, Color.blue, paintPosition);
         }
-        
         g.drawImage(box, width/2, 0, width/2, height, null);
         drawOptions(g, width/2, 2*height/3, width/2, height/3);
     }
@@ -253,10 +252,10 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
     
-    private int calcFontSize(int width, int height) {
+    private int calculateFontSize(int width, int height) {
         // current hypotenuse of regular window size is ~965, with font size 25
         // 965/25 = 37.4
-        return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2))/TEXT_SCALAR);
+        return (int)(Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2))/TEXT_SCALAR);
     }
 
     /**
