@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import util.encrypt.Encrypter;
+import arcade.usermanager.exception.PasswordNotMatchException;
+import arcade.usermanager.exception.UserNotExistException;
 import arcade.utility.FileOperation;
 
 
@@ -61,6 +63,24 @@ public class UserManager {
         myAllUser = new HashMap<String, User>();
 
         myAdminHashes = new HashSet<String>();
+        readAdminFile();
+
+        File folder = new File(myUserBasicFilePath);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File listOfFile : listOfFiles) {
+            if (listOfFile.isFile()) {
+                String name = FileOperation.stripExtension(listOfFile.getName());
+                User newUser = myXMLReader.getUser(name);
+                newUser.setMyAdminStatus(checkAdminStatus(name));
+                myAllUser.put(name, newUser);
+
+            }
+
+        }
+    }
+
+    private void readAdminFile () {
         try {
             BufferedReader br =
                     new BufferedReader(new FileReader(myDatabaseFilePath + "admins.txt"));
@@ -74,21 +94,6 @@ public class UserManager {
         }
         catch (IOException e) {
             e.printStackTrace();
-        }
-
-        File folder = new File(myUserBasicFilePath);
-        File[] listOfFiles = folder.listFiles();
-
-        for (File listOfFile : listOfFiles) {
-            if (listOfFile.isFile()) {
-                String name = FileOperation.stripExtension(listOfFile.getName());
-                User newUser = myXMLReader.getUser(name);
-                newUser.setMyAdminStatus(checkAdminStatus(name));
-                System.out.println(checkAdminStatus(name) + name);
-                myAllUser.put(name, newUser);
-
-            }
-
         }
     }
 
@@ -175,8 +180,8 @@ public class UserManager {
         return myCurrentUser;
     }
 
-    protected void setCurrentUser (User newUser) {
-        myCurrentUser = newUser;
+    protected void setCurrentUser (String userName) {
+        myCurrentUser = getUser(userName);
 
     }
 
@@ -197,6 +202,10 @@ public class UserManager {
 
         return userProfileList;
 
+    }
+
+    protected void updateMessage (String sender, String receiver, String content) {
+        getUser(receiver).updateMyMessage(sender, content);
     }
 
 }

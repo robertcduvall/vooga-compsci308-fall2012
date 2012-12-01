@@ -10,6 +10,8 @@ import util.xml.XmlBuilder;
 import util.xml.XmlParser;
 import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
+import arcade.usermanager.exception.UserNotExistException;
+import arcade.usermanager.exception.ValidationException;
 import arcade.utility.FileOperation;
 
 
@@ -21,8 +23,7 @@ import arcade.utility.FileOperation;
  * 
  * @author Difan Zhao
  *         modified by Howard Chung
- *         TODO:
- *         Allow user to change profile picture
+ *         
  */
 public class SocialCenter {
 
@@ -61,8 +62,8 @@ public class SocialCenter {
         myUserManager.validateUser(userName, password);
 
         // set current user
-        User newUser = myUserManager.getUser(userName);
-        myUserManager.setCurrentUser(newUser);
+        
+        myUserManager.setCurrentUser(userName);
 
         return true;
     }
@@ -83,7 +84,7 @@ public class SocialCenter {
             User newUser =
                     myUserManager
                             .addNewUser(userName, password, "default.jpg", firstName, lastName);
-            myUserManager.setCurrentUser(newUser);
+            myUserManager.setCurrentUser(userName);
 
             return true;
         }
@@ -119,8 +120,8 @@ public class SocialCenter {
         XmlUtilities.appendElement(doc, message, "sender", sender);
         XmlUtilities.appendElement(doc, message, "content", content);
         XmlUtilities.write(doc, filePath);
-        myUserManager.getUser(receiver).updateMyMessage(sender, content);
-        //myUserManager.updateMyMessage(sender, receiver, content)
+       // myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        myUserManager.updateMessage(sender, receiver, content);
 
         return true;
     }
