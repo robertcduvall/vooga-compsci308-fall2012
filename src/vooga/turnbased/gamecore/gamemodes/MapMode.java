@@ -52,7 +52,7 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public MapMode (int ID, GameManager gm, Class modeObjectType) {
         super(ID, gm, modeObjectType);
-        //initialize();
+        // initialize();
     }
 
     @Override
@@ -66,8 +66,8 @@ public class MapMode extends GameMode implements InputAPI {
     @Override
     public void resume () {
         // do stuff when back to map mode
-    	initialize(); //TODO: Shouldn't need to reinitialize map objects
-    	//configureInputHandling();
+        initialize(); // TODO: Shouldn't need to reinitialize map objects
+        // configureInputHandling();
     }
 
     @Override
@@ -76,19 +76,19 @@ public class MapMode extends GameMode implements InputAPI {
         List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         for (MapObject mapObject : mapObjects) {
             addMapObject(mapObject.getLocation(), mapObject);
-            if (mapObject.getID() == getGameManager().getPlayerSpriteID()){
-            	myPlayer = (MapPlayerObject) mapObject;
+            if (mapObject.getID() == getGameManager().getPlayerSpriteID()) {
+                myPlayer = (MapPlayerObject) mapObject;
             }
         }
         configureInputHandling();
-        //update();
+        // update();
     }
 
-    public void setCameraSize(Dimension d) {
+    public void setCameraSize (Dimension d) {
         setNumDisplayCols(d.width);
         setNumDisplayRows(d.height);
     }
-    
+
     private void setNumDisplayRows (int numDisplayRows) {
         this.myNumDisplayRows = numDisplayRows;
     }
@@ -221,7 +221,7 @@ public class MapMode extends GameMode implements InputAPI {
             while (it.hasNext()) {
                 MapObject nextObject = it.next();
                 if (!nextObject.isVisible()) {
-                    it.remove(); //entire sprite should be removed???
+                    it.remove(); // entire sprite should be removed???
                 }
                 else {
                     nextObject.update();
@@ -265,12 +265,11 @@ public class MapMode extends GameMode implements InputAPI {
      *        x-coordinate on the grid
      * @param j
      *        y-coordinate on the grid
-     * @return a list of MapObjects on the tile; empty list if no MapObjects found
+     * @return a list of MapObjects on the tile; empty list if no MapObjects
+     *         found
      */
     public List<MapObject> getSpritesOnTile (int i, int j) {
-        if (myMapObjects.containsKey(new Point(i, j))) {
-            return myMapObjects.get(new Point(i, j));
-        }
+        if (myMapObjects.containsKey(new Point(i, j))) { return myMapObjects.get(new Point(i, j)); }
         return new ArrayList<MapObject>();
     }
 
@@ -311,15 +310,19 @@ public class MapMode extends GameMode implements InputAPI {
     @Override
     public void configureInputHandling () {
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myPlayer, "moveLeft");
-            GamePane.keyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myPlayer, "moveUp");
-            GamePane.keyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myPlayer, "moveRight");
-            GamePane.keyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myPlayer, "moveDown");
+            GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED,
+                                                   myPlayer, "moveLeft");
+            GamePane.keyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED,
+                                                   myPlayer, "moveUp");
+            GamePane.keyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED,
+                                                   myPlayer, "moveRight");
+            GamePane.keyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED,
+                                                   myPlayer, "moveDown");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
 
     public Dimension getMapSize () {
@@ -333,7 +336,7 @@ public class MapMode extends GameMode implements InputAPI {
     public void setPlayer (MapPlayerObject p) {
         myPlayer = p;
     }
-    
+
     public MapPlayerObject getPlayer () {
         return myPlayer;
     }
@@ -343,13 +346,15 @@ public class MapMode extends GameMode implements InputAPI {
     }
 
     @Override
-    public void processMouseInput (Point myMousePosition, int myMouseButton) {
-        if (myPathFinder != null) {
-            myPathFinder.stop();
+    public void processMouseInput (Boolean mousePressed, Point myMousePosition, int myMouseButton) {
+        if (mousePressed) {
+            if (myPathFinder != null) {
+                myPathFinder.stop();
+            }
+            Point target =
+                    new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
+                              (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);
+            myPathFinder = new PathFinder(this, myPlayer, target, myMapSize);
         }
-        Point target =
-                new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
-                          (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);
-        myPathFinder = new PathFinder(this, myPlayer, target, myMapSize);
     }
 }

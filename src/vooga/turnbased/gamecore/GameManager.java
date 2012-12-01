@@ -203,7 +203,7 @@ public class GameManager implements InputAPI {
     private void handleMouseActions() {
         while(!myMouseActions.isEmpty()){
             MouseAction m = myMouseActions.remove(0);
-            myActiveGameMode.processMouseInput(m.myMousePosition,m.myMouseButton);
+            myActiveGameMode.processMouseInput(m.myMousePressed, m.myMousePosition,m.myMouseButton);
         }
     }
 
@@ -331,16 +331,18 @@ public class GameManager implements InputAPI {
         }
     }
     
-    public void addMouseAction(Point mousePos, int mouseButton){
-        myMouseActions.add(new MouseAction(mousePos, mouseButton));
-        //System.out.println("pos: "+mousePos+", button: "+mouseButton);
+    public void addMouseAction(boolean mousePressed, Point mousePos, int mouseButton){
+        myMouseActions.add(new MouseAction(mousePressed, mousePos, mouseButton));
+        //System.out.println("press: "+mousePressed+", pos: "+mousePos+", button: "+mouseButton);
     }
     
     private class MouseAction {
+        private boolean myMousePressed;
         private Point myMousePosition;
         private int myMouseButton;
         
-        public MouseAction(Point mousePos, int mouseButton){
+        public MouseAction(boolean mousePressed, Point mousePos, int mouseButton){
+            myMousePressed = mousePressed;
             myMousePosition = mousePos;
             myMouseButton = mouseButton;
         }

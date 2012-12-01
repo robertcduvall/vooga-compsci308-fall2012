@@ -47,9 +47,9 @@ public class BattleMode extends GameMode implements InputAPI {
     private final double TEXT_SCALAR = 40;
     private int myLooserSpriteID;
     private final String OPTION1 = "ATTACK";
-    private final String OPTION4 = "HEAL";
     private final String OPTION2 = "DEFEND";
     private final String OPTION3 = "CHARGE";
+    private final String OPTION4 = "HEAL";
 
     /**
      * Constructor for a Battle.
@@ -90,25 +90,12 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
-        int attack = KeyEvent.VK_A;
-        int defend = KeyEvent.VK_D;
-        int heal = KeyEvent.VK_H;
-        int charge = KeyEvent.VK_C;
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
         int up = KeyEvent.VK_UP;
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            /*GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
-                    "triggerAttackEvent");
-            GamePane.keyboardController.setControl(defend, KeyboardController.RELEASED, this,
-                    "triggerDefendEvent");
-            GamePane.keyboardController.setControl(heal,
-                    KeyboardController.RELEASED, this, "triggerHealEvent");
-            GamePane.keyboardController.setControl(charge, KeyboardController.RELEASED,
-                    this, "triggerChargeEvent");
-            */
             GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, 
                     this, "triggerLeftEvent");
             GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, 
@@ -310,35 +297,31 @@ public class BattleMode extends GameMode implements InputAPI {
         myMessages.add(myPlayerObject.getName() + " used " + OPTION1);
         myPlayerObject.attackEnemy(myEnemy);
         // check if enemy/opposing team is dead
-        if (isBattleOver()) { return; }
-        generateEnemyMove();
+        if (!isBattleOver()) {
+            generateEnemyMove();
+        }
     }
 
     public void triggerOption4Event () {
         // for now, increases player health by 3
-        // by difference in defense
         myMessages.add(myPlayerObject.getName() + " used HEAL");
         myPlayerObject.changeStat("health", myPlayerObject.getStat("health").intValue() + 3);
         if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat("maxHealth")
                 .intValue()) {
             myPlayerObject.changeStat("health", myPlayerObject.getStat("maxHealth").intValue());
         }
-        // check if enemy/opposing team is dead
-        if (isBattleOver()) { return; }
-        // opposing team makes some predetermined action
-        generateEnemyMove();
+        if (!isBattleOver()) {
+            generateEnemyMove();
+        }
     }
 
     public void triggerOption2Event () {
         // for now, increases player defense by one; other team still attacks
-        // System.out.println("You use DEFEND");
         myMessages.add(myPlayerObject.getName() + " used DEFEND");
         myPlayerObject.changeStat("defense", myPlayerObject.getStat("defense").intValue() + 1);
-        // displayBattleStats();
-        // check if enemy/opposing team is dead
-        if (isBattleOver()) { return; }
-        // opposing team makes some predetermined action
-        generateEnemyMove();
+        if (!isBattleOver()) {
+            generateEnemyMove();
+        }
     }
 
     public void triggerOption3Event () {
@@ -346,14 +329,11 @@ public class BattleMode extends GameMode implements InputAPI {
         // System.out.println("You use CHARGE");
         myMessages.add(myPlayerObject.getName() + " used CHARGE");
         myPlayerObject.changeStat("attack", myPlayerObject.getStat("attack").intValue() + 1);
-        // displayBattleStats();
-        // check if enemy/opposing team is dead
-        if (isBattleOver()) { return; }
-        // opposing team makes some predetermined action
-        generateEnemyMove();
+        if (!isBattleOver()) {
+            generateEnemyMove();
+        }
     }
     
-    //don't even start...i know D:
     public void triggerLeftEvent () {
         if (mySelection == OptionSelect.OPTION2) {
             mySelection = OptionSelect.OPTION1;
@@ -390,14 +370,14 @@ public class BattleMode extends GameMode implements InputAPI {
         if (mySelection == OptionSelect.OPTION1) {
             triggerOption1Event();
         }
+        else if (mySelection == OptionSelect.OPTION2) {
+            triggerOption2Event();
+        }
         else if (mySelection == OptionSelect.OPTION3) {
             triggerOption3Event();
         }
         else if (mySelection == OptionSelect.OPTION4) {
             triggerOption4Event();
-        }
-        else if (mySelection == OptionSelect.OPTION2) {
-            triggerOption2Event();
         }
     }
 
@@ -491,10 +471,10 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private enum OptionSelect {
         OPTION1, OPTION2, OPTION3, OPTION4
-        }
+    }
 
     @Override
-    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+    public void processMouseInput (Boolean mousePressed, Point myMousePosition, int myMouseButton) {
         // TODO Auto-generated method stub
 
 

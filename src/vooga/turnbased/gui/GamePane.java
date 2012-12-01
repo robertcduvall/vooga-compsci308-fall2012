@@ -98,8 +98,12 @@ public class GamePane extends DisplayPane implements Runnable {
     private void initMouseListener() { //TODO: subscribe to input team
         addMouseListener(new MouseAdapter(){
             @Override
-            public void mouseClicked (MouseEvent e) {
-                myGameManager.addMouseAction(e.getPoint(), e.getButton());
+            public void mousePressed (MouseEvent e) {
+                myGameManager.addMouseAction(true, e.getPoint(), e.getButton());
+            }
+            @Override
+            public void mouseReleased (MouseEvent e) {
+                myGameManager.addMouseAction(false, e.getPoint(), e.getButton());
             }
         });
         
