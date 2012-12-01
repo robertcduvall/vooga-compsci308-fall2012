@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -75,7 +77,7 @@ public class PlatformerFrame extends JFrame{
         LevelEditor le = new LevelEditor(DEFAULT_FRAME_SIZE);
         setTitle("Level Editor");
         myContent.add(le);
-//        setJMenuBar(new EditorMenuBar(le));
+        addKeyListener(le.getKeyListener());
         validate();
         repaint();
     }

@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -17,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -62,6 +66,10 @@ public class LevelBoard extends JPanel implements ISavable {
     private String myBackgroundPath;
     private int mouseX;
     private int mouseY;
+    private int myLength;
+    private int myOffset;
+    private KeyListener myKeyListener;
+    private List<Integer> myKeyHeld; 
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
@@ -71,6 +79,7 @@ public class LevelBoard extends JPanel implements ISavable {
      */
     public LevelBoard(Dimension d) {
         setSize(d);
+        myKeyHeld = new ArrayList<Integer>();
         mySprites = new ArrayList<Sprite>();
         myAvailableAttributes = new ArrayList<String>();
         myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
@@ -80,6 +89,11 @@ public class LevelBoard extends JPanel implements ISavable {
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
         setupMouseInput();
+        myOffset = 0;
+    }
+
+    public void incLength() {
+
     }
 
     private void setupMouseInput() {
@@ -102,7 +116,7 @@ public class LevelBoard extends JPanel implements ISavable {
                         }
                     }
                     if (e.getButton() == MouseEvent.BUTTON3) {
-                        JFileChooser chooser = new JFileChooser();
+                        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                                 "JPG & GIF Images", "jpg", "gif");
                         chooser.setFileFilter(filter);
@@ -127,10 +141,44 @@ public class LevelBoard extends JPanel implements ISavable {
                 mouseY = e.getY();
             }
         };
+        myKeyListener = new KeyAdapter() {
+            @Override 
+            public void keyTyped (KeyEvent ke) {
+                //                switch (arg0.getKeyCode()) {
+                //                    case KeyEvent.VK_LEFT:
+                //                        if (myOffset == 0) {
+                //                            bumpLeft();
+                //                        }
+                //                        else {
+                //                            myOffset -= 10;
+                //                        }
+                //                        break;
+                //                    case KeyEvent.VK_RIGHT: 
+                //                        if (myOffset == getWidth() - myContainer.getSize().width) {
+                //                        }
+                //                }
+            }
+
+            @Override
+            public void keyPressed (KeyEvent ke) {
+                myKeyHeld.add(ke.getKeyCode());
+            }
+
+            @Override
+            public void keyReleased (KeyEvent ke) {
+                myKeyHeld.remove((Integer) ke.getKeyCode());
+            }
+
+            private void bumpLeft () {
+                System.out.println("Already at beginning!");
+            }
+            private void bumpRight () {
+                System.out.println("Already at end!");
+            }
+        };
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
         myMouseListener = mouseListener;
-
     }
 
 
@@ -144,7 +192,11 @@ public class LevelBoard extends JPanel implements ISavable {
     public MouseListener getMouseListener() {
         return myMouseListener;
     }
-    
+
+    public KeyListener getKeyListener() {
+        return myKeyListener;
+    }
+
     /**
      * Passes the LevelEditorMouseListener as a MouseMotionListener.
      * 
@@ -168,6 +220,13 @@ public class LevelBoard extends JPanel implements ISavable {
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
             myCurrentSprite.setY(mouseY - myCurrentSprite.getHeight() / 2);
+            myBufferGraphics.setColor(Color.ORANGE);
+            myBufferGraphics.drawString("Current Sprite = ("+mouseX+", "+mouseY+")", getWidth()-250, 30);
+        }
+        if (myKeyHeld.size() > 0){
+            for(int i = 0; i < myKeyHeld.size(); i++ ) {
+                myBufferGraphics.drawString(((Integer) myKeyHeld.get(i)).toString(), 20, (i+1)*10);
+            }
         }
     }
 
@@ -179,6 +238,8 @@ public class LevelBoard extends JPanel implements ISavable {
     public void paint(Graphics g) {
         update(g);
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
+        super.paintComponents(g);
+
     }
 
     @Override
@@ -193,10 +254,10 @@ public class LevelBoard extends JPanel implements ISavable {
             saveFile = fc.getSelectedFile();
             //This is where a real application would save the file.
 
-//            log.append("Saving: " + file.getName() + "." + newline);
+            //            log.append("Saving: " + file.getName() + "." + newline);
         } else {
             saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
-//            log.append("Save command cancelled by user." + newline);
+            //            log.append("Save command cancelled by user." + newline);
         }
         LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", getWidth(), getHeight(),
                 myBackgroundPath, mySprites, "myCollision", "myCamera");
@@ -226,7 +287,7 @@ public class LevelBoard extends JPanel implements ISavable {
         JMenuItem j4 = new JMenuItem("Delete");
         j4.addActionListener(sh);
         pop.add(j4);
-        pop.show(this.getParent(), e.getXOnScreen(), e.getYOnScreen());
+        pop.show(this.getParent(), s.getX()+s.getWidth()/2, s.getY()+s.getHeight());
     }
     /**
      * @return An unmodifiable Collection of the sprites
@@ -294,12 +355,12 @@ public class LevelBoard extends JPanel implements ISavable {
             pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
 
 
-/*           create a list of attributes from the resource file 
+            /*           create a list of attributes from the resource file 
              and get appropriate values for certain attributes.
-*/
+             */
         }
     }
-    
+
     /**
      * A TEMPORARY mouse listener for the current modes this level editor supports.
      * And yes, I realize we have 3 different mouse listeners for this class.

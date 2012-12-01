@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -50,7 +52,6 @@ public class LevelEditor extends JPanel {
     private MouseListener myMouseListener;
     private MouseMotionListener myMouseMotionListener;
     private MouseListener myButtonListener;
-    private int myViewOffset;
     private JPanel myButtonPanel;
     private JMenuBar myMenuBar;
 
@@ -65,44 +66,24 @@ public class LevelEditor extends JPanel {
         setLayout(new BorderLayout());
         setSize(new Dimension(dim));
         myBoard = new LevelBoard(getSize());
+        myBoard.setLayout(new BorderLayout());
         fillMap();
         createListeners();
+        addKeyListener(myKeyListener);
         myButtonPanel = createButtonPanel();
         myMenuBar = new EditorMenuBar(this);
         add(myMenuBar, BorderLayout.NORTH);
         add(myBoard, BorderLayout.CENTER);
-        add(myButtonPanel, BorderLayout.WEST);
+        myBoard.add(myButtonPanel, BorderLayout.EAST);
 
     }
 
+    public KeyListener getKeyListener() {
+        return myKeyListener;
+    }
     private void createListeners() {
         myMouseListener = myBoard.getMouseListener();
-        myKeyListener = new KeyAdapter() {
-            @Override 
-            public void keyPressed (KeyEvent arg0) {
-                System.out.println(arg0.getKeyCode());
-//                switch (arg0.getKeyCode()) {
-//                    case KeyEvent.VK_LEFT:
-//                        if (myViewOffset == 0) {
-//                            bumpLeft();
-//                        }
-//                        else {
-//                            myViewOffset -= myContainer.getSize().width;
-//                        }
-//                        break;
-//                    case KeyEvent.VK_RIGHT: 
-//                        if (myViewOffset == myBoard.getWidth() - myContainer.getSize().width) {
-//                        }
-//                }
-            }
-
-            private void bumpLeft () {
-                System.out.println("Already at beginning!");
-            }
-            private void bumpRight () {
-                System.out.println("Already at end!");
-            }
-        };
+        myKeyListener = myBoard.getKeyListener();
         myButtonListener = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent arg0) {
@@ -110,7 +91,6 @@ public class LevelEditor extends JPanel {
             }
         };
 //        addMouseListener(myMouseListener);
-//        addKeyListener(myKeyListener);
 //        myContainer.addMouseListener(myMouseListener);
 //        myContainer.addMouseMotionListener(myMouseListener);
 //        myContainer.addKeyListener(myKeyListener);
@@ -133,7 +113,7 @@ public class LevelEditor extends JPanel {
             subpanel.add(createButton(sprite));
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        panel.add(subpanel, BorderLayout.CENTER);
+        panel.add(subpanel);
         panel.setOpaque(false);
         panel.addMouseMotionListener(myBoard.getMouseMotionListener());
         return panel;
