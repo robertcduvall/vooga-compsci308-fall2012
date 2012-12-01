@@ -2,6 +2,7 @@ package arcade.gui.panel.main;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import edu.cmu.relativelayout.Direction;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
@@ -37,12 +38,10 @@ public class UserListMainPanel extends AMainPanel {
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);
 
-//        myPanel.setLayout(new MigLayout("", "[center]", "[center]60[center]"));
-//        myPanel.add(label, "wrap");
-//        myPanel.add(new UserListComponent("hello", myPanel), "wrap");
-        
         myPanel.add(label);
-        myPanel.add(new UserListComponent("hello", myPanel), Direction.BELOW);
+        for (int i=0; i<10; i++){
+            myPanel.add(new UserListComponent("Helloooooo321"+i, myPanel));
+        }
 
         return myPanel;
     }
