@@ -40,9 +40,6 @@ public class BattleMode extends GameMode implements InputAPI {
     private Team myEnemyTeam;
     private BattleObject myPlayerObject;
     private BattleObject myEnemyObject;
-    private BattleState myState;
-    private int myTurnCount;
-    private int myTeamStartRandomizer;
     private int myLooserSpriteID;
     private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
@@ -65,6 +62,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private final double SHIFT_RIGHT_SCALAR = .60;
     private final double SHIFT_TOP_SCALAR = .45;
     private final double SHIFT_BOTTOM_SCALAR = .75;
+    private final double ADJUST_ARROW_SCALAR = .80;
 
     private final double INCREASE_ATTACK_VAL = 1;
     private final double INCREASE_DEFENSE_VAL = 1;
@@ -296,23 +294,23 @@ public class BattleMode extends GameMode implements InputAPI {
         Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         if (mySelection == OptionSelect.OPTION1) {
             g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                    y + topShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
-                    arrow.getHeight(null), null);
+                    (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
+                    arrow.getWidth(null), arrow.getHeight(null), null);
         }
         else if (mySelection == OptionSelect.OPTION2) {
             g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                    y + topShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
-                    arrow.getHeight(null), null);
+                    (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                    arrow.getWidth(null), arrow.getHeight(null), null);
         }
         else if (mySelection == OptionSelect.OPTION3) {
             g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                    y + bottomShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
-                    arrow.getHeight(null), null);
+                    (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                    arrow.getWidth(null), arrow.getHeight(null), null);
         }
         else if (mySelection == OptionSelect.OPTION4) {
             g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                    y + bottomShift - arrow.getHeight(null) / 2, arrow.getWidth(null),
-                    arrow.getHeight(null), null);
+                    (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                    arrow.getWidth(null), arrow.getHeight(null), null);
         }
     }
 
@@ -326,14 +324,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     @Override
     public void initialize () {
-        myState = BattleState.WAITING_FOR_MOVE;
         mySelection = OptionSelect.OPTION1;
-        myTurnCount = 0;
-        // Initialize myTeamStartRandomizer to 0 to number of teams (exclusive)
-        // the seed value is going to determine which team starts where 0 =
-        // "team 1"
-        Random generator = new Random();
-        myTeamStartRandomizer = generator.nextInt(1);
         myPlayerObject = myTeam.getActivePlayer();
         myEnemyObject = myEnemyTeam.getActivePlayer();
     }
@@ -543,10 +534,6 @@ public class BattleMode extends GameMode implements InputAPI {
             return false;
         }
 
-        public List<BattleObject> getBattleObjects () {
-            return myBattleObjects;
-        }
-
         public BattleObject getActivePlayer () {
             return myActivePlayer;
         }
@@ -559,15 +546,6 @@ public class BattleMode extends GameMode implements InputAPI {
             myBattleObjects.add(myBattleObjects.remove(0));
             return myBattleObjects.get(0);
         }
-    }
-
-    /**
-     * battle states in a battle
-     * waiting for player to decide, display message, and when animation takes
-     * place
-     */
-    private enum BattleState {
-        WAITING_FOR_MOVE, MESSAGE, ANIMATING
     }
 
     /**
