@@ -13,6 +13,7 @@ import java.util.Map;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
+import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 
@@ -94,11 +95,15 @@ public class OptionMode extends GameMode {
     @Override
     public void changeDisplayPosition (Point currentPosition) {
         if (hasFocus()) {
+            /*
             Point positionOnPanel = getPositionOnPanel(currentPosition);
             int x = positionOnPanel.x - myPanel.getPreviousPosition().x;
             int y = positionOnPanel.y - myPanel.getPreviousPosition().y;
             myOrigin.translate(x, y);
-            myPanel.setPreviousPosition(positionOnPanel);
+            myPanel.setPreviousPosition(positionOnPanel);*/
+            Point pressedPosition = myPanel.getPreviousPosition();
+            currentPosition.translate(-pressedPosition.x, -pressedPosition.y);
+            myOrigin = currentPosition;
         }
     }
     
@@ -109,18 +114,18 @@ public class OptionMode extends GameMode {
     }
 
     @Override
-    public void processMouseInput (Boolean mousePressed, Point myMousePosition, int myMouseButton) {
-        if(mousePressed){
+    public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
+        if(mousePressed == GamePane.MOUSE_PRESSED){
             myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
             if (myBounds.contains(myMousePosition)) {
                 myPanel.highlightOption(getPositionOnPanel(myMousePosition));
                 setFocus(true);
                 //myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer); error?
-                System.out.println("clicking on the option mode thingy!");
             }
-        } else { //!mousePressed
+        } else if (mousePressed == GamePane.MOUSE_RELEASED){
             myPanel.dehighlightOption(); 
+        } else {
+            getGameManager().flagEvent("SWITCH_LEVEL", new ArrayList<Integer>());
         }
-        getGameManager().flagEvent("SWITCH_LEVEL", new ArrayList<Integer>());
     }
 }

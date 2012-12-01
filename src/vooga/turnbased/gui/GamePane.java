@@ -21,6 +21,9 @@ import vooga.turnbased.gamecore.GameManager;
  */
 public class GamePane extends DisplayPane implements Runnable {
 
+    public static final int MOUSE_PRESSED = 0;
+    public static final int MOUSE_RELEASED = 1;
+    public static final int MOUSE_CLICKED = 2;
     private GameManager myGameManager;
     private Thread myGameThread;
     private static int delayBetweenGameLoopCycles;
@@ -99,11 +102,15 @@ public class GamePane extends DisplayPane implements Runnable {
         addMouseListener(new MouseAdapter(){
             @Override
             public void mousePressed (MouseEvent e) {
-                myGameManager.addMouseAction(true, e.getPoint(), e.getButton());
+                myGameManager.addMouseAction(MOUSE_PRESSED, e.getPoint(), e.getButton());
             }
             @Override
             public void mouseReleased (MouseEvent e) {
-                myGameManager.addMouseAction(false, e.getPoint(), e.getButton());
+                myGameManager.addMouseAction(MOUSE_RELEASED, e.getPoint(), e.getButton());
+            }
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                myGameManager.addMouseAction(MOUSE_CLICKED, e.getPoint(), e.getButton());
             }
         });
         
@@ -111,7 +118,7 @@ public class GamePane extends DisplayPane implements Runnable {
 
             @Override
             public void mouseDragged (MouseEvent e) {
-                myGameManager.handleMouseDragged(e);
+                myGameManager.handleMouseDragged(e.getPoint());
             }
 
             @Override
