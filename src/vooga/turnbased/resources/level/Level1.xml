@@ -34,7 +34,7 @@
 				<attack>3</attack>
 			</stats>
 			<name>Chansey</name>
-			<image>src/vooga/turnbased/resources/image/battleobject/113.png</image>
+			<image>src/vooga/turnbased/resources/image/battleobject/113a.gif</image>
 		</battle>
 		<battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
@@ -46,7 +46,7 @@
 				<attack>6</attack>
 			</stats>
 			<name>Blissey</name>
-			<image>src/vooga/turnbased/resources/image/battleobject/242.png</image>
+			<image>src/vooga/turnbased/resources/image/battleobject/242a.gif</image>
 		</battle>
 	</sprite>
 	<sprite>
