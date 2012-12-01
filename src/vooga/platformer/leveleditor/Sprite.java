@@ -122,6 +122,12 @@ public class Sprite {
         g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 0, 0,
                       myImage.getWidth(null), myImage.getHeight(null), c);
     }
+    
+    public void paint (Graphics g, Component c, Integer offset) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(myImage, myX - offset, myY, myX - myWidth - offset, myY + myHeight, 0, 0,
+                      myImage.getWidth(null), myImage.getHeight(null), c);
+    }
 
     /**
      * Flips the sprites image across it's vertical axis.

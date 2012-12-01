@@ -52,6 +52,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  */
 public class LevelBoard extends JPanel implements ISavable {
 
+    private static final int SCROLL_SPEED = 2;
     private static final long serialVersionUID = -3528519211577278934L;
     private Collection<Sprite> mySprites;
     private Collection<String> myAvailableAttributes;
@@ -142,38 +143,43 @@ public class LevelBoard extends JPanel implements ISavable {
             }
         };
         myKeyListener = new KeyAdapter() {
-            @Override 
-            public void keyTyped (KeyEvent ke) {
-                //                switch (arg0.getKeyCode()) {
-                //                    case KeyEvent.VK_LEFT:
-                //                        if (myOffset == 0) {
-                //                            bumpLeft();
-                //                        }
-                //                        else {
-                //                            myOffset -= 10;
-                //                        }
-                //                        break;
-                //                    case KeyEvent.VK_RIGHT: 
-                //                        if (myOffset == getWidth() - myContainer.getSize().width) {
-                //                        }
-                //                }
-            }
-
             @Override
             public void keyPressed (KeyEvent ke) {
                 myKeyHeld.add(ke.getKeyCode());
+                int accel = 0;
+                for(Integer kevent : myKeyHeld) {
+                    if(kevent == KeyEvent.VK_LEFT) {
+                        accel++;
+                    }
+                }
+                switch (ke.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        if (myOffset == 0) {
+                            bumpLeft();
+                        }
+                        else {
+                            myOffset -= SCROLL_SPEED+accel;
+                        }
+                        break;
+                    case KeyEvent.VK_RIGHT: 
+                        if(myOffset+getWidth() == myLength) {
+                            myLength += SCROLL_SPEED+accel;
+                        }
+                        System.out.println(myOffset);
+                        myOffset += SCROLL_SPEED+accel;
+                }
             }
 
             @Override
             public void keyReleased (KeyEvent ke) {
-                myKeyHeld.remove((Integer) ke.getKeyCode());
+                while(myKeyHeld.contains((Integer) ke.getKeyCode())) {
+                    myKeyHeld.remove((Integer) ke.getKeyCode());
+                }
             }
 
             private void bumpLeft () {
                 System.out.println("Already at beginning!");
-            }
-            private void bumpRight () {
-                System.out.println("Already at end!");
+                //TODO: add code to animate bumping motion (if theres time)
             }
         };
         addMouseListener(mouseListener);
@@ -215,18 +221,16 @@ public class LevelBoard extends JPanel implements ISavable {
         myBufferGraphics.drawImage(
                 myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         for (Sprite s : mySprites) {
-            s.paint(myBufferGraphics, this);
+            s.paint(myBufferGraphics, this, myOffset);
         }
         if (myCurrentSprite != null) {
             myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
             myCurrentSprite.setY(mouseY - myCurrentSprite.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
-            myBufferGraphics.drawString("Current Sprite = ("+mouseX+", "+mouseY+")", getWidth()-250, 30);
         }
-        if (myKeyHeld.size() > 0){
-            for(int i = 0; i < myKeyHeld.size(); i++ ) {
-                myBufferGraphics.drawString(((Integer) myKeyHeld.get(i)).toString(), 20, (i+1)*10);
-            }
+        myBufferGraphics.drawString("Current Sprite = ("+mouseX+", "+mouseY+")", getWidth()-250, 30);
+        for(int i = 0; i < myKeyHeld.size(); i++ ) {
+            myBufferGraphics.drawString(((Integer) myKeyHeld.get(i)).toString(), 20, (i+1)*10);
         }
     }
 
