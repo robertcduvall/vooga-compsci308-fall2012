@@ -93,5 +93,5 @@ public abstract class GameMode {
 
     public void changeDisplayPosition (Point position) {
     }
-    public abstract void processMouseInput (Boolean mousePressed, Point mousePosition, int mouseButton);
+    public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
 }

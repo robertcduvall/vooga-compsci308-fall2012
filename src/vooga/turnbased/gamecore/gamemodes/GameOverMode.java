@@ -47,8 +47,7 @@ public class GameOverMode extends GameMode {
     }
 
     @Override
-    public void processMouseInput (Boolean mousePressed, Point myMousePosition, int myMouseButton) {
-        // TODO Auto-generated method stub
+    public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
         
     }
 
