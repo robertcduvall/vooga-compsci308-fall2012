@@ -346,7 +346,7 @@ public class GameManager implements InputAPI {
         }
     }
 
-    public void handleMouseDragged(Point mousePosition) {
-        myActiveGameMode.changeDisplayPosition(mousePosition);
-    }
+//    public void handleMouseDragged(Point mousePosition) {
+//        myActiveGameMode.changeDisplayPosition(mousePosition);
+//    }
 }

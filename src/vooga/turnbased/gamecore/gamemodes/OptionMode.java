@@ -89,17 +89,17 @@ public class OptionMode extends GameMode {
 
     }
     
-    /**
-     * change the position of the conversation box
-     */
-    @Override
-    public void changeDisplayPosition (Point currentPosition) {
-        if (hasFocus()) {
-            Point pressedPosition = myPanel.getPreviousPosition();
-            currentPosition.translate(-pressedPosition.x, -pressedPosition.y);
-            myOrigin = currentPosition;
-        }
-    }
+//    /**
+//     * change the position of the conversation box
+//     */
+//    @Override
+//    public void changeDisplayPosition (Point currentPosition) {
+//        if (hasFocus()) {
+//            Point pressedPosition = myPanel.getPreviousPosition();
+//            currentPosition.translate(-pressedPosition.x, -pressedPosition.y);
+//            myOrigin = currentPosition;
+//        }
+//    }
     
     private Point getPositionOnPanel(Point position) {
         int x = position.x - myOrigin.x;
@@ -108,12 +108,16 @@ public class OptionMode extends GameMode {
     }
 
     @Override
-    public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
+    public void processMouseInput (int mousePressed, Point mousePosition, int mouseButton) {
         if(mousePressed == GamePane.MOUSE_PRESSED){
             myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
-            if (myBounds.contains(myMousePosition)) {
-                setFocus(!myPanel.highlightOption(getPositionOnPanel(myMousePosition)));
+            if (myBounds.contains(mousePosition)) {
+                setFocus(!myPanel.highlightOption(getPositionOnPanel(mousePosition)));
             }
+        } else if (mousePressed == GamePane.MOUSE_DRAGGED && hasFocus()) {
+            Point pressedPosition = myPanel.getPreviousPosition();
+            mousePosition.translate(-pressedPosition.x, -pressedPosition.y);
+            myOrigin = mousePosition;
         } else if (mousePressed == GamePane.MOUSE_RELEASED){
             myPanel.dehighlightOption();
         } else {
