@@ -93,7 +93,7 @@ public class Game {
      * @param infoName name of requested information
      * @return requested information in a list form.
      */
-    public List<String> getGameInfo (String infoName) {
+    private List<String> getGameInfo (String infoName) {
         List<String> info = new ArrayList<String>();
         if (!myGameInfoList.contains(infoName)) {
             System.out.println("no such information is available!!!");
@@ -112,7 +112,7 @@ public class Game {
      * @param tag tag name of new information
      * @param content new information content
      */
-    public void setGameInfo (String tag, String content) {
+    private void setGameInfo (String tag, String content) {
         myDocumentManager.appendElement(myDocument, myGameElement, tag, content);
     }
 
@@ -126,7 +126,6 @@ public class Game {
      */
     public void runGame () {
         myGame.runGame(getUserPreferences(), mySaver);
-        // TODO
     }
 
     /**
