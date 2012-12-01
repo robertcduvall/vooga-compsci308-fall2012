@@ -167,10 +167,11 @@ public class BattleMode extends GameMode implements InputAPI {
         int height = myWindow.height;
         int width = myWindow.width;
 
-        myEnemyObject.paintBattleObject(g, 0, 0, width, height / 3);
-        myPlayerObject.paintBattleObject(g, 0, height / 3, width, height / 3);
+        myEnemyObject.paintStats(g, 0, 0, width / 2, height / 3);
+        myEnemyObject.paintBattleObject(g, width / 2, 0, width / 2, height / 3);
+        myPlayerObject.paintBattleObject(g, 0, height / 3, width / 2, height / 3);
+        myPlayerObject.paintStats(g, width / 2, height / 3, width / 2, height / 3);
         paintMenu(g);
-        
     }
 
     //someone please fix this...
