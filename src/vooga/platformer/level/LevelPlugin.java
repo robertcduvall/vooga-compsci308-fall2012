@@ -12,6 +12,8 @@ import vooga.platformer.gameobject.GameObject;
  *
  */
 public abstract class LevelPlugin implements Comparable<LevelPlugin> {
+    protected final static int MIN_PRIORITY = 0;
+    protected final static int MAX_PRIORITY = 99;
     
     /**
      * Update this LevelPlugin, either modifying its internal state or modifying the
