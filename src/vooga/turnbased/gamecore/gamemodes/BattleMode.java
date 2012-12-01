@@ -70,7 +70,6 @@ public class BattleMode extends GameMode implements InputAPI {
     private final double INCREASE_DEFENSE_VAL = 1;
     private final double INCREASE_HEALTH_VAL = 3;
 
-    private final String DEATH_TEXT = " fainted";
     private final String USED = " used ";
     private final String MENU_FONT = "Sans_Serif";
     private final String HEALTH_STAT = "health";
@@ -173,11 +172,7 @@ public class BattleMode extends GameMode implements InputAPI {
             endBattle();
         }
         if (!myPlayerObject.isAlive()) {
-<<<<<<< HEAD
-            myMessages.add(myPlayerObject.getName() + DEATH_TEXT);
-=======
             myMessages.add(myPlayerObject.getDeathMessage());
->>>>>>> b71c12293bd00edd46d23de4d72580cfbada2212
             myTeam.switchPlayer(myTeam.nextPlayer());
             myPlayerObject = myTeam.getActivePlayer();
             myMessages.add(myPlayerObject.getName() + " sent out");
@@ -263,9 +258,6 @@ public class BattleMode extends GameMode implements InputAPI {
         // format positions based on width and height of the box...maybe?
         int fontSize = calculateFontSize(width, height) * width / height;
         Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
-
-        System.out.println("height is " + height + " and width is " + width + "and fontsize is " +
-                fontSize);
         FontEffect fontEffect = new FontEffect(g, font);
         String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
         // position determines where the strings are painted (need to get rid
@@ -410,7 +402,6 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption3Event () {
         // for now, increases player attack by one; other team still attacks
-        // System.out.println("You use CHARGE");
         myMessages.add(myPlayerObject.getName() + USED + OPTION3);
         myPlayerObject.changeStat(ATTACK_STAT, myPlayerObject.getStat(ATTACK_STAT).intValue() +
                 INCREASE_ATTACK_VAL);
