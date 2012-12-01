@@ -3,6 +3,7 @@ package games.platformerdemo;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import vooga.platformer.collision.CollisionChecker;
+import vooga.platformer.gameobject.Brick;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.camera.FollowingCamera;
@@ -10,13 +11,13 @@ import vooga.platformer.util.camera.FollowingCamera;
 public class DemoLevelFactory {
 
     public Level loadLevel (String levelName) {
-        return LevelFactory.loadLevel("src/vooga/platformer/test/testLevelFactory.xml", "games.platformerdemo.Player");
+        return LevelFactory.loadLevel("src/games/platformerdemo/demoLevel.xml", "vooga.platformer.gameobject.Player");
         
-//        /*
-//         * The level name "level1" corresponds to an instance of TestLevel with the listed GameObjects added to it. Multiple
-//         * level names can be instances of the same level class--they would just have different GameObjects added. The factory
-//         * should handle making this connection between level name and Level class instance somehow.
-//         */
+        /*
+         * The level name "level1" corresponds to an instance of TestLevel with the listed GameObjects added to it. Multiple
+         * level names can be instances of the same level class--they would just have different GameObjects added. The factory
+         * should handle making this connection between level name and Level class instance somehow.
+         */
 //        if (levelName.equals("level1")) {
 //            /*
 //             * Set up the CollisionChecker and Camera objects for this level--eventually we will want this to be

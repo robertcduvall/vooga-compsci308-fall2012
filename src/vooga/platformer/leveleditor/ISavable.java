@@ -22,6 +22,8 @@ public interface ISavable {
      * specified path.
      * 
      * @param path
+     * @deprecated Don't know how I expected an object to
+     *             be able to load itself...
      */
     void load(URL path);
 

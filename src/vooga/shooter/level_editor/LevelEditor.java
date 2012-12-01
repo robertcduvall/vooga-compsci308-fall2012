@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import util.input.core.MouseController;
 import util.xml.XmlUtilities;
 import java.io.*;
 import java.net.URL;
@@ -62,6 +63,9 @@ public class LevelEditor implements ActionListener, KeyListener {
     private JMenuItem exitMI;
     private JMenuItem about;
     private JMenuItem howToUse;
+    
+    /*Listeners*/
+    MouseController mouseController = new MouseController(mainFrame);
 
     public static void main (String args[]) {
         new LevelEditor();
@@ -193,7 +197,8 @@ public class LevelEditor implements ActionListener, KeyListener {
             for (String file : new File(path.toURI()).list())
             {
                 //System.out.println(path + file);
-                results.add(new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + file)));
+                ImageIcon icon = new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + file));
+                results.add(makeScaledIcon(50,50,icon));
             }
             return results;
 
@@ -204,6 +209,20 @@ public class LevelEditor implements ActionListener, KeyListener {
             System.out.println("this should not happen");
             return new ArrayList<ImageIcon>(); 
         }
+    }
+    
+    /**
+     * 
+     * @param xSize the x dimension size of the new image
+     * @param ySize the y dimension size of the new image
+     * @param icon the icon to be scaled to the new size
+     * @return the newly scaled ImageIcon
+     */
+    private ImageIcon makeScaledIcon(int xSize, int ySize, ImageIcon icon) {
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(100,100,java.awt.Image.SCALE_SMOOTH);
+        ImageIcon newIcon = new ImageIcon(scaledImage);
+        return newIcon;
     }
 
     @Override
