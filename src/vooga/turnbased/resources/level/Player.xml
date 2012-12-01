@@ -69,5 +69,41 @@
 			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
 		  </battle>
+		  <battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<stats>
+				<maxHealth>8</maxHealth>
+				<health>8</health>
+				<defense>5</defense>
+				<attack>3</attack>
+			</stats>
+			<name>Squirtle</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/007b.png</image>
+		  </battle>
+		  <battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<stats>
+				<maxHealth>15</maxHealth>
+				<health>15</health>
+				<defense>4</defense>
+				<attack>4</attack>
+			</stats>
+			<name>Bulbasaur</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/001b.png</image>
+		  </battle>
+		  <battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<stats>
+				<maxHealth>30</maxHealth>
+				<health>30</health>
+				<defense>5</defense>
+				<attack>10</attack>
+			</stats>
+			<name>Charizard</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/006b.png</image>
+		  </battle>
 	</player>
 </players>
