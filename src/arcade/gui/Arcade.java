@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import arcade.datatransfer.ModelInterface;
-import arcade.gamemanager.GameCenter;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
+import arcade.usermanager.UserProfile;
 
 
 /**
@@ -132,9 +132,12 @@ public class Arcade {
     }
 
     /**
+     * @deprecated why does this method exist? just call:
+     *  ModelInterface.getUser(Arcade.getUsername);
+     * 
      * @return The User that is currently logged in.
      */
-    public User getCurrentUser () {
+    public UserProfile getCurrentUser () {
         return myModelInterface.getUser(myUsername);
     }
 

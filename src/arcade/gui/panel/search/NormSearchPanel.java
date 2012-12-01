@@ -23,8 +23,8 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class NormSearchPanel extends ASearchPanel implements ActionListener{
 
-    private static final int PANEL_WIDTH = 250; //300
-    private static final int PANEL_HEIGHT = 800; // 450
+//    private static final int PANEL_WIDTH = 250; //300
+//    private static final int PANEL_HEIGHT = 800; // 450
     
     private List<String> myGameList;
     private JList searchedThroughList = new JList();
@@ -43,7 +43,7 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         
-        myPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+//        myPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         
         MigLayout layout = new MigLayout("", "", "[][][][][]push[][]");
         myPanel.setLayout(layout);
