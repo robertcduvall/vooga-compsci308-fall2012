@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import util.configstring.ConfigStringParser;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.util.ConfigStringParser;
 
 /**
  * A simple BackgroundPainter that paints a static background image on the screen.

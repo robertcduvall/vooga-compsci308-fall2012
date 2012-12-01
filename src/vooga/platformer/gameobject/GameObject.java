@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import util.camera.Camera;
+import util.configstring.ConfigStringParser;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.ConfigStringParser;
 
 
 /**

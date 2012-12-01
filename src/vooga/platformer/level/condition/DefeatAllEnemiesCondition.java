@@ -3,9 +3,9 @@ package vooga.platformer.level.condition;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.configstring.ConfigStringParser;
 import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.util.ConfigStringParser;
 import vooga.platformer.util.enums.PlayState;
 
 /**
