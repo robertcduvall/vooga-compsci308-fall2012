@@ -95,12 +95,6 @@ public class OptionMode extends GameMode {
     @Override
     public void changeDisplayPosition (Point currentPosition) {
         if (hasFocus()) {
-            /*
-            Point positionOnPanel = getPositionOnPanel(currentPosition);
-            int x = positionOnPanel.x - myPanel.getPreviousPosition().x;
-            int y = positionOnPanel.y - myPanel.getPreviousPosition().y;
-            myOrigin.translate(x, y);
-            myPanel.setPreviousPosition(positionOnPanel);*/
             Point pressedPosition = myPanel.getPreviousPosition();
             currentPosition.translate(-pressedPosition.x, -pressedPosition.y);
             myOrigin = currentPosition;
@@ -118,12 +112,13 @@ public class OptionMode extends GameMode {
         if(mousePressed == GamePane.MOUSE_PRESSED){
             myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
             if (myBounds.contains(myMousePosition)) {
-                myPanel.highlightOption(getPositionOnPanel(myMousePosition));
-                setFocus(true);
+                //myPanel.highlightOption(getPositionOnPanel(myMousePosition));
+                //setFocus(true);
+                setFocus(!myPanel.highlightOption(getPositionOnPanel(myMousePosition)));
                 //myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer); error?
             }
         } else if (mousePressed == GamePane.MOUSE_RELEASED){
-            myPanel.dehighlightOption(); 
+            myPanel.dehighlightOption();
         } else {
             getGameManager().flagEvent("SWITCH_LEVEL", new ArrayList<Integer>());
         }

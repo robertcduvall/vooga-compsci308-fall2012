@@ -93,17 +93,25 @@ public class InteractionPanel {
         myImageGraphics = (myPanelImage.getGraphics());
     }
 
-    public void highlightOption (Point mousePosition) {
+    /**
+     * highlight any option, if applicable
+     * @param position current position of focus
+     * @return if anything is highlighted (when the focus is on certain option
+     */
+    public boolean highlightOption (Point position) {
         boolean highlighted = false;
         for (int i = 0; i < myOptions.size(); i++) {
-            highlighted = myOptions.get(i).highlight(mousePosition);
+            if (myOptions.get(i).highlight(position)) {
+                highlighted = true;
+            }
             if (myOptions.get(i).optionIsHighlighted()) {
                 myBulletPointIndex = i;
             }
         }
         if (!highlighted) {
-            myPreviousPosition = mousePosition;
+            myPreviousPosition = position;
         }
+        return highlighted;
     }
 
     public void dehighlightOption () {
