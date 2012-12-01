@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,7 +20,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public class MainMenu extends JFrame{
+public class PlatformerFrame extends JFrame{
     private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
     private static final int ONE_SECOND = 1000;
     private static final int FRAMES_PER_SECOND = 20;
@@ -27,14 +28,12 @@ public class MainMenu extends JFrame{
     private ActionListener myActionListener;
     private JPanel myContent;
     public static void main(String[] args) {
-        new MainMenu();
+        new PlatformerFrame();
     }
-    public MainMenu () {
+    public PlatformerFrame () {
         frameBuild();
-        createListener();
-        myContent.add(createMenu(), BorderLayout.CENTER);
-        addBorder(myContent);
         add(myContent, BorderLayout.CENTER);
+        myContent.add(new PlatformerMenu(this), BorderLayout.CENTER);
         pack();
         setVisible(true);
         myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
@@ -45,33 +44,6 @@ public class MainMenu extends JFrame{
                     }
                 });
         myTimer.start();
-    }
-
-    private void addBorder (JPanel focusPanel) {
-        
-    }
-    private void createListener () {
-        myActionListener = new ActionListener() {
-            @Override
-            public void actionPerformed (ActionEvent e) {
-                if ("Level Editor".equals(e.getActionCommand())) {
-                    goLevelEditor();
-                }
-                else if ("New Game".equals(e.getActionCommand())) {
-                    System.out.println("new Game");
-                }
-                else if ("Quit".equals(e.getActionCommand())) {
-                    System.out.println("quit");
-                }
-            }
-        };
-    }
-    protected void goLevelEditor () {
-        System.out.println("LevelEditor");
-        myContent.removeAll();
-        myContent.add(new LevelEditor(this));
-        add(myContent);
-
     }
     private void frameBuild() {
         setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -89,26 +61,25 @@ public class MainMenu extends JFrame{
             e.printStackTrace();
         }
         myContent = new JPanel();
+        myContent.setSize(DEFAULT_FRAME_SIZE);
+//        {
+//            @Override
+//            public void addKeyListener(KeyListener kl) {
+//                MainMenu.this.addKeyListener(kl);
+//            }
+//        };
         myContent.setLayout(new BorderLayout());
     }
-    private JPanel createMenu() {
-        JPanel menu = new JPanel();
-        menu.setLayout(new GridLayout(3, 1));
-        JButton b = new JButton("Level Editor");
-        b.addActionListener(myActionListener);
-        menu.add(b);
-        b = new JButton("New Game");
-        b.addActionListener(myActionListener);
-        menu.add(b);
-        b = new JButton("Quit");
-        b.addActionListener(myActionListener);
-        menu.add(b);
-        return menu;
+
+    public void levelEdit () {
+        myContent.removeAll();
+        myContent.add(new LevelEditor(myContent));
+        setTitle("Level Editor");
+        validate();
     }
-//    @Override
-//    public void paint (Graphics g) {
-//        super.paint(g);
-//        g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
-//        myContent.paint(g);
-//    }
+
+    public void newGame () {
+        System.out.println("make a new game or something");
+    }
+
 }

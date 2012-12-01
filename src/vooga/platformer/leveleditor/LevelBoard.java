@@ -135,11 +135,21 @@ public class LevelBoard extends JPanel implements ISavable {
 
 
     /**
-     * Passes the MouseListener to any components that need it.
+     * Passes the LevelEditorMouseListner as a MouseListener
+     * to any components that need it.
      * 
      * @return MouseListener attached to component
      */
-    public LevelEditorMouseListener getMouseListener() {
+    public MouseListener getMouseListener() {
+        return myMouseListener;
+    }
+    
+    /**
+     * Passes the LevelEditorMouseListener as a MouseMotionListener.
+     * 
+     * @return MouseMotionListener attached to component
+     */
+    public MouseMotionListener getMouseMotionListener() {
         return myMouseListener;
     }
 
