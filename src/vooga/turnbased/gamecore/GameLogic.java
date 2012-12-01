@@ -1,84 +1,51 @@
 package vooga.turnbased.gamecore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import vooga.turnbased.gamecore.gamemodes.BattleMode;
-import vooga.turnbased.gamecore.gamemodes.GameMode;
-import vooga.turnbased.gamecore.gamemodes.OptionMode;
-import vooga.turnbased.gameobject.battleobject.BattleObject;
-import vooga.turnbased.gameobject.mapobject.MapObject;
-
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 /**
- * handles game events
+ * maps conditions to mode events to see if a mode event needs to be flagged
  *
  */
 public class GameLogic {
-
-//    private GameManager myGameManager;
-//    private int myPlayerSpriteID;
-//    
-//    public GameLogic (GameManager gameManager) {
-//        myGameManager = gameManager;
-//    }
-//
-//    public void processEvents (List<ModeEvent> events) {
-//        while (!events.isEmpty()) {
-//            ModeEvent m = events.remove(0);
-//            handleEvent(m);
-//        }
-//    }
-//    
-//    /**
-//     * @param event
-//     * this was supposed to be handled by a map: event -> destination game mode
-//     * but due to the complexity of the program (multiple active modes support)
-//     * i no longer see a way to implement it with a map. ideas are welcome
-//     */
-//    private void handleEvent (ModeEvent event) {
-//        String eventName = event.getModeEventName();
-//        List<Integer> myInvolvedIDs = event.getEventInvolvedIDs();
-//        if ("NO_ACTION".equals(eventName)) {
-//            // do nothing
-//        }
-//        else if ("BATTLE_START".equals(eventName)) {
-//            BattleMode battleMode = new BattleMode(myGameManager, BattleObject.class, myInvolvedIDs);
-//            myGameManager.getActiveModes().add(battleMode);
-//            myGameManager.changeCurrentMode(battleMode);
-//        }
-//        else if ("BATTLE_OVER".equals(eventName)) {
-//            if(event.getEventInvolvedIDs().get(0) == myGameManager.getPlayerSpriteID()) {
-//                myGameManager.processGameOver();
-//            }
-//            //myGameManager.removeInactiveModes();
-//            myGameManager.resumeModes();
-//        }
-//        else if ("SWITCH_LEVEL".equals(eventName)) {
-//            MapObject enteringMapObject = myGameManager.findSpriteWithID(myInvolvedIDs.get(0)).getMapObject();
-//            myGameManager.initializeGameLevel(myGameManager.getNewMapResource(), enteringMapObject);
-//        }
-//        else if ("CONVERSATION_START".equals(eventName)) {
-//            OptionMode optionMode =
-//                    new OptionMode(myGameManager, MapObject.class, myInvolvedIDs);
-//            // do not add the same conversation twice
-//            for (GameMode mode : myGameManager.getActiveModes()) {
-//                if ((mode instanceof OptionMode) &&
-//                    (optionMode.equalsTo((OptionMode) (mode)))) { return; }
-//            }
-//            myGameManager.getActiveModes().add(optionMode);
-//        }
-//        else if ("CONVERSATION_OVER".equals(eventName)) {
-//            //myGameManager.removeInactiveModes();
-//        }
-//        else if ("INTERACTION_COMPLETED".equals(eventName)) {
-//            // to win, need to interact with specific (or all) sprites, i.e.
-//            // NPCs, Enemies, Pickup-able items, teleports, etc.
-//            /*
-//             * myGameLogic.processInteraction(event);
-//             * if(myGameLogic.winningConditionsAreMet()) { processGameWin(); }
-//             */
-//        }
-//        else {
-//            // System.err.println("Unrecognized mode event requested.");
-//        }
-//    }
+    private GameManager myGameManager;
+    private final Map<String, List<String>> myEventConditions;
+    private ArrayList<String> myModeEventNames;
+    private ArrayList<String> myGameConditions;
+    
+    public GameLogic (GameManager gm, Map<String, List<String>> eventConditions) {
+        myGameManager = gm;
+        myEventConditions = eventConditions;
+        myModeEventNames = new ArrayList<String>();
+        myGameConditions = new ArrayList<String>();
+        
+    }
+    
+    public List<String> getNewEvents() {
+        List<String> retList = new ArrayList<String>();
+        while(!myModeEventNames.isEmpty()){
+            retList.add(myModeEventNames.remove(0));
+        }
+        return retList;
+    }
+    
+    public void flagCondition(String newCondition, List<Integer> involvedSpriteIDs) {
+        myGameConditions.add(newCondition);
+        checkConditions(involvedSpriteIDs);
+    }
+    
+    private void checkConditions(List<Integer> involvedSpriteIDs) {
+        Set<String> usedConditions = new TreeSet<String>();
+        for(String eventName : myEventConditions.keySet()){
+            List<String> requiredConditions = myEventConditions.get(eventName);
+            if(myGameConditions.containsAll(requiredConditions)){
+                myGameManager.flagEvent(eventName, involvedSpriteIDs);
+                usedConditions.addAll(requiredConditions);
+            }
+        }
+        myGameConditions.removeAll(usedConditions);
+    }
 }

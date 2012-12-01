@@ -40,6 +40,6 @@ public class TransportStrategy extends MapStrategy {
         getGameManager().setNewMapResources(myMapModeResource);
         List<Integer> involvedSpriteIDs = new ArrayList<Integer>();
         involvedSpriteIDs.add(target.getID());
-        getMapMode().flagEvent(MODE_EVENT, involvedSpriteIDs);
+        getMapMode().flagCondition(MODE_EVENT, involvedSpriteIDs);
     }
 }

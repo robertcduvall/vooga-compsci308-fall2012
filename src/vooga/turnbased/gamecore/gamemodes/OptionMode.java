@@ -121,7 +121,7 @@ public class OptionMode extends GameMode {
         } else if (mousePressed == GamePane.MOUSE_RELEASED){
             myPanel.dehighlightOption();
         } else {
-            getGameManager().flagEvent("SWITCH_LEVEL", new ArrayList<Integer>());
+            flagCondition("switchlevel", new ArrayList<Integer>());
             //myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer); error?
         }
     }

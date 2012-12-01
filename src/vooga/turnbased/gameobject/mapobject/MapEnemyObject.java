@@ -21,7 +21,7 @@ public class MapEnemyObject extends MapObject {
             List <Integer> involvedSpriteIDs = new ArrayList<Integer>();
             involvedSpriteIDs.add(m.getID());
             involvedSpriteIDs.add(getID());
-            getMapMode().flagEvent(getModeEvent(), involvedSpriteIDs);
+            getMapMode().flagCondition(getModeEvent(), involvedSpriteIDs);
         }
     }
 

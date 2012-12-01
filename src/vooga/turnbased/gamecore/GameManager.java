@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecore.gamemodes.GameOverMode;
@@ -35,6 +36,7 @@ public class GameManager implements InputAPI {
 
     private final GamePane myGamePane;
     // private GameLevelManager myLevelManager;
+    private GameLogic myGameLogic;
     private boolean myGameIsOver;
     private HashMap<Integer, Sprite> mySprites;
     private HashMap<String, Class> myAvailableModeTypes;
@@ -60,10 +62,10 @@ public class GameManager implements InputAPI {
 
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
-        // myLevelManager = new GameLevelManager(this);
-        // myGameLogic = new GameLogic(this);
+//        myLevelManager = new GameLevelManager(this);
+//        myGameLogic = new GameLogic(this);
         initializeGameLevel(GameWindow.importString("Entrance"));
-        // initializeGameLevel(GameWindow.importString("OtherLevel"));
+//        initializeGameLevel(GameWindow.importString("OtherLevel"));
         configureInputHandling();
     }
 
@@ -89,6 +91,13 @@ public class GameManager implements InputAPI {
 
         myAvailableModeTypes.put("BATTLE_START", BattleMode.class);
         myAvailableModeTypes.put("CONVERSATION_START", OptionMode.class);
+        
+        Map<String, List<String>> conditionMap = new HashMap<String, List<String>>();
+        conditionMap.put("BATTLE_START", new ArrayList<String>());
+        conditionMap.get("BATTLE_START").add("dobattle");
+        conditionMap.put("CONVERSATION_START", new ArrayList<String>());
+        conditionMap.get("CONVERSATION_START").add("enteroptmode");
+        myGameLogic = new GameLogic(this, conditionMap);
 
         myGameModes.get(0).resume();
     }
@@ -202,7 +211,6 @@ public class GameManager implements InputAPI {
 
     private void handleMouseActions (GameMode mode) {
         while (!myMouseActions.isEmpty()) {
-            System.out.println("doing mouse things for "+mode.getClass().toString());
             MouseAction m = myMouseActions.remove(0);
             mode.processMouseInput(m.myMouseEventType, m.myMousePosition, m.myMouseButton);
         }
@@ -252,18 +260,26 @@ public class GameManager implements InputAPI {
             myName = eventName;
             myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
         }
+        
+        public String getName() {
+            return myName;
+        }
+        
+        public List<Integer> getInvolvedIDs() {
+            return myInvolvedIDs;
+        }
     }
-
+    
+    
+    public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
+        myGameLogic.flagCondition(eventName, involvedSpriteIDs);
+    }
     /**
      * Adds an event to the list of events to handle.
-     * 
-     * @param eventName
-     *        String name of event to add.
-     * @param involvedSpriteIDs
-     *        List of integer IDs of sprites involved in given action.
+     * @param eventName - String name of event to add.
+     * @param involvedSpriteIDs - List of integer IDs of sprites involved in given action.
      */
-    // deprecated - use the one below
-    public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
+    protected void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
         myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
     }
 
@@ -280,8 +296,8 @@ public class GameManager implements InputAPI {
 
     // this whole thing to be wrapped into hashmap: event -> destinationModeId
     private void handleEvent (ModeEvent event) {
-        String eventName = event.myName;
-        List<Integer> myInvolvedIDs = event.myInvolvedIDs;
+        String eventName = event.getName();
+        List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         System.out.println(eventName);
         if (myAvailableModeTypes.containsKey(eventName)) {
             myGameModes.get(myGameModes.size() - 1).pause();

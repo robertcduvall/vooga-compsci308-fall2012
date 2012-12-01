@@ -62,6 +62,7 @@ public class MapMode extends GameMode implements InputAPI {
     public void pause () {
         myMapObjects.clear();
         setInactive();
+        // should unregister keyboard input, otherwise leads to issues
     }
 
     @Override

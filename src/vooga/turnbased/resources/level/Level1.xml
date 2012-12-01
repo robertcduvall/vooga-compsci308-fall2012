@@ -17,7 +17,7 @@
 	<sprite>
 		<map>
 			<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
-			<event>BATTLE_START</event>
+			<event>dobattle</event>
 			<location>
 				<x>8</x>
 				<y>7</y>
@@ -63,8 +63,8 @@
 	</sprite>
         <sprite>
                 <map>
-                        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
-                        <event>NO_ACTION</event>
+                        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+                        <event>enteroptmode</event>
                         <location>
                                 <x>10</x>
                                 <y>10</y>
