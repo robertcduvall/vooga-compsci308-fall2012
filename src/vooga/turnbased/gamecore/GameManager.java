@@ -38,8 +38,8 @@ public class GameManager implements InputAPI {
     // private GameLevelManager myLevelManager;
     private GameLogic myGameLogic;
     private boolean myGameIsOver;
-    private HashMap<Integer, Sprite> mySprites;
-    private HashMap<String, Class> myAvailableModeTypes;
+    private Map<Integer, Sprite> mySprites;
+    private Map<String, Class> myAvailableModeTypes;
     private List<ModeEvent> myModeEvents;
     private List<MouseAction> myMouseActions;
     private List<GameMode> myGameModes;
@@ -62,10 +62,10 @@ public class GameManager implements InputAPI {
 
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
-//        myLevelManager = new GameLevelManager(this);
-//        myGameLogic = new GameLogic(this);
-        initializeGameLevel(GameWindow.importString("Entrance"));
-//        initializeGameLevel(GameWindow.importString("OtherLevel"));
+        // myLevelManager = new GameLevelManager(this);
+        // myGameLogic = new GameLogic(this);
+        // initializeGameLevel(GameWindow.importString("Entrance"));
+        initializeGameLevel(GameWindow.importString("OtherLevel"));
         configureInputHandling();
     }
 
@@ -77,28 +77,19 @@ public class GameManager implements InputAPI {
      * @param enteringObject
      *        The MapObject which will used for the MapMode of this level.
      */
-    public void initializeGameLevel (String levelFileName) {
+    private void initializeGameLevel (String levelFileName) {
         LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
 
-        myGameModes.add(test.getMapMode());
-
         addSprites(test.parseSprites());
-
         myPlayerSpriteID = test.getPlayerID();
+        myAvailableModeTypes = test.getUserDefinedModes();
+        myGameLogic = new GameLogic(this, test.getEventConditionMapping());
 
-        myAvailableModeTypes.put("battle", BattleMode.class);
-        myAvailableModeTypes.put("optionMenu", OptionMode.class);
-        myAvailableModeTypes.put("gameOver", GameOverMode.class);
-        
-        Map<String, List<String>> conditionMap = new HashMap<String, List<String>>();
-        conditionMap.put("battle", new ArrayList<String>());
-        conditionMap.get("battle").add("dobattle");
-        conditionMap.put("optionMenu", new ArrayList<String>());
-        conditionMap.get("optionMenu").add("enteroptmode");
-        conditionMap.put("gameOver", new ArrayList<String>());
-        conditionMap.get("gameOver").add("gamelost");
-        myGameLogic = new GameLogic(this, conditionMap);
-
+        startFirstMode(test.getStartMode());
+    }
+    
+    private void startFirstMode(String entryMode) {
+        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
         myGameModes.get(0).resume();
     }
 
@@ -183,13 +174,14 @@ public class GameManager implements InputAPI {
                 if (mode.isActive()) {
                     mode.update();
                 }
-//                if (mode.hasFocus()) {
-//                    handleMouseActions(mode);
-//                }
+                // if (mode.hasFocus()) {
+                // handleMouseActions(mode);
+                // }
             }
         }
-        handleMouseActions(myGameModes.get(myGameModes.size()-1));
-        for(GameMode mode : finishedModes) { //avoid concurrent modifcation over myGameModes list
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
+        for (GameMode mode : finishedModes) { // avoid concurrent modifcation
+                                              // over myGameModes list
             killMode(mode);
         }
     }
@@ -260,24 +252,26 @@ public class GameManager implements InputAPI {
             myName = eventName;
             myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
         }
-        
-        public String getName() {
+
+        public String getName () {
             return myName;
         }
-        
-        public List<Integer> getInvolvedIDs() {
+
+        public List<Integer> getInvolvedIDs () {
             return myInvolvedIDs;
         }
     }
-    
-    
+
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
+
     /**
      * Adds an event to the list of events to handle.
+     * 
      * @param eventName - String name of event to add.
-     * @param involvedSpriteIDs - List of integer IDs of sprites involved in given action.
+     * @param involvedSpriteIDs - List of integer IDs of sprites involved in
+     *        given action.
      */
     protected void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
         myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
@@ -294,13 +288,17 @@ public class GameManager implements InputAPI {
         }
     }
 
-    // this whole thing to be wrapped into hashmap: event -> destinationModeId
     private void handleEvent (ModeEvent event) {
         String eventName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
-        System.out.println(eventName);
         if (myAvailableModeTypes.containsKey(eventName)) {
-            myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again assuming latest is active for now
+            if (!myGameModes.isEmpty()) {
+                myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again
+                                                                 // assuming
+                                                                 // latest is
+                                                                 // active for
+                                                                 // now
+            }
             Class c = myAvailableModeTypes.get(eventName);
             Constructor[] newC = c.getConstructors();
             try {
@@ -337,6 +335,8 @@ public class GameManager implements InputAPI {
 
     private void killMode (GameMode mode) {
         myGameModes.remove(mode);
-        myGameModes.get(myGameModes.size() - 1).resume();
+        if (!myGameModes.isEmpty()) {
+            myGameModes.get(myGameModes.size() - 1).resume();
+        }
     }
 }
