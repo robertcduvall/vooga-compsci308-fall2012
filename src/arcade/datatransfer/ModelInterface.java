@@ -154,4 +154,7 @@ public class ModelInterface {
         return myUserManager.getUserProfile(username);
     }
 
+    public void changeAdminStatus (String name, boolean adminStatus) {
+        myUserManager.changeAdminStatus(name, adminStatus);
+    }
 }

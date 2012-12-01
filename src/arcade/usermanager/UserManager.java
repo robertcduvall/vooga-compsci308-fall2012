@@ -1,12 +1,20 @@
 package arcade.usermanager;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
+import util.encrypt.Encrypter;
 import arcade.utility.FileOperation;
 
 
@@ -23,11 +31,13 @@ public class UserManager {
     private static String myUserBasicFilePath;
     private static String myUserMessageFilePath;
     private static String myUserGameFilePath;
+    private static String myDatabaseFilePath;
     private static ResourceBundle resource;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
     private User myCurrentUser;
+    private Set<String> myAdminHashes;
 
     public static UserManager getInstance () {
         if (myUserManager == null) {
@@ -43,11 +53,28 @@ public class UserManager {
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
+        myDatabaseFilePath = resource.getString("DatabaseFilePath");
 
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
 
         myAllUser = new HashMap<String, User>();
+
+        myAdminHashes = new HashSet<String>();
+        try {
+            BufferedReader br =
+                    new BufferedReader(new FileReader(myDatabaseFilePath + "admins.txt"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                myAdminHashes.add(line);
+            }
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
         File folder = new File(myUserBasicFilePath);
         File[] listOfFiles = folder.listFiles();
@@ -56,13 +83,62 @@ public class UserManager {
             if (listOfFile.isFile()) {
                 String name = FileOperation.stripExtension(listOfFile.getName());
                 User newUser = myXMLReader.getUser(name);
-
+                newUser.setMyAdminStatus(checkAdminStatus(name));
+                System.out.println(checkAdminStatus(name) + name);
                 myAllUser.put(name, newUser);
 
             }
 
         }
+    }
 
+    /**
+     * Checks adminstrator status given a username
+     * 
+     * @param name
+     * @return
+     */
+    private boolean checkAdminStatus (String name) {
+        return myAdminHashes.contains(Encrypter.hashCode(name));
+    }
+
+    /**
+     * Changes a given user's administrator status and writes the administrator
+     * file.
+     * 
+     * @param name
+     * @param adminStatus
+     */
+    public void changeAdminStatus (String name, boolean adminStatus) {
+        myAllUser.get(name).setMyAdminStatus(adminStatus);
+        if (adminStatus == true) {
+            myAdminHashes.add(Encrypter.hashCode(name));
+        }
+        else {
+            myAdminHashes.remove(Encrypter.hashCode(name));
+        }
+        writeAdminFile(name);
+
+    }
+
+    /**
+     * Writes the file of administrators.
+     * 
+     * @param name
+     */
+    private void writeAdminFile (String name) {
+        try {
+            BufferedWriter bw =
+                    new BufferedWriter(new FileWriter(myDatabaseFilePath + "admins.txt"));
+            for (String hash : myAdminHashes) {
+                bw.write(hash);
+                bw.newLine();
+                bw.flush();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected User getUser (String userName) {
@@ -103,24 +179,24 @@ public class UserManager {
         myCurrentUser = newUser;
 
     }
-    
-    public UserProfile getUserProfile(String userName){
-        User user=getUser(userName);
-        String name=user.getName();
-        String picture=user.getPicture();
-        String firstName=user.getFirstName();
-        String lastName=user.getLastName();
-        return new UserProfile(name,picture,firstName,lastName);
+
+    public UserProfile getUserProfile (String userName) {
+        User user = getUser(userName);
+        String name = user.getName();
+        String picture = user.getPicture();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        return new UserProfile(name, picture, firstName, lastName);
     }
-    
-    public List<UserProfile> getAllUserProfile(){
-        List<UserProfile> userProfileList=new ArrayList<UserProfile>();
-        for(String name:myAllUser.keySet()){
+
+    public List<UserProfile> getAllUserProfile () {
+        List<UserProfile> userProfileList = new ArrayList<UserProfile>();
+        for (String name : myAllUser.keySet()) {
             userProfileList.add(getUserProfile(name));
         }
-        
+
         return userProfileList;
-        
+
     }
 
 }
