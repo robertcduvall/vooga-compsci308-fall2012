@@ -61,8 +61,8 @@ public class LevelXmlParser {
 
     private int myPlayerID;
     private String myStartMode;
-    private Dimension myTileSize;
-    private Dimension myCameraTiles;
+//    private Dimension myTileSize;
+//    private Dimension myCameraTiles;
 
     private MapMode myMapMode; // should not be here
 
@@ -75,18 +75,19 @@ public class LevelXmlParser {
     public LevelXmlParser (File file, GameManager gm) {
         myXmlDocument = XmlUtilities.makeDocument(file);
         myDocumentElement = myXmlDocument.getDocumentElement(); // rpggame
+        myMapMode = new MapMode(gm, MapObject.class, new ArrayList<Integer>());
+        myMapMode.setMapSize(parseDimension(GameWindow.importString("MapDimension")));
+        myMapMode.setCameraSize(parseDimension(GameWindow.importString("CameraDimension")));
         myPlayerXmlDocument = XmlUtilities.makeDocument(PLAYER_XML_PATH);
-        parseSetup();
-
-        myMapMode = new MapMode(gm, MapObject.class, new ArrayList<Integer>()); // badbad
+//        parseSetup();
     }
 
-    private void parseSetup () {
-        Element gameSetupElement = XmlUtilities.getElement(myDocumentElement, GAME_SETUP);
-        myTileSize = parseDimension(GameWindow.importString("MapDimension"));
-        myCameraTiles = parseDimension(GameWindow.importString("CameraDimension"));
-        myStartMode = XmlUtilities.getChildContent(gameSetupElement, "startMode");
-    }
+//    private void parseSetup () {
+//        Element gameSetupElement = XmlUtilities.getElement(myDocumentElement, GAME_SETUP);
+//        myTileSize = parseDimension(GameWindow.importString("MapDimension"));
+//        myCameraTiles = parseDimension(GameWindow.importString("CameraDimension"));
+//        myStartMode = XmlUtilities.getChildContent(gameSetupElement, "startMode");
+//    }
 
     /**
      * @param name The string name of the element containing dimensions
@@ -134,6 +135,7 @@ public class LevelXmlParser {
         }
         Map<String, ImageLoop> imageLoops = parseImageLoops(mapPlayer.getImageMap());
         mapPlayer.setImageLoops(imageLoops);
+        myMapMode.setPlayer(mapPlayer);
         s.addGameObject(mapPlayer);
         List<BattleObject> playerBattleObjects =
                 parseBattleObjects(s, getListOfPlayerElements().get(0));
@@ -147,8 +149,8 @@ public class LevelXmlParser {
     private List<Sprite> parseStaticSprites () {
         List<Sprite> spriteList = new ArrayList<Sprite>();
         Sprite s = new Sprite();
-        for (int i = 0; i < myCameraTiles.width; i++) {
-            for (int j = 0; j < myCameraTiles.height; j++) {
+        for (int i = 0; i < myMapMode.getMapSize().width; i++) {
+            for (int j = 0; j < myMapMode.getMapSize().height; j++) {
                 Point point = new Point(i, j);
                 s = new Sprite();
                 Element staticSprite = XmlUtilities.getElement(myDocumentElement, "staticSprite");
@@ -363,6 +365,10 @@ public class LevelXmlParser {
 
     public String getStartMode () {
         return myStartMode;
+    }
+    
+    public GameMode getMapMode() {
+        return myMapMode;
     }
 
     public Map<String, Class> getUserDefinedModes () {

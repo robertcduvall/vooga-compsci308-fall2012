@@ -14,6 +14,7 @@ import java.util.Map;
 import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecore.gamemodes.GameOverMode;
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
 import vooga.turnbased.gamecreation.LevelXmlParser;
 import vooga.turnbased.gameobject.GameObject;
@@ -79,19 +80,23 @@ public class GameManager implements InputAPI {
      */
     private void initializeGameLevel (String levelFileName) {
         LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
-
+        
+        MapMode mapMode = (MapMode) test.getMapMode();
+        myGameModes.add(mapMode);
+        
         addSprites(test.parseSprites());
         myPlayerSpriteID = test.getPlayerID();
         myAvailableModeTypes = test.getUserDefinedModes();
         myGameLogic = new GameLogic(this, test.getEventConditionMapping());
 
-        startFirstMode(test.getStartMode());
-    }
-    
-    private void startFirstMode(String entryMode) {
-        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+        //startFirstMode(test.getStartMode());
         myGameModes.get(0).resume();
     }
+    
+//    private void startFirstMode(String entryMode) {
+//        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+//        myGameModes.get(0).resume();
+//    }
 
     /**
      * find the Sprite with specific ID
@@ -179,7 +184,7 @@ public class GameManager implements InputAPI {
                 // }
             }
         }
-        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1)); //assume latest is focus
         for (GameMode mode : finishedModes) { // avoid concurrent modifcation
                                               // over myGameModes list
             killMode(mode);

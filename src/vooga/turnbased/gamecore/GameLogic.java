@@ -16,13 +16,13 @@ public class GameLogic {
     private GameManager myGameManager;
     private final Map<String, List<List<String>>> myEventConditions;
     private ArrayList<String> myModeEventNames;
-    private ArrayList<String> myGameConditions;
+    private TreeSet<String> myGameConditions;
 
     public GameLogic (GameManager gm, Map<String, List<List<String>>> eventConditions) {
         myGameManager = gm;
         myEventConditions = eventConditions;
         myModeEventNames = new ArrayList<String>();
-        myGameConditions = new ArrayList<String>();
+        myGameConditions = new TreeSet<String>();
 
     }
 

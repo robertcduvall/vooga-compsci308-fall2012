@@ -10,7 +10,7 @@
 			<height>11</height>
 		</cameraDimension>
 		<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
-		<startMode>map1</startMode>
+		<startMode>map</startMode><!-- map is hardcoded, required default value in XMLParser -->
 	</gameSetup>
 	<modeDeclarations>
 		<mode>
@@ -25,7 +25,7 @@
 			<condition>endgame</condition>
 		</mode>
 		<mode>
-			<name>map1</name>
+			<name>map</name>
 			<class>vooga.turnbased.gamecore.gamemodes.MapMode</class>
 			<condition>entermap1</condition>
 		</mode>
@@ -42,7 +42,7 @@
 	</modeDeclarations>
 	<spriteDeclarations>
 		<sprite>
-			<map1>
+			<map>
 				<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
 				<condition>dobattle</condition>
 				<location>
@@ -50,7 +50,7 @@
 					<y>7</y>
 				</location>
 				<image>src/vooga/turnbased/resources/image/mapobject/Nurse.png</image>
-			</map1>
+			</map>
 			<battle>
 				<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
 				<condition>NO_ACTION</condition>
@@ -77,7 +77,7 @@
 			</battle>
 		</sprite>
 		<sprite>
-			<map1>
+			<map>
 				<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
 				<condition>NO_ACTION</condition>
 				<location>
@@ -85,10 +85,10 @@
 					<y>5</y>
 				</location>
 				<image>src/vooga/turnbased/resources/image/mapobject/FatMan.png</image>
-			</map1>
+			</map>
 		</sprite>
 	    <sprite>
-		    <map1>
+		    <map>
 		            <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
 		            <condition>optionstuff</condition>
 		            <location>
@@ -96,10 +96,10 @@
 		                    <y>10</y>
 		            </location>
 		            <image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
-		    </map1>
+		    </map>
 	    </sprite>
 	    <sprite>
-			<map1>
+			<map>
 				<class>vooga.turnbased.gameobject.mapobject.MovingMapObject</class>
 				<condition>NO_ACTION</condition>
 				<location>
@@ -107,7 +107,7 @@
 					<y>3</y>
 				</location>
 				<image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
-			</map1>
+			</map>
 		</sprite>
 			<sprite>
 			<map2>
