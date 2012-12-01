@@ -60,6 +60,7 @@ public class NormSearchPanel extends ASearchPanel {
         JLabel listSelectPrompt = new JLabel("Select a game: ");
         JButton goButton = new JButton("Go to Profile");
         JButton goToTagSearchButton = new JButton("Search for Games by tag: ");
+        JButton goToUserSearchButton = new JButton("Search for Arcade Users!");
         goButton.addActionListener(new ActionListener(){
 
             @Override
