@@ -80,26 +80,23 @@ public class GameManager implements InputAPI {
     public void initializeGameLevel (String levelFileName) {
         LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
 
-        // need to get mode event mappings too
-
         myGameModes.add(test.getMapMode());
-        // myAvailableModeTypes.put(myGameModes.getID(), myGameModes);
 
         addSprites(test.parseSprites());
 
         myPlayerSpriteID = test.getPlayerID();
 
-        myAvailableModeTypes.put("BATTLE_START", BattleMode.class);
-        myAvailableModeTypes.put("CONVERSATION_START", OptionMode.class);
-        myAvailableModeTypes.put("GAME_OVER", GameOverMode.class);
+        myAvailableModeTypes.put("battle", BattleMode.class);
+        myAvailableModeTypes.put("optionMenu", OptionMode.class);
+        myAvailableModeTypes.put("gameOver", GameOverMode.class);
         
         Map<String, List<String>> conditionMap = new HashMap<String, List<String>>();
-        conditionMap.put("BATTLE_START", new ArrayList<String>());
-        conditionMap.get("BATTLE_START").add("dobattle");
-        conditionMap.put("CONVERSATION_START", new ArrayList<String>());
-        conditionMap.get("CONVERSATION_START").add("enteroptmode");
-        conditionMap.put("GAME_OVER", new ArrayList<String>());
-        conditionMap.get("GAME_OVER").add("gamelost");
+        conditionMap.put("battle", new ArrayList<String>());
+        conditionMap.get("battle").add("dobattle");
+        conditionMap.put("optionMenu", new ArrayList<String>());
+        conditionMap.get("optionMenu").add("enteroptmode");
+        conditionMap.put("gameOver", new ArrayList<String>());
+        conditionMap.get("gameOver").add("gamelost");
         myGameLogic = new GameLogic(this, conditionMap);
 
         myGameModes.get(0).resume();
