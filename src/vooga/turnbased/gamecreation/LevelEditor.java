@@ -47,7 +47,14 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myXmlDocument, myRootElement, "levelid", id.toString());
     }
 
-    // public void modifyLevelId, etc. for each of following
+    /**
+     * 
+     * @param id The id number to replace the former id
+     */
+    public void modifyLevelId (Number id) {
+        Element levelId = XmlUtilities.getElement(myRootElement, "levelid");
+        XmlUtilities.setContent(levelId, id.toString());
+    }
 
     /**
      * 
@@ -56,6 +63,15 @@ public class LevelEditor extends Editor {
      */
     public void addDimensionTag(Number width, Number height) {
         addDimension("dimension", width, height);
+    }
+
+    /**
+     * 
+     * @param width New map dimension width
+     * @param height New map dimension height
+     */
+    public void modifyDimensionTag(Number width, Number height) {
+        modifyDimension("dimension", width, height);
     }
 
     /**
@@ -69,11 +85,29 @@ public class LevelEditor extends Editor {
 
     /**
      * 
+     * @param width New camera dimension width
+     * @param height New camera dimension height
+     */
+    public void modifyCameraDimension (Number width, Number height) {
+        modifyDimension("cameraDimension", width, height);
+    }
+
+    /**
+     * 
      * @param imagePath Path to the Background image of the level
      */
     public void addBackgroundImage (String imagePath) {
         XmlUtilities.appendElement(myXmlDocument, myRootElement,
                 "backgroundImage", imagePath);
+    }
+
+    /**
+     * 
+     * @param imagePath New Image Path
+     */
+    public void modifyBackgroundImage (String imagePath) {
+        Element background = XmlUtilities.getElement(myRootElement, "backgroundImage");
+        XmlUtilities.setContent(background, imagePath);
     }
 
     /**
@@ -89,6 +123,18 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myXmlDocument, dimension, "y", y.toString());
     }
 
+    /**
+     * 
+     * @param x New x-coordinate for player entry
+     * @param y New y-coordinate for player entry
+     */
+    public void modifyPlayerEntryPoints (Number x, Number y) {
+        Element playerEntry = XmlUtilities.getElement(myRootElement, "player_entry_point");
+        Element xElement = XmlUtilities.getElement(playerEntry, "x");
+        Element yElement = XmlUtilities.getElement(playerEntry, "y");
+        XmlUtilities.setContent(xElement, x.toString());
+        XmlUtilities.setContent(yElement, y.toString());
+    }
     /**
      * 
      * @return The new Sprite element that was just added to the Xml Document
@@ -149,5 +195,13 @@ public class LevelEditor extends Editor {
         Element dimension = XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
         XmlUtilities.appendElement(myXmlDocument, dimension, "width", width.toString());
         XmlUtilities.appendElement(myXmlDocument, dimension, "height", height.toString());
+    }
+
+    private void modifyDimension (String s, Number width, Number height) {
+        Element dimension = XmlUtilities.getElement(myRootElement, s);
+        Element w = XmlUtilities.getElement(dimension, "width");
+        Element h = XmlUtilities.getElement(dimension, "height");
+        XmlUtilities.setContent(w, width.toString());
+        XmlUtilities.setContent(h, height.toString());
     }
 }
