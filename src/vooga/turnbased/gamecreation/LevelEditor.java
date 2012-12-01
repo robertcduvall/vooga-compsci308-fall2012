@@ -15,6 +15,7 @@ public class LevelEditor extends Editor {
 
     private Document myXmlDocument;
     private Element myRootElement;
+    private String myFileName;
 
     /**
      * Instantiates a LevelEditor for modifying an Xml document.
@@ -25,6 +26,7 @@ public class LevelEditor extends Editor {
     public LevelEditor(Document xmlDocument, String fileName) {
         super(xmlDocument, fileName);
         myXmlDocument = xmlDocument;
+        myFileName = fileName;
     }
 
     /**
@@ -37,6 +39,7 @@ public class LevelEditor extends Editor {
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("level");
         myXmlDocument.appendChild(myRootElement);
+        myFileName = fileName;
     }
 
     /**
@@ -203,5 +206,10 @@ public class LevelEditor extends Editor {
         Element h = XmlUtilities.getElement(dimension, "height");
         XmlUtilities.setContent(w, width.toString());
         XmlUtilities.setContent(h, height.toString());
+    }
+
+    @Override
+    public void saveXmlDocument () {
+        XmlUtilities.write(myXmlDocument, myFileName);
     }
 }

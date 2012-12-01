@@ -41,9 +41,7 @@ public abstract class Editor {
     /**
      * Saves the xml document.
      */
-    public void saveXmlDocument() {
-        XmlUtilities.write(myXmlDocument, myFileName);
-    }
+    public abstract void saveXmlDocument();
 
     /**
      * 

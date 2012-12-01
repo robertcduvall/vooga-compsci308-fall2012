@@ -1,5 +1,6 @@
 package vooga.turnbased.gamecreation;
 
+import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -14,6 +15,7 @@ import util.xml.XmlUtilities;
 public class PlayerEditor extends Editor {
     private Document myXmlDocument;
     private Element myRootElement;
+    private String myFileName;
 
     /**
      * Instantiates a LevelEditor for modifying an Xml document.
@@ -24,6 +26,7 @@ public class PlayerEditor extends Editor {
     public PlayerEditor(Document xmlDocument, String fileName) {
         super(xmlDocument, fileName);
         myXmlDocument = xmlDocument;
+        myFileName = fileName;
     }
 
     /**
@@ -36,6 +39,7 @@ public class PlayerEditor extends Editor {
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("players");
         myXmlDocument.appendChild(myRootElement);
+        myFileName = fileName;
     }
 
     /**
@@ -96,16 +100,27 @@ public class PlayerEditor extends Editor {
     }
 
     /**
-     * 
      * @param s sprite element for which the battle stats need altering
      * @param stats Map of battle attributes and their values
+     * @param name Name of the battle object that stat changes in
      */
-    public void modifyBattleStats (Element s, Map<String, Number> stats) {
-        Element battle = XmlUtilities.getElement(s, "battle");
-        Element statsElement = XmlUtilities.getElement(battle, "stats");
+    public void modifyBattleStats (Element s, Map<String, Number> stats, String name) {
+        List<Element> battle = (List<Element>) XmlUtilities.getElements(s, "battle");
+        Element statsElement = null;
+        for (Element current : battle) {
+            String currentName = XmlUtilities.getChildContent(current, "name");
+            if (currentName.equals(name)) {
+                statsElement = current;
+            }
+        }
         for (String key : stats.keySet()) {
             Element current = XmlUtilities.getElement(statsElement, key);
             XmlUtilities.setContent(current, stats.get(key).toString());
         }
+    }
+
+    @Override
+    public void saveXmlDocument () {
+        XmlUtilities.write(myXmlDocument, myFileName);
     }
 }

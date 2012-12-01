@@ -94,7 +94,7 @@ public class EditorPane extends DisplayPane {
         stats.put("health", 6);
         stats.put("attack", 5);
         stats.put("defense", 4);
-        p.modifyBattleStats(player, stats);
+        p.modifyBattleStats(player, stats, "NAME");
         p.saveXmlDocument();
     }
 
