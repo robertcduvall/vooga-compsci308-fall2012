@@ -10,6 +10,8 @@ import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.util.enums.PlayState;
 
 

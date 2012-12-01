@@ -1,4 +1,4 @@
-package vooga.platformer.level;
+package vooga.platformer.level.condition;
 
 import java.util.HashMap;
 import java.util.Map;

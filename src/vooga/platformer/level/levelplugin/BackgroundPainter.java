@@ -1,4 +1,4 @@
-package vooga.platformer.level;
+package vooga.platformer.level.levelplugin;
 
 import java.awt.Graphics;
 import java.awt.Image;
