@@ -318,6 +318,8 @@ public class MapMode extends GameMode implements InputAPI {
                                                    myPlayer, "moveRight");
             GamePane.keyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED,
                                                    myPlayer, "moveDown");
+            GamePane.keyboardController.setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
+                                                   myPlayer, "toggleRunning");
         }
         catch (Exception e) {
             e.printStackTrace();
