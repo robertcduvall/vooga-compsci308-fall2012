@@ -7,10 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
-import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.graphicprocessing.ImageLoop;
 import vooga.turnbased.gameobject.GameObject;
 
 /**
@@ -22,6 +22,7 @@ public abstract class BattleObject extends GameObject {
     private final String HEALTH = "health";
     private Map<String, Number> myStats;
     private String myName;
+    private ImageLoop myImageLoop;
 
     private final double FONT_SCALAR = 18;
     private final float FONT_SPACING_SCALAR = (float) 1.2;
@@ -173,11 +174,16 @@ public abstract class BattleObject extends GameObject {
 
     @Override 
     public void update () {
-
+        if(myImageLoop != null)
+            myImage = myImageLoop.next();
     }
 
     @Override 
     public void paint (Graphics g) {
 
+    }
+    
+    public void setImageLoop (ImageLoop imgLoop) {
+        myImageLoop = imgLoop;
     }
 }

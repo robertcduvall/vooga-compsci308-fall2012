@@ -145,6 +145,9 @@ public class BattleMode extends GameMode implements InputAPI {
             myPlayerObject = myTeam.getActivePlayer();
             myMessages.add(myPlayerObject.getName() + " sent out");
         }
+        else {
+            myPlayerObject.update();
+        }
         if (!myEnemyObject.isAlive()) {
             myMessages.add(myEnemyObject.getName() + " fainted");
             myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());

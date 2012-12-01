@@ -234,6 +234,17 @@ public class LevelXmlParser {
         }
         return imageMap;
     }
+    
+    private ImageLoop parseObjectImages (Element element) {
+        List<Image> images = new ArrayList<Image>();
+        List<Element> imageList = (List<Element>) XmlUtilities.getElements(element, IMAGE);
+        for (Element e : imageList) {
+            System.out.println(XmlUtilities.getContent(e));
+            Image img = XmlUtilities.getContentAsImage(e);
+            images.add(img);
+        }
+        return new ImageLoop(images);
+    }
 
     private Sprite parseSprite (Element sprite) {
         Sprite s = new Sprite();
@@ -280,6 +291,7 @@ public class LevelXmlParser {
             BattleObject battleObject =
                     (BattleObject) Reflection.createInstance(className, s.getID(), event, stats,
                                                              name, image);
+            battleObject.setImageLoop(parseObjectImages(battleSprite));
             return battleObject;
         }
         return null;

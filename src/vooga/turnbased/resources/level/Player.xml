@@ -68,6 +68,7 @@
 			</stats>
 			<name>Pikachu</name>
 			<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
+			<image>src/vooga/turnbased/resources/image/battleobject/025sb.png</image>
 		  </battle>
 		  <battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>

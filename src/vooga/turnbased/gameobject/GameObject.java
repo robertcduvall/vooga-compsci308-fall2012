@@ -103,7 +103,6 @@ public abstract class GameObject {
     public abstract void update ();
     
     public abstract void paint (Graphics g);
-    
 
     /**
      * Remove all occurences of this object in the program.
