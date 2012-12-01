@@ -102,6 +102,18 @@ public class GamePane extends DisplayPane implements Runnable {
                 myGameManager.addMouseAction(e.getPoint(), e.getButton());
             }
         });
+        
+        addMouseMotionListener(new MouseMotionListener() {
+
+            @Override
+            public void mouseDragged (MouseEvent e) {
+                myGameManager.handleMouseDragged(e);
+            }
+
+            @Override
+            public void mouseMoved (MouseEvent e) {
+            }
+        });
     }
 
 }

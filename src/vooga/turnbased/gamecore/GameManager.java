@@ -344,5 +344,8 @@ public class GameManager implements InputAPI {
             myMousePosition = mousePos;
             myMouseButton = mouseButton;
         }
-    }    
+    }   
+    
+    public void handleMouseDragged(MouseEvent e) {
+    }
 }

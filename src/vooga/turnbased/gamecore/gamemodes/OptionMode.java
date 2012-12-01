@@ -91,7 +91,8 @@ public class OptionMode extends GameMode {
     /**
      * change the position of the conversation box
      */
-    protected void changeDisplayPosition(Point currentPosition) {
+    @Override
+    public void changeDisplayPosition (Point currentPosition) {
         if (hasFocus()) {
             Point positionOnPanel = getPositionOnPanel(currentPosition);
             int x = positionOnPanel.x - myPanel.getPreviousPosition().x;
