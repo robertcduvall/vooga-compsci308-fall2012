@@ -26,7 +26,8 @@ import vooga.turnbased.sprites.Sprite;
 
 
 /**
- * This is a gamemode that will run a battle given two lists of BattleObjects that
+ * This is a gamemode that will run a battle given two lists of BattleObjects
+ * that
  * will fight each other.
  * Currently, 4 battle options are supported: attack, defend, charge, heal.
  * They can be modified and extended.
@@ -58,15 +59,17 @@ public class BattleMode extends GameMode implements InputAPI {
      * Constructor for a Battle.
      * 
      * @param id The ID of the mode
-     * @param gameManager The parent GameManager that is creating this battle. Will be
+     * @param gameManager The parent GameManager that is creating this battle.
+     *        Will be
      *        alerted when battle ends.
-     * @param modeObjectType The object type this mode uses, i.e. BattleObject.java
+     * @param modeObjectType The object type this mode uses, i.e.
+     *        BattleObject.java
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
 
     // need to pass ids of battle participants upon battle creation
     public BattleMode (int id, GameManager gameManager, Class<BattleObject> modeObjectType,
-            List<Integer> involvedIDs) {
+                       List<Integer> involvedIDs) {
         super(id, gameManager, modeObjectType);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
@@ -74,7 +77,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void pause () {
-        //myTeams.clear();
+        // myTeams.clear();
     }
 
     @Override
@@ -92,7 +95,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Controls include Attack, Defend, Heal, and Charge, set as constants.
      */
     public void configureInputHandling () {
-        // use input api for key handling. notice how you can only invoke methods w/t parameters...
+        // use input api for key handling. notice how you can only invoke
+        // methods w/t parameters...
         int attack = KeyEvent.VK_A;
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
@@ -100,18 +104,18 @@ public class BattleMode extends GameMode implements InputAPI {
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, 
-                    this, "triggerOption1Event");
-            GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, 
-                    this, "triggerLeftEvent");
-            GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, 
-                    this, "triggerRightEvent");
-            GamePane.keyboardController.setControl(up, KeyboardController.RELEASED, 
-                    this, "triggerUpEvent");
-            GamePane.keyboardController.setControl(down, KeyboardController.RELEASED, 
-                    this, "triggerDownEvent");
-            GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, 
-                    this, "triggerSelectEvent");
+            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
+                                                   "triggerOption1Event");
+            GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, this,
+                                                   "triggerLeftEvent");
+            GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, this,
+                                                   "triggerRightEvent");
+            GamePane.keyboardController.setControl(up, KeyboardController.RELEASED, this,
+                                                   "triggerUpEvent");
+            GamePane.keyboardController.setControl(down, KeyboardController.RELEASED, this,
+                                                   "triggerDownEvent");
+            GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, this,
+                                                   "triggerSelectEvent");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -126,7 +130,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myBattleObjects.add(bo);
         }
         myTeam = new Team(myBattleObjects);
-        
+
         // adding enemy
         List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
         Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
@@ -156,7 +160,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myEnemyObject = myEnemyTeam.getActivePlayer();
             myMessages.add(myEnemyObject.getName() + " appeared");
         }
-            
+
         // TODO: figure out how this should work. Right now we just give it the
         // previous team
         // TODO: Take into account animating, requesting user input for player
@@ -179,14 +183,14 @@ public class BattleMode extends GameMode implements InputAPI {
         paintMenu(g);
     }
 
-    //someone please fix this...
+    // someone please fix this...
     public void paintMenu (Graphics g) {
         // paint the message box/battle option menu
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
 
-        //move this to XML 
+        // move this to XML
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Message_Sign.png");
         Image box = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         g.drawImage(box, 0, 0, width, height, null);
@@ -202,60 +206,79 @@ public class BattleMode extends GameMode implements InputAPI {
         FontEffect myFontEffect = new FontEffect(g, font);
         for (int i = 0; counter + i < myMessages.size(); i++) {
             String currentMessage = myMessages.get(counter + i);
-            double horizontalShift = (double) ((width/TEXT_SCALAR)*3);
-            double verticalShift = (double) (height/TEXT_SCALAR*4.5);
-            double spacingBetweenLines = (double) (1.2)*(fontSize) * i;
-            Point paintPosition = new Point((int)horizontalShift, (int)((2 * height / 3 + verticalShift + spacingBetweenLines)));
+            double horizontalShift = (double) ((width / TEXT_SCALAR) * 3);
+            double verticalShift = (double) (height / TEXT_SCALAR * 4.5);
+            double spacingBetweenLines = (double) (1.2) * (fontSize) * i;
+            Point paintPosition =
+                    new Point((int) horizontalShift,
+                              (int) ((2 * height / 3 + verticalShift + spacingBetweenLines)));
             myFontEffect.shodowEffect(currentMessage, Color.blue, paintPosition);
         }
-        g.drawImage(box, width/2, 0, width/2, height, null);
-        drawOptions(g, width/2, 2*height/3, width/2, height/3);
+        g.drawImage(box, width / 2, 0, width / 2, height, null);
+        drawOptions(g, width / 2, 2 * height / 3, width / 2, height / 3);
     }
 
-
+    /**
+     * draw options in a box for the player to choose
+     * @param g the Graphics context
+     * @param x the x coordinate of the origin of this box
+     * @param y the y coordinate of the origin of this box
+     * @param width the width of this box
+     * @param height the height of this box
+     */
+    // I would say a point and a dimension, or a rectangle would be more intuitive and readable?
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
-        //format positions based on width and height of the box...maybe?
-        Graphics2D g2d = (Graphics2D) g;
+        // format positions based on width and height of the box...maybe?
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
-        FontRenderContext frc = g2d.getFontRenderContext();
-        g2d.setColor(Color.BLACK);
-        String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
-        for (int i = 0; i < options.length; i ++) {
-            String s = options[i];
-            GlyphVector gv = font.createGlyphVector(frc, s);
+        FontEffect fontEffect = new FontEffect(g, font);
+        String[] options = { OPTION1, OPTION2, OPTION3, OPTION4 };
+        // position determines where the strings are painted (need to get rid
+        // of the magic numbers)
+        Point position = null;
+        Color mainColor = Color.GRAY;
+        Color outlineColor = Color.BLACK;
+        for (int i = 0; i < options.length; i++) {
+            String option = options[i];
             if (i == 0) {
-                g2d.drawGlyphVector(gv, x+60, y+80);
+                position = new Point(x + 60, y + 80);
             }
             else if (i == 1) {
-                g2d.drawGlyphVector(gv, x+220, y+80);
+                position = new Point(x + 220, y + 80);
             }
             else if (i == 2) {
-                g2d.drawGlyphVector(gv, x+60, y+140);
+                position = new Point(x + 60, y + 140);
             }
             else if (i == 3) {
-                g2d.drawGlyphVector(gv, x+220, y+140);
+                position = new Point(x + 220, y + 140);
+            }
+            try {
+                fontEffect.outlineEffect(option, mainColor, outlineColor, position);
+            }
+            catch (NullPointerException e) {
+                System.err.println("option not recognized");
+                e.printStackTrace();
             }
         }
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
         Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         if (mySelection == OptionSelect.OPTION1) {
-            g.drawImage(arrow, x+40, y+60, 20, 20, null);
+            g.drawImage(arrow, x + 40, y + 60, 20, 20, null);
         }
         else if (mySelection == OptionSelect.OPTION2) {
-            g.drawImage(arrow, x+200, y+60, 20, 20, null);
+            g.drawImage(arrow, x + 200, y + 60, 20, 20, null);
         }
         else if (mySelection == OptionSelect.OPTION3) {
-            g.drawImage(arrow, x+40, y+120, 20, 20, null);
+            g.drawImage(arrow, x + 40, y + 120, 20, 20, null);
         }
         else if (mySelection == OptionSelect.OPTION4) {
-            g.drawImage(arrow, x+200, y+120, 20, 20, null);
+            g.drawImage(arrow, x + 200, y + 120, 20, 20, null);
         }
     }
-    
-    private int calculateFontSize(int width, int height) {
+
+    private int calculateFontSize (int width, int height) {
         // current hypotenuse of regular window size is ~965, with font size 25
         // 965/25 = 37.4
-        return (int)(Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2))/TEXT_SCALAR);
+        return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2)) / TEXT_SCALAR);
     }
 
     /**
@@ -275,6 +298,9 @@ public class BattleMode extends GameMode implements InputAPI {
         myEnemyObject = myEnemyTeam.getActivePlayer();
     }
 
+    /**
+     * end a battle and report the event (whether player is dead) to GameManager
+     */
     private void endBattle () {
         System.out.println("End battle!");
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
@@ -290,16 +316,14 @@ public class BattleMode extends GameMode implements InputAPI {
     private boolean isBattleOver () {
         boolean teamDead = false;
         if (!myTeam.stillAlive()) {
-            Sprite loserSprite = getGameManager().findSpriteWithID(
-                    myPlayerObject.getID());
+            Sprite loserSprite = getGameManager().findSpriteWithID(myPlayerObject.getID());
             myLooserSpriteID = loserSprite.getID();
             loserSprite.clear();
             getGameManager().deleteSprite(loserSprite.getID());
             teamDead = true;
         }
         if (!myEnemyTeam.stillAlive()) {
-            Sprite loserSprite = getGameManager().findSpriteWithID(
-                    myEnemyObject.getID());
+            Sprite loserSprite = getGameManager().findSpriteWithID(myEnemyObject.getID());
             myLooserSpriteID = loserSprite.getID();
             loserSprite.clear();
             getGameManager().deleteSprite(loserSprite.getID());
@@ -350,7 +374,10 @@ public class BattleMode extends GameMode implements InputAPI {
             generateEnemyMove();
         }
     }
-    
+
+    /**
+     * select the option that is on the left of the current option
+     */
     public void triggerLeftEvent () {
         if (mySelection == OptionSelect.OPTION2) {
             mySelection = OptionSelect.OPTION1;
@@ -359,6 +386,10 @@ public class BattleMode extends GameMode implements InputAPI {
             mySelection = OptionSelect.OPTION3;
         }
     }
+
+    /**
+     * select the option that is on the right of the current option
+     */
     public void triggerRightEvent () {
         if (mySelection == OptionSelect.OPTION1) {
             mySelection = OptionSelect.OPTION2;
@@ -367,6 +398,10 @@ public class BattleMode extends GameMode implements InputAPI {
             mySelection = OptionSelect.OPTION4;
         }
     }
+
+    /**
+     * select the option that is above the current option
+     */
     public void triggerUpEvent () {
         if (mySelection == OptionSelect.OPTION3) {
             mySelection = OptionSelect.OPTION1;
@@ -375,6 +410,10 @@ public class BattleMode extends GameMode implements InputAPI {
             mySelection = OptionSelect.OPTION2;
         }
     }
+
+    /**
+     * select the option that is below the current option
+     */
     public void triggerDownEvent () {
         if (mySelection == OptionSelect.OPTION1) {
             mySelection = OptionSelect.OPTION3;
@@ -383,6 +422,10 @@ public class BattleMode extends GameMode implements InputAPI {
             mySelection = OptionSelect.OPTION4;
         }
     }
+
+    /**
+     * trigger the selected event
+     */
     public void triggerSelectEvent () {
         if (mySelection == OptionSelect.OPTION1) {
             triggerOption1Event();
@@ -421,7 +464,8 @@ public class BattleMode extends GameMode implements InputAPI {
         if (random >= .9 && random < 1) {
             // increase health
             myEnemyObject.changeStat("health", myEnemyObject.getStat("health").intValue() + 3);
-            if (myEnemyObject.getStat("health").intValue() > myEnemyObject.getStat("maxHealth").intValue()) {
+            if (myEnemyObject.getStat("health").intValue() > myEnemyObject.getStat("maxHealth")
+                    .intValue()) {
                 myEnemyObject.changeStat("health", myEnemyObject.getStat("maxHealth").intValue());
             }
             myMessages.add(myEnemyObject.getName() + " used HEAL");
@@ -444,8 +488,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
         public Team (List<BattleObject> battleObjs) {
             myBattleObjects = battleObjs;
-            if (myBattleObjects.size() > 0)
-                myActivePlayer = myBattleObjects.get(0);
+            if (myBattleObjects.size() > 0) myActivePlayer = myBattleObjects.get(0);
         }
 
         public boolean stillAlive () {
@@ -458,11 +501,11 @@ public class BattleMode extends GameMode implements InputAPI {
         public List<BattleObject> getBattleObjects () {
             return myBattleObjects;
         }
-        
-        public BattleObject getActivePlayer() {
+
+        public BattleObject getActivePlayer () {
             return myActivePlayer;
         }
-        
+
         public void switchPlayer (BattleObject nextPlayer) {
             myActivePlayer = nextPlayer;
         }
@@ -475,7 +518,8 @@ public class BattleMode extends GameMode implements InputAPI {
 
     /**
      * battle states in a battle
-     * waiting for player to decide, display message, and when animation takes place
+     * waiting for player to decide, display message, and when animation takes
+     * place
      */
     private enum BattleState {
         WAITING_FOR_MOVE, MESSAGE, ANIMATING

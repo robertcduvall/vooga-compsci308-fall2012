@@ -29,8 +29,7 @@ public class FontEffect {
      */
     public FontEffect (Graphics g, Font font) {
         myGraphics = (Graphics2D) g;
-        myFont = font;
-        g.setFont(font);
+        applyFont(font);
     }
 
     /**
@@ -41,8 +40,7 @@ public class FontEffect {
      */
     public FontEffect (Graphics2D g, Font font) {
         myGraphics = g;
-        myFont = font;
-        g.setFont(font);
+        applyFont(font);
     }
 
     /**
@@ -124,5 +122,10 @@ public class FontEffect {
 
     private int ShiftWest (int p, int distance) {
         return (p - distance);
+    }
+    
+    private void applyFont(Font font) {
+        myFont = font;
+        myGraphics.setFont(myFont);
     }
 }

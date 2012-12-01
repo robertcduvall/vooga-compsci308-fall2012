@@ -27,7 +27,6 @@ public class PathFinder {
     private Point myStart;
     private Point myEnd;
     private Dimension mySize;
-    private Thread myMovementThread;
     private MovingMapObject myMovingObject;
     private PathSearch myPathSearch;
     private boolean isHighlighted;
