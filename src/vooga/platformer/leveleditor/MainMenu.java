@@ -32,8 +32,9 @@ public class MainMenu extends JFrame{
     public MainMenu () {
         frameBuild();
         createListener();
-        myContent = createMenu();
-        add(createMenu());
+        myContent.add(createMenu(), BorderLayout.CENTER);
+        addBorder(myContent);
+        add(myContent, BorderLayout.CENTER);
         pack();
         setVisible(true);
         myTimer = new Timer(ONE_SECOND / FRAMES_PER_SECOND, 
@@ -43,8 +44,12 @@ public class MainMenu extends JFrame{
                         repaint();
                     }
                 });
+        myTimer.start();
     }
 
+    private void addBorder (JPanel focusPanel) {
+        
+    }
     private void createListener () {
         myActionListener = new ActionListener() {
             @Override
@@ -62,11 +67,11 @@ public class MainMenu extends JFrame{
         };
     }
     protected void goLevelEditor () {
-        removeAll();
-        myContent = new LevelEditor(this);
+        System.out.println("LevelEditor");
+        myContent.removeAll();
+        myContent.add(new LevelEditor(this));
         add(myContent);
-        repaint();
-        myTimer.start();
+
     }
     private void frameBuild() {
         setPreferredSize(DEFAULT_FRAME_SIZE);
@@ -83,16 +88,11 @@ public class MainMenu extends JFrame{
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+        myContent = new JPanel();
+        myContent.setLayout(new BorderLayout());
     }
     private JPanel createMenu() {
-        JPanel menu = new JPanel()
-        {
-            @Override
-            public void paint(Graphics g) {
-                MainMenu.super.paint(g);
-                super.paint(g);
-            }
-        };
+        JPanel menu = new JPanel();
         menu.setLayout(new GridLayout(3, 1));
         JButton b = new JButton("Level Editor");
         b.addActionListener(myActionListener);
@@ -105,10 +105,10 @@ public class MainMenu extends JFrame{
         menu.add(b);
         return menu;
     }
-    @Override
-    public void paint (Graphics g) {
-        super.paint(g);
-        g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
-        myContent.paint(g);
-    }
+//    @Override
+//    public void paint (Graphics g) {
+//        super.paint(g);
+//        g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
+//        myContent.paint(g);
+//    }
 }

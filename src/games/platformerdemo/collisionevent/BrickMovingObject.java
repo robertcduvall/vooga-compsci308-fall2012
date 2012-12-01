@@ -6,6 +6,7 @@ import vooga.platformer.gameobject.Brick;
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.Direction;
+import vooga.platformer.util.enums.Direction;
 
 
 public class BrickMovingObject extends CollisionEvent {

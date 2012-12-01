@@ -1,4 +1,4 @@
-package games.platformerdemo;
+package vooga.platformer.gameobject.strategy;
 
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.gameobject.UpdateStrategy;
@@ -26,7 +26,8 @@ public class SimpleMoveStrategy implements UpdateStrategy {
         if (myMoveObj.getHorizontalMovingDirection().equals(Direction.LEFT)) {
             myMoveObj.setFacingDirection(Direction.LEFT);
         }
-        else if (myMoveObj.getHorizontalMovingDirection().equals(Direction.RIGHT)){
+        else if (myMoveObj.getHorizontalMovingDirection().equals(
+                Direction.RIGHT)) {
             myMoveObj.setFacingDirection(Direction.RIGHT);
         }
     }

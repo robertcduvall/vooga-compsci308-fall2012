@@ -1,8 +1,7 @@
 package games.platformerdemo.collisionevent;
 
-import games.platformerdemo.Enemy;
 import vooga.platformer.gameobject.Brick;
-import vooga.platformer.level.Level;
+import vooga.platformer.gameobject.Enemy;
 
 /**
  * @author Probably Niel

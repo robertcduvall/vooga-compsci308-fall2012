@@ -1,9 +1,9 @@
 package games.platformerdemo.collisionevent;
 
-import games.platformerdemo.Enemy;
-import games.platformerdemo.Player;
 import vooga.platformer.collision.CollisionEvent;
+import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.Direction;
 

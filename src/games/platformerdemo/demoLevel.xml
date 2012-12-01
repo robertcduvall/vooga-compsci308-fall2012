@@ -6,7 +6,7 @@
 <collisionChecker>games.platformerdemo.SloppyCollisionChecker</collisionChecker>
 <camera>vooga.platformer.util.camera.FollowingCamera</camera>
 
-<gameObject class="games.platformerdemo.Player">
+<gameObject class="vooga.platformer.gameobject.Player">
 <x>4</x>
 <y>5</y>
 <width>33</width>
@@ -15,7 +15,7 @@
 <imagePath>src/games/platformerdemo/player.png</imagePath>
 </gameObject>
 
-<gameObject class="games.platformerdemo.Enemy">
+<gameObject class="vooga.platformer.gameobject.Enemy">
 <x>400</x>
 <y>5</y>
 <width>40</width>

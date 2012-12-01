@@ -1,8 +1,6 @@
 package vooga.platformer.core;
 
 import games.platformerdemo.DemoLevelFactory;
-import games.platformerdemo.Player;
-import games.platformerdemo.ShootingStrategy;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,10 +17,10 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
-import util.input.core.Controller;
 import util.input.core.KeyboardController;
+import vooga.platformer.gameobject.Player;
+import vooga.platformer.gameobject.strategy.ShootingStrategy;
 import vooga.platformer.level.Level;
-import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -136,14 +134,14 @@ public class PlatformerController extends JPanel implements Runnable {
             @Override
             public void keyPressed (KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    myPlayer.getMovingStragety().goLeft();
+                    myPlayer.getMovingStrategy().goLeft();
                     
                 }
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    myPlayer.getMovingStragety().goRight();
+                    myPlayer.getMovingStrategy().goRight();
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.getMovingStragety().jump();
+                    myPlayer.getMovingStrategy().jump();
                 }
                 if(e.getKeyCode()==KeyEvent.VK_SPACE){
                     ShootingStrategy ss = myPlayer.getShootingStrategy();
@@ -154,7 +152,7 @@ public class PlatformerController extends JPanel implements Runnable {
             }
 
             public void keyReleased (KeyEvent e) {
-                myPlayer.getMovingStragety().stop();
+                myPlayer.getMovingStrategy().stop();
             }
         };
         MouseMotionListener mml = new MouseAdapter() {

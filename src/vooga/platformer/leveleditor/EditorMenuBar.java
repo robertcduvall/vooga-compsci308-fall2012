@@ -20,25 +20,25 @@ public class EditorMenuBar extends JMenuBar{
         levelMenu.add(new AbstractAction("Load") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myEditor.load();
+//                myEditor.load();
             }
         });
         levelMenu.add(new AbstractAction("Clear") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myEditor.clear();
+//                myEditor.clear();
             }
         });
         levelMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myEditor.newLevel();
+//                myEditor.newLevel();
             }
         });
         levelMenu.add(new AbstractAction("Save") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myEditor.save();
+//                myEditor.save();
             }
         });
 
