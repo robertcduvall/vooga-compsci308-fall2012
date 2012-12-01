@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,8 +120,11 @@ public class LevelXmlParser {
         mapPlayer.setImageLoops(imageLoops);
         myMapMode.setPlayer(mapPlayer);
         s.addGameObject(mapPlayer);
-        BattleObject playerBattleObject = parseBattleObject(s, getListOfPlayerElements().get(0));
-        s.addGameObject(playerBattleObject);
+        List<BattleObject> playerBattleObjects = parseBattleObjects (
+                s, getListOfPlayerElements().get(0));
+        for (BattleObject pbs : playerBattleObjects) {
+            s.addGameObject(pbs);
+        }
         myPlayerID = s.getID();
         return s;
     }
@@ -233,19 +237,40 @@ public class LevelXmlParser {
 
     private Sprite parseSprite (Element sprite) {
         Sprite s = new Sprite();
-        MapObject mapObject = parseMapObject(s, sprite);
-        if (mapObject != null) {
-            s.addGameObject(mapObject);
+        List<MapObject> mapObjects = parseMapObjects(s, sprite);
+        for (MapObject mo : mapObjects) {
+            if (mo != null) {
+                s.addGameObject(mo);
+            }
         }
-        BattleObject battleObject = parseBattleObject(s, sprite);
-        if (battleObject != null) {
-            s.addGameObject(battleObject);
+        List<BattleObject> battleObjects = parseBattleObjects(s, sprite);
+        for (BattleObject bo : battleObjects) {
+            if (bo != null) {
+                s.addGameObject(bo);
+            }
         }
         return s;
     }
+    
+    private List<MapObject> parseMapObjects(Sprite s, Element sprite) {
+        Collection<Element> mapSprites = XmlUtilities.getElements(sprite, "map");
+        List<MapObject> mapObjects = new ArrayList<MapObject>();
+        for (Element ms : mapSprites) {
+            mapObjects.add(parseMapObject (s, ms));
+        }
+        return mapObjects;
+    }
+    
+    private List<BattleObject> parseBattleObjects(Sprite s, Element sprite) {
+        Collection<Element> battleSprites = XmlUtilities.getElements(sprite, "battle");
+        List<BattleObject> battleObjects = new ArrayList<BattleObject>();
+        for (Element bs : battleSprites) {
+            battleObjects.add(parseBattleObject (s, bs));
+        }
+        return battleObjects;
+    }
 
-    private BattleObject parseBattleObject (Sprite s, Element sprite) {
-        Element battleSprite = XmlUtilities.getElement(sprite, "battle");
+    private BattleObject parseBattleObject (Sprite s, Element battleSprite) {
         if (battleSprite.hasChildNodes()) {
             String className = XmlUtilities.getChildContent(battleSprite, CLASS);
             String event = XmlUtilities.getChildContent(battleSprite, EVENT);
@@ -275,26 +300,24 @@ public class LevelXmlParser {
         return stats;
     }
 
-    private MapObject parseMapObject (Sprite s, Element sprite) {
-        Element mapSprite = XmlUtilities.getElement(sprite, MAP);
+    private MapObject parseMapObject (Sprite s, Element mapSprite) {
         if (mapSprite.hasChildNodes()) {
             String className = XmlUtilities.getChildContent(mapSprite, CLASS);
             String event = XmlUtilities.getChildContent(mapSprite, EVENT);
             Element location = XmlUtilities.getElement(mapSprite, LOCATION);
             Point point =
                     new Point(XmlUtilities.getChildContentAsInt(location, X),
-                              XmlUtilities.getChildContentAsInt(location, Y));
+                            XmlUtilities.getChildContentAsInt(location, Y));
             Image image = XmlUtilities.getChildContentAsImage(mapSprite, IMAGE);
             MapObject mapObject =
                     (MapObject) Reflection.createInstance(className, s.getID(), event, point,
-                                                          image, myMapMode);
+                            image, myMapMode);
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {
-                mapObject
-                        .addStrategy(new TransportStrategy(
-                                                           myMapMode,
-                                                           "src/vooga/turnbased/resources/level/Level2.xml",
-                                                           new Point(8, 8)));
+                mapObject.addStrategy(new TransportStrategy(
+                        myMapMode,
+                        "src/vooga/turnbased/resources/level/Level2.xml",
+                        new Point(8, 8)));
             }
             if (point.equals(new Point(9, 3))) {
                 mapObject.addStrategy(new ConversationStrategy(myMapMode));
@@ -305,9 +328,9 @@ public class LevelXmlParser {
         }
         return null;
     }
-    
+
     public int getPlayerID() {
-    	return myPlayerID;
+        return myPlayerID;
     }
     
     public GameMode getMapMode() { //TODO: fix...

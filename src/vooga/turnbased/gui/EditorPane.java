@@ -22,15 +22,15 @@ import vooga.turnbased.gamecreation.PlayerEditor;
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
-	/**
-	 * 
-	 * @param gameWindow
-	 *            The game window that calls this editor pane
-	 */
-	public EditorPane(GameWindow gameWindow) {
-		super(gameWindow);
-		addInitialButtons();
-	}
+    /**
+     * 
+     * @param gameWindow
+     *            The game window that calls this editor pane
+     */
+    public EditorPane(GameWindow gameWindow) {
+        super(gameWindow);
+        addInitialButtons();
+    }
 
     private void addInitialButtons () {
         JButton menuButton = new JButton("Back to menu");
@@ -98,33 +98,33 @@ public class EditorPane extends DisplayPane {
         p.saveXmlDocument();
     }
 
-	/**
-	 * paint components of the Canvas
-	 * 
-	 * @param g
-	 *            Graphics
-	 */
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Image background = GameWindow.importImage("EditorBackgroundImage");
-		g.drawImage(background, 0, 0, background.getWidth(null),
-				background.getHeight(null), this);
-	}
+    /**
+     * paint components of the Canvas
+     * 
+     * @param g
+     *            Graphics
+     */
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Image background = GameWindow.importImage("EditorBackgroundImage");
+        g.drawImage(background, 0, 0, background.getWidth(null),
+                background.getHeight(null), this);
+    }
 
-	private LevelEditor modifyExistingLevel(File f) {
-		Document xmlDocument = createXmlFromFile(f);
-		return new LevelEditor(xmlDocument, f.toString());
-	}
+    private LevelEditor modifyExistingLevel(File f) {
+        Document xmlDocument = createXmlFromFile(f);
+        return new LevelEditor(xmlDocument, f.toString());
+    }
 
-	private Document createXmlFromFile(File f) {
-		int extensionStart = f.toString().lastIndexOf(".");
-		String extension = f.toString().substring(extensionStart);
-		if (".xml".equals(extension)) {
-			return XmlUtilities.makeDocument(f);
-		}
-		return null;
-	}
+    private Document createXmlFromFile(File f) {
+        int extensionStart = f.toString().lastIndexOf(".");
+        String extension = f.toString().substring(extensionStart);
+        if (".xml".equals(extension)) {
+            return XmlUtilities.makeDocument(f);
+        }
+        return null;
+    }
 
     private File selectFile () {
         JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
@@ -135,8 +135,8 @@ public class EditorPane extends DisplayPane {
         return null;
     }
 
-	private void editDocument(LevelEditor l) {
-		removeAll();
-		repaint();
-	}
+    private void editDocument(LevelEditor l) {
+        removeAll();
+        repaint();
+    }
 }

@@ -33,9 +33,10 @@ import vooga.turnbased.sprites.Sprite;
  * 
  */
 public class BattleMode extends GameMode implements InputAPI {
-    private List<Team> myTeams;
+    private Team myTeam;
+    private Team myEnemyTeam;
     private BattleObject myPlayerObject;
-    private BattleObject myEnemy;
+    private BattleObject myEnemyObject;
     private BattleState myState;
     private int myTurnCount;
     private int myTeamStartRandomizer;
@@ -71,14 +72,14 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void pause () {
-        myTeams.clear();
+        //myTeams.clear();
     }
 
     @Override
     public void resume () {
         makeTeams();
         initialize();
-        myMessages.add(myEnemy.getName() + " encountered!");
+        myMessages.add(myEnemyObject.getName() + " encountered!");
         configureInputHandling();
         // getGameManager().handleEvent(GameManager.GameEvent.BATTLE_OVER, new
         // ArrayList<Integer>());
@@ -90,12 +91,15 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
+        int attack = KeyEvent.VK_A;
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
         int up = KeyEvent.VK_UP;
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
+            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, 
+                    this, "triggerOption1Event");
             GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, 
                     this, "triggerLeftEvent");
             GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, 
@@ -113,25 +117,21 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     private void makeTeams () {
-        // I don't think this is super bad test code now,
-        // We should eventually add support for a single sprite with multiple battleobjects
-        // (i.e. A single Pokemon trainer with multiple pokemon)
-        myTeams = new ArrayList<Team>();
-
         // adding player
-        List<BattleObject> team1BattleObjects = new ArrayList<BattleObject>();
+        List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
         Sprite s1 = getGameManager().findSpriteWithID(myInvolvedIDs.get(0));
-        BattleObject bo1 = s1.getObject(BattleObject.class).get(0);
-        team1BattleObjects.add(bo1);
-
+        for (BattleObject bo : s1.getObject(BattleObject.class)) {
+            myBattleObjects.add(bo);
+        }
+        myTeam = new Team(myBattleObjects);
+        
         // adding enemy
-        List<BattleObject> team2BattleObjects = new ArrayList<BattleObject>();
+        List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
         Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
-        BattleObject bo2 = s2.getObject(BattleObject.class).get(0);
-        team2BattleObjects.add(bo2);
-
-        myTeams.add(new Team(team2BattleObjects));
-        myTeams.add(new Team(team1BattleObjects));
+        for (BattleObject bo : s2.getObject(BattleObject.class)) {
+            enemyBattleObjects.add(bo);
+        }
+        myEnemyTeam = new Team(enemyBattleObjects);
     }
 
     @Override
@@ -139,6 +139,19 @@ public class BattleMode extends GameMode implements InputAPI {
         if (isBattleOver()) {
             endBattle();
         }
+        if (!myPlayerObject.isAlive()) {
+            myMessages.add(myPlayerObject.getName() + " fainted");
+            myTeam.switchPlayer(myTeam.nextPlayer());
+            myPlayerObject = myTeam.getActivePlayer();
+            myMessages.add(myPlayerObject.getName() + " sent out");
+        }
+        if (!myEnemyObject.isAlive()) {
+            myMessages.add(myEnemyObject.getName() + " fainted");
+            myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
+            myEnemyObject = myEnemyTeam.getActivePlayer();
+            myMessages.add(myEnemyObject.getName() + " appeared");
+        }
+            
         // TODO: figure out how this should work. Right now we just give it the
         // previous team
         // TODO: Take into account animating, requesting user input for player
@@ -153,14 +166,11 @@ public class BattleMode extends GameMode implements InputAPI {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-        int teamNumber = 0;
-        for (Team t : myTeams) {
-            for (BattleObject b : t.getBattleObjects()) {
-                b.paintBattleObject(g, 0, teamNumber * height / 3, width, height / 3);
-            }
-            teamNumber += 1;
-        }
+
+        myEnemyObject.paintBattleObject(g, 0, 0, width, height / 3);
+        myPlayerObject.paintBattleObject(g, 0, height / 3, width, height / 3);
         paintMenu(g);
+        
     }
 
     //someone please fix this...
@@ -202,13 +212,12 @@ public class BattleMode extends GameMode implements InputAPI {
 
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         //format positions based on width and height of the box...maybe?
-
         Graphics2D g2d = (Graphics2D) g;
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
         String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
-        for (int i = 0; i < 4; i ++) {
+        for (int i = 0; i < options.length; i ++) {
             String s = options[i];
             GlyphVector gv = font.createGlyphVector(frc, s);
             if (i == 0) {
@@ -258,35 +267,40 @@ public class BattleMode extends GameMode implements InputAPI {
         // the seed value is going to determine which team starts where 0 =
         // "team 1"
         Random generator = new Random();
-        myTeamStartRandomizer = generator.nextInt(myTeams.size());
-        myPlayerObject = nextTeam().nextPlayer();
-        myEnemy = nextTeam().nextPlayer();
+        myTeamStartRandomizer = generator.nextInt(1);
+        myPlayerObject = myTeam.getActivePlayer();
+        myEnemyObject = myEnemyTeam.getActivePlayer();
     }
 
     private void endBattle () {
         System.out.println("End battle!");
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
-        if(!myPlayerObject.isAlive()){
+        if (!myPlayerObject.isAlive()) {
             getGameManager().flagEvent("GAME_LOST", new ArrayList<Integer>());
-        } else {
+        }
+        else {
             getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
         }
     }
 
     private boolean isBattleOver () {
         boolean teamDead = false;
-        for (Team t : myTeams) {
-            if (!t.stillAlive()) {
-                teamDead = true;
-                // hardcoded
-                Sprite loserSprite = getGameManager().findSpriteWithID(
-                        t.getBattleObjects().get(0).getID());
-                // not to be confused with tighterSprite...
-                myLooserSpriteID = loserSprite.getID();
-                loserSprite.clear();
-                getGameManager().deleteSprite(loserSprite.getID());
-            }
+        if (!myTeam.stillAlive()) {
+            Sprite loserSprite = getGameManager().findSpriteWithID(
+                    myPlayerObject.getID());
+            myLooserSpriteID = loserSprite.getID();
+            loserSprite.clear();
+            getGameManager().deleteSprite(loserSprite.getID());
+            teamDead = true;
+        }
+        if (!myEnemyTeam.stillAlive()) {
+            Sprite loserSprite = getGameManager().findSpriteWithID(
+                    myEnemyObject.getID());
+            myLooserSpriteID = loserSprite.getID();
+            loserSprite.clear();
+            getGameManager().deleteSprite(loserSprite.getID());
+            teamDead = true;
         }
         return teamDead;
     }
@@ -295,7 +309,7 @@ public class BattleMode extends GameMode implements InputAPI {
         // for now, player attacks enemy player
         // by difference in defense
         myMessages.add(myPlayerObject.getName() + " used " + OPTION1);
-        myPlayerObject.attackEnemy(myEnemy);
+        myPlayerObject.attackEnemy(myEnemyObject);
         // check if enemy/opposing team is dead
         if (!isBattleOver()) {
             generateEnemyMove();
@@ -385,29 +399,29 @@ public class BattleMode extends GameMode implements InputAPI {
         double random = Math.random();
         if (random >= 0 && random < .5) {
             // attack
-            myEnemy.attackEnemy(myPlayerObject);
-            myMessages.add(myEnemy.getName() + " used ATTACK");
+            myEnemyObject.attackEnemy(myPlayerObject);
+            myMessages.add(myEnemyObject.getName() + " used ATTACK");
             // System.out.println("Your enemy uses ATTACK");
         }
         if (random >= .5 && random < .7) {
             // defend
-            myEnemy.changeStat("defense", myEnemy.getStat("defense").intValue() + 1);
-            myMessages.add(myEnemy.getName() + " used DEFEND");
+            myEnemyObject.changeStat("defense", myEnemyObject.getStat("defense").intValue() + 1);
+            myMessages.add(myEnemyObject.getName() + " used DEFEND");
             // System.out.println("Your enemy uses DEFEND");
         }
         if (random >= .7 && random < .9) {
             // charge
-            myEnemy.changeStat("attack", myEnemy.getStat("attack").intValue() + 1);
-            myMessages.add(myEnemy.getName() + " used CHARGE");
+            myEnemyObject.changeStat("attack", myEnemyObject.getStat("attack").intValue() + 1);
+            myMessages.add(myEnemyObject.getName() + " used CHARGE");
             // System.out.println("Your enemy uses CHARGE");
         }
         if (random >= .9 && random < 1) {
             // increase health
-            myEnemy.changeStat("health", myEnemy.getStat("health").intValue() + 3);
-            if (myEnemy.getStat("health").intValue() > myEnemy.getStat("maxHealth").intValue()) {
-                myEnemy.changeStat("health", myEnemy.getStat("maxHealth").intValue());
+            myEnemyObject.changeStat("health", myEnemyObject.getStat("health").intValue() + 3);
+            if (myEnemyObject.getStat("health").intValue() > myEnemyObject.getStat("maxHealth").intValue()) {
+                myEnemyObject.changeStat("health", myEnemyObject.getStat("maxHealth").intValue());
             }
-            myMessages.add(myEnemy.getName() + " used HEAL");
+            myMessages.add(myEnemyObject.getName() + " used HEAL");
             // System.out.println("Your enemy uses HEALTH INCREASE");
         }
         // displayBattleStats();
@@ -417,27 +431,18 @@ public class BattleMode extends GameMode implements InputAPI {
     private void displayBattleStats () {
         System.out.println("My health: " + myPlayerObject.getStat("health"));
         System.out.println("My defense: " + myPlayerObject.getStat("defense"));
-        System.out.println("Enemy health: " + myEnemy.getStat("health"));
-        System.out.println("Enemy defense: " + myEnemy.getStat("defense"));
-    }
-
-    /**
-     * Returns the team that should make the next move and increments
-     * myTurnCount by 1.
-     * 
-     * @return Team that should make next move.
-     */
-    private Team nextTeam () {
-        // Get team index and increment turncount
-        myTeams.add(myTeams.remove(0));
-        return myTeams.get(0);
+        System.out.println("Enemy health: " + myEnemyObject.getStat("health"));
+        System.out.println("Enemy defense: " + myEnemyObject.getStat("defense"));
     }
 
     private class Team {
         private final List<BattleObject> myBattleObjects;
+        private BattleObject myActivePlayer;
 
         public Team (List<BattleObject> battleObjs) {
             myBattleObjects = battleObjs;
+            if (myBattleObjects.size() > 0)
+                myActivePlayer = myBattleObjects.get(0);
         }
 
         public boolean stillAlive () {
@@ -447,21 +452,22 @@ public class BattleMode extends GameMode implements InputAPI {
             return false;
         }
 
-        public void makeMove (Team enemy) {
-            // TODO: fill in behavior here
-            // get user input to choose active enemy sprite
-            // currentEnemyBattleObject.attackEnemy(currentPlayerBattleObject);
-        }
-
         public List<BattleObject> getBattleObjects () {
             return myBattleObjects;
+        }
+        
+        public BattleObject getActivePlayer() {
+            return myActivePlayer;
+        }
+        
+        public void switchPlayer (BattleObject nextPlayer) {
+            myActivePlayer = nextPlayer;
         }
 
         public BattleObject nextPlayer () {
             myBattleObjects.add(myBattleObjects.remove(0));
             return myBattleObjects.get(0);
         }
-        // TODO: Add more methods here to aid team behavior
     }
 
     private enum BattleState {
