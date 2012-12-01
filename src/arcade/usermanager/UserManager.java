@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import arcade.usermanager.exception.PasswordNotMatchException;
+import arcade.usermanager.exception.UserNotExistException;
 import arcade.utility.FileOperation;
 
 
@@ -99,8 +101,8 @@ public class UserManager {
         return myCurrentUser;
     }
 
-    protected void setCurrentUser (User newUser) {
-        myCurrentUser = newUser;
+    protected void setCurrentUser (String userName) {
+        myCurrentUser = getUser(userName);
 
     }
     
@@ -121,6 +123,10 @@ public class UserManager {
         
         return userProfileList;
         
+    }
+    
+    protected void updateMessage(String sender, String receiver, String content){
+        getUser(receiver).updateMyMessage(sender, content);
     }
 
 }

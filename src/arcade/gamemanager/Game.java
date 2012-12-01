@@ -238,8 +238,8 @@ public class Game {
     /**
      * Returns the genre of the game for the purposes of sorting.
      */
-    public List<String> getGenre () {
-        String genreData = getGameInfo("genre").get(0);
+    public List<String> getTags () {
+        String genreData = getGameInfo("tags").get(0);
         List<String> genre = Arrays.asList(genreData.split(" "));
         return genre;
     }

@@ -96,7 +96,7 @@ public class GameCenter {
     public List<String> getGameListByTagName (String tag) {
         List<String> gameList = new ArrayList<String>();
         for (Game gm : myGames) {
-            if (gm.getGenre().contains(tag)) {
+            if (gm.getTags().contains(tag)) {
                 gameList.add(gm.getGameName());
             }
         }
