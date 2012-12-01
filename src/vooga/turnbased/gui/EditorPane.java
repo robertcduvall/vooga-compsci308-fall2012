@@ -165,7 +165,14 @@ public class EditorPane extends DisplayPane {
             p.add(textField);
         }
         makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
-        p.add(new JButton("Done"));        
+        JButton doneButton = new JButton("Done");
+        doneButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                getGameWindow().changeActivePane(GameWindow.MENU);
+                //Get window to close here
+            }
+        });
+        p.add(doneButton);        
         JFrame frame = new JFrame("Background Information (Default Values shown)");
         p.setOpaque(true);
         frame.setContentPane(p);
