@@ -83,7 +83,7 @@ public class ChatService implements Service {
     private void processLogout (String input, Socket socket) {
         String user = myProtocol.getUser(input);
         if (authorized(user, socket)) {
-            myUsersToSockets.remove(user);
+            removeUser(user, socket);
             write(socket, myProtocol.createLoggedIn(false));
             try {
                 socket.close();
@@ -146,10 +146,21 @@ public class ChatService implements Service {
     }
 
     private void addUser (String user, Socket socket) {
+        //notify all clients of new user
         for (Socket s : myUsersToSockets.values()) {
             write(s, myProtocol.createAddUser(user));
         }
+        //add new user to list
         myUsersToSockets.put(user, socket);
+    }
+    
+    private void removeUser (String user, Socket socket) {
+        //remove user from list
+        myUsersToSockets.remove(user);
+        //notify all clients to remove user
+        for (Socket s : myUsersToSockets.values()) {
+            write(s, myProtocol.createRemoveUser(user));
+        }
     }
 
     private boolean authorized (String user, Socket socket) {

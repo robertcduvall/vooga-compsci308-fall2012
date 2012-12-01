@@ -30,6 +30,8 @@ public interface ChatProtocol {
     String createLoggedIn (boolean b);
 
     String createAddUser (String user);
+    
+    String createRemoveUser (String user);
 
     String createError (String string);
     
@@ -37,8 +39,8 @@ public interface ChatProtocol {
     
     
     
-    
     //Protocol-specific port
     
     int getPort();
+    
 }
