@@ -2,6 +2,7 @@ package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
 import java.util.Map;
+import java.util.Random;
 
 
 /**
@@ -40,5 +41,22 @@ public class TestMonster extends BattleObject {
     @Override
     public String getDeathMessage () {
         return this.getName() + " fainted.";
+    }
+
+    @Override
+    public String getStartFightingMessage (boolean isPlayerControlled) {
+        String name = this.getName();
+        Random randomGenerator = new Random();
+        int i = randomGenerator.nextInt(2);
+        
+        if (isPlayerControlled) {
+            String[] messages = {name + " sent out.", name + " GO!"};
+            return messages[i];
+        }
+        else {
+            String[] messages = {name + " encountered.", name + " appeared."};
+            return messages[i]; 
+        }
+
     }
 }
