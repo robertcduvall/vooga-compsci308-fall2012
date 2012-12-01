@@ -2,7 +2,9 @@ package arcade.usermanager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import arcade.utility.FileOperation;
@@ -100,6 +102,25 @@ public class UserManager {
     protected void setCurrentUser (User newUser) {
         myCurrentUser = newUser;
 
+    }
+    
+    public UserProfile getUserProfile(String userName){
+        User user=getUser(userName);
+        String name=user.getName();
+        String picture=user.getPicture();
+        String firstName=user.getFirstName();
+        String lastName=user.getLastName();
+        return new UserProfile(name,picture,firstName,lastName);
+    }
+    
+    public List<UserProfile> getAllUserProfile(){
+        List<UserProfile> userProfileList=new ArrayList<UserProfile>();
+        for(String name:myAllUser.keySet()){
+            userProfileList.add(getUserProfile(name));
+        }
+        
+        return userProfileList;
+        
     }
 
 }

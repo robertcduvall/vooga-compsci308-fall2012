@@ -20,11 +20,14 @@ import arcade.gui.panel.ArcadePanel;
  * @author Michael Deng & Kannan Raju
  * 
  */
-public class NormSearchPanel extends ASearchPanel {
+public class NormSearchPanel extends ASearchPanel implements ActionListener{
 
     private List<String> myGameList;
     private JList searchedThroughList = new JList();
     private String gameSelected;
+    private String GO = "Go";
+    private String USER = "User";
+    private String TAG = "Tag";
     
     
     public NormSearchPanel (Arcade a) {
@@ -35,7 +38,7 @@ public class NormSearchPanel extends ASearchPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        MigLayout layout = new MigLayout();
+        MigLayout layout = new MigLayout("", "", "[][][][][]push[][]");
         myPanel.setLayout(layout);
         
         myPanel.setBackground(Color.LIGHT_GRAY);
@@ -59,19 +62,14 @@ public class NormSearchPanel extends ASearchPanel {
         JLabel searchPrompt = new JLabel("Search for a game by Name:");
         JLabel listSelectPrompt = new JLabel("Select a game: ");
         JButton goButton = new JButton("Go to Profile");
-        JButton goToTagSearchButton = new JButton("Search for Games by tag: ");
-        goButton.addActionListener(new ActionListener(){
-
-            @Override
-            public void actionPerformed (ActionEvent arg0) {
-                gameSelected = (String) searchedThroughList.getSelectedValue();
-                if (gameSelected != null) {
-                    getArcade().saveVariable("GameName", gameSelected);
-                    getArcade().replacePanel("GameProfile");
-                }
-            }
-              
-          });
+        goButton.setActionCommand(GO);
+        goButton.addActionListener(this);
+        JButton goToTagSearchButton = new JButton("Search for Games by Tag ");
+        goToTagSearchButton.setActionCommand(TAG);
+        goToTagSearchButton.addActionListener(this);
+        JButton goToUserSearchButton = new JButton("Search for Arcade Users!");
+        goToUserSearchButton.setActionCommand(USER);
+        goToUserSearchButton.addActionListener(this);
         /*JLabel label = new JLabel();
         label.setText("This is the Norm Search page.");
         label.setForeground(Color.WHITE);
@@ -83,8 +81,27 @@ public class NormSearchPanel extends ASearchPanel {
         myPanel.add(listSelectPrompt, "wrap, grow, span");
         myPanel.add(searchedListScroller, "wrap, grow, span");
         myPanel.add(goButton);
+        myPanel.add(goToUserSearchButton, "dock south, grow, span");
+        myPanel.add(goToTagSearchButton, "dock south, grow, span");
 
         return myPanel;
+    }
+
+    @Override
+    public void actionPerformed (ActionEvent e) {
+        if (e.getActionCommand() == GO) {
+            gameSelected = (String) searchedThroughList.getSelectedValue();
+            if (gameSelected != null) {
+                getArcade().saveVariable("GameName", gameSelected);
+                getArcade().replacePanel("GameProfile");
+            }
+        }
+        if (e.getActionCommand() == TAG) {
+            getArcade().replacePanel("GameTagSearch");
+        }
+        if (e.getActionCommand() == USER) {
+            getArcade().replacePanel("UserSearch");
+        }       
     }
 
 }
