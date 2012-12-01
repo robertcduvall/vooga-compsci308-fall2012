@@ -1,6 +1,8 @@
 package vooga.platformer.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,5 +30,19 @@ public final class ConfigStringParser {
             configMap.put(entrySplit[0], entrySplit[1]);
         }
         return configMap;
+    }
+    
+    public static List<String> parseMultiArgEntry (String argString)
+                throws ConfigStringException {
+        if (!(argString.startsWith("{") && argString.endsWith("}"))) {
+            throw new ConfigStringException("multi-argument string is not enclosed by {}");
+        }
+        String subStr = argString.substring(1, argString.length() - 1);
+        String[] splitStr = subStr.split(",");
+        List<String> strList = new ArrayList<String>();
+        for (String s : splitStr) {
+            strList.add(s);
+        }
+        return strList;
     }
 }

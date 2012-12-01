@@ -31,6 +31,7 @@ public class Menu extends JComponent {
     private double myRatio = MENU_SIZE_RATIO;
     private Map<String, GameButton> myButtonMap = new HashMap<String, GameButton>();
     private JComponent myGameCanvas;
+    private Color myColor;
 
     /**
      * @param gameCanvas JComponent where the game painted
@@ -45,7 +46,7 @@ public class Menu extends JComponent {
 
     @Override
     protected void paintComponent (Graphics pen) {
-        pen.setColor(TRANSP_COLOR);
+        pen.setColor(Color.WHITE);
         double myWidth = getSize().width * myRatio;
         double myHeight = getSize().height * myRatio;
         pen.fillRect((int) ((getSize().width / 2) - (myWidth / 2)),
@@ -93,6 +94,22 @@ public class Menu extends JComponent {
      */
     public void addHotKey (int keyValue, Button button) {
 
+    }
+
+    /**
+     * @param color 
+     */
+    public void setColor (Color color) {
+        myColor = color;
+        repaint();
+    }
+
+    /**
+     * 
+     */
+    public void setTransparent () {
+        myColor = TRANSP_COLOR;
+        repaint();
     }
 
 }
