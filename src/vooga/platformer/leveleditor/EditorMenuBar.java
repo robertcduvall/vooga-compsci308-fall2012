@@ -14,6 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 public class EditorMenuBar extends JMenuBar{
+    private static final long serialVersionUID = 1L;
 
     public EditorMenuBar(final LevelEditor myEditor) {
         JMenu levelMenu = new JMenu("Level");
@@ -55,5 +56,8 @@ public class EditorMenuBar extends JMenuBar{
                 //newLevel();
             }
         });
+        add(levelMenu);
+        add(spriteMenu);
     }
+
 }

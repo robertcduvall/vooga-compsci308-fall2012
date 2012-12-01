@@ -35,15 +35,17 @@ public class PlatformerMenu extends JPanel{
             }
         };
         setLayout(new GridLayout(3, 1));
-        Dimension buttonSize = new Dimension(640, 150);
+        Dimension buttonSize = new Dimension(parent.getWidth(), parent.getHeight()/3);
         GameButton b = new GameButton("Level Editor");
         b.addMouseListener(buttonListener);
         b.setSize(buttonSize);
         add(b);
         b = new GameButton("New Game");
+        b.addMouseListener(buttonListener);
         b.setSize(buttonSize);
         add(b);
         b = new GameButton("Quit");
+        b.addMouseListener(buttonListener);
         b.setSize(buttonSize);
         add(b);
     }

@@ -3,6 +3,7 @@ package vooga.platformer.leveleditor;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -43,13 +45,14 @@ public class LevelEditor extends JPanel {
     private static final int BUTTON_BAR_WIDTH = 50;
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> mySpriteTypes;
-    private JPanel myContainer;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
     private MouseListener myMouseListener;
     private MouseMotionListener myMouseMotionListener;
     private MouseListener myButtonListener;
     private int myViewOffset;
+    private JPanel myButtonPanel;
+    private JMenuBar myMenuBar;
 
     /**
      * Frame containing all the elements needed to save, load, and create
@@ -58,14 +61,18 @@ public class LevelEditor extends JPanel {
      * 
      * @param parent JPanel containing LevelEditor
      */
-    public LevelEditor(JPanel parent) {
-        myContainer = parent;
-        myBoard = new LevelBoard(new Dimension(myContainer.getSize()));
+    public LevelEditor(Dimension dim) {
+        setLayout(new BorderLayout());
+        setSize(new Dimension(dim));
+        myBoard = new LevelBoard(getSize());
         fillMap();
         createListeners();
-        add(createButtonPanel(), BorderLayout.WEST);
+        myButtonPanel = createButtonPanel();
+        myMenuBar = new EditorMenuBar(this);
+        add(myMenuBar, BorderLayout.NORTH);
         add(myBoard, BorderLayout.CENTER);
-        add(new EditorMenuBar(this), BorderLayout.NORTH);
+        add(myButtonPanel, BorderLayout.WEST);
+
     }
 
     private void createListeners() {
@@ -120,7 +127,7 @@ public class LevelEditor extends JPanel {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
         subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
-        subpanel.setPreferredSize(new Dimension(BUTTON_BAR_WIDTH, 
+        subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, 
                 BUTTON_BAR_WIDTH * mySpriteTypes.size()));
         for (String sprite : mySpriteTypes.keySet()) {
             subpanel.add(createButton(sprite));
@@ -166,7 +173,7 @@ public class LevelEditor extends JPanel {
             newLevel();
         }
         // root elements
-        myBoard = new LevelBoard(myContainer.getSize());
+        myBoard = new LevelBoard(getSize());
         myMouseListener = myBoard.getMouseListener();
         myMouseMotionListener = myBoard.getMouseMotionListener();
     }

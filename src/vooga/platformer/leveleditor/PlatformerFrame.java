@@ -32,7 +32,7 @@ public class PlatformerFrame extends JFrame{
     }
     public PlatformerFrame () {
         frameBuild();
-        add(myContent, BorderLayout.CENTER);
+        setContentPane(myContent);
         myContent.add(new PlatformerMenu(this), BorderLayout.CENTER);
         pack();
         setVisible(true);
@@ -46,7 +46,7 @@ public class PlatformerFrame extends JFrame{
         myTimer.start();
     }
     private void frameBuild() {
-        setPreferredSize(DEFAULT_FRAME_SIZE);
+        setSize(DEFAULT_FRAME_SIZE);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         try {
@@ -61,7 +61,6 @@ public class PlatformerFrame extends JFrame{
             e.printStackTrace();
         }
         myContent = new JPanel();
-        myContent.setSize(DEFAULT_FRAME_SIZE);
 //        {
 //            @Override
 //            public void addKeyListener(KeyListener kl) {
@@ -73,9 +72,12 @@ public class PlatformerFrame extends JFrame{
 
     public void levelEdit () {
         myContent.removeAll();
-        myContent.add(new LevelEditor(myContent));
+        LevelEditor le = new LevelEditor(DEFAULT_FRAME_SIZE);
         setTitle("Level Editor");
+        myContent.add(le);
+//        setJMenuBar(new EditorMenuBar(le));
         validate();
+        repaint();
     }
 
     public void newGame () {

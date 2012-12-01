@@ -57,8 +57,6 @@ public class LevelBoard extends JPanel implements ISavable {
     private LevelEditorMouseListener myMouseListener;
     private Image myBackground;
     private Sprite myCurrentSprite;
-    private int myWidth;
-    private int myHeight;
     private String myLevelName;
     private String myLevelType;
     private String myBackgroundPath;
@@ -68,8 +66,11 @@ public class LevelBoard extends JPanel implements ISavable {
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
      * off empty.
+     * 
+     * @param d Dimension for initial level size (determined by Frame)
      */
     public LevelBoard(Dimension d) {
+        setSize(d);
         mySprites = new ArrayList<Sprite>();
         myAvailableAttributes = new ArrayList<String>();
         myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
@@ -156,7 +157,8 @@ public class LevelBoard extends JPanel implements ISavable {
     /**
      * Updates the buffer preparing for the next paint call.
      */
-    public void update() {
+    @Override
+    public void update(Graphics g) {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(
                 myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
@@ -175,7 +177,7 @@ public class LevelBoard extends JPanel implements ISavable {
      * @param g Graphics attached to level.
      */
     public void paint(Graphics g) {
-//        super.paint(g);
+        update(g);
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
     }
 
@@ -196,7 +198,7 @@ public class LevelBoard extends JPanel implements ISavable {
             saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
 //            log.append("Save command cancelled by user." + newline);
         }
-        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", myWidth, myHeight,
+        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", getWidth(), getHeight(),
                 myBackgroundPath, mySprites, "myCollision", "myCamera");
     }
 
