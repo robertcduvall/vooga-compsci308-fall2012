@@ -124,8 +124,7 @@ public abstract class BattleObject extends GameObject {
      */
     // see comments in battlemode.paint(g) explaining why this was renamed
     public void paintBattleObject (Graphics g, int x, int y, int width, int height) {
-        super.drawRectangularImage(g, x, y, width / 2, height);
-        paintStats(g, x + width / 2, y, width / 2, height);
+        super.drawRectangularImage(g, x, y, width, height);
     }
 
     private int calcFontSize(int width, int height) {
@@ -135,7 +134,7 @@ public abstract class BattleObject extends GameObject {
     }
 
     //fix this at some point...
-    private void paintStats (Graphics g, int x, int y, int width, int height) {
+    public void paintStats (Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g;
         //g2d.setPaint(Color.CYAN);
         //g2d.draw3DRect(x, y, width, height, true);
