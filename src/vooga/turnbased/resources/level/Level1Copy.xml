@@ -35,7 +35,7 @@
 			<condition>entermap2</condition>
 		</mode>
 		<mode>
-			<name>optionMenu</name>
+			<name>optionMode</name>
 			<class>vooga.turnbased.gamecore.gamemodes.OptionMode</class>
 			<condition>optionstuff</condition>
 		</mode>

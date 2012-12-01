@@ -268,6 +268,7 @@ public class GameManager implements InputAPI {
     }
 
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
+        System.out.println("Flagging condition "+eventName);
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
 
