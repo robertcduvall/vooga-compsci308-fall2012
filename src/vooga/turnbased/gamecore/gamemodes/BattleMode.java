@@ -90,12 +90,15 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke methods w/t parameters...
+        int attack = KeyEvent.VK_A;
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
         int up = KeyEvent.VK_UP;
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
+            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, 
+                    this, "triggerOption1Event");
             GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, 
                     this, "triggerLeftEvent");
             GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, 
@@ -113,22 +116,21 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     private void makeTeams () {
-        // I don't think this is super bad test code now,
-        // We should eventually add support for a single sprite with multiple battleobjects
-        // (i.e. A single Pokemon trainer with multiple pokemon)
         myTeams = new ArrayList<Team>();
 
         // adding player
         List<BattleObject> team1BattleObjects = new ArrayList<BattleObject>();
         Sprite s1 = getGameManager().findSpriteWithID(myInvolvedIDs.get(0));
-        BattleObject bo1 = s1.getObject(BattleObject.class).get(0);
-        team1BattleObjects.add(bo1);
+        for (BattleObject bo : s1.getObject(BattleObject.class)) {
+            team1BattleObjects.add(bo);
+        }
 
         // adding enemy
         List<BattleObject> team2BattleObjects = new ArrayList<BattleObject>();
         Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
-        BattleObject bo2 = s2.getObject(BattleObject.class).get(0);
-        team2BattleObjects.add(bo2);
+        for (BattleObject bo : s2.getObject(BattleObject.class)) {
+            team2BattleObjects.add(bo);
+        }
 
         myTeams.add(new Team(team2BattleObjects));
         myTeams.add(new Team(team1BattleObjects));
@@ -139,6 +141,19 @@ public class BattleMode extends GameMode implements InputAPI {
         if (isBattleOver()) {
             endBattle();
         }
+        if (!myPlayerObject.isAlive()) {
+            myMessages.add(myPlayerObject.getName() + " fainted");
+            myTeams.get(1).switchPlayer(myTeams.get(1).nextPlayer());
+            myPlayerObject = myTeams.get(1).getActivePlayer();
+            myMessages.add(myPlayerObject.getName() + " appeared");
+        }
+        if (!myEnemy.isAlive()) {
+            myMessages.add(myEnemy.getName() + " fainted");
+            myTeams.get(0).switchPlayer(myTeams.get(0).nextPlayer());
+            myEnemy = myTeams.get(0).getActivePlayer();
+            myMessages.add(myEnemy.getName() + " appeared");
+        }
+            
         // TODO: figure out how this should work. Right now we just give it the
         // previous team
         // TODO: Take into account animating, requesting user input for player
@@ -155,9 +170,8 @@ public class BattleMode extends GameMode implements InputAPI {
         int width = myWindow.width;
         int teamNumber = 0;
         for (Team t : myTeams) {
-            for (BattleObject b : t.getBattleObjects()) {
-                b.paintBattleObject(g, 0, teamNumber * height / 3, width, height / 3);
-            }
+            BattleObject b = t.getActivePlayer();
+            b.paintBattleObject(g, 0, teamNumber * height / 3, width, height / 3);
             teamNumber += 1;
         }
         paintMenu(g);
@@ -202,13 +216,12 @@ public class BattleMode extends GameMode implements InputAPI {
 
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         //format positions based on width and height of the box...maybe?
-
         Graphics2D g2d = (Graphics2D) g;
         Font font = new Font("Sans_Serif", Font.PLAIN, 25);
         FontRenderContext frc = g2d.getFontRenderContext();
         g2d.setColor(Color.BLACK);
         String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
-        for (int i = 0; i < 4; i ++) {
+        for (int i = 0; i < options.length; i ++) {
             String s = options[i];
             GlyphVector gv = font.createGlyphVector(frc, s);
             if (i == 0) {
@@ -259,17 +272,18 @@ public class BattleMode extends GameMode implements InputAPI {
         // "team 1"
         Random generator = new Random();
         myTeamStartRandomizer = generator.nextInt(myTeams.size());
-        myPlayerObject = nextTeam().nextPlayer();
-        myEnemy = nextTeam().nextPlayer();
+        myPlayerObject = nextTeam().getActivePlayer();
+        myEnemy = nextTeam().getActivePlayer();
     }
 
     private void endBattle () {
         System.out.println("End battle!");
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
-        if(!myPlayerObject.isAlive()){
+        if (!myPlayerObject.isAlive()) {
             getGameManager().flagEvent("GAME_LOST", new ArrayList<Integer>());
-        } else {
+        }
+        else {
             getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
         }
     }
@@ -435,9 +449,12 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private class Team {
         private final List<BattleObject> myBattleObjects;
+        private BattleObject myActivePlayer;
 
         public Team (List<BattleObject> battleObjs) {
             myBattleObjects = battleObjs;
+            if (myBattleObjects.size() > 0)
+                myActivePlayer = myBattleObjects.get(0);
         }
 
         public boolean stillAlive () {
@@ -447,21 +464,22 @@ public class BattleMode extends GameMode implements InputAPI {
             return false;
         }
 
-        public void makeMove (Team enemy) {
-            // TODO: fill in behavior here
-            // get user input to choose active enemy sprite
-            // currentEnemyBattleObject.attackEnemy(currentPlayerBattleObject);
-        }
-
         public List<BattleObject> getBattleObjects () {
             return myBattleObjects;
+        }
+        
+        public BattleObject getActivePlayer() {
+            return myActivePlayer;
+        }
+        
+        public void switchPlayer (BattleObject nextPlayer) {
+            myActivePlayer = nextPlayer;
         }
 
         public BattleObject nextPlayer () {
             myBattleObjects.add(myBattleObjects.remove(0));
             return myBattleObjects.get(0);
         }
-        // TODO: Add more methods here to aid team behavior
     }
 
     private enum BattleState {
