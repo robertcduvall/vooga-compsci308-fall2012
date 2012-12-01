@@ -108,7 +108,18 @@ public class OptionMode extends GameMode {
     }
 
     @Override
-    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+    public void processMouseInput (Boolean mousePressed, Point myMousePosition, int myMouseButton) {
+        if(mousePressed){
+            myBounds = new Rectangle(myOrigin, myPanel.getPanelSize());
+            if (myBounds.contains(myMousePosition)) {
+                myPanel.highlightOption(getPositionOnPanel(myMousePosition));
+                setFocus(true);
+                //myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer); error?
+                System.out.println("clicking on the option mode thingy!");
+            }
+        } else { //!mousePressed
+            myPanel.dehighlightOption(); 
+        }
         getGameManager().flagEvent("SWITCH_LEVEL", new ArrayList<Integer>());
     }
 }

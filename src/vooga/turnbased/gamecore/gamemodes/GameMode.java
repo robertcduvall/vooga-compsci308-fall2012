@@ -93,5 +93,5 @@ public abstract class GameMode {
         myHasFocus = isFocus;
     }
 
-    public abstract void processMouseInput (Point myMousePosition, int myMouseButton);
+    public abstract void processMouseInput (Boolean mousePressed, Point mousePosition, int mouseButton);
 }
