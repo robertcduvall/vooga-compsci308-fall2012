@@ -50,8 +50,8 @@ public class MapMode extends GameMode implements InputAPI {
      * @param gm
      *        the GameManager which manages the mode
      */
-    public MapMode (int ID, GameManager gm, Class modeObjectType) {
-        super(ID, gm, modeObjectType);
+    public MapMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
+        super(gm, modeObjectType, involvedIDs);
         // initialize();
     }
 
@@ -61,11 +61,13 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public void pause () {
         myMapObjects.clear();
+        setInactive();
     }
 
     @Override
     public void resume () {
         // do stuff when back to map mode
+        setActive();
         initialize(); // TODO: Shouldn't need to reinitialize map objects
         // configureInputHandling();
     }

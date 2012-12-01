@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -12,7 +14,6 @@ import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecore.gamemodes.GameOverMode;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
-import vooga.turnbased.gamecreation.GameLevelManager;
 import vooga.turnbased.gamecreation.LevelXmlParser;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
@@ -36,10 +37,10 @@ public class GameManager implements InputAPI {
     // private GameLevelManager myLevelManager;
     private boolean myGameIsOver;
     private HashMap<Integer, Sprite> mySprites;
-    private HashMap<Integer, GameMode> myGameModes;
+    private HashMap<String, Class> myAvailableModeTypes;
     private List<ModeEvent> myModeEvents;
     private List<MouseAction> myMouseActions;
-    private GameMode myActiveGameMode;
+    private List<GameMode> myGameModes;
     private String myNewMapResource;
     private int myPlayerSpriteID;
 
@@ -52,13 +53,17 @@ public class GameManager implements InputAPI {
     public GameManager (GamePane gameCanvas) {
         myGamePane = gameCanvas;
         myGameIsOver = false;
+
         mySprites = new HashMap<Integer, Sprite>();
-        myGameModes = new HashMap<Integer, GameMode>();
+        myAvailableModeTypes = new HashMap<String, Class>();
+        myGameModes = new ArrayList<GameMode>();
+
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         // myGameLogic = new GameLogic(this);
         initializeGameLevel(GameWindow.importString("Entrance"));
+        // initializeGameLevel(GameWindow.importString("OtherLevel"));
         configureInputHandling();
     }
 
@@ -75,14 +80,17 @@ public class GameManager implements InputAPI {
 
         // need to get mode event mappings too
 
-        myActiveGameMode = test.getMapMode();
-        myGameModes.put(myActiveGameMode.getID(), myActiveGameMode);
+        myGameModes.add(test.getMapMode());
+        // myAvailableModeTypes.put(myGameModes.getID(), myGameModes);
 
         addSprites(test.parseSprites());
 
         myPlayerSpriteID = test.getPlayerID();
 
-        myActiveGameMode.resume();
+        myAvailableModeTypes.put("BATTLE_START", BattleMode.class);
+        myAvailableModeTypes.put("CONVERSATION_START", OptionMode.class);
+
+        myGameModes.get(0).resume();
     }
 
     /**
@@ -150,8 +158,31 @@ public class GameManager implements InputAPI {
      */
     public void update () {
         handleEvents();
-        handleMouseActions();
-        myActiveGameMode.update();
+        updateGameModes();
+        // myGameModes.get(myGameModes.size()-1).update(); //assume latest is
+        // active for now
+        // handleMouseActions(myGameModes.get(myGameModes.size()-1));
+    }
+
+    private void updateGameModes () {
+        ArrayList<GameMode> finishedModes = new ArrayList<GameMode>();
+        for (GameMode mode : myGameModes) {
+            if (mode.isOver()) {
+                finishedModes.add(mode);
+            }
+            else {
+                if (mode.isActive()) {
+                    mode.update();
+                }
+//                if (mode.hasFocus()) {
+//                    handleMouseActions(mode);
+//                }
+            }
+        }
+        handleMouseActions(myGameModes.get(myGameModes.size()-1));
+        for(GameMode mode : finishedModes) { //avoid concurrent modifcation over myGameModes list
+            killMode(mode);
+        }
     }
 
     /**
@@ -161,66 +192,20 @@ public class GameManager implements InputAPI {
      *        The Graphics object of the offScreenImage.
      */
     public void paint (Graphics g) {
-        myActiveGameMode.paint(g);
-    }
-
-    /**
-     * Adds an event to the list of events to handle.
-     * 
-     * @param eventName
-     *        String name of event to add.
-     * @param involvedSpriteIDs
-     *        List of integer IDs of sprites involved in given action.
-     */
-    // deprecated - use the one below
-    public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
-        myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
-    }
-
-    /**
-     * GameModes (mapMode, BattleMode, etc., collect their local events, then
-     * decide which ones should be reported to GameManager, then report at the
-     * end of update cycle using this method.
-     * 
-     * @param m
-     *        This is the event that the GameMode is passing in for the
-     *        GameManager to handle
-     */
-
-    /**
-     * Takes events to be handled and deals with each according to the mode and
-     * sprites involved.
-     */
-    private void handleEvents () {
-        while (!myModeEvents.isEmpty()) {
-            ModeEvent m = myModeEvents.remove(0);
-            handleEvent(m);
+        for (GameMode mode : myGameModes) {
+            if (mode.isActive()) {
+                mode.paint(g);
+            }
         }
+        // myGameModes.get(myGameModes.size()-1).paint(g);
     }
-    
-    private void handleMouseActions() {
-        while(!myMouseActions.isEmpty()){
+
+    private void handleMouseActions (GameMode mode) {
+        while (!myMouseActions.isEmpty()) {
+            System.out.println("doing mouse things for "+mode.getClass().toString());
             MouseAction m = myMouseActions.remove(0);
-            myActiveGameMode.processMouseInput(m.myMousePressed, m.myMousePosition,m.myMouseButton);
+            mode.processMouseInput(m.myMouseEventType, m.myMousePosition, m.myMouseButton);
         }
-    }
-
-    /**
-     * Pauses current modes, resume the active mode
-     * 
-     * @param mode
-     *        GameMode object to be switched to.
-     */
-    private void changeCurrentMode (GameMode mode) {
-        myActiveGameMode.pause();
-        myActiveGameMode = mode;
-        myActiveGameMode.resume();
-    }
-
-    private void changeCurrentMode (int modeID) {
-        myActiveGameMode.pause();
-        myActiveGameMode = myGameModes.get(modeID);
-        myActiveGameMode.resume();
     }
 
     /**
@@ -269,84 +254,73 @@ public class GameManager implements InputAPI {
         }
     }
 
+    /**
+     * Adds an event to the list of events to handle.
+     * 
+     * @param eventName
+     *        String name of event to add.
+     * @param involvedSpriteIDs
+     *        List of integer IDs of sprites involved in given action.
+     */
+    // deprecated - use the one below
+    public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
+        myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
+    }
+
+    /**
+     * Takes events to be handled and deals with each according to the mode and
+     * sprites involved.
+     */
+    private void handleEvents () {
+        while (!myModeEvents.isEmpty()) {
+            ModeEvent m = myModeEvents.remove(0);
+            handleEvent(m);
+        }
+    }
+
     // this whole thing to be wrapped into hashmap: event -> destinationModeId
     private void handleEvent (ModeEvent event) {
         String eventName = event.myName;
         List<Integer> myInvolvedIDs = event.myInvolvedIDs;
-        if ("NO_ACTION".equals(eventName)) {
-            // do nothing
-        }
-        else if ("BATTLE_START".equals(eventName)) {
-            BattleMode battleMode = new BattleMode(5, this, BattleObject.class, myInvolvedIDs);// magic ID number
-            changeCurrentMode(battleMode);
-            // idOfRespectiveMode = myInvolvedIDs.get(0),
-            // e.g. id of enemy sprite is equal to id of target battle mode... ?
-            // changeCurrentMode(idOfRespectiveMode);
-        }
-        else if ("BATTLE_OVER".equals(eventName)) {
-            changeCurrentMode(1);
-            // changeCurrentMode(idOfLatestMapMode);
-        }
-        else if ("SWITCH_LEVEL".equals(eventName)) {
-            myModeEvents.clear();
-            myMouseActions.clear();
-            mySprites.clear();
-            myGameModes.clear();//TODO: Fix this, not how things really happen
-            initializeGameLevel(GameWindow.importString("OtherLevel"));
-            // idOfRespectiveLevel = myInvolvedIDs.get(0),
-            // e.g. id of teleport sprite is equal to id of target mapmode
-            // changeCurrentMode(idOfRespectiveLevel);
-        }
-        else if ("CONVERSATION_START".equals(eventName)) {
-            OptionMode conversationMode =
-                new OptionMode(2, this, MapObject.class, myInvolvedIDs);
-        // do not add the same conversation twice
-//        for (GameMode mode : myActiveModes) {
-//            if ((mode instanceof OptionMode) &&
-//                (conversationMode.equalsTo((OptionMode) (mode)))) { return; }
-//        }
-            changeCurrentMode(conversationMode);
-            // idOfRespectiveMode = myInvolvedIDs.get(0),
-            // e.g. id of NPC sprite is equal to id of target conversation mode
-            // changeCurrentMode(idOfRespectiveMode);
-        }
-        else if ("CONVERSATION_OVER".equals(eventName)) {
-            // changeCurrentMode(idOfLatestMapMode);
-        }
-        else if ("GAME_WON".equals(eventName)) { 
-            // this event is thrown to gamemanager by gamelogic
-            // changeCurrentMode(idOfGameWonMode);
-        }
-        else if ("GAME_LOST".equals(eventName)) { 
-            // this event is thrown to gamemanager by gamelogic
-            // changeCurrentMode(idOfGameOverMode);
-            GameOverMode overMode = new GameOverMode(3, this, null);
-            changeCurrentMode(overMode);
-        }
-        else {
-            // please no more new features that don't fit in
-            // "mode event -> destination mode" design
+        System.out.println(eventName);
+        if (myAvailableModeTypes.containsKey(eventName)) {
+            myGameModes.get(myGameModes.size() - 1).pause();
+            Class c = myAvailableModeTypes.get(eventName);
+            Constructor[] newC = c.getConstructors();
+            try {
+                myGameModes.add((GameMode) newC[0]
+                        .newInstance(this, MapObject.class, myInvolvedIDs));
+            }
+            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {
+                System.out.println("Check XML file for mistyped mode class");
+            }
         }
     }
-    
-    public void addMouseAction(int mousePressed, Point mousePos, int mouseButton){
+
+    public void addMouseAction (int mousePressed, Point mousePos, int mouseButton) {
         myMouseActions.add(new MouseAction(mousePressed, mousePos, mouseButton));
-        //System.out.println("press: "+mousePressed+", pos: "+mousePos+", button: "+mouseButton);
+        // System.out.println("press: "+mousePressed+", pos: "+mousePos+", button: "+mouseButton);
     }
-    
+
     private class MouseAction {
-        private int myMousePressed;
+        private int myMouseEventType;
         private Point myMousePosition;
         private int myMouseButton;
 
-        public MouseAction(int mousePressed, Point mousePos, int mouseButton){
-            myMousePressed = mousePressed;
+        public MouseAction (int mouseEventType, Point mousePos, int mouseButton) {
+            myMouseEventType = mouseEventType;
             myMousePosition = mousePos;
             myMouseButton = mouseButton;
         }
     }
 
-//    public void handleMouseDragged(Point mousePosition) {
-//        myActiveGameMode.changeDisplayPosition(mousePosition);
-//    }
+    // public void handleMouseDragged(Point mousePosition) {
+    // myActiveGameMode.changeDisplayPosition(mousePosition);
+    // }
+
+    private void killMode (GameMode mode) {
+        myGameModes.remove(mode);
+        myGameModes.get(myGameModes.size() - 1).resume();
+    }
 }

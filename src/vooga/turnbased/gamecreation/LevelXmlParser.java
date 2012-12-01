@@ -66,7 +66,7 @@ public class LevelXmlParser {
     public LevelXmlParser (File file, GameManager gm) {
         myXmlDocument = XmlUtilities.makeDocument(file);
         myDocumentElement = myXmlDocument.getDocumentElement();
-        myMapMode = new MapMode(1, gm, MapObject.class); //hardcoded ID :(
+        myMapMode = new MapMode(gm, MapObject.class, new ArrayList<Integer>()); //hardcoded ID :(
         myMapMode.setMapSize(parseDimension(GameWindow.importString("MapDimension"))); //ahhhhhhhh
         myMapMode.setCameraSize(parseDimension(GameWindow.importString("CameraDimension")));//gggggggggrrrrgggggllllllllll....aggggggg *dramatic death*
         myPlayerXmlDocument = XmlUtilities.makeDocument(PLAYER_XML_PATH);

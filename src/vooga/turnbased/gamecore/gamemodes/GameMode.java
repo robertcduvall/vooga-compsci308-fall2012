@@ -15,10 +15,12 @@ import vooga.turnbased.gamecore.GameManager;
  */
 // public abstract class GameMode extends Observable {
 public abstract class GameMode {
-    private final int myID;
+    //private final int myID;
     private final GameManager myGameManager;
     private final Class myObjectType;
     private boolean myHasFocus;
+    private boolean isActive;
+    private boolean isOver;
 
     /**
      * Constructor for GameMode.
@@ -28,11 +30,12 @@ public abstract class GameMode {
      * @param modeObjectType Type of GameObject associated with GameMode
      *        being constructed.
      */
-    public GameMode (int ID, GameManager gm, Class modeObjectType) {
-        myID = ID;
+    public GameMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
         myGameManager = gm;
         myObjectType = modeObjectType;
         myHasFocus = true;
+        isActive = true;
+        isOver = false;
     }
 
     public GameManager getGameManager () {
@@ -52,9 +55,9 @@ public abstract class GameMode {
         return myObjectType;
     }
 
-    public int getID () {
-        return myID;
-    }
+//    public int getID () {
+//        return myID;
+//    }
 
     /**
      * Call when gamemode if first created
@@ -83,15 +86,35 @@ public abstract class GameMode {
      */
     public abstract void update ();
 
-    protected boolean hasFocus () {
+    public boolean hasFocus () {
         return myHasFocus;
     }
 
     protected void setFocus (boolean isFocus) {
         myHasFocus = isFocus;
     }
+    
+    protected void setActive() {
+        isActive = true;
+    }
+    
+    protected void setInactive() {
+        isActive = false;
+    }
+    
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    public boolean isOver() {
+        return isOver;
+    }
 
 //    public void changeDisplayPosition (Point position) {
 //    }
     public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
+    
+    protected void setModeIsOver() {
+        isOver = true;
+    }
 }

@@ -35,8 +35,8 @@ public class OptionMode extends GameMode {
     private Map<String, MapStrategy> myDisplayedStrategies;
     private Rectangle myBounds;
 
-    public OptionMode (int ID, GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
-        super(ID, gm, modeObjectType);
+    public OptionMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
+        super(gm, modeObjectType, involvedIDs);
         myDisplayedStrategies = new HashMap<String, MapStrategy>();
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
         myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);

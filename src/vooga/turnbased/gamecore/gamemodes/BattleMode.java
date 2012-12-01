@@ -68,11 +68,12 @@ public class BattleMode extends GameMode implements InputAPI {
      */
 
     // need to pass ids of battle participants upon battle creation
-    public BattleMode (int id, GameManager gameManager, Class<BattleObject> modeObjectType,
+    public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
                        List<Integer> involvedIDs) {
-        super(id, gameManager, modeObjectType);
+        super(gameManager, modeObjectType, involvedIDs);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
+        resume();
     }
 
     @Override
@@ -302,14 +303,12 @@ public class BattleMode extends GameMode implements InputAPI {
      * end a battle and report the event (whether player is dead) to GameManager
      */
     private void endBattle () {
+        setModeIsOver();
         System.out.println("End battle!");
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
         if (!myPlayerObject.isAlive()) {
             getGameManager().flagEvent("GAME_LOST", new ArrayList<Integer>());
-        }
-        else {
-            getGameManager().flagEvent("BATTLE_OVER", battleLooserIDs);
         }
     }
 
