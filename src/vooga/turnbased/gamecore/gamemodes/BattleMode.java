@@ -492,7 +492,7 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     @Override
-    public void processMouseInput (Point myMousePosition, int myMouseButton) {
+    public void processMouseInput (Boolean mousePressed, Point myMousePosition, int myMouseButton) {
         // TODO Auto-generated method stub
 
 

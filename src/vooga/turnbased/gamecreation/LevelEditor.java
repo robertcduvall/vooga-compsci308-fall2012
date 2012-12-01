@@ -11,10 +11,9 @@ import util.xml.XmlUtilities;
  *
  * @author Mark Hoffman
  */
-public class LevelEditor {
+public class LevelEditor extends Editor {
 
     private Document myXmlDocument;
-    private String myFileName;
     private Element myRootElement;
 
     /**
@@ -24,8 +23,8 @@ public class LevelEditor {
      * @param fileName File name (with path) of Xml document
      */
     public LevelEditor(Document xmlDocument, String fileName) {
+        super(xmlDocument, fileName);
         myXmlDocument = xmlDocument;
-        myFileName = fileName;
     }
 
     /**
@@ -34,10 +33,10 @@ public class LevelEditor {
      * @param fileName File name (with path) of Xml document
      */
     public LevelEditor(String fileName) {
+        super(fileName);
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("level");
         myXmlDocument.appendChild(myRootElement);
-        myFileName = fileName;
     }
 
     /**
@@ -144,21 +143,6 @@ public class LevelEditor {
         for (String key : m.keySet()) {
             XmlUtilities.appendElement(myXmlDocument, e, key, m.get(key).toString());
         }
-    }
-
-    /**
-     * Saves the xml document.
-     */
-    public void saveXmlDocument() {
-        XmlUtilities.write(myXmlDocument, myFileName);
-    }
-
-    /**
-     * 
-     * @return Xml Document
-     */
-    public Document getXmlDocument () {
-        return myXmlDocument;
     }
 
     private void addDimension (String tagName, Number width, Number height) {
