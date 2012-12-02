@@ -80,23 +80,23 @@ public class GameManager implements InputAPI {
      */
     private void initializeGameLevel (String levelFileName) {
         LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
-        
+
         MapMode mapMode = (MapMode) test.getMapMode();
         myGameModes.add(mapMode);
-        
+
         addSprites(test.parseSprites());
         myPlayerSpriteID = test.getPlayerID();
         myAvailableModeTypes = test.getUserDefinedModes();
         myGameLogic = new GameLogic(this, test.getEventConditionMapping());
 
-        //startFirstMode(test.getStartMode());
+        // startFirstMode(test.getStartMode());
         myGameModes.get(0).resume();
     }
-    
-//    private void startFirstMode(String entryMode) {
-//        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
-//        myGameModes.get(0).resume();
-//    }
+
+    // private void startFirstMode(String entryMode) {
+    // handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+    // myGameModes.get(0).resume();
+    // }
 
     /**
      * find the Sprite with specific ID
@@ -184,7 +184,9 @@ public class GameManager implements InputAPI {
                 // }
             }
         }
-        handleMouseActions(myGameModes.get(myGameModes.size() - 1)); //assume latest is focus
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1)); // assume
+                                                                     // latest
+                                                                     // is focus
         for (GameMode mode : finishedModes) { // avoid concurrent modifcation
                                               // over myGameModes list
             killMode(mode);
@@ -268,7 +270,7 @@ public class GameManager implements InputAPI {
     }
 
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
-        System.out.println("Flagging condition "+eventName);
+        System.out.println("Flagging condition " + eventName);
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
 
@@ -299,25 +301,23 @@ public class GameManager implements InputAPI {
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         if (myAvailableModeTypes.containsKey(eventName)) {
             if (!myGameModes.isEmpty()) {
-                myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again
-                                                                 // assuming
-                                                                 // latest is
-                                                                 // active for
-                                                                 // now
+                myGameModes.get(myGameModes.size() - 1).pause();
+                // TODO: again assuming latest is active for now
             }
             Class c = myAvailableModeTypes.get(eventName);
             Constructor[] newC = c.getConstructors();
-            /*try {
+            /*
+             * try {
+             * myGameModes.add((GameMode) newC[0]
+             * .newInstance(this, MapObject.class, myInvolvedIDs));
+             * }
+             * /*catch (InstantiationException | IllegalAccessException |
+             * IllegalArgumentException
+             * | InvocationTargetException e) {
+             */
+            try {
                 myGameModes.add((GameMode) newC[0]
                         .newInstance(this, MapObject.class, myInvolvedIDs));
-            }
-            /*catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {*/
-            catch (Exception e) {
-                System.out.println("Check XML file for mistyped mode class");
-            }*/
-            try {
-                myGameModes.add((GameMode) newC[0].newInstance(this, MapObject.class, myInvolvedIDs));
             }
             catch (Exception e) {
                 System.out.println("Check XML file for mistyped mode class");

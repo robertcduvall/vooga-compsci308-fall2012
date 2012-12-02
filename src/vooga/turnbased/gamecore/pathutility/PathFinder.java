@@ -19,7 +19,6 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class PathFinder {
 
-    private static final int ATTEMPT_INTERVAL = 60;
     private List<Point> myPath;
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
@@ -34,6 +33,7 @@ public class PathFinder {
     private Point myPreviousLocation;
     private Point myCurrentLocation;
     private int myPathIndex;
+    private boolean myIsMultiDestination;
 
     /**
      * constructor
@@ -51,11 +51,11 @@ public class PathFinder {
         myPreviousLocation = myStart;
         myPathIndex = 0;
         isHighlighted = false;
+        myIsMultiDestination = false;
         myHighlightObjects = new ArrayList<MapObject>();
         mySize = new Dimension(mapSize);
         myPath = searchPath();
         if (myPath.isEmpty()) { return; }
-
     }
 
     /**
@@ -69,6 +69,10 @@ public class PathFinder {
         checkObstacles();
         myPathSearch.findPath(myStart);
         return myPathSearch.getImmutablePath();
+    }
+    
+    public void setMultiDestination(boolean isMultiDestination) {
+        myIsMultiDestination = isMultiDestination;
     }
 
     /**
@@ -110,8 +114,9 @@ public class PathFinder {
 
     /**
      * highlight the path by generating a series of path indicators
+     * Could be overriden if other ways of highlighting path are needed
      */
-    private void highlightPath () {
+    protected void highlightPath () {
         for (Point p : myPath) {
             MapObject m = generatePathIndicator(p);
             myMap.addMapObject(p, m);
