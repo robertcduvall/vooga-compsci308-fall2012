@@ -101,8 +101,10 @@ public final class LevelFileWriter {
      * @param width overall width of the level
      * @param height overall height of the level
      * @param backgroundImage image to display in the background of the level
-     * @param gameObjects a collection of the all the GameObjects that should be
-     *        loaded when the user plays or edits the level
+     * @param gameObjects Collection of the all the GameObjects that should be
+     *        loaded when the user plays or edits the level. One GameObject
+     *        <strong>must</strong> of type Player for LevelFactory to be able
+     *        to load the level.
      * @param cameraType fully-qualified class name of the Camera to use for
      *        this level
      */
