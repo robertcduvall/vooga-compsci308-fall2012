@@ -105,7 +105,7 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
         JLabel userSearchPrompt = new JLabel("Search for a user by Name:");
         JLabel userListSelectPrompt = new JLabel("Select a user: ");
         JButton userGoButton = new JButton("Go to Profile");
-        userGoButton.setActionCommand(GO+USER);
+        userGoButton.setActionCommand(USER);
         userGoButton.addActionListener(this);
         
         /*JLabel label = new JLabel();
@@ -143,7 +143,11 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
             getArcade().replacePanel("GameTagSearch");
         }
         if (e.getActionCommand() == USER) {
-            getArcade().replacePanel("UserSearch");
+            String userSelected = (String) userSearchedThroughList.getSelectedValue();
+            if (userSelected != null){
+                getArcade().saveVariable("UserName", userSelected);
+                getArcade().replacePanel("UserProfile");
+            }
         }       
     }
 
