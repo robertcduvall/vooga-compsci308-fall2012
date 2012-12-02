@@ -35,7 +35,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private Team myEnemyTeam;
     private BattleObject myPlayerObject;
     private BattleObject myEnemyObject;
-    private int myLooserSpriteID;
+    private int myLoserSpriteID;
     private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
     private OptionSelect mySelection;
@@ -56,22 +56,18 @@ public class BattleMode extends GameMode implements InputAPI {
     /**
      * Constructor for a Battle.
      * 
-     * @param gameManager The parent GameManager that is creating this battle.
-     *        Will be
-     *        alerted when battle ends.
-     * @param allowableModes Mode names that this object can exist in
+     * @param gameManager The parent GameManager that is creating this battle. Will be 
+     * alerted when battle ends.
+     * @param modeName The name of this BattleMode
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
-
-    // need to pass ids of battle participants upon battle creation
-    public BattleMode (GameManager gameManager, String modeName,
-            List<Integer> involvedIDs) {
+    public BattleMode (GameManager gameManager, String modeName, List<Integer> involvedIDs) {
         super(gameManager, modeName, involvedIDs);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
         resume();
     }
-    
+
     /**
      * Initializes a battle with the current lists of BattleObjects
      */
@@ -92,6 +88,7 @@ public class BattleMode extends GameMode implements InputAPI {
         makeTeams();
         initialize();
         myMessages.add(myEnemyObject.getStartFightingMessage(false));
+        myMessages.add(myPlayerObject.getStartFightingMessage(true));
         configureInputHandling();
     }
 
@@ -162,7 +159,6 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
 
-    // this needs to be generalized
     @Override
     public void paint (Graphics g) {
         Dimension myWindow = getGameManager().getPaneDimension();
@@ -234,8 +230,7 @@ public class BattleMode extends GameMode implements InputAPI {
         Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
         FontEffect fontEffect = new FontEffect(g, font);
         String[] options = myPlayerObject.getOptions();
-        // position determines where the strings are painted (need to get rid
-        // of the magic numbers)
+        // position determines where the strings are painted
         Point position = null;
         Color mainColor = Color.GRAY;
         Color outlineColor = Color.BLACK;
@@ -263,7 +258,6 @@ public class BattleMode extends GameMode implements InputAPI {
             }
             catch (NullPointerException e) {
                 System.err.println("option not recognized");
-                // e.printStackTrace();
             }
         }
         drawArrow(g, x, y, leftShift, rightShift, topShift, bottomShift);
@@ -273,25 +267,28 @@ public class BattleMode extends GameMode implements InputAPI {
             int rightShift, int topShift, int bottomShift) {
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
         Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
-        if (mySelection == OptionSelect.OPTION1) {
-            g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                    (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
-                    arrow.getWidth(null), arrow.getHeight(null), null);
-        }
-        else if (mySelection == OptionSelect.OPTION2) {
-            g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                    (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
-                    arrow.getWidth(null), arrow.getHeight(null), null);
-        }
-        else if (mySelection == OptionSelect.OPTION3) {
-            g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                    (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
-                    arrow.getWidth(null), arrow.getHeight(null), null);
-        }
-        else if (mySelection == OptionSelect.OPTION4) {
-            g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                    (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
-                    arrow.getWidth(null), arrow.getHeight(null), null);
+        switch (mySelection) {
+            case OPTION1:
+                g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
+                        (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
+                        arrow.getWidth(null), arrow.getHeight(null), null);
+                break;
+            case OPTION2:
+                g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
+                        (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                        arrow.getWidth(null), arrow.getHeight(null), null);
+                break;
+            case OPTION3:
+                g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
+                        (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                        arrow.getWidth(null), arrow.getHeight(null), null);
+                break;
+            case OPTION4:
+                g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
+                        (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                        arrow.getWidth(null), arrow.getHeight(null), null);
+                break;
+            default: break;
         }
     }
 
@@ -309,17 +306,17 @@ public class BattleMode extends GameMode implements InputAPI {
         if (!myPlayerObject.isAlive()) {
             flagCondition(myPlayerObject.getConditionFlag(), new ArrayList<Integer>());
         }
-        getGameManager().clearSprite(myLooserSpriteID);
+        getGameManager().clearSprite(myLoserSpriteID);
     }
 
     private boolean isBattleOver () {
         boolean teamDead = false;
         if (!myTeam.stillAlive()) {
-            myLooserSpriteID = myPlayerObject.getID();
+            myLoserSpriteID = myPlayerObject.getID();
             teamDead = true;
         }
         if (!myEnemyTeam.stillAlive()) {
-            myLooserSpriteID = myEnemyObject.getID();
+            myLoserSpriteID = myEnemyObject.getID();
             teamDead = true;
         }
         return teamDead;
@@ -424,17 +421,21 @@ public class BattleMode extends GameMode implements InputAPI {
      * trigger the selected event
      */
     public void triggerSelectEvent () {
-        if (mySelection == OptionSelect.OPTION1) {
-            triggerOption1Event();
-        }
-        else if (mySelection == OptionSelect.OPTION2) {
-            triggerOption2Event();
-        }
-        else if (mySelection == OptionSelect.OPTION3) {
-            triggerOption3Event();
-        }
-        else if (mySelection == OptionSelect.OPTION4) {
-            triggerOption4Event();
+        switch (mySelection) {
+            case OPTION1: 
+                triggerOption1Event();
+                break;
+            case OPTION2:
+                triggerOption2Event();
+                break;
+            case OPTION3:
+                triggerOption3Event();
+                break;
+            case OPTION4:
+                triggerOption4Event();
+                break;
+            default:
+                break;
         }
     }
 

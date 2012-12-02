@@ -1,6 +1,5 @@
 package vooga.turnbased.gamecreation;
 
-import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
@@ -71,7 +70,7 @@ public class LevelEditor extends Editor {
      * @param width Describes width of the Map dimension
      * @param height Describes height of the Map dimension
      */
-    public void addDimensionTag(Number width, Number height) {
+    public void addDimensionTag(String width, String height) {
         addDimension(DIMENSION, width, height);
     }
 
@@ -80,7 +79,7 @@ public class LevelEditor extends Editor {
      * @param width New map dimension width
      * @param height New map dimension height
      */
-    public void modifyDimensionTag(Number width, Number height) {
+    public void modifyDimensionTag(String width, String height) {
         modifyDimension(DIMENSION, width, height);
     }
 
@@ -89,7 +88,7 @@ public class LevelEditor extends Editor {
      * @param width Describes width of the Camera dimension
      * @param height Describes height of the Camera dimension
      */
-    public void addCameraDimension (Number width, Number height) {
+    public void addCameraDimension (String width, String height) {
         addDimension("camaraDimension", width, height);
     }
 
@@ -98,7 +97,7 @@ public class LevelEditor extends Editor {
      * @param width New camera dimension width
      * @param height New camera dimension height
      */
-    public void modifyCameraDimension (Number width, Number height) {
+    public void modifyCameraDimension (String width, String height) {
         modifyDimension("cameraDimension", width, height);
     }
 
@@ -112,7 +111,7 @@ public class LevelEditor extends Editor {
     }
 
     /**
-     * 
+     *
      * @param imagePath New Image Path
      */
     public void modifyBackgroundImage (String imagePath) {
@@ -175,73 +174,58 @@ public class LevelEditor extends Editor {
      * 
      * @param s Sprite Element to which the mapObject is added
      * @param createsOn When the object is initiated
-     * @param modeds The modes that this object is in
-     * @param mapClass Specific concrete class for the map object
+     * @param modes The modes that this object is in
+     * @param className Specific concrete class for the map object
      * @param condition Condition event for this map object
      * @param x Map x-coordinate
      * @param y Map y-coordinate
-     * @param imagePath Path to the Map Image
+     * @param imagePaths Path to the Map Image
      */
-    public void addMapObject (Element s, String createsOn, String modeds, String mapClass,
-            String condition, Number x, Number y, String[] imagePath) {
-        Element mapElement = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
-        XmlUtilities.appendElement(myXmlDocument, mapElement, CREATE_ON, createsOn);
-        XmlUtilities.appendElement(myXmlDocument, mapElement, MODES, modeds);
-        XmlUtilities.appendElement(myXmlDocument, mapElement, CLASS, mapClass);
-        XmlUtilities.appendElement(myXmlDocument, mapElement, CONDITION, condition);
-        Element location = XmlUtilities.appendElement(myXmlDocument, mapElement, "location");
-        XmlUtilities.appendElement(myXmlDocument, location, "x", x.toString());
-        XmlUtilities.appendElement(myXmlDocument, location, "y", y.toString());
-        for (String image : imagePath) {
-            XmlUtilities.appendElement(myXmlDocument, mapElement, IMAGE, image);
+    public void addObject (Element s, String createsOn, String modes, String className,
+            String condition, String x, String y, String imagePaths, String stats, String name) {
+        Element objectElement = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
+        XmlUtilities.appendElement(myXmlDocument, objectElement, CREATE_ON, createsOn);
+        XmlUtilities.appendElement(myXmlDocument, objectElement, MODES, modes);
+        XmlUtilities.appendElement(myXmlDocument, objectElement, CLASS, className);
+        XmlUtilities.appendElement(myXmlDocument, objectElement, CONDITION, condition);
+        Element location = XmlUtilities.appendElement(myXmlDocument, objectElement, "location");
+        XmlUtilities.appendElement(myXmlDocument, location, "x", x);
+        XmlUtilities.appendElement(myXmlDocument, location, "y", y);
+        addImagesToXml(objectElement, imagePaths);
+        Element statsElement = XmlUtilities.appendElement(myXmlDocument, objectElement, "stats");
+        addStatsToXml(statsElement, stats);
+        XmlUtilities.appendElement(myXmlDocument, objectElement, NAME, name);
+    }
+
+    private void addImagesToXml (Element objectElement, String imagePaths) {
+        imagePaths.replaceAll("\\s", "");
+        String[] allImages = imagePaths.split("\\s*,\\s*");
+        for (String image : allImages) {
+            XmlUtilities.appendElement(myXmlDocument, objectElement, IMAGE, image);
         }
     }
 
-    /**
-     * Creates a battle object and adds it to a sprite.
-     * 
-     * @param s Sprite to which the battleObject is added
-     * @param createsOn When the object is initiated
-     * @param modes The modes this object is in
-     * @param battleClass Specific concrete class for the battle object
-     * @param condition Condition event for the battle object
-     * @param stats map for each battle attribute and value (health, attack, etc.)
-     * @param name Name of the battle object (i.e. Pikachu)
-     * @param imagePath Path to the Battle Image
-     */
-    public void addBattleObject (Element s, String createsOn, String modes, String battleClass,
-            String condition, Map<String, Number> stats, String name, String[] imagePath) {
-        Element battle = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
-        XmlUtilities.appendElement(myXmlDocument, battle, CREATE_ON, createsOn);
-        XmlUtilities.appendElement(myXmlDocument, battle, MODES, modes);
-        XmlUtilities.appendElement(myXmlDocument, battle, CLASS, battleClass);
-        XmlUtilities.appendElement(myXmlDocument, battle, CONDITION, condition);
-        Element statsElement = XmlUtilities.appendElement(myXmlDocument, battle, "stats");
-        addStatsMapToXml(statsElement, stats);
-        XmlUtilities.appendElement(myXmlDocument, battle, NAME, name);
-        for (String image : imagePath) {
-            XmlUtilities.appendElement(myXmlDocument, battle, IMAGE, image);
+    private void addStatsToXml (Element e, String stats) {
+        stats.replaceAll("\\s", "");
+        String[] allStats = stats.split("\\s*,\\s*");
+        for (String stat : allStats) {
+            String[] singleStat = stat.split("\\s*:\\s*");
+            XmlUtilities.appendElement(myXmlDocument, e, singleStat[0], singleStat[1]);
         }
     }
 
-    private void addStatsMapToXml (Element e, Map<String, Number> m) {
-        for (String key : m.keySet()) {
-            XmlUtilities.appendElement(myXmlDocument, e, key, m.get(key).toString());
-        }
-    }
-
-    private void addDimension (String tagName, Number width, Number height) {
+    private void addDimension (String tagName, String width, String height) {
         Element dimension = XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, tagName);
-        XmlUtilities.appendElement(myXmlDocument, dimension, WIDTH, width.toString());
-        XmlUtilities.appendElement(myXmlDocument, dimension, HEIGHT, height.toString());
+        XmlUtilities.appendElement(myXmlDocument, dimension, WIDTH, width);
+        XmlUtilities.appendElement(myXmlDocument, dimension, HEIGHT, height);
     }
 
-    private void modifyDimension (String s, Number width, Number height) {
+    private void modifyDimension (String s, String width, String height) {
         Element dimension = XmlUtilities.getElement(myGameSetupElement, s);
         Element w = XmlUtilities.getElement(dimension, WIDTH);
         Element h = XmlUtilities.getElement(dimension, HEIGHT);
-        XmlUtilities.setContent(w, width.toString());
-        XmlUtilities.setContent(h, height.toString());
+        XmlUtilities.setContent(w, width);
+        XmlUtilities.setContent(h, height);
     }
 
     /**

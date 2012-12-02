@@ -114,8 +114,8 @@ public abstract class PathSearch {
      * @return list of Points that traces the path; empty list if no path is
      *         found
      */
-    public List<Point> getImmutablePath () {
-        return Collections.unmodifiableList(myPath);
+    public List<Point> getPath () {
+        return myPath;
     }
     
     protected void setPath(List<Point> path) {

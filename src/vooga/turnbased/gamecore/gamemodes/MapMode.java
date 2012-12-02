@@ -14,6 +14,7 @@ import java.util.List;
 import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.graphutility.MapModePathFinder;
+import vooga.turnbased.gamecore.graphutility.PathFinder;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gui.GamePane;
@@ -41,7 +42,7 @@ public class MapMode extends GameMode implements InputAPI {
     private int myCurrentTileWidth;
     private int myCurrentTileHeight;
     private Rectangle myCurrentCamera;
-    private MapModePathFinder myPathFinder;
+    private PathFinder myPathFinder;
     private Point myTopLeftCoord;
 
     /**
@@ -83,6 +84,8 @@ public class MapMode extends GameMode implements InputAPI {
         setMapSize(getGameManager().getMapSize());
         
         myMapObjects = new HashMap<Point, List<MapObject>>();
+        @SuppressWarnings("unchecked")
+        //the getGameObjects method has already taken care of correct casting
         List<MapObject> mapObjects = (List<MapObject>) getGameObjects();
         for (MapObject mapObject : mapObjects) {
             mapObject.setMapMode(this);
@@ -91,6 +94,7 @@ public class MapMode extends GameMode implements InputAPI {
                 setPlayer((MapPlayerObject) mapObject);
             }
         }
+        myPathFinder = new MapModePathFinder(this, myPlayer);
         configureInputHandling();
         update();
     }
@@ -331,8 +335,11 @@ public class MapMode extends GameMode implements InputAPI {
                                                    myPlayer, "moveDown");
             GamePane.keyboardController.setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
                                                    myPlayer, "toggleRunning");
-            //GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
-            //                                       myPathFinder, "")
+            //enable/disable multi-destination feature in PathFinder
+            GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
+                                                   myPathFinder, "activateMultiDestination");
+            GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.RELEASED,
+                                                   myPathFinder, "deactivateMultiDestination");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -363,13 +370,12 @@ public class MapMode extends GameMode implements InputAPI {
     @Override
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
         if (mousePressed == GamePane.MOUSE_CLICKED && myMouseButton == MouseEvent.BUTTON3) {
-            if (myPathFinder != null) {
-                myPathFinder.stop();
-            }
+            myPathFinder.stop();
             Point target =
                     new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
                               (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);
             myPathFinder = new MapModePathFinder(this, myPlayer, target, myMapSize);
+            myPathFinder.executeSearch();
         }
     }
 }

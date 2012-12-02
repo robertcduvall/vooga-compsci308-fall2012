@@ -19,21 +19,14 @@ import vooga.turnbased.gui.GameWindow;
  * 
  * @author Rex Ying
  */
-public class MapModePathFinder extends PathFinder{
+public class MapModePathFinder extends PathFinder {
 
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
-    private boolean myCancelMovement;
-    private Point myStart;
-    private Point myEnd;
-    private Dimension mySize;
     private MovingMapObject myMovingObject;
-    private PathSearch myPathSearch;
-    private boolean isHighlighted;
     // for execution of walking along the path
     private Point myPreviousLocation;
     private Point myCurrentLocation;
-    private int myPathIndex;
 
     /**
      * constructor
@@ -44,43 +37,40 @@ public class MapModePathFinder extends PathFinder{
      * @param mapSize bottom right corner of the entire map
      */
     public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
+        super(object.getLocation(), target, new Dimension(mapSize));
+        initialize(map, object);
+        setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
+        myPreviousLocation = getStart();
+    }
+
+    /**
+     * default constructor.
+     * needs to add task after constructing using this default one
+     */
+    public MapModePathFinder (MapMode map, MovingMapObject object) {
+        super();
+        initialize(map, object);
+    }
+
+    /**
+     * initialize variables specific to this MapModePathFinder
+     * 
+     * @param map the MapMode instance on which the path should be found
+     * @param object the object which needs to find a path
+     */
+    private void initialize (MapMode map, MovingMapObject object) {
         myMap = map;
         myMovingObject = object;
-        myStart = object.getLocation();
-        myEnd = target;
-        myPreviousLocation = myStart;
-        myPathIndex = 0;
-        isHighlighted = false;
         myHighlightObjects = new ArrayList<MapObject>();
-        mySize = new Dimension(mapSize);
-        setPath(searchPath());
-        if (pathIsEmpty()) { return; }
     }
 
-    /**
-     * use PathSearch for finding path
-     * 
-     * @return the path represented by a list of Points
-     */
-    private List<Point> searchPath () {
-        // It can either be a DepthFirstSearch, or BreadthFirstSearch
-        myPathSearch = new BreadthFirstSearch(myStart, myEnd, mySize);
-        checkObstacles();
-        myPathSearch.findPath(myStart);
-        return myPathSearch.getImmutablePath();
-    }
-
-    /**
-     * mark obstacles as inaccessible
-     * should be used after PathSearch object is instantiated
-     * pre-processing
-     */
+    @Override
     protected void checkObstacles () {
-        for (int i = 0; i < mySize.width; i++) {
-            for (int j = 0; j < mySize.height; j++) {
+        for (int i = 0; i < getSize().width; i++) {
+            for (int j = 0; j < getSize().height; j++) {
                 for (MapObject m : myMap.getSpritesOnTile(i, j)) {
                     if (m instanceof MapObstacleObject) {
-                        myPathSearch.markVisited(i, j);
+                        getPathSearch().markVisited(i, j);
                     }
                 }
             }
@@ -88,13 +78,25 @@ public class MapModePathFinder extends PathFinder{
     }
 
     /**
+     * add a new task to the path finder
+     * 
+     * @param object the object that needs to find path
+     * @param target the target position
+     * @param mapSize the size of the map
+     */
+    public void addTask (MovingMapObject object, Point target, Dimension mapSize) {
+        super.addTask(object.getLocation(), target, new Dimension(mapSize));
+    }
+
+    /**
      * stop the moving process and the highlighted path disappeared
      */
+    @Override
     public void stop () {
+        super.stop();
         for (MapObject m : myHighlightObjects) {
             m.setVisible(false);
         }
-        myCancelMovement = true;
     }
 
     /**
@@ -104,41 +106,40 @@ public class MapModePathFinder extends PathFinder{
      * @return the MapItemObject representing a path indicator
      */
     protected MapItemObject generatePathIndicator (Point p) {
-        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION", p, GameWindow.importImage("HighlightPath"));
+        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION",
+                                 p, GameWindow.importImage("HighlightPath"));
     }
 
     /**
      * highlight the path by generating a series of path indicators
      * Could be overriden if other ways of highlighting path are needed
      */
+    @Override
     protected void highlightPath () {
+        super.highlightPath();
         for (Point p : getImmutablePath()) {
             MapObject m = generatePathIndicator(p);
             m.setMapMode(myMap);
             myMap.addMapObject(p, m);
             myHighlightObjects.add(m);
         }
-        isHighlighted = true;
     }
 
     /**
      * update the movement along the path (should be called in an update cycle
      * of the object which has an instance of active PathFinder
      */
-    public void updatePath () {
-        if ((!isHighlighted) && (getImmutablePath() != null)) {
-            System.out.println("drawing");
-            highlightPath();
+    @Override
+    public boolean updatePath () {
+        if (!super.updatePath()) { return false; }
+        myCurrentLocation = getPathUsingIndex();
+        Point direction =
+                new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
+                                                                      myPreviousLocation.y);
+        if (myMovingObject.tryMove(direction)) {
+            incrementPathIndex();
+            myPreviousLocation = myCurrentLocation;
         }
-        if ((myPathIndex < getImmutablePath().size()) && !myCancelMovement) {
-            myCurrentLocation = getPathUsingIndex(myPathIndex);
-            Point direction =
-                    new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
-                                                                          myPreviousLocation.y);
-            if (myMovingObject.tryMove(direction)) {
-                myPathIndex++;
-                myPreviousLocation = myCurrentLocation;
-            }
-        }
+        return true;
     }
 }
