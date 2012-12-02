@@ -39,8 +39,6 @@ public class Player extends MovingObject {
     }
 
     private void initStrategies() {
-        // this UpdateStrategy will update MovingObject's positions based on their velocities
-//        myPlayer.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(myPlayer));
         // TODO migrate Gravity to level
         this.addStrategy("GravityStrategy", new GravityStrategy(this));
 
