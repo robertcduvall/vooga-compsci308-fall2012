@@ -1,10 +1,15 @@
 package vooga.platformer.levelfileio;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.leveleditor.Sprite;
 
 
@@ -76,6 +81,69 @@ public final class LevelFileWriter {
         return SUCCESSFUL_WRITE;
     }
 
+    /**
+     * Method that writes the data describing a platformer level to an XML file
+     * so that it can be reconstructed by a level factory or opened again in the
+     * editor.
+     * 
+     * @param filePath file path to write to. Should be an xml file. A second
+     *        file containing the binary GameObject data will also be
+     *        constructed based on this name.
+     * @param levelName Name of the level to display to the user
+     * @param width overall width of the level
+     * @param height overall height of the level
+     * @param backgroundImage image to display in the background of the level
+     * @param gameObjects a collection of the all the GameObjects that should be
+     *        loaded when the user plays or edits the level
+     * @param collisionCheckerType fully-qualified class name of the
+     *        CollisionChecker to use for
+     *        this level
+     * @param cameraType fully-qualified class name of the Camera to use for
+     *        this level
+     */
+    public static void writeLevel (String filePath, String levelName, int width, int height,
+                                   String backgroundImage, Collection<GameObject> gameObjects,
+                                   String collisionCheckerType, String cameraType) {
+        Document doc = XmlUtilities.makeDocument();
+
+        Element level = doc.createElement(XmlTags.DOCUMENT);
+        doc.appendChild(level);
+
+        XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
+        XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
+        XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
+        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
+        XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionCheckerType);
+        XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
+
+        String serializedGameObjectFilePath = filePath.split("\\.")[0] + "GameObjects.bin";
+        XmlUtilities.appendElement(doc, level, XmlTags.GAMEOBJECT_DATA,
+                                   serializedGameObjectFilePath);
+        try {
+            serializeGameObjects(gameObjects, doc, level, serializedGameObjectFilePath);
+        }
+        catch (FileNotFoundException e) {
+            throw new LevelFileIOException("File not found", e);
+        }
+        catch (IOException e) {
+            throw new LevelFileIOException("And IO exception occurred", e);
+        }
+
+        XmlUtilities.write(doc, filePath);
+    }
+
+    private static void serializeGameObjects (Collection<GameObject> gameObjects, Document doc,
+                                              Element level, String filePath)
+                                                                             throws FileNotFoundException,
+                                                                             IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        for (GameObject g : gameObjects) {
+            oos.writeObject(g);
+        }
+        oos.close();
+    }
+
     private static void addLevelObjects (Collection<Sprite> levelObjects, Document doc,
                                          Element level) {
         for (Sprite s : levelObjects) {
@@ -88,10 +156,8 @@ public final class LevelFileWriter {
                                        String.valueOf(s.getWidth()));
             XmlUtilities.appendElement(doc, spriteElement, XmlTags.HEIGHT,
                                        String.valueOf(s.getHeight()));
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.ID,
-                                       s.getID());
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH,
-                                       s.getImagePath());
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.ID, s.getID());
+            XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH, s.getImagePath());
 
             for (Map<String, String> strategy : s.getUpdateStrategies()) {
 
