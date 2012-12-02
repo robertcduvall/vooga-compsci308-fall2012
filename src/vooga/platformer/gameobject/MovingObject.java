@@ -33,6 +33,8 @@ public class MovingObject extends GameObject {
     public MovingObject () {
         super();
         myVelocity = new Point2D.Double(0, 0);
+        // all MovingObjects have a MovementUpdateStrategy
+        this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));
     }
 
     /**
