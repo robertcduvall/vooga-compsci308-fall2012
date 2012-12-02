@@ -216,21 +216,35 @@ public abstract class GameObject implements Comparable<GameObject>,
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
-     * @param StrategyName the Class Name of the Strategy, not includes package
+     * @param stratName the Class Name of the Strategy, not includes package
      *        name
      * @param strat strategy
      */
-    public void addStrategy (String StrategyName, UpdateStrategy strat) {
-        strategyMap.put(StrategyName, strat);
+    public void addStrategy (String stratName, UpdateStrategy strat) {
+        strategyMap.put(stratName, strat);
+    }
+
+    /**
+     * @param strat
+     */
+    public void addStrategy (UpdateStrategy strat) {
+        String stratName = strat.getClass().toString();
+        //strategyMap.put(stratName, strat);
+    }
+
+    private void removeStrategy (UpdateStrategy strat) {
+        strategyMap.remove(strat);
     }
 
     /**
      * Remove a strategy from the list.
      * 
-     * @param strat strategy
+     * @param strategyName Class name of the strategy without package name, eg.
+     *        PlayerMovingStrategy.
      */
-    public void removeStrategy (UpdateStrategy strat) {
-        strategyMap.remove(strat);
+    public void removeStrategy (String strategyName) {
+        UpdateStrategy strat = strategyMap.get(strategyName);
+        removeStrategy(strat);
     }
 
     /**

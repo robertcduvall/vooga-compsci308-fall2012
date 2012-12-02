@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import java.util.Collections;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.ingamemenu.GameButton;
@@ -83,16 +84,26 @@ public class PlatformerController extends JPanel implements Runnable {
 
     @Override
     public void paint(Graphics pen) {
+        paintBackground(pen);
         myCurrentLevel.paint(pen);
         pen.setColor(Color.BLACK);
         pen.drawString("M - Menu", getSize().width*3/5,getSize().height/4);
         pen.drawString("¡û ¡ú - Move left and right", getSize().width*3/5,getSize().height/4+15);
         pen.drawString("¡ü - Jump", getSize().width*3/5,getSize().height/4+30);
         pen.drawString("Space - Shoot", getSize().width*3/5,getSize().height/4+45);
-        
-        for(Component c: getComponents()){
-            c.paint(pen);
-        }
+        //Comment out because the size of getComponents() is zero
+//        for(Component c: getComponents()){
+//            c.paint(pen);
+//        }
+    }
+    
+    /**
+     * @param pen
+     */
+    public void paintBackground(Graphics pen){
+        //TODO: enable to setImage of the background
+        pen.setColor(Color.WHITE);
+        pen.fillRect(0, 0, getWidth(), getHeight());
     }
 
     /**
