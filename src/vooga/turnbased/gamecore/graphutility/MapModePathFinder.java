@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore.pathutility;
+package vooga.turnbased.gamecore.graphutility;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -21,7 +21,6 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class MapModePathFinder extends PathFinder{
 
-    private List<Point> myPath;
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
     private boolean myCancelMovement;
@@ -35,7 +34,6 @@ public class MapModePathFinder extends PathFinder{
     private Point myPreviousLocation;
     private Point myCurrentLocation;
     private int myPathIndex;
-    private boolean myIsMultiDestination;
 
     /**
      * constructor
@@ -53,11 +51,10 @@ public class MapModePathFinder extends PathFinder{
         myPreviousLocation = myStart;
         myPathIndex = 0;
         isHighlighted = false;
-        myIsMultiDestination = false;
         myHighlightObjects = new ArrayList<MapObject>();
         mySize = new Dimension(mapSize);
-        myPath = searchPath();
-        if (myPath.isEmpty()) { return; }
+        setPath(searchPath());
+        if (pathIsEmpty()) { return; }
     }
 
     /**
@@ -71,10 +68,6 @@ public class MapModePathFinder extends PathFinder{
         checkObstacles();
         myPathSearch.findPath(myStart);
         return myPathSearch.getImmutablePath();
-    }
-    
-    public void setMultiDestination(boolean isMultiDestination) {
-        myIsMultiDestination = isMultiDestination;
     }
 
     /**
@@ -119,7 +112,7 @@ public class MapModePathFinder extends PathFinder{
      * Could be overriden if other ways of highlighting path are needed
      */
     protected void highlightPath () {
-        for (Point p : myPath) {
+        for (Point p : getImmutablePath()) {
             MapObject m = generatePathIndicator(p);
             m.setMapMode(myMap);
             myMap.addMapObject(p, m);
@@ -133,12 +126,12 @@ public class MapModePathFinder extends PathFinder{
      * of the object which has an instance of active PathFinder
      */
     public void updatePath () {
-        if ((!isHighlighted) && (myPath != null)) {
+        if ((!isHighlighted) && (getImmutablePath() != null)) {
             System.out.println("drawing");
             highlightPath();
         }
-        if ((myPathIndex < myPath.size()) && !myCancelMovement) {
-            myCurrentLocation = myPath.get(myPathIndex);
+        if ((myPathIndex < getImmutablePath().size()) && !myCancelMovement) {
+            myCurrentLocation = getPathUsingIndex(myPathIndex);
             Point direction =
                     new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
                                                                           myPreviousLocation.y);

@@ -1,4 +1,4 @@
-package vooga.turnbased.gamecore.pathutility;
+package vooga.turnbased.gamecore.graphutility;
 
 import java.awt.Dimension;
 import java.awt.Point;

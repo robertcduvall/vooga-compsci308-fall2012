@@ -11,7 +11,7 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
 /**
  * Player object controlled by the user when navigating a map.
  * 
- * @author TurnBased mapmode team
+ * @author Vo, Rex
  * 
  */
 public class MapPlayerObject extends MovingMapObject {

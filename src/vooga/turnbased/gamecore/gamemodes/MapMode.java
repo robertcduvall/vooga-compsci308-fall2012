@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
-import vooga.turnbased.gamecore.pathutility.MapModePathFinder;
+import vooga.turnbased.gamecore.graphutility.MapModePathFinder;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gui.GamePane;

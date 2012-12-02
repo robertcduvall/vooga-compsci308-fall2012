@@ -5,14 +5,16 @@ import java.awt.Container;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
+
 public class InputDisplayUtil {
 
-    public static void makeCompactGrid(Container parent, int rows, int cols,
-            int initialX, int initialY, int xPad, int yPad) {
+    public static void makeCompactGrid (Container parent, int rows, int cols, int initialX,
+                                        int initialY, int xPad, int yPad) {
         SpringLayout layout = null;
         try {
-            layout = (SpringLayout)parent.getLayout();
-        } catch (ClassCastException e) {
+            layout = (SpringLayout) parent.getLayout();
+        }
+        catch (ClassCastException e) {
             e.printStackTrace();
         }
         Spring x = Spring.constant(initialX);
@@ -45,13 +47,12 @@ public class InputDisplayUtil {
         pCons.setConstraint(SpringLayout.SOUTH, y);
         pCons.setConstraint(SpringLayout.EAST, x);
     }
- 
-    public static SpringLayout.Constraints getConstraintsForCell(int row, int col,
-            Container parent, int cols) {
+
+    public static SpringLayout.Constraints getConstraintsForCell (int row, int col,
+                                                                  Container parent, int cols) {
         SpringLayout layout = (SpringLayout) parent.getLayout();
         Component c = parent.getComponent(row * cols + col);
         return layout.getConstraints(c);
     }
-    
-    
+
 }

@@ -8,8 +8,13 @@ import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.factories.ControllerFactory;
 
-
 @SuppressWarnings("serial")
+/**
+ * The abstract class that describe the feature of a displayable pane in this game
+ * including editor, game, menu 
+ * @author rex
+ *
+ */
 public abstract class DisplayPane extends JPanel {
     private GameWindow myGameWindow;
     public static KeyboardController keyboardController;

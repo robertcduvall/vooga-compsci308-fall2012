@@ -6,6 +6,7 @@ import vooga.turnbased.gui.GameWindow;
 
 /**
  * Main entrance of the game
+ * For Testing the sample game
  * 
  * @author Rex
  */
