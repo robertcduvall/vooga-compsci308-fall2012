@@ -131,31 +131,41 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map");
     }
 
-//    /**
-//     *
-//     * @param x X-coordinate player entry point
-//     * @param y Y-coordinate player entry point
-//     */
-//    public void addPlayerEntryPoints (Number x, Number y) {
-//        String tagName = "player_entry_point";
-//        XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
-//        Element dimension = XmlUtilities.getElement(myRootElement, tagName);
-//        XmlUtilities.appendElement(myXmlDocument, dimension, "x", x.toString());
-//        XmlUtilities.appendElement(myXmlDocument, dimension, "y", y.toString());
-//    }
-//
-//    /**
-//     * 
-//     * @param x New x-coordinate for player entry
-//     * @param y New y-coordinate for player entry
-//     */
-//    public void modifyPlayerEntryPoints (Number x, Number y) {
-//        Element playerEntry = XmlUtilities.getElement(myRootElement, "player_entry_point");
-//        Element xElement = XmlUtilities.getElement(playerEntry, "x");
-//        Element yElement = XmlUtilities.getElement(playerEntry, "y");
-//        XmlUtilities.setContent(xElement, x.toString());
-//        XmlUtilities.setContent(yElement, y.toString());
-//    }
+    /**
+     * 
+     * @param name Name of Declared mode
+     * @param classMode Class used for the mode
+     * @param conditions Either single string value or multiple comma separated strings
+     */
+    public void addMode (String name, String classMode, String conditions) {
+        if (conditions.contains(",")) {
+            conditions.replaceAll("\\s","");
+            String[] newConditions = conditions.split("\\s*,\\s*");
+            addMode(name, classMode, newConditions);
+        }
+        else {
+            Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, "mode");
+            XmlUtilities.appendElement(myXmlDocument, mode, "name", name);
+            XmlUtilities.appendElement(myXmlDocument, mode, "class", classMode);
+            XmlUtilities.appendElement(myXmlDocument, mode, "condition", conditions);
+        }
+        
+    }
+
+    /**
+     * 
+     * @param name Name of Declared mode
+     * @param classMode Class used for the mode
+     * @param conditions multiple condition tags to be added
+     */
+    public void addMode (String name, String classMode, String[] conditions) {
+        Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, "mode");
+        XmlUtilities.appendElement(myXmlDocument, mode, "name", name);
+        XmlUtilities.appendElement(myXmlDocument, mode, "class", classMode);
+        for (String condition : conditions) {
+            XmlUtilities.appendElement(myXmlDocument, mode, "condition", condition);
+        }
+    }
 
     /**
      * 
