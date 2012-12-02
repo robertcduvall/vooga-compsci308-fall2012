@@ -25,6 +25,7 @@ public class ChatClient extends Client {
     private String myUser;
     private boolean myLoggedIn;
     private List<String> myListUsers;
+    private List<ChatListener> myChatListeners;
 
     public ChatClient(String host, int port, ChatProtocol c) throws IOException{
         super(host,port);
@@ -82,12 +83,12 @@ public class ChatClient extends Client {
         String from = myProtocol.getFrom(input);
         String to = myProtocol.getTo(input);
         String body = myProtocol.getBody(input);
-       // fireEvent(new MessageReceivedEvent(this, to, from, body));
+        fireMessageReceivedEvent(to, from, body);
     }
 
     @SuppressWarnings("unused")
     private void processError(String input) {
-        
+        fireErrorEvent(myProtocol.getErrorMessage(input));
     }
     
     @SuppressWarnings("unused")
@@ -111,15 +112,25 @@ public class ChatClient extends Client {
     }
     
     
-    private synchronized void fireEvent(ChatEvent ce){
-        //To be implemented
+    private synchronized void fireMessageReceivedEvent(String to, String from, String body){
+        MessageReceivedEvent e = new MessageReceivedEvent(this, to, from, body);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleMessageReceivedEvent(e);
+        }
     }
 
-    private synchronized void addListener(ClientListener cl){
-
+    private synchronized void fireErrorEvent(String message) {
+        ErrorEvent e = new ErrorEvent(this, message);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleErrorEvent(e);
+        }
+    }
+    
+    public synchronized void addListener(ChatListener cl){
+        myChatListeners.add(cl);
     }
 
-    private synchronized void removeListener(ClientListener cl){
-
+    public synchronized void removeListener(ChatListener cl){
+        myChatListeners.remove(cl);
     }
 }
