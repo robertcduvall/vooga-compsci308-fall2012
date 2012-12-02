@@ -78,22 +78,19 @@ public class GameManager implements InputAPI {
      *        The MapObject which will used for the MapMode of this level.
      */
     private void initializeGameLevel (String gameFileName, String playerFileName) {
-        LevelXmlParser test = new LevelXmlParser(gameFileName, playerFileName, this);
-        myMapSize = test.getMapSize();
-        myCameraSize = test.getCameraSize();
-        
-//        MapMode mapMode = (MapMode) test.getMapMode();
-//        myGameModes.add(mapMode);
+        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, playerFileName, this);
+        myMapSize = levelLoader.getMapSize();
+        myCameraSize = levelLoader.getCameraSize();
 
-        addSprites(test.parseSprites());
+        addSprites(levelLoader.parseSprites());
         
-        myPlayerSpriteID = test.getPlayerID();
+        myPlayerSpriteID = levelLoader.getPlayerID();
         
-        myAvailableModeTypes = test.getUserDefinedModes();
+        myAvailableModeTypes = levelLoader.getUserDefinedModes();
         
-        myGameLogic.addEventConditions(test.getEventConditionMapping());
-
-        startFirstMode(test.getStartMode());
+        myGameLogic.addEventConditions(levelLoader.getEventConditionMapping());
+        
+        startFirstMode(levelLoader.getStartMode());
     }
     
     public Dimension getMapSize() {
@@ -181,14 +178,11 @@ public class GameManager implements InputAPI {
                 if (mode.isActive()) {
                     mode.update();
                 }
-                // if (mode.hasFocus()) {
-                // handleMouseActions(mode);
-                // }
+                 if (mode.hasFocus()) { //TODO this is wrong
+                     handleMouseActions(mode);
+                 }
             }
         }
-        handleMouseActions(myGameModes.get(myGameModes.size() - 1)); // assume
-                                                                     // latest
-                                                                     // is focus
         for (GameMode mode : finishedModes) { // avoid concurrent modifcation
                                               // over myGameModes list
             killMode(mode);
