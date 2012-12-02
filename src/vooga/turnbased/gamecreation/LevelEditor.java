@@ -55,23 +55,6 @@ public class LevelEditor extends Editor {
 
     /**
      * 
-     * @param id The id number for the level Xml
-     */
-    public void addLevelId (Number id) {
-        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "levelid", id.toString());
-    }
-
-    /**
-     * 
-     * @param id The id number to replace the former id
-     */
-    public void modifyLevelId (Number id) {
-        Element levelId = XmlUtilities.getElement(myGameSetupElement, "levelid");
-        XmlUtilities.setContent(levelId, id.toString());
-    }
-
-    /**
-     * 
      * @param width Describes width of the Map dimension
      * @param height Describes height of the Map dimension
      */
@@ -185,15 +168,19 @@ public class LevelEditor extends Editor {
      * @param y Map y-coordinate
      * @param imagePath Path to the Map Image
      */
-    public void addMapObject (Element s, String map, String mapClass, String condition,
-            Number x, Number y, String imagePath) {
-        Element mapElement = XmlUtilities.appendElement(myXmlDocument, s, map);
+    public void addMapObject (Element s, String createsOn, String map, String mapClass,
+            String condition, Number x, Number y, String[] imagePath) {
+        Element mapElement = XmlUtilities.appendElement(myXmlDocument, s, "object");
+        XmlUtilities.appendElement(myXmlDocument, mapElement, "createsOn", createsOn);
+        XmlUtilities.appendElement(myXmlDocument, mapElement, "modes", map);
         XmlUtilities.appendElement(myXmlDocument, mapElement, "class", mapClass);
         XmlUtilities.appendElement(myXmlDocument, mapElement, "condition", condition);
         Element location = XmlUtilities.appendElement(myXmlDocument, mapElement, "location");
         XmlUtilities.appendElement(myXmlDocument, location, "x", x.toString());
         XmlUtilities.appendElement(myXmlDocument, location, "y", y.toString());
-        XmlUtilities.appendElement(myXmlDocument, mapElement, "image", imagePath);
+        for (String image : imagePath) {
+            XmlUtilities.appendElement(myXmlDocument, mapElement, "image", image);
+        }
     }
 
     /**
@@ -206,15 +193,19 @@ public class LevelEditor extends Editor {
      * @param name Name of the battle object (i.e. Pikachu)
      * @param imagePath Path to the Battle Image
      */
-    public void addBattleObject (Element s, String battleClass, String condition,
-            Map<String, Number> stats, String name, String imagePath) {
-        Element battle = XmlUtilities.appendElement(myXmlDocument, s, "battle");
+    public void addBattleObject (Element s, String createsOn, String modes, String battleClass,
+            String condition, Map<String, Number> stats, String name, String[] imagePath) {
+        Element battle = XmlUtilities.appendElement(myXmlDocument, s, "object");
+        XmlUtilities.appendElement(myXmlDocument, battle, "createsOn", createsOn);
+        XmlUtilities.appendElement(myXmlDocument, battle, "modes", modes);
         XmlUtilities.appendElement(myXmlDocument, battle, "class", battleClass);
         XmlUtilities.appendElement(myXmlDocument, battle, "condition", condition);
         Element statsElement = XmlUtilities.appendElement(myXmlDocument, battle, "stats");
         addStatsMapToXml(statsElement, stats);
         XmlUtilities.appendElement(myXmlDocument, battle, "name", name);
-        XmlUtilities.appendElement(myXmlDocument, battle, "image", imagePath);
+        for (String image : imagePath) {
+            XmlUtilities.appendElement(myXmlDocument, battle, "image", image);
+        }
     }
 
     private void addStatsMapToXml (Element e, Map<String, Number> m) {

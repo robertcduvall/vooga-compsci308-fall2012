@@ -9,21 +9,25 @@
 <width>10</width>
 <height>10</height>
 </camaraDimension>
-<levelid>1</levelid>
 </gameSetup>
 <modeDeclarations/>
 <spriteDeclarations>
 <sprite>
-<map>
+<object>
+<createsOn>CREATE</createsOn>
+<modes>map</modes>
 <class>MAP CLASS</class>
 <condition>MAP EVENT</condition>
 <location>
 <x>5</x>
 <y>5</y>
 </location>
-<image>MAP IMAGE PATH</image>
-</map>
-<battle>
+<image>img1</image>
+<image>img2</image>
+</object>
+<object>
+<createsOn>CREATE</createsOn>
+<modes>battle</modes>
 <class>BATTLE CLASS</class>
 <condition>BATTLE EVENT</condition>
 <stats>
@@ -32,8 +36,9 @@
 <health>10</health>
 </stats>
 <name>NAME</name>
-<image>BATTLE IMG PATH</image>
-</battle>
+<image>img1</image>
+<image>img2</image>
+</object>
 </sprite>
 </spriteDeclarations>
 </rpggame>

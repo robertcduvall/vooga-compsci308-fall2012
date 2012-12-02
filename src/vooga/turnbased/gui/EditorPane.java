@@ -73,15 +73,16 @@ public class EditorPane extends DisplayPane {
         l.addDimensionTag(20, 30);
         l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
         l.addCameraDimension(10, 10);
-        l.addLevelId(1);
- //       l.addPlayerEntryPoints(5, 5);
         Element sprite = l.addSprite();
-        l.addMapObject(sprite, "map","MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
+        String[] mapImagePaths = {"img1", "img2"};
+        l.addMapObject(sprite, "CREATE","map","MAP CLASS", "MAP EVENT", 5, 5, mapImagePaths);
         Map<String, Number> stats = new HashMap<String, Number>();
         stats.put("health", 10);
         stats.put("attack", 5);
         stats.put("defense", 8);
-        l.addBattleObject(sprite, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG PATH");
+        String[] battleImagePaths = {"img1", "img2"};
+        l.addBattleObject(sprite, "CREATE", "battle","BATTLE CLASS", "BATTLE EVENT", stats,
+                "NAME", battleImagePaths);
         l.saveXmlDocument();
     }
 
@@ -196,7 +197,6 @@ public class EditorPane extends DisplayPane {
         for (String now : returnedValues) {
             System.out.println(now);
         }
-        l.addLevelId(Integer.parseInt(returnedValues[0]));
         l.addDimensionTag(Integer.parseInt(returnedValues[1]),
                 Integer.parseInt(returnedValues[2]));
         l.addCameraDimension(Integer.parseInt(returnedValues[3]),
