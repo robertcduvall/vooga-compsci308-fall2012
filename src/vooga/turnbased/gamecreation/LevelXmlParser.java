@@ -37,23 +37,24 @@ import vooga.turnbased.sprites.Sprite;
  */
 public class LevelXmlParser {
 
-    private final String GAME_SETUP = "gameSetup";
-    private final String MODE_DEFS = "modeDeclarations";
-    private final String NAME = "name";
-    private final String MODE = "mode";
-    private final String CLASS = "class";
-    private final String CONDITION = "condition";
-    private final String IMAGE = "image";
-    private final String LEFT = "left";
-    private final String RIGHT = "right";
-    private final String UP = "up";
-    private final String DOWN = "down";
-    private final String MAP = "map1";
-    private final String X = "x";
-    private final String Y = "y";
-    private final String LOCATION = "location";
-    private final String PLAYER = "player";
-    private final String PLAYER_XML_PATH = "src/vooga/turnbased/resources/level/PlayerCopy.xml";
+    private static final String GAME_SETUP = "gameSetup";
+    private static final String MODE_DEFS = "modeDeclarations";
+    private static final String NAME = "name";
+    private static final String MODE = "mode";
+    private static final String CLASS = "class";
+    private static final String CONDITION = "condition";
+    private static final String IMAGE = "image";
+    private static final String LEFT = "left";
+    private static final String RIGHT = "right";
+    private static final String UP = "up";
+    private static final String DOWN = "down";
+    private static final String MAP = "map1";
+    private static final String X = "x";
+    private static final String Y = "y";
+    private static final String LOCATION = "location";
+    private static final String PLAYER = "player";
+    private static final String PLAYER_XML_PATH =
+            "src/vooga/turnbased/resources/level/PlayerCopy.xml";
 
     private Document myXmlDocument;
     private Document myPlayerXmlDocument;
@@ -64,17 +65,18 @@ public class LevelXmlParser {
 //    private Dimension myTileSize;
 //    private Dimension myCameraTiles;
 
-    private MapMode myMapMode; // should not be here
+    // should not be here
+    private MapMode myMapMode;
 
     /**
      * 
      * @param file XML file used to create the level, the constructor
      *        parameters may change in the future.
-     * @param mapMode The map mode of the level that is being parsed
+     * @param gm The game manager of the level that is being parsed
      */
     public LevelXmlParser (File file, GameManager gm) {
         myXmlDocument = XmlUtilities.makeDocument(file);
-        myDocumentElement = myXmlDocument.getDocumentElement(); // rpggame
+        myDocumentElement = myXmlDocument.getDocumentElement();
         myMapMode = new MapMode(gm, MapObject.class, new ArrayList<Integer>());
         myMapMode.setMapSize(parseDimension(GameWindow.importString("MapDimension")));
         myMapMode.setCameraSize(parseDimension(GameWindow.importString("CameraDimension")));
@@ -118,7 +120,8 @@ public class LevelXmlParser {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
         toReturn.addAll(parseCharacterSprites());
-        toReturn.add(parsePlayerSprite()); // TODO
+        // TODO:
+        toReturn.add(parsePlayerSprite()); 
         return toReturn;
     }
 
@@ -303,7 +306,7 @@ public class LevelXmlParser {
             String event = XmlUtilities.getChildContent(battleSprite, CONDITION);
             Image image = XmlUtilities.getChildContentAsImage(battleSprite, IMAGE);
             Map<String, Number> stats = parseBattleStats(battleSprite);
-            String name = XmlUtilities.getChildContent(battleSprite, "name");
+            String name = XmlUtilities.getChildContent(battleSprite, NAME);
             BattleObject battleObject =
                     (BattleObject) Reflection.createInstance(className, s.getID(), event, stats,
                                                              name, image);
@@ -339,14 +342,14 @@ public class LevelXmlParser {
             Image image = XmlUtilities.getChildContentAsImage(mapSprite, IMAGE);
             MapObject mapObject =
                     (MapObject) Reflection.createInstance(className, s.getID(), event, point,
-                                                          image, myMapMode);
+                            image, myMapMode);
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {
                 mapObject
-                        .addStrategy(new TransportStrategy(
-                                                           myMapMode,
-                                                           "src/vooga/turnbased/resources/level/Level2.xml",
-                                                           new Point(8, 8)));
+                .addStrategy(new TransportStrategy(
+                        myMapMode,
+                        "src/vooga/turnbased/resources/level/Level2.xml",
+                        new Point(8, 8)));
             }
             if (point.equals(new Point(9, 3))) {
                 mapObject.addStrategy(new ConversationStrategy(myMapMode));
@@ -358,20 +361,32 @@ public class LevelXmlParser {
         return null;
     }
 
+    /**
+     * Return the player ID
+     */
     public int getPlayerID () {
         return myPlayerID;
     }
 
+    /**
+     * @return Start Mode
+     */
     public String getStartMode () {
         return myStartMode;
     }
-    
+
+    /**
+     * @return Map Mode
+     */
     public GameMode getMapMode() {
         return myMapMode;
     }
 
+    /**
+     * @return The user defined modes for the game
+     */
     public Map<String, Class> getUserDefinedModes () {
-        Map<String, Class> UserDefinedModes = new HashMap<String, Class>();
+        Map<String, Class> userDefinedModes = new HashMap<String, Class>();
         Element modeDefinitionsElement = XmlUtilities.getElement(myDocumentElement, MODE_DEFS);
         List<Element> allModes =
                 (List<Element>) XmlUtilities.getElements(modeDefinitionsElement, MODE);
@@ -379,14 +394,17 @@ public class LevelXmlParser {
             try {
                 String name = XmlUtilities.getChildContent(mode, NAME);
                 Class modeClass = Class.forName(XmlUtilities.getChildContent(mode, CLASS));
-                UserDefinedModes.put(name, modeClass);
+                userDefinedModes.put(name, modeClass);
             }
             catch (ClassNotFoundException e) {
             }
         }
-        return UserDefinedModes;
+        return userDefinedModes;
     }
 
+    /**
+     * @return Map of events and conditions
+     */
     public Map<String, List<List<String>>> getEventConditionMapping () {
         Map<String, List<List<String>>> conditionMap = new HashMap<String, List<List<String>>>();
         Element modeDefinitionsElement = XmlUtilities.getElement(myDocumentElement, MODE_DEFS);
@@ -395,8 +413,9 @@ public class LevelXmlParser {
         for (Element mode : allModes) {
             String name = XmlUtilities.getChildContent(mode, NAME);
             conditionMap.put(name, new ArrayList<List<String>>());
-            List<Element> conditionElements = (List<Element>) XmlUtilities.getElements(mode, CONDITION);
-            for(Element conditionElement : conditionElements) {
+            List<Element> conditionElements = (List<Element>) XmlUtilities.getElements(mode,
+                    CONDITION);
+            for (Element conditionElement : conditionElements) {
                 String[] conditions = XmlUtilities.getContent(conditionElement).split("\\s*,\\s*");
                 conditionMap.get(name).add(Arrays.asList(conditions));
             }

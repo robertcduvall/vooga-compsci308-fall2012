@@ -18,7 +18,6 @@ public abstract class Editor {
      * Instantiates a LevelEditor for modifying an Xml document.
      *
      * @param xmlDocument Already formed Xml document for modifying
-     * @param fileName File name (with path) of Xml document
      */
     public Editor(Document xmlDocument) {
         myXmlDocument = xmlDocument;
@@ -26,8 +25,6 @@ public abstract class Editor {
 
     /**
      * Creates a LevelEditor for a new Xml document.
-     * 
-     * @param fileName File name (with path) of Xml document
      */
     public Editor() {
         myXmlDocument = XmlUtilities.makeDocument();

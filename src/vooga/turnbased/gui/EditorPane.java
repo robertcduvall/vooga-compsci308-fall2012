@@ -2,7 +2,6 @@ package vooga.turnbased.gui;
 
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -11,14 +10,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.text.JTextComponent;
 import org.w3c.dom.Document;
@@ -33,6 +30,8 @@ import vooga.turnbased.gamecreation.PlayerEditor;
  */
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
+
+    private static final String USER_DIR = "user.dir";
 
     /**
      * 
@@ -49,7 +48,7 @@ public class EditorPane extends DisplayPane {
         JButton newLevelButton = new JButton("Create New Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                String dir = System.getProperty("user.dir");
+                String dir = System.getProperty(USER_DIR);
                 LevelEditor l = new LevelEditor(dir +
                         "/src/vooga/turnbased/resources/level/testLevel.xml");
                 editDocument(l);
@@ -135,7 +134,7 @@ public class EditorPane extends DisplayPane {
     }
 
     private File selectFile () {
-        JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+        JFileChooser fc = new JFileChooser(System.getProperty(USER_DIR));
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile();
@@ -149,7 +148,7 @@ public class EditorPane extends DisplayPane {
         String[] background = {"Dimension Width: ", "Dimension Height: ",
                 "Viewable Width: ", "Viewable Height: ", "Background Image: "};
         String[] defaultValues = {"20", "30", "15", "11",
-                "src/vooga/turnbased/resources/image/background.png"};
+        "src/vooga/turnbased/resources/image/background.png"};
         displayAndGetSetupInformation(background, defaultValues, l);
         addMenuButton();
         validate();
@@ -158,22 +157,22 @@ public class EditorPane extends DisplayPane {
     private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
             final LevelEditor l) {
 
-        final int numPairs = labels.length;
-        final JPanel p = new JPanel(new SpringLayout());
-        for (int i = 0; i < numPairs; i++) {
+        final int NUM_PAIRS = labels.length;
+        final JPanel P = new JPanel(new SpringLayout());
+        for (int i = 0; i < NUM_PAIRS; i++) {
             JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
-            p.add(l1);
+            P.add(l1);
             JTextField textField = new JTextField(defaultValues[i], 10);
             l1.setLabelFor(textField);
-            p.add(textField);
+            P.add(textField);
         }
-        InputDisplayUtil.makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
-        final JFrame frame = new JFrame("Background Information (Default Values shown)");
+        InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
+        final JFrame FRAME = new JFrame("Background Information (Default Values shown)");
         JButton doneButton = new JButton("Done");
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                String[] returnedValues = new String[numPairs];
-                Component[] allComponents = p.getComponents();
+                String[] returnedValues = new String[NUM_PAIRS];
+                Component[] allComponents = P.getComponents();
                 int index = 0;
                 for (Component current : allComponents) {
                     if (current.getClass().getName().contains("JTextField")) {
@@ -182,16 +181,16 @@ public class EditorPane extends DisplayPane {
                     }
                 }
                 addBackgroundXmlInformation(returnedValues, l);
-                frame.dispose();
+                FRAME.dispose();
             }
 
         });
-        p.add(doneButton);  
-        p.setOpaque(true);
-        frame.setContentPane(p);
-        frame.pack();
-        frame.setSize(new Dimension(600, 400));
-        frame.setVisible(true);
+        P.add(doneButton);;
+        P.setOpaque(true);
+        FRAME.setContentPane(P);
+        FRAME.pack();
+        FRAME.setSize(new Dimension(600, 400));
+        FRAME.setVisible(true);
     }
 
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
