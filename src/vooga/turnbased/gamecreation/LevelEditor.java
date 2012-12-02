@@ -198,12 +198,20 @@ public class LevelEditor extends Editor {
     }
 
     private void addImagesToXml (Element objectElement, String imagePaths) {
-        // TODO: change this to accept multiple images (img1, img2, etc.)
-        
+        imagePaths.replaceAll("\\s", "");
+        String[] allImages = imagePaths.split("\\s*,\\s*");
+        for (String image : allImages) {
+            XmlUtilities.appendElement(myXmlDocument, objectElement, IMAGE, image);
+        }
     }
 
     private void addStatsToXml (Element e, String stats) {
-        //TODO: make stats parse through a string of all stats (health:10, defense:5, etc.)
+        stats.replaceAll("\\s", "");
+        String[] allStats = stats.split("\\s*,\\s*");
+        for (String stat : allStats) {
+            String[] singleStat = stat.split("\\s*:\\s*");
+            XmlUtilities.appendElement(myXmlDocument, e, singleStat[0], singleStat[1]);
+        }
     }
 
     private void addDimension (String tagName, String width, String height) {
