@@ -250,11 +250,12 @@ public class GameManager implements InputAPI {
     public void configureInputHandling () {
         try {
             GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED, this, "toggleSoundTrack");
+            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
+                                                   KeyboardController.PRESSED, myGamePane, "returnToMenu");
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**

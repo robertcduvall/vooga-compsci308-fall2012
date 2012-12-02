@@ -79,7 +79,7 @@ public class MapMode extends GameMode implements InputAPI {
         int playerID = getGameManager().getPlayerSpriteID();
         setCameraSize(getGameManager().getCameraSize());
         setMapSize(getGameManager().getMapSize());
-
+        
         myMapObjects = new HashMap<Point, List<MapObject>>();
         List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         for (MapObject mapObject : mapObjects) {
@@ -90,7 +90,7 @@ public class MapMode extends GameMode implements InputAPI {
             }
         }
         configureInputHandling();
-        // update();
+        update();
     }
 
     private void setCameraSize (Dimension d) {
