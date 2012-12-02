@@ -1,5 +1,6 @@
 package vooga.turnbased.gui;
 
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
+import javax.swing.text.JTextComponent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
@@ -55,7 +58,7 @@ public class EditorPane extends DisplayPane {
                 LevelEditor l = new LevelEditor(dir +
                         "/src/vooga/turnbased/resources/level/testLevel.xml");
                 editDocument(l);
-                testHardcodedLevelEditor(l);
+                //testHardcodedLevelEditor(l);
                 PlayerEditor p = new PlayerEditor(dir +
                         "/src/vooga/turnbased/resources/level/testPlayer.xml");
                 testHardcodedPlayerEditor(p);
@@ -149,14 +152,16 @@ public class EditorPane extends DisplayPane {
         String[] background = {"Level ID: ", "Dimension Width: ", "Dimension Height: ",
                 "Viewable Width: ", "Viewable Height: ", "Background Image: ",
                 "Player Entry X-Coordinate: ", "Player Entry Y-Coordinate: "};
-        String[] defaultValues = {"", "20", "30", "15", "11", "", "1", "1"};
-        displayAndGetStringInformation(background, defaultValues);
+        String[] defaultValues = {"1", "20", "30", "15", "11",
+                "src/vooga/turnbased/resources/image/background.png", "1", "1"};
+        displayAndGetStringInformation(background, defaultValues, l);
     }
 
-    private void displayAndGetStringInformation (String[] labels, String[] defaultValues) {
+    private void displayAndGetStringInformation (String[] labels, String[] defaultValues,
+            final LevelEditor l) {
 
-        int numPairs = labels.length;
-        JPanel p = new JPanel(new SpringLayout());
+        final int numPairs = labels.length;
+        final JPanel p = new JPanel(new SpringLayout());
         for (int i = 0; i < numPairs; i++) {
             JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
             p.add(l1);
@@ -165,21 +170,45 @@ public class EditorPane extends DisplayPane {
             p.add(textField);
         }
         makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
+        final JFrame frame = new JFrame("Background Information (Default Values shown)");
         JButton doneButton = new JButton("Done");
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                getGameWindow().changeActivePane(GameWindow.MENU);
-                //Get window to close here
+                String[] returnedValues = new String[numPairs];
+                Component[] allComponents = p.getComponents();
+                int index = 0;
+                for (Component current : allComponents) {
+                    if (current.getClass().getName().contains("JTextField")) {
+                        returnedValues[index] = ((JTextComponent) current).getText();
+                        index++;
+                    }
+                }
+                addBackgroundXmlInformation(returnedValues, l);
+                frame.dispose();
             }
+
         });
-        p.add(doneButton);        
-        JFrame frame = new JFrame("Background Information (Default Values shown)");
+        p.add(doneButton);  
         p.setOpaque(true);
         frame.setContentPane(p);
         frame.pack();
         frame.setVisible(true);
     }
 
+    private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
+        for (String now : returnedValues) {
+            System.out.println(now);
+        }
+        l.addLevelId(Integer.parseInt(returnedValues[0]));
+        l.addDimensionTag(Integer.parseInt(returnedValues[1]),
+                Integer.parseInt(returnedValues[2]));
+        l.addCameraDimension(Integer.parseInt(returnedValues[3]),
+                Integer.parseInt(returnedValues[4]));
+        l.addBackgroundImage(returnedValues[5]);
+        l.addPlayerEntryPoints(Integer.parseInt(returnedValues[6]),
+                Integer.parseInt(returnedValues[7]));
+        l.saveXmlDocument();
+    }
     private void makeCompactGrid(Container parent, int rows, int cols,
             int initialX, int initialY, int xPad, int yPad) {
         SpringLayout layout = null;
