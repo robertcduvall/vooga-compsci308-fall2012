@@ -362,10 +362,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's first option.
      */
     public void triggerOption1Event () {
-        // for now, player attacks enemy player
-        // by difference in defense
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[0]);
-        myPlayerObject.attackEnemy(myEnemyObject);
+        myPlayerObject.doOption1(myEnemyObject);
         continueBattle();
     }
 
@@ -373,10 +371,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's second option.
      */
     public void triggerOption2Event () {
-        // for now, increases player defense by one; other team still attacks
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[1]);
-        myPlayerObject.changeStat(DEFENSE_STAT, myPlayerObject.getStat(DEFENSE_STAT).intValue() +
-                INCREASE_DEFENSE_VAL);
+        myPlayerObject.doOption2(null);
         continueBattle();
     }
 
@@ -384,10 +380,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's third option.
      */
     public void triggerOption3Event () {
-        // for now, increases player attack by one; other team still attacks
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[2]);
-        myPlayerObject.changeStat(ATTACK_STAT, myPlayerObject.getStat(ATTACK_STAT).intValue() +
-                INCREASE_ATTACK_VAL);
+        myPlayerObject.doOption3(null);
         continueBattle();
     }
 
@@ -395,14 +389,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's fourth option.
      */
     public void triggerOption4Event () {
-        // for now, increases player health by 3
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[3]);
-        myPlayerObject.changeStat(HEALTH_STAT, myPlayerObject.getStat(HEALTH_STAT).intValue() +
-                INCREASE_HEALTH_VAL);
-        if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat(MAX_HEALTH_STAT)
-                .intValue()) {
-            myPlayerObject.changeStat("health", myPlayerObject.getStat(MAX_HEALTH_STAT).intValue());
-        }
+        myPlayerObject.doOption4(null);
         continueBattle();
     }
 
