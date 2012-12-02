@@ -129,7 +129,7 @@ public class Level {
 
         // modified here
         myCollisionChecker.checkCollisions(this);
-
+        
         for (LevelPlugin lp : pluginList) {
             lp.update(objectList);
         }
