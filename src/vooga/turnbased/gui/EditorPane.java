@@ -66,7 +66,7 @@ public class EditorPane extends DisplayPane {
                 editDocument(l);
             }
         });
-        add(modifyLevelButton);
+        //add(modifyLevelButton);
     }
 
     private void testHardcodedLevelEditor (LevelEditor l) {
@@ -155,8 +155,76 @@ public class EditorPane extends DisplayPane {
         final String[] modesDefaultValues = {"", "", ""};
         JButton modeButton = setUpModeButton(l, modes, modesDefaultValues);
         add(modeButton);
-        // TODO: add sprites and their objects
+        final String[] objects = {"Create On: ", "Modes: ", "Class: ", "Condition: ",
+                "X-Coordinate: ", "Y-Coordinate: ", "Images: "};
+        final String[] objectsDefaultValues = {"","","","","","",""};
+        JButton spriteButton = setUpSpriteButton(l, objects, objectsDefaultValues);
+        add(spriteButton);
+        // TODO: Add create player button somewhere in this mess
+        // TODO: Done button that saves all levelEditor changes (remove saves throughout)
         validate();
+    }
+
+    private JButton setUpSpriteButton (final LevelEditor l, final String[] objects,
+            final String[] objectsDefaultValues) {
+        JButton spriteButton = new JButton("Add Sprites");
+        spriteButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                displayAndGetSpriteInfo(objects, objectsDefaultValues, l);
+            }
+        });
+        return spriteButton;
+    }
+
+    private void displayAndGetSpriteInfo (String[] objects,
+            String[] objectsDefaultValues, LevelEditor l) {
+        final int NUM_PAIRS = objects.length;
+        final JPanel P = setUpJPanel(objects, objectsDefaultValues, NUM_PAIRS);
+        InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 35, 6, 6);
+        final JFrame FRAME = new JFrame("Sprite Information");
+        Element sprite = l.addSprite();
+        JButton nextButton = makeNextButtonAndAddObjectXml(l, sprite, NUM_PAIRS, P, FRAME);
+        JButton doneButton = makeDoneButton(FRAME);
+        setUpFrameAndPanel(P, FRAME, nextButton, doneButton);
+    }
+
+    private JButton makeDoneButton (final JFrame FRAME) {
+        JButton doneButton = new JButton("Done");
+        doneButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                FRAME.dispose();
+            }
+        });
+        return doneButton;
+    }
+
+    private JButton makeNextButtonAndAddObjectXml (final LevelEditor l,
+            final Element sprite, final int NUM_PAIRS, final JPanel P, final JFrame FRAME) {
+        JButton nextButton = new JButton("Add Object");
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                String[] returnedValues = new String[NUM_PAIRS];
+                Component[] allComponents = P.getComponents();
+                int index = 0;
+                for (Component current : allComponents) {
+                    if (current.getClass().getName().contains("JTextField")) {
+                        returnedValues[index] = ((JTextComponent) current).getText();
+                        index++;
+                    }
+                }
+                addObjectXmlInformation(returnedValues, l, sprite);
+                l.saveXmlDocument();
+            }
+        });
+        return nextButton;
+    }
+
+    private void addObjectXmlInformation (String[] returnedValues,
+                    LevelEditor l, Element sprite) {
+        String[] imagePaths = {returnedValues[6]};
+        l.addMapObject(sprite, returnedValues[0], returnedValues[1], returnedValues[2],
+                returnedValues[3], Integer.parseInt(returnedValues[4]),
+                Integer.parseInt(returnedValues[5]), imagePaths);
     }
 
     private JButton setUpModeButton (final LevelEditor l, final String[] modes,
@@ -175,7 +243,13 @@ public class EditorPane extends DisplayPane {
         final int NUM_PAIRS = labels.length;
         final JPanel P = setUpJPanel(labels, defaultValues, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
-        final JFrame FRAME = new JFrame("Modes Information (Default Values shown)");
+        final JFrame FRAME = new JFrame("Modes Information");
+        JButton doneButton = makeDoneButtonAndAddModeXml(l, NUM_PAIRS, P, FRAME);
+        setUpFrameAndPanel(P, FRAME, doneButton);
+    }
+
+    private JButton makeDoneButtonAndAddModeXml (final LevelEditor l,
+            final int NUM_PAIRS, final JPanel P, final JFrame FRAME) {
         JButton doneButton = new JButton("Done");
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
@@ -192,7 +266,7 @@ public class EditorPane extends DisplayPane {
                 FRAME.dispose();
             }
         });
-        setUpFrameAndPanel(P, FRAME, doneButton);
+        return doneButton;
     }
 
     private void addModesXmlInformation (
@@ -255,6 +329,12 @@ public class EditorPane extends DisplayPane {
         FRAME.pack();
         FRAME.setSize(new Dimension(600, 400));
         FRAME.setVisible(true);
+    }
+    
+    private void setUpFrameAndPanel (final JPanel P, final JFrame FRAME,
+            JButton nextButton, JButton doneButton){
+        P.add(nextButton);
+        setUpFrameAndPanel(P, FRAME, doneButton);
     }
     
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
