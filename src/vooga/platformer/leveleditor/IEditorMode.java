@@ -1,5 +1,9 @@
 package vooga.platformer.leveleditor;
 
+import java.util.Collection;
+import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
+
+
 /*
  * I initially tried to allow LevelBoard to paint everything. Unfortunately this
  * led to messiness in an initial implementation of DrawingMode since
@@ -30,7 +34,7 @@ public interface IEditorMode extends IPaintable {
      * @param x The x coordinates of the current cursor position.
      * @param y The y coordinates of the current cursor position.
      */
-    void sendCursorPosition(int x, int y);
+    void sendCursorPosition (int x, int y);
 
     /**
      * Alerts the IEditorMode that a button has been pressed
@@ -42,7 +46,7 @@ public interface IEditorMode extends IPaintable {
      * @param y The coordinates of the cursor on the screen at the
      *        time of the button press.
      */
-    void primaryButtonPress(int x, int y);
+    void primaryButtonPress (int x, int y);
 
     /**
      * Alerts the IEditorMode that a button has been pressed
@@ -54,6 +58,23 @@ public interface IEditorMode extends IPaintable {
      * @param y The coordinates of the cursor on the screen at the
      *        time of the button press.
      */
-    void secondaryButtonPress(int x, int y);
+    void secondaryButtonPress (int x, int y);
+
+    /**
+     * Adds an object to the current mode.
+     * 
+     * @param editorObject The editor object that will be added to
+     *        the current mode.
+     */
+    void add (IEditorObject editorObject);
+
+    /**
+     * Gets the editor objects from a current editor mode. This method
+     * is needed to ensure transitions between modes, since objects
+     * should not be lost between transitions.
+     * 
+     * @return
+     */
+    Collection<IEditorObject> getEditorObjects ();
 
 }

@@ -403,12 +403,17 @@ public class LevelBoard extends JPanel implements ISavable {
             }
         }
 
-        
-
     }
 
-    public void setMode (IEditorMode mode) {
-        myCurrentMode = mode;
+    /**
+     * Sets the current editor mode.
+     * @param nextMode The mode that the editor will transition to. 
+     */
+    public void setMode (IEditorMode nextMode) {
+        if (nextMode == null) {
+            throw new IllegalArgumentException();
+        }
+        myCurrentMode = nextMode;
     }
 
 }
