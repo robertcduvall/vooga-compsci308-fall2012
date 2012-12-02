@@ -25,7 +25,6 @@ public class MapModePathFinder extends PathFinder{
     private MapMode myMap;
     private boolean myCancelMovement;
     private MovingMapObject myMovingObject;
-    private boolean isHighlighted;
     // for execution of walking along the path
     private Point myPreviousLocation;
     private Point myCurrentLocation;
@@ -46,10 +45,8 @@ public class MapModePathFinder extends PathFinder{
         myMovingObject = object;
         myPreviousLocation = getStart();
         myPathIndex = 0;
-        isHighlighted = false;
         myHighlightObjects = new ArrayList<MapObject>();
-        setPath(searchPath());
-        if (pathIsEmpty()) { return; }
+        executeSearch();
     }
 
     @Override
@@ -89,25 +86,24 @@ public class MapModePathFinder extends PathFinder{
      * highlight the path by generating a series of path indicators
      * Could be overriden if other ways of highlighting path are needed
      */
+    @Override
     protected void highlightPath () {
+        super.highlightPath();
         for (Point p : getImmutablePath()) {
             MapObject m = generatePathIndicator(p);
             m.setMapMode(myMap);
             myMap.addMapObject(p, m);
             myHighlightObjects.add(m);
         }
-        isHighlighted = true;
     }
 
     /**
      * update the movement along the path (should be called in an update cycle
      * of the object which has an instance of active PathFinder
      */
+    @Override
     public void updatePath () {
-        if ((!isHighlighted) && (getImmutablePath() != null)) {
-            System.out.println("drawing");
-            highlightPath();
-        }
+        super.updatePath();
         if ((myPathIndex < getImmutablePath().size()) && !myCancelMovement) {
             myCurrentLocation = getPathUsingIndex(myPathIndex);
             Point direction =

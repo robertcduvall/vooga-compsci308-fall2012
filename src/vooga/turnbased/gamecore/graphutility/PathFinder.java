@@ -10,6 +10,8 @@ import java.util.List;
 /**
  * abstract path finder which provides basic functionality of finding path
  * multiple path supported (as the effect of shift+right click in WarCraft)
+ * See vooga.turnbased.gamecore.graphutility.MapModePathFinder for an example to
+ * extend the class and apply to games etc.
  * 
  * @author rex
  * 
@@ -17,6 +19,8 @@ import java.util.List;
 public abstract class PathFinder {
     private List<Point> myPath;
     private boolean myIsMultiDestination;
+    private boolean myHasTask;
+    private boolean myIsHighlighted;
     private PathSearch myPathSearch;
     private Point myStart;
     private Point myEnd;
@@ -32,11 +36,32 @@ public abstract class PathFinder {
      *        intended to be used)
      */
     public PathFinder (Point start, Point end, Dimension size) {
-        myPath = new ArrayList<Point>();
-        myIsMultiDestination = false;
+        this();
         myStart = start;
         myEnd = end;
         mySize = size;
+    }
+
+    /**
+     * construct an empty path finder
+     * need to call addTask(Point start, Point end, Dimension size) later
+     */
+    public PathFinder () {
+        myPath = new ArrayList<Point>();
+        myIsMultiDestination = false;
+        myHasTask = false;
+        myIsHighlighted = false;
+    }
+
+    /**
+     * this method executes the path search, and highlight the path, if
+     * necessary
+     */
+    protected void executeSearch () {
+        setPath(searchPath());
+        if (!pathIsEmpty()) {
+            myHasTask = true;
+        }
     }
 
     /**
@@ -70,6 +95,11 @@ public abstract class PathFinder {
         return myPath.isEmpty();
     }
 
+    /**
+     * get an immutable list representing the path found
+     * 
+     * @return An immutable list of Points representing the path
+     */
     public List<Point> getImmutablePath () {
         return Collections.unmodifiableList(myPath);
     }
@@ -87,6 +117,27 @@ public abstract class PathFinder {
      * method
      */
     protected abstract void checkObstacles ();
+
+    /**
+     * sub-classes will determine how to indicate the path
+     * called in the updatePath cycle
+     * currently it does nothing
+     */
+    protected void highlightPath () {
+        myIsHighlighted = true;
+    }
+
+    /**
+     * used for display of the path.
+     * need to be called in an update cycle of the application.
+     * Override if subclasses wants to graphically display the path
+     */
+    public void updatePath () {
+        if (!myHasTask) { return; }
+        if ((!myIsHighlighted) && (getImmutablePath() != null)) {
+            highlightPath();
+        }
+    }
 
     /**
      * get the path search instance which determines what kind of algorithm is
@@ -117,13 +168,13 @@ public abstract class PathFinder {
     protected Point getStart () {
         return myStart;
     }
-    
+
     /**
      * get the ending point
      * 
      * @return the ending point of a path search
      */
-    protected Point getEnd() {
+    protected Point getEnd () {
         return myEnd;
     }
 
