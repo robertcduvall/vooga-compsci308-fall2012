@@ -2,7 +2,11 @@ package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,6 +24,7 @@ import vooga.platformer.level.Level;
  * @author Niel Lebeck
  * @author Yaqi Zhang (revised)
  * @author Grant Oakley (modified)
+ * @author Sam Rang (added sprite methods)
  * 
  */
 public abstract class GameObject implements Comparable<GameObject>, Serializable {
@@ -261,5 +266,28 @@ public abstract class GameObject implements Comparable<GameObject>, Serializable
     public Rectangle2D getShape () {
         return new Rectangle2D.Double(x, y, width, height);
     }
+    
+    /**
+     * Returns a boolean of whether or not a point is contained by the object.
+     * 
+     * @param p Point of interest
+     * @return boolean of whether the point is inside the bounds of the object
+     */
+    public boolean containsPoint(Point p) {
+        return p.x >= getX() && p.x <= getX() + getWidth() &&
+                p.y >= getY() && p.y <= getY() + getHeight();
+    }
+
+    /**
+     * Flips the sprites image across it's vertical axis.
+     * 
+     */
+    public void flipImage () {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-getCurrentImage().getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        setImage(op.filter((BufferedImage) getCurrentImage(), null));
+    }
+
 
 }

@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
+import vooga.platformer.gameobject.GameObject;
 
 /**
  * Frame containing all the elements needed to build and save a level
@@ -43,10 +44,10 @@ import util.ingamemenu.GameButton;
  */
 @SuppressWarnings("serial")
 public class LevelEditor extends JPanel {
-    private static final int SPRITE_BUTTON_SIZE = 40;
+    private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
     private static final String IMAGE_PATH = "src/vooga/platformer/data/";
-    private Map<String, List<String>> mySpriteTypes;
+    private Map<String, List<String>> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
     private MouseListener myMouseListener;
@@ -90,26 +91,22 @@ public class LevelEditor extends JPanel {
                 createPopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
             }
         };
-//        addMouseListener(myMouseListener);
-//        myContainer.addMouseListener(myMouseListener);
-//        myContainer.addMouseMotionListener(myMouseListener);
-//        myContainer.addKeyListener(myKeyListener);
     }
 
-    private GameButton createButton(String spritename) {
-        GameButton gb = new GameButton(spritename);
+    private GameButton createButton(String objectname) {
+        GameButton gb = new GameButton(objectname);
         gb.addMouseListener(myButtonListener);
-        gb.setButtonSize(SPRITE_BUTTON_SIZE, SPRITE_BUTTON_SIZE);
+        gb.setButtonSize(OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
         return gb;
     }
 
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
-        subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
+        subpanel.setLayout(new GridLayout(myObjectTypes.size(), 1));
         subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, 
-                BUTTON_BAR_WIDTH * mySpriteTypes.size()));
-        for (String sprite : mySpriteTypes.keySet()) {
+                BUTTON_BAR_WIDTH * myObjectTypes.size()));
+        for (String sprite : myObjectTypes.keySet()) {
             subpanel.add(createButton(sprite));
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -121,15 +118,16 @@ public class LevelEditor extends JPanel {
     private void createPopupMenu(final Component comp, final int x,
             final int y) {
         JPopupMenu pop = new JPopupMenu();
-        for (String subsprite : mySpriteTypes.get(comp.getName())) {
+        for (String subsprite : myObjectTypes.get(comp.getName())) {
             JMenuItem j = new JMenuItem(subsprite);
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
                     // TODO replace null value for spriteID with a unique id value
-                    Sprite s = new Sprite(event.getActionCommand(), x, y, SPRITE_BUTTON_SIZE, SPRITE_BUTTON_SIZE,
-                            null, IMAGE_PATH + event.getActionCommand() + ".png");
-                    myBoard.add(s);
+//                    Sprite s = new Sprite(event.getActionCommand(), x, y, OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
+//                            null, IMAGE_PATH + event.getActionCommand() + ".png");
+//                    GameObject obj = new GameObject();
+//                    myBoard.add(obj);
                 }
             });
             pop.add(j);
@@ -180,21 +178,21 @@ public class LevelEditor extends JPanel {
     }
 
     private void fillMap() {
-        mySpriteTypes = new HashMap<String, List<String>>();
+        myObjectTypes = new HashMap<String, List<String>>();
         List<String> list = new ArrayList<String>();
         list.add("Yoshi");
         list.add("Pink Yoshi");
-        mySpriteTypes.put("Yoshi", list);
+        myObjectTypes.put("Yoshi", list);
         list = new ArrayList<String>();
         list.add("Mario");
-        mySpriteTypes.put("Mario", list);
+        myObjectTypes.put("Mario", list);
         list = new ArrayList<String>();
         list.add("Bowser");
         list.add("Baby Bowser");
-        mySpriteTypes.put("Bowser", list);
+        myObjectTypes.put("Bowser", list);
         list = new ArrayList<String>();
         list.add("Brick");
         list.add("Question Block");
-        mySpriteTypes.put("Block", list);
+        myObjectTypes.put("Block", list);
     }
 }

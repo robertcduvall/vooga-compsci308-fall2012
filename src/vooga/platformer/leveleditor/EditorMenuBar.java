@@ -50,12 +50,6 @@ public class EditorMenuBar extends JMenuBar{
         });
 
         JMenu spriteMenu = new JMenu("Sprite");
-        spriteMenu.add(new AbstractAction("Load") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //load();
-            }
-        });
         spriteMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed(ActionEvent e) {

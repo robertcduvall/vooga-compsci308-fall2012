@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
 
@@ -54,14 +55,14 @@ public class LevelBoard extends JPanel implements ISavable {
 
     private static final int SCROLL_SPEED = 2;
     private static final long serialVersionUID = -3528519211577278934L;
-    private Collection<Sprite> mySprites;
+    private Collection<GameObject> myGameObjects;
     private Collection<String> myAvailableAttributes;
     private IEditorMode myCurrentMode;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
     private LevelEditorMouseListener myMouseListener;
     private Image myBackground;
-    private Sprite myCurrentSprite;
+    private GameObject myCurrentObject;
     private String myLevelName;
     private String myLevelType;
     private String myBackgroundPath;
@@ -81,7 +82,7 @@ public class LevelBoard extends JPanel implements ISavable {
     public LevelBoard(Dimension d) {
         setSize(d);
         myKeyHeld = new ArrayList<Integer>();
-        mySprites = new ArrayList<Sprite>();
+        myGameObjects = new ArrayList<GameObject>();
         myAvailableAttributes = new ArrayList<String>();
         myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
         myAvailableAttributes.add("Patrolling"); myAvailableAttributes.add("Teammate");
@@ -101,17 +102,17 @@ public class LevelBoard extends JPanel implements ISavable {
         LevelEditorMouseListener mouseListener = new LevelEditorMouseListener() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (myCurrentSprite != null) {
-                    myCurrentSprite = null;
+                if (myCurrentObject != null) {
+                    myCurrentObject = null;
                 }
                 else {
-                    for (Sprite s : mySprites) {
-                        if (s.contains(e.getPoint())) {
+                    for (GameObject g : myGameObjects) {
+                        if (g.containsPoint(e.getPoint())) {
                             if (e.getButton() == MouseEvent.BUTTON3) {
-                                spritePopupMenu(s, e);
+                                objectPopupMenu(g, e);
                             }
                             else if (e.getButton() == MouseEvent.BUTTON1) {
-                                myCurrentSprite = s;
+                                myCurrentObject = g;
                             }
                             return;
                         }
@@ -219,12 +220,12 @@ public class LevelBoard extends JPanel implements ISavable {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(
                 myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
-        for (Sprite s : mySprites) {
-            s.paint(myBufferGraphics, this, myOffset);
+        for (GameObject obj : myGameObjects) {
+            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(), (int) obj.getWidth(), (int) obj.getHeight(), null);
         }
-        if (myCurrentSprite != null) {
-            myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
-            myCurrentSprite.setY(mouseY - myCurrentSprite.getHeight() / 2);
+        if (myCurrentObject != null) {
+            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
+            myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
         }
         myBufferGraphics.drawString("Current Sprite = ("+mouseX+", "+mouseY+")", getWidth()-250, 30);
@@ -262,8 +263,8 @@ public class LevelBoard extends JPanel implements ISavable {
             saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
             //            log.append("Save command cancelled by user." + newline);
         }
-        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", getWidth(), getHeight(),
-                myBackgroundPath, mySprites, "myCollision", "myCamera");
+//        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", getWidth(), getHeight(),
+//                myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
 
     @Override
@@ -272,32 +273,32 @@ public class LevelBoard extends JPanel implements ISavable {
     }
 
     public void clear() {
-        mySprites.clear();
+        myGameObjects.clear();
     }
 
-    protected void spritePopupMenu (Sprite s, MouseEvent e) {
+    protected void objectPopupMenu (GameObject g, MouseEvent e) {
         JPopupMenu pop = new JPopupMenu();
-        SelectionHelper sh = new SelectionHelper(s);
+        SelectionHelper sh = new SelectionHelper(g);
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(sh);
         pop.add(j);
         JMenuItem j2 = new JMenuItem("Duplicate");
         j2.addActionListener(sh);
         pop.add(j2);
-        JMenuItem j3 = new JMenuItem("Add attribute");
+        JMenuItem j3 = new JMenuItem("Edit");
         j3.addActionListener(sh);
         pop.add(j3);
         JMenuItem j4 = new JMenuItem("Delete");
         j4.addActionListener(sh);
         pop.add(j4);
-        pop.show(this.getParent(), s.getX()+s.getWidth()/2, s.getY()+s.getHeight());
+        pop.show(this.getParent(), (int)(g.getX()+g.getWidth()/2), (int)(g.getY()+g.getHeight()));
     }
     /**
      * @return An unmodifiable Collection of the sprites
      *         currently positioned on the board.
      */
-    protected Collection<Sprite> getSprites() {
-        return Collections.unmodifiableCollection(mySprites);
+    protected Collection<GameObject> getSprites() {
+        return Collections.unmodifiableCollection(myGameObjects);
     }
 
     /**
@@ -307,9 +308,9 @@ public class LevelBoard extends JPanel implements ISavable {
      * 
      * @param sprite
      */
-    protected void add(Sprite sprite) {
-        mySprites.add(sprite);
-        myCurrentSprite = sprite;
+    protected void add(GameObject obj) {
+        myGameObjects.add(obj);
+        myCurrentObject = obj;
     }
 
     /**
@@ -319,29 +320,28 @@ public class LevelBoard extends JPanel implements ISavable {
      *        be removed.
      */
     protected void remove(Sprite sprite) {
-        mySprites.remove(sprite);
+        myGameObjects.remove(sprite);
     }
 
     private class SelectionHelper implements ActionListener {
-        private Sprite mySprite;
-        public SelectionHelper(Sprite s) {
-            mySprite = s;
+        private GameObject myObject;
+        public SelectionHelper(GameObject obj) {
+            myObject = obj;
         }
         @Override
         public void actionPerformed(ActionEvent event) {
             if ("Flip".equals(event.getActionCommand())) {
-                mySprite.flipImage();
+                myObject.flipImage();
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
-                Sprite ns = new Sprite(mySprite.getClassName(), mySprite.getX(), mySprite.getY(),
-                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getID(), mySprite.getImagePath());
-                LevelBoard.this.add(ns);
+//                GameObject nobj = new GameObject(myObject.getConfigStringParams());
+//                LevelBoard.this.add(nobj);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
                 createAttributeWindow();
             }
             else if ("Delete".equals(event.getActionCommand())) {
-                mySprites.remove(mySprite);
+                myGameObjects.remove(myObject);
             }
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
@@ -355,7 +355,7 @@ public class LevelBoard extends JPanel implements ISavable {
                 j.addActionListener(this);
                 pop.add(j);
             }
-            pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
+            pop.show(LevelBoard.this, (int)(myObject.getX()+myObject.getWidth()/2), (int)(myObject.getY()+myObject.getHeight()/2));
 
 
             /*           create a list of attributes from the resource file 
