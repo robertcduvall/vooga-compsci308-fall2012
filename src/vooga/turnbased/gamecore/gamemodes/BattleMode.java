@@ -74,10 +74,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private final String ATTACK_STAT = "attack";
     private final String DEFENSE_STAT = "defense";
     private final String MAX_HEALTH_STAT = "maxHealth";
-    private final String OPTION1 = "ATTACK";
-    private final String OPTION2 = "DEFEND";
-    private final String OPTION3 = "CHARGE";
-    private final String OPTION4 = "HEAL";
+
 
     /**
      * Constructor for a Battle.
@@ -369,10 +366,7 @@ public class BattleMode extends GameMode implements InputAPI {
         // by difference in defense
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[0]);
         myPlayerObject.attackEnemy(myEnemyObject);
-        // check if enemy/opposing team is dead
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
+        continueBattle();
     }
 
     /**
@@ -383,9 +377,7 @@ public class BattleMode extends GameMode implements InputAPI {
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[1]);
         myPlayerObject.changeStat(DEFENSE_STAT, myPlayerObject.getStat(DEFENSE_STAT).intValue() +
                 INCREASE_DEFENSE_VAL);
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
+        continueBattle();
     }
 
     /**
@@ -396,9 +388,7 @@ public class BattleMode extends GameMode implements InputAPI {
         myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[2]);
         myPlayerObject.changeStat(ATTACK_STAT, myPlayerObject.getStat(ATTACK_STAT).intValue() +
                 INCREASE_ATTACK_VAL);
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
+        continueBattle();
     }
 
     /**
@@ -413,6 +403,10 @@ public class BattleMode extends GameMode implements InputAPI {
                 .intValue()) {
             myPlayerObject.changeStat("health", myPlayerObject.getStat(MAX_HEALTH_STAT).intValue());
         }
+        continueBattle();
+    }
+
+    private void continueBattle () {
         if (!isBattleOver()) {
             generateEnemyMove();
         }
@@ -489,19 +483,19 @@ public class BattleMode extends GameMode implements InputAPI {
         if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
             // attack
             myEnemyObject.attackEnemy(myPlayerObject);
-            myMessages.add(myEnemyObject.getName() + USED + OPTION1);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[0]);
         }
         if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
             // defend
             myEnemyObject.changeStat(DEFENSE_STAT, myEnemyObject.getStat(DEFENSE_STAT).intValue() +
                     INCREASE_DEFENSE_VAL);
-            myMessages.add(myEnemyObject.getName() + USED + OPTION2);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[1]);
         }
         if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
             // charge
             myEnemyObject.changeStat(ATTACK_STAT, myEnemyObject.getStat(ATTACK_STAT).intValue() +
                     INCREASE_ATTACK_VAL);
-            myMessages.add(myEnemyObject.getName() + USED + OPTION3);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[2]);
         }
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
             // increase health
@@ -512,7 +506,7 @@ public class BattleMode extends GameMode implements InputAPI {
                 myEnemyObject.changeStat(HEALTH_STAT, myEnemyObject.getStat(MAX_HEALTH_STAT)
                         .intValue());
             }
-            myMessages.add(myEnemyObject.getName() + USED + OPTION4);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[3]);
         }
     }
 
