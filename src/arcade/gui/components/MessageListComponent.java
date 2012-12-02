@@ -19,40 +19,35 @@ import arcade.utility.ImageReader;
     public class MessageListComponent extends JComponent implements ActionListener {
 
         private UserProfile myUser;
-        private String userName;
-        private String userInfo;
+        private String mySender;
+        private String myMessage;
         private ArcadePanel myContainer;
-        private Image profilePic;
-        private JLabel usernameLabel;
+        private Image sendersPic;
         private JButton viewProfileButton;
         private JButton sendMessageButton;
 
         public MessageListComponent(UserProfile user, ArcadePanel theContainer){
-            this.setLayout(new MigLayout("", "[500][]5[]", "[30][][30]"));
-            myUser = user;
-            getUserInfo();
+            
+        }
+
+        public MessageListComponent (String sender, String message,
+                ArcadePanel theContainer) {
+            this.setLayout(new MigLayout("", "[450][]5[]", "[30][][30]"));
+            mySender = sender;
+            myMessage = message;
             myContainer = theContainer;
-            profilePic = getUserPicture();
+            myUser = theContainer.getArcade().getCurrentUser();
+            sendersPic = getSendersPicture();
             //ImageIcon anImage = new ImageIcon(ImageReader.loadImage("src/arcade/database/images", "default.jpg"));
             this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
             initComponents();
         }
 
-        public MessageListComponent (String string, String string2,
-                ArcadePanel messageCenterMainPanel) {
-            // TODO Auto-generated constructor stub
-        }
-
-        private Image getUserPicture () {
-            String fullLocation = myUser.getUserPicture();
+        private Image getSendersPicture () {
+            String fullLocation = myContainer.getArcade().getModelInterface().getUser(mySender).getUserPicture();
             String fileName = fullLocation.substring(fullLocation.lastIndexOf("/"));
             String directoryLocation = fullLocation.substring(0,fullLocation.lastIndexOf("/"));
             return ImageReader.loadImage(directoryLocation, fileName);
-        }
-
-        private void getUserInfo () {
-            userName = myUser.getUserName();
-            userInfo = myUser.getUserFirstName()+" "+myUser.getUserLastName();
         }
 
         private void initComponents () {
@@ -61,12 +56,12 @@ import arcade.utility.ImageReader;
                 @Override
                 public void actionPerformed (ActionEvent arg0) {
                     System.out.println("View profile of " + myUser);
-                    myContainer.getArcade().saveVariable("UserName", userName);
+                    myContainer.getArcade().saveVariable("UserName", mySender);
                     myContainer.getArcade().replacePanel("UserProfile");
                 }
 
             });
-            sendMessageButton = new JButton("Send Message");
+            sendMessageButton = new JButton("View Message");
             sendMessageButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed (ActionEvent arg0) {
@@ -82,15 +77,15 @@ import arcade.utility.ImageReader;
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.setColor(Color.red);
-            g.fillRect(50, 5, this.getWidth()-50, this.getHeight()-5);
+            g.fillRect(25, 5, this.getWidth()-75, this.getHeight()-5);
             g.setColor(Color.black);
-            g.fillRect(55, 10, this.getWidth()-60, this.getHeight()-15);
-            g.drawImage(profilePic, 60, 12, 81, 81, Color.black, this);
+            g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
+            g.drawImage(sendersPic, 35, 12, 81, 81, Color.black, this);
             g.setColor(Color.white);
             g.setFont(new Font("sansserif", Font.BOLD, 40));
-            g.drawString(userName, 150, 60);
+            g.drawString(mySender, 125, 60);
             g.setFont(new Font("sansserif", Font.ITALIC, 18));
-            g.drawString(userInfo, 170, 85);
+            g.drawString(myMessage.substring(0,50) + "...", 145, 85);
         }
 
         @Override
