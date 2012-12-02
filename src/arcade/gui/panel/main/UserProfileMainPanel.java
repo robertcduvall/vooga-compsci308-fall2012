@@ -70,7 +70,8 @@ public class UserProfileMainPanel extends AMainPanel {
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("SendMessage...");
-                //getArcade().replacePanel("SendMessage");
+                getArcade().saveVariable("UserName", userToLoad);
+                getArcade().replacePanel("SendMessage");
             }
 
         });
@@ -105,7 +106,7 @@ public class UserProfileMainPanel extends AMainPanel {
             }
 
         });
-        gameStats = "Testing!";
+        gameStats = "No game stats... Yet...";
         statsArea = new JTextArea(gameStats, 10, 20);
         statsArea.setLineWrap(true);
         statsArea.setWrapStyleWord(true);
