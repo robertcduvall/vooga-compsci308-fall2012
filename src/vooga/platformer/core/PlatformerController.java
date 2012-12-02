@@ -216,8 +216,15 @@ public class PlatformerController extends JPanel implements Runnable {
         return kl;
     }
 
+    /**
+     * TODO: should be removed
+     */
     private PlatformerController myCanvas = this;
 
+    /**
+     * should be moved out of API
+     * @return
+     */
     public KeyListener setMenuKeyListener () {
         KeyListener kl = new KeyAdapter() {
             @Override
