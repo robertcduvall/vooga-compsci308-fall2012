@@ -225,11 +225,20 @@ public abstract class GameObject implements Comparable<GameObject>,
     }
 
     /**
-     * @param strat
+     * @param strat Strategy
      */
     public void addStrategy (UpdateStrategy strat) {
-        String stratName = strat.getClass().toString();
-        //strategyMap.put(stratName, strat);
+        String classString = strat.getClass().toString();
+        String split[] = classString.split(" ");
+        String name = split[split.length-1];
+        String stratName = "";
+        if(name.contains(".")){
+            String names[] = name.split("\\.");
+            stratName =  names[names.length-1];
+        }else{
+            stratName = name;
+        }
+        strategyMap.put(stratName, strat);
     }
 
     private void removeStrategy (UpdateStrategy strat) {
