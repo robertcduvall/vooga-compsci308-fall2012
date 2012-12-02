@@ -1,4 +1,4 @@
-package vooga.platformer.level;
+package vooga.platformer.level.levelplugin;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,14 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import util.camera.Camera;
+import util.configstring.ConfigStringException;
+import util.configstring.ConfigStringParser;
 import util.reflection.Reflection;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.util.ConfigStringException;
-import vooga.platformer.util.ConfigStringParser;
 
 /**
  * A plugin that paints a message, consisting of a variable number of lines, to the screen
- * starting at the given x and y position and with the given vertical spacing.
+ * starting at the given x and y position and with the given vertical spacing. Paints the message
+ * on top of everything else.
  * @author Niel Lebeck
  *
  */
@@ -42,7 +43,7 @@ public class FixedMessagePainter extends LevelPlugin {
     public FixedMessagePainter(String configString) {
         Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
         try {
-            myMessages = ConfigStringParser.parseMultiArgEntry(configMap.get(MESSAGES_TAG));
+            myMessages = ConfigStringParser.extractMultipleEntries(configMap.get(MESSAGES_TAG));
         }
         catch(ConfigStringException e) {
             System.out.println("FixedMessagePainter: config string formatted improperly: "
@@ -57,12 +58,12 @@ public class FixedMessagePainter extends LevelPlugin {
     }
     
     @Override
-    public void update (Iterable<GameObject> objCollection) {
+    public void update (List<GameObject> objectList) {
         
     }
 
     @Override
-    public void paint (Graphics pen, Iterable<GameObject> objList, Camera cam) {
+    public void paint (Graphics pen, List<GameObject> objectList, Camera cam) {
         pen.setColor(myColor);
         for (int i = 0; i < myMessages.size(); i++) {
             String str = myMessages.get(i);

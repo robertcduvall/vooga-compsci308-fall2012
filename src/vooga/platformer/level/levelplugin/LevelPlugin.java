@@ -1,6 +1,7 @@
-package vooga.platformer.level;
+package vooga.platformer.level.levelplugin;
 
 import java.awt.Graphics;
+import java.util.List;
 import java.util.Map;
 import util.camera.Camera;
 import vooga.platformer.gameobject.GameObject;
@@ -18,17 +19,18 @@ public abstract class LevelPlugin implements Comparable<LevelPlugin> {
     /**
      * Update this LevelPlugin, either modifying its internal state or modifying the
      * objects in the list.
-     * @param objCollection the Level's collection of objects
+     * @param objList the Level's list of objects. The collection must be a list to
+     * take advantage of sorting by ID.
      */
-    public abstract void update(Iterable<GameObject> objCollection);
+    public abstract void update(List<GameObject> objList);
     
     /**
      * Paint this LevelPlugin.
      * @param pen Graphics object to use when painting
-     * @param objList the Level's collection of objects
+     * @param objList the Level's list of objects
      * @param cam the Level's current Camera
      */
-    public abstract void paint(Graphics pen, Iterable<GameObject> objList, Camera cam);
+    public abstract void paint(Graphics pen, List<GameObject> objList, Camera cam);
     
     /**
      * Return a map with information about the param tags (keys) and descriptions of the
