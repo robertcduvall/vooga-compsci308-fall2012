@@ -26,7 +26,7 @@ public final class ProtocolTester {
     public static void main(String[] args) throws UnknownHostException {
 
         File file = new File("src/util/networking/chat/users.xml");
-        new ChatServer(new ProtocolXMPP(), file, MAX_CONNECTIONS);
+        new ChatServer(new GordonBukspanProtocol(), file, MAX_CONNECTIONS);
         
         //ProtocolXMPP xmpp = new ProtocolXMPP();
         //System.out.println(xmpp.sendMessage("Connor Gordon", "Oren Bukspan", "goduke."));

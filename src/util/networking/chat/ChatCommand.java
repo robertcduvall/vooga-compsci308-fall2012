@@ -7,28 +7,45 @@ package util.networking.chat;
  */
 public enum ChatCommand {
 
+    //Miscellaneous
+    UNKNOWN ("processUnkown", "UNKNOWN"),
+    
     //Server Processes
-    LOGIN ("processLogin"),
-    LOGOUT ("processLogout"),
-    REGISTER ("processRegister"),
+    LOGIN ("processLogin", "LOGIN"),
+    LOGOUT ("processLogout", "LOGOUT"),
+    REGISTER ("processRegister", "REGISTER"),
     
     //Server Processes and Forwards
-    MESSAGE ("processMessage"),
+    MESSAGE ("processMessage", "MESSAGE"),
     
     //Server Creates
-    ERROR ("processError"),
-    LOGGED_IN ("processLoggedIn"),
-    LIST_USERS ("processUsers"),
-    ADD_USER ("processAddUser"),
-    REMOVE_USER ("processRemoveUser");
+    ERROR ("processError", "ERROR"),
+    LOGGEDIN ("processLoggedIn", "LOGGEDIN"),
+    LISTUSERS ("processUsers", "LISTUSERS"),
+    ADDUSER ("processAddUser", "ADDUSER"),
+    REMOVEUSER ("processRemoveUser", "REMOVEUSER");
     
+
     private String myMethodName;
     
-    private ChatCommand(String method) {
+    private ChatCommand(String method, String commandName) {
         myMethodName = method;              
     }
     
     public String getMethodName()  {
         return myMethodName;
+    }
+    
+    private String getCommandName()  {
+        return myMethodName;
+    }
+    
+    public static ChatCommand getChatCommandFromString(String commandName) {
+        for (ChatCommand c : values()) {
+            if (c.getCommandName().equals(commandName)) {
+                return c;
+            }
+        }
+        return null;
     }
 }
