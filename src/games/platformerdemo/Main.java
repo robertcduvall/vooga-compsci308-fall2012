@@ -32,6 +32,19 @@ public class Main {
         frame.addKeyListener(controller.setTemporaryInputListener());
         frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
+        paintString(controller);
         frame.setVisible(true);
     }
+
+    public static void paintString (PlatformerController controller) {
+        Dimension canvasSize = controller.getSize();
+        controller.paintString("M - Menu", canvasSize.width * 3 / 5,canvasSize.height / 4);
+        controller.paintString("¡û ¡ú - Move left and right", canvasSize.width * 3 / 5,
+                canvasSize.height / 4 + 15);
+        controller.paintString("¡ü - Jump", canvasSize.width * 3 / 5,
+                canvasSize.height / 4 + 30);
+        controller.paintString("Space - Shoot", canvasSize.width * 3 / 5,
+                canvasSize.height / 4 + 45);
+    }
+
 }
