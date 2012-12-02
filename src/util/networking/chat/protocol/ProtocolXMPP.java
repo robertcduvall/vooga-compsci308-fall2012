@@ -1,4 +1,4 @@
-package util.networking.chat.jabber;
+package util.networking.chat.protocol;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -88,7 +88,6 @@ public class ProtocolXMPP implements ChatProtocol {
 
     @Override
     public String createRemoveUser (String user) {
-        // TODO Auto-generated method stub
         return null;
     }
     

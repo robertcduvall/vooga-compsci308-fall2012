@@ -96,7 +96,7 @@ public class GameCenter {
     public List<String> getGameListByTagName (String tag) {
         List<String> gameList = new ArrayList<String>();
         for (Game gm : myGames) {
-            if (gm.getGenre().contains(tag)) {
+            if (gm.getTags().contains(tag)) {
                 gameList.add(gm.getGameName());
             }
         }
@@ -111,8 +111,7 @@ public class GameCenter {
 //     Game rpg = gc.getGame("Turnbased RPG");
 //     System.out.println(rpg.getGameInfoList());
 //     System.out.println(rpg.getAverageRating());
-//     rpg.setRating(3);
 //     rpg.getReviews();
-//     
+//     System.out.println(gc.getGameListByTagName("turnbased"));
 //     }
 }
