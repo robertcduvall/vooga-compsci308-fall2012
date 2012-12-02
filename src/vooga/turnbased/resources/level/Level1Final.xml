@@ -44,7 +44,7 @@
 		<sprite>
 			<object>
 				<createOn>start</createOn>
-				<modes>map</modes>
+				<modes>map1</modes>
 				<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
 				<condition>dobattle</condition>
 				<location>
@@ -85,7 +85,7 @@
 		<sprite>
 			<object>
 				<createOn>start</createOn>
-				<modes>map</modes>
+				<modes>map1</modes>
 				<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
 				<condition>NO_ACTION</condition>
 				<location>
@@ -98,7 +98,7 @@
 	    <sprite>
 		    <object>
 				<createOn>start</createOn>
-				<modes>map</modes>
+				<modes>map1</modes>
 	            <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
 	            <condition>optionstuff</condition>
 	            <location>
@@ -125,7 +125,7 @@
 	    <sprite>
 			<object>
 				<createOn>start</createOn>
-				<modes>map</modes>
+				<modes>map1</modes>
 				<class>vooga.turnbased.gameobject.mapobject.MovingMapObject</class>
 				<condition>NO_ACTION</condition>
 				<location>

@@ -40,6 +40,7 @@ public class LevelXmlParser {
 
     private static final String GAME_SETUP = "gameSetup";
     private static final String MODE_DEFS = "modeDeclarations";
+    private static final String SPRITE = "sprite";
     private static final String NAME = "name";
     private static final String MODE = "mode";
     private static final String MODES = "modes";
@@ -134,9 +135,9 @@ public class LevelXmlParser {
     public List<Sprite> parseSprites () {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
-        // toReturn.addAll(parseCharacterSprites());
+        toReturn.addAll(parseCharacterSprites());
         // TODO:
-        toReturn.add(parsePlayerSprite());
+        toReturn.add(parseSprite(myPlayerElement));
         return toReturn;
     }
 
@@ -144,62 +145,28 @@ public class LevelXmlParser {
      * 
      * @return The player-controlled sprite.
      */
-    public Sprite parsePlayerSprite () {
+    public Sprite parseSprite (Element spriteElement) {
         Sprite s = new Sprite();
         List<Element> playerObjects =
-                (List<Element>) XmlUtilities.getElements(myPlayerElement, OBJECT);
+                (List<Element>) XmlUtilities.getElements(spriteElement, OBJECT);
         for (Element playerObject : playerObjects) {
             GameObject newObject = parseGameObject(playerObject);
             if (newObject != null) {
                 s.addGameObject(newObject);
             }
         }
-        // MapPlayerObject mapPlayer = parseMapPlayer(s);
-        // Map<String, ImageLoop> imageLoops =
-        // parseImageLoops(mapPlayer.getImageMap());
-        // mapPlayer.setImageLoops(imageLoops);
-        // s.addGameObject(mapPlayer);
-        // List<BattleObject> playerBattleObjects =
-        // parseBattleObjects(s, getListOfPlayerElements().get(0));
-        // for (BattleObject pbs : playerBattleObjects) {
-        // s.addGameObject(pbs);
-        // }
         myPlayerID = s.getID();
         return s;
     }
-
-    private GameObject parseGameObject(Element objectElement) {
-        //this is nasty... given more time, reflection could have solved this
-        String objectClass = XmlUtilities.getChildContent(objectElement, CLASS);
-        switch (objectClass) {
-            case "vooga.turnbased.gameobject.mapobject.MapPlayerObject" :
-                return (GameObject) parseMapPlayer(objectElement);
-            case "vooga.turnbased.gameobject.battleobject.TestMonster" :
-                break;
-            case "vooga.turnbased.gameobject.mapobject.MapEnemyObject" :
-                break;
-            case "vooga.turnbased.gameobject.mapobject.MapObstacleObject" :
-                break;
-            case "vooga.turnbased.gameobject.optionobject.OptionObject" :
-                break;
-            case "vooga.turnbased.gameobject.mapobject.MovingMapObject" :
-                break;
-        }
-        return null;
-    }
     
-    private MapPlayerObject parseMapPlayer (Element mapPlayer) {
-        if (mapPlayer == null) { return null; }
-        String className = XmlUtilities.getChildContent(mapPlayer, CLASS);
-        String event = XmlUtilities.getChildContent(mapPlayer, CONDITION);
-        Set<String> modes = getObjectsModes(mapPlayer);
-        Point point = parseLocation(mapPlayer);
-        Map<String, Image> playerImages = parsePlayerImages(mapPlayer);
-        Map<String, ImageLoop> imageMap = parseImageLoops(playerImages);
-        MapPlayerObject myMapPlayer = (MapPlayerObject) Reflection.createInstance(className, modes, event, point,
-                                                                                  playerImages);
-        myMapPlayer.setImageLoops(imageMap);
-        return myMapPlayer;
+    private List<Sprite> parseCharacterSprites () {
+        List<Element> sprites = (List<Element>) XmlUtilities.getElements(myDocumentElement, SPRITE);
+        List<Sprite> spriteList = new ArrayList<Sprite>();
+        for (Element sprite : sprites) {
+            Sprite s = parseSprite(sprite);
+            spriteList.add(s);
+        }
+        return spriteList;
     }
 
     private List<Sprite> parseStaticSprites () {
@@ -215,9 +182,8 @@ public class LevelXmlParser {
                 Set<String> modes = getObjectsModes(staticSprite);
                 Image image = XmlUtilities.getChildContentAsImage(staticSprite, IMAGE);
                 MapObject mapTile =
-                        (MapObject) Reflection.createInstance(className,
-                                                              modes, condition,
-                                                              point, image);
+                        (MapObject) Reflection.createInstance(className, modes, condition, point,
+                                                              image);
                 s.addGameObject(mapTile);
                 spriteList.add(s);
             }
@@ -225,20 +191,44 @@ public class LevelXmlParser {
         return spriteList;
     }
     
-    private Set<String> getObjectsModes(Element objectElement) {
-        return new TreeSet<String>(Arrays.asList(XmlUtilities.getChildContent(objectElement, MODES).split("\\s*,\\s*")));
+    private GameObject parseGameObject (Element objectElement) {
+        // this is nasty... given more time, reflection could have solved this
+        String objectClass = XmlUtilities.getChildContent(objectElement, CLASS);
+        switch (objectClass) {
+            case "vooga.turnbased.gameobject.mapobject.MapPlayerObject":
+                return (GameObject) parseMapPlayer(objectElement);
+            case "vooga.turnbased.gameobject.battleobject.TestMonster":
+                return (GameObject) parseBattleObject(objectElement);
+            case "vooga.turnbased.gameobject.mapobject.MapEnemyObject":
+                return (GameObject) parseMapObject(objectElement);
+            case "vooga.turnbased.gameobject.mapobject.MapObstacleObject":
+                break;
+            case "vooga.turnbased.gameobject.optionobject.OptionObject":
+                break;
+            case "vooga.turnbased.gameobject.mapobject.MovingMapObject":
+                break;
+        }
+        return null;
     }
 
-    private List<Sprite> parseCharacterSprites () {
-        List<Element> sprites =
-                (List<Element>) XmlUtilities.getElements(myDocumentElement, "sprite");
-        List<Sprite> spriteList = new ArrayList<Sprite>();
-        for (int i = 0; i < sprites.size(); i++) {
-            Element sprite = sprites.get(i);
-            Sprite s = parseSprite(sprite);
-            spriteList.add(s);
-        }
-        return spriteList;
+    private MapPlayerObject parseMapPlayer (Element mapPlayer) {
+        if (mapPlayer == null) { return null; }
+        String className = XmlUtilities.getChildContent(mapPlayer, CLASS);
+        String event = XmlUtilities.getChildContent(mapPlayer, CONDITION);
+        Set<String> modes = getObjectsModes(mapPlayer);
+        Point point = parseLocation(mapPlayer);
+        Map<String, Image> playerImages = parsePlayerImages(mapPlayer);
+        Map<String, ImageLoop> imageMap = parseImageLoops(playerImages);
+        MapPlayerObject myMapPlayer =
+                (MapPlayerObject) Reflection.createInstance(className, modes, event, point,
+                                                            playerImages);
+        myMapPlayer.setImageLoops(imageMap);
+        return myMapPlayer;
+    }
+
+    private Set<String> getObjectsModes (Element objectElement) {
+        return new TreeSet<String>(Arrays.asList(XmlUtilities.getChildContent(objectElement, MODES)
+                .split("\\s*,\\s*")));
     }
 
     private Map<String, ImageLoop> parseImageLoops (Map<String, Image> map) {
@@ -293,7 +283,7 @@ public class LevelXmlParser {
     private Map<String, Image> parsePlayerImages (Element element) {
         List<Element> imageList = (List<Element>) XmlUtilities.getElements(element, IMAGE);
         Map<String, Image> imageMap = new HashMap<String, Image>();
-        for(Element imageData : imageList) {
+        for (Element imageData : imageList) {
             Image image = XmlUtilities.getChildContentAsImage(imageData, "source");
             String direction = XmlUtilities.getChildContent(imageData, "direction");
             imageMap.put(direction, image);
@@ -311,42 +301,27 @@ public class LevelXmlParser {
         return new ImageLoop(images);
     }
 
-    private Sprite parseSprite (Element sprite) {
-        Sprite s = new Sprite();
-        List<MapObject> mapObjects = parseMapObjects(s, sprite);
-        for (MapObject mo : mapObjects) {
-            if (mo != null) {
-                s.addGameObject(mo);
-            }
-        }
-        List<BattleObject> battleObjects = parseBattleObjects(s, sprite);
-        for (BattleObject bo : battleObjects) {
-            if (bo != null) {
-                s.addGameObject(bo);
-            }
-        }
-        return s;
-    }
+//    private List<MapObject> parseMapObjects (Sprite s, Element sprite) {
+//        Collection<Element> mapSprites = XmlUtilities.getElements(sprite, "map");
+//        List<MapObject> mapObjects = new ArrayList<MapObject>();
+//        for (Element ms : mapSprites) {
+//            mapObjects.add(parseMapObject(s, ms));
+//        }
+//        return mapObjects;
+//    }
 
-    private List<MapObject> parseMapObjects (Sprite s, Element sprite) {
-        Collection<Element> mapSprites = XmlUtilities.getElements(sprite, "map");
-        List<MapObject> mapObjects = new ArrayList<MapObject>();
-        for (Element ms : mapSprites) {
-            mapObjects.add(parseMapObject(s, ms));
-        }
-        return mapObjects;
-    }
+    // private List<BattleObject> parseBattleObjects (Sprite s, Element sprite)
+    // {
+    // Collection<Element> battleSprites = XmlUtilities.getElements(sprite,
+    // "battle");
+    // List<BattleObject> battleObjects = new ArrayList<BattleObject>();
+    // for (Element bs : battleSprites) {
+    // battleObjects.add(parseBattleObject(s, bs));
+    // }
+    // return battleObjects;
+    // }
 
-    private List<BattleObject> parseBattleObjects (Sprite s, Element sprite) {
-        Collection<Element> battleSprites = XmlUtilities.getElements(sprite, "battle");
-        List<BattleObject> battleObjects = new ArrayList<BattleObject>();
-        for (Element bs : battleSprites) {
-            battleObjects.add(parseBattleObject(s, bs));
-        }
-        return battleObjects;
-    }
-
-    private BattleObject parseBattleObject (Sprite s, Element battleSprite) {
+    private BattleObject parseBattleObject (Element battleSprite) {
         if (battleSprite.hasChildNodes()) {
             String className = XmlUtilities.getChildContent(battleSprite, CLASS);
             String event = XmlUtilities.getChildContent(battleSprite, CONDITION);
@@ -379,18 +354,19 @@ public class LevelXmlParser {
         return stats;
     }
 
-    private MapObject parseMapObject (Sprite s, Element mapSprite) {
-        if (mapSprite.hasChildNodes()) {
-            String className = XmlUtilities.getChildContent(mapSprite, CLASS);
-            String event = XmlUtilities.getChildContent(mapSprite, CONDITION);
-            Element location = XmlUtilities.getElement(mapSprite, LOCATION);
+    private MapObject parseMapObject (Element mapObjectElement) {
+        if (mapObjectElement.hasChildNodes()) {
+            String className = XmlUtilities.getChildContent(mapObjectElement, CLASS);
+            String event = XmlUtilities.getChildContent(mapObjectElement, CONDITION);
+            Element location = XmlUtilities.getElement(mapObjectElement, LOCATION);
+            Set<String> modes = getObjectsModes(mapObjectElement);
             Point point =
                     new Point(XmlUtilities.getChildContentAsInt(location, X),
                               XmlUtilities.getChildContentAsInt(location, Y));
-            Image image = XmlUtilities.getChildContentAsImage(mapSprite, IMAGE);
+            Image image = XmlUtilities.getChildContentAsImage(mapObjectElement, IMAGE);
             MapObject mapObject =
                     (MapObject) Reflection
-                            .createInstance(className, new TreeSet<String>(Arrays.asList("map")),
+                            .createInstance(className, modes,
                                             event, point, image);
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {
