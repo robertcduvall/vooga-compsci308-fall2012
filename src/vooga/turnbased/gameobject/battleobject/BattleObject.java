@@ -20,7 +20,7 @@ import vooga.turnbased.gameobject.GameObject;
  *
  */
 public abstract class BattleObject extends GameObject {
-    private String CurrentMessage = null;
+    private String myCurrentMessage = null;
     private final String HEALTH = "health";
     private Map<String, Number> myStats;
     private String myName;
@@ -33,14 +33,15 @@ public abstract class BattleObject extends GameObject {
     /**
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
-     * @param id the ID number of the object.
+     * @param allowableModes A set of Strings that holds all the possible modes this can exist in
      * @param condition The action that this object can pass to the GameManager,
      * can be GameEvent.NO_ACTION if no action needed
      * @param stats the battle stats of the object, including its defense, attack, and health
      * @param name the name of the object
      * @param image The image of this BattleObject
      */
-    public BattleObject(Set<String> allowableModes, String condition, Map<String, Number> stats, String name, Image image) {
+    public BattleObject(Set<String> allowableModes, String condition, Map<String, Number>
+    stats, String name, Image image) {
         super(allowableModes, condition, image);
         myStats = new HashMap<String, Number>();
         setStats(stats);
@@ -99,19 +100,19 @@ public abstract class BattleObject extends GameObject {
      * @param target The target of this move/attack, can be null, depending on implementation.
      */
     public abstract void doOption1(BattleObject target);
-    
+
     /**
      * Executes the second option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
      */
     public abstract void doOption2(BattleObject target);
-    
+
     /**
      * Executes the third option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
      */
     public abstract void doOption3(BattleObject target);
-    
+
     /**
      * Executes the fourth option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
@@ -152,7 +153,7 @@ public abstract class BattleObject extends GameObject {
      * @return The String you want return upon death.
      */
     public abstract String getDeathMessage();
-    
+
     /**
      * Returns the message for when your BattleObject is sent out to fight
      * @param isPlayerControlled Pass True if this is a player controlled BattleObject,
@@ -173,11 +174,11 @@ public abstract class BattleObject extends GameObject {
      * @return String that contains the current message.
      */
     public String getCurrentMessage() {
-        return CurrentMessage;
+        return myCurrentMessage;
     }
 
     protected void setCurrentMessage(String message) {
-        CurrentMessage = message;
+        myCurrentMessage = message;
     }
 
     /**
@@ -199,7 +200,15 @@ public abstract class BattleObject extends GameObject {
         return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2)) / FONT_SCALAR);
     }
 
-    //fix this at some point...
+    /**
+     * Paints the current stats for this BattleObject. Will be drawn at x,y, with given 
+     * width and height.  
+     * @param g This is passed in to draw the stats.
+     * @param x The x location of where the stats should be drawn
+     * @param y  The y location of where the stats should be drawn
+     * @param width The width of the box for the stats
+     * @param height The height of the box for the stats.
+     */
     public void paintStats (Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g;
         //g2d.setPaint(Color.CYAN);
@@ -212,25 +221,16 @@ public abstract class BattleObject extends GameObject {
         GlyphVector gv = font.createGlyphVector(frc, myName);
         g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + fontSize * FONT_SPACING_SCALAR);
 
+        String[] statLines = getStatLines();
 
-        int myHealth = myStats.get(HEALTH).intValue();
-        int myMaxHealth = myStats.get("maxHealth").intValue();
-        int myAttack = myStats.get("attack").intValue();
-        int myDefense = myStats.get("defense").intValue();
-        
-        String health = "Health: " + myHealth + "/" + myMaxHealth;
-        gv = font.createGlyphVector(frc, health);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 2 * fontSize * FONT_SPACING_SCALAR);
-
-        String attack = "Attack: " + myAttack;
-        gv = font.createGlyphVector(frc, attack);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 3 * fontSize * FONT_SPACING_SCALAR);
-
-        String defense = "Defense: " + myDefense;
-        gv = font.createGlyphVector(frc, defense);
-        g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + 4 * fontSize * FONT_SPACING_SCALAR);
+        for (int i = 0; i < statLines.length; i += 1) {
+            gv = font.createGlyphVector(frc, statLines[i]);
+            g2d.drawGlyphVector(gv, x + STAT_FONT_SHIFT, y + (2 + i) *
+                    fontSize * FONT_SPACING_SCALAR);
+        }
     }
-    
+
+    protected abstract String[] getStatLines ();
 
     @Override 
     public void clear() {
@@ -239,7 +239,7 @@ public abstract class BattleObject extends GameObject {
 
     @Override 
     public void update () {
-        if(myImageLoop != null) {
+        if (myImageLoop != null) {
             myImage = myImageLoop.next();
         }
     }

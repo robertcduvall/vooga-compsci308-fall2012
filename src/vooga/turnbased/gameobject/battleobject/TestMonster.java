@@ -1,6 +1,7 @@
 package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -128,5 +129,21 @@ public class TestMonster extends BattleObject {
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
             doOption4(target);
         }
+    }
+
+    @Override
+    protected String[] getStatLines () {
+        String[] ret = new String[3];
+        int myHealth = getStat("health").intValue();
+        int myMaxHealth = getStat("maxHealth").intValue();
+        int myAttack = getStat("attack").intValue();
+        int myDefense = getStat("defense").intValue();
+
+        ret[0] = "Health: " + myHealth + "/" + myMaxHealth;
+        ret[1] = "Attack: " + myAttack;
+        ret[2] = "Defense: " + myDefense;
+
+        return ret;
+
     }
 }
