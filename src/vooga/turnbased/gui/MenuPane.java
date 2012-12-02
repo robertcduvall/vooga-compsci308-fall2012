@@ -2,9 +2,9 @@ package vooga.turnbased.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import util.sound.SoundPlayer;
 
 
 @SuppressWarnings("serial")
@@ -37,6 +37,8 @@ public class MenuPane extends DisplayPane {
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 getGameWindow().changeActivePane(GameWindow.GAME);
+                SoundPlayer p = new SoundPlayer("src/util/sound/sounds/pokemon.wav");
+                p.playOnce();
             }
         });
         add(startButton);
