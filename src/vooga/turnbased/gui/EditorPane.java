@@ -51,8 +51,8 @@ public class EditorPane extends DisplayPane {
                 String dir = System.getProperty("user.dir");
                 LevelEditor l = new LevelEditor(dir +
                         "/src/vooga/turnbased/resources/level/testLevel.xml");
-                editDocument(l);
-                //testHardcodedLevelEditor(l);
+                //editDocument(l);
+                testHardcodedLevelEditor(l);
                 PlayerEditor p = new PlayerEditor(dir +
                         "/src/vooga/turnbased/resources/level/testPlayer.xml");
                 testHardcodedPlayerEditor(p);
@@ -90,12 +90,13 @@ public class EditorPane extends DisplayPane {
         Map<String, String> imagePaths = new HashMap<String,String>();
         imagePaths.put("source1", "direction1");
         imagePaths.put("source2", "direction2");
-        p.addPlayerMapObject(player, "MAP CLASS", "MAP EVENT", 4, 4, imagePaths);
+        p.addMapObject(player, "start", "map1, map2", "MAP CLASS", "MAP EVENT", 4, 4, imagePaths);
         Map<String, Number> stats = new HashMap<String, Number>();
         stats.put("health", 3);
         stats.put("attack", 2);
         stats.put("defense", 1);
-        p.addBattleObject(player, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG");
+        String[] imagePath = {"PATH1", "PATH2"};
+        p.addBattleObject(player, "start", "battle", "CLASS", "CONDITION", stats, "NAME", imagePath);
         stats.put("health", 6);
         stats.put("attack", 5);
         stats.put("defense", 4);
@@ -201,8 +202,6 @@ public class EditorPane extends DisplayPane {
         l.addCameraDimension(Integer.parseInt(returnedValues[3]),
                 Integer.parseInt(returnedValues[4]));
         l.addBackgroundImage(returnedValues[5]);
-//        l.addPlayerEntryPoints(Integer.parseInt(returnedValues[6]),
-//                Integer.parseInt(returnedValues[7]));
         l.addStartMode();
         l.saveXmlDocument();
     }

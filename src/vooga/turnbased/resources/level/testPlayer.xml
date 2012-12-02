@@ -1,8 +1,10 @@
 <players>
 <player>
-<map>
+<object>
+<createOn>start</createOn>
+<modes>map1, map2</modes>
 <class>MAP CLASS</class>
-<event>MAP EVENT</event>
+<condition>MAP EVENT</condition>
 <location>
 <x>4</x>
 <y>4</y>
@@ -15,17 +17,20 @@
 <source>source1</source>
 <direction>direction1</direction>
 </image>
-</map>
-<battle>
-<class>BATTLE CLASS</class>
-<event>BATTLE EVENT</event>
+</object>
+<object>
+<createOn>start</createOn>
+<modes>battle</modes>
+<class>CLASS</class>
+<condition>CONDITION</condition>
 <stats>
 <defense>4</defense>
 <attack>5</attack>
 <health>6</health>
 </stats>
 <name>NAME</name>
-<image>BATTLE IMG</image>
-</battle>
+<image>PATH1</image>
+<image>PATH2</image>
+</object>
 </player>
 </players>
