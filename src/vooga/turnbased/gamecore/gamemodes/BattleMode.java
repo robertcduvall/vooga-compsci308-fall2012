@@ -362,8 +362,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's first option.
      */
     public void triggerOption1Event () {
-        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[0]);
         myPlayerObject.doOption1(myEnemyObject);
+        myMessages.add(myPlayerObject.getCurrentMessage());
         continueBattle();
     }
 
@@ -371,8 +371,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's second option.
      */
     public void triggerOption2Event () {
-        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[1]);
         myPlayerObject.doOption2(null);
+        myMessages.add(myPlayerObject.getCurrentMessage());
         continueBattle();
     }
 
@@ -380,8 +380,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's third option.
      */
     public void triggerOption3Event () {
-        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[2]);
         myPlayerObject.doOption3(null);
+        myMessages.add(myPlayerObject.getCurrentMessage());
         continueBattle();
     }
 
@@ -389,8 +389,8 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's fourth option.
      */
     public void triggerOption4Event () {
-        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[3]);
         myPlayerObject.doOption4(null);
+        myMessages.add(myPlayerObject.getCurrentMessage());
         continueBattle();
     }
 

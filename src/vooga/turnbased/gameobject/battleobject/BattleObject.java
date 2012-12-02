@@ -19,6 +19,7 @@ import vooga.turnbased.gameobject.GameObject;
  *
  */
 public abstract class BattleObject extends GameObject {
+    private String CurrentMessage = null;
     private final String HEALTH = "health";
     private Map<String, Number> myStats;
     private String myName;
@@ -85,7 +86,13 @@ public abstract class BattleObject extends GameObject {
     public String getName() {
         return myName;
     }
-    
+
+    /**
+     * Will randomly select an option, based on game designer's choice
+     * @param target The target enemy of this object, should it choose to attack it.
+     */
+    public abstract void doRandomOption(BattleObject target);
+
     /**
      * Executes the first option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
@@ -159,6 +166,18 @@ public abstract class BattleObject extends GameObject {
      * could be extended by a game developer
      */
     public abstract String[] getOptions();
+    
+    /**
+     * Get the current battle message of the Object.
+     * @return String that contains the current message.
+     */
+    public String getCurrentMessage(){
+        return CurrentMessage;
+    }
+    
+    protected void setCurrentMessage(String message){
+        CurrentMessage = message;
+    }
 
     /**
      * Paints the BattleObject.

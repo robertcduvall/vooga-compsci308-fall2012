@@ -77,24 +77,35 @@ public class TestMonster extends BattleObject {
 
     @Override
     public void doOption1 (BattleObject target) {
+        setCurrentMessage(getName() + " used " + getOptions()[0]);
         attackEnemy(target);
     }
 
     @Override
     public void doOption2 (BattleObject target) {
+        setCurrentMessage(getName() + " used " + getOptions()[1]);
         changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() + 1);
     }
 
     @Override
     public void doOption3 (BattleObject target) {
+        setCurrentMessage(getName() + " used " + getOptions()[2]);
         changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() +1);
     }
 
     @Override
     public void doOption4 (BattleObject target) {
+        setCurrentMessage(getName() + " used " + getOptions()[3]);
         changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() + 3);
         if (getStat(HEALTH_STAT).intValue() > getStat(MAX_HEALTH_STAT).intValue()) {
             changeStat(HEALTH_STAT, getStat(MAX_HEALTH_STAT).intValue());
         }
+    }
+
+    @Override
+    public void doRandomOption (BattleObject target) {
+        Random randomGenerator = new Random();
+        double i = randomGenerator.nextDouble();
+        
     }
 }
