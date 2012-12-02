@@ -73,7 +73,7 @@ public abstract class BattleObject extends GameObject {
      * @param statName The stat you'd like to change
      * @param value The value you want to change the stat to
      */
-    public void changeStat (String statName, Number value) {
+    protected void changeStat (String statName, Number value) {
         if (myStats.containsKey(statName)) {
             myStats.put(statName, value);
         }
@@ -122,7 +122,7 @@ public abstract class BattleObject extends GameObject {
      * actually affects its health.
      * @param damageDone The raw damage done by the other monster's attack.
      */
-    public abstract void takeDamage(int damageDone);
+    protected abstract void takeDamage(int damageDone);
 
     /**
      * Implement this method to determine how to attack the other enemy, depending on
@@ -130,7 +130,7 @@ public abstract class BattleObject extends GameObject {
      * amount of damage is called.
      * @param enemy The other BattleObject which this BattleObject is fighting.
      */
-    public abstract void attackEnemy(BattleObject enemy);
+    protected abstract void attackEnemy(BattleObject enemy);
 
     /**
      * Checks to see if this BattleObject has any health left.
@@ -159,23 +159,23 @@ public abstract class BattleObject extends GameObject {
      * @return The String the will be displayed when this monster starts fighting
      */
     public abstract String getStartFightingMessage(boolean isPlayerControlled);
-    
+
     /**
      * Gets the options that this BattleObject can perform, to be displayed in the GUI
      * @return String array of the options, paradigm is defaulted to 4,
      * could be extended by a game developer
      */
     public abstract String[] getOptions();
-    
+
     /**
      * Get the current battle message of the Object.
      * @return String that contains the current message.
      */
-    public String getCurrentMessage(){
+    public String getCurrentMessage() {
         return CurrentMessage;
     }
-    
-    protected void setCurrentMessage(String message){
+
+    protected void setCurrentMessage(String message) {
         CurrentMessage = message;
     }
 
@@ -238,8 +238,9 @@ public abstract class BattleObject extends GameObject {
 
     @Override 
     public void update () {
-        if(myImageLoop != null)
+        if(myImageLoop != null) {
             myImage = myImageLoop.next();
+        }
     }
 
     @Override 

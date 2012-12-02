@@ -49,31 +49,13 @@ public class BattleMode extends GameMode implements InputAPI {
     private final int HEIGHT_SCALAR = 3;
     private final double TEXT_SCALAR = 40;
 
-    private final double OPTION1_LOWER_BOUND = .0;
-    private final double OPTION1_UPPER_BOUND = .5;
-    private final double OPTION2_LOWER_BOUND = .5;
-    private final double OPTION2_UPPER_BOUND = .7;
-    private final double OPTION3_LOWER_BOUND = .7;
-    private final double OPTION3_UPPER_BOUND = .9;
-    private final double OPTION4_LOWER_BOUND = .9;
-    private final double OPTION4_UPPER_BOUND = 1;
-
     private final double SHIFT_LEFT_SCALAR = .15;
     private final double SHIFT_RIGHT_SCALAR = .60;
     private final double SHIFT_TOP_SCALAR = .45;
     private final double SHIFT_BOTTOM_SCALAR = .75;
     private final double ADJUST_ARROW_SCALAR = .80;
 
-    private final double INCREASE_ATTACK_VAL = 1;
-    private final double INCREASE_DEFENSE_VAL = 1;
-    private final double INCREASE_HEALTH_VAL = 3;
-
-    private final String USED = " used ";
     private final String MENU_FONT = "Sans_Serif";
-    private final String HEALTH_STAT = "health";
-    private final String ATTACK_STAT = "attack";
-    private final String DEFENSE_STAT = "defense";
-    private final String MAX_HEALTH_STAT = "maxHealth";
 
 
     /**
@@ -400,6 +382,11 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
 
+    private void generateEnemyMove () {
+        myEnemyObject.doRandomOption(myPlayerObject);
+        myMessages.add(myEnemyObject.getCurrentMessage());
+    }
+
     /**
      * select the option that is on the left of the current option
      */
@@ -463,38 +450,6 @@ public class BattleMode extends GameMode implements InputAPI {
         }
         else if (mySelection == OptionSelect.OPTION4) {
             triggerOption4Event();
-        }
-    }
-
-    private void generateEnemyMove () {
-        double random = Math.random();
-        if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
-            // attack
-            myEnemyObject.attackEnemy(myPlayerObject);
-            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[0]);
-        }
-        if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
-            // defend
-            myEnemyObject.changeStat(DEFENSE_STAT, myEnemyObject.getStat(DEFENSE_STAT).intValue() +
-                    INCREASE_DEFENSE_VAL);
-            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[1]);
-        }
-        if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
-            // charge
-            myEnemyObject.changeStat(ATTACK_STAT, myEnemyObject.getStat(ATTACK_STAT).intValue() +
-                    INCREASE_ATTACK_VAL);
-            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[2]);
-        }
-        if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
-            // increase health
-            myEnemyObject.changeStat(HEALTH_STAT, myEnemyObject.getStat(HEALTH_STAT).intValue() + 
-                    INCREASE_HEALTH_VAL);
-            if (myEnemyObject.getStat(HEALTH_STAT).intValue() > myEnemyObject.getStat(
-                    MAX_HEALTH_STAT).intValue()) {
-                myEnemyObject.changeStat(HEALTH_STAT, myEnemyObject.getStat(MAX_HEALTH_STAT)
-                        .intValue());
-            }
-            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[3]);
         }
     }
 

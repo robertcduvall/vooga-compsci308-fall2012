@@ -20,6 +20,15 @@ public class TestMonster extends BattleObject {
     private final double INCREASE_ATTACK_VAL = 1;
     private final double INCREASE_DEFENSE_VAL = 1;
     private final double INCREASE_HEALTH_VAL = 3;
+    
+    private final double OPTION1_LOWER_BOUND = .0;
+    private final double OPTION1_UPPER_BOUND = .5;
+    private final double OPTION2_LOWER_BOUND = .5;
+    private final double OPTION2_UPPER_BOUND = .7;
+    private final double OPTION3_LOWER_BOUND = .7;
+    private final double OPTION3_UPPER_BOUND = .9;
+    private final double OPTION4_LOWER_BOUND = .9;
+    private final double OPTION4_UPPER_BOUND = 1;
     /**
      * Creates a test battle monster.
      * @param id the ID number of the object.
@@ -105,7 +114,18 @@ public class TestMonster extends BattleObject {
     @Override
     public void doRandomOption (BattleObject target) {
         Random randomGenerator = new Random();
-        double i = randomGenerator.nextDouble();
-        
+        double random = randomGenerator.nextDouble();
+        if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
+            doOption1(target);
+        }
+        if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
+            doOption2(target);
+        }
+        if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
+            doOption3(target);
+        }
+        if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
+            doOption4(target);
+        }
     }
 }
