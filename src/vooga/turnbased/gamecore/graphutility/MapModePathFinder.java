@@ -24,11 +24,7 @@ public class MapModePathFinder extends PathFinder{
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
     private boolean myCancelMovement;
-    private Point myStart;
-    private Point myEnd;
-    private Dimension mySize;
     private MovingMapObject myMovingObject;
-    private PathSearch myPathSearch;
     private boolean isHighlighted;
     // for execution of walking along the path
     private Point myPreviousLocation;
@@ -44,43 +40,25 @@ public class MapModePathFinder extends PathFinder{
      * @param mapSize bottom right corner of the entire map
      */
     public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
+        super(object.getLocation(), target, new Dimension(mapSize));
+        setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
         myMap = map;
         myMovingObject = object;
-        myStart = object.getLocation();
-        myEnd = target;
-        myPreviousLocation = myStart;
+        myPreviousLocation = getStart();
         myPathIndex = 0;
         isHighlighted = false;
         myHighlightObjects = new ArrayList<MapObject>();
-        mySize = new Dimension(mapSize);
         setPath(searchPath());
         if (pathIsEmpty()) { return; }
     }
 
-    /**
-     * use PathSearch for finding path
-     * 
-     * @return the path represented by a list of Points
-     */
-    private List<Point> searchPath () {
-        // It can either be a DepthFirstSearch, or BreadthFirstSearch
-        myPathSearch = new BreadthFirstSearch(myStart, myEnd, mySize);
-        checkObstacles();
-        myPathSearch.findPath(myStart);
-        return myPathSearch.getImmutablePath();
-    }
-
-    /**
-     * mark obstacles as inaccessible
-     * should be used after PathSearch object is instantiated
-     * pre-processing
-     */
+    @Override
     protected void checkObstacles () {
-        for (int i = 0; i < mySize.width; i++) {
-            for (int j = 0; j < mySize.height; j++) {
+        for (int i = 0; i < getSize().width; i++) {
+            for (int j = 0; j < getSize().height; j++) {
                 for (MapObject m : myMap.getSpritesOnTile(i, j)) {
                     if (m instanceof MapObstacleObject) {
-                        myPathSearch.markVisited(i, j);
+                        getPathSearch().markVisited(i, j);
                     }
                 }
             }
