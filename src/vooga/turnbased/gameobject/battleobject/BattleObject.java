@@ -20,7 +20,7 @@ import vooga.turnbased.gameobject.GameObject;
  *
  */
 public abstract class BattleObject extends GameObject {
-    private String CurrentMessage = null;
+    private String myCurrentMessage = null;
     private final String HEALTH = "health";
     private Map<String, Number> myStats;
     private String myName;
@@ -173,11 +173,11 @@ public abstract class BattleObject extends GameObject {
      * @return String that contains the current message.
      */
     public String getCurrentMessage() {
-        return CurrentMessage;
+        return myCurrentMessage;
     }
 
     protected void setCurrentMessage(String message) {
-        CurrentMessage = message;
+        myCurrentMessage = message;
     }
 
     /**
