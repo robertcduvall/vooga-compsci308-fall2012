@@ -22,7 +22,6 @@ import util.mathvector.*;
  */
 public class ParticleEngine {
     private static final int DEFAULT_COUNT = 1;
-    private static final Point DEFAULT_DIRECTION = new Point(0, 10);
     private static final int DEFAULT_VARIANCE = 15; // i.e. 15%
     private static final int DEFAULT_DURATION = 10000;
     private static final double DEFAULT_ANGLESPAN = 0;
@@ -30,8 +29,8 @@ public class ParticleEngine {
 
     private int spriteCount;
     private Image spriteImage;
-    private Point initialPosition;
-    private Point mainVelocity;
+    private MathVector2D initialPosition;
+    private MathVector2D mainVelocity;
     private int variance;
     private int duration;
     private Boolean loop;
@@ -44,9 +43,10 @@ public class ParticleEngine {
      * 
      * @param particleImage the image to use as the particle
      */
-    protected ParticleEngine (Image particleImage, Point initialPosition,
+    protected ParticleEngine (Image particleImage,
+            MathVector2D initialPosition, MathVector2D inputDirection,
             Boolean loopValue) {
-        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
+        this(DEFAULT_COUNT, particleImage, initialPosition, inputDirection,
                 DEFAULT_VARIANCE, DEFAULT_DURATION, DEFAULT_ANGLESPAN,
                 DEFAULT_NUMBEROFDIRECTIONS, loopValue);
     }
@@ -69,9 +69,10 @@ public class ParticleEngine {
      *        directions will be calculated using the given or default
      *        direction, angleSpan, and the numberOfDirections)
      */
-    protected ParticleEngine (Image particleImage, Point initialPosition,
-            double inputAngleSpan, int numberOfDirections, Boolean loopValue) {
-        this(DEFAULT_COUNT, particleImage, initialPosition, DEFAULT_DIRECTION,
+    protected ParticleEngine (Image particleImage,
+            MathVector2D initialPosition, MathVector2D inputDirection, double inputAngleSpan,
+            int numberOfDirections, Boolean loopValue) {
+        this(DEFAULT_COUNT, particleImage, initialPosition, inputDirection,
                 DEFAULT_VARIANCE, DEFAULT_DURATION, inputAngleSpan,
                 numberOfDirections, loopValue);
     }
@@ -87,9 +88,10 @@ public class ParticleEngine {
      *        direction
      * @param length how long the particles will exist before being reset
      */
-    protected ParticleEngine (int density, Image particleImage, Point position,
-            Point velocity, int tolerance, int length, double inputAngleSpan,
-            int numberOfDirections, Boolean loopValue) {
+    protected ParticleEngine (int density, Image particleImage,
+            MathVector2D position, MathVector2D velocity, int tolerance,
+            int length, double inputAngleSpan, int numberOfDirections,
+            Boolean loopValue) {
         spriteCount = density;
         spriteImage = particleImage;
         initialPosition = position;
@@ -126,11 +128,16 @@ public class ParticleEngine {
                 spriteImage.getHeight(null));
         double angleInterval = inputAngleSpan / (double) numberOfOriginLines
                 * Math.PI / 180;
-        double velocityMagnitude = VectorCalculator.calculateMagnitude(mainVelocity);
-        double velocityAngle = VectorCalculator.calculateAngleInRadians(mainVelocity);
-        particles.add(new Particle(new Point(initialPosition), particleSize,
-                spriteImage, velocityMagnitude, velocityAngle + angleInterval
-                        * i, variance, duration));
+        double velocityMagnitude = mainVelocity.calculateMagnitude();
+        double velocityAngle = mainVelocity.calculateAngleInRadians();
+
+        MathVector2D startingPosition = new MathVector2D();
+        startingPosition.setComponent(MathVector2D.X, initialPosition.getComponent(MathVector2D.X));
+        startingPosition.setComponent(MathVector2D.Y, initialPosition.getComponent(MathVector2D.Y));
+
+        particles.add(new Particle(startingPosition, particleSize, spriteImage,
+                velocityMagnitude, velocityAngle + angleInterval * i, variance,
+                duration));
     }
 
     protected void draw (Graphics g) {
@@ -143,7 +150,7 @@ public class ParticleEngine {
         ArrayList<Particle> remove = new ArrayList<Particle>();
         for (Particle p : particles) {
             if (!p.stillExists()) {
-                    remove.add(p);
+                remove.add(p);
             }
             else {
                 p.update();
@@ -163,7 +170,7 @@ public class ParticleEngine {
         spriteCount = density;
     }
 
-    protected void setVelocity (Point v) {
+    protected void setVelocity (MathVector2D v) {
         mainVelocity = v;
     }
 
@@ -172,15 +179,14 @@ public class ParticleEngine {
     }
 
     protected Boolean stillExists () {
-        // System.out.println("\t\t" + particles.size());
         return (particles.size() > 0);
     }
 
-    protected void setStartingPosition (Point position) {
+    protected void setStartingPosition (MathVector2D position) {
         initialPosition = position;
     }
 
-    protected Point getStartingPosition () {
+    protected MathVector2D getStartingPosition () {
         return initialPosition;
     }
 
