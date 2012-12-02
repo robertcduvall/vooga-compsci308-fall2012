@@ -85,5 +85,11 @@ public class ProtocolXMPP implements ChatProtocol {
     public int getPort () {
         return PORT;
     }
+
+    @Override
+    public String createRemoveUser (String user) {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }
