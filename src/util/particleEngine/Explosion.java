@@ -24,12 +24,11 @@ public class Explosion extends ParticleSystem {
 
     private static MathVector2D[] velocities = { new MathVector2D(-1, 1),
             new MathVector2D(-1, -1), new MathVector2D(1, -1),
-            new MathVector2D(1, 1), new MathVector2D(-1, 0),
-            new MathVector2D(1, 0), new MathVector2D(0, -1),
-            new MathVector2D(0, 1) };
-    private final MathVector2D velocity = new MathVector2D(0, 1);
+            new MathVector2D(1, 1), new MathVector2D(-Math.sqrt(2), 0),
+            new MathVector2D(Math.sqrt(2), 0), new MathVector2D(0, -Math.sqrt(2)),
+            new MathVector2D(0, Math.sqrt(2)) };
     private static int tolerance = 30;
-    private static int length = 20;
+    private static int length = 30;
 
     private static int densityStartNum = 70;
 
@@ -42,8 +41,8 @@ public class Explosion extends ParticleSystem {
         Image smokeImage = temp.getImage();
 
         for (int j = 0; j < velocities.length; j++) {
-            addParticleEngine(densityStartNum + 20, explosionImage, position, velocities[j], tolerance, length, 0.0, 5, false);
-            addParticleEngine(densityStartNum - 40, smokeImage, position, velocities[j], tolerance, length + 15, 0.0, 1,
+            addParticleEngine(densityStartNum, explosionImage, position, velocities[j], tolerance, length, 0.0, 5, false);
+            addParticleEngine(densityStartNum-50, smokeImage, position, velocities[j], tolerance, length + 15, 0.0, 1,
                     false);
         }
 
