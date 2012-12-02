@@ -47,14 +47,15 @@ public class ComposeMessageMainPanel extends AMainPanel {
             recipientField.setText((String) getArcade().getVariable("UserName"));
         }
 
-        JLabel reviewPrompt = new JLabel("Write a review/comment:");
+        JLabel messagePrompt = new JLabel("Write your message here:");
+        messagePrompt.setForeground(Color.WHITE);
         reviewArea = new JTextArea("", 20, 60);
         reviewArea.setLineWrap(true);
         reviewArea.setWrapStyleWord(true);
         reviewArea.setMaximumSize(maxMessageBoxSize);
         JScrollPane scrollingReview = new JScrollPane(reviewArea);
 
-        JButton submitBut = new JButton("Submit");
+        JButton submitBut = new JButton("Send");
         submitBut.addActionListener(new ActionListener(){
 
             @Override
@@ -81,10 +82,11 @@ public class ComposeMessageMainPanel extends AMainPanel {
         MigLayout layout = new MigLayout("flowy", "[]push[]");
         myPanel.setLayout(layout);
 
-        myPanel.add(headerLabel, "span, grow, align center");
+        myPanel.add(headerLabel, "align left, split 2");
+        myPanel.add(recipientField);
+        myPanel.add(messagePrompt);
+        myPanel.add(scrollingReview, "align left");
         myPanel.add(submitBut, "dock south, span, grow, align center");
-        myPanel.add(reviewPrompt, "cell 2 1");
-        myPanel.add(scrollingReview, "cell 2 2");
 
         return myPanel;
     }

@@ -3,4 +3,8 @@
 <sender>rwb392</sender>
 <content>Testing...</content>
 </message>
+<message>
+<sender>Howard</sender>
+<content>Failed Message. [FIXED]</content>
+</message>
 </messagelist>
