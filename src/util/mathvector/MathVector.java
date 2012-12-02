@@ -86,7 +86,7 @@ public class MathVector {
 	 * of the vector represented by v.
 	 * @param v vector 
 	 */
-	protected void copyVector(double[] v){
+	public void copyVector(double[] v){
 		if (vectorDimensionsEqual(v)){
 			for (int k = 0; k < v.length; k++){
 				myVector[k] = v[k];
@@ -99,7 +99,7 @@ public class MathVector {
 	 * (i.e. has the same dimension and component values).
 	 * @return
 	 */
-	protected MathVector getCopyOfMathVector(){
+	public MathVector getCopyOfMathVector(){
 		MathVector copy = new MathVector(dimension);
 		for (int k = 0; k < dimension; k++){
 			copy.setComponent(k, myVector[k]);
@@ -111,7 +111,7 @@ public class MathVector {
 	 * Returns a copy of this vector represented as a double array.
 	 * @return
 	 */
-	protected double[] getCopyOfVector(){
+	public double[] getCopyOfVector(){
 		double[] copy = new double[dimension];
 		for (int k = 0; k < dimension; k++){
 			copy[k] = myVector[k];
@@ -126,7 +126,7 @@ public class MathVector {
 	 * @param v vector to be summed with this vector.
 	 * @return
 	 */
-	protected MathVector getVectorSumCopy(MathVector v){
+	public MathVector getVectorSumCopy(MathVector v){
 		if (!vectorDimensionsEqual(v)){
 			return null;
 		}
@@ -145,7 +145,7 @@ public class MathVector {
 	 * @param v vector to be added to this vector
 	 * @return
 	 */
-	protected boolean addVector(MathVector v){
+	public boolean addVector(MathVector v){
 		if (!vectorDimensionsEqual(v)){
 			return false;
 		}
@@ -158,7 +158,7 @@ public class MathVector {
 	/**
 	 * Returns the magnitude of this vector.
 	 */
-	protected double calculateMagnitude(){
+	public double calculateMagnitude(){
 		return Math.sqrt(calculateDotProduct(this));
 	}
 	
@@ -166,7 +166,7 @@ public class MathVector {
 	 * Changes this vector by scaling the components by the constant c.
 	 * @param c
 	 */
-	protected MathVector scale(double c){
+	public MathVector scale(double c){
 		for (int k = 0; k < dimension; k++){
 			setComponent(k, c*getComponent(k));
 		}
@@ -179,7 +179,7 @@ public class MathVector {
 	 * @param c
 	 * @return
 	 */
-	protected MathVector getScaledCopy(double c){
+	public MathVector getScaledCopy(double c){
 		MathVector scaledV = new MathVector(this);
 		scaledV.scale(c);
 		return scaledV;
@@ -188,7 +188,7 @@ public class MathVector {
 	/**
 	 * Normalizes this vector.
 	 */
-	protected MathVector normalize(){
+	public MathVector normalize(){
 		double magnitude = calculateMagnitude();
 		scale(1 / magnitude);
 		return this;
@@ -198,7 +198,7 @@ public class MathVector {
 	 * Returns a new MathVector that represents this vector normalized.
 	 * @return
 	 */
-	protected MathVector getNormalizedCopy(){
+	public MathVector getNormalizedCopy(){
 		return getScaledCopy(calculateMagnitude());
 	}
 	
@@ -208,7 +208,7 @@ public class MathVector {
 	 * @param v vector
 	 * @return
 	 */
-	protected double calculateDotProduct(MathVector v){
+	public double calculateDotProduct(MathVector v){
 		if (!vectorDimensionsEqual(v)){
 			return 0;
 		}
@@ -229,7 +229,7 @@ public class MathVector {
 	 * @pram v vector
 	 * @return
 	 */
-	protected double calculateAngleInRadians(MathVector v){
+	public double calculateAngleInRadians(MathVector v){
 		if (!vectorDimensionsEqual(v) || v.calculateMagnitude() == 0 || calculateMagnitude() == 0){
 			return -1;
 		}
@@ -245,7 +245,7 @@ public class MathVector {
 	 * @param n index of component to be retrieved
 	 * @return
 	 */
-	protected double getComponent(int n){
+	public double getComponent(int n){
 		if (!isValidIndex(n)){
 			return 0.0;
 		}
@@ -259,7 +259,7 @@ public class MathVector {
 	 * @param n index
 	 * @param d component value
 	 */
-	protected boolean setComponent(int n, double d){
+	public boolean setComponent(int n, double d){
 		if (!isValidIndex(n)){
 			return false;
 		}
@@ -273,7 +273,7 @@ public class MathVector {
 	 * @param n index
 	 * @return
 	 */
-	protected boolean isValidIndex(int n){
+	public boolean isValidIndex(int n){
 		return (n >= 0 && n < dimension);
 	}
 	
@@ -283,7 +283,7 @@ public class MathVector {
 	 * @param v vector
 	 * @return
 	 */
-	protected boolean vectorDimensionsEqual(double[] v){
+	public boolean vectorDimensionsEqual(double[] v){
 		return v.length == dimension;
 	}
 	
@@ -293,7 +293,7 @@ public class MathVector {
 	 * @param v vector
 	 * @return
 	 */
-	protected boolean vectorDimensionsEqual(MathVector v){
+	public boolean vectorDimensionsEqual(MathVector v){
 		return v.getDimension() == dimension;
 	}
 	
@@ -301,7 +301,7 @@ public class MathVector {
 	 * Returns the dimension of this vector.
 	 * @return
 	 */
-	protected int getDimension(){
+	public int getDimension(){
 		return dimension;
 	}
 }
