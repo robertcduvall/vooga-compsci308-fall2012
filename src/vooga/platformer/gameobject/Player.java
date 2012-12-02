@@ -38,6 +38,11 @@ public class Player {
         myPlayer = new MovingObject(configString);
         initStrategies();
     }
+    public Player(MovingObject myPlayer) {
+        this.myPlayer = myPlayer;
+        initStrategies();
+    }
+
     private void initStrategies() {
         // this Update strategy will update MovingObject's positions based on their velocities
         myPlayer.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(myPlayer));
@@ -49,25 +54,7 @@ public class Player {
         this.addControlStrategy("GoLeft", new GoLeftStrategy(myPlayer));
         this.addControlStrategy("GoRight", new GoRightStrategy(myPlayer));
         this.addControlStrategy("Stop", new StopStrategy(myPlayer));
-        this.addControlStrategy("Shoot", new ShootingStrategy(myPlayer))
-    }
-    public Player(MovingObject myPlayer) {
-        this.myPlayer = myPlayer;
-        initStrategies();
-    }
-
-    /**
-     * @return the moving strategy of the myPlayer
-     */
-    public PlayerMoveStrategy getMovingStrategy() {
-        return (PlayerMoveStrategy) myPlayer.getStrategy("PlayerMoveStrategy");
-    }
-
-    /**
-     * @return the shooting strategy of the myPlayer
-     */
-    public ShootingStrategy getShootingStrategy() {
-        return (ShootingStrategy) myPlayer.getStrategy("ShootingStrategy");
+        this.addControlStrategy("Shoot", new ShootingStrategy(myPlayer));
     }
 
     /**

@@ -134,28 +134,20 @@ public class PlatformerController extends JPanel implements Runnable {
             @Override
             public void keyPressed (KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-//                    myPlayer.getMovingStrategy().goLeft();
                     myPlayer.fireControlStrategy("GoLeft");
                 }
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-//                    myPlayer.getMovingStrategy().goRight();
                     myPlayer.fireControlStrategy("GoRight");
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-//                    myPlayer.getMovingStrategy().jump();
                     myPlayer.fireControlStrategy("Jump");
                 }
                 if(e.getKeyCode()==KeyEvent.VK_SPACE){
-//                    myPlayer.fireControlStrategy("Jump");
-                    ShootingStrategy ss = myPlayer.getShootingStrategy();
-                    if(ss !=null){
-                        ss.fire();
-                    }
+                    myPlayer.fireControlStrategy("Shoot");
                 }
             }
 
             public void keyReleased (KeyEvent e) {
-//                myPlayer.getMovingStrategy().stop();
                 myPlayer.fireControlStrategy("Stop");
 
             }
