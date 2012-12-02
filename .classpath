@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="src/lib/wiiusej.jar"/>
 	<classpathentry kind="lib" path="src/lib/bluecove-2.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="src/lib/jmf.jar"/>
+	<classpathentry kind="lib" path="src/lib/mp3plugin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
