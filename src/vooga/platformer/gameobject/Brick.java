@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import vooga.platformer.util.ConfigStringParser;
+import util.configstring.ConfigStringParser;
 
 
 /**

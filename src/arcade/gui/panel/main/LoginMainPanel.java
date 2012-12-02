@@ -48,7 +48,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel = addUserNameField(myPanel);
         myPanel = addPasswordField(myPanel);
         myPanel = addWrongPasswordLabel(myPanel);
-        //myPanel = addBypassButton(myPanel);
+        myPanel = addBypassButton(myPanel);
 
 
         return myPanel;

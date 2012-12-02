@@ -58,7 +58,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
         }
-        
+        System.out.println(arrayOfGames);
         MigLayout layout = new MigLayout("align center, fill");
         myPanel.setLayout(layout);
 

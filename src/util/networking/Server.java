@@ -4,8 +4,10 @@ package util.networking;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,22 +36,28 @@ public class Server {
 
     /**
      * Instantiates a server with at most DEFAULT_MAX_CONNECTIONS connections.
+     * @throws UnknownHostException Could not determine HostName.
      */
-    public Server () {
+    public Server () throws UnknownHostException {
         this(DEFAULT_MAX_CONNECTIONS);
     }
 
     /**
-     * Instantiates a new ChatServer with at most maxConnections connections to
-     * the server.
+     * Instantiates a server with at most maxConnections connections.
      * 
      * @param maxConnections The maximum number of connections to this server.
+     * @throws UnknownHostException Could not determine HostName.
      **/
-    public Server (int maxConnections) {
+    public Server (int maxConnections) throws UnknownHostException {
         myThreadGroup = new ThreadGroup(Server.class.getName());
         this.myMaxConnections = maxConnections;
         myServices = new HashMap<Integer, Listener>();
         myConnections = new HashSet<Connection>(maxConnections);
+
+        //Print host name - to make sure we have correct address
+        InetAddress addr = InetAddress.getLocalHost();
+        String hostname = addr.getHostName();
+        System.out.println(hostname);
     }
 
     /**
@@ -135,10 +143,9 @@ public class Server {
 
     /**
      * This nested Thread subclass is a "listener". It listens for
-     * connections on a specified port (using a ServerSocket) and when it gets
-     * a connection request, it calls the servers addConnection() method to
-     * accept (or reject) the connection. There is one Listener for each
-     * Service being provided by the Server.
+     * connections on a specified port and calls addConnection() to
+     * process the connection according to Server specifications. There 
+     * is one Listener for each Service being provided by the Server.
      **/
     public class Listener extends Thread {
         private ServerSocket myListenSocket;
@@ -146,19 +153,18 @@ public class Server {
         private volatile boolean myStop = false;
 
         /**
-         * The Listener constructor creates a thread for itself in the
-         * threadgroup. It creates a ServerSocket to listen for connections
-         * on the specified port. It arranges for the ServerSocket to be
-         * interruptible, so that services can be removed from the server.
-         * 
-         * @param group 
-         * @param port
-         * @param service
+         * On a new thread, creates a ServerSocket to listen for connections 
+         * on the specified port. 
+         *
+         * @param group ThreadGroup to add this listener Thread to.
+         * @param port Port on which to listen for connections.
+         * @param service Service to call for every connection on this port.
+         * @throws IOException Error creating Socket.
          **/
         public Listener (ThreadGroup group, int port, Service service) throws IOException {
             super(group, "Listener:" + port);
             myListenSocket = new ServerSocket(port);
-            myListenSocket.setSoTimeout(TIMEOUT);
+            //myListenSocket.setSoTimeout(TIMEOUT);
             this.myService = service;
         }
 

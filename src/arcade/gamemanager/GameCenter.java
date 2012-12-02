@@ -19,7 +19,7 @@ import arcade.IArcadeGame;
 public class GameCenter {
 
     private List<Game> myGames;
-    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
+    public static final String GAME_XML_FILE = "src/arcade/database/game.xml";
 
     public GameCenter () {
         initialize();
@@ -39,7 +39,7 @@ public class GameCenter {
      */
     private void refreshGames () {
         myGames.clear();
-        Document doc = XmlUtilities.makeDocument(myGameXml);
+        Document doc = XmlUtilities.makeDocument(GAME_XML_FILE);
         Collection<Element> games = XmlUtilities.getElements(doc.getDocumentElement());
         for (Element ele : games) {
             String filePath = ele.getElementsByTagName("filepath").item(0).getTextContent();
@@ -96,7 +96,7 @@ public class GameCenter {
     public List<String> getGameListByTagName (String tag) {
         List<String> gameList = new ArrayList<String>();
         for (Game gm : myGames) {
-            if (gm.getGenre().contains(tag)) {
+            if (gm.getTags().contains(tag)) {
                 gameList.add(gm.getGameName());
             }
         }
@@ -111,8 +111,7 @@ public class GameCenter {
 //     Game rpg = gc.getGame("Turnbased RPG");
 //     System.out.println(rpg.getGameInfoList());
 //     System.out.println(rpg.getAverageRating());
-//     rpg.setRating(3);
 //     rpg.getReviews();
-//     
+//     System.out.println(gc.getGameListByTagName("turnbased"));
 //     }
 }

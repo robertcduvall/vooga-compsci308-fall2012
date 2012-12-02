@@ -1,48 +1,48 @@
-package vooga.platformer.level;
+package vooga.platformer.level.condition;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import util.configstring.ConfigStringParser;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.util.ConfigStringParser;
+import vooga.platformer.util.GameObjectFinder;
 import vooga.platformer.util.enums.PlayState;
 
 /**
- * A win condition that moves to the next level if all enemies are defeated. This
- * code will be broken until someone creates an Enemy class in the GameObject package.
+ * A condition where the user wins the game when a specific GameObject (specified
+ * by ID) no longer exists.
  * @author Niel Lebeck
  *
  */
-public class DefeatAllEnemiesCondition implements Condition {
-    
+public class DestroySpecificObjectWinCondition implements Condition {
+
     protected static final String LEVEL_NAME_TAG = "nextlevel";
+    protected static final String OBJECT_TAG = "object";
     
     private String myNextLevelName;
+    private int myObjectId;
     
     /**
      * 
      */
-    public DefeatAllEnemiesCondition() {
+    public DestroySpecificObjectWinCondition() {
         
     }
-    
+
     /**
      * 
      * @param configString config string
      */
-    public DefeatAllEnemiesCondition(String configString) {
+    public DestroySpecificObjectWinCondition(String configString) {
         Map<String, String> configStringMap = ConfigStringParser.parseConfigString(configString);
         myNextLevelName = configStringMap.get(LEVEL_NAME_TAG);
+        myObjectId = Integer.parseInt(configStringMap.get(OBJECT_TAG));
     }
     
     @Override
-    public boolean isSatisfied (Iterable<GameObject> objectList) {
-        int numEnemies = 0;
-        for (GameObject go : objectList) {
-            //if (go instanceof Enemy) {
-            //    numEnemies++;
-            //}
-        }
-        return numEnemies <= 0;
+    public boolean isSatisfied (List<GameObject> objectList) {
+        GameObject go = GameObjectFinder.findGameObject(objectList, myObjectId);
+        return go == null;
     }
 
     @Override
@@ -59,6 +59,7 @@ public class DefeatAllEnemiesCondition implements Condition {
     public Map<String, String> getConfigStringParams () {
         Map<String, String> configMap = new HashMap<String, String>();
         configMap.put(LEVEL_NAME_TAG, "the next level that the player goes to upon winning");
+        configMap.put(OBJECT_TAG, "the object that must disappear for the player to win");
         return configMap;
     }
 

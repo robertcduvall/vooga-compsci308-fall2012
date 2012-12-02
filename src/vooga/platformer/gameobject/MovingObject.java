@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import util.configstring.ConfigStringParser;
 import vooga.platformer.util.enums.Direction;
-import vooga.platformer.util.ConfigStringParser;
 
 
 /**
