@@ -12,9 +12,9 @@ public class Trail extends ParticleSystem {
     private final int numberOfDirections = 10;
     private static MathVector2D velocity = new MathVector2D(0,2);
     private final int tolerance = 20;
-    private final int length = 65;
+    private final int length = 165;
 
-    private static int density = 350;
+    private static int density = 750;
 
     public Trail (Point startingPosition) {
         super(new MathVector2D(startingPosition));
@@ -22,7 +22,7 @@ public class Trail extends ParticleSystem {
 
     @Override
     protected void setUpParticleEngines () {
-        ImageIcon temp = new ImageIcon(Trail.class.getResource("particle.png"));
+        ImageIcon temp = new ImageIcon(Trail.class.getResource("orangeParticle.png"));
         Image particleImage = temp.getImage();
 
         addParticleEngine(density, particleImage, position, velocity,

@@ -27,7 +27,7 @@ public class Explosion extends ParticleSystem {
             new MathVector2D(1, 1), new MathVector2D(-1, 0),
             new MathVector2D(1, 0), new MathVector2D(0, -1),
             new MathVector2D(0, 1) };
-    private final MathVector2D velocity = new MathVector2D(0, 0);
+    private final MathVector2D velocity = new MathVector2D(0, 1);
     private static int tolerance = 30;
     private static int length = 20;
 
