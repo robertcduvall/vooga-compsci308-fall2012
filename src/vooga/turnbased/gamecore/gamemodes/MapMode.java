@@ -52,8 +52,10 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public MapMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
-        //myPlayer = (MapPlayerObject) myMapObjects.get(gm.getPlayerSpriteID());
-        initialize();
+        
+        //initialize();
+        setModeName("map"); //hackhackhack
+        resume(); //hackhackhack
     }
 
     @Override
@@ -68,11 +70,9 @@ public class MapMode extends GameMode implements InputAPI {
 
     @Override
     public void resume () {
-        // do stuff when back to map mode
         setActive();
         acquireGameObjects();
-        initialize(); // TODO: Shouldn't need to reinitialize map objects
-        // configureInputHandling();
+        initialize();
     }
 
     @Override

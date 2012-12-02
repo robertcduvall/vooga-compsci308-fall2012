@@ -315,16 +315,9 @@ public class GameManager implements InputAPI {
             }
             Class c = myAvailableModeTypes.get(modeName);
             Constructor[] newC = c.getConstructors();
-            /*
-             * try {
-             * myGameModes.add((GameMode) newC[0]
-             * .newInstance(this, MapObject.class, myInvolvedIDs));
-             * }
-             * /*catch (InstantiationException | IllegalAccessException |
-             * IllegalArgumentException
-             * | InvocationTargetException e) {
-             */
             try {
+//                System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
+//                System.out.println(newC[0].toGenericString());
                 myGameModes.add((GameMode) newC[0]
                         .newInstance(this, modeName, myInvolvedIDs));
             }

@@ -19,7 +19,7 @@ import vooga.turnbased.gameobject.GameObject;
 public abstract class GameMode {
     private List<GameObject> myGameObjects;
     private final GameManager myGameManager;
-    private final String myModeName;
+    private String myModeName;
     private boolean myHasFocus;
     private boolean isActive;
     private boolean isOver;
@@ -62,6 +62,10 @@ public abstract class GameMode {
     
     public String getName() {
         return myModeName;
+    }
+    
+    public void setModeName(String s){
+        myModeName = s; //hackhackhack mode name should be final
     }
 
     public GameManager getGameManager () {
