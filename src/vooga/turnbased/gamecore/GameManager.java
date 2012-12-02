@@ -73,20 +73,20 @@ public class GameManager implements InputAPI {
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         // initializeGameLevel(GameWindow.importString("Entrance"));
-        initializeGameLevel(GameWindow.importString("OtherLevel"));
+        initializeGameLevel(GameWindow.importString("GameXML"), GameWindow.importString("PlayerXML"));
         configureInputHandling();
     }
 
     /**
      * Starts a new level, and puts the RPG in mapMode in that new level.
      * 
-     * @param levelFileName
+     * @param gameFileName
      *        The name of the level that will be initialized
      * @param enteringObject
      *        The MapObject which will used for the MapMode of this level.
      */
-    private void initializeGameLevel (String levelFileName) {
-        LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
+    private void initializeGameLevel (String gameFileName, String playerFileName) {
+        LevelXmlParser test = new LevelXmlParser(gameFileName, playerFileName, this);
         myMapSize = test.getMapSize();
         myCameraSize = test.getCameraSize();
         
@@ -366,10 +366,6 @@ public class GameManager implements InputAPI {
             myMouseButton = mouseButton;
         }
     }
-
-    // public void handleMouseDragged(Point mousePosition) {
-    // myActiveGameMode.changeDisplayPosition(mousePosition);
-    // }
 
     private void killMode (GameMode mode) {
         myGameModes.remove(mode);

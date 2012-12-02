@@ -53,8 +53,6 @@ public class LevelXmlParser {
     private static final String Y = "y";
     private static final String LOCATION = "location";
     private static final String PLAYER = "player";
-    private static final String PLAYER_XML_PATH =
-            "src/vooga/turnbased/resources/level/PlayerCopy.xml";
 
     private Document myXmlDocument;
     private Document myPlayerXmlDocument;
@@ -71,10 +69,10 @@ public class LevelXmlParser {
      *        parameters may change in the future.
      * @param gm The game manager of the level that is being parsed
      */
-    public LevelXmlParser (File file, GameManager gm) {
-        myXmlDocument = XmlUtilities.makeDocument(file);
+    public LevelXmlParser (String gameFilePath, String playerFilePath, GameManager gm) {
+        myXmlDocument = XmlUtilities.makeDocument(new File(gameFilePath));
         myDocumentElement = myXmlDocument.getDocumentElement();
-        myPlayerXmlDocument = XmlUtilities.makeDocument(PLAYER_XML_PATH);
+        myPlayerXmlDocument = XmlUtilities.makeDocument(new File(playerFilePath));
         parseSetup();
     }
     
