@@ -178,4 +178,12 @@ public class ModelInterface {
     public void changeAdminStatus (String name, boolean adminStatus) {
         myUserManager.changeAdminStatus(name, adminStatus);
     }
+    
+    public void sendMessage(String receiver, String content){
+        mySocialCenter.sendMessage(receiver, content);
+    }
+    
+    public List<String> getMessage(){
+        return myUserManager.getMessage();
+    }
 }

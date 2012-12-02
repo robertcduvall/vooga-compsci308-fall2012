@@ -110,7 +110,8 @@ public class SocialCenter {
     /*
      * return operation status
      */
-    public boolean sendMessage (String sender, String receiver, String content) {
+    public boolean sendMessage (String receiver, String content) {
+        String sender=myUserManager.getCurrentUserName();
         String filePath = myUserMessageFilePath + receiver + ".xml";
         File f = new File(filePath);
 
