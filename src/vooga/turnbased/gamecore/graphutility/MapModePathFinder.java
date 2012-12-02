@@ -19,11 +19,10 @@ import vooga.turnbased.gui.GameWindow;
  * 
  * @author Rex Ying
  */
-public class MapModePathFinder extends PathFinder{
+public class MapModePathFinder extends PathFinder {
 
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
-    private boolean myCancelMovement;
     private MovingMapObject myMovingObject;
     // for execution of walking along the path
     private Point myPreviousLocation;
@@ -40,15 +39,32 @@ public class MapModePathFinder extends PathFinder{
      */
     public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
         super(object.getLocation(), target, new Dimension(mapSize));
+        initialize(map, object);
         setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
-        myMap = map;
-        myMovingObject = object;
         myPreviousLocation = getStart();
-        myPathIndex = 0;
-        myHighlightObjects = new ArrayList<MapObject>();
-        executeSearch();
     }
 
+    /**
+     * default constructor.
+     * needs to add task after constructing using this default one
+     */
+    public MapModePathFinder (MapMode map, MovingMapObject object) {
+        super();
+        initialize(map, object);
+    }
+
+    /**
+     * initialize variables specific to this MapModePathFinder
+     * @param map the MapMode instance on which the path should be found
+     * @param object the object which needs to find a path
+     */
+    private void initialize(MapMode map, MovingMapObject object) {
+        myMap = map;
+        myMovingObject = object;
+        myPathIndex = 0;
+        myHighlightObjects = new ArrayList<MapObject>();
+    }
+    
     @Override
     protected void checkObstacles () {
         for (int i = 0; i < getSize().width; i++) {
@@ -63,13 +79,24 @@ public class MapModePathFinder extends PathFinder{
     }
 
     /**
+     * add a new task to the path finder
+     * @param object the object that needs to find path
+     * @param target the target position
+     * @param mapSize the size of the map
+     */
+    public void addTask(MovingMapObject object, Point target, Dimension mapSize) {
+        super.addTask(object.getLocation(), target, new Dimension(mapSize));
+    }
+    
+    /**
      * stop the moving process and the highlighted path disappeared
      */
+    @Override
     public void stop () {
+        super.stop();
         for (MapObject m : myHighlightObjects) {
             m.setVisible(false);
         }
-        myCancelMovement = true;
     }
 
     /**
@@ -79,7 +106,8 @@ public class MapModePathFinder extends PathFinder{
      * @return the MapItemObject representing a path indicator
      */
     protected MapItemObject generatePathIndicator (Point p) {
-        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION", p, GameWindow.importImage("HighlightPath"));
+        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION",
+                                 p, GameWindow.importImage("HighlightPath"));
     }
 
     /**
@@ -104,7 +132,7 @@ public class MapModePathFinder extends PathFinder{
     @Override
     public void updatePath () {
         super.updatePath();
-        if ((myPathIndex < getImmutablePath().size()) && !myCancelMovement) {
+        if (myPathIndex < getImmutablePath().size()) {
             myCurrentLocation = getPathUsingIndex(myPathIndex);
             Point direction =
                     new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -

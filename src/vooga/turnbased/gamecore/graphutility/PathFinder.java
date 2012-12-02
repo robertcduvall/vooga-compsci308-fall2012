@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
  * See vooga.turnbased.gamecore.graphutility.MapModePathFinder for an example to
  * extend the class and apply to games etc.
  * 
- * @author rex
+ * @author Rex Ying
  * 
  */
 public abstract class PathFinder {
@@ -21,6 +23,8 @@ public abstract class PathFinder {
     private boolean myIsMultiDestination;
     private boolean myHasTask;
     private boolean myIsHighlighted;
+    private boolean myCancelMovement;
+    private Queue<GraphTask> myTaskCache;
     private PathSearch myPathSearch;
     private Point myStart;
     private Point myEnd;
@@ -51,16 +55,36 @@ public abstract class PathFinder {
         myIsMultiDestination = false;
         myHasTask = false;
         myIsHighlighted = false;
+        myTaskCache = new LinkedList<GraphTask>();
+        myCancelMovement = false;
     }
 
     /**
-     * this method executes the path search, and highlight the path, if
-     * necessary
+     * this method executes the path search
      */
-    protected void executeSearch () {
-        setPath(searchPath());
+    public void executeSearch () {
+        myPath = searchPath();
         if (!pathIsEmpty()) {
             myHasTask = true;
+        }
+    }
+
+    /**
+     * add task to the path finder, by specifying starting, ending point and the
+     * size
+     * 
+     * @param start starting point
+     * @param end ending point
+     * @param size size of the grid
+     */
+    protected void addTask (Point start, Point end, Dimension size) {
+        if (myIsMultiDestination) {
+            myTaskCache.add(new GraphTask(myStart, myEnd, mySize));
+        }
+        else {
+            myStart = start;
+            myEnd = end;
+            mySize = size;
         }
     }
 
@@ -80,30 +104,48 @@ public abstract class PathFinder {
         myPathSearch = new BreadthFirstSearch(myStart, myEnd, mySize);
         checkObstacles();
         myPathSearch.findPath(myStart);
-        return myPathSearch.getImmutablePath();
+        return myPathSearch.getPath();
     }
 
-    protected void setPath (List<Point> path) {
-        myPath = path;
+    /**
+     * activate multi-Destination functionality
+     * have activate/deactivate so that the input API is easier to be used
+     */
+    public void activateMultiDestination () {
+        myIsMultiDestination = true;
     }
 
-    public void setMultiDestination (boolean isMultiDestination) {
-        myIsMultiDestination = isMultiDestination;
+    /**
+     * de-activate multi-Destination functionality
+     */
+    public void deactivateMultiDestination () {
+        myIsMultiDestination = false;
     }
 
+    /**
+     * whether there is no path found
+     * 
+     * @return whether path is empty
+     */
     protected boolean pathIsEmpty () {
         return myPath.isEmpty();
     }
 
     /**
-     * get an immutable list representing the path found
+     * get a list representing the path found
      * 
-     * @return An immutable list of Points representing the path
+     * @return A list of Points representing the path
      */
-    public List<Point> getImmutablePath () {
+    protected List<Point> getImmutablePath () {
         return Collections.unmodifiableList(myPath);
     }
 
+    /**
+     * get a particular Point on the path using index
+     * 
+     * @param index
+     * @return the Point on the path
+     */
     protected Point getPathUsingIndex (int index) {
         return myPath.get(index);
     }
@@ -119,9 +161,9 @@ public abstract class PathFinder {
     protected abstract void checkObstacles ();
 
     /**
-     * sub-classes will determine how to indicate the path
-     * called in the updatePath cycle
-     * currently it does nothing
+     * The abstract class does nothing to highlight.
+     * sub-classes will determine how to indicate the path.
+     * It should be called called in the updatePath cycle.
      */
     protected void highlightPath () {
         myIsHighlighted = true;
@@ -133,10 +175,20 @@ public abstract class PathFinder {
      * Override if subclasses wants to graphically display the path
      */
     public void updatePath () {
-        if (!myHasTask) { return; }
+        if ((!myHasTask) || myCancelMovement) { return; }
         if ((!myIsHighlighted) && (getImmutablePath() != null)) {
             highlightPath();
         }
+    }
+
+    /**
+     * stop the update path process
+     * sub-classes could also override to dehighlight path etc.
+     */
+    public void stop () {
+        myCancelMovement = true;
+        myPath.clear();
+        myTaskCache.clear();
     }
 
     /**
@@ -179,12 +231,46 @@ public abstract class PathFinder {
     }
 
     /**
-     * get the size of the grid
-     * Not necessary for Dijkstra and BellmanFord
+     * get the size of the grid.
+     * Not necessary for Dijkstra and BellmanFord:
+     * In these cases, the size is simply Dimension(V, V), where V is the number
+     * of vertices
      * 
      * @return the size of the grid
      */
     protected Dimension getSize () {
         return mySize;
+    }
+
+    /**
+     * private inner class that describe a path finding task waiting to be
+     * executed.
+     * Used when multi-destination is on
+     * 
+     * @author rex
+     * 
+     */
+    private class GraphTask {
+        private Point start;
+        private Point end;
+        private Dimension size;
+
+        protected GraphTask (Point start, Point end, Dimension size) {
+            this.start = start;
+            this.end = end;
+            this.size = size;
+        }
+
+        protected Point getStart () {
+            return start;
+        }
+
+        protected Point getEnd () {
+            return end;
+        }
+
+        protected Dimension getSize () {
+            return size;
+        }
     }
 }
