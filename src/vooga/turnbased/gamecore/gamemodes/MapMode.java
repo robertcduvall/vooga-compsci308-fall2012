@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
-import vooga.turnbased.gamecore.pathutility.PathFinder;
+import vooga.turnbased.gamecore.pathutility.MapModePathFinder;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gui.GamePane;
@@ -41,7 +41,7 @@ public class MapMode extends GameMode implements InputAPI {
     private int myCurrentTileWidth;
     private int myCurrentTileHeight;
     private Rectangle myCurrentCamera;
-    private PathFinder myPathFinder;
+    private MapModePathFinder myPathFinder;
     private Point myTopLeftCoord;
 
     /**
@@ -295,7 +295,7 @@ public class MapMode extends GameMode implements InputAPI {
             Point target =
                     new Point(e.getX() / myCurrentTileWidth + myTopLeftCoord.x,
                               e.getY() / myCurrentTileHeight + myTopLeftCoord.y);
-            myPathFinder = new PathFinder(this, myPlayer, target, myMapSize);
+            myPathFinder = new MapModePathFinder(this, myPlayer, target, myMapSize);
         }
     }
 
@@ -362,7 +362,7 @@ public class MapMode extends GameMode implements InputAPI {
             Point target =
                     new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
                               (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);
-            myPathFinder = new PathFinder(this, myPlayer, target, myMapSize);
+            myPathFinder = new MapModePathFinder(this, myPlayer, target, myMapSize);
         }
     }
 }
