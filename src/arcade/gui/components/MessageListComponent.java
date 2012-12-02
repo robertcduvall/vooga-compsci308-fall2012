@@ -65,8 +65,10 @@ import arcade.utility.ImageReader;
             sendMessageButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed (ActionEvent arg0) {
-                    System.out.println("Send message to " + myUser);
-                    //getArcade().replacePanel("SendMessage");
+                    System.out.println("Opening Message.");
+                    myContainer.getArcade().saveVariable("UserName", mySender);
+                    myContainer.getArcade().saveVariable("Message", myMessage);
+                    myContainer.getArcade().replacePanel("ViewMessage");
                 }
 
             });

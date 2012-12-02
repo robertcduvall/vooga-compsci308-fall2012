@@ -21,7 +21,7 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class ComposeMessageMainPanel extends AMainPanel {
 
-    private JTextArea reviewArea;
+    private JTextArea messageArea;
     private HintTextField recipientField;
     private JLabel headerLabel;
     private Dimension maxMessageBoxSize = new Dimension(600, 300);
@@ -49,11 +49,11 @@ public class ComposeMessageMainPanel extends AMainPanel {
 
         JLabel messagePrompt = new JLabel("Write your message here:");
         messagePrompt.setForeground(Color.WHITE);
-        reviewArea = new JTextArea("", 20, 60);
-        reviewArea.setLineWrap(true);
-        reviewArea.setWrapStyleWord(true);
-        reviewArea.setMaximumSize(maxMessageBoxSize);
-        JScrollPane scrollingReview = new JScrollPane(reviewArea);
+        messageArea = new JTextArea("", 20, 60);
+        messageArea.setLineWrap(true);
+        messageArea.setWrapStyleWord(true);
+        messageArea.setMaximumSize(maxMessageBoxSize);
+        JScrollPane scrollingMessageArea = new JScrollPane(messageArea);
 
         JButton submitBut = new JButton("Send");
         submitBut.addActionListener(new ActionListener(){
@@ -61,13 +61,13 @@ public class ComposeMessageMainPanel extends AMainPanel {
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("Attempting to send message:");
-                if (reviewArea.getText() != null && reviewArea.getText() != "" &&
+                if (messageArea.getText() != null && messageArea.getText() != "" &&
                         recipientField.getText() != null && recipientField.getText() != "") {
                     messageSent = getArcade().getModelInterface().sendMessage(getArcade().getUsername(),
-                            recipientField.getText(), reviewArea.getText());
+                            recipientField.getText(), messageArea.getText());
                 }
                 System.out.println(recipientField.getText());
-                System.out.println(reviewArea.getText());
+                System.out.println(messageArea.getText());
                 if (messageSent) {
                     getArcade().replacePanel("MessageCenter");
                 }
@@ -85,7 +85,7 @@ public class ComposeMessageMainPanel extends AMainPanel {
         myPanel.add(headerLabel, "align left, split 2");
         myPanel.add(recipientField);
         myPanel.add(messagePrompt);
-        myPanel.add(scrollingReview, "align left");
+        myPanel.add(scrollingMessageArea, "align left");
         myPanel.add(submitBut, "dock south, span, grow, align center");
 
         return myPanel;

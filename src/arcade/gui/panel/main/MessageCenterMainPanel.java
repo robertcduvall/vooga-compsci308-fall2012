@@ -39,15 +39,18 @@ public class MessageCenterMainPanel extends AMainPanel {
         myPanel.add(composeMessageButton);
 
         List<Message> myMessages = getArcade().getModelInterface().getEditableCurrentUser().getMyMessage();
+        int numLoaded = 0;
         for (Message aMessage : myMessages){
             try {
                 myPanel.add(new MessageListComponent(aMessage.getSender(), 
                         aMessage.getMessage(), myPanel), BorderLayout.SOUTH);
+                numLoaded++;
             }
             catch (NullPointerException e) {
                 System.out.println("Trouble loading a message...");
             }
         }
+        myPanel.setPreferredSize(new Dimension(750, 110*numLoaded));
 
         return myPanel;
     }
