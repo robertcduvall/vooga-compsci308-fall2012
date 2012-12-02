@@ -6,6 +6,5 @@ package util.networking;
  *
  */
 public interface ClientEvent {
-    //METHODS ALL EVENTS MUST IMPLEMENT
-    String getInfo();
+    String getName();
 }
