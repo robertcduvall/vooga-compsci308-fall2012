@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Random;
@@ -39,7 +38,7 @@ public class Particle {
 
     // These values were found after extensive testing,
     // and scale the sprite's red, green, blue, and alpha values
-    private float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.2f };
+    private float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.4f };
     //private float[] RGBAscales = { 3f, .04f, 0.01f, 0.8f };
 
     private float[] offsets;

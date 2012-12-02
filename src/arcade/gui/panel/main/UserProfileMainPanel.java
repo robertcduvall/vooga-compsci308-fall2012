@@ -39,8 +39,6 @@ public class UserProfileMainPanel extends AMainPanel {
 
     @Override
     public ArcadePanel createPanel () {
-        System.out.println("This is currently a work in progress. " +
-                "It will break stuff until ModelInterface gets implemented.");
         ArcadePanel myPanel = initializeNewPanel();
 
         userToLoad = (String) getArcade().getVariable("UserName");

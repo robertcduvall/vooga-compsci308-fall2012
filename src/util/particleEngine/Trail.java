@@ -8,13 +8,15 @@ import util.mathvector.*;
 
 public class Trail extends ParticleSystem {
 
-    private final double angleSpan = 90;
-    private final int numberOfDirections = 10;
+    private static double angleSpan = 90;
+    private static int numberOfDirections = 15;
     private static MathVector2D velocity = new MathVector2D(0,2);
-    private final int tolerance = 20;
-    private final int length = 65;
-
-    private static int density = 1750;
+    private static int tolerance = 25;
+    private static int length = 35;
+    private static int density = 450;
+    
+    private static float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.4f };
+    private static float[] RGBAtolerances = {0.2f, 0.2f, 0.2f, 0.1f};
 
     public Trail (Point startingPosition) {
         super(new MathVector2D(startingPosition));
@@ -22,7 +24,7 @@ public class Trail extends ParticleSystem {
 
     @Override
     protected void setUpParticleEngines () {
-        ImageIcon temp = new ImageIcon(Trail.class.getResource("orangeParticle.png"));
+        ImageIcon temp = new ImageIcon(Trail.class.getResource("particle.png"));
         Image particleImage = temp.getImage();
 
         addParticleEngine(density, particleImage, position, velocity,

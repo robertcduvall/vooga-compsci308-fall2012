@@ -3,7 +3,6 @@ package util.particleEngine;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import util.mathvector.*;
@@ -188,6 +187,10 @@ public class ParticleEngine {
 
     protected MathVector2D getStartingPosition () {
         return initialPosition;
+    }
+    
+    protected int getSpriteCount() {
+        return particles.size();
     }
 
 }

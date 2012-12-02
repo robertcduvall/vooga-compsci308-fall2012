@@ -35,7 +35,8 @@ public class UserListMainPanel extends AMainPanel {
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setPreferredSize(new Dimension(750, 900));
+        int numUsers = getArcade().getModelInterface().getNumUsers();
+        myPanel.setPreferredSize(new Dimension(750, 110*numUsers));
         JLabel label = new JLabel();
         label.setText("[User List]");
         label.setForeground(Color.WHITE);

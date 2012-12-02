@@ -131,4 +131,11 @@ public abstract class ParticleSystem {
         for (ParticleEngine p : myParticleEngines)
             p.setLoop(setLoopValue);
     }
+    public int spriteCount() {
+        int count = 0;
+        for(ParticleEngine p: myParticleEngines) {
+            count+=p.getSpriteCount();
+        }
+        return count;
+    }
 }
