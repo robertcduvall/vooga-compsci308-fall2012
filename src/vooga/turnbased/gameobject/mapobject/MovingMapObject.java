@@ -33,13 +33,13 @@ public class MovingMapObject extends MapObject {
      * Creates the MovingMapObject that will be used in MapMode.
      * 
      * @param id Integer ID associated with the MovingMapObject.
-     * @param event GameEvent that can be passed to GameManager.
+     * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MovingMapObject (int id, String event, Point location, Image mapImage) {
-        super(id, event, location, mapImage);
+    public MovingMapObject (String condition, Point location, Image mapImage) {
+        super(condition, location, mapImage);
         // need to be read in
         myMovementTimePerTile = 600;
         myXOriginInTile = 0;

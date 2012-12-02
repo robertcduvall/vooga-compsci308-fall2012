@@ -36,13 +36,13 @@ public class MapObject extends GameObject {
      * Creates the MapObject that will be used in MapMode.
      * 
      * @param id Integer ID associated with the MapObject.
-     * @param event GameEvent that can be passed to GameManager.
+     * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapObject (int id, String event, Point location, Image mapImage) {
-        super(id, event, mapImage);
+    public MapObject (String condition, Point location, Image mapImage) {
+        super(condition, mapImage);
         setLocation(location);
         setVisible(true);
         //setMapMode(mapMode);
@@ -149,7 +149,7 @@ public class MapObject extends GameObject {
         List<Integer> involvedSpriteIDs = new ArrayList<Integer>();
         involvedSpriteIDs.add(this.getID());
         involvedSpriteIDs.add(involvedObject.getID());
-        getMapMode().flagCondition(getModeEvent(), involvedSpriteIDs);
+        getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
     }
 
     public void addStrategy (MapStrategy mapStrategy) {

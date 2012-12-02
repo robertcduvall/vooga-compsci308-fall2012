@@ -10,8 +10,8 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
 
 public class MapEnemyObject extends MapObject {
 
-    public MapEnemyObject (int id, String event, Point location, Image mapImage) {
-        super(id, event, location, mapImage);
+    public MapEnemyObject (String condition, Point location, Image mapImage) {
+        super(condition, location, mapImage);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class MapEnemyObject extends MapObject {
             List <Integer> involvedSpriteIDs = new ArrayList<Integer>();
             involvedSpriteIDs.add(m.getID());
             involvedSpriteIDs.add(getID());
-            getMapMode().flagCondition(getModeEvent(), involvedSpriteIDs);
+            getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
         }
     }
 

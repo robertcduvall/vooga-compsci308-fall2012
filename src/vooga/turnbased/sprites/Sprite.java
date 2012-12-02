@@ -12,7 +12,7 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
  *
  */
 public class Sprite {
-    private static int SPRITE_COUNT = 0;
+    private static int SPRITE_COUNT = 1;
     private int myID;
     private List<GameObject> myGameObjects;
 

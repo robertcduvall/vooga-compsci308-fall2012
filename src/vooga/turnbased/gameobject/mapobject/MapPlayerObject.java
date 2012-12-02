@@ -29,13 +29,13 @@ public class MapPlayerObject extends MovingMapObject {
      * Creates the MovingMapObject that will be used in MapMode.
      * 
      * @param id Integer ID associated with the MapObject.
-     * @param event GameEvent that can be passed to GameManager.
+     * @param condition GameEvent that can be passed to GameManager.
      * @param coord Point at which object is located.
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (int id, String event, Point coord, Image mapImage) {
-        super(id, event, coord, mapImage);
+    public MapPlayerObject (String condition, Point coord, Image mapImage) {
+        super(condition, coord, mapImage);
         myFrameCount = 0;
     }
 
@@ -44,14 +44,14 @@ public class MapPlayerObject extends MovingMapObject {
      * image.
      * 
      * @param id Integer ID associated with the MapObject.
-     * @param event GameEvent that can be passed to GameManager.
+     * @param condition GameEvent that can be passed to GameManager.
      * @param coord Point at which object is located.
      * @param mapImages Map of strings to images that will be used for
      *        animation of the player object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (int id, String event, Point coord, Map<String, Image> mapImages) {
-        super(id, event, coord, mapImages.get(0));
+    public MapPlayerObject (String condition, Point coord, Map<String, Image> mapImages) {
+        super(condition, coord, mapImages.get(0));
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
     }

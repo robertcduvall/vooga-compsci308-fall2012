@@ -33,14 +33,14 @@ public abstract class BattleObject extends GameObject {
      * Create the BattleObject for this sprite which will be used in
      * the BattleMode.
      * @param id the ID number of the object.
-     * @param event The action that this object can pass to the GameManager,
+     * @param condition The action that this object can pass to the GameManager,
      * can be GameEvent.NO_ACTION if no action needed
      * @param stats the battle stats of the object, including its defense, attack, and health
      * @param name the name of the object
      * @param image The image of this BattleObject
      */
-    public BattleObject(int id, String event, Map<String, Number> stats, String name, Image image) {
-        super(id, event, image);
+    public BattleObject(String condition, Map<String, Number> stats, String name, Image image) {
+        super(condition, image);
         myStats = new HashMap<String, Number>();
         setStats(stats);
         myName = name;

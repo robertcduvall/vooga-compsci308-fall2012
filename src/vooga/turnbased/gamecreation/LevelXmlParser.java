@@ -164,7 +164,7 @@ public class LevelXmlParser {
                 String event = XmlUtilities.getChildContent(staticSprite, CONDITION);
                 Image image = XmlUtilities.getChildContentAsImage(staticSprite, IMAGE);
                 MapObject mapTile =
-                        (MapObject) Reflection.createInstance(className, s.getID(), event, point,
+                        (MapObject) Reflection.createInstance(className, event, point,
                                                               image);
                 s.addGameObject(mapTile);
                 spriteList.add(s);
@@ -216,7 +216,7 @@ public class LevelXmlParser {
         Point point = parseLocation(mapPlayer);
         Map<String, Image> imageMap = parsePlayerImages(mapPlayer);
 
-        return (MapPlayerObject) Reflection.createInstance(className, s.getID(), event, point,
+        return (MapPlayerObject) Reflection.createInstance(className, event, point,
                                                            imageMap);
     }
 
@@ -311,7 +311,7 @@ public class LevelXmlParser {
             Map<String, Number> stats = parseBattleStats(battleSprite);
             String name = XmlUtilities.getChildContent(battleSprite, NAME);
             BattleObject battleObject =
-                    (BattleObject) Reflection.createInstance(className, s.getID(), event, stats,
+                    (BattleObject) Reflection.createInstance(className, event, stats,
                                                              name, image);
             battleObject.setImageLoop(parseObjectImages(battleSprite));
             return battleObject;
@@ -344,7 +344,7 @@ public class LevelXmlParser {
                               XmlUtilities.getChildContentAsInt(location, Y));
             Image image = XmlUtilities.getChildContentAsImage(mapSprite, IMAGE);
             MapObject mapObject =
-                    (MapObject) Reflection.createInstance(className, s.getID(), event, point,
+                    (MapObject) Reflection.createInstance(className, event, point,
                             image);
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {

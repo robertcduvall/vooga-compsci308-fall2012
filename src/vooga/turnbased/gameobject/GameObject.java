@@ -17,19 +17,18 @@ import javax.swing.ImageIcon;
 public abstract class GameObject {
 
     private int myID;
-    private final String myModeEvent;
+    private final String myConditionFlag;
     protected Image myImage;
 
     /**
      * Construct the new game object.
      * 
      * @param objectID The ID number of the new object.
-     * @param modeEvent The event describing the current action occurring.
+     * @param condition The condition flagged my interacting with this object.
      * @param image The image associated with the new object.
      */
-    public GameObject (int objectID, String modeEvent, Image image) {
-        myID = objectID;
-        myModeEvent = modeEvent;
+    public GameObject (String condition, Image image) {
+        myConditionFlag = condition;
         setImage(image);
     }
 
@@ -56,8 +55,8 @@ public abstract class GameObject {
      * 
      * @return myGameEvent The GameEvent that does with this object.
      */
-    public String getModeEvent () {
-        return myModeEvent;
+    public String getConditionFlag () {
+        return myConditionFlag;
     }
 
     /**

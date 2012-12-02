@@ -32,14 +32,14 @@ public class TestMonster extends BattleObject {
     /**
      * Creates a test battle monster.
      * @param id the ID number of the object.
-     * @param event The action that this object can pass to the GameManager,
+     * @param condition The action that this object can pass to the GameManager,
      * can be GameEvent.NO_ACTION if no action needed
      * @param stats 
      * @param name 
      * @param image The image of this testMonster
      */
-    public TestMonster (int id, String event, Map<String, Number> stats, String name, Image image) {
-        super(id, event, stats, name, image);
+    public TestMonster (String condition, Map<String, Number> stats, String name, Image image) {
+        super(condition, stats, name, image);
     }
 
     @Override
