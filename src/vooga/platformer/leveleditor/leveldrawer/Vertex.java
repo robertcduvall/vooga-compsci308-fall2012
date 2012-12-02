@@ -74,11 +74,7 @@ public class Vertex implements IEditorObject {
      * @param y The y coordinate.
      */
     public void determineColor(int x, int y) {
-        if (contains(x, y)) {
-            myColor = Color.red;
-        } else {
-            myColor = Color.black;
-        }
+        myColor = contains(x, y) ? Color.red : Color.black;
     }
 
     /**
