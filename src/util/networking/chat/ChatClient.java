@@ -1,9 +1,11 @@
 package util.networking.chat;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.Socket;
+import util.networking.GenericClient;
 
 /**
  * 
@@ -11,21 +13,14 @@ import java.net.Socket;
  * @author Oren Bukspan
  */
 
-public class ChatClient {
+public class ChatClient extends GenericClient {
 
-    private Socket myConnection;
     private ChatProtocol myProtocol;
     private String myUser, myPass;
 
-    public ChatClient(String host, int port, ChatProtocol c){
-        try {
-            myProtocol = c;
-            myConnection = connect(host, port);
-
-        }
-        catch (IOException e) {
-            System.out.println("Unable to connect to Server specified.");
-        }
+    public ChatClient(String host, int port, ChatProtocol c, OutputStream os) throws IOException{
+        super(host,port,os);
+        myProtocol = c;
     }
 
     private Socket connect(String host, int port) throws IOException{
