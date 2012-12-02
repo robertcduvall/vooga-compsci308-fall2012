@@ -35,8 +35,8 @@ public class OptionMode extends GameMode {
     private Map<String, MapStrategy> myDisplayedStrategies;
     private Rectangle myBounds;
 
-    public OptionMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
-        super(gm, modeObjectType, involvedIDs);
+    public OptionMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
+        super(gm, modeName, involvedIDs);
         myDisplayedStrategies = new HashMap<String, MapStrategy>();
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
         myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
@@ -54,6 +54,7 @@ public class OptionMode extends GameMode {
     
     @Override
     public void pause () {
+        setModeIsOver();
     }
 
     @Override
@@ -121,7 +122,7 @@ public class OptionMode extends GameMode {
         } else if (mousePressed == GamePane.MOUSE_RELEASED){
             myPanel.dehighlightOption();
         } else {
-            //flagCondition("switchlevel", new ArrayList<Integer>()); TODO
+            flagCondition("entermap2", new ArrayList<Integer>());
             setModeIsOver();
             //myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer); error?
         }

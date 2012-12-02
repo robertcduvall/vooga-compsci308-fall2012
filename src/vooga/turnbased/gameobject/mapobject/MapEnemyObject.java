@@ -4,14 +4,15 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 
 
 public class MapEnemyObject extends MapObject {
 
-    public MapEnemyObject (String condition, Point location, Image mapImage) {
-        super(condition, location, mapImage);
+    public MapEnemyObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+        super(allowableModes, condition, location, mapImage);
     }
 
     @Override

@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Map;
+import java.util.Set;
 import util.graphicprocessing.ImageLoop;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 
@@ -34,8 +35,8 @@ public class MapPlayerObject extends MovingMapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (String condition, Point coord, Image mapImage) {
-        super(condition, coord, mapImage);
+    public MapPlayerObject (Set<String> allowableModes, String condition, Point coord, Image mapImage) {
+        super(allowableModes, condition, coord, mapImage);
         myFrameCount = 0;
     }
 
@@ -50,8 +51,8 @@ public class MapPlayerObject extends MovingMapObject {
      *        animation of the player object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (String condition, Point coord, Map<String, Image> mapImages) {
-        super(condition, coord, mapImages.get(0));
+    public MapPlayerObject (Set<String> allowableModes, String condition, Point coord, Map<String, Image> mapImages) {
+        super(allowableModes, condition, coord, mapImages.get(0));
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
     }

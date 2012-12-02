@@ -50,10 +50,10 @@ public class MapMode extends GameMode implements InputAPI {
      * @param gm
      *        the GameManager which manages the mode
      */
-    public MapMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
-        super(gm, modeObjectType, involvedIDs);
+    public MapMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
+        super(gm, modeName, involvedIDs);
         //myPlayer = (MapPlayerObject) myMapObjects.get(gm.getPlayerSpriteID());
-        // initialize();
+        initialize();
     }
 
     @Override
@@ -76,12 +76,13 @@ public class MapMode extends GameMode implements InputAPI {
 
     @Override
     public void initialize () {
+        setActive();
         int playerID = getGameManager().getPlayerSpriteID();
         setCameraSize(getGameManager().getCameraSize());
         setMapSize(getGameManager().getMapSize());
         
         myMapObjects = new HashMap<Point, List<MapObject>>();
-        List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
+        List<MapObject> mapObjects = (List<MapObject>) getGameObjects();
         for (MapObject mapObject : mapObjects) {
             mapObject.setMapMode(this);
             addMapObject(mapObject.getLocation(), mapObject);

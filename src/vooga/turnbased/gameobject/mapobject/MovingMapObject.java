@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gui.GamePane;
 
@@ -38,8 +39,8 @@ public class MovingMapObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MovingMapObject (String condition, Point location, Image mapImage) {
-        super(condition, location, mapImage);
+    public MovingMapObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+        super(allowableModes, condition, location, mapImage);
         // need to be read in
         myMovementTimePerTile = 600;
         myXOriginInTile = 0;

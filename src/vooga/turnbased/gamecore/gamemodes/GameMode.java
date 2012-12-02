@@ -2,8 +2,10 @@ package vooga.turnbased.gamecore.gamemodes;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gameobject.GameObject;
 
 
 /**
@@ -15,9 +17,9 @@ import vooga.turnbased.gamecore.GameManager;
  */
 // public abstract class GameMode extends Observable {
 public abstract class GameMode {
-    //private final int myID;
+    private List<GameObject> myGameObjects;
     private final GameManager myGameManager;
-    private final Class myObjectType;
+    private final String myModeName;
     private boolean myHasFocus;
     private boolean isActive;
     private boolean isOver;
@@ -27,15 +29,39 @@ public abstract class GameMode {
      * 
      * @param gm The GameManager which receives information about how sprites
      *        interact.
-     * @param modeObjectType Type of GameObject associated with GameMode
+     * @param allowableModes Type of GameObject associated with GameMode
      *        being constructed.
      */
-    public GameMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
+    public GameMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         myGameManager = gm;
-        myObjectType = modeObjectType;
+        myModeName = modeName;
         myHasFocus = true;
         isActive = true;
         isOver = false;
+        acquireGameObjects();
+    }
+    
+    private void acquireGameObjects() {
+        myGameObjects = new ArrayList<GameObject>();
+        myGameObjects.addAll(myGameManager.getGameObjects(getName()));
+    }
+    
+    protected List<? extends GameObject> getGameObjects() {
+        return myGameObjects;
+    }
+    
+    protected List<? extends GameObject> getGameObjectsByID(int spriteID) {
+        List<GameObject> gameObjectsOfID = new ArrayList<GameObject>();
+        for(GameObject go : myGameObjects) {
+            if (go.getID() == spriteID) {
+                gameObjectsOfID.add(go);
+            }
+        }
+        return gameObjectsOfID;
+    }
+    
+    public String getName() {
+        return myModeName;
     }
 
     public GameManager getGameManager () {
@@ -45,19 +71,6 @@ public abstract class GameMode {
     public void flagCondition (String conditionName, List<Integer> involvedSpriteIDs) {
         myGameManager.flagCondition(conditionName, involvedSpriteIDs);
     }
-
-    /**
-     * Returns type of GameObject associated with current mode.
-     * 
-     * @return Type of object that current mode uses.
-     */
-    public Class getObjectType () {
-        return myObjectType;
-    }
-
-//    public int getID () {
-//        return myID;
-//    }
 
     /**
      * Call when gamemode if first created
@@ -110,8 +123,6 @@ public abstract class GameMode {
         return isOver;
     }
 
-//    public void changeDisplayPosition (Point position) {
-//    }
     public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
     
     protected void setModeIsOver() {

@@ -3,7 +3,9 @@ package vooga.turnbased.gamecore.pathutility;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TreeSet;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapItemObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -109,7 +111,7 @@ public class MapModePathFinder extends PathFinder{
      * @return the MapItemObject representing a path indicator
      */
     protected MapItemObject generatePathIndicator (Point p) {
-        return new MapItemObject("NO_ACTION", p, GameWindow.importImage("HighlightPath"));
+        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION", p, GameWindow.importImage("HighlightPath"));
     }
 
     /**

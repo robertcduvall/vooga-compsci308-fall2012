@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.GameObject;
@@ -41,8 +42,8 @@ public class MapObject extends GameObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapObject (String condition, Point location, Image mapImage) {
-        super(condition, mapImage);
+    public MapObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+        super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
         //setMapMode(mapMode);

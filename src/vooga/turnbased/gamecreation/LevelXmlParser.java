@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -17,8 +18,6 @@ import util.graphicprocessing.ImageLoop;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.turnbased.gamecore.GameManager;
-import vooga.turnbased.gamecore.gamemodes.GameMode;
-import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
@@ -161,10 +160,10 @@ public class LevelXmlParser {
                 s = new Sprite();
                 Element staticSprite = XmlUtilities.getElement(myDocumentElement, "staticSprite");
                 String className = XmlUtilities.getChildContent(staticSprite, CLASS);
-                String event = XmlUtilities.getChildContent(staticSprite, CONDITION);
+                String condition = XmlUtilities.getChildContent(staticSprite, CONDITION);
                 Image image = XmlUtilities.getChildContentAsImage(staticSprite, IMAGE);
                 MapObject mapTile =
-                        (MapObject) Reflection.createInstance(className, event, point,
+                        (MapObject) Reflection.createInstance(className, new TreeSet<String>(Arrays.asList("map")), condition, point,
                                                               image);
                 s.addGameObject(mapTile);
                 spriteList.add(s);
@@ -216,7 +215,7 @@ public class LevelXmlParser {
         Point point = parseLocation(mapPlayer);
         Map<String, Image> imageMap = parsePlayerImages(mapPlayer);
 
-        return (MapPlayerObject) Reflection.createInstance(className, event, point,
+        return (MapPlayerObject) Reflection.createInstance(className, new TreeSet<String>(Arrays.asList("map")), event, point,
                                                            imageMap);
     }
 
@@ -311,7 +310,7 @@ public class LevelXmlParser {
             Map<String, Number> stats = parseBattleStats(battleSprite);
             String name = XmlUtilities.getChildContent(battleSprite, NAME);
             BattleObject battleObject =
-                    (BattleObject) Reflection.createInstance(className, event, stats,
+                    (BattleObject) Reflection.createInstance(className, new TreeSet<String>(Arrays.asList("battle")), event, stats,
                                                              name, image);
             battleObject.setImageLoop(parseObjectImages(battleSprite));
             return battleObject;
@@ -344,7 +343,7 @@ public class LevelXmlParser {
                               XmlUtilities.getChildContentAsInt(location, Y));
             Image image = XmlUtilities.getChildContentAsImage(mapSprite, IMAGE);
             MapObject mapObject =
-                    (MapObject) Reflection.createInstance(className, event, point,
+                    (MapObject) Reflection.createInstance(className, new TreeSet<String>(Arrays.asList("map")), event, point,
                             image);
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {

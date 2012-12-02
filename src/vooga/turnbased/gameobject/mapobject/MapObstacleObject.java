@@ -2,6 +2,7 @@ package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Set;
 
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapstrategy.BlockStrategy;
@@ -17,8 +18,8 @@ import vooga.turnbased.gameobject.mapstrategy.BlockStrategy;
  */
 public class MapObstacleObject extends MapObject {
 
-    public MapObstacleObject (String condition, Point location, Image mapImage) {
-        super(condition, location, mapImage);
+    public MapObstacleObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+        super(allowableModes, condition, location, mapImage);
         addStrategy(new BlockStrategy());
     }
 }

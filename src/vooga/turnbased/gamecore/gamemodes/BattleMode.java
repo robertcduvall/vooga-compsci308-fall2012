@@ -64,15 +64,14 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param gameManager The parent GameManager that is creating this battle.
      *        Will be
      *        alerted when battle ends.
-     * @param modeObjectType The object type this mode uses, i.e.
-     *        BattleObject.java
+     * @param allowableModes Mode names that this object can exist in
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
 
     // need to pass ids of battle participants upon battle creation
-    public BattleMode (GameManager gameManager, Class<BattleObject> modeObjectType,
+    public BattleMode (GameManager gameManager, String modeName,
             List<Integer> involvedIDs) {
-        super(gameManager, modeObjectType, involvedIDs);
+        super(gameManager, modeName, involvedIDs);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
         resume();
@@ -138,18 +137,12 @@ public class BattleMode extends GameMode implements InputAPI {
     private void makeTeams () {
         // adding player
         List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
-        Sprite s1 = getGameManager().findSpriteWithID(myInvolvedIDs.get(0));
-        for (BattleObject bo : s1.getObject(BattleObject.class)) {
-            myBattleObjects.add(bo);
-        }
+        myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(0)));
         myTeam = new Team(myBattleObjects);
 
         // adding enemy
         List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
-        Sprite s2 = getGameManager().findSpriteWithID(myInvolvedIDs.get(1));
-        for (BattleObject bo : s2.getObject(BattleObject.class)) {
-            enemyBattleObjects.add(bo);
-        }
+        enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(1)));
         myEnemyTeam = new Team(enemyBattleObjects);
     }
 

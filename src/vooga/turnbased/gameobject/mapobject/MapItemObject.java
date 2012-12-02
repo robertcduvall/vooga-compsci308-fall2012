@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Set;
 
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 
@@ -25,8 +26,8 @@ public class MapItemObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapItemObject (String condition, Point location, Image mapImage) {
-        super(condition, location, mapImage);
+    public MapItemObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+        super(allowableModes, condition, location, mapImage);
 
     }
 

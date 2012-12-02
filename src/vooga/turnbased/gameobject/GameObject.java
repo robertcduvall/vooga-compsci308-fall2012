@@ -2,6 +2,7 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Set;
 import javax.swing.ImageIcon;
 
 
@@ -17,6 +18,7 @@ import javax.swing.ImageIcon;
 public abstract class GameObject {
 
     private int myID;
+    private Set<String> myAllowableModes;
     private final String myConditionFlag;
     protected Image myImage;
 
@@ -27,9 +29,14 @@ public abstract class GameObject {
      * @param condition The condition flagged my interacting with this object.
      * @param image The image associated with the new object.
      */
-    public GameObject (String condition, Image image) {
+    public GameObject (Set<String> allowableModes, String condition, Image image) {
+        myAllowableModes = allowableModes;
         myConditionFlag = condition;
         setImage(image);
+    }
+    
+    public boolean isValidMode(String modeName) {
+        return myAllowableModes.contains(modeName);
     }
 
     /**

@@ -60,10 +60,10 @@ public class Sprite {
      * @param clazz The class that you are looking for
      * @return
      */
-    public <T extends GameObject> List<T> getObject (Class<T> clazz) {
+    public <T extends GameObject> List<T> getObjects (String modeName) {
         List<T> relevantObjects = new ArrayList<T>();
         for (GameObject go : myGameObjects) {
-            if (clazz.isAssignableFrom(go.getClass())) {
+            if (go.isValidMode(modeName)) {
                 relevantObjects.add((T) go);
             }
         }

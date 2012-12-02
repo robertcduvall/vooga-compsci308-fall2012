@@ -9,6 +9,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import util.graphicprocessing.ImageLoop;
 import vooga.turnbased.gameobject.GameObject;
@@ -39,8 +40,8 @@ public abstract class BattleObject extends GameObject {
      * @param name the name of the object
      * @param image The image of this BattleObject
      */
-    public BattleObject(String condition, Map<String, Number> stats, String name, Image image) {
-        super(condition, image);
+    public BattleObject(Set<String> allowableModes, String condition, Map<String, Number> stats, String name, Image image) {
+        super(allowableModes, condition, image);
         myStats = new HashMap<String, Number>();
         setStats(stats);
         myName = name;

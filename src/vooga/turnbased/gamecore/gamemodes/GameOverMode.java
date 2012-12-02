@@ -11,8 +11,8 @@ import vooga.turnbased.gui.GameWindow;
 
 public class GameOverMode extends GameMode {
 
-    public GameOverMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
-        super(gm, modeObjectType, involvedIDs);
+    public GameOverMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
+        super(gm, modeName, involvedIDs);
     }
 
     @Override

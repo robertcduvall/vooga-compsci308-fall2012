@@ -4,9 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -14,15 +12,9 @@ import java.util.List;
 import java.util.Map;
 import util.input.core.KeyboardController;
 import util.sound.SoundPlayer;
-import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
-import vooga.turnbased.gamecore.gamemodes.GameOverMode;
-import vooga.turnbased.gamecore.gamemodes.MapMode;
-import vooga.turnbased.gamecore.gamemodes.OptionMode;
 import vooga.turnbased.gamecreation.LevelXmlParser;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gameobject.battleobject.BattleObject;
-import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.InputAPI;
@@ -114,7 +106,7 @@ public class GameManager implements InputAPI {
 
      private void startFirstMode(String entryMode) {
          handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
-         myGameModes.get(0).resume();
+         //myGameModes.get(0).resume();
      }
 
     /**
@@ -149,10 +141,18 @@ public class GameManager implements InputAPI {
      * @return modeObjects A list of all requested GameObjects within all
      *         sprites.
      */
-    public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
-        List<T> modeObjects = new ArrayList<T>();
-        for (Sprite s : mySprites.values()) {
-            modeObjects.addAll(s.getObject(c));
+//    public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
+//        List<T> modeObjects = new ArrayList<T>();
+//        for (Sprite s : mySprites.values()) {
+//            modeObjects.addAll(s.getObject(c));
+//        }
+//        return modeObjects;
+//    }
+    
+    public List<GameObject> getGameObjects(String modeName) {
+        List<GameObject> modeObjects = new ArrayList<GameObject>();
+        for(Sprite s : mySprites.values()){
+            modeObjects.addAll(s.getObjects(modeName));
         }
         return modeObjects;
     }
@@ -280,8 +280,8 @@ public class GameManager implements InputAPI {
         private final String myName;
         private final List<Integer> myInvolvedIDs;
 
-        public ModeEvent (String eventName, List<Integer> involvedIDs) {
-            myName = eventName;
+        public ModeEvent (String modeName, List<Integer> involvedIDs) {
+            myName = modeName;
             myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
         }
 
@@ -302,12 +302,12 @@ public class GameManager implements InputAPI {
     /**
      * Adds an event to the list of events to handle.
      * 
-     * @param eventName - String name of event to add.
+     * @param modeName - String name of event to add.
      * @param involvedSpriteIDs - List of integer IDs of sprites involved in
      *        given action.
      */
-    protected void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
-        myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
+    protected void flagEvent (String modeName, List<Integer> involvedSpriteIDs) {
+        myModeEvents.add(new ModeEvent(modeName, involvedSpriteIDs));
     }
 
     /**
@@ -322,14 +322,16 @@ public class GameManager implements InputAPI {
     }
 
     private void handleEvent (ModeEvent event) {
-        String eventName = event.getName();
+        System.out.println("doing event: "+event.getName());
+        System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
+        String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
-        if (myAvailableModeTypes.containsKey(eventName)) {
+        if (myAvailableModeTypes.containsKey(modeName)) {
             if (!myGameModes.isEmpty()) {
                 myGameModes.get(myGameModes.size() - 1).pause();
                 // TODO: again assuming latest is active for now
             }
-            Class c = myAvailableModeTypes.get(eventName);
+            Class c = myAvailableModeTypes.get(modeName);
             Constructor[] newC = c.getConstructors();
             /*
              * try {
@@ -342,10 +344,10 @@ public class GameManager implements InputAPI {
              */
             try {
                 myGameModes.add((GameMode) newC[0]
-                        .newInstance(this, MapObject.class, myInvolvedIDs));
+                        .newInstance(this, modeName, myInvolvedIDs));
             }
             catch (Exception e) {
-                System.out.println("Check XML file for mistyped mode class");
+                System.out.println("Unable to create mode "+modeName+" of class "+c.toString());
             }
         }
     }

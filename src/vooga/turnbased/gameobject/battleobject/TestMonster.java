@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.battleobject;
 import java.awt.Image;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 
 /**
@@ -38,8 +39,8 @@ public class TestMonster extends BattleObject {
      * @param name 
      * @param image The image of this testMonster
      */
-    public TestMonster (String condition, Map<String, Number> stats, String name, Image image) {
-        super(condition, stats, name, image);
+    public TestMonster (Set<String> allowableModes, String condition, Map<String, Number> stats, String name, Image image) {
+        super(allowableModes, condition, stats, name, image);
     }
 
     @Override
