@@ -193,10 +193,9 @@ public class EditorPane extends DisplayPane {
 
     private void addObjectXmlInformation (String[] returnedValues,
                     LevelEditor l, Element sprite) {
-        String[] imagePaths = {returnedValues[6]};
-        l.addMapObject(sprite, returnedValues[0], returnedValues[1], returnedValues[2],
-                returnedValues[3], Integer.parseInt(returnedValues[4]),
-                Integer.parseInt(returnedValues[5]), imagePaths);
+        l.addObject(sprite, returnedValues[0], returnedValues[1], returnedValues[2],
+                returnedValues[3], returnedValues[4], returnedValues[5], returnedValues[6],
+                returnedValues[7], returnedValues[8]);
     }
 
     private JButton setUpModeButton (final LevelEditor l, final String[] modes,
@@ -313,10 +312,8 @@ public class EditorPane extends DisplayPane {
         for (String now : returnedValues) {
             System.out.println(now);
         }
-        l.addDimensionTag(Integer.parseInt(returnedValues[0]),
-                Integer.parseInt(returnedValues[1]));
-        l.addCameraDimension(Integer.parseInt(returnedValues[2]),
-                Integer.parseInt(returnedValues[3]));
+        l.addDimensionTag(returnedValues[0], returnedValues[1]);
+        l.addCameraDimension(returnedValues[2], returnedValues[3]);
         l.addBackgroundImage(returnedValues[4]);
         l.addStartMode();
         l.saveXmlDocument();
