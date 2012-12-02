@@ -44,13 +44,7 @@ public class EditorPane extends DisplayPane {
     }
 
     private void addInitialButtons () {
-        JButton menuButton = new JButton("Back to menu");
-        menuButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                getGameWindow().changeActivePane(GameWindow.MENU);
-            }
-        });
-        add(menuButton);
+        addMenuButton();
         JButton newLevelButton = new JButton("Create New Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
@@ -80,9 +74,9 @@ public class EditorPane extends DisplayPane {
         l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
         l.addCameraDimension(10, 10);
         l.addLevelId(1);
-        l.addPlayerEntryPoints(5, 5);
+ //       l.addPlayerEntryPoints(5, 5);
         Element sprite = l.addSprite();
-        l.addMapObject(sprite, "MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
+        l.addMapObject(sprite, "map","MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
         Map<String, Number> stats = new HashMap<String, Number>();
         stats.put("health", 10);
         stats.put("attack", 5);
@@ -154,10 +148,12 @@ public class EditorPane extends DisplayPane {
                 "Player Entry X-Coordinate: ", "Player Entry Y-Coordinate: "};
         String[] defaultValues = {"1", "20", "30", "15", "11",
                 "src/vooga/turnbased/resources/image/background.png", "1", "1"};
-        displayAndGetStringInformation(background, defaultValues, l);
+        displayAndGetSetupInformation(background, defaultValues, l);
+        addMenuButton();
+        validate();
     }
 
-    private void displayAndGetStringInformation (String[] labels, String[] defaultValues,
+    private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
             final LevelEditor l) {
 
         final int numPairs = labels.length;
@@ -169,7 +165,7 @@ public class EditorPane extends DisplayPane {
             l1.setLabelFor(textField);
             p.add(textField);
         }
-        makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
+        InputDisplayUtil.makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
         final JFrame frame = new JFrame("Background Information (Default Values shown)");
         JButton doneButton = new JButton("Done");
         doneButton.addActionListener(new ActionListener() {
@@ -205,53 +201,19 @@ public class EditorPane extends DisplayPane {
         l.addCameraDimension(Integer.parseInt(returnedValues[3]),
                 Integer.parseInt(returnedValues[4]));
         l.addBackgroundImage(returnedValues[5]);
-        l.addPlayerEntryPoints(Integer.parseInt(returnedValues[6]),
-                Integer.parseInt(returnedValues[7]));
+//        l.addPlayerEntryPoints(Integer.parseInt(returnedValues[6]),
+//                Integer.parseInt(returnedValues[7]));
+        l.addStartMode();
         l.saveXmlDocument();
     }
-    private void makeCompactGrid(Container parent, int rows, int cols,
-            int initialX, int initialY, int xPad, int yPad) {
-        SpringLayout layout = null;
-        try {
-            layout = (SpringLayout)parent.getLayout();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-        Spring x = Spring.constant(initialX);
-        for (int c = 0; c < cols; c++) {
-            Spring width = Spring.constant(0);
-            for (int r = 0; r < rows; r++) {
-                width = Spring.max(width, getConstraintsForCell(r, c, parent, cols).getWidth());
+ 
+    private void addMenuButton () {
+        JButton menuButton = new JButton("Back to menu");
+        menuButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                getGameWindow().changeActivePane(GameWindow.MENU);
             }
-            for (int r = 0; r < rows; r++) {
-                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
-                constraints.setX(x);
-                constraints.setWidth(width);
-            }
-            x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
-        }
-        Spring y = Spring.constant(initialY);
-        for (int r = 0; r < rows; r++) {
-            Spring height = Spring.constant(0);
-            for (int c = 0; c < cols; c++) {
-                height = Spring.max(height, getConstraintsForCell(r, c, parent, cols).getHeight());
-            }
-            for (int c = 0; c < cols; c++) {
-                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
-                constraints.setY(y);
-                constraints.setHeight(height);
-            }
-            y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
-        }
-        SpringLayout.Constraints pCons = layout.getConstraints(parent);
-        pCons.setConstraint(SpringLayout.SOUTH, y);
-        pCons.setConstraint(SpringLayout.EAST, x);
-    }
-
-    private SpringLayout.Constraints getConstraintsForCell(int row, int col,
-            Container parent, int cols) {
-        SpringLayout layout = (SpringLayout) parent.getLayout();
-        Component c = parent.getComponent(row * cols + col);
-        return layout.getConstraints(c);
+        });
+        add(menuButton);
     }
 }
