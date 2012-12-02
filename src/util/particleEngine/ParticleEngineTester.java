@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Stack;
 import javax.swing.JApplet;
 import javax.swing.Timer;
-import vooga.shooter.gameplay.Game;
 
 
 /**
@@ -43,6 +42,7 @@ import vooga.shooter.gameplay.Game;
  * 
  */
 
+@SuppressWarnings("serial")
 public class ParticleEngineTester extends JApplet {
     private static final Dimension defaultSize = new Dimension(800, 800);
     private static final int ONE_SECOND = 1000;
@@ -200,14 +200,20 @@ public class ParticleEngineTester extends JApplet {
 
         g2d.setFont(font);
         g2d.setColor(Color.WHITE);
-        g2d.drawString(""
-                + (1 / ((System.currentTimeMillis() - lastTime) / 1000.0f))
-                + " fps", 100, 100);
-        lastTime = System.currentTimeMillis();
+        long newTime = System.currentTimeMillis();
+        g2d.drawString("fps: "
+                + (1 / ((newTime - lastTime) / 1000.0f))
+                , 100, 100);
+        lastTime = newTime;
+        
+        int spriteCount=0;
 
         // Actually draw the particleSystems
-        for (ParticleSystem e : mySystems)
+        for (ParticleSystem e : mySystems) {
             e.draw(g2d);
+            spriteCount+=e.spriteCount();
+        }
+        g2d.drawString("Sprites: "+ spriteCount,400,100);
 
         Graphics2D graphics = (Graphics2D) g;
         graphics.drawImage(buff, null, 0, 0);
