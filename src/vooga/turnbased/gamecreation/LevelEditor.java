@@ -206,11 +206,13 @@ public class LevelEditor extends Editor {
     }
 
     private void addStatsToXml (Element e, String stats) {
-        stats.replaceAll("\\s", "");
-        String[] allStats = stats.split("\\s*,\\s*");
-        for (String stat : allStats) {
-            String[] singleStat = stat.split("\\s*:\\s*");
-            XmlUtilities.appendElement(myXmlDocument, e, singleStat[0], singleStat[1]);
+        if (!stats.equals("")) {
+            stats.replaceAll("\\s", "");
+            String[] allStats = stats.split("\\s*,\\s*");
+            for (String stat : allStats) {
+                String[] singleStat = stat.split("\\s*:\\s*");
+                XmlUtilities.appendElement(myXmlDocument, e, singleStat[0], singleStat[1]);
+            }
         }
     }
 
