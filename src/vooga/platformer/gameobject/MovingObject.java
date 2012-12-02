@@ -2,7 +2,7 @@ package vooga.platformer.gameobject;
 
 import java.awt.geom.Point2D;
 
-import vooga.platformer.gameobject.strategy.MovementUpdateStrategy;
+import vooga.platformer.gameobject.strategy.update.MovementUpdateStrategy;
 import vooga.platformer.util.enums.Direction;
 
 

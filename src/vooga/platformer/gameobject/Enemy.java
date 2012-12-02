@@ -1,8 +1,8 @@
 package vooga.platformer.gameobject;
 
 
-import vooga.platformer.gameobject.strategy.EnemyMoveStrategy;
-import vooga.platformer.gameobject.strategy.GravityStrategy;
+import vooga.platformer.gameobject.strategy.update.EnemyMoveStrategy;
+import vooga.platformer.gameobject.strategy.update.GravityStrategy;
 
 public class Enemy extends MovingObject {
 

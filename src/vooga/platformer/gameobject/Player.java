@@ -1,8 +1,6 @@
 package vooga.platformer.gameobject;
 
-import vooga.platformer.gameobject.strategy.GravityStrategy;
-import vooga.platformer.gameobject.strategy.MovementUpdateStrategy;
-import vooga.platformer.gameobject.strategy.PlayerMoveStrategy;
+import vooga.platformer.gameobject.strategy.update.GravityStrategy;
 import vooga.platformer.gameobject.strategy.ShootingStrategy;
 import vooga.platformer.gameobject.strategy.movement.GoLeftStrategy;
 import vooga.platformer.gameobject.strategy.movement.GoRightStrategy;
