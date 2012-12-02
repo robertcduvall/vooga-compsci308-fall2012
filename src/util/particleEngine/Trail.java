@@ -12,9 +12,9 @@ public class Trail extends ParticleSystem {
     private final int numberOfDirections = 10;
     private static MathVector2D velocity = new MathVector2D(0,2);
     private final int tolerance = 20;
-    private final int length = 165;
+    private final int length = 65;
 
-    private static int density = 750;
+    private static int density = 1750;
 
     public Trail (Point startingPosition) {
         super(new MathVector2D(startingPosition));
