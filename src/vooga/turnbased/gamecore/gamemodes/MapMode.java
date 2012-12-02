@@ -352,7 +352,7 @@ public class MapMode extends GameMode implements InputAPI {
 
     @Override
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
-        if (mousePressed == GamePane.MOUSE_DRAGGED && myMouseButton == MouseEvent.BUTTON3) {
+        if (mousePressed == GamePane.MOUSE_CLICKED && myMouseButton == MouseEvent.BUTTON3) {
             if (myPathFinder != null) {
                 myPathFinder.stop();
             }

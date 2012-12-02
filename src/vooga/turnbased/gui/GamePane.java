@@ -24,6 +24,7 @@ public class GamePane extends DisplayPane implements Runnable {
     public static final int MOUSE_PRESSED = 0;
     public static final int MOUSE_RELEASED = 1;
     public static final int MOUSE_DRAGGED = 2;
+    public static final int MOUSE_CLICKED = 3;
     private GameManager myGameManager;
     private Thread myGameThread;
     private static int delayBetweenGameLoopCycles;
@@ -107,6 +108,10 @@ public class GamePane extends DisplayPane implements Runnable {
             @Override
             public void mouseReleased (MouseEvent e) {
                 myGameManager.addMouseAction(MOUSE_RELEASED, e.getPoint(), e.getButton());
+            }
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                myGameManager.addMouseAction(MOUSE_CLICKED, e.getPoint(), e.getButton());
             }
         });
         

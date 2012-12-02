@@ -307,8 +307,9 @@ public class GameManager implements InputAPI {
                 myGameModes.add((GameMode) newC[0]
                         .newInstance(this, MapObject.class, myInvolvedIDs));
             }
-            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
+            /*catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {*/
+            catch (Exception e) {
                 System.out.println("Check XML file for mistyped mode class");
             }
         }
