@@ -38,8 +38,16 @@ public class GenericClient {
         startListening();
     }
     
-    protected synchronized void fireEvent(ClientEvent ce){
+    private synchronized void fireEvent(ClientEvent ce){
         //To be implemented
+    }
+    
+    private synchronized void addListener(ClientListener cl){
+        
+    }
+    
+    private synchronized void removeListener(ClientListener cl){
+        
     }
     
     private void startListening() {
