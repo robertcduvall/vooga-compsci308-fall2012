@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import util.dataStructures.FlagPair;
 import util.datatable.DataTable;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
+import util.input.inputhelpers.FlagPair;
 import util.input.inputhelpers.UKeyCode;
 
 
@@ -29,7 +29,7 @@ public abstract class Controller<T> {
     private static final String ACTION_DESCRIPTION = "Action Description";
     private static final String KEYCODE = "KeyCode";
     private static final String TUPLE = "Tuple";
-    private static int NUM_COLUMNS = 4;
+    private static final int NUM_COLUMNS = 4;
 
     private String[] myColumnName;
 

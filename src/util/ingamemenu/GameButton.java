@@ -74,8 +74,22 @@ public class GameButton extends JComponent {
      * @param ml MouseListener
      */
     public GameButton (String fileName, String command, MouseListener ml) {
-        this(fileName);
+        this(fileName, command);
         addMouseListener(ml);
+    }
+
+    /**
+     * Create a game button that allows to customize the image of the button.
+     * 
+     * @param fileName of the button image
+     * @param command String appears on the button.
+     * @param ml MouseListener
+     * @param size of the Button
+     */
+    public GameButton (String fileName, String command, MouseListener ml,
+            Dimension size) {
+        this(fileName, command, ml);
+        setSize(size);
     }
 
     /**
@@ -158,8 +172,8 @@ public class GameButton extends JComponent {
     }
 
     /**
-     * @param width 
-     * @param height 
+     * @param width
+     * @param height
      */
     public void setButtonSize (int width, int height) {
         mySize = new Dimension(width, height);

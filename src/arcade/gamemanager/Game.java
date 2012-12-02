@@ -32,7 +32,6 @@ public class Game {
     private Document myDocument;
     private Element myGameElement;
     private List<String> myGameInfoList;
-    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
     private DocumentManager myDocumentManager;
 
     /**
@@ -94,7 +93,7 @@ public class Game {
      * @param infoName name of requested information
      * @return requested information in a list form.
      */
-    public List<String> getGameInfo (String infoName) {
+    private List<String> getGameInfo (String infoName) {
         List<String> info = new ArrayList<String>();
         if (!myGameInfoList.contains(infoName)) {
             System.out.println("no such information is available!!!");
@@ -113,7 +112,7 @@ public class Game {
      * @param tag tag name of new information
      * @param content new information content
      */
-    public void setGameInfo (String tag, String content) {
+    private void setGameInfo (String tag, String content) {
         myDocumentManager.appendElement(myDocument, myGameElement, tag, content);
     }
 
@@ -127,7 +126,6 @@ public class Game {
      */
     public void runGame () {
         myGame.runGame(getUserPreferences(), mySaver);
-        // TODO
     }
 
     /**
@@ -191,7 +189,7 @@ public class Game {
     }
 
     private void saveChanges () {
-        myDocumentManager.save(myDocument, myGameXml);
+        myDocumentManager.save(myDocument, GameCenter.GAME_XML_FILE);
         resetGameInfoList();
     }
 
@@ -240,8 +238,8 @@ public class Game {
     /**
      * Returns the genre of the game for the purposes of sorting.
      */
-    public List<String> getGenre () {
-        String genreData = getGameInfo("genre").get(0);
+    public List<String> getTags () {
+        String genreData = getGameInfo("tags").get(0);
         List<String> genre = Arrays.asList(genreData.split(" "));
         return genre;
     }

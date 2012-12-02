@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -17,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -24,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
 
@@ -48,29 +53,36 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  */
 public class LevelBoard extends JPanel implements ISavable {
 
+    private static final int SCROLL_SPEED = 2;
     private static final long serialVersionUID = -3528519211577278934L;
-    private Collection<Sprite> mySprites;
+    private Collection<GameObject> myGameObjects;
     private Collection<String> myAvailableAttributes;
     private IEditorMode myCurrentMode;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
     private LevelEditorMouseListener myMouseListener;
     private Image myBackground;
-    private Sprite myCurrentSprite;
-    private int myWidth;
-    private int myHeight;
+    private GameObject myCurrentObject;
     private String myLevelName;
     private String myLevelType;
     private String myBackgroundPath;
     private int mouseX;
     private int mouseY;
+    private int myLength;
+    private int myOffset;
+    private KeyListener myKeyListener;
+    private List<Integer> myKeyHeld; 
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
      * off empty.
+     * 
+     * @param d Dimension for initial level size (determined by Frame)
      */
     public LevelBoard(Dimension d) {
-        mySprites = new ArrayList<Sprite>();
+        setSize(d);
+        myKeyHeld = new ArrayList<Integer>();
+        myGameObjects = new ArrayList<GameObject>();
         myAvailableAttributes = new ArrayList<String>();
         myAvailableAttributes.add("HP"); myAvailableAttributes.add("Shooting"); myAvailableAttributes.add("Flying");
         myAvailableAttributes.add("Patrolling"); myAvailableAttributes.add("Teammate");
@@ -78,32 +90,35 @@ public class LevelBoard extends JPanel implements ISavable {
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
-        
         setupMouseInput();
+        myOffset = 0;
+    }
+
+    public void incLength() {
+
     }
 
     private void setupMouseInput() {
         LevelEditorMouseListener mouseListener = new LevelEditorMouseListener() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (myCurrentSprite != null) {
-                    myCurrentSprite = null;
+                if (myCurrentObject != null) {
+                    myCurrentObject = null;
                 }
                 else {
-                    for (Sprite s : mySprites) {
-                        if (e.getX() >= s.getX() && e.getX() <= s.getX() + s.getWidth() &&
-                                e.getY() >= s.getY() && e.getY() <= s.getY() + s.getHeight()) {
+                    for (GameObject g : myGameObjects) {
+                        if (g.containsPoint(e.getPoint())) {
                             if (e.getButton() == MouseEvent.BUTTON3) {
-                                spritePopupMenu(s, e);
+                                objectPopupMenu(g, e);
                             }
                             else if (e.getButton() == MouseEvent.BUTTON1) {
-                                myCurrentSprite = s;
+                                myCurrentObject = g;
                             }
                             return;
                         }
                     }
                     if (e.getButton() == MouseEvent.BUTTON3) {
-                        JFileChooser chooser = new JFileChooser();
+                        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
                         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                                 "JPG & GIF Images", "jpg", "gif");
                         chooser.setFileFilter(filter);
@@ -128,37 +143,94 @@ public class LevelBoard extends JPanel implements ISavable {
                 mouseY = e.getY();
             }
         };
+        myKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed (KeyEvent ke) {
+                myKeyHeld.add(ke.getKeyCode());
+                int accel = 0;
+                for(Integer kevent : myKeyHeld) {
+                    if(kevent == KeyEvent.VK_LEFT) {
+                        accel++;
+                    }
+                }
+                switch (ke.getKeyCode()) {
+                    case KeyEvent.VK_LEFT:
+                        if (myOffset == 0) {
+                            bumpLeft();
+                        }
+                        else {
+                            myOffset -= SCROLL_SPEED+accel;
+                        }
+                        break;
+                    case KeyEvent.VK_RIGHT: 
+                        if(myOffset+getWidth() == myLength) {
+                            myLength += SCROLL_SPEED+accel;
+                        }
+                        myOffset += SCROLL_SPEED+accel;
+                }
+            }
+
+            @Override
+            public void keyReleased (KeyEvent ke) {
+                while(myKeyHeld.contains((Integer) ke.getKeyCode())) {
+                    myKeyHeld.remove((Integer) ke.getKeyCode());
+                }
+            }
+
+            private void bumpLeft () {
+                System.out.println("Already at beginning!");
+                //TODO: add code to animate bumping motion (if theres time)
+            }
+        };
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
         myMouseListener = mouseListener;
-
     }
 
 
 
     /**
-     * Passes the MouseListener to any components that need it.
+     * Passes the LevelEditorMouseListner as a MouseListener
+     * to any components that need it.
      * 
      * @return MouseListener attached to component
      */
-    public LevelEditorMouseListener getMouseListener() {
+    public MouseListener getMouseListener() {
+        return myMouseListener;
+    }
+
+    public KeyListener getKeyListener() {
+        return myKeyListener;
+    }
+
+    /**
+     * Passes the LevelEditorMouseListener as a MouseMotionListener.
+     * 
+     * @return MouseMotionListener attached to component
+     */
+    public MouseMotionListener getMouseMotionListener() {
         return myMouseListener;
     }
 
     /**
      * Updates the buffer preparing for the next paint call.
      */
-    public void update() {
+    @Override
+    public void update(Graphics g) {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(
                 myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
-        for (Sprite s : mySprites) {
-            s.paint(myBufferGraphics, this);
-            myBufferGraphics.setColor(Color.WHITE);
+        for (GameObject obj : myGameObjects) {
+            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(), (int) obj.getWidth(), (int) obj.getHeight(), null);
         }
-        if (myCurrentSprite != null) {
-            myCurrentSprite.setX(mouseX - myCurrentSprite.getWidth() / 2);
-            myCurrentSprite.setY(mouseY - myCurrentSprite.getHeight() / 2);
+        if (myCurrentObject != null) {
+            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
+            myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
+            myBufferGraphics.setColor(Color.ORANGE);
+        }
+        myBufferGraphics.drawString("Current Sprite = ("+mouseX+", "+mouseY+")", getWidth()-250, 30);
+        for(int i = 0; i < myKeyHeld.size(); i++ ) {
+            myBufferGraphics.drawString(((Integer) myKeyHeld.get(i)).toString(), 20, (i+1)*10);
         }
     }
 
@@ -168,8 +240,10 @@ public class LevelBoard extends JPanel implements ISavable {
      * @param g Graphics attached to level.
      */
     public void paint(Graphics g) {
-        super.paint(g);
+        update(g);
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
+        super.paintComponents(g);
+
     }
 
     @Override
@@ -184,13 +258,13 @@ public class LevelBoard extends JPanel implements ISavable {
             saveFile = fc.getSelectedFile();
             //This is where a real application would save the file.
 
-//            log.append("Saving: " + file.getName() + "." + newline);
+            //            log.append("Saving: " + file.getName() + "." + newline);
         } else {
             saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
-//            log.append("Save command cancelled by user." + newline);
+            //            log.append("Save command cancelled by user." + newline);
         }
-        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", myWidth, myHeight,
-                myBackgroundPath, mySprites, "myCollision", "myCamera");
+//        LevelFileWriter.writeLevel(saveFile.getPath(), "mylevelType", "LevelTitle", getWidth(), getHeight(),
+//                myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
 
     @Override
@@ -199,32 +273,32 @@ public class LevelBoard extends JPanel implements ISavable {
     }
 
     public void clear() {
-        mySprites.clear();
+        myGameObjects.clear();
     }
 
-    protected void spritePopupMenu (Sprite s, MouseEvent e) {
+    protected void objectPopupMenu (GameObject g, MouseEvent e) {
         JPopupMenu pop = new JPopupMenu();
-        SelectionHelper sh = new SelectionHelper(s);
+        SelectionHelper sh = new SelectionHelper(g);
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(sh);
         pop.add(j);
         JMenuItem j2 = new JMenuItem("Duplicate");
         j2.addActionListener(sh);
         pop.add(j2);
-        JMenuItem j3 = new JMenuItem("Add attribute");
+        JMenuItem j3 = new JMenuItem("Edit");
         j3.addActionListener(sh);
         pop.add(j3);
         JMenuItem j4 = new JMenuItem("Delete");
         j4.addActionListener(sh);
         pop.add(j4);
-        pop.show(this.getParent(), e.getX(), e.getY());
+        pop.show(this.getParent(), (int)(g.getX()+g.getWidth()/2), (int)(g.getY()+g.getHeight()));
     }
     /**
      * @return An unmodifiable Collection of the sprites
      *         currently positioned on the board.
      */
-    protected Collection<Sprite> getSprites() {
-        return Collections.unmodifiableCollection(mySprites);
+    protected Collection<GameObject> getSprites() {
+        return Collections.unmodifiableCollection(myGameObjects);
     }
 
     /**
@@ -234,9 +308,9 @@ public class LevelBoard extends JPanel implements ISavable {
      * 
      * @param sprite
      */
-    protected void add(Sprite sprite) {
-        mySprites.add(sprite);
-        myCurrentSprite = sprite;
+    protected void add(GameObject obj) {
+        myGameObjects.add(obj);
+        myCurrentObject = obj;
     }
 
     /**
@@ -246,52 +320,50 @@ public class LevelBoard extends JPanel implements ISavable {
      *        be removed.
      */
     protected void remove(Sprite sprite) {
-        mySprites.remove(sprite);
+        myGameObjects.remove(sprite);
     }
 
     private class SelectionHelper implements ActionListener {
-        private Sprite mySprite;
-        public SelectionHelper(Sprite s) {
-            mySprite = s;
+        private GameObject myObject;
+        public SelectionHelper(GameObject obj) {
+            myObject = obj;
         }
         @Override
         public void actionPerformed(ActionEvent event) {
             if ("Flip".equals(event.getActionCommand())) {
-                mySprite.flipImage();
+                myObject.flipImage();
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
-                Sprite ns = new Sprite(mySprite.getClassName(), mySprite.getX(), mySprite.getY(),
-                        mySprite.getWidth(), mySprite.getHeight(), mySprite.getID(), mySprite.getImagePath());
-                LevelBoard.this.add(ns);
+//                GameObject nobj = new GameObject(myObject.getConfigStringParams());
+//                LevelBoard.this.add(nobj);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
                 createAttributeWindow();
             }
             else if ("Delete".equals(event.getActionCommand())) {
-                mySprites.remove(mySprite);
+                myGameObjects.remove(myObject);
             }
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-            
+
         }
         private void createAttributeWindow() {
-             JPopupMenu pop = new JPopupMenu();
-
-             for (String att : myAvailableAttributes) {
+            JPopupMenu pop = new JPopupMenu();
+            for (String att : myAvailableAttributes) {
                 JMenuItem j = new JMenuItem(att);
                 j.addActionListener(this);
                 pop.add(j);
-             }
-             pop.show(LevelBoard.this, mySprite.getX()+mySprite.getWidth()/2, mySprite.getY()+mySprite.getHeight()/2);
+            }
+            pop.show(LevelBoard.this, (int)(myObject.getX()+myObject.getWidth()/2), (int)(myObject.getY()+myObject.getHeight()/2));
 
 
-/*           create a list of attributes from the resource file 
+            /*           create a list of attributes from the resource file 
              and get appropriate values for certain attributes.
-*/
+             */
         }
     }
-    
+
     /**
      * A TEMPORARY mouse listener for the current modes this level editor supports.
      * And yes, I realize we have 3 different mouse listeners for this class.

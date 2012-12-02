@@ -1,7 +1,12 @@
 package vooga.platformer.levelfileio;
 
 import java.awt.Image;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import util.xml.XmlUtilities;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.leveleditor.Sprite;
 
 
@@ -115,6 +121,41 @@ public class LevelFileReader {
      */
     public String getCameraType () {
         return XmlUtilities.getChildContent(myRoot, XmlTags.CAMERA);
+    }
+
+    /**
+     * Gets a collection of all the serialized GameObjects stored in the binary
+     * file specified in the GameObject data tag of the xml document. This
+     * method will throw an exception if called on data files written using the
+     * out dated <code>writeLevel(...)</code> method in LevelFileWriter.
+     * 
+     * @return a collection of the saved GameObjects
+     */
+    public Collection<GameObject> getGameObjects () {
+        String gameObjectDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.GAMEOBJECT_DATA);
+        FileInputStream fis;
+        Collection<GameObject> inputGameObjects;
+        try {
+            fis = new FileInputStream(gameObjectDataFile);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            inputGameObjects = new ArrayList<GameObject>();
+            while (fis.available() > 0) {
+                inputGameObjects.add((GameObject) ois.readObject());
+            }
+            ois.close();
+        }
+        catch (FileNotFoundException e) {
+            throw new LevelFileIOException("File could not be found", e);
+        }
+        catch (IOException e) {
+            throw new LevelFileIOException("An IO error occurred", e);
+        }
+        catch (ClassNotFoundException e) {
+            throw new LevelFileIOException(
+                                           "A class matching the serialized class in the data file could not found.",
+                                           e);
+        }
+        return inputGameObjects;
     }
 
     /**

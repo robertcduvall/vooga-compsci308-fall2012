@@ -1,19 +1,24 @@
 package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import util.camera.Camera;
+import util.configstring.ConfigStringParser;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.ConfigStringParser;
 
 
 /**
@@ -21,9 +26,12 @@ import vooga.platformer.util.ConfigStringParser;
  * @author Niel Lebeck
  * @author Yaqi Zhang (revised)
  * @author Grant Oakley (modified)
+ * @author Sam Rang (added sprite methods)
  * 
  */
-public abstract class GameObject implements Comparable<GameObject> {
+public abstract class GameObject implements Comparable<GameObject>,
+        Serializable {
+    private static final long serialVersionUID = 1L;
     protected static final String X_TAG = "x";
     protected static final String Y_TAG = "y";
     protected static final String WIDTH_TAG = "width";
@@ -33,12 +41,14 @@ public abstract class GameObject implements Comparable<GameObject> {
 
     private boolean removeFlag;
     private Map<String, UpdateStrategy> strategyMap;
+    private Map<String, String> attributeMap;
     private double x;
     private double y;
     private double width;
     private double height;
-    private Image defaultImage;
+    private ImageIcon defaultImage;
     private int id;
+    private int hp;
     private Level myLevel;
 
     // Change this to public because no config str provided when creating
@@ -49,20 +59,6 @@ public abstract class GameObject implements Comparable<GameObject> {
     public GameObject () {
         strategyMap = new HashMap<String, UpdateStrategy>();
     }
-
-    // /**
-    // *
-    // * @param inX starting x position
-    // * @param inY starting y position
-    // */
-    // public GameObject (double inX, double inY, double inWidth, double
-    // inHeight) {
-    // this();
-    // x = inX;
-    // y = inY;
-    // width = inWidth;
-    // height = inHeight;
-    // }
 
     /**
      * @param configString containing key-value pairs for the GameObject's
@@ -80,15 +76,64 @@ public abstract class GameObject implements Comparable<GameObject> {
         y = Double.parseDouble(configMap.get(Y_TAG));
         width = Double.parseDouble(configMap.get(WIDTH_TAG));
         height = Double.parseDouble(configMap.get(HEIGHT_TAG));
-        String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
         id = Integer.parseInt(configMap.get(ID_TAG));
+        String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
         try {
-            defaultImage = ImageIO.read(new File(defaultImageName));
+            defaultImage = new ImageIcon(
+                    ImageIO.read(new File(defaultImageName)));
         }
         catch (IOException e) {
+            // TODO Handle this exception in a more acceptable manner, or do not
+            // use config string instantiation.
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
+    }
+
+    /**
+     * @author Yaqi
+     * @param ele XML element of this GameObject.
+     */
+    public GameObject (Element ele) {
+        this();
+        attributeMap = new HashMap<String, String>();
+        NodeList attrNodes = ele.getChildNodes();
+        for (int i = 0; i < attrNodes.getLength(); i++) {
+            Element attr = (Element) attrNodes.item(i);
+            attributeMap.put(attr.getTagName(), attr.getNodeValue());
+        }
+        convertValue();
+    }
+
+    /**
+     * This method convert String value of x, y, width, height, id in
+     * attributeMap to the proper format and save them to the instance variable.
+     */
+    private void convertValue () {
+        x = Double.parseDouble(attributeMap.get(X_TAG));
+        y = Double.parseDouble(attributeMap.get(Y_TAG));
+        width = Double.parseDouble(attributeMap.get(WIDTH_TAG));
+        height = Double.parseDouble(attributeMap.get(HEIGHT_TAG));
+        id = Integer.parseInt(attributeMap.get(ID_TAG));
+        String defaultImageName = attributeMap.get(DEFAULT_IMAGE_TAG);
+        try {
+            defaultImage = new ImageIcon(
+                    ImageIO.read(new File(defaultImageName)));
+        }
+        catch (IOException e) {
+            // TODO Handle this exception in a more acceptable manner, or do not
+            // use config string instantiation.
+            System.out.println("could not load image " + defaultImageName);
+            System.exit(0);
+        }
+    }
+
+    /**
+     * @return the attributeMap, which is a map between name of the attribute
+     *         and String value of the attribute.
+     */
+    public Map<String, String> getAttributeMap () {
+        return attributeMap;
     }
 
     /**
@@ -171,7 +216,8 @@ public abstract class GameObject implements Comparable<GameObject> {
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
-     * @param StrategyName the Class Name of the Strategy, not includes package name
+     * @param StrategyName the Class Name of the Strategy, not includes package
+     *        name
      * @param strat strategy
      */
     public void addStrategy (String StrategyName, UpdateStrategy strat) {
@@ -240,14 +286,14 @@ public abstract class GameObject implements Comparable<GameObject> {
      * @return the current Image of this GameObject
      */
     public Image getCurrentImage () {
-        return defaultImage;
+        return defaultImage.getImage();
     }
 
     /**
      * @param img of the obj
      */
     public void setImage (Image img) {
-        defaultImage = img;
+        defaultImage = new ImageIcon(img);
     }
 
     /**
@@ -268,12 +314,44 @@ public abstract class GameObject implements Comparable<GameObject> {
     }
 
     /**
+     * Damage the GameObject by given amount of HP.
+     * 
+     * @param amount
+     */
+    public void damage (int amount) {
+        hp -= amount;
+    }
+
+    /**
      * Gives the GameObject's bounds.
      * 
      * @return GameObject's bounds.
      */
     public Rectangle2D getShape () {
         return new Rectangle2D.Double(x, y, width, height);
+    }
+
+    /**
+     * Returns a boolean of whether or not a point is contained by the object.
+     * 
+     * @param p Point of interest
+     * @return boolean of whether the point is inside the bounds of the object
+     */
+    public boolean containsPoint (Point p) {
+        return p.x >= getX() && p.x <= getX() + getWidth() && p.y >= getY()
+                && p.y <= getY() + getHeight();
+    }
+
+    /**
+     * Flips the sprites image across it's vertical axis.
+     * 
+     */
+    public void flipImage () {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-getCurrentImage().getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        setImage(op.filter((BufferedImage) getCurrentImage(), null));
     }
 
 }

@@ -66,18 +66,19 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
     
-    public void setInputController(KeyboardController ic) {
+    //TODO: Figure out how to use input team's API
+    /*public void setInputController(KeyboardController ic) {
         myInputController = ic;
         myCurrentLevel.setInputController(myInputController);
-    }
+    }*/
     
     private void setupLevel(String lvlName) {
         myCurrentLevel = myLevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
         setPreferredSize(new Dimension((int)cameraBounds.getWidth(), (int)cameraBounds.getHeight()));
-        if (myInputController != null) {
+        /*if (myInputController != null) {
             myCurrentLevel.setInputController(myInputController);
-        }
+        }*/
     }
 
     @Override

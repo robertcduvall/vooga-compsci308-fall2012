@@ -19,15 +19,19 @@ public class Test {
     private static UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
     private static ResourceBundle resource;
-    private static SocialCenter mySocialCenter;
+    private static  SocialCenter mySocialCenter;
+    private static UserManager myUserManager;
 
     public static void main (String[] args) throws Exception {
 
         mySocialCenter = new SocialCenter();
-        //testLogOn();
-        //testRegister();
+        // testLogOn();
+        // testRegister();
 
-        testSendMessage();
+       // testSendMessage();
+        myUserManager=UserManager.getInstance();
+        testUserProfile();
+       
 
     }
 
@@ -36,7 +40,8 @@ public class Test {
     }
 
     private static void testRegister () throws Exception {
-        boolean status2 = mySocialCenter.registerUser("testuser2", "password", "firstname","lastname");
+        boolean status2 =
+                mySocialCenter.registerUser("testuser2", "password", "firstname", "lastname");
     }
 
     private static void testLogOn () throws Exception {
@@ -58,6 +63,12 @@ public class Test {
         myUserGameFilePath = resource.getString("GameFilePath");
         System.out.println(myUserGameFilePath);
         System.out.println(myUserMessageFilePath);
+    }
+    
+    private static void testUserProfile(){
+       //myUserManager.getUserProfile(userName);
+        myUserManager.getAllUserProfile();
+        
     }
 
 }

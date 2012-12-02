@@ -26,15 +26,6 @@ public abstract class AbstractPanelCreator {
         myArcade = a;
     }
 
-    //    /**
-    //     * Initializes the PanelCreator
-    //     * 
-    //     * @param a Arcade
-    //     */
-    //    public void creatorSetup (Arcade a) {
-    //        myArcade = a;
-    //    }
-
     /**
      * Used by subclasses as the first step in creating a new ArcadePanel
      * 
@@ -43,8 +34,16 @@ public abstract class AbstractPanelCreator {
     protected ArcadePanel initializeNewPanel () {
         ArcadePanel newPanel = new ArcadePanel(myArcade, myPanelType);
         newPanel.setBackground(Color.BLACK);
-        return newPanel;
+        return preparePanel(newPanel);
     }
+
+    /**
+     * Implement this with all methods that are common to the panel
+     * 
+     * @param newPanel
+     * @return
+     */
+    abstract protected ArcadePanel preparePanel (ArcadePanel newPanel);
 
     /**
      * Call this method to have this panel creator create you a new panel
