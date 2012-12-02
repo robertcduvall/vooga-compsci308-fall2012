@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
+import vooga.platformer.gameobject.Brick;
 import vooga.platformer.gameobject.GameObject;
 
 /**
@@ -126,7 +127,7 @@ public class LevelEditor extends JPanel {
                     // TODO replace null value for spriteID with a unique id value
 //                    Sprite s = new Sprite(event.getActionCommand(), x, y, OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
 //                            null, IMAGE_PATH + event.getActionCommand() + ".png");
-//                    GameObject obj = new GameObject();
+                    GameObject obj = new Brick();
 //                    myBoard.add(obj);
                 }
             });

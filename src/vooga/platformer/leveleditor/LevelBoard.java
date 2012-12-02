@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.gameobject.Brick;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
@@ -334,7 +335,8 @@ public class LevelBoard extends JPanel implements ISavable {
                 myObject.flipImage();
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
-//                GameObject nobj = new GameObject(myObject.getConfigStringParams());
+                
+//                GameObject nobj = new Brick(myObject.getConfigStringParams());
 //                LevelBoard.this.add(nobj);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {

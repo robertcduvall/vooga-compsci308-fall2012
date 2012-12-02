@@ -17,4 +17,7 @@ public class Brick extends GameObject {
     public Brick (String configString) {
         super(configString);
     }
+    public Brick () {
+        super();
+    }
 }
