@@ -1,7 +1,6 @@
 package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -18,11 +17,8 @@ public class TestMonster extends BattleObject {
     private final String ATTACK_STAT = "attack";
     private final String DEFENSE_STAT = "defense";
     private final String MAX_HEALTH_STAT = "maxHealth";
-    
-    private final double INCREASE_ATTACK_VAL = 1;
-    private final double INCREASE_DEFENSE_VAL = 1;
-    private final double INCREASE_HEALTH_VAL = 3;
-    
+
+
     private final double OPTION1_LOWER_BOUND = .0;
     private final double OPTION1_UPPER_BOUND = .5;
     private final double OPTION2_LOWER_BOUND = .5;

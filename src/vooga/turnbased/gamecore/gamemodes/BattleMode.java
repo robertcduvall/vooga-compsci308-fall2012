@@ -8,13 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.swing.ImageIcon;
 import util.graphicprocessing.FontEffect;
 import util.input.core.KeyboardController;
@@ -22,7 +18,6 @@ import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.InputAPI;
-import vooga.turnbased.sprites.Sprite;
 
 
 /**
