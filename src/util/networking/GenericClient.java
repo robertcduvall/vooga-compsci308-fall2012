@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 
 
@@ -21,7 +23,7 @@ public class GenericClient {
 
     private Socket myServer;
     private OutputStream myUserOutputStream;
-
+    
     /**
      * 
      * @param host
@@ -34,6 +36,10 @@ public class GenericClient {
         myUserOutputStream = os;
         System.out.println("Connected to " + myServer.getInetAddress() + ":" + myServer.getPort());
         startListening();
+    }
+    
+    protected synchronized void fireEvent(ClientEvent ce){
+        //To be implemented
     }
     
     private void startListening() {
