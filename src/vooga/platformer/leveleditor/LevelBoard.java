@@ -222,7 +222,9 @@ public class LevelBoard extends JPanel implements ISavable {
         myBufferGraphics.drawImage(
                 myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         for (GameObject obj : myGameObjects) {
-            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(), (int) obj.getWidth(), (int) obj.getHeight(), null);
+//            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(), (int) obj.getWidth(), (int) obj.getHeight(), null);
+            myBufferGraphics.setColor(Color.WHITE);
+            myBufferGraphics.drawRect((int)obj.getX()-myOffset, (int)obj.getY(), (int)obj.getWidth(), (int)obj.getHeight());
         }
         if (myCurrentObject != null) {
             myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
@@ -240,7 +242,7 @@ public class LevelBoard extends JPanel implements ISavable {
      * 
      * @param g Graphics attached to level.
      */
-    public void paint(Graphics g) {
+    public void paint (Graphics g) {
         update(g);
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         super.paintComponents(g);
@@ -324,6 +326,10 @@ public class LevelBoard extends JPanel implements ISavable {
         myGameObjects.remove(sprite);
     }
 
+    protected void setGrav(int value) {
+        System.out.println(value);
+    }
+
     private class SelectionHelper implements ActionListener {
         private GameObject myObject;
         public SelectionHelper(GameObject obj) {
@@ -336,8 +342,12 @@ public class LevelBoard extends JPanel implements ISavable {
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
                 
-//                GameObject nobj = new Brick(myObject.getConfigStringParams());
-//                LevelBoard.this.add(nobj);
+                GameObject nobj = new Brick();
+                nobj.setSize(20, 20);
+                nobj.setX(getMousePosition().x);
+                nobj.setY(getMousePosition().y);
+                myCurrentObject = nobj;
+                LevelBoard.this.add(nobj);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
                 createAttributeWindow();

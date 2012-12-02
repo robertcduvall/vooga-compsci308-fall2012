@@ -3,6 +3,7 @@ package vooga.platformer.leveleditor;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +25,14 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,8 +56,6 @@ public class LevelEditor extends JPanel {
     private Map<String, List<String>> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
-    private MouseListener myMouseListener;
-    private MouseMotionListener myMouseMotionListener;
     private MouseListener myButtonListener;
     private JPanel myButtonPanel;
     private JMenuBar myMenuBar;
@@ -83,13 +86,49 @@ public class LevelEditor extends JPanel {
     public KeyListener getKeyListener() {
         return myKeyListener;
     }
+    
+    public void addAttribute(String attribute) {
+        if("Gravity".equals(attribute)) { 
+            final LevelBoard current = myBoard;
+            final JPopupMenu jpop = new JPopupMenu();
+            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
+            final JTextField gravityfield = new JTextField();
+            JButton accept = new JButton("OK");
+            accept.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed (ActionEvent arg0) {
+                    String val = gravityfield.getText();
+                    try {
+                         int temp = Integer.parseInt(val);
+                         current.setGrav(temp);
+                    }
+                    catch (NumberFormatException e) {
+                        JLabel error = new JLabel("Entry invalid.\n Enter an integer.");
+                        jpop.add(error);
+                        jpop.pack();
+                        jpop.repaint();
+                    }
+                }
+            });
+            jpop.add(gravitylabel);
+            jpop.add(gravityfield);
+            jpop.add(accept);
+            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
+        }
+    }
     private void createListeners() {
-        myMouseListener = myBoard.getMouseListener();
         myKeyListener = myBoard.getKeyListener();
         myButtonListener = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent arg0) {
-                createPopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
+                try{
+                    createSpriteTypePopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
+                }
+                catch(NullPointerException e){
+                    if("plugin".equals(arg0.getComponent().getName())) {
+                        System.out.println("add level plugin");
+                    }
+                }
             }
         };
     }
@@ -112,11 +151,10 @@ public class LevelEditor extends JPanel {
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         panel.add(subpanel);
-        panel.setOpaque(false);
         panel.addMouseMotionListener(myBoard.getMouseMotionListener());
         return panel;
     }
-    private void createPopupMenu(final Component comp, final int x,
+    private void createSpriteTypePopupMenu(final Component comp, final int x,
             final int y) {
         JPopupMenu pop = new JPopupMenu();
         for (String subsprite : myObjectTypes.get(comp.getName())) {
@@ -128,7 +166,8 @@ public class LevelEditor extends JPanel {
 //                    Sprite s = new Sprite(event.getActionCommand(), x, y, OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
 //                            null, IMAGE_PATH + event.getActionCommand() + ".png");
                     GameObject obj = new Brick();
-//                    myBoard.add(obj);
+                    obj.setSize(20, 20);
+                    myBoard.add(obj);
                 }
             });
             pop.add(j);
@@ -153,8 +192,6 @@ public class LevelEditor extends JPanel {
         }
         // root elements
         myBoard = new LevelBoard(getSize());
-        myMouseListener = myBoard.getMouseListener();
-        myMouseMotionListener = myBoard.getMouseMotionListener();
     }
 
     protected void clear() {
