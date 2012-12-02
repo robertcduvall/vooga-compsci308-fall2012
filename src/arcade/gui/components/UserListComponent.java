@@ -32,7 +32,7 @@ public class UserListComponent extends JComponent implements ActionListener {
     private JButton sendMessageButton;
 
     public UserListComponent(UserProfile user, ArcadePanel theContainer){
-        this.setLayout(new MigLayout("", "[500][]5[]", "[30][][30]"));
+        this.setLayout(new MigLayout("", "[450][]5[]", "[30][][30]"));
         myUser = user;
         getUserInfo();
         myContainer = theContainer;
@@ -81,15 +81,15 @@ public class UserListComponent extends JComponent implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.red);
-        g.fillRect(50, 5, this.getWidth()-50, this.getHeight()-5);
+        g.fillRect(25, 5, this.getWidth()-75, this.getHeight()-5);
         g.setColor(Color.black);
-        g.fillRect(55, 10, this.getWidth()-60, this.getHeight()-15);
-        g.drawImage(profilePic, 60, 12, 81, 81, Color.black, this);
+        g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
+        g.drawImage(profilePic, 35, 12, 81, 81, Color.black, this);
         g.setColor(Color.white);
         g.setFont(new Font("sansserif", Font.BOLD, 40));
-        g.drawString(userName, 150, 60);
+        g.drawString(userName, 125, 60);
         g.setFont(new Font("sansserif", Font.ITALIC, 18));
-        g.drawString(userInfo, 170, 85);
+        g.drawString(userInfo, 145, 85); 
     }
 
     @Override
