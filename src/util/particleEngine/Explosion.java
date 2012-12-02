@@ -3,7 +3,7 @@ package util.particleEngine;
 import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
-import util.calculator.VectorCalculator;
+import util.mathvector.*;
 
 
 

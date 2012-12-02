@@ -207,5 +207,10 @@ public class UserManager {
     protected void updateMessage (String sender, String receiver, String content) {
         getUser(receiver).updateMyMessage(sender, content);
     }
+    
+    public GameData getGame(String userName, String gameName){
+     return   getUser(userName).getGameData(gameName);
+        
+    }
 
 }

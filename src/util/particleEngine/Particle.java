@@ -9,7 +9,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Random;
-import util.calculator.VectorCalculator;
+import util.mathvector.*;
 
 
 /**
