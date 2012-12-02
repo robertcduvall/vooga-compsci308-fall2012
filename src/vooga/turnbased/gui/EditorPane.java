@@ -3,6 +3,7 @@ package vooga.turnbased.gui;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -51,8 +52,8 @@ public class EditorPane extends DisplayPane {
                 String dir = System.getProperty("user.dir");
                 LevelEditor l = new LevelEditor(dir +
                         "/src/vooga/turnbased/resources/level/testLevel.xml");
-                //editDocument(l);
-                testHardcodedLevelEditor(l);
+                editDocument(l);
+                //testHardcodedLevelEditor(l);
                 PlayerEditor p = new PlayerEditor(dir +
                         "/src/vooga/turnbased/resources/level/testPlayer.xml");
                 testHardcodedPlayerEditor(p);
@@ -145,11 +146,10 @@ public class EditorPane extends DisplayPane {
     private void editDocument(LevelEditor l) {
         removeAll();
         repaint();
-        String[] background = {"Level ID: ", "Dimension Width: ", "Dimension Height: ",
-                "Viewable Width: ", "Viewable Height: ", "Background Image: ",
-                "Player Entry X-Coordinate: ", "Player Entry Y-Coordinate: "};
-        String[] defaultValues = {"1", "20", "30", "15", "11",
-                "src/vooga/turnbased/resources/image/background.png", "1", "1"};
+        String[] background = {"Dimension Width: ", "Dimension Height: ",
+                "Viewable Width: ", "Viewable Height: ", "Background Image: "};
+        String[] defaultValues = {"20", "30", "15", "11",
+                "src/vooga/turnbased/resources/image/background.png"};
         displayAndGetSetupInformation(background, defaultValues, l);
         addMenuButton();
         validate();
@@ -190,6 +190,7 @@ public class EditorPane extends DisplayPane {
         p.setOpaque(true);
         frame.setContentPane(p);
         frame.pack();
+        frame.setSize(new Dimension(600, 400));
         frame.setVisible(true);
     }
 
@@ -197,11 +198,11 @@ public class EditorPane extends DisplayPane {
         for (String now : returnedValues) {
             System.out.println(now);
         }
-        l.addDimensionTag(Integer.parseInt(returnedValues[1]),
-                Integer.parseInt(returnedValues[2]));
-        l.addCameraDimension(Integer.parseInt(returnedValues[3]),
-                Integer.parseInt(returnedValues[4]));
-        l.addBackgroundImage(returnedValues[5]);
+        l.addDimensionTag(Integer.parseInt(returnedValues[0]),
+                Integer.parseInt(returnedValues[1]));
+        l.addCameraDimension(Integer.parseInt(returnedValues[2]),
+                Integer.parseInt(returnedValues[3]));
+        l.addBackgroundImage(returnedValues[4]);
         l.addStartMode();
         l.saveXmlDocument();
     }

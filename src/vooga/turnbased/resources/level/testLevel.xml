@@ -4,41 +4,13 @@
 <width>20</width>
 <height>30</height>
 </dimension>
-<backgroundImage>THIS IS THE NEW IMAGE PATH</backgroundImage>
 <camaraDimension>
-<width>10</width>
-<height>10</height>
+<width>15</width>
+<height>11</height>
 </camaraDimension>
+<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+<startMode>map</startMode>
 </gameSetup>
 <modeDeclarations/>
-<spriteDeclarations>
-<sprite>
-<object>
-<createsOn>CREATE</createsOn>
-<modes>map</modes>
-<class>MAP CLASS</class>
-<condition>MAP EVENT</condition>
-<location>
-<x>5</x>
-<y>5</y>
-</location>
-<image>img1</image>
-<image>img2</image>
-</object>
-<object>
-<createsOn>CREATE</createsOn>
-<modes>battle</modes>
-<class>BATTLE CLASS</class>
-<condition>BATTLE EVENT</condition>
-<stats>
-<defense>8</defense>
-<attack>5</attack>
-<health>10</health>
-</stats>
-<name>NAME</name>
-<image>img1</image>
-<image>img2</image>
-</object>
-</sprite>
-</spriteDeclarations>
+<spriteDeclarations/>
 </rpggame>
