@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
@@ -135,25 +134,30 @@ public class PlatformerController extends JPanel implements Runnable {
             @Override
             public void keyPressed (KeyEvent e) {
                 if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    myPlayer.getMovingStrategy().goLeft();
-                    
+//                    myPlayer.getMovingStrategy().goLeft();
+                    myPlayer.fireControlStrategy("GoLeft");
                 }
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    myPlayer.getMovingStrategy().goRight();
+//                    myPlayer.getMovingStrategy().goRight();
+                    myPlayer.fireControlStrategy("GoRight");
                 }
                 if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.getMovingStrategy().jump();
+//                    myPlayer.getMovingStrategy().jump();
+                    myPlayer.fireControlStrategy("Jump");
                 }
                 if(e.getKeyCode()==KeyEvent.VK_SPACE){
+//                    myPlayer.fireControlStrategy("Jump");
                     ShootingStrategy ss = myPlayer.getShootingStrategy();
                     if(ss !=null){
-                        ss.shoot();
+                        ss.fire();
                     }
                 }
             }
 
             public void keyReleased (KeyEvent e) {
-                myPlayer.getMovingStrategy().stop();
+//                myPlayer.getMovingStrategy().stop();
+                myPlayer.fireControlStrategy("Stop");
+
             }
         };
         MouseMotionListener mml = new MouseAdapter() {
