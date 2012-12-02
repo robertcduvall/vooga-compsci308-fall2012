@@ -1,5 +1,5 @@
-<level>
-<levelid>1</levelid>
+<rpggame>
+<gameSetup>
 <dimension>
 <width>20</width>
 <height>30</height>
@@ -9,8 +9,8 @@
 <height>11</height>
 </camaraDimension>
 <backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
-<player_entry_point>
-<x>1</x>
-<y>1</y>
-</player_entry_point>
-</level>
+<startMode>map</startMode>
+</gameSetup>
+<modeDeclarations/>
+<spriteDeclarations/>
+</rpggame>

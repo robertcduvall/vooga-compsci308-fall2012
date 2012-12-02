@@ -12,6 +12,14 @@ import java.util.Random;
  *
  */
 public class TestMonster extends BattleObject {
+    private final String HEALTH_STAT = "health";
+    private final String ATTACK_STAT = "attack";
+    private final String DEFENSE_STAT = "defense";
+    private final String MAX_HEALTH_STAT = "maxHealth";
+    
+    private final double INCREASE_ATTACK_VAL = 1;
+    private final double INCREASE_DEFENSE_VAL = 1;
+    private final double INCREASE_HEALTH_VAL = 3;
     /**
      * Creates a test battle monster.
      * @param id the ID number of the object.
@@ -27,15 +35,15 @@ public class TestMonster extends BattleObject {
 
     @Override
     public void takeDamage (int damageDone) {
-        int healthLost =  damageDone - getStat("defense").intValue();
+        int healthLost =  damageDone - getStat(DEFENSE_STAT).intValue();
         if (healthLost > 0) {
-            changeStat("health", getStat("health").intValue() - healthLost);
+            changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() - healthLost);
         }
     }
 
     @Override
     public void attackEnemy (BattleObject enemy) {
-        enemy.takeDamage(getStat("attack").intValue());
+        enemy.takeDamage(getStat(ATTACK_STAT).intValue());
     }
 
     @Override
@@ -58,5 +66,35 @@ public class TestMonster extends BattleObject {
             return messages[i]; 
         }
 
+    }
+
+    @Override
+    public String[] getOptions () {
+        String[] ret = {"ATTACK", "DEFEND", "CHARGE", "HEAL"};
+        return ret;
+
+    }
+
+    @Override
+    public void doOption1 (BattleObject target) {
+        attackEnemy(target);
+    }
+
+    @Override
+    public void doOption2 (BattleObject target) {
+        changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() + 1);
+    }
+
+    @Override
+    public void doOption3 (BattleObject target) {
+        changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() +1);
+    }
+
+    @Override
+    public void doOption4 (BattleObject target) {
+        changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() + 3);
+        if (getStat(HEALTH_STAT).intValue() > getStat(MAX_HEALTH_STAT).intValue()) {
+            changeStat(HEALTH_STAT, getStat(MAX_HEALTH_STAT).intValue());
+        }
     }
 }

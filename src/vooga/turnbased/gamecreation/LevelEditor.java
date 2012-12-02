@@ -13,8 +13,24 @@ import util.xml.XmlUtilities;
  */
 public class LevelEditor extends Editor {
 
+    private static final String DIMENSION = "dimension";
+    private static final String BACKGROUND_IMAGE = "backgroundImage";
+    private static final String MODE = "mode";
+    private static final String NAME = "name";
+    private static final String CLASS = "class";
+    private static final String CONDITION = "condition";
+    private static final String OBJECT = "object";
+    private static final String CREATE_ON = "createOn";
+    private static final String MODES = "modes";
+    private static final String IMAGE = "image";
+    private static final String HEIGHT = "height";
+    private static final String WIDTH = "width";
+
     private Document myXmlDocument;
     private Element myRootElement;
+    private Element myGameSetupElement;
+    private Element myModeElement;
+    private Element mySpriteElement;
     private String myFileName;
 
     /**
@@ -36,26 +52,18 @@ public class LevelEditor extends Editor {
      */
     public LevelEditor(String fileName) {
         myXmlDocument = XmlUtilities.makeDocument();
-        myRootElement = myXmlDocument.createElement("level");
+        myRootElement = myXmlDocument.createElement("rpggame");
         myXmlDocument.appendChild(myRootElement);
+        myGameSetupElement = XmlUtilities.appendElement(myXmlDocument, myRootElement,
+                "gameSetup");
+        myRootElement.appendChild(myGameSetupElement);
+        myModeElement = XmlUtilities.appendElement(myXmlDocument, myRootElement,
+                "modeDeclarations");
+        myRootElement.appendChild(myModeElement);
+        mySpriteElement = XmlUtilities.appendElement(myXmlDocument, myRootElement,
+                "spriteDeclarations");
+        myRootElement.appendChild(mySpriteElement);
         myFileName = fileName;
-    }
-
-    /**
-     * 
-     * @param id The id number for the level Xml
-     */
-    public void addLevelId (Number id) {
-        XmlUtilities.appendElement(myXmlDocument, myRootElement, "levelid", id.toString());
-    }
-
-    /**
-     * 
-     * @param id The id number to replace the former id
-     */
-    public void modifyLevelId (Number id) {
-        Element levelId = XmlUtilities.getElement(myRootElement, "levelid");
-        XmlUtilities.setContent(levelId, id.toString());
     }
 
     /**
@@ -64,7 +72,7 @@ public class LevelEditor extends Editor {
      * @param height Describes height of the Map dimension
      */
     public void addDimensionTag(Number width, Number height) {
-        addDimension("dimension", width, height);
+        addDimension(DIMENSION, width, height);
     }
 
     /**
@@ -73,7 +81,7 @@ public class LevelEditor extends Editor {
      * @param height New map dimension height
      */
     public void modifyDimensionTag(Number width, Number height) {
-        modifyDimension("dimension", width, height);
+        modifyDimension(DIMENSION, width, height);
     }
 
     /**
@@ -99,8 +107,8 @@ public class LevelEditor extends Editor {
      * @param imagePath Path to the Background image of the level
      */
     public void addBackgroundImage (String imagePath) {
-        XmlUtilities.appendElement(myXmlDocument, myRootElement,
-                "backgroundImage", imagePath);
+        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement,
+                BACKGROUND_IMAGE, imagePath);
     }
 
     /**
@@ -108,83 +116,112 @@ public class LevelEditor extends Editor {
      * @param imagePath New Image Path
      */
     public void modifyBackgroundImage (String imagePath) {
-        Element background = XmlUtilities.getElement(myRootElement, "backgroundImage");
+        Element background = XmlUtilities.getElement(myGameSetupElement, BACKGROUND_IMAGE);
         XmlUtilities.setContent(background, imagePath);
     }
 
     /**
-     *
-     * @param x X-coordinate player entry point
-     * @param y Y-coordinate player entry point
+     * Adds the start mode element, which is always map.
      */
-    public void addPlayerEntryPoints (Number x, Number y) {
-        String tagName = "player_entry_point";
-        XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
-        Element dimension = XmlUtilities.getElement(myRootElement, tagName);
-        XmlUtilities.appendElement(myXmlDocument, dimension, "x", x.toString());
-        XmlUtilities.appendElement(myXmlDocument, dimension, "y", y.toString());
+    public void addStartMode () {
+        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map");
     }
 
     /**
      * 
-     * @param x New x-coordinate for player entry
-     * @param y New y-coordinate for player entry
+     * @param name Name of Declared mode
+     * @param classMode Class used for the mode
+     * @param conditions Either single string value or multiple comma separated strings
      */
-    public void modifyPlayerEntryPoints (Number x, Number y) {
-        Element playerEntry = XmlUtilities.getElement(myRootElement, "player_entry_point");
-        Element xElement = XmlUtilities.getElement(playerEntry, "x");
-        Element yElement = XmlUtilities.getElement(playerEntry, "y");
-        XmlUtilities.setContent(xElement, x.toString());
-        XmlUtilities.setContent(yElement, y.toString());
+    public void addMode (String name, String classMode, String conditions) {
+        if (conditions.contains(",")) {
+            conditions.replaceAll("\\s", "");
+            String[] newConditions = conditions.split("\\s*,\\s*");
+            addMode(name, classMode, newConditions);
+        }
+        else {
+            Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
+            XmlUtilities.appendElement(myXmlDocument, mode, NAME, name);
+            XmlUtilities.appendElement(myXmlDocument, mode, CLASS, classMode);
+            XmlUtilities.appendElement(myXmlDocument, mode, CONDITION, conditions);
+        }
     }
+
+    /**
+     * 
+     * @param name Name of Declared mode
+     * @param classMode Class used for the mode
+     * @param conditions multiple condition tags to be added
+     */
+    public void addMode (String name, String classMode, String[] conditions) {
+        Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
+        XmlUtilities.appendElement(myXmlDocument, mode, NAME, name);
+        XmlUtilities.appendElement(myXmlDocument, mode, CLASS, classMode);
+        for (String condition : conditions) {
+            XmlUtilities.appendElement(myXmlDocument, mode, CONDITION, condition);
+        }
+    }
+
     /**
      * 
      * @return The new Sprite element that was just added to the Xml Document
      */
     public Element addSprite () {
-        return XmlUtilities.appendElement(myXmlDocument, myRootElement, "sprite");
+        return XmlUtilities.appendElement(myXmlDocument, mySpriteElement, "sprite");
     }
 
     /**
      * Creates a map object and adds it to a sprite.
      * 
      * @param s Sprite Element to which the mapObject is added
+     * @param createsOn When the object is initiated
+     * @param modeds The modes that this object is in
      * @param mapClass Specific concrete class for the map object
-     * @param event Event for this map object
+     * @param condition Condition event for this map object
      * @param x Map x-coordinate
      * @param y Map y-coordinate
      * @param imagePath Path to the Map Image
      */
-    public void addMapObject (Element s, String mapClass, String event, Number x, Number y,
-            String imagePath) {
-        Element map = XmlUtilities.appendElement(myXmlDocument, s, "map");
-        XmlUtilities.appendElement(myXmlDocument, map, "class", mapClass);
-        XmlUtilities.appendElement(myXmlDocument, map, "event", event);
-        Element location = XmlUtilities.appendElement(myXmlDocument, map, "location");
+    public void addMapObject (Element s, String createsOn, String modeds, String mapClass,
+            String condition, Number x, Number y, String[] imagePath) {
+        Element mapElement = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
+        XmlUtilities.appendElement(myXmlDocument, mapElement, CREATE_ON, createsOn);
+        XmlUtilities.appendElement(myXmlDocument, mapElement, MODES, modeds);
+        XmlUtilities.appendElement(myXmlDocument, mapElement, CLASS, mapClass);
+        XmlUtilities.appendElement(myXmlDocument, mapElement, CONDITION, condition);
+        Element location = XmlUtilities.appendElement(myXmlDocument, mapElement, "location");
         XmlUtilities.appendElement(myXmlDocument, location, "x", x.toString());
         XmlUtilities.appendElement(myXmlDocument, location, "y", y.toString());
-        XmlUtilities.appendElement(myXmlDocument, map, "image", imagePath);
+        for (String image : imagePath) {
+            XmlUtilities.appendElement(myXmlDocument, mapElement, IMAGE, image);
+        }
     }
 
     /**
      * Creates a battle object and adds it to a sprite.
      * 
      * @param s Sprite to which the battleObject is added
+     * @param createsOn When the object is initiated
+     * @param modes The modes this object is in
      * @param battleClass Specific concrete class for the battle object
-     * @param event Event for the battle object
+     * @param condition Condition event for the battle object
      * @param stats map for each battle attribute and value (health, attack, etc.)
      * @param name Name of the battle object (i.e. Pikachu)
      * @param imagePath Path to the Battle Image
      */
-    public void addBattleObject (Element s, String battleClass, String event,
-            Map<String, Number> stats, String name, String imagePath) {
-        Element battle = XmlUtilities.appendElement(myXmlDocument, s, "battle");
-        XmlUtilities.appendElement(myXmlDocument, battle, "class", battleClass);
-        XmlUtilities.appendElement(myXmlDocument, battle, "event", event);
+    public void addBattleObject (Element s, String createsOn, String modes, String battleClass,
+            String condition, Map<String, Number> stats, String name, String[] imagePath) {
+        Element battle = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
+        XmlUtilities.appendElement(myXmlDocument, battle, CREATE_ON, createsOn);
+        XmlUtilities.appendElement(myXmlDocument, battle, MODES, modes);
+        XmlUtilities.appendElement(myXmlDocument, battle, CLASS, battleClass);
+        XmlUtilities.appendElement(myXmlDocument, battle, CONDITION, condition);
         Element statsElement = XmlUtilities.appendElement(myXmlDocument, battle, "stats");
         addStatsMapToXml(statsElement, stats);
-        XmlUtilities.appendElement(myXmlDocument, battle, "name", name);
-        XmlUtilities.appendElement(myXmlDocument, battle, "image", imagePath);
+        XmlUtilities.appendElement(myXmlDocument, battle, NAME, name);
+        for (String image : imagePath) {
+            XmlUtilities.appendElement(myXmlDocument, battle, IMAGE, image);
+        }
     }
 
     private void addStatsMapToXml (Element e, Map<String, Number> m) {
@@ -194,23 +231,29 @@ public class LevelEditor extends Editor {
     }
 
     private void addDimension (String tagName, Number width, Number height) {
-        Element dimension = XmlUtilities.appendElement(myXmlDocument, myRootElement, tagName);
-        XmlUtilities.appendElement(myXmlDocument, dimension, "width", width.toString());
-        XmlUtilities.appendElement(myXmlDocument, dimension, "height", height.toString());
+        Element dimension = XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, tagName);
+        XmlUtilities.appendElement(myXmlDocument, dimension, WIDTH, width.toString());
+        XmlUtilities.appendElement(myXmlDocument, dimension, HEIGHT, height.toString());
     }
 
     private void modifyDimension (String s, Number width, Number height) {
-        Element dimension = XmlUtilities.getElement(myRootElement, s);
-        Element w = XmlUtilities.getElement(dimension, "width");
-        Element h = XmlUtilities.getElement(dimension, "height");
+        Element dimension = XmlUtilities.getElement(myGameSetupElement, s);
+        Element w = XmlUtilities.getElement(dimension, WIDTH);
+        Element h = XmlUtilities.getElement(dimension, HEIGHT);
         XmlUtilities.setContent(w, width.toString());
         XmlUtilities.setContent(h, height.toString());
     }
 
+    /**
+     * Save this Xml Document.
+     */
     public void saveXmlDocument () {
         XmlUtilities.write(myXmlDocument, myFileName);
     }
 
+    /**
+     * Retrieve the Xml Document.
+     */
     public Document getXmlDocument () {
         return myXmlDocument;
     }

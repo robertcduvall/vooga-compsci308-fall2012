@@ -74,10 +74,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private final String ATTACK_STAT = "attack";
     private final String DEFENSE_STAT = "defense";
     private final String MAX_HEALTH_STAT = "maxHealth";
-    private final String OPTION1 = "ATTACK";
-    private final String OPTION2 = "DEFEND";
-    private final String OPTION3 = "CHARGE";
-    private final String OPTION4 = "HEAL";
+
 
     /**
      * Constructor for a Battle.
@@ -257,7 +254,7 @@ public class BattleMode extends GameMode implements InputAPI {
         int fontSize = calculateFontSize(width, height) * width / height;
         Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
         FontEffect fontEffect = new FontEffect(g, font);
-        String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
+        String[] options = myPlayerObject.getOptions();
         // position determines where the strings are painted (need to get rid
         // of the magic numbers)
         Point position = null;
@@ -365,54 +362,39 @@ public class BattleMode extends GameMode implements InputAPI {
      * Triggers the event associated with the player's first option.
      */
     public void triggerOption1Event () {
-        // for now, player attacks enemy player
-        // by difference in defense
-        myMessages.add(myPlayerObject.getName() + USED + OPTION1);
-        myPlayerObject.attackEnemy(myEnemyObject);
-        // check if enemy/opposing team is dead
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[0]);
+        myPlayerObject.doOption1(myEnemyObject);
+        continueBattle();
     }
 
     /**
      * Triggers the event associated with the player's second option.
      */
     public void triggerOption2Event () {
-        // for now, increases player defense by one; other team still attacks
-        myMessages.add(myPlayerObject.getName() + USED + OPTION2);
-        myPlayerObject.changeStat(DEFENSE_STAT, myPlayerObject.getStat(DEFENSE_STAT).intValue() +
-                INCREASE_DEFENSE_VAL);
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[1]);
+        myPlayerObject.doOption2(null);
+        continueBattle();
     }
 
     /**
      * Triggers the event associated with the player's third option.
      */
     public void triggerOption3Event () {
-        // for now, increases player attack by one; other team still attacks
-        myMessages.add(myPlayerObject.getName() + USED + OPTION3);
-        myPlayerObject.changeStat(ATTACK_STAT, myPlayerObject.getStat(ATTACK_STAT).intValue() +
-                INCREASE_ATTACK_VAL);
-        if (!isBattleOver()) {
-            generateEnemyMove();
-        }
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[2]);
+        myPlayerObject.doOption3(null);
+        continueBattle();
     }
 
     /**
      * Triggers the event associated with the player's fourth option.
      */
     public void triggerOption4Event () {
-        // for now, increases player health by 3
-        myMessages.add(myPlayerObject.getName() + USED + OPTION4);
-        myPlayerObject.changeStat(HEALTH_STAT, myPlayerObject.getStat(HEALTH_STAT).intValue() +
-                INCREASE_HEALTH_VAL);
-        if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat(MAX_HEALTH_STAT)
-                .intValue()) {
-            myPlayerObject.changeStat("health", myPlayerObject.getStat(MAX_HEALTH_STAT).intValue());
-        }
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[3]);
+        myPlayerObject.doOption4(null);
+        continueBattle();
+    }
+
+    private void continueBattle () {
         if (!isBattleOver()) {
             generateEnemyMove();
         }
@@ -489,19 +471,19 @@ public class BattleMode extends GameMode implements InputAPI {
         if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
             // attack
             myEnemyObject.attackEnemy(myPlayerObject);
-            myMessages.add(myEnemyObject.getName() + USED + OPTION1);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[0]);
         }
         if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
             // defend
             myEnemyObject.changeStat(DEFENSE_STAT, myEnemyObject.getStat(DEFENSE_STAT).intValue() +
                     INCREASE_DEFENSE_VAL);
-            myMessages.add(myEnemyObject.getName() + USED + OPTION2);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[1]);
         }
         if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
             // charge
             myEnemyObject.changeStat(ATTACK_STAT, myEnemyObject.getStat(ATTACK_STAT).intValue() +
                     INCREASE_ATTACK_VAL);
-            myMessages.add(myEnemyObject.getName() + USED + OPTION3);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[2]);
         }
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
             // increase health
@@ -512,7 +494,7 @@ public class BattleMode extends GameMode implements InputAPI {
                 myEnemyObject.changeStat(HEALTH_STAT, myEnemyObject.getStat(MAX_HEALTH_STAT)
                         .intValue());
             }
-            myMessages.add(myEnemyObject.getName() + USED + OPTION4);
+            myMessages.add(myEnemyObject.getName() + USED + myEnemyObject.getOptions()[3]);
         }
     }
 

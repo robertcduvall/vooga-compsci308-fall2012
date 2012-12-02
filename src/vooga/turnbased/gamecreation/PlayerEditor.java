@@ -1,5 +1,6 @@
 package vooga.turnbased.gamecreation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Document;
@@ -13,6 +14,15 @@ import util.xml.XmlUtilities;
  * @author Mark Hoffman
  */
 public class PlayerEditor extends Editor {
+
+    private static final String NAME = "name";
+    private static final String CLASS = "class";
+    private static final String CONDITION = "condition";
+    private static final String OBJECT = "object";
+    private static final String MODES = "modes";
+    private static final String IMAGE = "image";
+    private static final String CREATE_ON = "createOn";
+
     private Document myXmlDocument;
     private Element myRootElement;
     private String myFileName;
@@ -52,23 +62,26 @@ public class PlayerEditor extends Editor {
     /**
      * Creates a map object and adds it to a sprite.
      * 
-     * @param s Sprite Element to which the mapObject is added
+     * @param player Object element to which the mapObject is added
+     * @param createOn When to create the object
+     * @param modes Comma-separated modes this object is in
      * @param mapClass Specific concrete class for the map object
-     * @param event Event for this map object
+     * @param condition Event for this map object
      * @param x Map x-coordinate
      * @param y Map y-coordinate
      * @param imagePaths Paths to the Map Image (maps <source, direction>)
      */
-    public void addPlayerMapObject (Element s, String mapClass, String event, Number x, Number y,
-            Map<String, String> imagePaths) {
-        Element map = XmlUtilities.appendElement(myXmlDocument, s, "map");
-        XmlUtilities.appendElement(myXmlDocument, map, "class", mapClass);
-        XmlUtilities.appendElement(myXmlDocument, map, "event", event);
-        Element location = XmlUtilities.appendElement(myXmlDocument, map, "location");
+    public void addMapObject (Element player, String createOn, String modes, String mapClass,
+            String condition, Number x, Number y, Map<String, String> imagePaths) {
+        Element object = XmlUtilities.appendElement(myXmlDocument, player, OBJECT);
+        XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
+        XmlUtilities.appendElement(myXmlDocument, object, CLASS, mapClass);
+        XmlUtilities.appendElement(myXmlDocument, object, CONDITION, condition);
+        Element location = XmlUtilities.appendElement(myXmlDocument, object, "location");
         XmlUtilities.appendElement(myXmlDocument, location, "x", x.toString());
         XmlUtilities.appendElement(myXmlDocument, location, "y", y.toString());
         for (String key : imagePaths.keySet()) {
-            Element image = XmlUtilities.appendElement(myXmlDocument, map, "image");
+            Element image = XmlUtilities.appendElement(myXmlDocument, object, IMAGE);
             XmlUtilities.appendElement(myXmlDocument, image, "source", key);
             XmlUtilities.appendElement(myXmlDocument, image, "direction", imagePaths.get(key));
         }
@@ -78,36 +91,48 @@ public class PlayerEditor extends Editor {
      * Creates a battle object and adds it to a sprite.
      * 
      * @param s Sprite to which the battleObject is added
+     * @param createOn When to create the object
+     * @param modes Comma-separated modes this object is in
      * @param battleClass Specific concrete class for the battle object
-     * @param event Event for the battle object
+     * @param condition Event for the battle object
      * @param stats map for each battle attribute and value (health, attack, etc.)
      * @param name Name of the battle object (i.e. Pikachu)
      * @param imagePath Path to the Battle Image
      */
-    public void addBattleObject (Element s, String battleClass, String event,
-            Map<String, Number> stats, String name, String imagePath) {
-        Element battle = XmlUtilities.appendElement(myXmlDocument, s, "battle");
-        XmlUtilities.appendElement(myXmlDocument, battle, "class", battleClass);
-        XmlUtilities.appendElement(myXmlDocument, battle, "event", event);
-        Element statsElement = XmlUtilities.appendElement(myXmlDocument, battle, "stats");
+    public void addBattleObject (Element s, String createOn, String modes, String battleClass,
+            String condition, Map<String, Number> stats, String name, String[] imagePath) {
+        Element object = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
+        XmlUtilities.appendElement(myXmlDocument, object, CREATE_ON, createOn);
+        XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
+        XmlUtilities.appendElement(myXmlDocument, object, CLASS, battleClass);
+        XmlUtilities.appendElement(myXmlDocument, object, CONDITION, condition);
+        Element statsElement = XmlUtilities.appendElement(myXmlDocument, object, "stats");
         for (String key : stats.keySet()) {
             XmlUtilities.appendElement(myXmlDocument, statsElement, key,
                     stats.get(key).toString());
         }
-        XmlUtilities.appendElement(myXmlDocument, battle, "name", name);
-        XmlUtilities.appendElement(myXmlDocument, battle, "image", imagePath);
+        XmlUtilities.appendElement(myXmlDocument, object, NAME, name);
+        for (String image : imagePath) {
+            XmlUtilities.appendElement(myXmlDocument, object, IMAGE, image);
+        }
     }
 
     /**
-     * @param s sprite element for which the battle stats need altering
+     * @param s object element for which the battle stats need altering
      * @param stats Map of battle attributes and their values
      * @param name Name of the battle object that stat changes in
      */
     public void modifyBattleStats (Element s, Map<String, Number> stats, String name) {
-        List<Element> battle = (List<Element>) XmlUtilities.getElements(s, "battle");
+        List<Element> allObjects = (List<Element>) XmlUtilities.getElements(s, OBJECT);
+        List<Element> battleObjects = new ArrayList<Element>();
+        for (Element current : allObjects) {
+            if (XmlUtilities.getChildContent(current, MODES).contains("battle")) {
+                battleObjects.add(current);
+            }
+        }
         Element statsElement = null;
-        for (Element current : battle) {
-            String currentName = XmlUtilities.getChildContent(current, "name");
+        for (Element current : battleObjects) {
+            String currentName = XmlUtilities.getChildContent(current, NAME);
             if (currentName.equals(name)) {
                 statsElement = current;
             }
@@ -118,10 +143,16 @@ public class PlayerEditor extends Editor {
         }
     }
 
+    /**
+     * Save Xml Document.
+     */
     public void saveXmlDocument () {
         XmlUtilities.write(myXmlDocument, myFileName);
     }
 
+    /**
+     * get Xml document.
+     */
     public Document getXmlDocument () {
         return myXmlDocument;
     }

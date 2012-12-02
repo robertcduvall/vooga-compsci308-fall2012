@@ -2,7 +2,7 @@ package vooga.turnbased.gui;
 
 
 import java.awt.Component;
-import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -10,14 +10,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.text.JTextComponent;
 import org.w3c.dom.Document;
@@ -33,6 +31,8 @@ import vooga.turnbased.gamecreation.PlayerEditor;
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
+    private static final String USER_DIR = "user.dir";
+
     /**
      * 
      * @param gameWindow
@@ -44,17 +44,11 @@ public class EditorPane extends DisplayPane {
     }
 
     private void addInitialButtons () {
-        JButton menuButton = new JButton("Back to menu");
-        menuButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                getGameWindow().changeActivePane(GameWindow.MENU);
-            }
-        });
-        add(menuButton);
+        addMenuButton();
         JButton newLevelButton = new JButton("Create New Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                String dir = System.getProperty("user.dir");
+                String dir = System.getProperty(USER_DIR);
                 LevelEditor l = new LevelEditor(dir +
                         "/src/vooga/turnbased/resources/level/testLevel.xml");
                 editDocument(l);
@@ -79,15 +73,16 @@ public class EditorPane extends DisplayPane {
         l.addDimensionTag(20, 30);
         l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
         l.addCameraDimension(10, 10);
-        l.addLevelId(1);
-        l.addPlayerEntryPoints(5, 5);
         Element sprite = l.addSprite();
-        l.addMapObject(sprite, "MAP CLASS", "MAP EVENT", 5, 5, "MAP IMAGE PATH");
+        String[] mapImagePaths = {"img1", "img2"};
+        l.addMapObject(sprite, "CREATE","map","MAP CLASS", "MAP EVENT", 5, 5, mapImagePaths);
         Map<String, Number> stats = new HashMap<String, Number>();
         stats.put("health", 10);
         stats.put("attack", 5);
         stats.put("defense", 8);
-        l.addBattleObject(sprite, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG PATH");
+        String[] battleImagePaths = {"img1", "img2"};
+        l.addBattleObject(sprite, "CREATE", "battle","BATTLE CLASS", "BATTLE EVENT", stats,
+                "NAME", battleImagePaths);
         l.saveXmlDocument();
     }
 
@@ -96,12 +91,13 @@ public class EditorPane extends DisplayPane {
         Map<String, String> imagePaths = new HashMap<String,String>();
         imagePaths.put("source1", "direction1");
         imagePaths.put("source2", "direction2");
-        p.addPlayerMapObject(player, "MAP CLASS", "MAP EVENT", 4, 4, imagePaths);
+        p.addMapObject(player, "start", "map1, map2", "MAP CLASS", "MAP EVENT", 4, 4, imagePaths);
         Map<String, Number> stats = new HashMap<String, Number>();
         stats.put("health", 3);
         stats.put("attack", 2);
         stats.put("defense", 1);
-        p.addBattleObject(player, "BATTLE CLASS", "BATTLE EVENT", stats, "NAME", "BATTLE IMG");
+        String[] imagePath = {"PATH1", "PATH2"};
+        p.addBattleObject(player, "start", "battle", "CLASS", "CONDITION", stats, "NAME", imagePath);
         stats.put("health", 6);
         stats.put("attack", 5);
         stats.put("defense", 4);
@@ -138,7 +134,7 @@ public class EditorPane extends DisplayPane {
     }
 
     private File selectFile () {
-        JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+        JFileChooser fc = new JFileChooser(System.getProperty(USER_DIR));
         int returnVal = fc.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile();
@@ -149,33 +145,34 @@ public class EditorPane extends DisplayPane {
     private void editDocument(LevelEditor l) {
         removeAll();
         repaint();
-        String[] background = {"Level ID: ", "Dimension Width: ", "Dimension Height: ",
-                "Viewable Width: ", "Viewable Height: ", "Background Image: ",
-                "Player Entry X-Coordinate: ", "Player Entry Y-Coordinate: "};
-        String[] defaultValues = {"1", "20", "30", "15", "11",
-                "src/vooga/turnbased/resources/image/background.png", "1", "1"};
-        displayAndGetStringInformation(background, defaultValues, l);
+        String[] background = {"Dimension Width: ", "Dimension Height: ",
+                "Viewable Width: ", "Viewable Height: ", "Background Image: "};
+        String[] defaultValues = {"20", "30", "15", "11",
+        "src/vooga/turnbased/resources/image/background.png"};
+        displayAndGetSetupInformation(background, defaultValues, l);
+        addMenuButton();
+        validate();
     }
 
-    private void displayAndGetStringInformation (String[] labels, String[] defaultValues,
+    private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
             final LevelEditor l) {
 
-        final int numPairs = labels.length;
-        final JPanel p = new JPanel(new SpringLayout());
-        for (int i = 0; i < numPairs; i++) {
+        final int NUM_PAIRS = labels.length;
+        final JPanel P = new JPanel(new SpringLayout());
+        for (int i = 0; i < NUM_PAIRS; i++) {
             JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
-            p.add(l1);
+            P.add(l1);
             JTextField textField = new JTextField(defaultValues[i], 10);
             l1.setLabelFor(textField);
-            p.add(textField);
+            P.add(textField);
         }
-        makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
-        final JFrame frame = new JFrame("Background Information (Default Values shown)");
+        InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
+        final JFrame FRAME = new JFrame("Background Information (Default Values shown)");
         JButton doneButton = new JButton("Done");
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                String[] returnedValues = new String[numPairs];
-                Component[] allComponents = p.getComponents();
+                String[] returnedValues = new String[NUM_PAIRS];
+                Component[] allComponents = P.getComponents();
                 int index = 0;
                 for (Component current : allComponents) {
                     if (current.getClass().getName().contains("JTextField")) {
@@ -184,74 +181,38 @@ public class EditorPane extends DisplayPane {
                     }
                 }
                 addBackgroundXmlInformation(returnedValues, l);
-                frame.dispose();
+                FRAME.dispose();
             }
 
         });
-        p.add(doneButton);  
-        p.setOpaque(true);
-        frame.setContentPane(p);
-        frame.pack();
-        frame.setVisible(true);
+        P.add(doneButton);;
+        P.setOpaque(true);
+        FRAME.setContentPane(P);
+        FRAME.pack();
+        FRAME.setSize(new Dimension(600, 400));
+        FRAME.setVisible(true);
     }
 
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
         for (String now : returnedValues) {
             System.out.println(now);
         }
-        l.addLevelId(Integer.parseInt(returnedValues[0]));
-        l.addDimensionTag(Integer.parseInt(returnedValues[1]),
-                Integer.parseInt(returnedValues[2]));
-        l.addCameraDimension(Integer.parseInt(returnedValues[3]),
-                Integer.parseInt(returnedValues[4]));
-        l.addBackgroundImage(returnedValues[5]);
-        l.addPlayerEntryPoints(Integer.parseInt(returnedValues[6]),
-                Integer.parseInt(returnedValues[7]));
+        l.addDimensionTag(Integer.parseInt(returnedValues[0]),
+                Integer.parseInt(returnedValues[1]));
+        l.addCameraDimension(Integer.parseInt(returnedValues[2]),
+                Integer.parseInt(returnedValues[3]));
+        l.addBackgroundImage(returnedValues[4]);
+        l.addStartMode();
         l.saveXmlDocument();
     }
-    private void makeCompactGrid(Container parent, int rows, int cols,
-            int initialX, int initialY, int xPad, int yPad) {
-        SpringLayout layout = null;
-        try {
-            layout = (SpringLayout)parent.getLayout();
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-        Spring x = Spring.constant(initialX);
-        for (int c = 0; c < cols; c++) {
-            Spring width = Spring.constant(0);
-            for (int r = 0; r < rows; r++) {
-                width = Spring.max(width, getConstraintsForCell(r, c, parent, cols).getWidth());
+ 
+    private void addMenuButton () {
+        JButton menuButton = new JButton("Back to menu");
+        menuButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                getGameWindow().changeActivePane(GameWindow.MENU);
             }
-            for (int r = 0; r < rows; r++) {
-                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
-                constraints.setX(x);
-                constraints.setWidth(width);
-            }
-            x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
-        }
-        Spring y = Spring.constant(initialY);
-        for (int r = 0; r < rows; r++) {
-            Spring height = Spring.constant(0);
-            for (int c = 0; c < cols; c++) {
-                height = Spring.max(height, getConstraintsForCell(r, c, parent, cols).getHeight());
-            }
-            for (int c = 0; c < cols; c++) {
-                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
-                constraints.setY(y);
-                constraints.setHeight(height);
-            }
-            y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
-        }
-        SpringLayout.Constraints pCons = layout.getConstraints(parent);
-        pCons.setConstraint(SpringLayout.SOUTH, y);
-        pCons.setConstraint(SpringLayout.EAST, x);
-    }
-
-    private SpringLayout.Constraints getConstraintsForCell(int row, int col,
-            Container parent, int cols) {
-        SpringLayout layout = (SpringLayout) parent.getLayout();
-        Component c = parent.getComponent(row * cols + col);
-        return layout.getConstraints(c);
+        });
+        add(menuButton);
     }
 }

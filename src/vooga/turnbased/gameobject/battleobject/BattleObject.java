@@ -69,8 +69,8 @@ public abstract class BattleObject extends GameObject {
     }
     /**
      * Change the value of the given stat
-     * @param statName 
-     * @param value 
+     * @param statName The stat you'd like to change
+     * @param value The value you want to change the stat to
      */
     public void changeStat (String statName, Number value) {
         if (myStats.containsKey(statName)) {
@@ -85,6 +85,30 @@ public abstract class BattleObject extends GameObject {
     public String getName() {
         return myName;
     }
+    
+    /**
+     * Executes the first option for this BattleObject.
+     * @param target The target of this move/attack, can be null, depending on implementation.
+     */
+    public abstract void doOption1(BattleObject target);
+    
+    /**
+     * Executes the second option for this BattleObject.
+     * @param target The target of this move/attack, can be null, depending on implementation.
+     */
+    public abstract void doOption2(BattleObject target);
+    
+    /**
+     * Executes the third option for this BattleObject.
+     * @param target The target of this move/attack, can be null, depending on implementation.
+     */
+    public abstract void doOption3(BattleObject target);
+    
+    /**
+     * Executes the fourth option for this BattleObject.
+     * @param target The target of this move/attack, can be null, depending on implementation.
+     */
+    public abstract void doOption4(BattleObject target);
 
     /**
      * Implement this method to determine how much of the attack done to this monster
@@ -123,9 +147,18 @@ public abstract class BattleObject extends GameObject {
     
     /**
      * Returns the message for when your BattleObject is sent out to fight
-     * @return
+     * @param isPlayerControlled Pass True if this is a player controlled BattleObject,
+     * False if it is not
+     * @return The String the will be displayed when this monster starts fighting
      */
     public abstract String getStartFightingMessage(boolean isPlayerControlled);
+    
+    /**
+     * Gets the options that this BattleObject can perform, to be displayed in the GUI
+     * @return String array of the options, paradigm is defaulted to 4,
+     * could be extended by a game developer
+     */
+    public abstract String[] getOptions();
 
     /**
      * Paints the BattleObject.
