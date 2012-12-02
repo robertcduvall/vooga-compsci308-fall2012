@@ -1,7 +1,6 @@
 <players>
 <player>
 <object>
-<createOn>start</createOn>
 <modes>map1, map2</modes>
 <class>MAP CLASS</class>
 <condition>MAP EVENT</condition>

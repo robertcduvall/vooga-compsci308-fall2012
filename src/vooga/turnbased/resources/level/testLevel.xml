@@ -11,6 +11,19 @@
 <backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
 <startMode>map</startMode>
 </gameSetup>
-<modeDeclarations/>
+<modeDeclarations>
+	<mode>
+		<name>name1</name>
+		<class>class1</class>
+		<condition>condition1</condition>
+		<condition>condition1</condition>
+	</mode>
+	<mode>
+		<name>name2</name>
+		<class>class2</class>
+		<condition>condition2</condition>
+		<condition>condition</condition>
+	</mode>
+</modeDeclarations>
 <spriteDeclarations/>
 </rpggame>

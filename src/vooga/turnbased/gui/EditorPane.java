@@ -142,32 +142,82 @@ public class EditorPane extends DisplayPane {
         return null;
     }
 
-    private void editDocument(LevelEditor l) {
+    private void editDocument(final LevelEditor l) {
         removeAll();
         repaint();
         String[] background = {"Dimension Width: ", "Dimension Height: ",
                 "Viewable Width: ", "Viewable Height: ", "Background Image: "};
-        String[] defaultValues = {"20", "30", "15", "11",
+        String[] backgroundDefaultValues = {"20", "30", "15", "11",
         "src/vooga/turnbased/resources/image/background.png"};
-        displayAndGetSetupInformation(background, defaultValues, l);
+        displayAndGetSetupInformation(background, backgroundDefaultValues, l);
         addMenuButton();
+        final String[] modes = {"Name: ", "Class: ", "Condition: "};
+        final String[] modesDefaultValues = {"", "", ""};
+        JButton modeButton = new JButton("Set up Modes");
+        modeButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                displayAndGetModeInformation(modes, modesDefaultValues, l);
+            }
+        });
+        add(modeButton);
         validate();
     }
 
+    private void displayAndGetModeInformation (String[] labels,
+            String[] defaultValues, final LevelEditor l) {
+        final int NUM_PAIRS = labels.length;
+        final JPanel P = setUpJPanel(labels, defaultValues, NUM_PAIRS);
+        InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
+        final JFrame FRAME = new JFrame("Modes Information (Default Values shown)");
+        JButton doneButton = new JButton("Done");
+        doneButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                String[] returnedValues = new String[NUM_PAIRS];
+                Component[] allComponents = P.getComponents();
+                int index = 0;
+                for (Component current : allComponents) {
+                    if (current.getClass().getName().contains("JTextField")) {
+                        returnedValues[index] = ((JTextComponent) current).getText();
+                        index++;
+                    }
+                }
+                addModesXmlInformation(returnedValues, l);
+                FRAME.dispose();
+            }
+        });
+        P.add(doneButton);
+        P.setOpaque(true);
+        FRAME.setContentPane(P);
+        FRAME.pack();
+        FRAME.setSize(new Dimension(600, 400));
+        FRAME.setVisible(true);
+    }
+    
+    private void addModesXmlInformation (
+                    String[] returnedValues, LevelEditor l) {
+                l.addMode(returnedValues[0], returnedValues[1], returnedValues[2]);
+                l.saveXmlDocument();
+            }
+    
     private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
             final LevelEditor l) {
 
         final int NUM_PAIRS = labels.length;
-        final JPanel P = new JPanel(new SpringLayout());
-        for (int i = 0; i < NUM_PAIRS; i++) {
-            JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
-            P.add(l1);
-            JTextField textField = new JTextField(defaultValues[i], 10);
-            l1.setLabelFor(textField);
-            P.add(textField);
-        }
+        final JPanel P = setUpJPanel(labels, defaultValues, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
         final JFrame FRAME = new JFrame("Background Information (Default Values shown)");
+        JButton doneButton = makeDoneButtonAndAddBackgroundXml(l, NUM_PAIRS, P,
+                FRAME);
+        P.add(doneButton);
+        P.setOpaque(true);
+        FRAME.setContentPane(P);
+        FRAME.pack();
+        FRAME.setSize(new Dimension(600, 400));
+        FRAME.setVisible(true);
+    }
+
+    private JButton makeDoneButtonAndAddBackgroundXml (final LevelEditor l,
+            final int NUM_PAIRS, final JPanel P, final JFrame FRAME) {
         JButton doneButton = new JButton("Done");
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
@@ -183,14 +233,21 @@ public class EditorPane extends DisplayPane {
                 addBackgroundXmlInformation(returnedValues, l);
                 FRAME.dispose();
             }
-
         });
-        P.add(doneButton);;
-        P.setOpaque(true);
-        FRAME.setContentPane(P);
-        FRAME.pack();
-        FRAME.setSize(new Dimension(600, 400));
-        FRAME.setVisible(true);
+        return doneButton;
+    }
+
+    private JPanel setUpJPanel (String[] labels, String[] defaultValues,
+            final int NUM_PAIRS) {
+        final JPanel P = new JPanel(new SpringLayout());
+        for (int i = 0; i < NUM_PAIRS; i++) {
+            JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
+            P.add(l1);
+            JTextField textField = new JTextField(defaultValues[i], 10);
+            l1.setLabelFor(textField);
+            P.add(textField);
+        }
+        return P;
     }
 
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
