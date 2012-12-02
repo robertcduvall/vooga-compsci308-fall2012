@@ -12,8 +12,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.text.JTextComponent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,8 +48,7 @@ public class EditorPane extends DisplayPane {
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 String dir = System.getProperty(USER_DIR);
-                LevelEditor l = new LevelEditor(dir +
-                        "/src/vooga/turnbased/resources/level/testLevel.xml");
+                LevelEditor l = makeFile();
                 editLevelDocument(l);
                 PlayerEditor p = new PlayerEditor(dir +
                         "/src/vooga/turnbased/resources/level/testPlayer.xml");
@@ -57,7 +58,7 @@ public class EditorPane extends DisplayPane {
         JButton modifyLevelButton = new JButton("Modify Existing Level");
         modifyLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                LevelEditor l = modifyExistingLevel(selectFile());
+                LevelEditor l = chooseLevelFile(selectFile());
                 editLevelDocument(l);
             }
         });
@@ -78,7 +79,7 @@ public class EditorPane extends DisplayPane {
                 background.getHeight(null), this);
     }
 
-    private LevelEditor modifyExistingLevel(File f) {
+    private LevelEditor chooseLevelFile(File f) {
         Document xmlDocument = createXmlFromFile(f);
         return new LevelEditor(xmlDocument, f.toString());
     }
@@ -92,9 +93,20 @@ public class EditorPane extends DisplayPane {
         return null;
     }
 
+    private LevelEditor makeFile () {
+        JFileChooser fc = new JFileChooser(System.getProperty(USER_DIR));
+        fc.addChoosableFileFilter(new XmlFileFilter());
+        int returnVal = fc.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            LevelEditor newFile = new LevelEditor(fc.getSelectedFile().toString());
+            return newFile;
+        }
+        return null;
+    }
+
     private File selectFile () {
         JFileChooser fc = new JFileChooser(System.getProperty(USER_DIR));
-        int returnVal = fc.showOpenDialog(null);
+        int returnVal = fc.showSaveDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             return fc.getSelectedFile();
         }
