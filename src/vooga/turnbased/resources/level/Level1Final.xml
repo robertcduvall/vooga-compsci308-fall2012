@@ -126,8 +126,8 @@
 			<object>
 				<createOn>start</createOn>
 				<modes>map1</modes>
-				<class>vooga.turnbased.gameobject.mapobject.MovingMapObject</class>
-				<condition>NO_ACTION</condition>
+				<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+				<condition>entermap2</condition>
 				<location>
 					<x>9</x>
 					<y>3</y>

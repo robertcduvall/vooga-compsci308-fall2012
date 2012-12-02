@@ -202,11 +202,11 @@ public class LevelXmlParser {
             case "vooga.turnbased.gameobject.mapobject.MapEnemyObject":
                 return (GameObject) parseMapObject(objectElement);
             case "vooga.turnbased.gameobject.mapobject.MapObstacleObject":
-                break;
+                return (GameObject) parseMapObject(objectElement);
             case "vooga.turnbased.gameobject.optionobject.OptionObject":
                 break;
             case "vooga.turnbased.gameobject.mapobject.MovingMapObject":
-                break;
+                return (GameObject) parseMapObject(objectElement);
         }
         return null;
     }

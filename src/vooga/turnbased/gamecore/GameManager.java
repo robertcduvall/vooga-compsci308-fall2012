@@ -64,8 +64,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
-        myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        // initializeGameLevel(GameWindow.importString("Entrance"));
+        //myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         initializeGameLevel(GameWindow.importString("GameXML"),
                             GameWindow.importString("PlayerXML"));
         configureInputHandling();
@@ -275,6 +274,7 @@ public class GameManager implements InputAPI {
     }
 
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
+        System.out.println(eventName);
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
 
