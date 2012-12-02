@@ -45,8 +45,13 @@ public class SimpleBackgroundPainter extends BackgroundPainter {
     /**
      * @param bgImg background image
      */
-    public SimpleBackgroundPainter(Image bgImg) {
-        myBgImg = bgImg;
+    public SimpleBackgroundPainter(File imgFile) {
+        try {
+            myBgImg = ImageIO.read(imgFile);
+        }
+        catch (IOException e) {
+            System.out.println("invalid image path: " + imgFile);
+        }
     }
     
     @Override
