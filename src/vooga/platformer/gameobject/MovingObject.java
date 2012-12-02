@@ -112,9 +112,9 @@ public class MovingObject extends GameObject {
     }
 
     /**
-     * @param direc Facing Direction of the object
+     * @param direction Facing Direction of the object
      */
-    public void setFacingDirection (Direction direc) {
-        myFacingDirection = direc;
+    public void setFacingDirection (Direction direction) {
+        myFacingDirection = direction;
     }
 }
