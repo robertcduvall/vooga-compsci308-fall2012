@@ -131,24 +131,6 @@ public class GameManager implements InputAPI {
         }
     }
 
-    /**
-     * Returns a list of GameObjects of the indicated type.
-     * 
-     * @param c
-     *        Class of desired GameObjects.
-     * @param <T>
-     *        Type of class in the list.
-     * @return modeObjects A list of all requested GameObjects within all
-     *         sprites.
-     */
-//    public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
-//        List<T> modeObjects = new ArrayList<T>();
-//        for (Sprite s : mySprites.values()) {
-//            modeObjects.addAll(s.getObject(c));
-//        }
-//        return modeObjects;
-//    }
-    
     public List<GameObject> getGameObjects(String modeName) {
         List<GameObject> modeObjects = new ArrayList<GameObject>();
         for(Sprite s : mySprites.values()){
@@ -164,8 +146,9 @@ public class GameManager implements InputAPI {
      * @param spriteID
      *        Int ID of sprite to be removed.
      */
-    public void deleteSprite (int spriteID) {
+    public void clearSprite (int spriteID) {
         findSpriteWithID(spriteID).clear();
+        //mySprites.put(spriteID, null);
     }
 
     /**
@@ -295,7 +278,6 @@ public class GameManager implements InputAPI {
     }
 
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
-        System.out.println("Flagging condition " + eventName);
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
 
@@ -322,8 +304,8 @@ public class GameManager implements InputAPI {
     }
 
     private void handleEvent (ModeEvent event) {
-        System.out.println("doing event: "+event.getName());
-        System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
+//        System.out.println("doing event: "+event.getName());
+//        System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         if (myAvailableModeTypes.containsKey(modeName)) {

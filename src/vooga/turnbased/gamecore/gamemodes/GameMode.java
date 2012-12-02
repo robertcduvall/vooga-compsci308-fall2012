@@ -41,7 +41,7 @@ public abstract class GameMode {
         acquireGameObjects();
     }
     
-    private void acquireGameObjects() {
+    protected void acquireGameObjects() {
         myGameObjects = new ArrayList<GameObject>();
         myGameObjects.addAll(myGameManager.getGameObjects(getName()));
     }

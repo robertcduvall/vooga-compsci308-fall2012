@@ -61,8 +61,7 @@ public class MapMode extends GameMode implements InputAPI {
      * pause the game
      */
     public void pause () {
-        System.out.println("clearing map objects");
-        myMapObjects.clear();
+        getGameObjects().clear();
         setInactive();
         // should unregister keyboard input, otherwise leads to issues
     }
@@ -71,6 +70,7 @@ public class MapMode extends GameMode implements InputAPI {
     public void resume () {
         // do stuff when back to map mode
         setActive();
+        acquireGameObjects();
         initialize(); // TODO: Shouldn't need to reinitialize map objects
         // configureInputHandling();
     }

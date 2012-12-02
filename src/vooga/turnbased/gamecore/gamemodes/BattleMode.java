@@ -307,27 +307,20 @@ public class BattleMode extends GameMode implements InputAPI {
     private void endBattle () {
         setModeIsOver();
         System.out.println("End battle!");
-        List<Integer> battleLooserIDs = new ArrayList<Integer>();
-        battleLooserIDs.add(myLooserSpriteID);
         if (!myPlayerObject.isAlive()) {
             flagCondition(myPlayerObject.getConditionFlag(), new ArrayList<Integer>());
         }
+        getGameManager().clearSprite(myLooserSpriteID);
     }
 
     private boolean isBattleOver () {
         boolean teamDead = false;
         if (!myTeam.stillAlive()) {
-            Sprite loserSprite = getGameManager().findSpriteWithID(myPlayerObject.getID());
-            myLooserSpriteID = loserSprite.getID();
-            loserSprite.clear();
-            getGameManager().deleteSprite(loserSprite.getID());
+            myLooserSpriteID = myPlayerObject.getID();
             teamDead = true;
         }
         if (!myEnemyTeam.stillAlive()) {
-            Sprite loserSprite = getGameManager().findSpriteWithID(myEnemyObject.getID());
-            myLooserSpriteID = loserSprite.getID();
-            loserSprite.clear();
-            getGameManager().deleteSprite(loserSprite.getID());
+            myLooserSpriteID = myEnemyObject.getID();
             teamDead = true;
         }
         return teamDead;
