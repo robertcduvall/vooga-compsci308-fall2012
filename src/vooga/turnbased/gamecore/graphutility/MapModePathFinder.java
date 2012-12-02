@@ -27,7 +27,6 @@ public class MapModePathFinder extends PathFinder {
     // for execution of walking along the path
     private Point myPreviousLocation;
     private Point myCurrentLocation;
-    private int myPathIndex;
 
     /**
      * constructor
@@ -55,16 +54,16 @@ public class MapModePathFinder extends PathFinder {
 
     /**
      * initialize variables specific to this MapModePathFinder
+     * 
      * @param map the MapMode instance on which the path should be found
      * @param object the object which needs to find a path
      */
-    private void initialize(MapMode map, MovingMapObject object) {
+    private void initialize (MapMode map, MovingMapObject object) {
         myMap = map;
         myMovingObject = object;
-        myPathIndex = 0;
         myHighlightObjects = new ArrayList<MapObject>();
     }
-    
+
     @Override
     protected void checkObstacles () {
         for (int i = 0; i < getSize().width; i++) {
@@ -80,14 +79,15 @@ public class MapModePathFinder extends PathFinder {
 
     /**
      * add a new task to the path finder
+     * 
      * @param object the object that needs to find path
      * @param target the target position
      * @param mapSize the size of the map
      */
-    public void addTask(MovingMapObject object, Point target, Dimension mapSize) {
+    public void addTask (MovingMapObject object, Point target, Dimension mapSize) {
         super.addTask(object.getLocation(), target, new Dimension(mapSize));
     }
-    
+
     /**
      * stop the moving process and the highlighted path disappeared
      */
@@ -130,17 +130,16 @@ public class MapModePathFinder extends PathFinder {
      * of the object which has an instance of active PathFinder
      */
     @Override
-    public void updatePath () {
-        super.updatePath();
-        if (myPathIndex < getImmutablePath().size()) {
-            myCurrentLocation = getPathUsingIndex(myPathIndex);
-            Point direction =
-                    new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
-                                                                          myPreviousLocation.y);
-            if (myMovingObject.tryMove(direction)) {
-                myPathIndex++;
-                myPreviousLocation = myCurrentLocation;
-            }
+    public boolean updatePath () {
+        if (!super.updatePath()) { return false; }
+        myCurrentLocation = getPathUsingIndex();
+        Point direction =
+                new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
+                                                                      myPreviousLocation.y);
+        if (myMovingObject.tryMove(direction)) {
+            incrementPathIndex();
+            myPreviousLocation = myCurrentLocation;
         }
+        return true;
     }
 }

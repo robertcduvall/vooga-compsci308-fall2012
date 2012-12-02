@@ -84,6 +84,8 @@ public class MapMode extends GameMode implements InputAPI {
         setMapSize(getGameManager().getMapSize());
         
         myMapObjects = new HashMap<Point, List<MapObject>>();
+        @SuppressWarnings("unchecked")
+        //the getGameObjects method has already taken care of correct casting
         List<MapObject> mapObjects = (List<MapObject>) getGameObjects();
         for (MapObject mapObject : mapObjects) {
             mapObject.setMapMode(this);
@@ -333,9 +335,10 @@ public class MapMode extends GameMode implements InputAPI {
                                                    myPlayer, "moveDown");
             GamePane.keyboardController.setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
                                                    myPlayer, "toggleRunning");
+            //enable/disable multi-destination feature in PathFinder
             GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
                                                    myPathFinder, "activateMultiDestination");
-            GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
+            GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.RELEASED,
                                                    myPathFinder, "deactivateMultiDestination");
         }
         catch (Exception e) {

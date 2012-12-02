@@ -20,6 +20,7 @@ import java.util.Queue;
  */
 public abstract class PathFinder {
     private List<Point> myPath;
+    private int myPathIndex;
     private boolean myIsMultiDestination;
     private boolean myHasTask;
     private boolean myIsHighlighted;
@@ -57,6 +58,7 @@ public abstract class PathFinder {
         myIsHighlighted = false;
         myTaskCache = new LinkedList<GraphTask>();
         myCancelMovement = false;
+        myPathIndex = 0;
     }
 
     /**
@@ -141,13 +143,16 @@ public abstract class PathFinder {
     }
 
     /**
-     * get a particular Point on the path using index
+     * get a particular Point on the path using myPathIndex
      * 
-     * @param index
      * @return the Point on the path
      */
-    protected Point getPathUsingIndex (int index) {
-        return myPath.get(index);
+    protected Point getPathUsingIndex () {
+        return myPath.get(myPathIndex);
+    }
+
+    protected void incrementPathIndex () {
+        myPathIndex++;
     }
 
     /**
@@ -173,12 +178,18 @@ public abstract class PathFinder {
      * used for display of the path.
      * need to be called in an update cycle of the application.
      * Override if subclasses wants to graphically display the path
+     * 
+     * @return whether update should be carried out (used for the benefit of
+     *         subclasses)
      */
-    public void updatePath () {
-        if ((!myHasTask) || myCancelMovement) { return; }
-        if ((!myIsHighlighted) && (getImmutablePath() != null)) {
+    public boolean updatePath () {
+        if ((!myHasTask) || myCancelMovement) { return false; }
+        
+        if (myPathIndex >= getImmutablePath().size()) { return false; }
+        if (!myIsHighlighted) {
             highlightPath();
         }
+        return true;
     }
 
     /**
