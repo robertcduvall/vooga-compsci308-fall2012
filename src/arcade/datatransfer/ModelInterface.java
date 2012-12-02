@@ -10,7 +10,7 @@ import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
 import arcade.usermanager.UserManager;
 import arcade.usermanager.UserProfile;
-import arcade.usermanager.ValidationException;
+import arcade.usermanager.exception.ValidationException;
 
 
 /**
@@ -153,5 +153,29 @@ public class ModelInterface {
     public UserProfile getUser (String username) {
         return myUserManager.getUserProfile(username);
     }
+    
+  /**
+   * @return get an editable user class for the current user
+   */
+    
+    public User getEditableCurrentUser(){
+        return myUserManager.getCurrentUser();
+        
+    }
+    
+    /**
+     * delete user profile
+     * @param userName
+     * @param password
+     * @return
+     */
+    
+    public boolean deleteUser(String userName, String password){
+     return   mySocialCenter.deleteUser(userName, password);
+        
+    }
 
+    public void changeAdminStatus (String name, boolean adminStatus) {
+        myUserManager.changeAdminStatus(name, adminStatus);
+    }
 }
