@@ -137,12 +137,12 @@ public class ParticleEngineTester extends JApplet {
         if (myLastKeyPressed == KeyEvent.VK_DOWN)
             for (ParticleSystem p : mySystems) {
                 p.move(new Point(0, 5));
-                p.setParticleVelocity(new Point(0, 3));
+                p.setParticleVelocity(new Point(0, -3));
             }
         if (myLastKeyPressed == KeyEvent.VK_UP)
             for (ParticleSystem p : mySystems) {
                 p.move(new Point(0, -5));
-                p.setParticleVelocity(new Point(0, -3));
+                p.setParticleVelocity(new Point(0, 3));
             }
         if (myLastKeyPressed == KeyEvent.VK_RIGHT)
             for (ParticleSystem p : mySystems) {
