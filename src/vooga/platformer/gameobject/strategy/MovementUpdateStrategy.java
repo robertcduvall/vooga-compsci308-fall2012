@@ -6,19 +6,24 @@ import vooga.platformer.util.enums.Direction;
 
 
 /**
+ * Updates a MovingObject's movement (position and direction) based
+ * on its velocity
  * @author Yaqi Zhang
- * 
+ * @author Zach Michaelov (modified)
  */
-public class SimpleMoveStrategy implements UpdateStrategy {
+public class MovementUpdateStrategy implements UpdateStrategy {
     private MovingObject myMoveObj;
 
     /**
      * @param moveObj MovingObject
      */
-    public SimpleMoveStrategy (MovingObject moveObj) {
+    public MovementUpdateStrategy(MovingObject moveObj) {
         myMoveObj = moveObj;
     }
 
+    /**
+     * updates the MovingObject based on physics
+     */
     @Override
     public void applyAction () {
         myMoveObj.setX(myMoveObj.getVelocity().getX() + myMoveObj.getX());
