@@ -4,7 +4,7 @@ import java.awt.Point;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameplay.Game;
-import util.calculator.VectorCalculator;
+import util.mathvector.VectorCalculator;
 
 /**
  * AI that moves directly towards the player character.
@@ -23,13 +23,14 @@ public class ChaseAI extends AI{
     @Override
     public void subCalculate (Sprite mySprite, Player myPlayer, Game myGame) {
         Point playerVector = new Point(
-                mySprite.getPosition().x - myPlayer.getPosition().x,
-                mySprite.getPosition().y - myPlayer.getPosition().y);
+                myPlayer.getPosition().x - mySprite.getPosition().x,
+                myPlayer.getPosition().y - mySprite.getPosition().y);
         double[] normalized = VectorCalculator.normalizeVector(playerVector);
         double currentMagnitude = 
             VectorCalculator.calculateMagnitude(mySprite.getVelocity());
-        Point moveVector = new Point((int)(normalized[0]*currentMagnitude),
-                (int)(normalized[1]*(currentMagnitude)));
+        Point moveVector = new Point(
+                (int)Math.round((normalized[0]*currentMagnitude)),
+                (int)Math.round((normalized[1]*currentMagnitude)));
         mySprite.setVelocity(moveVector);
     }
 
