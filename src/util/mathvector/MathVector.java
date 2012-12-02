@@ -1,4 +1,4 @@
-package util.mathVector;
+package util.mathvector;
 
 /**
  * This class represents a mathematical vector (as opposed to a more 

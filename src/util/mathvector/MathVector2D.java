@@ -1,4 +1,4 @@
-package util.mathVector;
+package util.mathvector;
 
 public class MathVector2D extends MathVector{
 
