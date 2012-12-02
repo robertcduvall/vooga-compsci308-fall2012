@@ -28,12 +28,12 @@ public class Explosion extends ParticleSystem {
             new MathVector2D(Math.sqrt(2), 0), new MathVector2D(0, -Math.sqrt(2)),
             new MathVector2D(0, Math.sqrt(2)) };
     
-    private static int explosionTolerance = 30;
-    private static int explosionLength = 25;
-    private static int explosionDensity = 70;
-    private static int smokeTolerance = 30;
-    private static int smokeLength = 40;
-    private static int smokeDensity = 20;
+    private static int explosionTolerance = 40;
+    private static int explosionLength = 20;
+    private static int explosionDensity = 210;
+    private static int smokeTolerance = 40;
+    private static int smokeLength = 30;
+    private static int smokeDensity = 100;
     
     private static float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.4f };
     private static float[] RGBAtolerances = {0.2f, 0.2f, 0.2f, 0.1f};
@@ -47,9 +47,9 @@ public class Explosion extends ParticleSystem {
         Image smokeImage = temp.getImage();
 
         for (int j = 0; j < velocities.length; j++) {
-            addParticleEngine(explosionDensity, explosionImage, position, velocities[j], explosionTolerance, explosionLength, 0.0, 5, false);
             addParticleEngine(smokeDensity, smokeImage, position, velocities[j], smokeTolerance, smokeLength, 0.0, 1,
                     false);
+            addParticleEngine(explosionDensity, explosionImage, position, velocities[j], explosionTolerance, explosionLength, 0.0, 5, false);
         }
 
     }
