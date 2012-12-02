@@ -1,5 +1,7 @@
 package util.mathvector;
 
+import java.awt.Point;
+
 public class MathVector2D extends MathVector{
 
 	/**
@@ -16,6 +18,9 @@ public class MathVector2D extends MathVector{
 	 *@author Kathleen 
 	 */
 	
+        public static final int X = 0;
+        public static final int Y = 1;
+    
 	double[] myVector;
 	
 	/**
@@ -26,6 +31,10 @@ public class MathVector2D extends MathVector{
 	 */
 	public MathVector2D(double a, double b){
 		super(new double[]{a,b});
+	}
+	
+	public MathVector2D(Point a) {
+	    super(new double[]{a.x,a.y});
 	}
 
 	/**

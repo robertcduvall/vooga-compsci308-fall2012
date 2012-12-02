@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import util.mathvector.MathVector2D;
 
 
 /**
@@ -21,11 +22,14 @@ import java.util.Stack;
 public abstract class ParticleSystem {
 
     private List<ParticleEngine> myParticleEngines;
-    protected Point position;
+    protected MathVector2D position;
+    
+    private MathVector2D velocity;
 
-    public ParticleSystem (Point startingPosition) {
+    public ParticleSystem (MathVector2D startingPosition) {
         myParticleEngines = new ArrayList<ParticleEngine>();
         position = startingPosition;
+        velocity = new MathVector2D(10,10);
         setUpParticleEngines();
     }
 
@@ -55,22 +59,22 @@ public abstract class ParticleSystem {
      * @param length how long the particles will exist before being reset
      */
     protected void addParticleEngine (int density, Image particleImage,
-            Point position, Point velocity, int tolerance, int length,
+            MathVector2D position, MathVector2D velocity, int tolerance, int length,
             double angleSpan, int numberOfDirections, Boolean loop) {
         myParticleEngines.add(new ParticleEngine(density, particleImage,
                 position, velocity, tolerance, length, angleSpan,
                 numberOfDirections, loop));
     }
 
-    protected void addParticleEngine (Image particleImage, Point position,
+    protected void addParticleEngine (Image particleImage, MathVector2D position,
             Boolean loop) {
         myParticleEngines
-                .add(new ParticleEngine(particleImage, position, loop));
+                .add(new ParticleEngine(particleImage, position, velocity, loop));
     }
 
-    protected void addParticleEngine (Image particleImage, Point position,
+    protected void addParticleEngine (Image particleImage, MathVector2D position,
             double angleSpan, int numberOfDirections, Boolean loop) {
-        myParticleEngines.add(new ParticleEngine(particleImage, position,
+        myParticleEngines.add(new ParticleEngine(particleImage, position, velocity,
                 angleSpan, numberOfDirections, loop));
     }
 
@@ -93,8 +97,9 @@ public abstract class ParticleSystem {
      */
     public void move (Point moveBy) {
         for (ParticleEngine p : myParticleEngines) {
-            p.getStartingPosition().x += moveBy.x;
-            p.getStartingPosition().y += moveBy.y;
+            double xNewPos = p.getStartingPosition().getComponent(MathVector2D.X) + moveBy.x;
+            double yNewPos = p.getStartingPosition().getComponent(MathVector2D.Y) + moveBy.y;
+            p.setStartingPosition(new MathVector2D(xNewPos,yNewPos));
         }
     }
 
@@ -107,12 +112,17 @@ public abstract class ParticleSystem {
             p.draw(g);
     }
 
-    public void setParticleVelocity (Point velocity) {
+    public void setParticleVelocity (MathVector2D velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(velocity);
     }
     
-    public void setPosition (Point position) {
+    public void setParticleVelocity (Point velocity) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setVelocity(new MathVector2D(velocity));
+    }
+    
+    public void setPosition (MathVector2D position) {
         for (ParticleEngine p : myParticleEngines)
             p.setStartingPosition(position);
     }
