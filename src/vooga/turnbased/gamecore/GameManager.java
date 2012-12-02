@@ -14,6 +14,7 @@ import java.util.Map;
 import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecore.gamemodes.GameOverMode;
+import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
 import vooga.turnbased.gamecreation.LevelXmlParser;
 import vooga.turnbased.gameobject.GameObject;
@@ -38,8 +39,8 @@ public class GameManager implements InputAPI {
     // private GameLevelManager myLevelManager;
     private GameLogic myGameLogic;
     private boolean myGameIsOver;
-    private HashMap<Integer, Sprite> mySprites;
-    private HashMap<String, Class> myAvailableModeTypes;
+    private Map<Integer, Sprite> mySprites;
+    private Map<String, Class> myAvailableModeTypes;
     private List<ModeEvent> myModeEvents;
     private List<MouseAction> myMouseActions;
     private List<GameMode> myGameModes;
@@ -62,10 +63,10 @@ public class GameManager implements InputAPI {
 
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
-//        myLevelManager = new GameLevelManager(this);
-//        myGameLogic = new GameLogic(this);
-        initializeGameLevel(GameWindow.importString("Entrance"));
-//        initializeGameLevel(GameWindow.importString("OtherLevel"));
+        // myLevelManager = new GameLevelManager(this);
+        // myGameLogic = new GameLogic(this);
+        // initializeGameLevel(GameWindow.importString("Entrance"));
+        initializeGameLevel(GameWindow.importString("OtherLevel"));
         configureInputHandling();
     }
 
@@ -77,30 +78,25 @@ public class GameManager implements InputAPI {
      * @param enteringObject
      *        The MapObject which will used for the MapMode of this level.
      */
-    public void initializeGameLevel (String levelFileName) {
+    private void initializeGameLevel (String levelFileName) {
         LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
-
-        myGameModes.add(test.getMapMode());
-
-        addSprites(test.parseSprites());
-
-        myPlayerSpriteID = test.getPlayerID();
-
-        myAvailableModeTypes.put("battle", BattleMode.class);
-        myAvailableModeTypes.put("optionMenu", OptionMode.class);
-        myAvailableModeTypes.put("gameOver", GameOverMode.class);
         
-        Map<String, List<String>> conditionMap = new HashMap<String, List<String>>();
-        conditionMap.put("battle", new ArrayList<String>());
-        conditionMap.get("battle").add("dobattle");
-        conditionMap.put("optionMenu", new ArrayList<String>());
-        conditionMap.get("optionMenu").add("enteroptmode");
-        conditionMap.put("gameOver", new ArrayList<String>());
-        conditionMap.get("gameOver").add("gamelost");
-        myGameLogic = new GameLogic(this, conditionMap);
+        MapMode mapMode = (MapMode) test.getMapMode();
+        myGameModes.add(mapMode);
+        
+        addSprites(test.parseSprites());
+        myPlayerSpriteID = test.getPlayerID();
+        myAvailableModeTypes = test.getUserDefinedModes();
+        myGameLogic = new GameLogic(this, test.getEventConditionMapping());
 
+        //startFirstMode(test.getStartMode());
         myGameModes.get(0).resume();
     }
+    
+//    private void startFirstMode(String entryMode) {
+//        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+//        myGameModes.get(0).resume();
+//    }
 
     /**
      * find the Sprite with specific ID
@@ -183,13 +179,14 @@ public class GameManager implements InputAPI {
                 if (mode.isActive()) {
                     mode.update();
                 }
-//                if (mode.hasFocus()) {
-//                    handleMouseActions(mode);
-//                }
+                // if (mode.hasFocus()) {
+                // handleMouseActions(mode);
+                // }
             }
         }
-        handleMouseActions(myGameModes.get(myGameModes.size()-1));
-        for(GameMode mode : finishedModes) { //avoid concurrent modifcation over myGameModes list
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1)); //assume latest is focus
+        for (GameMode mode : finishedModes) { // avoid concurrent modifcation
+                                              // over myGameModes list
             killMode(mode);
         }
     }
@@ -260,24 +257,27 @@ public class GameManager implements InputAPI {
             myName = eventName;
             myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
         }
-        
-        public String getName() {
+
+        public String getName () {
             return myName;
         }
-        
-        public List<Integer> getInvolvedIDs() {
+
+        public List<Integer> getInvolvedIDs () {
             return myInvolvedIDs;
         }
     }
-    
-    
+
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
+        System.out.println("Flagging condition "+eventName);
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
+
     /**
      * Adds an event to the list of events to handle.
+     * 
      * @param eventName - String name of event to add.
-     * @param involvedSpriteIDs - List of integer IDs of sprites involved in given action.
+     * @param involvedSpriteIDs - List of integer IDs of sprites involved in
+     *        given action.
      */
     protected void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
         myModeEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
@@ -294,21 +294,31 @@ public class GameManager implements InputAPI {
         }
     }
 
-    // this whole thing to be wrapped into hashmap: event -> destinationModeId
     private void handleEvent (ModeEvent event) {
         String eventName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
-        System.out.println(eventName);
         if (myAvailableModeTypes.containsKey(eventName)) {
-            myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again assuming latest is active for now
+            if (!myGameModes.isEmpty()) {
+                myGameModes.get(myGameModes.size() - 1).pause(); // TODO: again
+                                                                 // assuming
+                                                                 // latest is
+                                                                 // active for
+                                                                 // now
+            }
             Class c = myAvailableModeTypes.get(eventName);
             Constructor[] newC = c.getConstructors();
-            try {
+            /*try {
                 myGameModes.add((GameMode) newC[0]
                         .newInstance(this, MapObject.class, myInvolvedIDs));
             }
             /*catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {*/
+            catch (Exception e) {
+                System.out.println("Check XML file for mistyped mode class");
+            }*/
+            try {
+                myGameModes.add((GameMode) newC[0].newInstance(this, MapObject.class, myInvolvedIDs));
+            }
             catch (Exception e) {
                 System.out.println("Check XML file for mistyped mode class");
             }
@@ -338,6 +348,8 @@ public class GameManager implements InputAPI {
 
     private void killMode (GameMode mode) {
         myGameModes.remove(mode);
-        myGameModes.get(myGameModes.size() - 1).resume();
+        if (!myGameModes.isEmpty()) {
+            myGameModes.get(myGameModes.size() - 1).resume();
+        }
     }
 }

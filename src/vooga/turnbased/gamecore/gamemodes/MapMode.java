@@ -52,6 +52,7 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public MapMode (GameManager gm, Class modeObjectType, List<Integer> involvedIDs) {
         super(gm, modeObjectType, involvedIDs);
+        //myPlayer = (MapPlayerObject) myMapObjects.get(gm.getPlayerSpriteID());
         // initialize();
     }
 

@@ -10,7 +10,8 @@ import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 
 public class ConversationStrategy extends MapStrategy {
 
-    private static final String MODE_EVENT = "CONVERSATION_START";
+    //private static final String MODE_EVENT = "CONVERSATION_START";
+    private static final String MODE_EVENT = "optionstuff";
     
     public ConversationStrategy (MapMode mapMode) {
         super(mapMode);

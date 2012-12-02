@@ -24,7 +24,7 @@ public class PlayerEditor extends Editor {
      * @param fileName File name (with path) of Xml document
      */
     public PlayerEditor(Document xmlDocument, String fileName) {
-        super(xmlDocument, fileName);
+        super(xmlDocument);
         myXmlDocument = xmlDocument;
         myFileName = fileName;
     }
@@ -35,7 +35,6 @@ public class PlayerEditor extends Editor {
      * @param fileName File name (with path) of Xml document
      */
     public PlayerEditor(String fileName) {
-        super(fileName);
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("players");
         myXmlDocument.appendChild(myRootElement);
@@ -119,8 +118,11 @@ public class PlayerEditor extends Editor {
         }
     }
 
-    @Override
     public void saveXmlDocument () {
         XmlUtilities.write(myXmlDocument, myFileName);
+    }
+
+    public Document getXmlDocument () {
+        return myXmlDocument;
     }
 }

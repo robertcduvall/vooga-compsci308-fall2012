@@ -12,7 +12,6 @@ import util.xml.XmlUtilities;
 public abstract class Editor {
 
     private Document myXmlDocument;
-    private String myFileName;
     private Element myRootElement;
 
     /**
@@ -21,9 +20,8 @@ public abstract class Editor {
      * @param xmlDocument Already formed Xml document for modifying
      * @param fileName File name (with path) of Xml document
      */
-    public Editor(Document xmlDocument, String fileName) {
+    public Editor(Document xmlDocument) {
         myXmlDocument = xmlDocument;
-        myFileName = fileName;
     }
 
     /**
@@ -31,11 +29,10 @@ public abstract class Editor {
      * 
      * @param fileName File name (with path) of Xml document
      */
-    public Editor(String fileName) {
+    public Editor() {
         myXmlDocument = XmlUtilities.makeDocument();
         myRootElement = myXmlDocument.createElement("level");
         myXmlDocument.appendChild(myRootElement);
-        myFileName = fileName;
     }
 
     /**
@@ -47,7 +44,5 @@ public abstract class Editor {
      * 
      * @return Xml Document
      */
-    public Document getXmlDocument () {
-        return myXmlDocument;
-    }
+    public abstract Document getXmlDocument ();
 }

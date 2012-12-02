@@ -116,6 +116,18 @@ public abstract class BattleObject extends GameObject {
     }
 
     /**
+     * Returns the message for when your BattleObject dies/runs out of health.
+     * @return The String you want return upon death.
+     */
+    public abstract String getDeathMessage();
+    
+    /**
+     * Returns the message for when your BattleObject is sent out to fight
+     * @return
+     */
+    public abstract String getStartFightingMessage(boolean isPlayerControlled);
+
+    /**
      * Paints the BattleObject.
      * @param g Image to be painted.
      * @param x X location of object.

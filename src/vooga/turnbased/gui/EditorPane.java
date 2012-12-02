@@ -1,5 +1,7 @@
 package vooga.turnbased.gui;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -9,6 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.Spring;
+import javax.swing.SpringLayout;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
@@ -138,5 +146,83 @@ public class EditorPane extends DisplayPane {
     private void editDocument(LevelEditor l) {
         removeAll();
         repaint();
+        String[] background = {"Level ID: ", "Dimension Width: ", "Dimension Height: ",
+                "Viewable Width: ", "Viewable Height: ", "Background Image: ",
+                "Player Entry X-Coordinate: ", "Player Entry Y-Coordinate: "};
+        String[] defaultValues = {"", "20", "30", "15", "11", "", "1", "1"};
+        displayAndGetStringInformation(background, defaultValues);
+    }
+
+    private void displayAndGetStringInformation (String[] labels, String[] defaultValues) {
+
+        int numPairs = labels.length;
+        JPanel p = new JPanel(new SpringLayout());
+        for (int i = 0; i < numPairs; i++) {
+            JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
+            p.add(l1);
+            JTextField textField = new JTextField(defaultValues[i], 10);
+            l1.setLabelFor(textField);
+            p.add(textField);
+        }
+        makeCompactGrid(p, numPairs, 2, 6, 6, 6, 6);
+        JButton doneButton = new JButton("Done");
+        doneButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                getGameWindow().changeActivePane(GameWindow.MENU);
+                //Get window to close here
+            }
+        });
+        p.add(doneButton);        
+        JFrame frame = new JFrame("Background Information (Default Values shown)");
+        p.setOpaque(true);
+        frame.setContentPane(p);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void makeCompactGrid(Container parent, int rows, int cols,
+            int initialX, int initialY, int xPad, int yPad) {
+        SpringLayout layout = null;
+        try {
+            layout = (SpringLayout)parent.getLayout();
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+        Spring x = Spring.constant(initialX);
+        for (int c = 0; c < cols; c++) {
+            Spring width = Spring.constant(0);
+            for (int r = 0; r < rows; r++) {
+                width = Spring.max(width, getConstraintsForCell(r, c, parent, cols).getWidth());
+            }
+            for (int r = 0; r < rows; r++) {
+                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
+                constraints.setX(x);
+                constraints.setWidth(width);
+            }
+            x = Spring.sum(x, Spring.sum(width, Spring.constant(xPad)));
+        }
+        Spring y = Spring.constant(initialY);
+        for (int r = 0; r < rows; r++) {
+            Spring height = Spring.constant(0);
+            for (int c = 0; c < cols; c++) {
+                height = Spring.max(height, getConstraintsForCell(r, c, parent, cols).getHeight());
+            }
+            for (int c = 0; c < cols; c++) {
+                SpringLayout.Constraints constraints = getConstraintsForCell(r, c, parent, cols);
+                constraints.setY(y);
+                constraints.setHeight(height);
+            }
+            y = Spring.sum(y, Spring.sum(height, Spring.constant(yPad)));
+        }
+        SpringLayout.Constraints pCons = layout.getConstraints(parent);
+        pCons.setConstraint(SpringLayout.SOUTH, y);
+        pCons.setConstraint(SpringLayout.EAST, x);
+    }
+
+    private SpringLayout.Constraints getConstraintsForCell(int row, int col,
+            Container parent, int cols) {
+        SpringLayout layout = (SpringLayout) parent.getLayout();
+        Component c = parent.getComponent(row * cols + col);
+        return layout.getConstraints(c);
     }
 }
