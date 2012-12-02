@@ -55,7 +55,7 @@ public class LeveFileIOWithSerializationTest {
                           SPRITE_HEIGHT + ",imagePath=" + TEST_IMAGE + ",id=" + SPRITE_ID);
         gameObjects.add(brick);
         LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
-                                   gameObjects, COLLISION_CHECKER_TYPE, CAMERA_TYPE);
+                                   gameObjects, CAMERA_TYPE);
         lfr = new LevelFileReader(XML_FILE_PATH);
         Assert.assertNotNull(lfr);
     }
@@ -78,11 +78,6 @@ public class LeveFileIOWithSerializationTest {
     @Test
     public void testGetBackgroundImage () throws Exception {
         Assert.assertNotNull(lfr.getBackgroundImage());
-    }
-
-    @Test
-    public void testGetCollisionChecker () throws Exception {
-        Assert.assertEquals(COLLISION_CHECKER_TYPE, lfr.getCollisionCheckerType());
     }
 
     @Test

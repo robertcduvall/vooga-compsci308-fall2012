@@ -1,6 +1,5 @@
 package vooga.platformer.level;
 
-
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
@@ -53,15 +52,13 @@ public final class LevelFactory {
         try {
             LevelFileReader lfr = new LevelFileReader(levelName);
             Dimension levelDimension = new Dimension(lfr.getWidth(), lfr.getHeight());
-            CollisionChecker levelCollisionChecker =
-                    (CollisionChecker) Reflection.createInstance(lfr.getCollisionCheckerType());
-            
+
             Collection<Sprite> levelSprites = lfr.getSprites();
             ArrayList<GameObject> levelGameObjects = new ArrayList<GameObject>();
             for (Sprite s : levelSprites) {
                 levelGameObjects.add(spriteToGameObject(s));
             }
-            
+
             GameObject player = findPlayerGameObject(levelGameObjects, playerClass);
 
             // TODO Using FollowingCamera by default. This is due to
@@ -75,8 +72,8 @@ public final class LevelFactory {
             // TODO configure with proper config string rather than assume
             // params
             Level level =
-                    (Level) Reflection.createInstance(lfr.getLevelType(), levelDimension,
-                                                      levelCollisionChecker, followCam);
+                    (Level) Reflection
+                            .createInstance(lfr.getLevelType(), levelDimension, followCam);
 
             for (GameObject g : levelGameObjects) {
                 level.addGameObject(g);

@@ -87,11 +87,6 @@ public class LevelFileIOTest {
     }
 
     @Test
-    public void testGetCollisionChecker () throws Exception {
-        Assert.assertEquals(COLLISION_CHECKER_TYPE, lfr.getCollisionCheckerType());
-    }
-
-    @Test
     public void testGetCamera () throws Exception {
         Assert.assertEquals(CAMERA_TYPE, lfr.getCameraType());
     }

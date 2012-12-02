@@ -105,16 +105,6 @@ public class LevelFileReader {
     }
 
     /**
-     * Gets the class name of the CollisionChecker to use for this particular
-     * level.
-     * 
-     * @return class name of this level's CollisionChecker subclass
-     */
-    public String getCollisionCheckerType () {
-        return XmlUtilities.getChildContent(myRoot, XmlTags.COLLISION_CHECKER);
-    }
-
-    /**
      * Gets the class name of the Camera to use for this particular level.
      * 
      * @return class name of this level's Camera subclass

@@ -103,15 +103,12 @@ public final class LevelFileWriter {
      * @param backgroundImage image to display in the background of the level
      * @param gameObjects a collection of the all the GameObjects that should be
      *        loaded when the user plays or edits the level
-     * @param collisionCheckerType fully-qualified class name of the
-     *        CollisionChecker to use for
-     *        this level
      * @param cameraType fully-qualified class name of the Camera to use for
      *        this level
      */
     public static void writeLevel (String filePath, String levelName, int width, int height,
                                    String backgroundImage, Collection<GameObject> gameObjects,
-                                   String collisionCheckerType, String cameraType) {
+                                   String cameraType) {
         Document doc = XmlUtilities.makeDocument();
 
         Element level = doc.createElement(XmlTags.DOCUMENT);
@@ -121,7 +118,6 @@ public final class LevelFileWriter {
         XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
         XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
         XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
-        XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionCheckerType);
         XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
 
         String serializedGameObjectFilePath = filePath.split("\\.")[0] + "GameObjects.bin";
