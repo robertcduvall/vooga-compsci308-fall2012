@@ -14,7 +14,7 @@ public class Example {
         }
         catch (InterruptedException e) {
         }
-        // loop needs to be stoped at some point
+        // loop needs to be stopped at some point
         p1.stopLoop();
         SoundPlayer p2 = new SoundPlayer("src/util/sound/sounds/benny_benassi.wav");
         p2.playOnce();

@@ -37,8 +37,6 @@ public class MenuPane extends DisplayPane {
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 getGameWindow().changeActivePane(GameWindow.GAME);
-                SoundPlayer p = new SoundPlayer("src/util/sound/sounds/pokemon.wav");
-                p.playOnce();
             }
         });
         add(startButton);

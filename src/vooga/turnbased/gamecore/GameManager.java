@@ -3,6 +3,7 @@ package vooga.turnbased.gamecore;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import util.input.core.KeyboardController;
+import util.sound.SoundPlayer;
 import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecore.gamemodes.GameOverMode;
@@ -48,6 +51,7 @@ public class GameManager implements InputAPI {
     private int myPlayerSpriteID;
     private Dimension myMapSize;
     private Dimension myCameraSize;
+    private SoundPlayer myGameSoundTrack;
 
     /**
      * Constructor of GameManager
@@ -67,6 +71,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
+        myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         // initializeGameLevel(GameWindow.importString("Entrance"));
         initializeGameLevel(GameWindow.importString("OtherLevel"));
         configureInputHandling();
@@ -241,10 +246,15 @@ public class GameManager implements InputAPI {
         return myGamePane.getSize();
     }
 
+    @Override
     public void configureInputHandling () {
-        // handle actions that shouldn't be passed down to individual gamemodes,
-        // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
-        // KeyboardController.PRESSED, this, "gameOver");
+        try {
+            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED, this, "toggleSoundTrack");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -364,6 +374,15 @@ public class GameManager implements InputAPI {
         myGameModes.remove(mode);
         if (!myGameModes.isEmpty()) {
             myGameModes.get(myGameModes.size() - 1).resume();
+        }
+    }
+    
+    public void toggleSoundTrack() {
+        if(myGameSoundTrack.loopIsRunning()) {
+            myGameSoundTrack.stopLoop();
+        }
+        else {
+            myGameSoundTrack.startLoop();
         }
     }
 }
