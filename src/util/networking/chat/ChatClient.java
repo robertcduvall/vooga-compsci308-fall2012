@@ -10,9 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.List;
-import util.networking.ClientEvent;
 import util.networking.ClientListener;
-import util.networking.GenericClient;
+import util.networking.Client;
 
 /**
  * 
@@ -20,7 +19,7 @@ import util.networking.GenericClient;
  * @author Oren Bukspan
  */
 
-public class ChatClient extends GenericClient {
+public class ChatClient extends Client {
 
     private ChatProtocol myProtocol;
     private String myUser;
@@ -58,7 +57,7 @@ public class ChatClient extends GenericClient {
     }
     
     @Override
-    public void methodToOverride(String input) {
+    public void processInputFromServer(String input) {
         System.out.println("server received: " + input);
         ChatCommand type = myProtocol.getType(input);
         Method m;
@@ -83,7 +82,7 @@ public class ChatClient extends GenericClient {
         String from = myProtocol.getFrom(input);
         String to = myProtocol.getTo(input);
         String body = myProtocol.getBody(input);
-        fireEvent(new MessageReceivedEvent(this, to, from, body));
+       // fireEvent(new MessageReceivedEvent(this, to, from, body));
     }
 
     @SuppressWarnings("unused")
@@ -112,7 +111,7 @@ public class ChatClient extends GenericClient {
     }
     
     
-    private synchronized void fireEvent(ClientEvent ce){
+    private synchronized void fireEvent(ChatEvent ce){
         //To be implemented
     }
 

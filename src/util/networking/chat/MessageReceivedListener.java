@@ -8,8 +8,9 @@ import util.networking.ClientListener;
  * @author Connor Gordon
  *
  */
-public class MessageReceivedListener implements ClientListener {
+public class MessageReceivedListener implements ClientListener {    
     public void handleClientEvent(EventObject e){
-        
+        if(!(e instanceof MessageReceivedEvent))
+            return;
     }
 }

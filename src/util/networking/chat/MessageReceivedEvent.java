@@ -1,6 +1,5 @@
 package util.networking.chat;
 import java.util.EventObject; 
-import util.networking.ClientEvent;
 
 
 /**
@@ -8,7 +7,7 @@ import util.networking.ClientEvent;
  * @author Connor Gordon
  *
  */
-public class MessageReceivedEvent extends EventObject implements ClientEvent {
+public class MessageReceivedEvent extends EventObject{
     private String myRecipient;
     private String mySender;
     private String myMessageBody;

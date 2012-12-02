@@ -19,7 +19,7 @@ import java.util.List;
  * @author Copyright (c) 2004 David Flanagan
  * @author Simplified and modified by Connor Gordon and Oren Bukspan
  **/
-public class GenericClient {
+public abstract class Client {
 
     private Socket myServer;
     
@@ -29,7 +29,7 @@ public class GenericClient {
      * @param port
      * @throws IOException
      */
-    public GenericClient (String host, int port) throws IOException {
+    public Client (String host, int port) throws IOException {
 
         myServer = new Socket(host, port);
         System.out.println("Connected to " + myServer.getInetAddress() + ":" + myServer.getPort());
@@ -50,9 +50,7 @@ public class GenericClient {
         }
     }
     
-    public void methodToOverride(String input) {
-        
-    }
+    public abstract void processInputFromServer(String input);
     
     class Receiver extends Thread{
         public void run () {
@@ -61,7 +59,7 @@ public class GenericClient {
                 
                 while (true && fromServer != null) {
                     String input = fromServer.readLine();
-                    methodToOverride(input);
+                    processInputFromServer(input);
                 }
                 
                 myServer.close();
