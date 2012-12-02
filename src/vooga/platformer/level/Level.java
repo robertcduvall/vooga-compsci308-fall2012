@@ -10,6 +10,8 @@ import util.input.core.KeyboardController;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -19,7 +21,7 @@ import vooga.platformer.util.enums.PlayState;
  * 
  */
 
-public abstract class Level {
+public class Level {
     private List<GameObject> objectList;
     private List<LevelPlugin> pluginList;
     private List<Condition> conditionList;
@@ -35,7 +37,6 @@ public abstract class Level {
      * @param pen Graphics object to paint on
      */
     public void paint (Graphics pen) {
-        paintBackground(pen);
         for (LevelPlugin lp : pluginList) {
             lp.paint(pen, objectList, cam);
         }
@@ -90,13 +91,6 @@ public abstract class Level {
     }
 
     /**
-     * Template method. Paint the background of the level.
-     * 
-     * @param pen Graphics object
-     */
-    public abstract void paintBackground (Graphics pen);
-
-    /**
      * Add a GameObject to the level.
      * 
      * @param go GameObject to add
@@ -113,13 +107,6 @@ public abstract class Level {
      */
     public List<GameObject> getObjectList () {
         return objectList;
-    }
-
-    /**
-     * @param go game object
-     */
-    public void addToObjectList (GameObject go) {
-        objectList.add(go);
     }
 
     /**
@@ -179,7 +166,7 @@ public abstract class Level {
         return PlayState.IS_PLAYING;
     }
 
-    public void setNextLevelName (String lvlName) {
+    private void setNextLevelName (String lvlName) {
         myNextLevelName = lvlName;
     }
 
@@ -189,20 +176,6 @@ public abstract class Level {
     public String getNextLevelName () {
         return myNextLevelName;
     }
-
-    /**
-     * Set up the given InputController to manage input for this level. For
-     * instance,
-     * associate keyboard presses with actions directing the player object to
-     * move. The
-     * Level subclass should have references to objects controlled by input, so
-     * that it
-     * can set up the InputController correctly.
-     * 
-     * @param myInputController
-     */
-    public abstract void setInputController (
-            KeyboardController myInputController);
 
     /**
      * @param pl

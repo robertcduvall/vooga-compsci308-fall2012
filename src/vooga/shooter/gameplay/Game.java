@@ -5,6 +5,7 @@ import arcade.gamemanager.GameSaver;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -18,6 +19,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import util.particleEngine.Explosion;
+import util.particleEngine.ParticleSystem;
 import vooga.shooter.gameObjects.Bullet;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
@@ -47,6 +50,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
 
+    private List<ParticleSystem> myParticleSystems;
     private List<Sprite> mySprites;
     private Player myPlayer;
     private Player myPlayer2;
@@ -64,14 +68,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-        myFrame = new JFrame(GAME_NAME);
-        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        myCanvas = new Canvas(this);
-        initializeGame(myCanvas, false);
-        myCanvas.start();
-        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
-        myFrame.pack();
-        myFrame.setVisible(true);
+       
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
         myGameImage = imageIcon.getImage();
 
@@ -81,6 +78,7 @@ public class Game implements DrawableComponent, IArcadeGame {
         myCanvas = c;
         mySprites = new ArrayList<Sprite>();
         myEnemies = new ArrayList<Enemy>();
+        myParticleSystems = new ArrayList<ParticleSystem>();
         myImageIcon = new ImageIcon(this.getClass().getResource("../images/spaceship.gif"));
         myPlayerImage = myImageIcon.getImage();
         myPlayerOneStart = new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - 50);
@@ -154,12 +152,16 @@ public class Game implements DrawableComponent, IArcadeGame {
                 if (collides.size() > 0) {
                     String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
+                    myParticleSystems.add(new Explosion(collides.get(0).getPosition()));
                     // might not need this second one if going through
                     // all combinations of sprites anyway
                     key = HIT_BY + collides.get(0).getType();
                     collides.get(1).doEvent(key, collides.get(0));
                 }
             }
+        }
+        for(ParticleSystem p: myParticleSystems) {
+            p.update();
         }
     }
 
@@ -239,6 +241,7 @@ public class Game implements DrawableComponent, IArcadeGame {
                 e.paint(pen);
             }
         }
+        for(ParticleSystem p:myParticleSystems) p.draw((Graphics2D)pen);
         getEnemies().removeAll(deadEnemies);
     }
 
@@ -345,8 +348,14 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        // will eventually get Game to run without running it through Applet
-        // (ideally when Canvas is finally working)
+        myFrame = new JFrame(GAME_NAME);
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        myCanvas = new Canvas(this);
+        initializeGame(myCanvas, false);
+        myCanvas.start();
+        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
+        myFrame.pack();
+        myFrame.setVisible(true);
 
     }
 

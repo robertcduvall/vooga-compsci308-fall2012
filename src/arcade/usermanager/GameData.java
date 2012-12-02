@@ -8,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import util.xml.XmlBuilder;
 import util.xml.XmlParser;
+import util.xml.XmlUtilities;
 import util.xml.XmlWriter;
 
 
@@ -55,20 +56,20 @@ public class GameData {
     public boolean setGameInfo (String propertyName, String content) {
         if (myPropertyMap.containsKey(propertyName)) {
             myPropertyMap.put(propertyName, content);
-            Document doc = XmlBuilder.createDocument(myFilePath);
+            Document doc = XmlUtilities.makeDocument(myFilePath);
 
             Element root = doc.getDocumentElement();
             NodeList children = root.getChildNodes();
             for (int i = 0; i < children.getLength(); i++) {
                 Element child = (Element) children.item(i);
 
-                if (XmlParser.getTextContent(child, "name").equals(
+                if (XmlUtilities.getChildContent(child, "name").equals(
                         getGameInfo(getGameInfo("myGameName")))) {
-                    XmlBuilder.modifyTag(child, propertyName, content);
+                    XmlUtilities.replaceAllTagNames(child, propertyName, content);
                 }
             }
 
-            XmlWriter.writeXML(doc, myFilePath);
+            XmlUtilities.write(doc, myFilePath);
 
             return true;
         }

@@ -2,13 +2,19 @@
 	<game id="1">
 		<name>Turnbased RPG</name>
 		<filepath>vooga.turnbased.Start</filepath>
-<rating>3 3 3 3 3</rating>
+<rating>3 3 3 3 3 9</rating>
+<tags>fun turnbased dingdong</tags>
+<review>The plotline was excellent, really enjoyed the story, gg- Kannan</review>
 </game>
 	<game id="2">
 		<name>Space Invaders</name>
-		<rating>4 2 2 3 1 9</rating>
+		<rating>4 2 2 3 1 9 10 7 7</rating>
 		<filepath>vooga.shooter.gameplay.Game</filepath>
 		<review>shooter game. haha.</review>
 	<review>game is 2hard- Kannan</review>
+<review>- michaeldeng</review>
+<review>blah blah- michaeldeng</review>
+<tags>fun shooter</tags>
+<review>This game is pretty cool - not gonna lie- Howard</review>
 </game>
 </gamelist>
