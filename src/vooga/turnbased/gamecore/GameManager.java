@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -65,7 +66,8 @@ public class GameManager implements InputAPI {
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         // initializeGameLevel(GameWindow.importString("Entrance"));
-        initializeGameLevel(GameWindow.importString("GameXML"), GameWindow.importString("PlayerXML"));
+        initializeGameLevel(GameWindow.importString("GameXML"),
+                            GameWindow.importString("PlayerXML"));
         configureInputHandling();
     }
 
@@ -83,28 +85,28 @@ public class GameManager implements InputAPI {
         myCameraSize = levelLoader.getCameraSize();
 
         addSprites(levelLoader.parseSprites());
-        
+
         myPlayerSpriteID = levelLoader.getPlayerID();
-        
+
         myAvailableModeTypes = levelLoader.getUserDefinedModes();
-        
+
         myGameLogic.addEventConditions(levelLoader.getEventConditionMapping());
-        
+
         startFirstMode(levelLoader.getStartMode());
     }
-    
-    public Dimension getMapSize() {
+
+    public Dimension getMapSize () {
         return myMapSize;
     }
-    
-    public Dimension getCameraSize() {
+
+    public Dimension getCameraSize () {
         return myCameraSize;
     }
 
-     private void startFirstMode(String entryMode) {
-         handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
-         //myGameModes.get(0).resume();
-     }
+    private void startFirstMode (String entryMode) {
+        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+        // myGameModes.get(0).resume();
+    }
 
     /**
      * find the Sprite with specific ID
@@ -128,9 +130,9 @@ public class GameManager implements InputAPI {
         }
     }
 
-    public List<GameObject> getGameObjects(String modeName) {
+    public List<GameObject> getGameObjects (String modeName) {
         List<GameObject> modeObjects = new ArrayList<GameObject>();
-        for(Sprite s : mySprites.values()){
+        for (Sprite s : mySprites.values()) {
             modeObjects.addAll(s.getObjects(modeName));
         }
         return modeObjects;
@@ -145,7 +147,7 @@ public class GameManager implements InputAPI {
      */
     public void clearSprite (int spriteID) {
         findSpriteWithID(spriteID).clear();
-        //mySprites.put(spriteID, null);
+        // mySprites.put(spriteID, null);
     }
 
     /**
@@ -178,9 +180,9 @@ public class GameManager implements InputAPI {
                 if (mode.isActive()) {
                     mode.update();
                 }
-                 if (mode.hasFocus()) { //TODO this is wrong
-                     handleMouseActions(mode);
-                 }
+                if (mode.hasFocus()) { // TODO this is wrong
+                    handleMouseActions(mode);
+                }
             }
         }
         for (GameMode mode : finishedModes) { // avoid concurrent modifcation
@@ -226,9 +228,10 @@ public class GameManager implements InputAPI {
     @Override
     public void configureInputHandling () {
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED, this, "toggleSoundTrack");
-            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
-                                                   KeyboardController.PRESSED, myGamePane, "returnToMenu");
+            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
+                                                   this, "toggleSoundTrack");
+            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
+                                                   myGamePane, "returnToMenu");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -298,8 +301,8 @@ public class GameManager implements InputAPI {
     }
 
     private void handleEvent (ModeEvent event) {
-//        System.out.println("doing event: "+event.getName());
-//        System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
+        // System.out.println("doing event: "+event.getName());
+        // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         if (myAvailableModeTypes.containsKey(modeName)) {
@@ -309,15 +312,16 @@ public class GameManager implements InputAPI {
             }
             Class c = myAvailableModeTypes.get(modeName);
             Constructor[] newC = c.getConstructors();
+
             try {
-//                System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
-//                System.out.println(newC[0].toGenericString());
-                myGameModes.add((GameMode) newC[0]
-                        .newInstance(this, modeName, myInvolvedIDs));
+                // System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
+                // System.out.println(newC[0].toGenericString());
+                myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
             }
-            catch (Exception e) {
-                System.out.println("Unable to create mode "+modeName+" of class "+c.toString());
+            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException e) {
                 e.printStackTrace();
+                System.out.println("Unable to create mode " + modeName + " of class " + c.toString());
             }
         }
     }
@@ -345,9 +349,9 @@ public class GameManager implements InputAPI {
             myGameModes.get(myGameModes.size() - 1).resume();
         }
     }
-    
-    public void toggleSoundTrack() {
-        if(myGameSoundTrack.loopIsRunning()) {
+
+    public void toggleSoundTrack () {
+        if (myGameSoundTrack.loopIsRunning()) {
             myGameSoundTrack.stopLoop();
         }
         else {
