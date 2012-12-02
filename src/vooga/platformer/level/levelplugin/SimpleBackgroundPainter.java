@@ -42,6 +42,13 @@ public class SimpleBackgroundPainter extends BackgroundPainter {
         }
     }
     
+    /**
+     * @param bgImg background image
+     */
+    public SimpleBackgroundPainter(Image bgImg) {
+        myBgImg = bgImg;
+    }
+    
     @Override
     public Map<String, String> getConfigStringParams () {
         Map<String, String> params = new HashMap<String, String>();
