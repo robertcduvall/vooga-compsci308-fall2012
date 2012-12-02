@@ -29,11 +29,10 @@ public class DefeatAllEnemiesCondition implements Condition {
     
     /**
      * 
-     * @param configString config string
+     * @param nextLevelName next level name
      */
-    public DefeatAllEnemiesCondition(String configString) {
-        Map<String, String> configStringMap = ConfigStringParser.parseConfigString(configString);
-        myNextLevelName = configStringMap.get(LEVEL_NAME_TAG);
+    public DefeatAllEnemiesCondition(String nextLevelName) {
+        myNextLevelName = nextLevelName;
     }
     
     @Override
