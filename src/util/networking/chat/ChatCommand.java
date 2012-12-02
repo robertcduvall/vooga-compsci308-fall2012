@@ -27,22 +27,21 @@ public enum ChatCommand {
     
 
     private String myMethodName;
+    private String myCommandName;
     
     private ChatCommand(String method, String commandName) {
-        myMethodName = method;              
+        myMethodName = method;   
+        myCommandName = commandName;
     }
     
     public String getMethodName()  {
         return myMethodName;
     }
-    
-    private String getCommandName()  {
-        return myMethodName;
-    }
-    
+   
     public static ChatCommand getChatCommandFromString(String commandName) {
+        commandName = commandName.toUpperCase();
         for (ChatCommand c : values()) {
-            if (c.getCommandName().equals(commandName)) {
+            if (c.myCommandName.equals(commandName)) {
                 return c;
             }
         }
