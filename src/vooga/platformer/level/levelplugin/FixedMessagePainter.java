@@ -2,6 +2,8 @@ package vooga.platformer.level.levelplugin;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +13,16 @@ import util.configstring.ConfigStringParser;
 import util.reflection.Reflection;
 import vooga.platformer.gameobject.GameObject;
 
+
 /**
- * A plugin that paints a message, consisting of a variable number of lines, to the screen
- * starting at the given x and y position and with the given vertical spacing. Paints the message
+ * A plugin that paints a message, consisting of a variable number of lines, to
+ * the screen
+ * starting at the given x and y position and with the given vertical spacing.
+ * Paints the message
  * on top of everything else.
+ * 
  * @author Niel Lebeck
- *
+ * 
  */
 public class FixedMessagePainter extends LevelPlugin {
     protected static final String MESSAGES_TAG = "messages";
@@ -29,37 +35,56 @@ public class FixedMessagePainter extends LevelPlugin {
     private int myX;
     private int myY;
     private int mySpace;
-    
+
     /**
      * 
      */
-    public FixedMessagePainter() {
-        
+    public FixedMessagePainter () {
+
     }
-     /**
-      * 
-      * @param configString config string
-      */
-    public FixedMessagePainter(String configString) {
-        Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
+
+    /**
+     * 
+     * @param configString config string
+     */
+    public FixedMessagePainter (String configString) {
+        Map<String, String> configMap = ConfigStringParser
+                .parseConfigString(configString);
         try {
-            myMessages = ConfigStringParser.extractMultipleEntries(configMap.get(MESSAGES_TAG));
+            myMessages = ConfigStringParser.extractMultipleEntries(configMap
+                    .get(MESSAGES_TAG));
         }
-        catch(ConfigStringException e) {
-            System.out.println("FixedMessagePainter: config string formatted improperly: "
-                    + e.getMessage());
+        catch (ConfigStringException e) {
+            System.out
+                    .println("FixedMessagePainter: config string formatted improperly: "
+                            + e.getMessage());
             System.exit(0);
         }
         myX = Integer.parseInt(configMap.get(X_TAG));
         myY = Integer.parseInt(configMap.get(Y_TAG));
         mySpace = Integer.parseInt(configMap.get(SPACE_TAG));
-        
+
         myColor = Color.BLACK;
     }
-    
+
+    /**
+     * 
+     * @param messageArray array of message lines to print
+     * @param x upper left x position
+     * @param y upper left y position
+     * @param space spacing between lines
+     */
+    public FixedMessagePainter (String[] messageArray, int x, int y, int space) {
+        myMessages = Arrays.asList(messageArray);
+        myX = x;
+        myY = y;
+        mySpace = space;
+        myColor = Color.BLACK;
+    }
+
     @Override
     public void update (List<GameObject> objectList) {
-        
+
     }
 
     @Override
@@ -75,7 +100,7 @@ public class FixedMessagePainter extends LevelPlugin {
     @Override
     public Map<String, String> getConfigStringParams () {
         Map<String, String> configMap = new HashMap<String, String>();
-        configMap.put(MESSAGES_TAG, "{line1,line2,line3}" );
+        configMap.put(MESSAGES_TAG, "{line1,line2,line3}");
         configMap.put(X_TAG, "0");
         configMap.put(Y_TAG, "0");
         configMap.put(SPACE_TAG, "15");

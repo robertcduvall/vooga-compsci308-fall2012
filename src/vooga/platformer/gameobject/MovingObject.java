@@ -1,13 +1,8 @@
 package vooga.platformer.gameobject;
 
-import java.awt.Image;
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import javax.imageio.ImageIO;
-import util.configstring.ConfigStringParser;
-import vooga.platformer.gameobject.strategy.SimpleMoveStrategy;
+
+import vooga.platformer.gameobject.strategy.update.MovementUpdateStrategy;
 import vooga.platformer.util.enums.Direction;
 
 
@@ -28,6 +23,8 @@ public class MovingObject extends GameObject {
     public MovingObject (String configString) {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
+        // all MovingObjects have a MovementUpdateStrategy
+        this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));
     }
 
     /**
@@ -36,6 +33,8 @@ public class MovingObject extends GameObject {
     public MovingObject () {
         super();
         myVelocity = new Point2D.Double(0, 0);
+        // all MovingObjects have a MovementUpdateStrategy
+        this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));
     }
 
     /**
@@ -112,9 +111,9 @@ public class MovingObject extends GameObject {
     }
 
     /**
-     * @param direc Facing Direction of the object
+     * @param direction Facing Direction of the object
      */
-    public void setFacingDirection (Direction direc) {
-        myFacingDirection = direc;
+    public void setFacingDirection (Direction direction) {
+        myFacingDirection = direction;
     }
 }

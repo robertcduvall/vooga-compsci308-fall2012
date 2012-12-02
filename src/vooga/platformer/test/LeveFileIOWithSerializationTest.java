@@ -6,11 +6,10 @@ import java.util.Map;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
-import vooga.platformer.levelfileio.XmlTags;
 
 
 /**
@@ -52,7 +51,7 @@ public class LeveFileIOWithSerializationTest {
         strategy.put(STRATEGY_PARAM_TAG, STRATEGY_PARAM_VALUE);
 
         brick =
-                new Brick("x=" + X_POS + ",y=" + Y_POS + ",width=" + SPRITE_WIDTH + ",height=" +
+                new StaticObject("x=" + X_POS + ",y=" + Y_POS + ",width=" + SPRITE_WIDTH + ",height=" +
                           SPRITE_HEIGHT + ",imagePath=" + TEST_IMAGE + ",id=" + SPRITE_ID);
         gameObjects.add(brick);
         LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,

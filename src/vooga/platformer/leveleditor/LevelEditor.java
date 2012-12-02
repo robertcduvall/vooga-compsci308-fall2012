@@ -229,7 +229,7 @@ public class LevelEditor extends JPanel {
         list.add("Baby Bowser");
         myObjectTypes.put("Bowser", list);
         list = new ArrayList<String>();
-        list.add("Brick");
+        list.add("StaticObject");
         list.add("Question Block");
         myObjectTypes.put("Block", list);
     }

@@ -16,10 +16,10 @@ import util.reflection.*;
 public class SloppyCollisionChecker extends BasicCollisionChecker {
     
     public SloppyCollisionChecker() {
-        this.addCollisionEvents("vooga.platformer.gameobject.Brick", "vooga.platformer.gameobject.Enemy", "games.platformerdemo.collisionevent.BrickBounceBack");
-        this.addCollisionEvents("vooga.platformer.gameobject.Brick", "games.platformerdemo.Bullet", "games.platformerdemo.collisionevent.BrickBounceBack");
-        this.addCollisionEvents("vooga.platformer.gameobject.Brick", "vooga.platformer.gameobject.Player", "games.platformerdemo.collisionevent.BrickMovingObject");   
-        this.addCollisionEvents("vooga.platformer.gameobject.Enemy", "vooga.platformer.gameobject.Player", "games.platformerdemo.collisionevent.EnemyPlayer");
+        this.addCollisionEvents("vooga.platformer.gameobject.StaticObject", "vooga.platformer.gameobject.Enemy", "games.platformerdemo.collisionevent.BrickBounceBack");
+        this.addCollisionEvents("vooga.platformer.gameobject.StaticObject", "games.platformerdemo.Bullet", "games.platformerdemo.collisionevent.BrickBounceBack");
+        this.addCollisionEvents("vooga.platformer.gameobject.StaticObject", "vooga.platformer.gameobject.Player", "games.platformerdemo.collisionevent.BrickMovingObject");
+        this.addCollisionEvents("vooga.platformer.gameobject.Enemy", "vooga.platformer.gameobject.Player", "games.platformerdemo.collisionevent.PlayerEnemy");
         this.addCollisionEvents("vooga.platformer.gameobject.Enemy", "games.platformerdemo.Bullet", "games.platformerdemo.collisionevent.BulletMovingObject");
     }
 }

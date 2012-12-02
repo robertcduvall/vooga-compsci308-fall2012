@@ -1,12 +1,7 @@
 package games.platformerdemo;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import vooga.platformer.collision.CollisionChecker;
-import vooga.platformer.gameobject.Brick;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
-import vooga.platformer.util.camera.FollowingCamera;
 
 public class DemoLevelFactory {
 
@@ -34,16 +29,16 @@ public class DemoLevelFactory {
 //            currLevel.addGameObject(player1);
 //            currLevel.setPlayer(player1);
 //            currLevel.addGameObject(new Enemy("x=400,y=5,width=40,height=37"));
-//            currLevel.addGameObject(new Brick("x=4,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=54,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=105,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=400,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=450,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=500,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=550,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=600,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=650,y=300,width=50,height=50"));
-//            currLevel.addGameObject(new Brick("x=650,y=250,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=4,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=54,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=105,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=400,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=450,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=500,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=550,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=600,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=650,y=300,width=50,height=50"));
+//            currLevel.addGameObject(new StaticObject("x=650,y=250,width=50,height=50"));
 //            /*
 //             * This code tells the camera to follow the player object. This code would be tricky for you guys to do.
 //             * We could just have the Level be responsible for keeping track of its Player and setting up the Camera appropriately.

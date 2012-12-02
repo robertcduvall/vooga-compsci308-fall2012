@@ -1,37 +1,68 @@
 package vooga.platformer.gameobject;
 
-import vooga.platformer.gameobject.strategy.GravityStrategy;
-import vooga.platformer.gameobject.strategy.PlayerMoveStrategy;
+import vooga.platformer.gameobject.strategy.update.GravityStrategy;
 import vooga.platformer.gameobject.strategy.ShootingStrategy;
+import vooga.platformer.gameobject.strategy.movement.GoLeftStrategy;
+import vooga.platformer.gameobject.strategy.movement.GoRightStrategy;
+import vooga.platformer.gameobject.strategy.movement.JumpStrategy;
+import vooga.platformer.gameobject.strategy.movement.StopStrategy;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
+ * A Player is a MovingObject composed with Strategies
+ *
  * @author Yaqi Zhang
  * @author Zach Michaelov
  */
 public class Player extends MovingObject {
     /**
+     * the Moving Object Representing the Player
+     */
+//    private MovingObject myPlayer;
+    /**
+     * the control strategies applied to the myPlayer
+     */
+    private Map<String, ControlStrategy> controlStrategies;
+
+
+    /**
      * @param configString
      */
-    public Player (String configString) {
+    public Player(String configString) {
         super(configString);
-        addStrategy("PlayerMoveStrategy", new PlayerMoveStrategy(this));
-        addStrategy("GravityStrategy",new GravityStrategy(this));
-        addStrategy("ShootingStrategy",new ShootingStrategy(this));
+        controlStrategies = new HashMap<String, ControlStrategy>();
+//        myPlayer = new MovingObject(configString);
+        initStrategies();
+    }
+
+    private void initStrategies() {
+        // TODO migrate Gravity to level
+        this.addStrategy("GravityStrategy", new GravityStrategy(this));
+
+        // add the Player's Control Strategies
+        this.addControlStrategy("Jump", new JumpStrategy(this));
+        this.addControlStrategy("GoLeft", new GoLeftStrategy(this));
+        this.addControlStrategy("GoRight", new GoRightStrategy(this));
+        this.addControlStrategy("Stop", new StopStrategy(this));
+        this.addControlStrategy("Shoot", new ShootingStrategy(this));
     }
 
     /**
-     * 
-     * @return the moving strategy of the player
+     * adds the specified controlStrategy
+     * @param controlStrategy the ControlStrategy we want to add to the Player
      */
-    public PlayerMoveStrategy getMovingStrategy () {
-        return (PlayerMoveStrategy) getStrategy("PlayerMoveStrategy");
+    public void addControlStrategy(String name, ControlStrategy controlStrategy) {
+        controlStrategies.put(name, controlStrategy);
     }
 
     /**
-     * @return the shooting strategy of the player
+     * Triggers the specified ControlStrategy
+     * @param name the name of the ControlStrategy we want to trigger
      */
-    public ShootingStrategy getShootingStrategy () {
-        return (ShootingStrategy) getStrategy("ShootingStrategy");
+    public void fireControlStrategy(String name) {
+        controlStrategies.get(name).fire();
     }
 }
