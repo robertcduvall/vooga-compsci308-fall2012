@@ -122,6 +122,7 @@ public class OptionMode extends GameMode {
             myPanel.dehighlightOption();
         } else {
             flagCondition("switchlevel", new ArrayList<Integer>());
+            setModeIsOver();
             //myDisplayedStrategies.get("Next Level!").performStrategy(myPlayer); error?
         }
     }

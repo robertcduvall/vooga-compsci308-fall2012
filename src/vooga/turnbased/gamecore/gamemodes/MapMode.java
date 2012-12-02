@@ -324,6 +324,8 @@ public class MapMode extends GameMode implements InputAPI {
                                                    myPlayer, "moveDown");
             GamePane.keyboardController.setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
                                                    myPlayer, "toggleRunning");
+            //GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
+            //                                       myPathFinder, "")
         }
         catch (Exception e) {
             e.printStackTrace();
