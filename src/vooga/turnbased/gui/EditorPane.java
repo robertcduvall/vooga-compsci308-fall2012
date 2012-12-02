@@ -214,9 +214,22 @@ public class EditorPane extends DisplayPane {
                 }
                 addObjectXmlInformation(returnedValues, l, sprite);
                 l.saveXmlDocument();
+                newPopUpMessage(
+                        "Successfully Added Object!", "To add another object, change the" +
+                        "fields to desired values.  When done, close the window to continue" +
+                        "game building.");
             }
         });
         return nextButton;
+    }
+
+    private void newPopUpMessage (String title, String message) {
+        JFrame j = new JFrame(title);
+        JLabel l = new JLabel("<HTML>" + message + "</HTML>");
+        j.add(l);
+        j.pack();
+        j.setSize(400, 200);
+        j.setVisible(true);
     }
 
     private void addObjectXmlInformation (String[] returnedValues,
