@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 /**
  * contains a Canvas, and menu that respond to change in games
  * 
- * @author Rex, Tony
+ * @author David, Rex, Tony
  **/
 public class GameWindow extends JFrame {
 

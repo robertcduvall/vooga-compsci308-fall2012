@@ -37,7 +37,6 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
-        myGameThread = new Thread(this);
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
         //addMouseListener(new GameMouseListener());
         initMouseListener();
@@ -49,8 +48,10 @@ public class GamePane extends DisplayPane implements Runnable {
      * initialize properties when user switch to game
      */
     public void initialize () {
-        repaint();
+        //myGameManager = new GameManager(this);
+        myGameThread = new Thread(this);
         myGameThread.start();
+        repaint();
     }
 
     /**
@@ -130,4 +131,8 @@ public class GamePane extends DisplayPane implements Runnable {
         });
     }
 
+    public void returnToMenu() {
+        myGameThread.stop();
+        getGameWindow().changeActivePane(GameWindow.MENU);
+    }
 }

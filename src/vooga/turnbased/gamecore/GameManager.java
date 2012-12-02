@@ -3,6 +3,7 @@ package vooga.turnbased.gamecore;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.gamemodes.BattleMode;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecore.gamemodes.GameOverMode;
@@ -242,9 +244,14 @@ public class GameManager implements InputAPI {
     }
 
     public void configureInputHandling () {
-        // handle actions that shouldn't be passed down to individual gamemodes,
-        // GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
-        // KeyboardController.PRESSED, this, "gameOver");
+         //handle actions that shouldn't be passed down to individual gamemodes,
+         try {
+            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
+             KeyboardController.PRESSED, myGamePane, "returnToMenu");
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+        }
     }
 
     /**
