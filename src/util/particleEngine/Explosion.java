@@ -7,36 +7,51 @@ import util.mathvector.*;
 
 
 /**
- * Tests an outward-moving particle engine effect. There are 8
- * "directions of origin" - particles have one of the eight following
- * directions:
- * (-1,1), (-1,-1), (1,-1), (1,1), (-1,0), (1,0), (0,-1), (0,1).
+ * This implementation of ParticleSystem provides for an explosion effect by
+ * creating/animating/drawing a large number of reddish orange sprites (there is
+ * some intended variation in color). This system has two types sprites that
+ * move radially outward from it's point of instantiation: explosion particles
+ * and smoke particles. The explosion particles are brighter in color and have
+ * less transparency than the smoke particles, but do not last as long on the
+ * screen - creating an effect of smoke lingering after an explosion.
  * 
- * @author Kathleen
- *         edited by David Spruill
+ * @author David Spruill
+ *         Started by Kathleen
  * 
  */
 public class Explosion extends ParticleSystem {
 
+    /**
+     * Constructs an explosion with a starting position
+     * 
+     * @param startingPosition the position at which to start the explosion
+     */
     public Explosion (Point startingPosition) {
         super(new MathVector2D(startingPosition));
     }
 
-    private static MathVector2D[] velocities = { new MathVector2D(-1, 1),
-            new MathVector2D(-1, -1), new MathVector2D(1, -1),
-            new MathVector2D(1, 1), new MathVector2D(-Math.sqrt(2), 0),
-            new MathVector2D(Math.sqrt(2), 0), new MathVector2D(0, -Math.sqrt(2)),
-            new MathVector2D(0, Math.sqrt(2)) };
-    
-    private static int explosionTolerance = 40;
-    private static int explosionLength = 20;
-    private static int explosionDensity = 210;
-    private static int smokeTolerance = 40;
-    private static int smokeLength = 30;
-    private static int smokeDensity = 100;
-    
-    private static float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.4f };
-    private static float[] RGBAtolerances = {0.2f, 0.2f, 0.2f, 0.1f};
+    // The different velocities that the explosion can take
+    private static MathVector2D[] velocities = { new MathVector2D(-2, 2),
+            new MathVector2D(-2, -2), new MathVector2D(2, -2),
+            new MathVector2D(2, 2), new MathVector2D(-Math.sqrt(8), 0),
+            new MathVector2D(Math.sqrt(8), 0),
+            new MathVector2D(0, -Math.sqrt(8)),
+            new MathVector2D(0, Math.sqrt(8)) };
+
+    // These following constants define this particular system
+    private static int explosionTolerance = 50;
+    private static int explosionLength = 30;
+    private static int explosionDensity = 30;
+    private static int explosionNumDirections = 10;
+    private static int smokeTolerance = 50;
+    private static int smokeLength = 50;
+    private static int smokeDensity = 70;
+    private static int smokeNumDirections = 1;
+
+    // Each particle is drawn with a RGBA scaling factor that is chosen randomly
+    // from this scale +/- these tolerances
+    private static float[] RGBAscales = { 3f, 1.2f, 1.2f, 0.4f };
+    private static float[] RGBAtolerances = { 0.2f, 0.2f, 0.2f, 0.1f };
 
     @Override
     protected void setUpParticleEngines () {
@@ -47,9 +62,12 @@ public class Explosion extends ParticleSystem {
         Image smokeImage = temp.getImage();
 
         for (int j = 0; j < velocities.length; j++) {
-            addParticleEngine(smokeDensity, smokeImage, position, velocities[j], smokeTolerance, smokeLength, 0.0, 1,
-                    false);
-            addParticleEngine(explosionDensity, explosionImage, position, velocities[j], explosionTolerance, explosionLength, 0.0, 5, false);
+            addParticleEngine(smokeDensity, smokeImage, position,
+                    velocities[j], smokeTolerance, smokeLength, 0.0,
+                    smokeNumDirections, RGBAscales, RGBAtolerances, false);
+            addParticleEngine(explosionDensity, explosionImage, position,
+                    velocities[j], explosionTolerance, explosionLength, 0.0,
+                    explosionNumDirections, RGBAscales, RGBAtolerances, false);
         }
 
     }
