@@ -1,5 +1,6 @@
 package arcade.gamemanager;
 
+import arcade.IArcadeGame;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +11,6 @@ import java.util.Set;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import util.xml.XmlUtilities;
-import arcade.IArcadeGame;
 
 
 // TODO getUserPreferences: maybe we should remove this method and let GUI team
@@ -27,6 +25,14 @@ import arcade.IArcadeGame;
  */
 public class Game {
 
+    /**
+     * Constant string for review.
+     */
+    private static final String REVIEW = "review";
+    /**
+     * Constant string for rating.
+     */
+    private static final String RATING = "rating";
     private GameSaver mySaver;
     private IArcadeGame myGame;
     private Document myDocument;
@@ -43,6 +49,7 @@ public class Game {
      * 
      * @param gameObject
      *        the game to be managed
+     * @param doc xml document used to save and load data
      */
     public Game (IArcadeGame gameObject, Document doc) {
         mySaver = new GameSaver(null, gameObject);
@@ -106,7 +113,7 @@ public class Game {
         }
         return info;
     }
-    
+
     /**
      * adds additional game information
      * @param tag tag name of new information
@@ -142,7 +149,7 @@ public class Game {
      * review first (if it exists).
      */
     public List<String> getReviews () {
-        return getGameInfo("review");
+        return getGameInfo(REVIEW);
     }
 
     /**
@@ -166,7 +173,7 @@ public class Game {
      */
     public List<Integer> getRatings () {
         List<Integer> ratings = new ArrayList<Integer>();
-        String ratingData = getGameInfo("rating").get(0);
+        String ratingData = getGameInfo(RATING).get(0);
         String[] ratingList = ratingData.split(" ");
         for (String rating : ratingList) {
             if (!rating.isEmpty()) {
@@ -184,7 +191,7 @@ public class Game {
      *        text for the review
      */
     public void setReview (String review) {
-        setGameInfo("review", review);
+        setGameInfo(REVIEW, review);
         saveChanges();
     }
 
@@ -201,12 +208,12 @@ public class Game {
      *        rating to be added
      */
     public void setRating (int rating) {
-        String ratingData = getGameInfo("rating").get(0) + " " + rating;
+        String ratingData = getGameInfo(RATING).get(0) + " " + rating;
         ratingData = ratingData.trim();
-        Node ratingElement = myGameElement.getElementsByTagName("rating").item(0);
+        Node ratingElement = myGameElement.getElementsByTagName(RATING).item(0);
         if (ratingElement == null) {
-            myDocumentManager.appendElement(myDocument, myGameElement, "rating", "");
-            ratingElement = myGameElement.getElementsByTagName("rating").item(0);
+            myDocumentManager.appendElement(myDocument, myGameElement, RATING, "");
+            ratingElement = myGameElement.getElementsByTagName(RATING).item(0);
         }
         ratingElement.setTextContent(ratingData);
         saveChanges();
