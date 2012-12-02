@@ -47,6 +47,7 @@ public class ChatService implements Service {
         while (true && in != null) {
             try {
                 String input = in.readLine();
+                System.out.println("received: " + input);
                 ChatCommand type = myProtocol.getType(input);
                 Method m;
                 m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
