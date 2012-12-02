@@ -1,4 +1,4 @@
-package vooga.platformer.gameobject.strategy;
+package vooga.platformer.gameobject.strategy.update;
 
 
 import vooga.platformer.gameobject.Enemy;
