@@ -94,9 +94,6 @@ public class GameTagSearchPanel extends ASearchPanel implements ActionListener{
 
     @Override
     public void actionPerformed (ActionEvent e) {
-        if (e.getActionCommand() == SEARCH) {
-        
-        }
         if (e.getActionCommand() == NAME) {
             getArcade().replacePanel("NormSearch");
         }
