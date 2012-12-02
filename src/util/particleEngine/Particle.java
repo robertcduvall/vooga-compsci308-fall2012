@@ -5,11 +5,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Random;
-import util.calculator.VectorCalculator;
+import util.mathvector.*;
 
 
 /**
@@ -27,8 +26,8 @@ import util.calculator.VectorCalculator;
 public class Particle {
     private int durationLimit;
     private int durationExisted;
-    public Point myPosition;
-    public Point myVelocity;
+    public MathVector2D myPosition;
+    public MathVector2D myVelocity;
     private int myVariance;
     private float myRotation; // radians
     private float myRotationalVelocity; // radians/frame
@@ -39,31 +38,14 @@ public class Particle {
 
     // These values were found after extensive testing,
     // and scale the sprite's red, green, blue, and alpha values
-    private float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.2f };
+    private float[] myRGBAscales;
+    private float[] myRGBAtolerances;
 
     private float[] offsets;
     private BufferedImage myBufferedImage;
 
     private static final int oneHundred = 100;
     private static final double radiansPerCircle = 2 * Math.PI;
-
-    /**
-     * Creates a particle to use in the particle effect implemented by
-     * the graphics package. The image to be drawn for this particular
-     * particle is written to the buffer of the BufferedImage that will
-     * be used to apply alpha filters to the entire image.
-     * 
-     * @param position the center position of the image
-     * @param size the size of the image to use
-     * @param image the image to use
-     * @param velocity the velocity of the particle
-     */
-    protected Particle (Point position, Dimension size, Image image,
-            Point velocity, int variance, int duration) {
-        declareVariables(position, size, image, variance, duration);
-        myVelocity = velocity;
-        setupRadianMode();
-    }
 
     /**
      * Another version of the constructor that also allows for initial angles to
@@ -77,10 +59,14 @@ public class Particle {
      * @param variance the amount which the angle can vary
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
+     * @param RGBAtolerance
+     * @param myRGBAscales
      */
-    protected Particle (Point position, Dimension size, Image image,
+    protected Particle (MathVector2D position, Dimension size, Image image,
             Double velocityMagnitude, Double velocityAngle, int variance,
-            int duration) {
+            int duration, float[] RGBAscales, float[] RGBAtolerances) {
+        myRGBAscales = RGBAscales.clone();
+        myRGBAtolerances = RGBAtolerances;
         declareVariables(position, size, image, variance, duration);
         myAngle = velocityAngle;
         maxDistanceTraveledPerUpdate = velocityMagnitude;
@@ -96,8 +82,8 @@ public class Particle {
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
      */
-    private void declareVariables (Point position, Dimension size, Image image,
-            int variance, int duration) {
+    private void declareVariables (MathVector2D position, Dimension size,
+            Image image, int variance, int duration) {
         myPosition = position;
         myVariance = variance;
         durationExisted = 0;
@@ -113,15 +99,15 @@ public class Particle {
         Graphics2D g2d = (Graphics2D) myBufferedImage.createGraphics();
         g2d.setBackground(new Color(0, 0, 0, 0));
         g2d.drawImage(image, 0, 0, size.width, size.height, null);
+        setRGBscales();
     }
 
-    /**
-     * Stores the angle and magnitude of the velocity vector.
-     */
-    private void setupRadianMode () {
-        myAngle = VectorCalculator.calculateAngleInRadians(myVelocity);
-        maxDistanceTraveledPerUpdate = Math.max(1,
-                VectorCalculator.calculateMagnitude(myVelocity));
+    private void setRGBscales () {
+        for(int i=0; i<myRGBAscales.length;i++)
+        {
+            myRGBAscales[i]+=(myRandomGenerator.nextFloat()*2-1)*myRGBAtolerances[i];
+        }
+        
     }
 
     /**
@@ -131,12 +117,22 @@ public class Particle {
      */
     protected void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        RescaleOp rop = new RescaleOp(RGBAscales, offsets, null);
-        g2d.rotate(myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
-                myPosition.y + myBufferedImage.getHeight() / 2);
-        g2d.drawImage(myBufferedImage, rop, myPosition.x, myPosition.y);
-        g2d.rotate(-myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
-                myPosition.y + myBufferedImage.getHeight() / 2);
+        RescaleOp rop = new RescaleOp(myRGBAscales, offsets, null);
+        g2d.rotate(
+                myRotation,
+                myPosition.getComponent(MathVector2D.X)
+                        + myBufferedImage.getWidth() / 2,
+                myPosition.getComponent(MathVector2D.Y)
+                        + myBufferedImage.getHeight() / 2);
+        g2d.drawImage(myBufferedImage, rop,
+                (int) myPosition.getComponent(MathVector2D.X),
+                (int) myPosition.getComponent(MathVector2D.Y));
+        g2d.rotate(
+                -myRotation,
+                myPosition.getComponent(MathVector2D.X)
+                        + myBufferedImage.getWidth() / 2,
+                myPosition.getComponent(MathVector2D.Y)
+                        + myBufferedImage.getHeight() / 2);
     }
 
     /**
@@ -149,14 +145,20 @@ public class Particle {
         double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
         int newX = (int) (Math.cos(tempNewAngle) * maxDistanceTraveledPerUpdate);
         int newY = (int) (Math.sin(tempNewAngle) * maxDistanceTraveledPerUpdate);
-        myPosition.x += newX;
-        myPosition.y -= newY;
+        myPosition.setComponent(MathVector2D.X,
+                myPosition.getComponent(MathVector2D.X) + newX);
+        myPosition.setComponent(MathVector2D.Y,
+                myPosition.getComponent(MathVector2D.Y) + newY);
         durationExisted++;
 
         myRotation += myRotationalVelocity;
 
+        calculateAlphachanges();
+    }
+
+    private void calculateAlphachanges () {
         // this is the alpha scale
-        RGBAscales[3] = (float) (durationLimit - durationExisted)
+        myRGBAscales[3] = (float) (durationLimit - durationExisted)
                 / (float) durationLimit;
     }
 

@@ -54,7 +54,7 @@ public class SerializationTest {
         GameObject readGameObject1 = (GameObject) ois.readObject();
         ois.close();
         Assert.assertTrue(readGameObject0.getX() != readGameObject1.getX());
-        // Assert.assertEquals(TEST_X_0, (int) readGameObject0.getX());
+        Assert.assertEquals(TEST_X_0, (int) readGameObject0.getX());
     }
 
 }

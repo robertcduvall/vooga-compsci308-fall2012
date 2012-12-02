@@ -179,6 +179,9 @@ public class UserManager {
     public User getCurrentUser () {
         return myCurrentUser;
     }
+    public String getCurrentUserName(){
+        return myCurrentUser.getName();
+    }
 
     protected void setCurrentUser (String userName) {
         myCurrentUser = getUser(userName);
@@ -206,6 +209,15 @@ public class UserManager {
 
     protected void updateMessage (String sender, String receiver, String content) {
         getUser(receiver).updateMyMessage(sender, content);
+    }
+    
+    public GameData getGame(String userName, String gameName){
+     return   getUser(userName).getGameData(gameName);
+        
+    }
+    
+    public List<Message> getMessage(){
+        return myCurrentUser.getMyMessage();
     }
 
 }
