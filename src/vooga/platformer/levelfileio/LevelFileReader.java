@@ -165,6 +165,9 @@ public class LevelFileReader {
      * 
      * @return a collection of Sprite objects representing the level's
      *         gameObjects
+     * 
+     * @deprecated Sprites are no longer supported in the revised file format
+     *             for saving levels. Use getGameObjects() instead.
      */
 
     public Collection<Sprite> getSprites () {

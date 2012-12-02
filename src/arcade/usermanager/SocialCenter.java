@@ -110,6 +110,23 @@ public class SocialCenter {
     /*
      * return operation status
      */
+    public boolean sendMessage (String receiver, String content) {
+        String sender=myUserManager.getCurrentUserName();
+        String filePath = myUserMessageFilePath + receiver + ".xml";
+        File f = new File(filePath);
+
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "sender", sender);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.write(doc, filePath);
+       // myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        myUserManager.updateMessage(sender, receiver, content);
+
+        return true;
+    }
+    
     public boolean sendMessage (String sender, String receiver, String content) {
         String filePath = myUserMessageFilePath + receiver + ".xml";
         File f = new File(filePath);

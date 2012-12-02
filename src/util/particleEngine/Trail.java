@@ -3,33 +3,32 @@ package util.particleEngine;
 import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
-import util.calculator.VectorCalculator;
+import util.mathvector.*;
 
 
 public class Trail extends ParticleSystem {
 
-    private static Image particleImage;
-    private static VectorCalculator vcalculator;
     private static double angleSpan = 90;
-    private static int numberOfDirections = 10;
-    private static Point velocity = new Point(0, 2);
-    private static int tolerance = 20;
-    private static int length = 65;
-
-    private static int density = 350;
+    private static int numberOfDirections = 15;
+    private static MathVector2D velocity = new MathVector2D(0,0);
+    private static int tolerance = 25;
+    private static int length = 35;
+    private static int density = 450;
+    
+    private static float[] RGBAscales = { 0f, 1.8f, 2.4f, 0.4f };
+    private static float[] RGBAtolerances = {0f, 2.2f, 2.2f, 0.3f};
 
     public Trail (Point startingPosition) {
-        super(startingPosition);
+        super(new MathVector2D(startingPosition));
     }
 
     @Override
     protected void setUpParticleEngines () {
-        // these 2 lines of code are from David's ParticleTestApplet class
         ImageIcon temp = new ImageIcon(Trail.class.getResource("particle.png"));
         Image particleImage = temp.getImage();
 
         addParticleEngine(density, particleImage, position, velocity,
-                tolerance, length, angleSpan, numberOfDirections, true);
+                tolerance, length, angleSpan, numberOfDirections,  RGBAscales, RGBAtolerances, true);
 
     }
 }

@@ -39,6 +39,16 @@ public class DestroySpecificObjectWinCondition implements Condition {
         myObjectId = Integer.parseInt(configStringMap.get(OBJECT_TAG));
     }
     
+    /**
+     * 
+     * @param nextLevelName name of next level
+     * @param objectIdString object id
+     */
+    public DestroySpecificObjectWinCondition(String nextLevelName, String objectIdString) {
+        myNextLevelName = nextLevelName;
+        myObjectId = Integer.parseInt(objectIdString);
+    }
+    
     @Override
     public boolean isSatisfied (List<GameObject> objectList) {
         GameObject go = GameObjectFinder.findGameObject(objectList, myObjectId);

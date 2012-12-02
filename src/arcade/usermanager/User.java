@@ -9,7 +9,7 @@ import java.util.List;
  * Represents a User of the arcade.
  * 
  * @author Howard
- *         modified by Difan Zhao, Jei Min Yoo
+ *         modified by Difan Zhao, Jei Min Yoo, Robert Bruce
  * 
  * 
  */
@@ -80,14 +80,8 @@ public class User {
         return null;
     }
 
-    protected List<String> getMyMessage () {
-        List<String> myMessage = new ArrayList<String>();
-        for (Message m : myMessages) {
-            myMessage.add(m.getMessage());
-
-        }
-
-        return myMessage;
+    public List<Message> getMyMessage () {
+        return myMessages;
     }
 
     protected void updateMyMessage (String sender, String content) {

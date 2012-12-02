@@ -25,11 +25,15 @@ public final class LevelFileWriter {
     /**
      * Integer constant that is returned by writeLevel if the file data cannot
      * be written successfully.
+     * 
+     * @deprecated Using custom exception instead.
      */
     public static final int UNSUCCESSFUL_WRITE = 0;
     /**
      * Integer constant returned by writeLevel if the data file is written
      * successfully.
+     * 
+     * @deprecated Using custom exception instead.
      */
     public static final int SUCCESSFUL_WRITE = 1;
 
@@ -56,6 +60,10 @@ public final class LevelFileWriter {
      * @param cameraType class name of the Camera to use for this level
      * @return an integer constant representing whether the file was written
      *         successfully or not
+     * 
+     * @deprecated Sprites are no longer supported in file writing, only
+     *             serializable GameObjects. Use the alternate writeLevel
+     *             method.
      */
     public static int writeLevel (String filePath, String levelType, String levelName, int width,
                                   int height, String backgroundImage,
@@ -144,6 +152,16 @@ public final class LevelFileWriter {
         oos.close();
     }
 
+    /**
+     * Writes sprite data to the xml file.
+     * 
+     * @param levelObjects sprites to be converted to xml tags
+     * @param doc document in which to write this data
+     * @param level parent element under which to write sprite data
+     * 
+     * @deprecated Sprite data is no longer being written to xml file. Instead,
+     *             GameObjects are being serialized.
+     */
     private static void addLevelObjects (Collection<Sprite> levelObjects, Document doc,
                                          Element level) {
         for (Sprite s : levelObjects) {

@@ -6,6 +6,7 @@ import util.encrypt.Encrypter;
 import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
+import arcade.usermanager.Message;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
 import arcade.usermanager.UserManager;
@@ -140,8 +141,14 @@ public class ModelInterface {
      * @return A list of all the users in the system.
      */
     public List<UserProfile> getAllUsers () {
-      return  myUserManager.getAllUserProfile();
-       
+        return  myUserManager.getAllUserProfile();
+    }
+    /**
+     * This is useful for sizing components.
+     * @return The number of profiles in the system.
+     */
+    public int getNumUsers() {
+        return myUserManager.getAllUserProfile().size();
     }
 
     /**
@@ -153,29 +160,44 @@ public class ModelInterface {
     public UserProfile getUser (String username) {
         return myUserManager.getUserProfile(username);
     }
-    
-  /**
-   * @return get an editable user class for the current user
-   */
-    
+
+    /**
+     * @return get an editable user class for the current user
+     */
+
     public User getEditableCurrentUser(){
         return myUserManager.getCurrentUser();
-        
+
     }
-    
+
+    /**
+     * 
+     */
+    public boolean sendMessage(String sender, String recipient, String messageContent) {
+        return mySocialCenter.sendMessage(sender, recipient, messageContent);
+    }
+
     /**
      * delete user profile
      * @param userName
      * @param password
      * @return
      */
-    
+
     public boolean deleteUser(String userName, String password){
-     return   mySocialCenter.deleteUser(userName, password);
-        
+        return   mySocialCenter.deleteUser(userName, password);
+
     }
 
     public void changeAdminStatus (String name, boolean adminStatus) {
         myUserManager.changeAdminStatus(name, adminStatus);
+    }
+    
+    public void sendMessage(String receiver, String content){
+        mySocialCenter.sendMessage(receiver, content);
+    }
+    
+    public List<Message> getMessage(){
+        return myUserManager.getMessage();
     }
 }

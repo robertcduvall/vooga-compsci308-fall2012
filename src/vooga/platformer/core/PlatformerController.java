@@ -102,7 +102,7 @@ public class PlatformerController extends JPanel implements Runnable {
 
     @Override
     public void paint (Graphics pen) {
-        paintBackground(pen);
+        paintBlankScreen(pen);
         myCurrentLevel.paint(pen);
         pen.setColor(Color.BLACK);
         paintString(pen);
@@ -116,14 +116,14 @@ public class PlatformerController extends JPanel implements Runnable {
      * 
      * @param pen
      */
-    public void paintBackground (Graphics pen) {
+    public void paintBlankScreen (Graphics pen) {
         pen.setColor(Color.WHITE);
         pen.fillRect(0, 0, getWidth(), getHeight());
-        // TODO: need to test this
-        if (myBackground != null) {
+        
+        /*if (myBackground != null) {
             pen.drawImage(myBackground.getScaledInstance((int) getWidth(),
                     (int) getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
-        }
+        }*/
     }
 
     private void paintString (Graphics pen) {
