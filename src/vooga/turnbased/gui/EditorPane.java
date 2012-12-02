@@ -1,6 +1,5 @@
 package vooga.turnbased.gui;
 
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,8 +7,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -25,7 +22,7 @@ import vooga.turnbased.gamecreation.LevelEditor;
 import vooga.turnbased.gamecreation.PlayerEditor;
 
 /**
- * @author s
+ * @author Mark Hoffman
  * 
  */
 @SuppressWarnings("serial")
@@ -51,11 +48,9 @@ public class EditorPane extends DisplayPane {
                 String dir = System.getProperty(USER_DIR);
                 LevelEditor l = new LevelEditor(dir +
                         "/src/vooga/turnbased/resources/level/testLevel.xml");
-                editDocument(l);
-                //testHardcodedLevelEditor(l);
+                editLevelDocument(l);
                 PlayerEditor p = new PlayerEditor(dir +
                         "/src/vooga/turnbased/resources/level/testPlayer.xml");
-                testHardcodedPlayerEditor(p);
             }
         });
         add(newLevelButton);
@@ -63,46 +58,10 @@ public class EditorPane extends DisplayPane {
         modifyLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 LevelEditor l = modifyExistingLevel(selectFile());
-                editDocument(l);
+                editLevelDocument(l);
             }
         });
         //add(modifyLevelButton);
-    }
-
-    private void testHardcodedLevelEditor (LevelEditor l) {
-        l.addDimensionTag(20, 30);
-        l.addBackgroundImage("THIS IS THE NEW IMAGE PATH");
-        l.addCameraDimension(10, 10);
-        Element sprite = l.addSprite();
-        String[] mapImagePaths = {"img1", "img2"};
-        l.addMapObject(sprite, "CREATE","map","MAP CLASS", "MAP EVENT", 5, 5, mapImagePaths);
-        Map<String, Number> stats = new HashMap<String, Number>();
-        stats.put("health", 10);
-        stats.put("attack", 5);
-        stats.put("defense", 8);
-        String[] battleImagePaths = {"img1", "img2"};
-        l.addBattleObject(sprite, "CREATE", "battle","BATTLE CLASS", "BATTLE EVENT", stats,
-                "NAME", battleImagePaths);
-        l.saveXmlDocument();
-    }
-
-    private void testHardcodedPlayerEditor (PlayerEditor p) {
-        Element player = p.addPlayer();
-        Map<String, String> imagePaths = new HashMap<String,String>();
-        imagePaths.put("source1", "direction1");
-        imagePaths.put("source2", "direction2");
-        p.addMapObject(player, "start", "map1, map2", "MAP CLASS", "MAP EVENT", 4, 4, imagePaths);
-        Map<String, Number> stats = new HashMap<String, Number>();
-        stats.put("health", 3);
-        stats.put("attack", 2);
-        stats.put("defense", 1);
-        String[] imagePath = {"PATH1", "PATH2"};
-        p.addBattleObject(player, "start", "battle", "CLASS", "CONDITION", stats, "NAME", imagePath);
-        stats.put("health", 6);
-        stats.put("attack", 5);
-        stats.put("defense", 4);
-        p.modifyBattleStats(player, stats, "NAME");
-        p.saveXmlDocument();
     }
 
     /**
@@ -142,7 +101,7 @@ public class EditorPane extends DisplayPane {
         return null;
     }
 
-    private void editDocument(final LevelEditor l) {
+    private void editLevelDocument(final LevelEditor l) {
         removeAll();
         repaint();
         String[] background = {"Dimension Width: ", "Dimension Height: ",
@@ -156,8 +115,8 @@ public class EditorPane extends DisplayPane {
         JButton modeButton = setUpModeButton(l, modes, modesDefaultValues);
         add(modeButton);
         final String[] objects = {"Create On: ", "Modes: ", "Class: ", "Condition: ",
-                "X-Coordinate: ", "Y-Coordinate: ", "Images: "};
-        final String[] objectsDefaultValues = {"","","","","","",""};
+                "X-Coordinate: ", "Y-Coordinate: ", "Images: ", "Stats: ", "Name: "};
+        final String[] objectsDefaultValues = {"","","","","","","","",""};
         JButton spriteButton = setUpSpriteButton(l, objects, objectsDefaultValues);
         add(spriteButton);
         // TODO: Add create player button somewhere in this mess
@@ -181,7 +140,7 @@ public class EditorPane extends DisplayPane {
         final int NUM_PAIRS = objects.length;
         final JPanel P = setUpJPanel(objects, objectsDefaultValues, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 35, 6, 6);
-        final JFrame FRAME = new JFrame("Sprite Information");
+        final JFrame FRAME = new JFrame("Sprite Information (Select Add Object when all fields are ready)");
         Element sprite = l.addSprite();
         JButton nextButton = makeNextButtonAndAddObjectXml(l, sprite, NUM_PAIRS, P, FRAME);
         JButton doneButton = makeDoneButton(FRAME);
@@ -215,8 +174,8 @@ public class EditorPane extends DisplayPane {
                 addObjectXmlInformation(returnedValues, l, sprite);
                 l.saveXmlDocument();
                 newPopUpMessage(
-                        "Successfully Added Object!", "To add another object, change the" +
-                        "fields to desired values.  When done, close the window to continue" +
+                        "Successfully Added Object!", "To add another object, change the " +
+                        "fields to desired values.  When done, close the window to continue " +
                         "game building.");
             }
         });
@@ -340,7 +299,7 @@ public class EditorPane extends DisplayPane {
         P.setOpaque(true);
         FRAME.setContentPane(P);
         FRAME.pack();
-        FRAME.setSize(new Dimension(600, 400));
+        FRAME.setSize(new Dimension(600, 600));
         FRAME.setVisible(true);
     }
     
