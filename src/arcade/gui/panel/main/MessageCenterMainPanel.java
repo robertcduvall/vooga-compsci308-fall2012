@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
+import arcade.gui.components.MessageListComponent;
 import arcade.gui.components.UserListComponent;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.UserProfile;
@@ -43,7 +44,7 @@ public class MessageCenterMainPanel extends AMainPanel {
                     "blahhhhhh meeeeeehhhhhhhhhhhhhh meeeeeehhhhhhhhhhhhhh " +
                     "meeeeeehhhhhhhhhhhhhh meeeeeehhhhhhhhhhhhhh " + i +
                     "meeeeeehhhhhhhhhhhhhh meeeeeehhhhhhhhhhhhhh " + i +
-                    "eeeeeehhhhhhhhhhhhhhhhh" + i));
+                    "eeeeeehhhhhhhhhhhhhhhhh" + i, myPanel));
         }
 
         return myPanel;
