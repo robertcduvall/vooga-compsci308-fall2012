@@ -108,20 +108,20 @@ public class MapModePathFinder extends PathFinder{
      * @param p Position the indicator should be placed
      * @return the MapItemObject representing a path indicator
      */
-    protected MapItemObject generatePathIndicator (Point p) {
-        return new MapItemObject(0, "NO_ACTION", p, GameWindow.importImage("HighlightPath"), myMap);
-    }
+//    protected MapItemObject generatePathIndicator (Point p) {
+//        return new MapItemObject(0, "NO_ACTION", p, GameWindow.importImage("HighlightPath"), myMap);
+//    }
 
     /**
      * highlight the path by generating a series of path indicators
      * Could be overriden if other ways of highlighting path are needed
      */
     protected void highlightPath () {
-        for (Point p : myPath) {
-            MapObject m = generatePathIndicator(p);
-            myMap.addMapObject(p, m);
-            myHighlightObjects.add(m);
-        }
+//        for (Point p : myPath) {
+//            MapObject m = generatePathIndicator(p);
+//            myMap.addMapObject(p, m);
+//            myHighlightObjects.add(m);
+//        }
         isHighlighted = true;
     }
 

@@ -46,6 +46,8 @@ public class GameManager implements InputAPI {
     private List<GameMode> myGameModes;
     private String myNewMapResource;
     private int myPlayerSpriteID;
+    private Dimension myMapSize;
+    private Dimension myCameraSize;
 
     /**
      * Constructor of GameManager
@@ -80,23 +82,35 @@ public class GameManager implements InputAPI {
      */
     private void initializeGameLevel (String levelFileName) {
         LevelXmlParser test = new LevelXmlParser(new File(levelFileName), this);
-
-        MapMode mapMode = (MapMode) test.getMapMode();
-        myGameModes.add(mapMode);
+        myMapSize = test.getMapSize();
+        myCameraSize = test.getCameraSize();
+        
+//        MapMode mapMode = (MapMode) test.getMapMode();
+//        myGameModes.add(mapMode);
 
         addSprites(test.parseSprites());
+        
         myPlayerSpriteID = test.getPlayerID();
+        
         myAvailableModeTypes = test.getUserDefinedModes();
+        
         myGameLogic.addEventConditions(test.getEventConditionMapping());
 
-        // startFirstMode(test.getStartMode());
-        myGameModes.get(0).resume();
+        startFirstMode(test.getStartMode());
+    }
+    
+    public Dimension getMapSize() {
+        return myMapSize;
+    }
+    
+    public Dimension getCameraSize() {
+        return myCameraSize;
     }
 
-    // private void startFirstMode(String entryMode) {
-    // handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
-    // myGameModes.get(0).resume();
-    // }
+     private void startFirstMode(String entryMode) {
+         handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+         myGameModes.get(0).resume();
+     }
 
     /**
      * find the Sprite with specific ID

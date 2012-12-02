@@ -11,8 +11,8 @@ import vooga.turnbased.gameobject.mapobject.MovingMapObject;
  */
 public class BlockStrategy extends MapStrategy {
 
-    public BlockStrategy (MapMode mapMode) {
-        super(mapMode);
+    public BlockStrategy () {
+        super();
     }
 
     @Override

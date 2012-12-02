@@ -14,13 +14,13 @@ import vooga.turnbased.gameobject.mapobject.MovingMapObject;
  */
 public class TransportStrategy extends MapStrategy {
 
-    private static final String MODE_EVENT = "SWITCH_LEVEL";
-    private String myMapModeResource;
+    private static final String MODE_EVENT = "map2";
     private Point myNewPlayerLocation;
+    private MapObject myMapObject; //should be moved to parent class MapStrategy
 
-    public TransportStrategy (MapMode mapMode, String mapModeResource, Point location) {
-        super(mapMode);
-        myMapModeResource = mapModeResource;
+    public TransportStrategy (MapObject mapObject, Point location) {
+        super();
+        myMapObject = mapObject;
         myNewPlayerLocation = location;
         setDisplayable(true);
         setDisplayMessage("Next Level!");
@@ -37,9 +37,9 @@ public class TransportStrategy extends MapStrategy {
         super.performStrategy(target);
         ((MovingMapObject) target).finishMovement();
         ((MovingMapObject) target).setLocation(myNewPlayerLocation);
-        getGameManager().setNewMapResources(myMapModeResource);
+        //getGameManager().setNewMapResources(myMapModeResource);
         List<Integer> involvedSpriteIDs = new ArrayList<Integer>();
         involvedSpriteIDs.add(target.getID());
-        getMapMode().flagCondition(MODE_EVENT, involvedSpriteIDs);
+        myMapObject.flagCondition(MODE_EVENT, involvedSpriteIDs);
     }
 }

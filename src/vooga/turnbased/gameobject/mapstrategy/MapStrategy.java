@@ -11,7 +11,6 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
  */
 public abstract class MapStrategy {
 
-    private MapMode myMapMode;
     private boolean myIsActive;
     private boolean myIsDisplayable;
     private String myDisplayMessage;
@@ -20,8 +19,7 @@ public abstract class MapStrategy {
      * constructor
      * @param mapMode MapMode instance in which sprites info is stored
      */
-    public MapStrategy(MapMode mapMode) {
-        myMapMode = mapMode;
+    public MapStrategy() {
         myIsActive = true;
         myIsDisplayable = false;
         myDisplayMessage = null;
@@ -52,11 +50,11 @@ public abstract class MapStrategy {
         myDisplayMessage = message;
     }
     
-    public MapMode getMapMode() {
-        return myMapMode;
-    }
-    
-    public GameManager getGameManager() {
-        return myMapMode.getGameManager();
-    }
+//    public MapMode getMapMode() {
+//        return myMapMode;
+//    }
+//    
+//    public GameManager getGameManager() {
+//        return myMapMode.getGameManager();
+//    }
 }

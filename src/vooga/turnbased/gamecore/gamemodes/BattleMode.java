@@ -77,6 +77,16 @@ public class BattleMode extends GameMode implements InputAPI {
         myMessages = new ArrayList<String>();
         resume();
     }
+    
+    /**
+     * Initializes a battle with the current lists of BattleObjects
+     */
+    @Override
+    public void initialize () {
+        mySelection = OptionSelect.OPTION1;
+        myPlayerObject = myTeam.getActivePlayer();
+        myEnemyObject = myEnemyTeam.getActivePlayer();
+    }
 
     @Override
     public void pause () {
@@ -296,16 +306,6 @@ public class BattleMode extends GameMode implements InputAPI {
     private int calculateFontSize (int width, int height) {
         // uses diagonal length of window; kind of faulty sometimes but usually works
         return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2)) / TEXT_SCALAR);
-    }
-
-    /**
-     * Initializes a battle with the current lists of BattleObjects
-     */
-    @Override
-    public void initialize () {
-        mySelection = OptionSelect.OPTION1;
-        myPlayerObject = myTeam.getActivePlayer();
-        myEnemyObject = myEnemyTeam.getActivePlayer();
     }
 
     /**

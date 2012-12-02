@@ -76,29 +76,34 @@ public class MapMode extends GameMode implements InputAPI {
 
     @Override
     public void initialize () {
+        int playerID = getGameManager().getPlayerSpriteID();
+        setCameraSize(getGameManager().getCameraSize());
+        setMapSize(getGameManager().getMapSize());
+
         myMapObjects = new HashMap<Point, List<MapObject>>();
         List<MapObject> mapObjects = getGameManager().getGameObjectsOfSpecificMode(MapObject.class);
         for (MapObject mapObject : mapObjects) {
+            mapObject.setMapMode(this);
             addMapObject(mapObject.getLocation(), mapObject);
-            if (mapObject.getID() == getGameManager().getPlayerSpriteID()) {
-                myPlayer = (MapPlayerObject) mapObject;
+            if (mapObject.getID() == playerID) {
+                setPlayer((MapPlayerObject) mapObject);
             }
         }
         configureInputHandling();
         // update();
     }
 
-    public void setCameraSize (Dimension d) {
+    private void setCameraSize (Dimension d) {
         setNumDisplayCols(d.width);
         setNumDisplayRows(d.height);
     }
 
     private void setNumDisplayRows (int numDisplayRows) {
-        this.myNumDisplayRows = numDisplayRows;
+        myNumDisplayRows = numDisplayRows;
     }
 
     private void setNumDisplayCols (int numDisplayCols) {
-        this.myNumDisplayCols = numDisplayCols;
+        myNumDisplayCols = numDisplayCols;
     }
 
     /**
@@ -337,11 +342,11 @@ public class MapMode extends GameMode implements InputAPI {
         return myMapSize;
     }
 
-    public void setMapSize (Dimension mapSize) {
+    private void setMapSize (Dimension mapSize) {
         myMapSize = mapSize;
     }
 
-    public void setPlayer (MapPlayerObject p) {
+    private void setPlayer (MapPlayerObject p) {
         myPlayer = p;
     }
 

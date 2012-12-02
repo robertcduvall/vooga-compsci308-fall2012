@@ -10,8 +10,8 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
 
 public class MapEnemyObject extends MapObject {
 
-    public MapEnemyObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
-        super(id, event, location, mapImage, mapMode);
+    public MapEnemyObject (int id, String event, Point location, Image mapImage) {
+        super(id, event, location, mapImage);
     }
 
     @Override

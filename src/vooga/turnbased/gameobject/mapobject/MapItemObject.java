@@ -25,9 +25,8 @@ public class MapItemObject extends MapObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapItemObject (int id, String event, Point location, Image mapImage,
-            MapMode mapMode) {
-        super(id, event, location, mapImage, mapMode);
+    public MapItemObject (int id, String event, Point location, Image mapImage) {
+        super(id, event, location, mapImage);
 
     }
 

@@ -41,16 +41,16 @@ public class MapObject extends GameObject {
      * @param mapImage Image of the object.
      * @param mapMode MapMode in which the object exists.
      */
-    public MapObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
+    public MapObject (int id, String event, Point location, Image mapImage) {
         super(id, event, mapImage);
         setLocation(location);
         setVisible(true);
-        setMapMode(mapMode);
+        //setMapMode(mapMode);
         myMapStrategies = new ArrayList<MapStrategy>();
-        myMapStrategies.add(new NullStrategy(mapMode));
+        //myMapStrategies.add(new NullStrategy(mapMode));
     }
 
-    private void setMapMode (MapMode mapMode) {
+    public void setMapMode (MapMode mapMode) {
         myMapMode = mapMode;
     }
 
@@ -202,5 +202,9 @@ public class MapObject extends GameObject {
     @Override
     public void clear () {
         myMapMode.removeMapObject(this);
+    }
+    
+    public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs){
+        myMapMode.flagCondition(conditionName, involvedSpriteIDs);
     }
 }
