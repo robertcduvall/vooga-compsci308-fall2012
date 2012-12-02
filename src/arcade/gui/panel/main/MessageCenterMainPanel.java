@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import edu.cmu.relativelayout.Direction;
@@ -12,6 +13,7 @@ import arcade.gui.Arcade;
 import arcade.gui.components.MessageListComponent;
 import arcade.gui.components.UserListComponent;
 import arcade.gui.panel.ArcadePanel;
+import arcade.usermanager.Message;
 import arcade.usermanager.UserProfile;
 
 
@@ -34,15 +36,10 @@ public class MessageCenterMainPanel extends AMainPanel {
 
         myPanel.add(composeMessageButton);
 
-        ArrayList<String> messages = new ArrayList<String>();
-        ArrayList<String> senders = new ArrayList<String>();
-        for (int i=0; i<10; i++){
-            myPanel.add(new MessageListComponent("Howard", "Message" + i +
-                    " blah blah bh bh eehhbh bh b h beehh h beehheehh h blah" +
-                    "blahhhhhh meeeeeehhhhhhhhhhhhhh meeeeeehhhhhhhhhhhhhh " +
-                    "meeeeeehhhhhhhhhhhhhh meeeeeehhhhhhhhhhhhhh " + i +
-                    "meeeeeehhhhhhhhhhhhhh meeeeeehhhhhhhhhhhhhh " + i +
-                    "eeeeeehhhhhhhhhhhhhhhhh" + i, myPanel), BorderLayout.SOUTH);
+        List<Message> myMessages = getArcade().getModelInterface().getEditableCurrentUser().getMyMessage();
+        for (Message aMessage : myMessages){
+            myPanel.add(new MessageListComponent(aMessage.getSender(), 
+                    aMessage.getMessage(), myPanel), BorderLayout.SOUTH);
         }
 
         return myPanel;

@@ -1,6 +1,5 @@
 package arcade.gui.components;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,14 +7,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
-import edu.cmu.relativelayout.Direction;
 import arcade.gui.panel.ArcadePanel;
-import arcade.usermanager.User;
 import arcade.usermanager.UserProfile;
 import arcade.utility.ImageReader;
 
@@ -27,7 +22,6 @@ public class UserListComponent extends JComponent implements ActionListener {
     private String userInfo;
     private ArcadePanel myContainer;
     private Image profilePic;
-    private JLabel usernameLabel;
     private JButton viewProfileButton;
     private JButton sendMessageButton;
 
@@ -37,7 +31,6 @@ public class UserListComponent extends JComponent implements ActionListener {
         getUserInfo();
         myContainer = theContainer;
         profilePic = getUserPicture();
-        //ImageIcon anImage = new ImageIcon(ImageReader.loadImage("src/arcade/database/images", "default.jpg"));
         this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
         initComponents();
     }
@@ -63,17 +56,18 @@ public class UserListComponent extends JComponent implements ActionListener {
                 myContainer.getArcade().saveVariable("UserName", userName);
                 myContainer.getArcade().replacePanel("UserProfile");
             }
-              
-          });
+
+        });
         sendMessageButton = new JButton("Send Message");
         sendMessageButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                System.out.println("Send message to " + myUser);
-                    //getArcade().replacePanel("SendMessage");
+                System.out.println("Send message to " + userName);
+                myContainer.getArcade().saveVariable("UserName", userName);
+                myContainer.getArcade().replacePanel("SendMessage");
             }
-              
-          });
+
+        });
         this.add(viewProfileButton, "cell 1 1, align right, split 2");
         this.add(sendMessageButton);
     }
