@@ -64,7 +64,7 @@ public class GameManager implements InputAPI {
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
-        // myGameLogic = new GameLogic(this);
+        myGameLogic = new GameLogic(this);
         // initializeGameLevel(GameWindow.importString("Entrance"));
         initializeGameLevel(GameWindow.importString("OtherLevel"));
         configureInputHandling();
@@ -87,7 +87,7 @@ public class GameManager implements InputAPI {
         addSprites(test.parseSprites());
         myPlayerSpriteID = test.getPlayerID();
         myAvailableModeTypes = test.getUserDefinedModes();
-        myGameLogic = new GameLogic(this, test.getEventConditionMapping());
+        myGameLogic.addEventConditions(test.getEventConditionMapping());
 
         // startFirstMode(test.getStartMode());
         myGameModes.get(0).resume();

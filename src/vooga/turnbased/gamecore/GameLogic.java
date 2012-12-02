@@ -14,16 +14,20 @@ import java.util.TreeSet;
  */
 public class GameLogic {
     private GameManager myGameManager;
-    private final Map<String, List<List<String>>> myEventConditions;
+    private Map<String, List<List<String>>> myEventConditions;
     private ArrayList<String> myModeEventNames;
     private TreeSet<String> myGameConditions;
 
-    public GameLogic (GameManager gm, Map<String, List<List<String>>> eventConditions) {
+    public GameLogic (GameManager gm) {
         myGameManager = gm;
-        myEventConditions = eventConditions;
+        myEventConditions = new HashMap<String, List<List<String>>>();
         myModeEventNames = new ArrayList<String>();
         myGameConditions = new TreeSet<String>();
 
+    }
+    
+    public void addEventConditions(Map<String, List<List<String>>> eventConditions){
+        myEventConditions.putAll(eventConditions);
     }
 
     public List<String> getNewEvents () {
