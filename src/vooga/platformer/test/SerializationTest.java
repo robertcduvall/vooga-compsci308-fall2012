@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 
 
@@ -30,10 +30,10 @@ public class SerializationTest {
     @Before
     public void initializeGameObject () throws Exception {
         myGameObject0 =
-                new Brick("x=" + TEST_X_0 +
+                new StaticObject("x=" + TEST_X_0 +
                           ",y=0,width=5,height=5,imagePath=src/games/platformerdemo/player.png,id=0");
         myGameObject1 =
-                new Brick("x=" + TEST_X_1 +
+                new StaticObject("x=" + TEST_X_1 +
                           ",y=0,width=5,height=5,imagePath=src/games/platformerdemo/player.png,id=0");
     }
 

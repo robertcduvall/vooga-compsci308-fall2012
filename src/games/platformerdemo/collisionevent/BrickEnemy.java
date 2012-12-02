@@ -1,6 +1,6 @@
 package games.platformerdemo.collisionevent;
 
-import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.Enemy;
 
 /**
@@ -9,16 +9,16 @@ import vooga.platformer.gameobject.Enemy;
  *
  */
 public class BrickEnemy extends BrickMovingObject{
-    private Brick myBrick;
+    private StaticObject myBrick;
     private Enemy myEnemy;
 
-    public BrickEnemy (Brick a, Enemy b) {
+    public BrickEnemy (StaticObject a, Enemy b) {
         super(a, b);
-        myBrick = (Brick) this.a();
+        myBrick = (StaticObject) this.a();
         myEnemy = (Enemy) this.b();
     }
     
-    public BrickEnemy (Enemy a, Brick b) {
+    public BrickEnemy (Enemy a, StaticObject b) {
         this(b, a);
     }
     

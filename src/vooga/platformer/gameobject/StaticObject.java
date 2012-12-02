@@ -9,12 +9,12 @@ import util.configstring.ConfigStringParser;
 
 
 /**
- * 
+ * A basic GameObject object with no additional functionality
  * @author Grant Oakley (modified)
- * 
+ * @author Zach Michaelov
  */
-public class Brick extends GameObject {
-    public Brick (String configString) {
+public class StaticObject extends GameObject {
+    public StaticObject(String configString) {
         super(configString);
     }
 }
