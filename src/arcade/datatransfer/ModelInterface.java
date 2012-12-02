@@ -191,7 +191,7 @@ public class ModelInterface {
         mySocialCenter.sendMessage(receiver, content);
     }
     
-    public List<String> getMessage(){
+    public List<Message> getMessage(){
         return myUserManager.getMessage();
     }
 }
