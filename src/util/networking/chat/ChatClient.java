@@ -8,20 +8,14 @@ import java.net.Socket;
 /**
  * 
  * @author Connor Gordon
+ * @author Oren Bukspan
  */
 
 public class ChatClient {
-    private final static int ourXMPPPort = 5222;
 
     private Socket myConnection;
-    // private Language myLanguage;
     private ChatProtocol myProtocol;
     private String myUser, myPass;
-
-    private Reader from_server;
-    private Writer to_server;
-    private Reader from_user;
-    private Writer to_user;
 
     public ChatClient(String host, int port, ChatProtocol c){
         try {
