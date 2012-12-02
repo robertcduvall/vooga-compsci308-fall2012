@@ -17,8 +17,8 @@ import vooga.turnbased.gameobject.mapstrategy.BlockStrategy;
  */
 public class MapObstacleObject extends MapObject {
 
-    public MapObstacleObject (int id, String event, Point location, Image mapImage, MapMode mapMode) {
-        super(id, event, location, mapImage, mapMode);
-        addStrategy(new BlockStrategy(mapMode));
+    public MapObstacleObject (int id, String event, Point location, Image mapImage) {
+        super(id, event, location, mapImage);
+        addStrategy(new BlockStrategy());
     }
 }

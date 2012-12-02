@@ -12,8 +12,8 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
  */
 public class NullStrategy extends MapStrategy {
 
-    public NullStrategy (MapMode mapMode) {
-        super(mapMode);
+    public NullStrategy () {
+        super();
     }
 
     @Override

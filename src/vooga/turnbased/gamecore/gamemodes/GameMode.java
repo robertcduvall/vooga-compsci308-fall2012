@@ -42,8 +42,8 @@ public abstract class GameMode {
         return myGameManager;
     }
 
-    public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
-        myGameManager.flagCondition(eventName, involvedSpriteIDs);
+    public void flagCondition (String conditionName, List<Integer> involvedSpriteIDs) {
+        myGameManager.flagCondition(conditionName, involvedSpriteIDs);
     }
 
     /**
