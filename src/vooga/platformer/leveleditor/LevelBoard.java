@@ -165,7 +165,6 @@ public class LevelBoard extends JPanel implements ISavable {
                         if(myOffset+getWidth() == myLength) {
                             myLength += SCROLL_SPEED+accel;
                         }
-                        System.out.println(myOffset);
                         myOffset += SCROLL_SPEED+accel;
                 }
             }

@@ -42,6 +42,12 @@ public class EditorMenuBar extends JMenuBar{
                 myEditor.save();
             }
         });
+        levelMenu.add(new AbstractAction("Add Level Attribute") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO: add submenu for default level attributes and new attributes 
+            }
+        });
 
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("Load") {
