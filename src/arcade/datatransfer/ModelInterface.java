@@ -8,7 +8,9 @@ import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
-import arcade.usermanager.ValidationException;
+import arcade.usermanager.UserManager;
+import arcade.usermanager.UserProfile;
+import arcade.usermanager.exception.ValidationException;
 
 
 /**
@@ -23,6 +25,7 @@ public class ModelInterface {
     private Arcade myArcade;
     private GameCenter myGameCenter;
     private SocialCenter mySocialCenter;
+    private UserManager myUserManager;
 
     /**
      * 
@@ -32,7 +35,7 @@ public class ModelInterface {
         myArcade = a;
         mySocialCenter = new SocialCenter();
         myGameCenter = new GameCenter(); // GameCenter is currently broken.
-
+        myUserManager=UserManager.getInstance();
     }
 
     // #############################################################
@@ -131,23 +134,48 @@ public class ModelInterface {
     }
 
     /**
-     * TODO: IMPLEMENT THIS
+     * 
      * This is for listing all the users on the UserListMainPane.
      * 
      * @return A list of all the users in the system.
      */
-    public List<User> getAllUsers () {
-        return null;
+    public List<UserProfile> getAllUsers () {
+      return  myUserManager.getAllUserProfile();
+       
     }
 
     /**
-     * TODO: Implement this.
+     * 
      * 
      * @param username The username of the User we want to access.
      * @return The User class with the corresponding username.
      */
-    public User getUser (String username) {
-        return null;
+    public UserProfile getUser (String username) {
+        return myUserManager.getUserProfile(username);
+    }
+    
+  /**
+   * @return get an editable user class for the current user
+   */
+    
+    public User getEditableCurrentUser(){
+        return myUserManager.getCurrentUser();
+        
+    }
+    
+    /**
+     * delete user profile
+     * @param userName
+     * @param password
+     * @return
+     */
+    
+    public boolean deleteUser(String userName, String password){
+     return   mySocialCenter.deleteUser(userName, password);
+        
     }
 
+    public void changeAdminStatus (String name, boolean adminStatus) {
+        myUserManager.changeAdminStatus(name, adminStatus);
+    }
 }

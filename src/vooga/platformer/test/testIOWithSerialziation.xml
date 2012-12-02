@@ -5,5 +5,5 @@
 <backgroundImage>src/vooga/platformer/test/testImage.jpg</backgroundImage>
 <collisionChecker>vooga.platformer.someCollisionChecker</collisionChecker>
 <camera>vooga.platformer.someCamera</camera>
-<gameObjectData>src/vooga/platformer/test/testIOGameObjects.bin</gameObjectData>
+<gameObjectData>src/vooga/platformer/test/testIOWithSerialziationGameObjects.bin</gameObjectData>
 </level>
