@@ -153,14 +153,21 @@ public class EditorPane extends DisplayPane {
         addMenuButton();
         final String[] modes = {"Name: ", "Class: ", "Condition: "};
         final String[] modesDefaultValues = {"", "", ""};
+        JButton modeButton = setUpModeButton(l, modes, modesDefaultValues);
+        add(modeButton);
+        // TODO: add sprites and their objects
+        validate();
+    }
+
+    private JButton setUpModeButton (final LevelEditor l, final String[] modes,
+            final String[] modesDefaultValues) {
         JButton modeButton = new JButton("Set up Modes");
         modeButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 displayAndGetModeInformation(modes, modesDefaultValues, l);
             }
         });
-        add(modeButton);
-        validate();
+        return modeButton;
     }
 
     private void displayAndGetModeInformation (String[] labels,
@@ -185,14 +192,9 @@ public class EditorPane extends DisplayPane {
                 FRAME.dispose();
             }
         });
-        P.add(doneButton);
-        P.setOpaque(true);
-        FRAME.setContentPane(P);
-        FRAME.pack();
-        FRAME.setSize(new Dimension(600, 400));
-        FRAME.setVisible(true);
+        setUpFrameAndPanel(P, FRAME, doneButton);
     }
-    
+
     private void addModesXmlInformation (
                     String[] returnedValues, LevelEditor l) {
                 l.addMode(returnedValues[0], returnedValues[1], returnedValues[2]);
@@ -208,12 +210,7 @@ public class EditorPane extends DisplayPane {
         final JFrame FRAME = new JFrame("Background Information (Default Values shown)");
         JButton doneButton = makeDoneButtonAndAddBackgroundXml(l, NUM_PAIRS, P,
                 FRAME);
-        P.add(doneButton);
-        P.setOpaque(true);
-        FRAME.setContentPane(P);
-        FRAME.pack();
-        FRAME.setSize(new Dimension(600, 400));
-        FRAME.setVisible(true);
+        setUpFrameAndPanel(P, FRAME, doneButton);
     }
 
     private JButton makeDoneButtonAndAddBackgroundXml (final LevelEditor l,
@@ -250,6 +247,16 @@ public class EditorPane extends DisplayPane {
         return P;
     }
 
+    private void setUpFrameAndPanel (final JPanel P, final JFrame FRAME,
+            JButton doneButton) {
+        P.add(doneButton);
+        P.setOpaque(true);
+        FRAME.setContentPane(P);
+        FRAME.pack();
+        FRAME.setSize(new Dimension(600, 400));
+        FRAME.setVisible(true);
+    }
+    
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
         for (String now : returnedValues) {
             System.out.println(now);

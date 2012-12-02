@@ -12,18 +12,18 @@
 <startMode>map</startMode>
 </gameSetup>
 <modeDeclarations>
-	<mode>
-		<name>name1</name>
-		<class>class1</class>
-		<condition>condition1</condition>
-		<condition>condition1</condition>
-	</mode>
-	<mode>
-		<name>name2</name>
-		<class>class2</class>
-		<condition>condition2</condition>
-		<condition>condition</condition>
-	</mode>
+<mode>
+<name>name</name>
+<class>class</class>
+<condition>1</condition>
+<condition>2</condition>
+<condition>3</condition>
+</mode>
+<mode>
+<name>jk</name>
+<class>kla;ds</class>
+<condition>jkald</condition>
+</mode>
 </modeDeclarations>
 <spriteDeclarations/>
 </rpggame>
