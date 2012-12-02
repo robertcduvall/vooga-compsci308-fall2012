@@ -1,12 +1,12 @@
 package games.platformerdemo;
 
-import java.awt.Image;
+import vooga.platformer.gameobject.MovingObject;
+import vooga.platformer.util.enums.Direction;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import vooga.platformer.gameobject.MovingObject;
-import vooga.platformer.gameobject.strategy.SimpleMoveStrategy;
-import vooga.platformer.util.enums.Direction;
 
 
 /**
@@ -36,7 +36,6 @@ public class Bullet extends MovingObject {
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
-        addStrategy("SimpleMoveStrategy", new SimpleMoveStrategy(this));
     }
 
     /**

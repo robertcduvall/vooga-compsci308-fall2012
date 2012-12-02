@@ -45,11 +45,12 @@ public class Level {
         }
     }
 
-    public Level (Dimension dim, CollisionChecker inChecker, Camera inCam) {
+    public Level (Dimension dim, Camera inCam) {
         objectList = new ArrayList<GameObject>();
         pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
-        myCollisionChecker = inChecker;
+        // TODO set to a default collision checker
+        myCollisionChecker = null;
         cam = inCam;
     }
 
