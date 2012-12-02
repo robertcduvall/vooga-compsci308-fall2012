@@ -68,7 +68,7 @@ public class PlacementMode implements IEditorMode {
 
     @Override
     public void secondaryButtonPress(int x, int y) {
-
+        //TODO THIS ISN'T SUPPOSED TO BE EMPTY.
     }
 
     @Override
