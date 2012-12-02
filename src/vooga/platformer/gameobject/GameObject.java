@@ -48,6 +48,7 @@ public abstract class GameObject implements Comparable<GameObject>,
     private double height;
     private ImageIcon defaultImage;
     private int id;
+    private int hp;
     private Level myLevel;
 
     // Change this to public because no config str provided when creating
@@ -125,6 +126,14 @@ public abstract class GameObject implements Comparable<GameObject>,
             System.out.println("could not load image " + defaultImageName);
             System.exit(0);
         }
+    }
+
+    /**
+     * @return the attributeMap, which is a map between name of the attribute
+     *         and String value of the attribute.
+     */
+    public Map<String, String> getAttributeMap () {
+        return attributeMap;
     }
 
     /**
@@ -302,6 +311,15 @@ public abstract class GameObject implements Comparable<GameObject>,
      */
     public boolean checkForRemoval () {
         return removeFlag;
+    }
+
+    /**
+     * Damage the GameObject by given amount of HP.
+     * 
+     * @param amount
+     */
+    public void damage (int amount) {
+        hp -= amount;
     }
 
     /**
