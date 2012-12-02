@@ -1,4 +1,4 @@
-package util.calculator;
+package util.mathvector;
 
 import java.awt.Point;
 

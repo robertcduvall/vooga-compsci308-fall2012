@@ -35,7 +35,6 @@ public class TestLevel extends Level {
         }
     }
 
-    @Override
     public void paintBackground(Graphics pen) {
         pen.setColor(Color.WHITE);
         pen.fillRect(0, 0, (int)getDimension().getWidth(), (int)getDimension().getHeight());
@@ -48,7 +47,6 @@ public class TestLevel extends Level {
         return PlayState.IS_PLAYING;
     }
 
-    @Override
     public void setInputController (KeyboardController ic) {
         try {
             ic.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myPlayer, "moveLeft()");

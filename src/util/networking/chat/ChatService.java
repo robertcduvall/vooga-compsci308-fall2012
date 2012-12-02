@@ -144,6 +144,12 @@ public class ChatService implements Service {
                                          from + "."));
         }
     }
+    
+    @SuppressWarnings("unused")
+    private void processUnknown(String input, Socket socket) {
+        //log the input
+        System.out.println("unrecognized command from: " + socket.getInetAddress() + ": " + input);
+    }
 
     private void addUser (String user, Socket socket) {
         //notify all clients of new user
