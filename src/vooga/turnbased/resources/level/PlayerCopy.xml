@@ -114,7 +114,7 @@
 		  </map2>
 		  <battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-			<condition>NO_ACTION</condition>
+			<condition>endgame</condition>
 			<stats>
 				<maxHealth>10</maxHealth>
 				<health>10</health>
@@ -127,7 +127,7 @@
 		  </battle>
 		  <battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-			<condition>NO_ACTION</condition>
+			<condition>endgame</condition>
 			<stats>
 				<maxHealth>8</maxHealth>
 				<health>8</health>
@@ -139,7 +139,7 @@
 		  </battle>
 		  <battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-			<condition>NO_ACTION</condition>
+			<condition>endgame</condition>
 			<stats>
 				<maxHealth>15</maxHealth>
 				<health>15</health>
@@ -151,7 +151,7 @@
 		  </battle>
 		  <battle>
 			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-			<condition>NO_ACTION</condition>
+			<condition>endgame</condition>
 			<stats>
 				<maxHealth>30</maxHealth>
 				<health>30</health>

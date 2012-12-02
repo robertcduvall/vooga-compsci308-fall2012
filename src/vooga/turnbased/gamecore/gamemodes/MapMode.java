@@ -61,6 +61,7 @@ public class MapMode extends GameMode implements InputAPI {
      * pause the game
      */
     public void pause () {
+        System.out.println("clearing map objects");
         myMapObjects.clear();
         setInactive();
         // should unregister keyboard input, otherwise leads to issues

@@ -310,7 +310,7 @@ public class BattleMode extends GameMode implements InputAPI {
         List<Integer> battleLooserIDs = new ArrayList<Integer>();
         battleLooserIDs.add(myLooserSpriteID);
         if (!myPlayerObject.isAlive()) {
-            flagCondition("gamelost", new ArrayList<Integer>());
+            flagCondition(myPlayerObject.getConditionFlag(), new ArrayList<Integer>());
         }
     }
 
