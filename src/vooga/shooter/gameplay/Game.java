@@ -64,14 +64,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-        myFrame = new JFrame(GAME_NAME);
-        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        myCanvas = new Canvas(this);
-        initializeGame(myCanvas, false);
-        myCanvas.start();
-        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
-        myFrame.pack();
-        myFrame.setVisible(true);
+       
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
         myGameImage = imageIcon.getImage();
 
@@ -345,8 +338,14 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        // will eventually get Game to run without running it through Applet
-        // (ideally when Canvas is finally working)
+        myFrame = new JFrame(GAME_NAME);
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        myCanvas = new Canvas(this);
+        initializeGame(myCanvas, false);
+        myCanvas.start();
+        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
+        myFrame.pack();
+        myFrame.setVisible(true);
 
     }
 

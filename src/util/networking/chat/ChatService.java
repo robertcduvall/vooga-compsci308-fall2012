@@ -47,6 +47,7 @@ public class ChatService implements Service {
         while (true && in != null) {
             try {
                 String input = in.readLine();
+                System.out.println("received: " + input);
                 ChatCommand type = myProtocol.getType(input);
                 Method m;
                 m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
@@ -143,6 +144,12 @@ public class ChatService implements Service {
                   myProtocol.createError("User not authorized to send message from username " +
                                          from + "."));
         }
+    }
+    
+    @SuppressWarnings("unused")
+    private void processUnknown(String input, Socket socket) {
+        //log the input
+        System.out.println("unrecognized command from: " + socket.getInetAddress() + ": " + input);
     }
 
     private void addUser (String user, Socket socket) {
