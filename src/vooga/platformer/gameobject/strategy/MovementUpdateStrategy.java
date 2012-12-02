@@ -22,7 +22,7 @@ public class MovementUpdateStrategy implements UpdateStrategy {
     }
 
     /**
-     * updates the MovingObject based on physics
+     * updates the MovingObject's position and direction
      */
     @Override
     public void applyAction () {

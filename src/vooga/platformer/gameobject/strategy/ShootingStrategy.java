@@ -4,10 +4,10 @@ import games.platformerdemo.Bullet;
 import vooga.platformer.gameobject.ControlStrategy;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.MovingObject;
-import vooga.platformer.gameobject.UpdateStrategy;
 
 
 /**
+ * Allows a GameObject to fire Bullets
  * @author Yaqi Zhang
  * @author Zach Michaelov
  */
@@ -33,6 +33,6 @@ public class ShootingStrategy implements ControlStrategy {
         if (myGO instanceof MovingObject) {
             bullet.setDirection(((MovingObject) myGO).getFacingDirection());
         }
-        myGO.getLevel().addToObjectList(bullet);
+//        myGO.getLevel().addToObjectList(bullet);
     }
 }

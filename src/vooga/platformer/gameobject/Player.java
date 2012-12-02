@@ -19,11 +19,11 @@ import java.util.Map;
  * @author Yaqi Zhang
  * @author Zach Michaelov
  */
-public class Player {
+public class Player extends MovingObject {
     /**
      * the Moving Object Representing the Player
      */
-    private MovingObject myPlayer;
+//    private MovingObject myPlayer;
     /**
      * the control strategies applied to the myPlayer
      */
@@ -35,26 +35,22 @@ public class Player {
      */
     public Player(String configString) {
         controlStrategies = new HashMap<String, ControlStrategy>();
-        myPlayer = new MovingObject(configString);
-        initStrategies();
-    }
-    public Player(MovingObject myPlayer) {
-        this.myPlayer = myPlayer;
+//        myPlayer = new MovingObject(configString);
         initStrategies();
     }
 
     private void initStrategies() {
-        // this Update strategy will update MovingObject's positions based on their velocities
-        myPlayer.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(myPlayer));
+        // this UpdateStrategy will update MovingObject's positions based on their velocities
+//        myPlayer.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(myPlayer));
         // TODO migrate Gravity to level
-        myPlayer.addStrategy("GravityStrategy", new GravityStrategy(myPlayer));
+        this.addStrategy("GravityStrategy", new GravityStrategy(this));
 
         // add the Player's Control Strategies
-        this.addControlStrategy("Jump", new JumpStrategy(myPlayer));
-        this.addControlStrategy("GoLeft", new GoLeftStrategy(myPlayer));
-        this.addControlStrategy("GoRight", new GoRightStrategy(myPlayer));
-        this.addControlStrategy("Stop", new StopStrategy(myPlayer));
-        this.addControlStrategy("Shoot", new ShootingStrategy(myPlayer));
+        this.addControlStrategy("Jump", new JumpStrategy(this));
+        this.addControlStrategy("GoLeft", new GoLeftStrategy(this));
+        this.addControlStrategy("GoRight", new GoRightStrategy(this));
+        this.addControlStrategy("Stop", new StopStrategy(this));
+        this.addControlStrategy("Shoot", new ShootingStrategy(this));
     }
 
     /**
@@ -66,7 +62,7 @@ public class Player {
     }
 
     /**
-     * Triggers the specified Control Strategy
+     * Triggers the specified ControlStrategy
      * @param name the name of the ControlStrategy we want to trigger
      */
     public void fireControlStrategy(String name) {

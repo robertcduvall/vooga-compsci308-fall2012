@@ -2,6 +2,7 @@ package vooga.platformer.gameobject;
 
 import java.awt.geom.Point2D;
 
+import vooga.platformer.gameobject.strategy.MovementUpdateStrategy;
 import vooga.platformer.util.enums.Direction;
 
 
@@ -22,6 +23,8 @@ public class MovingObject extends GameObject {
     public MovingObject (String configString) {
         super(configString);
         myVelocity = new Point2D.Double(0, 0);
+        // all MovingObjects have a MovementUpdateStrategy
+        this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));
     }
 
     /**
