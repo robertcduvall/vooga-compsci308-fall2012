@@ -14,6 +14,7 @@ public class PlayerMoveStrategy extends SimpleMoveStrategy {
     private static final double VERTICAL_VELOCITY = -3;
     private Player myPlayer;
 
+
     /**
      * @param player GameObject
      */
