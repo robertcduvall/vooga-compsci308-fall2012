@@ -33,6 +33,6 @@ public class ShootingStrategy implements ControlStrategy {
         if (myGO instanceof MovingObject) {
             bullet.setDirection(((MovingObject) myGO).getFacingDirection());
         }
-//        myGO.getLevel().addToObjectList(bullet);
+        myGO.getLevel().addGameObject(bullet);
     }
 }

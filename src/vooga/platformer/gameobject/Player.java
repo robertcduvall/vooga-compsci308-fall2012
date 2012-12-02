@@ -32,6 +32,7 @@ public class Player extends MovingObject {
      * @param configString
      */
     public Player(String configString) {
+        super(configString);
         controlStrategies = new HashMap<String, ControlStrategy>();
 //        myPlayer = new MovingObject(configString);
         initStrategies();
