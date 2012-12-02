@@ -7,6 +7,8 @@ import vooga.platformer.gameobject.strategy.movement.GoRightStrategy;
 import vooga.platformer.gameobject.strategy.movement.JumpStrategy;
 import vooga.platformer.gameobject.strategy.movement.StopStrategy;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,22 +21,13 @@ import java.util.Map;
  */
 public class Player extends MovingObject {
     /**
-     * the Moving Object Representing the Player
-     */
-//    private MovingObject myPlayer;
-    /**
      * the control strategies applied to the myPlayer
      */
     private Map<String, ControlStrategy> controlStrategies;
 
-
-    /**
-     * @param configString
-     */
-    public Player(String configString) {
-        super(configString);
+    public Player(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
+        super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
         controlStrategies = new HashMap<String, ControlStrategy>();
-//        myPlayer = new MovingObject(configString);
         initStrategies();
     }
 
