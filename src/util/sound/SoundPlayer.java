@@ -32,6 +32,7 @@ public class SoundPlayer {
      */
     public SoundPlayer (String soundFilePath) {
         soundFile = new File(soundFilePath);
+        initializeLoop();
     }
 
     private void initializeLoop () {
@@ -74,6 +75,13 @@ public class SoundPlayer {
     public void stopLoop () {
         loop.stop();
         loop.close();
+    }
+    
+    /**
+     * See if loop is currently playing
+     */
+    public boolean loopIsRunning () {
+        return loop.isRunning();
     }
 
     class SinglePlayback implements Runnable {
