@@ -22,7 +22,6 @@ import java.util.List;
 public class GenericClient {
 
     private Socket myServer;
-    private OutputStream myUserOutputStream;
     
     /**
      * 
@@ -30,24 +29,11 @@ public class GenericClient {
      * @param port
      * @throws IOException
      */
-    public GenericClient (String host, int port, OutputStream os) throws IOException {
+    public GenericClient (String host, int port) throws IOException {
 
         myServer = new Socket(host, port);
-        myUserOutputStream = os;
         System.out.println("Connected to " + myServer.getInetAddress() + ":" + myServer.getPort());
         startListening();
-    }
-    
-    private synchronized void fireEvent(ClientEvent ce){
-        //To be implemented
-    }
-    
-    private synchronized void addListener(ClientListener cl){
-        
-    }
-    
-    private synchronized void removeListener(ClientListener cl){
-        
     }
     
     private void startListening() {
@@ -64,17 +50,21 @@ public class GenericClient {
         }
     }
     
+    public void methodToOverride(String input) {
+        
+    }
+    
     class Receiver extends Thread{
         public void run () {
             try {
                 BufferedReader fromServer = new BufferedReader(new InputStreamReader(myServer.getInputStream()));
-                PrintWriter toUser = new PrintWriter(myUserOutputStream);
                 
-                while (true) {
+                while (true && fromServer != null) {
                     String input = fromServer.readLine();
-                    toUser.println(input);
-                    myServer.close();
+                    methodToOverride(input);
                 }
+                
+                myServer.close();
             }
             catch (IOException e) {
             }
