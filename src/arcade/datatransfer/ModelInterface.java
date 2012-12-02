@@ -142,7 +142,13 @@ public class ModelInterface {
      */
     public List<UserProfile> getAllUsers () {
         return  myUserManager.getAllUserProfile();
-
+    }
+    /**
+     * This is useful for sizing components.
+     * @return The number of profiles in the system.
+     */
+    public int getNumUsers() {
+        return myUserManager.getAllUserProfile().size();
     }
 
     /**

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import util.encrypt.Encrypter;
 import edu.cmu.relativelayout.Direction;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
@@ -15,6 +16,7 @@ import arcade.gui.components.UserListComponent;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.Message;
 import arcade.usermanager.UserProfile;
+import arcade.usermanager.exception.ValidationException;
 
 
 /**
@@ -38,8 +40,13 @@ public class MessageCenterMainPanel extends AMainPanel {
 
         List<Message> myMessages = getArcade().getModelInterface().getEditableCurrentUser().getMyMessage();
         for (Message aMessage : myMessages){
-            myPanel.add(new MessageListComponent(aMessage.getSender(), 
-                    aMessage.getMessage(), myPanel), BorderLayout.SOUTH);
+            try {
+                myPanel.add(new MessageListComponent(aMessage.getSender(), 
+                        aMessage.getMessage(), myPanel), BorderLayout.SOUTH);
+            }
+            catch (NullPointerException e) {
+                System.out.println("Trouble loading a message...");
+            }
         }
 
         return myPanel;
