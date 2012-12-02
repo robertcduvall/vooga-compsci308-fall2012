@@ -60,7 +60,8 @@ public class UserListComponent extends JComponent implements ActionListener {
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("View profile of " + myUser);
-                    //getArcade().replacePanel("SendMessage");
+                myContainer.getArcade().saveVariable("UserName", userName);
+                myContainer.getArcade().replacePanel("UserProfile");
             }
               
           });
