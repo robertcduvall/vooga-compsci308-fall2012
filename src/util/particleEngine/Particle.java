@@ -9,7 +9,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.RescaleOp;
 import java.util.Random;
-import util.calculator.VectorCalculator;
+import util.mathvector.*;
 
 
 /**
@@ -27,8 +27,8 @@ import util.calculator.VectorCalculator;
 public class Particle {
     private int durationLimit;
     private int durationExisted;
-    public Point myPosition;
-    public Point myVelocity;
+    public MathVector2D myPosition;
+    public MathVector2D myVelocity;
     private int myVariance;
     private float myRotation; // radians
     private float myRotationalVelocity; // radians/frame
@@ -39,7 +39,8 @@ public class Particle {
 
     // These values were found after extensive testing,
     // and scale the sprite's red, green, blue, and alpha values
-    private float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.2f };
+    //private float[] RGBAscales = { 3f, 1.8f, 2.4f, 0.2f };
+    private float[] RGBAscales = { 3f, .04f, 0.01f, 0.8f };
 
     private float[] offsets;
     private BufferedImage myBufferedImage;
@@ -58,8 +59,8 @@ public class Particle {
      * @param image the image to use
      * @param velocity the velocity of the particle
      */
-    protected Particle (Point position, Dimension size, Image image,
-            Point velocity, int variance, int duration) {
+    protected Particle (MathVector2D position, Dimension size, Image image,
+            MathVector2D velocity, int variance, int duration) {
         declareVariables(position, size, image, variance, duration);
         myVelocity = velocity;
         setupRadianMode();
@@ -78,7 +79,7 @@ public class Particle {
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
      */
-    protected Particle (Point position, Dimension size, Image image,
+    protected Particle (MathVector2D position, Dimension size, Image image,
             Double velocityMagnitude, Double velocityAngle, int variance,
             int duration) {
         declareVariables(position, size, image, variance, duration);
@@ -96,8 +97,8 @@ public class Particle {
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
      */
-    private void declareVariables (Point position, Dimension size, Image image,
-            int variance, int duration) {
+    private void declareVariables (MathVector2D position, Dimension size,
+            Image image, int variance, int duration) {
         myPosition = position;
         myVariance = variance;
         durationExisted = 0;
@@ -119,9 +120,9 @@ public class Particle {
      * Stores the angle and magnitude of the velocity vector.
      */
     private void setupRadianMode () {
-        myAngle = VectorCalculator.calculateAngleInRadians(myVelocity);
+        myAngle = myVelocity.calculateAngleInRadians();
         maxDistanceTraveledPerUpdate = Math.max(1,
-                VectorCalculator.calculateMagnitude(myVelocity));
+                myVelocity.calculateMagnitude());
     }
 
     /**
@@ -132,11 +133,21 @@ public class Particle {
     protected void draw (Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         RescaleOp rop = new RescaleOp(RGBAscales, offsets, null);
-        g2d.rotate(myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
-                myPosition.y + myBufferedImage.getHeight() / 2);
-        g2d.drawImage(myBufferedImage, rop, myPosition.x, myPosition.y);
-        g2d.rotate(-myRotation, myPosition.x + myBufferedImage.getWidth() / 2,
-                myPosition.y + myBufferedImage.getHeight() / 2);
+        g2d.rotate(
+                myRotation,
+                myPosition.getComponent(MathVector2D.X)
+                        + myBufferedImage.getWidth() / 2,
+                myPosition.getComponent(MathVector2D.Y)
+                        + myBufferedImage.getHeight() / 2);
+        g2d.drawImage(myBufferedImage, rop,
+                (int) myPosition.getComponent(MathVector2D.X),
+                (int) myPosition.getComponent(MathVector2D.Y));
+        g2d.rotate(
+                -myRotation,
+                myPosition.getComponent(MathVector2D.X)
+                        + myBufferedImage.getWidth() / 2,
+                myPosition.getComponent(MathVector2D.Y)
+                        + myBufferedImage.getHeight() / 2);
     }
 
     /**
@@ -149,8 +160,8 @@ public class Particle {
         double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
         int newX = (int) (Math.cos(tempNewAngle) * maxDistanceTraveledPerUpdate);
         int newY = (int) (Math.sin(tempNewAngle) * maxDistanceTraveledPerUpdate);
-        myPosition.x += newX;
-        myPosition.y -= newY;
+        myPosition.setComponent(MathVector2D.X, myPosition.getComponent(MathVector2D.X)+newX);
+        myPosition.setComponent(MathVector2D.Y, myPosition.getComponent(MathVector2D.Y)+newY);
         durationExisted++;
 
         myRotation += myRotationalVelocity;
