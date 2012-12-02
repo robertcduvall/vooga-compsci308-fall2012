@@ -123,9 +123,18 @@ public abstract class BattleObject extends GameObject {
     
     /**
      * Returns the message for when your BattleObject is sent out to fight
-     * @return
+     * @param isPlayerControlled Pass True if this is a player controlled BattleObject,
+     * False if it is not
+     * @return The String the will be displayed when this monster starts fighting
      */
     public abstract String getStartFightingMessage(boolean isPlayerControlled);
+    
+    /**
+     * Gets the options that this BattleObject can perform, to be displayed in the GUI
+     * @return String array of the options, paradigm is defaulted to 4,
+     * could be extended by a game developer
+     */
+    public abstract String[] getOptions();
 
     /**
      * Paints the BattleObject.

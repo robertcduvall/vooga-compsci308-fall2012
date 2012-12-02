@@ -59,4 +59,11 @@ public class TestMonster extends BattleObject {
         }
 
     }
+
+    @Override
+    public String[] getOptions () {
+        String[] ret = {"ATTACK", "DEFEND", "CHARGE", "HEAL"};
+        return ret;
+
+    }
 }

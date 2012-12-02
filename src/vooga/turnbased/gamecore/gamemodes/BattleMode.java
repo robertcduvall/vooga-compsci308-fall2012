@@ -257,7 +257,7 @@ public class BattleMode extends GameMode implements InputAPI {
         int fontSize = calculateFontSize(width, height) * width / height;
         Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
         FontEffect fontEffect = new FontEffect(g, font);
-        String[] options = {OPTION1, OPTION2, OPTION3, OPTION4};
+        String[] options = myPlayerObject.getOptions();
         // position determines where the strings are painted (need to get rid
         // of the magic numbers)
         Point position = null;
@@ -367,7 +367,7 @@ public class BattleMode extends GameMode implements InputAPI {
     public void triggerOption1Event () {
         // for now, player attacks enemy player
         // by difference in defense
-        myMessages.add(myPlayerObject.getName() + USED + OPTION1);
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[0]);
         myPlayerObject.attackEnemy(myEnemyObject);
         // check if enemy/opposing team is dead
         if (!isBattleOver()) {
@@ -380,7 +380,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption2Event () {
         // for now, increases player defense by one; other team still attacks
-        myMessages.add(myPlayerObject.getName() + USED + OPTION2);
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[1]);
         myPlayerObject.changeStat(DEFENSE_STAT, myPlayerObject.getStat(DEFENSE_STAT).intValue() +
                 INCREASE_DEFENSE_VAL);
         if (!isBattleOver()) {
@@ -393,7 +393,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption3Event () {
         // for now, increases player attack by one; other team still attacks
-        myMessages.add(myPlayerObject.getName() + USED + OPTION3);
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[2]);
         myPlayerObject.changeStat(ATTACK_STAT, myPlayerObject.getStat(ATTACK_STAT).intValue() +
                 INCREASE_ATTACK_VAL);
         if (!isBattleOver()) {
@@ -406,7 +406,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption4Event () {
         // for now, increases player health by 3
-        myMessages.add(myPlayerObject.getName() + USED + OPTION4);
+        myMessages.add(myPlayerObject.getName() + USED + myPlayerObject.getOptions()[3]);
         myPlayerObject.changeStat(HEALTH_STAT, myPlayerObject.getStat(HEALTH_STAT).intValue() +
                 INCREASE_HEALTH_VAL);
         if (myPlayerObject.getStat("health").intValue() > myPlayerObject.getStat(MAX_HEALTH_STAT)
