@@ -1,7 +1,10 @@
 package arcade.usermanager;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.ResourceBundle;
+import twitter4j.auth.AccessToken;
+import util.twitter.TwitterTools;
 import arcade.usermanager.exception.UserNotExistException;
 import arcade.usermanager.exception.ValidationException;
 import arcade.utility.FileOperation;
@@ -31,6 +34,7 @@ public class SocialCenter {
     // private final String userNameExist = "Successful";
     private static ResourceBundle resource;
     private UserManager myUserManager;
+    private TwitterTools myTwitterTools;
 
     /**
      * constructor
@@ -44,6 +48,7 @@ public class SocialCenter {
         myUserBasicFilePath = resource.getString("BasicFilePath");
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
+        myTwitterTools = new TwitterTools();
 
     }
 
@@ -145,6 +150,33 @@ public class SocialCenter {
         myUserManager.updateMessage(sender, receiver, content);
 
         return true;
+    }
+
+    /**
+     * Sends a tweet to Twitter.
+     * 
+     * @param name
+     * @param tweetText
+     */
+    public boolean sendTweet (String name, String tweetText) {
+        try {
+            Map<String, AccessToken> myTokens = myUserManager.getTwitterTokens();
+            AccessToken at;
+            if (!myTokens.keySet().contains(name)) {
+                at = myTwitterTools.requestAccessToken();
+                if (at == null) { return false; }
+                myUserManager.addTwitterToken(name, at);
+            }
+            else {
+                at = myTokens.get(name);
+            }
+            myTwitterTools.updateStatus(tweetText, at);
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
 }

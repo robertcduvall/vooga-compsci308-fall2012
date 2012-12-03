@@ -23,6 +23,7 @@ public class GameCenter {
      */
     public static final String GAME_XML_FILE = "src/arcade/database/game.xml";
     private List<Game> myGames;
+    private GameSearcher mySearcher;
 
     /**
      * Constructor for GameCenter.
@@ -36,6 +37,7 @@ public class GameCenter {
      */
     public void initialize () {
         myGames = new ArrayList<Game>();
+        mySearcher = new DefaultGameSearcher(myGames);
         refreshGames();
 
     }
@@ -75,11 +77,7 @@ public class GameCenter {
      * @return list of available games
      */
     public List<String> getGameList () {
-        List<String> gameList = new ArrayList<String>();
-        for (Game game : myGames) {
-            gameList.add(game.getGameName());
-        }
-        return gameList;
+        return mySearcher.getGameList();
     }
 
     /**
@@ -105,13 +103,7 @@ public class GameCenter {
      * @return list of games that have the tag.
      */
     public List<String> getGameListByTagName (String tag) {
-        List<String> gameList = new ArrayList<String>();
-        for (Game gm : myGames) {
-            if (gm.getTags().contains(tag)) {
-                gameList.add(gm.getGameName());
-            }
-        }
-        return gameList;
+        return mySearcher.getGameListByTagName(tag);
     }
 
 //     public static void main (String args[]) {
@@ -123,6 +115,6 @@ public class GameCenter {
 //     System.out.println(rpg.getGameInfoList());
 //     System.out.println(rpg.getAverageRating());
 //     rpg.getReviews();
-//     System.out.println(gc.getGameListByTagName("fun"));
+//     System.out.println(gc.getGameListByTagName("shooter"));
 //     }
 }

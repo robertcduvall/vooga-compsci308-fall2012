@@ -12,20 +12,21 @@ import javax.swing.ImageIcon;
  * Thus there will not be any actual classes that implement GameObject directly, but rather
  * BattleObject or MapObject, etc.
  * 
- * @author Michael Elgart
+ * @author Michael Elgart, volodymyr, Rex
  * 
  */
 public abstract class GameObject {
 
+    protected Image myImage;
     private int myID;
     private Set<String> myAllowableModes;
     private final String myConditionFlag;
-    protected Image myImage;
+
 
     /**
      * Construct the new game object.
      * 
-     * @param objectID The ID number of the new object.
+     * @param allowableModes A set of strings where this Object can exist in. 
      * @param condition The condition flagged my interacting with this object.
      * @param image The image associated with the new object.
      */
@@ -34,7 +35,12 @@ public abstract class GameObject {
         myConditionFlag = condition;
         setImage(image);
     }
-    
+
+    /**
+     * Will check to see if this object can exist in this mode.
+     * @param modeName The mode you checking
+     * @return True if this object can exist in the given mode
+     */
     public boolean isValidMode(String modeName) {
         return myAllowableModes.contains(modeName);
     }
@@ -107,7 +113,11 @@ public abstract class GameObject {
      * Updates game after some time delay (to be implemented by child classes).
      */
     public abstract void update ();
-    
+
+    /**
+     * Paints the object
+     * @param g The graphics which is used to paint the object.
+     */
     public abstract void paint (Graphics g);
 
     /**

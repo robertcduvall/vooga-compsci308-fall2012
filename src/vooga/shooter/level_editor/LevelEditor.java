@@ -243,7 +243,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         
         else if (source == helpBtn) {
-               JOptionPane myJOptionPane = new JOptionPane(); 
                JOptionPane.showMessageDialog(null, "Left click an existing sprite to select it."   + "\n" +
                                                       "A selected sprite can be deleted by clicking the delete button." + "\n" +
                                        "Right click to create a sprite at the pointer's location." + "\n" +
@@ -319,7 +318,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         if (response == JFileChooser.APPROVE_OPTION) {
 
             String imagePath = imageChooser.getSelectedFile().getPath();
-            Image spriteImage = (new ImageIcon(imagePath)).getImage();
+            //spriteImage not needed since Enemy constructor was deprecated
+            //Image spriteImage = (new ImageIcon(imagePath)).getImage();
             
             spriteOptionsPane.display();
             
@@ -331,7 +331,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             Dimension bounds = myCanvas.getSize();
             Point velocity = new Point(0,0);
             int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
-            Enemy newEnemy = new Enemy(position, size, bounds, spriteImage, velocity, health);
+            Enemy newEnemy = new Enemy(position, size, bounds, imagePath, velocity, health);
 
             return newEnemy;
         }
