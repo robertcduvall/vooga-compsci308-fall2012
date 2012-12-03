@@ -10,11 +10,7 @@ import vooga.turnbased.gui.GameWindow;
  * 
  * @author Rex
  */
-
-
 public class Main {
-
-
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 

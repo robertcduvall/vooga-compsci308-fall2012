@@ -11,6 +11,7 @@ import java.util.TreeSet;
 /**
  * maps conditions to mode events to see if a mode event needs to be flagged
  * 
+ * @author RPG Team
  */
 public class GameLogic {
     private GameManager myGameManager;
@@ -18,18 +19,27 @@ public class GameLogic {
     private ArrayList<String> myModeEventNames;
     private TreeSet<String> myGameConditions;
 
+    /**
+     * 
+     * @param gm 
+     */
     public GameLogic (GameManager gm) {
         myGameManager = gm;
         myEventConditions = new HashMap<String, List<List<String>>>();
         myModeEventNames = new ArrayList<String>();
         myGameConditions = new TreeSet<String>();
-
     }
-    
-    public void addEventConditions(Map<String, List<List<String>>> eventConditions){
+    /**
+     * 
+     * @param eventConditions 
+     */
+    public void addEventConditions(Map<String, List<List<String>>> eventConditions) {
         myEventConditions.putAll(eventConditions);
     }
-
+    /**
+     * 
+     * @return 
+     */
     public List<String> getNewEvents () {
         List<String> retList = new ArrayList<String>();
         while (!myModeEventNames.isEmpty()) {
@@ -37,12 +47,19 @@ public class GameLogic {
         }
         return retList;
     }
-
+    /**
+     * 
+     * @param newCondition 
+     * @param involvedSpriteIDs 
+     */
     public void flagCondition (String newCondition, List<Integer> involvedSpriteIDs) {
         myGameConditions.add(newCondition);
         checkConditions(involvedSpriteIDs);
     }
-
+    /**
+     * 
+     * @param involvedSpriteIDs 
+     */
     private void checkConditions (List<Integer> involvedSpriteIDs) {
         Set<String> usedConditions = new TreeSet<String>();
         for (String eventName : myEventConditions.keySet()) {

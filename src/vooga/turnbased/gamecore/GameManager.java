@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -26,7 +25,7 @@ import vooga.turnbased.sprites.Sprite;
  * GameManager class that manages interactions between the map and battle modes
  * of the game.
  * 
- * @author Turnbased team
+ * @author RPGs team
  * 
  */
 public class GameManager implements InputAPI {
@@ -94,25 +93,27 @@ public class GameManager implements InputAPI {
 
         startFirstMode(levelLoader.getStartMode());
     }
-
+    private void startFirstMode (String entryMode) {
+        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+    }
+    /**
+     * Get the dimension of the map
+     * @return
+     */
     public Dimension getMapSize () {
         return myMapSize;
     }
-
+    /**
+     * Get the dimension of the camera window
+     * @return
+     */
     public Dimension getCameraSize () {
         return myCameraSize;
     }
-
-    private void startFirstMode (String entryMode) {
-        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
-        // myGameModes.get(0).resume();
-    }
-
     /**
      * find the Sprite with specific ID
      * 
-     * @param id
-     *        ID of the Sprite
+     * @param id ID of the Sprite
      * @return the Sprite found (null if no Sprite with that ID was found)
      */
     public Sprite findSpriteWithID (int id) {
@@ -129,7 +130,11 @@ public class GameManager implements InputAPI {
             mySprites.put(s.getID(), s);
         }
     }
-
+    /**
+     * Get a list of all the GameObjects that belong to the given certain GameMode
+     * @param modeName 
+     * @return
+     */
     public List<GameObject> getGameObjects (String modeName) {
         List<GameObject> modeObjects = new ArrayList<GameObject>();
         for (Sprite s : mySprites.values()) {
@@ -187,8 +192,7 @@ public class GameManager implements InputAPI {
         }
         myGameModes.get(myGameModes.size() - 1).update();
         handleMouseActions(myGameModes.get(myGameModes.size() - 1));
-        for (GameMode mode : finishedModes) { // avoid concurrent modifcation
-                                              // over myGameModes list
+        for (GameMode mode : finishedModes) { 
             killMode(mode);
         }
     }
@@ -220,10 +224,7 @@ public class GameManager implements InputAPI {
      * 
      * @return Size of current GamePane.
      */
-    public Dimension getPaneDimension () { // TODO: shouldn't need this, just
-                                           // paint an BufferedImage and then
-                                           // scale it once it gets returned to
-                                           // pane
+    public Dimension getPaneDimension () {
         return myGamePane.getSize();
     }
 
@@ -243,13 +244,15 @@ public class GameManager implements InputAPI {
     /**
      * Calling this functions sets the next level from the input URI.
      * 
-     * @param URI
-     *        The location string of where to find the new map file.
+     * @param uri The location string of where to find the new map file.
      */
-    public void setNewMapResources (String URI) {
-        myNewMapResource = URI;
+    public void setNewMapResources (String uri) {
+        myNewMapResource = uri;
     }
-
+    /**
+     * Get the sprite ID of the player
+     * @return
+     */
     public int getPlayerSpriteID () {
         return myPlayerSpriteID;
     }
@@ -258,24 +261,12 @@ public class GameManager implements InputAPI {
         return myNewMapResource;
     }
 
-    private class ModeEvent {
-        private final String myName;
-        private final List<Integer> myInvolvedIDs;
 
-        public ModeEvent (String modeName, List<Integer> involvedIDs) {
-            myName = modeName;
-            myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
-        }
-
-        public String getName () {
-            return myName;
-        }
-
-        public List<Integer> getInvolvedIDs () {
-            return myInvolvedIDs;
-        }
-    }
-
+    /**
+     * Flag an event using the GameLogic
+     * @param eventName 
+     * @param involvedSpriteIDs 
+     */
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
@@ -301,12 +292,11 @@ public class GameManager implements InputAPI {
             handleEvent(m);
         }
     }
-    
     private boolean modeAlreadyExists (String modeName) {
-        for(GameMode g : myGameModes) {
-            if(modeName.equals(g.getName())){
-                myGameModes.get(myGameModes.size()-1).pause();
-                myGameModes.remove(g);
+        for (GameMode g : myGameModes) {
+            if (modeName.equals(g.getName())) {
+                myGameModes.get(myGameModes.size() - 1).pause();
+                myGameModes.remove(g); 
                 myGameModes.add(g);
                 g.resume();
                 return true;
@@ -324,14 +314,11 @@ public class GameManager implements InputAPI {
             if (myAvailableModeTypes.containsKey(modeName)) {
                 if (!myGameModes.isEmpty()) {
                     myGameModes.get(myGameModes.size() - 1).pause();
-                    // TODO: again assuming latest is active for now
                 }
                 Class c = myAvailableModeTypes.get(modeName);
                 Constructor[] newC = c.getConstructors();
 
                 try {
-                    // System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
-                    // System.out.println(newC[0].toGenericString());
                     myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
                 }
                 catch (Exception e) {
@@ -343,11 +330,33 @@ public class GameManager implements InputAPI {
         }
     }
 
+    /**
+     * Add a mouse action
+     * @param mousePressed 
+     * @param mousePos 
+     * @param mouseButton 
+     */
     public void addMouseAction (int mousePressed, Point mousePos, int mouseButton) {
         myMouseActions.add(new MouseAction(mousePressed, mousePos, mouseButton));
-        // System.out.println("press: "+mousePressed+", pos: "+mousePos+", button: "+mouseButton);
     }
 
+    private void killMode (GameMode mode) {
+        myGameModes.remove(mode);
+        if (!myGameModes.isEmpty()) {
+            myGameModes.get(myGameModes.size() - 1).resume();
+        }
+    }
+    /**
+     * Toggle the background sound track being played
+     */
+    public void toggleSoundTrack () {
+        if (myGameSoundTrack.loopIsRunning()) {
+            myGameSoundTrack.stopLoop();
+        }
+        else {
+            myGameSoundTrack.startLoop();
+        }
+    }
     private class MouseAction {
         private int myMouseEventType;
         private Point myMousePosition;
@@ -359,20 +368,21 @@ public class GameManager implements InputAPI {
             myMouseButton = mouseButton;
         }
     }
+    private class ModeEvent {
+        private final String myName;
+        private final List<Integer> myInvolvedIDs;
 
-    private void killMode (GameMode mode) {
-        myGameModes.remove(mode);
-        if (!myGameModes.isEmpty()) {
-            myGameModes.get(myGameModes.size() - 1).resume();
+        public ModeEvent (String modeName, List<Integer> involvedIDs) {
+            myName = modeName;
+            myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
         }
-    }
 
-    public void toggleSoundTrack () {
-        if (myGameSoundTrack.loopIsRunning()) {
-            myGameSoundTrack.stopLoop();
+        public String getName () {
+            return myName;
         }
-        else {
-            myGameSoundTrack.startLoop();
+
+        public List<Integer> getInvolvedIDs () {
+            return myInvolvedIDs;
         }
     }
 }
