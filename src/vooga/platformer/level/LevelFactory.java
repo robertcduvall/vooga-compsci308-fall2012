@@ -51,7 +51,7 @@ public final class LevelFactory {
                                                                            levelDimension.width),
                                         player);
 
-            Level level = new Level(levelDimension, followCam);
+            Level level = new Level(levelDimension, followCam, lfr.getCollisionCheckerPath());
 
             for (GameObject g : levelGameObjects) {
                 level.addGameObject(g);

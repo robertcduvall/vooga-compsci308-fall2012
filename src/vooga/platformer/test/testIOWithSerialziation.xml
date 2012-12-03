@@ -3,7 +3,9 @@
 <width>20</width>
 <height>20</height>
 <backgroundImage>src/vooga/platformer/test/testImage.jpg</backgroundImage>
-<collisionChecker>vooga.platformer.someCollisionChecker</collisionChecker>
+<collisionChecker>someCollisionCheckerPath</collisionChecker>
 <camera>vooga.platformer.someCamera</camera>
 <gameObjectData>src/vooga/platformer/test/testIOWithSerialziationGameObjects.bin</gameObjectData>
+<conditionFile>src/vooga/platformer/test/testIOWithSerialziationConditions.bin</conditionFile>
+<pluginFile>src/vooga/platformer/test/testIOWithSerialziationPlugins.bin</pluginFile>
 </level>

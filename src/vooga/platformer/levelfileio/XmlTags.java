@@ -42,6 +42,10 @@ public interface XmlTags {
 
     public static final String ID = "id";
 
+    public static final String CONDITION = "conditionData";
+
+    public static final String PLUGIN = "pluginData";
+
     // Tags for collision checker xml file
 
     public static final String GAMEOBJECT_DATA = "gameObjectData";

@@ -4,13 +4,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.leveleditor.Sprite;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 
 
 /**
@@ -21,73 +22,6 @@ import vooga.platformer.leveleditor.Sprite;
  * 
  */
 public final class LevelFileWriter {
-
-    /**
-     * Integer constant that is returned by writeLevel if the file data cannot
-     * be written successfully.
-     * 
-     * @deprecated Using custom exception instead.
-     */
-    public static final int UNSUCCESSFUL_WRITE = 0;
-    /**
-     * Integer constant returned by writeLevel if the data file is written
-     * successfully.
-     * 
-     * @deprecated Using custom exception instead.
-     */
-    public static final int SUCCESSFUL_WRITE = 1;
-
-    private LevelFileWriter () {
-        /*
-         * Empty constructor
-         */
-    }
-
-    /**
-     * Method that writes the data describing a platformer level to an XML file
-     * so that it can be reconstructed by a level factory.
-     * 
-     * @param filePath where the XML should be saved
-     * @param levelType specifies which Level subclass to use
-     * @param levelName name of the level
-     * @param width overall width of the level in pixels
-     * @param height overall height of the level in pixels
-     * @param backgroundImage path to the image that should be painted to the
-     *        level's background
-     * @param levelObjects Sprites that populate the level
-     * @param collisionCheckerType class name of the CollisionChecker to use for
-     *        this level
-     * @param cameraType class name of the Camera to use for this level
-     * @return an integer constant representing whether the file was written
-     *         successfully or not
-     * 
-     * @deprecated Sprites are no longer supported in file writing, only
-     *             serializable GameObjects. Use the alternate writeLevel
-     *             method.
-     */
-    public static int writeLevel (String filePath, String levelType, String levelName, int width,
-                                  int height, String backgroundImage,
-                                  Collection<Sprite> levelObjects, String collisionCheckerType,
-                                  String cameraType) {
-        Document doc = XmlUtilities.makeDocument();
-
-        Element level = doc.createElement(XmlTags.DOCUMENT);
-        doc.appendChild(level);
-
-        level.setAttribute(XmlTags.CLASS_NAME, levelType);
-        XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
-        XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
-        XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
-        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
-        XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionCheckerType);
-        XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
-
-        addLevelObjects(levelObjects, doc, level);
-
-        XmlUtilities.write(doc, filePath);
-
-        return SUCCESSFUL_WRITE;
-    }
 
     /**
      * Method that writes the data describing a platformer level to an XML file
@@ -105,28 +39,39 @@ public final class LevelFileWriter {
      *        loaded when the user plays or edits the level. One GameObject
      *        <strong>must</strong> of type Player for LevelFactory to be able
      *        to load the level.
+     * @param conditions the conditions for winning/losing this level
+     * @param plugins plugins this level uses
      * @param cameraType fully-qualified class name of the Camera to use for
      *        this level
+     * @param collisionChecker file path to the xml file describing the
+     *        CollisionChecker to use for this level
      */
     public static void writeLevel (String filePath, String levelName, int width, int height,
                                    String backgroundImage, Collection<GameObject> gameObjects,
-                                   String cameraType) {
+                                   Collection<Condition> conditions,
+                                   Collection<LevelPlugin> plugins, String cameraType,
+                                   String collisionChecker) {
+        
+        Collection<Object> gameObjectsAsObjects = new ArrayList<Object>(gameObjects);
+        Collection<Object> conditionsAsObjects = new ArrayList<Object>(conditions);
+        Collection<Object> pluginsAsObjects = new ArrayList<Object>(plugins);
+
         Document doc = XmlUtilities.makeDocument();
 
         Element level = doc.createElement(XmlTags.DOCUMENT);
         doc.appendChild(level);
-
-        XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
-        XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
-        XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
-        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
-        XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
-
         String serializedGameObjectFilePath = filePath.split("\\.")[0] + "GameObjects.bin";
-        XmlUtilities.appendElement(doc, level, XmlTags.GAMEOBJECT_DATA,
-                                   serializedGameObjectFilePath);
+        String serializedConditionsFilePath = filePath.split("\\.")[0] + "Conditions.bin";
+        String serializedPluginsFilePath = filePath.split("\\.")[0] + "Plugins.bin";
+
+        appendXmlElements(levelName, width, height, backgroundImage, cameraType, collisionChecker,
+                          doc, level, serializedGameObjectFilePath, serializedConditionsFilePath,
+                          serializedPluginsFilePath);
+
         try {
-            serializeGameObjects(gameObjects, doc, level, serializedGameObjectFilePath);
+            serializeCollection(gameObjectsAsObjects, doc, level, serializedGameObjectFilePath);
+            serializeCollection(conditionsAsObjects, doc, level, serializedConditionsFilePath);
+            serializeCollection(pluginsAsObjects, doc, level, serializedPluginsFilePath);
         }
         catch (FileNotFoundException e) {
             throw new LevelFileIOException("File not found", e);
@@ -138,63 +83,37 @@ public final class LevelFileWriter {
         XmlUtilities.write(doc, filePath);
     }
 
-    private static void serializeGameObjects (Collection<GameObject> gameObjects, Document doc,
-                                              Element level, String filePath)
-                                                                             throws FileNotFoundException,
-                                                                             IOException {
+    private static void appendXmlElements (String levelName, int width, int height,
+                                           String backgroundImage, String cameraType,
+                                           String collisionChecker, Document doc, Element level,
+                                           String serializedGameObjectFilePath,
+                                           String serializedConditionsFilePath,
+                                           String serializedPluginsFilePath) {
+        
+        XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
+        XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
+        XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
+        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
+        XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionChecker);
+        XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
+
+        XmlUtilities.appendElement(doc, level, XmlTags.GAMEOBJECT_DATA,
+                                   serializedGameObjectFilePath);
+        XmlUtilities.appendElement(doc, level, XmlTags.CONDITION, serializedConditionsFilePath);
+        XmlUtilities.appendElement(doc, level, XmlTags.PLUGIN, serializedPluginsFilePath);
+        
+    }
+
+    private static void serializeCollection (Collection<Object> gameObjects, Document doc,
+                                             Element level, String filePath)
+                                                                            throws FileNotFoundException,
+                                                                            IOException {
         FileOutputStream fos = new FileOutputStream(filePath);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
-        for (GameObject g : gameObjects) {
+        for (Object g : gameObjects) {
             oos.writeObject(g);
         }
         oos.close();
     }
 
-    /**
-     * Writes sprite data to the xml file.
-     * 
-     * @param levelObjects sprites to be converted to xml tags
-     * @param doc document in which to write this data
-     * @param level parent element under which to write sprite data
-     * 
-     * @deprecated Sprite data is no longer being written to xml file. Instead,
-     *             GameObjects are being serialized.
-     */
-    private static void addLevelObjects (Collection<Sprite> levelObjects, Document doc,
-                                         Element level) {
-        for (Sprite s : levelObjects) {
-            Element spriteElement = doc.createElement(XmlTags.GAMEOBJECT);
-            spriteElement.setAttribute(XmlTags.CLASS_NAME, s.getClassName());
-
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.X, String.valueOf(s.getX()));
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.Y, String.valueOf(s.getY()));
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.WIDTH,
-                                       String.valueOf(s.getWidth()));
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.HEIGHT,
-                                       String.valueOf(s.getHeight()));
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.ID, s.getID());
-            XmlUtilities.appendElement(doc, spriteElement, XmlTags.IMAGE_PATH, s.getImagePath());
-
-            for (Map<String, String> strategy : s.getUpdateStrategies()) {
-
-                String strategyType = "";
-                if (strategy.containsKey(XmlTags.CLASS_NAME)) {
-                    strategyType = strategy.get(XmlTags.CLASS_NAME);
-                    strategy.remove(XmlTags.CLASS_NAME);
-                }
-
-                Element strategyElement =
-                        XmlUtilities.generateElementFromMap(doc, XmlTags.STRATEGY, strategy);
-                strategyElement.setAttribute(XmlTags.CLASS_NAME, strategyType);
-                spriteElement.appendChild(strategyElement);
-            }
-
-            if (s.getAttributes() != null && s.getAttributes().size() > 0) {
-                XmlUtilities.appendMapContents(doc, spriteElement, XmlTags.CONFIG,
-                                               s.getAttributes());
-            }
-
-            level.appendChild(spriteElement);
-        }
-    }
 }

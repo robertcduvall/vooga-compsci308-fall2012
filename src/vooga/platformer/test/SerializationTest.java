@@ -1,5 +1,6 @@
 package vooga.platformer.test;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -30,11 +31,11 @@ public class SerializationTest {
     @Before
     public void initializeGameObject () throws Exception {
         myGameObject0 =
-                new StaticObject("x=" + TEST_X_0 +
-                          ",y=0,width=5,height=5,imagePath=src/games/platformerdemo/player.png,id=0");
+                new StaticObject(TEST_X_0, 1, 1, 1, 0,
+                                 new File("src/games/platformerdemo/player.png"));
         myGameObject1 =
-                new StaticObject("x=" + TEST_X_1 +
-                          ",y=0,width=5,height=5,imagePath=src/games/platformerdemo/player.png,id=0");
+                new StaticObject(TEST_X_1, 1, 1, 1, 0,
+                                 new File("src/games/platformerdemo/player.png"));
     }
 
     @Test

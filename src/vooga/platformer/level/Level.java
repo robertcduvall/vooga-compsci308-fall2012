@@ -38,7 +38,6 @@ public class Level {
         objectList = new ArrayList<GameObject>();
         pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
-        // TODO set to a default collision checker
         myCollisionChecker = new BasicCollisionChecker(fileName);
         cam = inCam;
         myPaused = false;
