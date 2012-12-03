@@ -1,4 +1,4 @@
-package vooga.shooter.level_editor;
+package util.gui;
 
 import javax.swing.JTextField;
 import javax.swing.text.AttributeSet;

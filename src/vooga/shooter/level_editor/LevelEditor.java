@@ -8,6 +8,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.gui.MultiFieldJOptionPane;
+import util.gui.NumericJTextField;
 import util.input.core.MouseController;
 import util.xml.XmlUtilities;
 import java.io.*;
@@ -202,7 +203,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     /**
      * Prompts the user to sprite attributes and then adds an Enemy with the
      * given attributes to
-     * the current Level. Calls validateSpriteAttributes to validate user input.
+     * the current Level.
      */
     private void makeSprite () {
         int response = imageChooser.showOpenDialog(null);
