@@ -13,7 +13,9 @@ import util.networking.Client;
  */
 
 public class ChatClient extends Client {
-
+    
+    private static final int TIMEOUT = 10000;
+    
     private ChatProtocol myProtocol;
     private String myUser;
     private boolean myLoggedIn;
@@ -37,6 +39,28 @@ public class ChatClient extends Client {
         send(myProtocol.createRegister(user, password));
     }
 
+    public boolean registerWithTimeout(String user, String password, int timeout) {
+        register(user, password);
+        try {
+            this.wait(10000);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return getLoggedInStatus();
+    }
+    
+    public boolean loginWithTimeout(String user, String password, int timeout) {
+        login(user, password);
+        try {
+            this.wait(10000);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return getLoggedInStatus();
+    }
+    
     public void switchUser(String user, String password) {
         logout();
         login(user, password);
