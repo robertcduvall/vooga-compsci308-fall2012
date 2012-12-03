@@ -52,7 +52,7 @@ public class ChatService implements Service {
             try {
                 String input = in.readLine();
                 if (input != null && !"".equals(input.trim())) {
-                    System.out.println("server received from "+ socket.getInetAddress() + ": " + input);
+                    System.out.println("Server received from "+ socket.getInetAddress() + ": " + input);
                     ChatCommand type = myProtocol.getType(input);
                     Method m;
                     m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class, Socket.class);
@@ -90,8 +90,12 @@ public class ChatService implements Service {
 
     private void logout (Socket socket) throws IOException {
         // remove the user from the list and close the socket
-        Collection<Socket> values = myUsersToSockets.values();
-        values.remove(socket);
+        System.out.println("Server removing client " + socket.getInetAddress());
+        for (String user : myUsersToSockets.keySet()) {
+            if (myUsersToSockets.get(user).equals(socket)) {
+                removeUser(user, socket);
+            }
+        }
         socket.close();
     }
 
@@ -168,12 +172,12 @@ public class ChatService implements Service {
     }
 
     private void addUser (String user, Socket socket) {
+        // add new user to list
+        myUsersToSockets.put(user, socket);
         // notify all clients of new user
         for (Socket s : myUsersToSockets.values()) {
             write(s, myProtocol.createAddUser(user));
         }
-        // add new user to list
-        myUsersToSockets.put(user, socket);
     }
 
     private void removeUser (String user, Socket socket) {

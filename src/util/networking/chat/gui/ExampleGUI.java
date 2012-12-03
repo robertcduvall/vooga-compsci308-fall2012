@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,12 +16,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import util.networking.chat.ChatClient;
 import util.networking.chat.ChatListener;
 import util.networking.chat.ErrorEvent;
@@ -47,7 +51,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 if(usersToDialogs.keySet().contains(e.getSender())){
-                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">" + e.getMessageBody());
+                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
                 }else{
                     ChatDialog cd = new ChatDialog(e.getMessageBody());
                     usersToDialogs.put(e.getSender(), cd);
@@ -58,8 +62,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             @Override
             public void handleErrorEvent (ErrorEvent e) {
-                System.out.println(e.getErrorMessage());
-                
+                JOptionPane.showMessageDialog(null, e.getErrorMessage());
             }
 
             @Override
@@ -81,6 +84,12 @@ public class ExampleGUI extends JPanel implements KeyListener {
         add(tabbedPane, BorderLayout.CENTER);
         add(initBuddyList(), BorderLayout.AFTER_LINE_ENDS);
         add(initChatInput(), BorderLayout.AFTER_LAST_LINE);
+        tabbedPane.addChangeListener(new ChangeListener() {
+
+            public void stateChanged (ChangeEvent arg0) {
+                System.out.println("HI");
+                
+            }});
     }
 
      private JTextArea initBuddyList () {
@@ -114,12 +123,18 @@ public class ExampleGUI extends JPanel implements KeyListener {
         tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
     }
     
+    public List<String> getUsersOnline(){
+        return Collections.unmodifiableList(usersOnline);
+    }
+    
     private JScrollPane initChatInput(){
-        userInput = new JTextArea(3, 40);
+        userInput = new JTextArea(3, 42);
         userInput.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         userInput.setLineWrap(true);
         userInput.setWrapStyleWord(true);
         userInput.addKeyListener(this);
+        userInput.setCaretPosition(0);
+        userInput.append("\n");
         JScrollPane chatInput = new JScrollPane(userInput);
         chatInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chatInput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -173,9 +188,12 @@ public class ExampleGUI extends JPanel implements KeyListener {
         String body = userInput.getText();
         String to = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
         myChatClient.sendMessage(to, body);
-        userInput.setText("");
+        userInput.replaceRange(null, 0, 0);
+        userInput.moveCaretPosition(0);
         ChatDialog cd = (ChatDialog)(tabbedPane.getSelectedComponent());
-        cd.getTextArea().append("<" + myChatClient.getUserName() + ">:" + body);
+        String content = "<" + myChatClient.getUserName() + ">:     " + body;
+        content = content.replace("\r\n", "").replace("\n","");
+        cd.getTextArea().append(content+"\n");
     }
 
     @Override
