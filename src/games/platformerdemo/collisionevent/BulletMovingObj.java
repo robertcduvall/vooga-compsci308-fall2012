@@ -1,7 +1,7 @@
 package games.platformerdemo.collisionevent;
 
-import games.platformerdemo.Bullet;
 import vooga.platformer.collision.CollisionEvent;
+import vooga.platformer.gameobject.Bullet;
 import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.MovingObject;
