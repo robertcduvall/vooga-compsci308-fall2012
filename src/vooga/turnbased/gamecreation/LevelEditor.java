@@ -65,6 +65,10 @@ public class LevelEditor extends Editor {
         myFileName = fileName;
     }
 
+    public void initialize () {
+        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map1");
+    }
+    
     /**
      * 
      * @param width Describes width of the Map dimension
@@ -117,13 +121,6 @@ public class LevelEditor extends Editor {
     public void modifyBackgroundImage (String imagePath) {
         Element background = XmlUtilities.getElement(myGameSetupElement, BACKGROUND_IMAGE);
         XmlUtilities.setContent(background, imagePath);
-    }
-
-    /**
-     * Adds the start mode element, which is always map.
-     */
-    public void addStartMode () {
-        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map");
     }
 
     /**

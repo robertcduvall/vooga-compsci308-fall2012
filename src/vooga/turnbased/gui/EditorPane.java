@@ -4,11 +4,17 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -16,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.Timer;
 import javax.swing.text.JTextComponent;
 import org.w3c.dom.Element;
 import vooga.turnbased.gamecreation.LevelEditor;
@@ -28,19 +35,27 @@ import vooga.turnbased.gamecreation.PlayerEditor;
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
+    private static final int ONE_SECOND = 1000;
+    private static final int FRAMES_PER_SECOND = 20;
     private static final String USER_DIR = "user.dir";
     private static final String[] GAME_SETUP = {"Dimension Width: ", "Dimension Height: ",
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
-    private static final String[] GAME_SETUP_DEFAULTS = {"20", "30", "15", "11",
-        "src/vooga/turnbased/resources/image/background.png"};
+    private static final String[] GAME_SETUP_DEFAULTS = {"20", "20", "15", "11",
+        "src/vooga/turnbased/resources/image/grass.png"};
     private static final String[] MODES = {"Name: ", "Class: ", "Condition: "};
     private static final String[] MODES_DEFAULTS = {"", "", ""};
     private static final String[] OBJECTS = {"Create On: ", "Modes: ", "Class: ", "Condition: ",
         "X-Coordinate: ", "Y-Coordinate: ", "Images: ", "Stats: ", "Name: "};
     private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", "", "", "", "", ""};
-    private static final Point DISPLAY_MAP_DIMENSION = new Point (700, 500);
-    private static final Point DISPLAY_MAP_ORIGIN = new Point (50, 85);
-    private static final int BOX_SIZE = 20;
+    private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
+    private static final int BOX_SIZE = 25;
+    File flashingBox = new File("src/vooga/turnbased/resources/image/flashing-box.png");
+    Image flash = new ImageIcon(flashingBox.getAbsolutePath()).getImage();
+    private Point[][] GRID;
+    private Point myCurrentTile;
+    private Image myBackground;
+    private Dimension myDimension;
+    private Map<Point, List<Image>> myImageMap;
 
     /**
      * 
@@ -51,6 +66,9 @@ public class EditorPane extends DisplayPane {
         super(gameWindow);
         addInitialButtons();
         addMouseListener(new GameMouseListener());
+        myDimension = new Dimension (-1, -1);
+        myCurrentTile = new Point(-1, -1);
+        myImageMap = new HashMap<Point, List<Image>>();
     }
 
     private void addInitialButtons () {
@@ -76,10 +94,16 @@ public class EditorPane extends DisplayPane {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 20; j++) {
-                g.drawRect(DISPLAY_MAP_ORIGIN.x + i * BOX_SIZE,
-                        DISPLAY_MAP_ORIGIN.y + j * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+        for (int i = 0; i < myDimension.width; i++) {
+            for (int j = 0; j < myDimension.height; j++) {
+                int x = DISPLAY_MAP_ORIGIN.x + i * BOX_SIZE;
+                int y = DISPLAY_MAP_ORIGIN.y + j * BOX_SIZE;
+                if(myBackground != null) {
+                    g.drawImage(myBackground, x, y, BOX_SIZE, BOX_SIZE, null);
+                }
+                if (myCurrentTile.x == i && myCurrentTile.y == j)
+                    g.drawImage(flash, x, y, BOX_SIZE, BOX_SIZE, null);
+                GRID[i][j] = new Point(x, y);
             }
         }
     }
@@ -99,6 +123,8 @@ public class EditorPane extends DisplayPane {
         removeAll();
         repaint();
         displayAndGetSetupInformation(GAME_SETUP, GAME_SETUP_DEFAULTS, l);
+        
+        
         JPanel p = new JPanel(new GridLayout(20,20));
         addMenuButton();
         JButton modeButton = setUpModeButton(l, MODES, MODES_DEFAULTS);
@@ -298,10 +324,17 @@ public class EditorPane extends DisplayPane {
         for (String now : returnedValues) {
             System.out.println(now);
         }
+        String imagePath = returnedValues[4];
+        File imageFile = new File(imagePath);
+        myBackground = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        myDimension = new Dimension(Integer.parseInt(returnedValues[0]),
+                Integer.parseInt(returnedValues[1]));
+        GRID = new Point[myDimension.width][myDimension.height];
+        repaint();
         l.addDimensionTag(returnedValues[0], returnedValues[1]);
         l.addCameraDimension(returnedValues[2], returnedValues[3]);
         l.addBackgroundImage(returnedValues[4]);
-        l.addStartMode();
+        l.initialize();
     }
  
     private void addMenuButton () {
@@ -328,27 +361,39 @@ public class EditorPane extends DisplayPane {
     private class GameMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked (MouseEvent e) {
-            System.out.println(e);
+            int xMouse = e.getX();
+            int yMouse = e.getY();
+            for (int i = 0; i < myDimension.width; i++) {
+                for (int j = 0; j < myDimension.height; j++) {
+                    int xGrid = GRID[i][j].x;
+                    int yGrid = GRID[i][j].y;
+                    if (xGrid < xMouse && xMouse < xGrid + BOX_SIZE && yGrid < yMouse
+                            && yMouse < yGrid + BOX_SIZE) {
+                        myCurrentTile = new Point(i, j);
+                        repaint();
+                    }
+                }
+            }
         }
 
         @Override
         public void mouseEntered (MouseEvent e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
 
         @Override
         public void mouseExited (MouseEvent e) {
-            System.out.println(e);
+           // System.out.println(e);
         }
 
         @Override
         public void mousePressed (MouseEvent e) {
-            System.out.println(e);
+           // System.out.println(e);
         }
 
         @Override
         public void mouseReleased (MouseEvent e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
     }
 }
