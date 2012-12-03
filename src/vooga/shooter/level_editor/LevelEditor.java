@@ -70,6 +70,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         
         myToolPane.setLayout(new BorderLayout());
         setupToolbars();
+        setupChoosers();
         
         /* Toolbar placement */
         myToolPane.add(myToolBar, BorderLayout.NORTH);
@@ -80,10 +81,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
     
     private void setupChoosers () {
-        levelChooser = new JFileChooser("/vooga/shooter/levels");
+  
+        levelChooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
         FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter("XML Level files", "xml");
         levelChooser.setFileFilter(XMLFilter);
-        imageChooser = new JFileChooser("/vooga/shooter/images");
+        imageChooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
         FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter("gif and png image files", "gif","png");
         imageChooser.setFileFilter(ImageFilter);
                                                              
@@ -104,6 +106,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myToolBar.add(newBtn);
         myToolBar.add(clearBtn);
         myToolBar.add(backgroundBtn);
+        myToolBar.add(makeSpriteBtn);
     }
     
     private List<ImageIcon> loadImages (String directory)
@@ -175,22 +178,22 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         
         else if (source == backgroundBtn) {
-            //int success = chooser.showOpenDialog(mainFrame);
-            //if (success == JFileChooser.APPROVE_OPTION) {
-            //    openFile(chooser.getSelectedFile());
-            //}
-            //myLevel.setBackgroundImage( IMAGE_LOCATION + "alienship.gif");
-            JFileChooser backchooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
-            int response = backchooser.showOpenDialog(null);
+            
+            //JFileChooser backchooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
+            int response = imageChooser.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
-                myLevel.setBackgroundImage(backchooser.getSelectedFile());
+                myLevel.setBackgroundImage(imageChooser.getSelectedFile());
             }
-            //ImageIcon backGroundIcon = new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + "alienship.gif"));
-            //JButton newButton = new JButton();
-            //newButton.setIcon(backGroundIcon);
-            //rightPanel.add(newButton);
-            //newBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
-           // myCanvas.paint()
+
+        }
+        
+        else if (source == makeSpriteBtn) {
+            int response = imageChooser.showOpenDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                
+                
+                //imageChooser.getSelectedFile());
+            }
         }
 
     }
