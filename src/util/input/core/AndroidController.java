@@ -14,7 +14,7 @@ import util.input.interfaces.listeners.AndroidListener;
 
 /**
  * This class allows users to enter input through an Android app.
- * 
+ *
  * @author Ben, Lance
  * 
  */

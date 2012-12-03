@@ -178,7 +178,6 @@ public class BattleMode extends GameMode implements InputAPI {
         paintMenu(g);
     }
 
-    // someone please fix this...
     /**
      * Draws the battle messages that display at the bottom of the screen, showing player and
      * enemy actions and changes.

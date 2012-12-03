@@ -48,7 +48,7 @@ public class MessageCenterMainPanel extends AMainPanel {
 
         myPanel.add(composeMessageButton);
 
-        List<Message> myMessages = getArcade().getModelInterface().getEditableCurrentUser().getMyMessage();
+        List<Message> myMessages = getArcade().getModelInterface().getMessage();
         int numLoaded = 0;
         for (Message aMessage : myMessages){
             try {

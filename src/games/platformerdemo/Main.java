@@ -28,11 +28,8 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController(new DemoLevelFactory(), "demoLevel",
                 new SimpleOnePlayerInputInitializer());
-        //TODO:Should use follow eventually
-        //KeyboardController testController = new KeyboardController(pc);
-        //pc.setInputController(testController);
+
         frame.getContentPane().add(controller);
-        //frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
         paintString(controller);
         frame.setVisible(true);

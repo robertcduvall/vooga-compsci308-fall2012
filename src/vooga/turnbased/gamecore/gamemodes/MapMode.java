@@ -25,13 +25,26 @@ import vooga.turnbased.gui.InputAPI;
 /**
  * Map Mode on which players move around and interact with other game objects
  * 
- * @author Tony, Rex
+ * @author Tony, Rex, volodymyr
  **/
 public class MapMode extends GameMode implements InputAPI {
 
+
+    /**
+     * A point 1 unit up in the Y direction
+     */
     public static final Point UP = new Point(0, -1);
+    /**
+     * A point 1 unit right in the X direction
+     */
     public static final Point RIGHT = new Point(1, 0);
+    /**
+     * A point 1 unit down in the Y direction
+     */
     public static final Point DOWN = new Point(0, 1);
+    /**
+     * A point 1 unit left in the X direction
+     */
     public static final Point LEFT = new Point(-1, 0);
     private int myNumDisplayRows;
     private int myNumDisplayCols;
@@ -115,7 +128,7 @@ public class MapMode extends GameMode implements InputAPI {
      * add MapObject to the MapMode
      * 
      * @param p
-     *        coordinate the MapObject shoulld be placed
+     *        coordinate the MapObject should be placed
      * @param s
      *        MapObject to be added
      */
@@ -365,7 +378,11 @@ public class MapMode extends GameMode implements InputAPI {
             GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.RELEASED,
                     myPathFinder, "deactivateMultiDestination");
         }
-        catch (Exception e) {
+        catch (NoSuchMethodException e) {
+            System.out.println("A method was called that does not exist!");
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 

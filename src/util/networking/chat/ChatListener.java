@@ -12,4 +12,5 @@ public interface ChatListener {
     
     void handleErrorEvent(ErrorEvent e);
     
+    void handleUsersUpdateEvent(UsersUpdateEvent e);
 }

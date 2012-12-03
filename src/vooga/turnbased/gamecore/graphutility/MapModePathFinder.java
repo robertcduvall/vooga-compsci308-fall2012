@@ -36,7 +36,8 @@ public class MapModePathFinder extends PathFinder {
      * @param target target position
      * @param mapSize bottom right corner of the entire map
      */
-    public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
+    public MapModePathFinder (MapMode map, MovingMapObject object, Point target,
+            Dimension mapSize) {
         super(object.getLocation(), target, new Dimension(mapSize));
         initialize(map, object);
         setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
@@ -46,6 +47,8 @@ public class MapModePathFinder extends PathFinder {
     /**
      * default constructor.
      * needs to add task after constructing using this default one
+     * @param map The MapMode where this path exists
+     * @param object The MapObject which is will follow the path (i.e. the player)
      */
     public MapModePathFinder (MapMode map, MovingMapObject object) {
         super();
