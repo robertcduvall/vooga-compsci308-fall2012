@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import vooga.shooter.gameObjects.Enemy;
+import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.*;
 import vooga.shooter.graphics.Canvas;
 
@@ -156,10 +157,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         if (source == newBtn) {
             newFile();
             openFile = null;
-
+            myLevel = new Level(); // is this necessary????
         }
         else if (source == clearBtn) {
-            // clear current wave
+            myLevel = new Level();
+            myBackground = null;
         }
         else if (source == saveBtn) {
             if (openFile == null) {
@@ -181,19 +183,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
         else if (source == backgroundBtn) {
             int response = imageChooser.showOpenDialog(null);
-
             if (response == JFileChooser.APPROVE_OPTION) {
-
                 myLevel.setBackgroundImage(imageChooser.getSelectedFile());
-
                 String backgroundPath = imageChooser.getSelectedFile().getPath();
-
                 Image backgroundImage = (new ImageIcon(backgroundPath)).getImage();
-
                 Image scaledImage =
                         backgroundImage.getScaledInstance(myCanvas.getWidth(),
                                                           myCanvas.getHeight(),
-
                                                           java.awt.Image.SCALE_SMOOTH);
                 myBackground = scaledImage;
             }
@@ -212,10 +208,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      */
     private void makeSprite () {
 
-        spriteOptionsPane.display();
+        //spriteOptionsPane.display();
         int response = imageChooser.showOpenDialog(null);
         if (response == JFileChooser.APPROVE_OPTION) {
 
+            //spriteOptionsPane.display();
             String imagePath = imageChooser.getSelectedFile().getPath();
             Image spriteImage = (new ImageIcon(imagePath)).getImage();
 
@@ -224,12 +221,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
                               new Dimension(20, 17), spriteImage, new Point(0, 5), 15);
 
             myLevel.addSprite(newEnemy);
-
-            // public Enemy (Point position, Dimension size, Dimension
-            // bounds,
-            // Image image, Point velocity, int health) {
-
-            // imageChooser.getSelectedFile());
         }
     }
 
@@ -280,8 +271,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
     @Override
     public void paint (Graphics g) {
-        myLevel.paintSprites(g, 0, 0);
         g.drawImage(myBackground, 0, 0, null);
+        myLevel.paintSprites(g, 0, 0);
     }
 
     @Override
