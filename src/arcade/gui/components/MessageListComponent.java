@@ -84,7 +84,7 @@ import arcade.utility.ImageReader;
             g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
             g.drawImage(sendersPic, 35, 12, 81, 81, Color.black, this);
             g.setColor(Color.white);
-            g.setFont(new Font("sansserif", Font.BOLD, 40));
+            g.setFont(new Font("sansserif", Font.BOLD, 32));
             g.drawString(mySender, 125, 60);
             g.setFont(new Font("sansserif", Font.ITALIC, 18));
             String displayMessage = myMessage;
