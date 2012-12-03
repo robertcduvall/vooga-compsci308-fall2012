@@ -21,6 +21,8 @@ public class Example {
             p1.stopLoop();
             SoundPlayer p2 = new SoundPlayer("src/util/sound/sounds/benny_benassi.mp3");
             p2.playOnce();
+            Thread.sleep(30000);
+            // sounds threads are daemons, meaning JVM will stop when no other threads are active
         }
         catch (InterruptedException e) {
         }
