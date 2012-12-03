@@ -23,11 +23,11 @@ public class TwitterMainPanel extends AMainPanel{
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.BLUE);
+        myPanel.setBackground(Color.CYAN);
         MigLayout layout = new MigLayout("", "[][]", "[][][]push[]");
         myPanel.setLayout(layout);
         
-        JLabel welcomeLabel = new JLabel("Welcome to the twitter connect! Share the CS 308 Arcade with your Friends!");
+        JLabel welcomeLabel = new JLabel("Welcome to the Twitter interface! \nTweet from the comfort of the arcade.");
         JLabel tweetPrompt = new JLabel("Tweet here: ");
         
         textToTweet = new JTextArea("", 4, 25);
@@ -36,19 +36,20 @@ public class TwitterMainPanel extends AMainPanel{
         
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/twitterbird.jpg");
         JButton tweetBut = new JButton("Tweet");
-        JButton tweetDisconnectBut = new JButton("Disconnect from Twitter");
+        JButton tweetDisconnectBut = new JButton("Disconnect Twitter Account");
         
         tweetBut.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed (ActionEvent arg0) {
-              String finalTweet = textToTweet.getText() + " | via CS308 Arcade";
+              String finalTweet = textToTweet.getText() + " | via Duke CS308 Arcade";
               boolean tweetSuccessful = getArcade().getModelInterface().sendTweet(getArcade().getUsername(), finalTweet);
               if (finalTweet.length() > 140) {
-                  JOptionPane.showMessageDialog(null, "Tweet length exceeding 140 characters! \nKeep in mind the tail ' | via CS308 Arcade' when making your tweet.");
+                  JOptionPane.showMessageDialog(null, "Tweet length exceeding 140 characters! \nKeep in mind the appended suffix when making your tweet.");
                   return;
               }
               if (tweetSuccessful) {
-                  JOptionPane.showMessageDialog(null, "Tweet was succesful!");
+                  textToTweet.setText("");
+                  JOptionPane.showMessageDialog(null, "Tweet was successful!");
               }
               else {
                   JOptionPane.showMessageDialog(null, "Tweet failed Q_Q");
