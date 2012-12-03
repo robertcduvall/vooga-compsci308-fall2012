@@ -20,7 +20,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * @author Grant Oakley
  * 
  */
-public class LeveFileIOWithSerializationTest {
+public class LevelFileIOWithSerializationTest {
 
     private static final String XML_FILE_PATH =
             "src/vooga/platformer/test/testIOWithSerialziation.xml";
@@ -60,6 +60,11 @@ public class LeveFileIOWithSerializationTest {
         Assert.assertNotNull(lfr);
     }
 
+    private GameObject getFirstGameObject () {
+        ArrayList<GameObject> go = new ArrayList<GameObject>(lfr.getGameObjects());
+        return go.get(0);
+    }
+
     @Test
     public void testgetLevelID () throws Exception {
         Assert.assertEquals(LEVEL_ID, lfr.getLevelID());
@@ -73,6 +78,11 @@ public class LeveFileIOWithSerializationTest {
     @Test
     public void testGetHeight () throws Exception {
         Assert.assertEquals(LEVEL_WIDTH, lfr.getHeight());
+    }
+    
+    @Test
+    public void testGetCollisionChecker () throws Exception {
+        Assert.assertEquals(COLLISION_CHECKER_PATH, lfr.getCollisionCheckerPath());
     }
 
     @Test
@@ -90,11 +100,14 @@ public class LeveFileIOWithSerializationTest {
         Assert.assertEquals(myStaticObj.getX(), getFirstGameObject().getX());
     }
     
+    @Test
+    public void testGetConditions () {
+        Assert.assertNotNull(lfr.getConditions());
+    }
     
-
-    private GameObject getFirstGameObject () {
-        ArrayList<GameObject> go = new ArrayList<GameObject>(lfr.getGameObjects());
-        return go.get(0);
+    @Test
+    public void testGetLevelPlugins () {
+        Assert.assertNotNull(lfr.getLevelPlugins());
     }
 
 }

@@ -95,7 +95,6 @@ public final class LevelFileWriter {
         XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
         XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionChecker);
         XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
-
         XmlUtilities.appendElement(doc, level, XmlTags.GAMEOBJECT_DATA,
                                    serializedGameObjectFilePath);
         XmlUtilities.appendElement(doc, level, XmlTags.CONDITION, serializedConditionsFilePath);
