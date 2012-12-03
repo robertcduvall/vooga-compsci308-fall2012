@@ -50,8 +50,8 @@ public class Explosion extends ParticleSystem {
 
     // Each particle is drawn with a RGBA scaling factor that is chosen randomly
     // from this scale +/- these tolerances
-    private static float[] RGBAscales = { 3f, 1.2f, 1.2f, 0.4f };
-    private static float[] RGBAtolerances = { 0.2f, 0.2f, 0.2f, 0.1f };
+    private static float[] RGBAscales =         { 3.0f, 1.2f, 1.2f, 0.4f };
+    private static float[] RGBAtolerances =     { 0.2f, 0.4f, 0.4f, 0.1f };
 
     @Override
     protected void setUpParticleEngines () {
