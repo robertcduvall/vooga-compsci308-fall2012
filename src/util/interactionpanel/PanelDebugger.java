@@ -1,4 +1,4 @@
-package vooga.util.interactionpanel;
+package util.interactionpanel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
