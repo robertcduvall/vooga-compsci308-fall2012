@@ -218,6 +218,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      * with the newly entered attributes.
      */
     private void editCurrentSprite() {
+        System.out.println("editing");
         Enemy newEnemy = makeEnemy();
         myLevel.removeSprite(myCurrentSprite);
         myLevel.addSprite(newEnemy);
@@ -259,6 +260,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         // convert XML to Level object then display sprites
         myLevel = new Level();
         myLevel = myLevel.unpack(XmlUtilities.makeDocument(file));
+        myBackground = myLevel.getBackgroundImage();
     }
 
     private void saveFile (File file) {
@@ -328,10 +330,15 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         int xPos = p.x;
         int yPos = p.y;
         for(Sprite s: myLevel.getSpriteList()) {
-            if(xPos <= s.getRight() && xPos >= s.getLeft() && yPos <= s.getTop() && yPos >= s.getBottom()) {
+            System.out.println(s.getRight());
+            System.out.println(s.getLeft());
+            System.out.println(s.getTop());
+            System.out.println(s.getBottom());
+            if(xPos <= s.getRight() && xPos >= s.getLeft() && yPos >= s.getTop() && yPos <= s.getBottom()) {
                 return s;
             }
         }
+        System.out.println("returning null");
         return null;
     }
     /**
