@@ -221,10 +221,17 @@ public class UserManager {
 
     }
 
+    /**
+     * 
+     * @return modifable user class
+     */
     public User getCurrentUser () {
         return myCurrentUser;
     }
-
+    /**
+     * 
+     * @return modifable user class
+     */
     public String getCurrentUserName () {
         return myCurrentUser.getName();
     }
@@ -233,6 +240,12 @@ public class UserManager {
         myCurrentUser = getUser(userName);
 
     }
+    
+    /**
+     * 
+     * @param userName
+     * @return un modifable user profile
+     */
 
     public UserProfile getUserProfile (String userName) {
         User user = getUser(userName);
@@ -242,6 +255,11 @@ public class UserManager {
         String lastName = user.getLastName();
         return new UserProfile(name, picture, firstName, lastName);
     }
+    
+    /**
+     * 
+     * @return a list of unmodifable user profile
+     */
 
     public List<UserProfile> getAllUserProfile () {
         List<UserProfile> userProfileList = new ArrayList<UserProfile>();
@@ -262,6 +280,10 @@ public class UserManager {
 
     }
 
+    /**
+     * 
+     * @return current user's message
+     */
     public List<Message> getMessage () {
         return myCurrentUser.getMyMessage();
     }

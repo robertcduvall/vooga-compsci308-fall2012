@@ -4,11 +4,8 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import arcade.utility.FileOperation;
-import util.encrypt.Encrypter;
-import util.xml.XmlBuilder;
+import org.w3c.dom.NodeList;
 import util.xml.XmlUtilities;
-import util.xml.XmlWriter;
 
 
 /**
@@ -43,16 +40,17 @@ public class UserXMLWriter {
      * @throws IOException
      */
 
-    public void makeUserXML (String userName, String password, String picture, String firstName,
-                             String lastName) throws IOException {
+    public void makeUserXML (String userName, String password, String picture,
+            String firstName, String lastName) throws IOException {
 
         makeBasicXml(userName, password, picture, firstName, lastName);
         makeMessageXml(userName);
         makeGameXml(userName);
     }
 
-    private void makeBasicXml (String userName, String password, String picture, String firstName,
-                               String lastName) throws IOException {
+    private void makeBasicXml (String userName, String password,
+            String picture, String firstName, String lastName)
+            throws IOException {
         String basicInfoFilePath = myUserBasicFilePath + userName + ".xml";
 
         Document doc = XmlUtilities.makeDocument();
@@ -64,7 +62,8 @@ public class UserXMLWriter {
         XmlUtilities.appendElement(doc, rootElement, "firstname", firstName);
         XmlUtilities.appendElement(doc, rootElement, "lastname", lastName);
         XmlUtilities.appendElement(doc, rootElement, "password", password);
-        XmlUtilities.appendElement(doc, rootElement, "picture", myUserImageFilePath + picture);
+        XmlUtilities.appendElement(doc, rootElement, "picture",
+                myUserImageFilePath + picture);
         XmlUtilities.appendElement(doc, rootElement, "credits", "0");
         XmlUtilities.write(doc, basicInfoFilePath);
 
@@ -94,4 +93,48 @@ public class UserXMLWriter {
 
     }
 
+    protected void appendMessage (String sender, String receiver, String content) {
+        String filePath = myUserMessageFilePath + receiver + ".xml";
+
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "sender", sender);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.write(doc, filePath);
+
+    }
+
+    protected void updateUserInfo (String userName, String tagName,
+            String newContent) {
+        String filePath = myUserBasicFilePath + userName + ".xml";
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        XmlUtilities.replaceAllTagNames(root, tagName, newContent);
+        XmlUtilities.write(doc, filePath);
+
+    }
+
+    protected void updateGameInfo (String userName, String gameName,
+            String tagName, String content) {
+        String filePath = myUserGameFilePath + userName + ".xml";
+
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        NodeList gameList = root.getElementsByTagName("game");
+        
+
+        if (gameList != null) {
+            for (int i = 0; i < gameList.getLength(); i++) {
+                Element game = (Element) gameList.item(i);
+                String name = XmlUtilities.getChildContent(game, "name");
+                if (name.equals(gameName)) {
+                    XmlUtilities.replaceAllTagNames(game, tagName, content);
+                    XmlUtilities.write(doc, filePath);
+                }
+            }
+
+        }
+
+    }
 }
