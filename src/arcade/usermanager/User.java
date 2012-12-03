@@ -1,7 +1,5 @@
 package arcade.usermanager;
 
-import java.awt.Image;
-import java.util.ArrayList;
 import java.util.List;
 
 

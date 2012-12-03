@@ -15,18 +15,28 @@ public class Message {
     /**
      * Constructs a message.
      * 
-     * @param sender
-     * @param content
+     * @param sender The user who sent the message
+     * @param content The content of the message
      */
     public Message (String sender, String content) {
         mySender = sender;
         myContent = content;
     }
-    
-    public String getSender() {
+
+    /**
+     * Gets the sender of the message.
+     * 
+     * @return
+     */
+    public String getSender () {
         return mySender;
     }
 
+    /**
+     * Gets the content of the message.
+     * 
+     * @return
+     */
     public String getMessage () {
         return myContent;
     }

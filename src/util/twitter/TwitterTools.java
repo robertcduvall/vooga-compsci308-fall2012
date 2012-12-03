@@ -1,6 +1,8 @@
 package util.twitter;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -10,55 +12,80 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 
+/**
+ * Functions for interfacing with Twitter.
+ * 
+ * @author Howard
+ * 
+ */
 public class TwitterTools {
-    private Twitter twitter;
-    private String consumerKey;
-    private String consumerSecret;
-    
-    public TwitterTools(){
-    String consumerKey = "z5zRan2VqwBMLdq5VMRzXA";
-    String consumerSecret = "T7whmI8IBtcHUEBNsWoQhu39f68loybHOmSYl8DMDg";
-    twitter = TwitterFactory.getSingleton();
-    twitter.setOAuthConsumer(consumerKey, consumerSecret);
-    }
-    
-    public AccessToken requestAccessToken () throws Exception {
+    private static String myConsumerKey;
+    private static String myConsumerSecret;
+    private Twitter myTwitter;
+    private RequestToken myRequestToken;
 
-        RequestToken requestToken = twitter.getOAuthRequestToken();
+    /**
+     * Constructs an instance.
+     */
+    public TwitterTools () {
+        myConsumerKey = "z5zRan2VqwBMLdq5VMRzXA";
+        myConsumerSecret = "T7whmI8IBtcHUEBNsWoQhu39f68loybHOmSYl8DMDg";
+        myTwitter = TwitterFactory.getSingleton();
+        myTwitter.setOAuthConsumer(myConsumerKey, myConsumerSecret);
+        try {
+            myRequestToken = myTwitter.getOAuthRequestToken();
+        }
+        catch (TwitterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Requests an access token from Twitter.
+     * 
+     * @return
+     */
+    public AccessToken requestAccessToken () throws IOException, URISyntaxException {
+
         AccessToken accessToken = null;
-        while (null == accessToken) {
-            java.awt.Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
-            String pin = javax.swing.JOptionPane.showInputDialog("Enter PIN:");
-            try {
-                if (pin.length() > 0) {
-                    accessToken = twitter.getOAuthAccessToken(requestToken, pin);
-                }
-                else {
-                    accessToken = twitter.getOAuthAccessToken();
-                }
+        try {
+            while (null == accessToken) {
+                java.awt.Desktop.getDesktop().browse(new URI(myRequestToken.getAuthorizationURL()));
+                String pin = javax.swing.JOptionPane.showInputDialog("Enter PIN:");
+                accessToken = myTwitter.getOAuthAccessToken(myRequestToken, pin);
             }
-            catch (TwitterException te) {
-                if (401 == te.getStatusCode()) {
-                    System.out.println("Unable to get the access token.");
-                }
-                else {
-                    te.printStackTrace();
-                }
+        }
+        catch (TwitterException te) {
+            if (401 == te.getStatusCode()) {
+                System.out.println("Unable to get the access token.");
+            }
+            else {
+                te.printStackTrace();
             }
         }
         return accessToken;
     }
 
+    /**
+     * Posts a status to Twitter.
+     * 
+     * @param statusText Text of the messsage.
+     * @param at AccessToken to validate with
+     * @throws Exception
+     */
     public void updateStatus (String statusText, AccessToken at) throws Exception {
+
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true);
-        cb.setOAuthConsumerKey(consumerKey);
-        cb.setOAuthConsumerSecret(consumerSecret);
+        cb.setOAuthConsumerKey(myConsumerKey);
+        cb.setOAuthConsumerSecret(myConsumerSecret);
         cb.setOAuthAccessToken(at.getToken());
         cb.setOAuthAccessTokenSecret(at.getTokenSecret());
-        twitter.setOAuthAccessToken(at);
-        
-        Status status = twitter.updateStatus(statusText);
+
+        myTwitter.setOAuthAccessToken(at);
+
+        Status status = myTwitter.updateStatus(statusText);
         System.out.println("Successfully updated the status to [" + status.getText() + "].");
     }
 

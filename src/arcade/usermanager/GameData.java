@@ -19,17 +19,16 @@ import util.xml.XmlWriter;
  */
 
 public class GameData {
-    private String myGameName="name";
-    private String myGameInfo="gameinfo";
-    private String myHighScore="highscore";
-    private String myTimesPlayed="timesplayed";
+    private String myGameName = "name";
+    private String myGameInfo = "gameinfo";
+    private String myHighScore = "highscore";
+    private String myTimesPlayed = "timesplayed";
     private Map<String, String> myPropertyMap;
     private String myFilePath;
     private static ResourceBundle resource;
     private UserXMLWriter myXmlWriter;
 
-    public GameData (String name, String gameInfo, String highScore,
-            String timesPlayed) {
+    public GameData (String name, String gameInfo, String highScore, String timesPlayed) {
         myPropertyMap = new HashMap<String, String>();
         myPropertyMap.put(myGameName, name);
         myPropertyMap.put(myGameInfo, gameInfo);
@@ -37,19 +36,18 @@ public class GameData {
         myPropertyMap.put(myTimesPlayed, timesPlayed);
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
         myFilePath = resource.getString("GameFilePath") + name + ".xml";
-        myXmlWriter=new UserXMLWriter();
+        myXmlWriter = new UserXMLWriter();
 
     }
-    
-//    public boolean addGame(String gameName){
-//        
-//        if (!myPropertyMap.containsKey(propertyName)){}
-//        else
-//    }
+
+    // public boolean addGame(String gameName){
+    //
+    // if (!myPropertyMap.containsKey(propertyName)){}
+    // else
+    // }
 
     public String getGameInfo (String propertyName) {
-        if (myPropertyMap.containsKey(propertyName))
-            return myPropertyMap.get(propertyName);
+        if (myPropertyMap.containsKey(propertyName)) return myPropertyMap.get(propertyName);
 
         return "";
 
@@ -58,8 +56,7 @@ public class GameData {
     public boolean setGameInfo (String userName, String propertyName, String content) {
         if (myPropertyMap.containsKey(propertyName)) {
             myPropertyMap.put(propertyName, content);
-            myXmlWriter.updateGameInfo(userName, getGameInfo("name"),propertyName, content);
-            
+            myXmlWriter.updateGameInfo(userName, getGameInfo("name"), propertyName, content);
 
             return true;
         }
@@ -67,17 +64,18 @@ public class GameData {
         return false;
 
     }
+
     /**
-     * Added getters for use in Game model, hope that's okay. 
-     *
+     * Added getters for use in Game model, hope that's okay.
+     * 
      * @author Seon Kang
      * @return
      */
-    public String getGameInfoKeyString() {
-    	return myGameInfo;
+    public String getGameInfoKeyString () {
+        return myGameInfo;
     }
-    
-    public String getHighScoreKeyString() {
-    	return myHighScore;
+
+    public String getHighScoreKeyString () {
+        return myHighScore;
     }
 }

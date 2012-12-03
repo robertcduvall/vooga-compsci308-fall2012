@@ -15,8 +15,14 @@ import util.searchbar.JListSearcher;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+/**
+ * Search Panel to find Games by Tag.
+ * @author Kannan
+ *
+ */
 public class GameTagSearchPanel extends ASearchPanel implements ActionListener{
 
+    //TODO:REFACTORING
     private List<String> myGameList;
     private JList searchedByTagList = new JList();
     private JTextField tagEntryField = new JTextField(10);
@@ -34,7 +40,7 @@ public class GameTagSearchPanel extends ASearchPanel implements ActionListener{
     
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        MigLayout layout = new MigLayout("", "", "[][][]40[][]push[][]");
+        MigLayout layout = new MigLayout("flowy", "[50%, grow]", "[][][]40[][]push[][]");
         myPanel.setLayout(layout);
         myPanel.setBackground(Color.LIGHT_GRAY);
         
@@ -80,14 +86,14 @@ public class GameTagSearchPanel extends ASearchPanel implements ActionListener{
         goToUserSearchButton.setActionCommand(USER);
         goToUserSearchButton.addActionListener(this);
 
-        myPanel.add(searchPrompt, "wrap");
+        myPanel.add(searchPrompt, "align center");
         //myPanel.add(tagListScroller, "wrap");
-        myPanel.add(tagEntryField, "wrap");
-        myPanel.add(searchByTagBut, "wrap");
-        myPanel.add(recomendationPrompt);
+        myPanel.add(tagEntryField, "align center, grow");
+        myPanel.add(searchByTagBut, "align center, grow");
+        myPanel.add(recomendationPrompt, "align center");
 
-        myPanel.add(goToUserSearchButton, "dock south, grow, span");
-        myPanel.add(goToGameNameSearchButton, "dock south, grow, span");
+        myPanel.add(goToUserSearchButton, "dock south, grow");
+        myPanel.add(goToGameNameSearchButton, "dock south, grow");
 
         return myPanel;
     }

@@ -30,6 +30,7 @@ public class NormNavPanel extends ANavPanel {
         JButton allusersBut = new JButton("All Users");
         JButton myprofileBut = new JButton("My Profile");
         JButton messagecenterBut = new JButton("Message Center");
+        JButton twitterBut = new JButton("Twitter Connect");
 
         allgamesBut.addActionListener(new ActionListener() {
             @Override
@@ -60,13 +61,22 @@ public class NormNavPanel extends ANavPanel {
                 getArcade().replacePanel("MessageCenter");
             }
         });
+        
+        twitterBut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
 
-        myPanel.setLayout(new MigLayout("", "[c, grow][c, grow][c, grow][c, grow]", "[c]"));
+                getArcade().replacePanel("Twitter");
+            }
+        });
+
+        myPanel.setLayout(new MigLayout("", "[c, grow][c, grow][c, grow][c, grow][c, grow]", "[c]"));
 
         myPanel.add(allgamesBut, "align center");
         myPanel.add(allusersBut, "align center");
         myPanel.add(myprofileBut, "align center");
         myPanel.add(messagecenterBut, "align center");
+        myPanel.add(twitterBut, "align center");
 
         return myPanel;
     }
