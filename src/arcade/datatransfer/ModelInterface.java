@@ -41,6 +41,7 @@ public class ModelInterface {
         mySocialCenter = new SocialCenter();
         myGameCenter = new GameCenter();
         myUserManager = UserManager.getInstance();
+        myTwitterTools = new TwitterTools();
     }
 
     // #############################################################
@@ -254,7 +255,7 @@ public class ModelInterface {
      * Should return a list with elements in the format:
      * "username - highscore"
      * 
-     * @param gameName
+     * @param gameName The name of the game in question
      * @return
      */
     public List<String> getListOfHighScoresForGame (String gameName) {
@@ -277,22 +278,24 @@ public class ModelInterface {
      * @param name
      * @param tweetText
      */
-    public void sendTweet (String name, String tweetText) {
+    public boolean sendTweet (String name, String tweetText) {
         try {
             Map<String, AccessToken> myTokens = myUserManager.getTwitterTokens();
             AccessToken at;
             if (!myTokens.keySet().contains(name)) {
                 at = myTwitterTools.requestAccessToken();
-                myUserManager.addTwitterToken(name, at);
+                myUserManager.addTwitterToken(name, at); 
             }
             else {
                 at = myTokens.get(name);
             }
             myTwitterTools.updateStatus(tweetText, at);
+            return true;
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -300,7 +303,7 @@ public class ModelInterface {
      * 
      * @param name
      */
-    public void disconnectTwitter (String name) {
-        myUserManager.deleteAccessToken(name);
+    public boolean disconnectTwitter (String name) {
+        return myUserManager.deleteAccessToken(name);
     }
 }
