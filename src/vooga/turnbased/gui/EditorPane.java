@@ -42,7 +42,10 @@ public class EditorPane extends DisplayPane {
         "src/vooga/turnbased/resources/image/grass.png"};
     private static final String[] OBJECTS = {"Class: ", "Condition: ",
         "Images: ", "Stats: ", "Name: "};
-    private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", ""};
+    private static final String[] OBJECTS_DEFAULTS = {
+        "vooga.turnbased.gameobject.[battleobject/mapobject].[specific instance]",
+        "", "vooga.turnbased.resources.image.[specific image path]",
+        "maxHealth:30 health:30, attack:10, defense:10", ""};
     private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
     private static final int BOX_SIZE = 25;
     static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
@@ -157,7 +160,6 @@ public class EditorPane extends DisplayPane {
                 int returnVal = fc.showSaveDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     myPlayerEditor = new PlayerEditor(fc.getSelectedFile().toString());
-                    //TODO
                     Point player = GRID[myCurrentTile.x][myCurrentTile.y];
                     myPlayerPoint = new Point(player.x, player.y);
                     displayPlayer = true;
@@ -463,5 +465,6 @@ public class EditorPane extends DisplayPane {
         myDimension = new Dimension (-1, -1);
         myCurrentTile = new Point(-1, -1);
         myPaintedSprites.clear();
+        displayPlayer = false;
     }
 }
