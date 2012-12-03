@@ -52,7 +52,7 @@ public class ChatService implements Service {
             try {
                 String input = in.readLine();
                 if (input != null && !"".equals(input.trim())) {
-                    System.out.println("server received: " + input);
+                    System.out.println("server received from "+ socket.getInetAddress() + ": " + input);
                     ChatCommand type = myProtocol.getType(input);
                     Method m;
                     m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class, Socket.class);
@@ -204,7 +204,7 @@ public class ChatService implements Service {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             out.println(text);
             out.flush();
-            System.out.println("Server sending: " + text);
+            System.out.println("Server sending to " + socket.getInetAddress() + ": " + text);
         }
         catch (IOException e) {
         }
