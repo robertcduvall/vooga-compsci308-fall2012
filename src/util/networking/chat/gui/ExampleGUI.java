@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 import util.networking.chat.ChatClient;
+import util.networking.chat.ChatListener;
 import util.networking.chat.ErrorEvent;
 import util.networking.chat.ChatAdapter;
 import util.networking.chat.MessageReceivedEvent;
@@ -42,25 +43,30 @@ public class ExampleGUI extends JPanel implements KeyListener {
     public ExampleGUI(ChatClient c, List<String> buddyList){
         myChatClient = c;
         usersOnline = buddyList;
-        myChatClient.addListener(new ChatAdapter() {
+        myChatClient.addListener(new ChatListener() {
+
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 
             }
 
+            @Override
             public void handleErrorEvent (ErrorEvent e) {
+                System.out.println(e.getErrorMessage());
+                
             }
-            
-            public void handleUsersUpdateEvent(UsersUpdateEvent e){
+
+            @Override
+            public void handleUsersUpdateEvent (UsersUpdateEvent e) {
                 updateBuddyList(e.getUsers());
-            }
-            
-        });
+                
+            }});
         
         
         recipientsToTextArea = new TreeMap<String, JTextArea>();
         setUpChatGUI();
     }
-        
+    
+         
     private void setUpChatGUI () {
         setLayout(new BorderLayout());
         tabbedPane = new JTabbedPane();

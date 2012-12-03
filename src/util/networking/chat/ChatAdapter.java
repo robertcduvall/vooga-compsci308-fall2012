@@ -15,7 +15,6 @@ public abstract class ChatAdapter implements ChatListener {
     }
     
     public void handleUsersChangeEvent(UsersUpdateEvent e){
-        
     }
    
 

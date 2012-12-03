@@ -3,6 +3,7 @@ package util.networking.chat;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import util.networking.Client;
 
@@ -25,6 +26,8 @@ public class ChatClient extends Client {
     public ChatClient(String host, ChatProtocol c) throws IOException{
         super(host, c.getPort());
         myProtocol = c;
+        myChatListeners = new ArrayList<ChatListener>();
+        myListUsers = new ArrayList<String>();
         myLoggedIn = false;
     }
 
