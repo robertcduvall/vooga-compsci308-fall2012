@@ -13,7 +13,7 @@ import util.sound.SoundPlayer;
  * Buttons will responds to user input and the screen will show game, editor or
  * some new menus
  * 
- * @author rex, Vo
+ * @author rex, volodymyr
  *
  */
 public class MenuPane extends DisplayPane {
