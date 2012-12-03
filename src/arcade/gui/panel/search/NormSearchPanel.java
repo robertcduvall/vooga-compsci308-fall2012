@@ -28,6 +28,7 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
 //    private static final int PANEL_WIDTH = 250; //300
 //    private static final int PANEL_HEIGHT = 800; // 450
     
+    //TODO:REFACTORING
     private List<String> myGameList;
     private JList searchedThroughList = new JList();
     private String gameSelected;

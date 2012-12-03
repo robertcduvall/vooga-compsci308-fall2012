@@ -15,8 +15,14 @@ import util.searchbar.JListSearcher;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+/**
+ * Search Panel to find Games by Tag.
+ * @author Kannan
+ *
+ */
 public class GameTagSearchPanel extends ASearchPanel implements ActionListener{
 
+    //TODO:REFACTORING
     private List<String> myGameList;
     private JList searchedByTagList = new JList();
     private JTextField tagEntryField = new JTextField(10);

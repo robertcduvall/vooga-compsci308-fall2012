@@ -15,6 +15,7 @@ import arcade.gui.panel.ArcadePanel;
 
 public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionListener{
 
+    //TODO:REFACTORING
     private String[] retrievedListOfTaggedGames;
     private String gameSelected;
     private String GO = "Go";
