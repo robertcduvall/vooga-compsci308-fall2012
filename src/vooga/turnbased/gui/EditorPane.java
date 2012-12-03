@@ -152,13 +152,16 @@ public class EditorPane extends DisplayPane {
                 }
                 repaint();
             }
-
         });
         return b;
     }
 
     private void editPlayer (PlayerEditor p) {
-        // TODO: Edit player here
+        Map<String, String> imagePaths = new HashMap<String,String>();
+        // TODO: Get player imagePaths here (as in PlayerFinal.xml)
+        p.addMapObject("", "map", "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
+                "NO_ACTION", myCurrentTile.x, myCurrentTile.y, imagePaths);
+        // TODO: add battle objects here
     }
 
     private JButton setUpSpriteButton (final LevelEditor l, final String[] objects,
