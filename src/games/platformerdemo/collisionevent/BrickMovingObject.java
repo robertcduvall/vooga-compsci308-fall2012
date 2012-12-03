@@ -2,6 +2,7 @@ package games.platformerdemo.collisionevent;
 
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.collision.CollisionEvent;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.level.Level;
@@ -23,7 +24,7 @@ public class BrickMovingObject extends CollisionEvent {
         this(b, a);
     }
     @Override
-    public void applyCollision (Level level) {
+    public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {
         Rectangle2D intersection = myBrick.getShape().createIntersection(
                 myMovingObject.getShape());
         double dy = intersection.getHeight();

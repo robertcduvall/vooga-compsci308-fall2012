@@ -11,6 +11,7 @@ import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.Level;
+import vooga.platformer.util.camera.UpdatableCamera;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -18,7 +19,7 @@ public class TestLevel extends Level {
     private int numEnemies;
     private Player myPlayer;
 
-    public TestLevel(Dimension dim, CollisionChecker cc, Camera c) {
+    public TestLevel(Dimension dim, CollisionChecker cc, UpdatableCamera c) {
         super(dim, c, "src/games/platformerdemo/demoCollisionEvents.xml");
         numEnemies = 0;
         myPlayer = null;
