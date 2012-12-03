@@ -12,6 +12,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 
 
 /**
@@ -118,22 +120,75 @@ public class LevelFileReader {
 
     /**
      * Gets a collection of all the serialized GameObjects stored in the binary
-     * file specified in the GameObject data tag of the xml document. This
-     * method will throw an exception if called on data files written using the
-     * out dated <code>writeLevel(...)</code> method in LevelFileWriter.
+     * file specified in the <code>gameObjectData</code> tag of the xml
+     * document.
      * 
      * @return a collection of the saved GameObjects
      */
     public Collection<GameObject> getGameObjects () {
         String gameObjectDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.GAMEOBJECT_DATA);
+        Collection<GameObject> castGameObjects = new ArrayList<GameObject>();
+
+        for (Object g : readSerializedObjects(gameObjectDataFile)) {
+            castGameObjects.add((GameObject) g);
+        }
+
+        return castGameObjects;
+    }
+
+    /**
+     * Gets a collection of all the serialized Conditions stored in the binary
+     * file specified in the <code>coditionData</code> data tag of the xml
+     * document.
+     * 
+     * @return a collection of the saved Conditions
+     */
+    public Collection<Condition> getConditions () {
+        String conditionDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.CONDITION);
+        Collection<Condition> castConditions = new ArrayList<Condition>();
+
+        for (Object c : readSerializedObjects(conditionDataFile)) {
+            castConditions.add((Condition) c);
+        }
+
+        return castConditions;
+    }
+
+    /**
+     * Gets a collection of all the serialized LevelPlugins stored in the binary
+     * file specified in the <code>pluginData</code> data tag of the xml
+     * document.
+     * 
+     * @return a collection of the saved LevelPlugins
+     */
+    public Collection<LevelPlugin> getLevelPlugins () {
+        String pluginDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.PLUGIN);
+        Collection<LevelPlugin> castPlugins = new ArrayList<LevelPlugin>();
+
+        for (Object lp : readSerializedObjects(pluginDataFile)) {
+            castPlugins.add((LevelPlugin) lp);
+        }
+
+        return castPlugins;
+    }
+
+    /**
+     * A general method for reading Objects from an Object input stream.
+     * 
+     * @param gameObjectDataFile file location of the binary file to be read
+     * @return a Collection of Objects that were stored in this binary file
+     */
+    private Collection<Object> readSerializedObjects (String gameObjectDataFile) {
+
         FileInputStream fis;
-        Collection<GameObject> inputGameObjects;
+        Collection<Object> inputObjects;
+
         try {
             fis = new FileInputStream(gameObjectDataFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            inputGameObjects = new ArrayList<GameObject>();
+            inputObjects = new ArrayList<Object>();
             while (fis.available() > 0) {
-                inputGameObjects.add((GameObject) ois.readObject());
+                inputObjects.add((Object) ois.readObject());
             }
             ois.close();
         }
@@ -148,6 +203,6 @@ public class LevelFileReader {
                                            "A class matching the serialized class in the data file could not found.",
                                            e);
         }
-        return inputGameObjects;
+        return inputObjects;
     }
 }
