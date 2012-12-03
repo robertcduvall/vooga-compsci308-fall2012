@@ -194,21 +194,26 @@ public class LevelXmlParser {
     private GameObject parseGameObject (Element objectElement) {
         // this is nasty... given more time, reflection could have solved this
         String objectClass = XmlUtilities.getChildContent(objectElement, CLASS);
-        switch (objectClass) {
-            case "vooga.turnbased.gameobject.mapobject.MapPlayerObject":
-                return (GameObject) parseMapPlayer(objectElement);
-            case "vooga.turnbased.gameobject.battleobject.TestMonster":
-                return (GameObject) parseBattleObject(objectElement);
-            case "vooga.turnbased.gameobject.mapobject.MapEnemyObject":
-                return (GameObject) parseMapObject(objectElement);
-            case "vooga.turnbased.gameobject.mapobject.MapObstacleObject":
-                return (GameObject) parseMapObject(objectElement);
-            case "vooga.turnbased.gameobject.optionobject.OptionObject":
-                break;
-            case "vooga.turnbased.gameobject.mapobject.MovingMapObject":
-                return (GameObject) parseMapObject(objectElement);
+        GameObject go = null;
+        if (objectClass.equals("vooga.turnbased.gameobject.mapobject.MapPlayerObject")) {
+            go = (GameObject) parseMapPlayer(objectElement);
         }
-        return null;
+        else if (objectClass.equals("vooga.turnbased.gameobject.battleobject.TestMonster")) {
+            go = (GameObject) parseBattleObject(objectElement);
+        }
+        else if (objectClass.equals("vooga.turnbased.gameobject.mapobject.MapEnemyObject")) {
+            go = (GameObject) parseMapObject(objectElement);
+        }
+        else if (objectClass.equals("vooga.turnbased.gameobject.mapobject.MapObstacleObject")) {
+            go = (GameObject) parseMapObject(objectElement);
+        }
+        else if (objectClass.equals("vooga.turnbased.gameobject.mapobject.MovingMapObject")) {
+            go = (GameObject) parseMapObject(objectElement);
+        }
+        else if (objectClass.equals("vooga.turnbased.gameobject.optionobject.OptionObject")) {
+            go = null;
+        }
+        return go;
     }
 
     private MapPlayerObject parseMapPlayer (Element mapPlayer) {
