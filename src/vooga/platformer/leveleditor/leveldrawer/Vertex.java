@@ -102,10 +102,7 @@ public class Vertex implements IEditorObject {
      */
     @Override
     public void setCenter(int x, int y) {
-        myLocation.setLocation(x, y);
-        // This isn't quite right. Should
-        // account for the diameter of this
-        // object, I think.
+        myLocation.setLocation(x - DIAMETER / 2, y - DIAMETER / 2);
     }
 
     /**
