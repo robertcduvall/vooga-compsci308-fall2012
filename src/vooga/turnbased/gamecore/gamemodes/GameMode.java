@@ -69,16 +69,12 @@ public abstract class GameMode {
         return myModeName;
     }
 
-    // should remove, yes?
-    public void setModeName (String s) {
-        myModeName = s; // hackhackhack mode name should be final
-    }
-
     /**
      * Returns the GameManager currently associated with the mode.
      * 
      * @return myGameManager
      */
+
     public GameManager getGameManager () {
         return myGameManager;
     }
