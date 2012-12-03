@@ -46,6 +46,7 @@ public abstract class Client {
             System.out.println("SENDING" + text);
             PrintWriter out = new PrintWriter(myServer.getOutputStream());
             out.println(text);
+            out.flush();
         }
         catch (IOException e) {
         }
