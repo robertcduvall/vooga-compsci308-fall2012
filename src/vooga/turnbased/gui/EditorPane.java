@@ -22,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.Timer;
 import javax.swing.text.JTextComponent;
 import org.w3c.dom.Element;
 import vooga.turnbased.gamecreation.LevelEditor;
@@ -35,15 +34,11 @@ import vooga.turnbased.gamecreation.PlayerEditor;
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
-    private static final int ONE_SECOND = 1000;
-    private static final int FRAMES_PER_SECOND = 20;
     private static final String USER_DIR = "user.dir";
     private static final String[] GAME_SETUP = {"Dimension Width: ", "Dimension Height: ",
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
     private static final String[] GAME_SETUP_DEFAULTS = {"20", "20", "15", "11",
         "src/vooga/turnbased/resources/image/grass.png"};
-    private static final String[] MODES = {"Name: ", "Class: ", "Condition: "};
-    private static final String[] MODES_DEFAULTS = {"", "", ""};
     private static final String[] OBJECTS = {"Create On: ", "Modes: ", "Class: ", "Condition: ",
         "X-Coordinate: ", "Y-Coordinate: ", "Images: ", "Stats: ", "Name: "};
     private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", "", "", "", "", ""};
@@ -127,8 +122,6 @@ public class EditorPane extends DisplayPane {
         
         JPanel p = new JPanel(new GridLayout(20,20));
         addMenuButton();
-        JButton modeButton = setUpModeButton(l, MODES, MODES_DEFAULTS);
-        add(modeButton);
         JButton spriteButton = setUpSpriteButton(l, OBJECTS, OBJECTS_DEFAULTS);
         add(spriteButton);
         // TODO: Add create player button somewhere in this mess
@@ -210,52 +203,6 @@ public class EditorPane extends DisplayPane {
         l.addObject(sprite, returnedValues[0], returnedValues[1], returnedValues[2],
                 returnedValues[3], returnedValues[4], returnedValues[5], returnedValues[6],
                 returnedValues[7], returnedValues[8]);
-    }
-
-    private JButton setUpModeButton (final LevelEditor l, final String[] modes,
-            final String[] modesDefaultValues) {
-        JButton modeButton = new JButton("Set up Modes");
-        modeButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                displayAndGetModeInformation(modes, modesDefaultValues, l);
-            }
-        });
-        return modeButton;
-    }
-
-    private void displayAndGetModeInformation (String[] labels,
-            String[] defaultValues, final LevelEditor l) {
-        final int NUM_PAIRS = labels.length;
-        final JPanel P = setUpJPanel(labels, defaultValues, NUM_PAIRS);
-        InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
-        final JFrame FRAME = new JFrame("Modes Information");
-        JButton addButton = makeAddButtonAndAddModeXml(l, NUM_PAIRS, P, FRAME);
-        setUpFrameAndPanel(P, FRAME, addButton);
-    }
-
-    private JButton makeAddButtonAndAddModeXml (final LevelEditor l,
-            final int NUM_PAIRS, final JPanel P, final JFrame FRAME) {
-        JButton addButton = new JButton("Add Mode");
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed (ActionEvent e) {
-                String[] returnedValues = new String[NUM_PAIRS];
-                Component[] allComponents = P.getComponents();
-                int index = 0;
-                for (Component current : allComponents) {
-                    if (current.getClass().getName().contains("JTextField")) {
-                        returnedValues[index] = ((JTextComponent) current).getText();
-                        index++;
-                    }
-                }
-                addModesXmlInformation(returnedValues, l);
-            }
-        });
-        return addButton;
-    }
-
-    private void addModesXmlInformation (
-            String[] returnedValues, LevelEditor l) {
-        l.addMode(returnedValues[0], returnedValues[1], returnedValues[2]);
     }
 
     private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,

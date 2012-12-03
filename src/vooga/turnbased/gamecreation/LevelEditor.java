@@ -67,8 +67,20 @@ public class LevelEditor extends Editor {
 
     public void initialize () {
         XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map1");
+        Element battleMode = addMode("battle", "vooga.turnbased.gamecore.gamemodes.BattleMode",
+                "dobattle");
+        XmlUtilities.appendElement(myModeElement, battleMode);
+        Element gameOver = addMode("gameOver", "vooga.turnbased.gamecore.gamemodes.GameOverMode",
+                "endgame");
+        XmlUtilities.appendElement(myModeElement, gameOver);
+        Element option = addMode("optionMode", "vooga.turnbased.gamecore.gamemodes.OptionMode",
+                "optionstuff");
+        XmlUtilities.appendElement(myModeElement, option);
+        Element map1 = addMode("map1", "vooga.turnbased.gamecore.gamemodes.MapMode",
+                "entermap1");
+        XmlUtilities.appendElement(myModeElement, map1);
     }
-    
+
     /**
      * 
      * @param width Describes width of the Map dimension
@@ -129,18 +141,20 @@ public class LevelEditor extends Editor {
      * @param classMode Class used for the mode
      * @param conditions Either single string value or multiple comma separated strings
      */
-    public void addMode (String name, String classMode, String conditions) {
+    public Element addMode (String name, String classMode, String conditions) {
+        Element mode = null;
         if (conditions.contains(",")) {
             conditions.replaceAll("\\s", "");
             String[] newConditions = conditions.split("\\s*,\\s*");
-            addMode(name, classMode, newConditions);
+            mode = addMode(name, classMode, newConditions);
         }
         else {
-            Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
+            mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
             XmlUtilities.appendElement(myXmlDocument, mode, NAME, name);
             XmlUtilities.appendElement(myXmlDocument, mode, CLASS, classMode);
             XmlUtilities.appendElement(myXmlDocument, mode, CONDITION, conditions);
         }
+        return mode;
     }
 
     /**
@@ -149,13 +163,14 @@ public class LevelEditor extends Editor {
      * @param classMode Class used for the mode
      * @param conditions multiple condition tags to be added
      */
-    public void addMode (String name, String classMode, String[] conditions) {
+    public Element addMode (String name, String classMode, String[] conditions) {
         Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
         XmlUtilities.appendElement(myXmlDocument, mode, NAME, name);
         XmlUtilities.appendElement(myXmlDocument, mode, CLASS, classMode);
         for (String condition : conditions) {
             XmlUtilities.appendElement(myXmlDocument, mode, CONDITION, condition);
         }
+        return mode;
     }
 
     /**
