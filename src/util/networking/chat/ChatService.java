@@ -51,11 +51,13 @@ public class ChatService implements Service {
         while (true && in != null) {
             try {
                 String input = in.readLine();
-                System.out.println("server received: " + input);
-                ChatCommand type = myProtocol.getType(input);
-                Method m;
-                m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
-                m.invoke(this, input, socket);
+                if(!(input.equals("") | input.equals(" "))){
+                    System.out.println("server received: " + input);
+                    ChatCommand type = myProtocol.getType(input);
+                    Method m;
+                    m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
+                    m.invoke(this, input, socket);
+                }
             }
             catch (IOException e) {
                 if ("Connection reset".equals(e.getMessage())) {
