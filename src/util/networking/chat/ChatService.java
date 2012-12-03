@@ -58,7 +58,9 @@ public class ChatService implements Service {
                 m.invoke(input, socket);
             }
             catch (IOException e) {
-                System.out.println("1: "+e.getMessage());
+                if ("Connection reset".equals(e.getMessage())) {
+                        break;
+                }
             }
             catch (SecurityException e) {
                 System.out.println("2: "+e.getMessage());
