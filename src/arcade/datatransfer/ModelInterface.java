@@ -188,7 +188,47 @@ public class ModelInterface {
         return   mySocialCenter.deleteUser(userName, password);
 
     }
-
+    /**
+     * Should return the highscore of the game that was just played and ended.
+     * @param userName The name of the user in question
+     * @param gameName The nameof the game in question
+     * @return
+     */
+    public int getMostRecentHighScore(String userName, String gameName) {
+        return 0;
+        //TODO: IMPLEMENT THIS
+    }
+    /**
+     * Should return the highest score a user has gotten for a specific game.
+     * @param userName The name of the user in question
+     * @param gameName The name of the game in question
+     * @return
+     */
+    public int getHighestScoreforGame(String userName, String gameName) {
+        return 0;
+        //TODO: implement dis
+    }
+    /**
+     * Should return a list with elements in the format:
+     * "NameofGame - highscore"
+     * @param userName The name of the user in question
+     * @return
+     */
+    public List<String> getListOfHighScoresForUser(String userName) {
+        return null;
+        //TODO: imple
+    }
+    /**
+     * Should return a list with elements in the format:
+     * "username - highscore"
+     * @param gameName
+     * @return
+     */
+    public List<String> getListOfHighScoresForGame(String gameName) {
+        return null;
+        //TODO: todo
+    }
+    
     public void changeAdminStatus (String name, boolean adminStatus) {
         myUserManager.changeAdminStatus(name, adminStatus);
     }
@@ -199,5 +239,13 @@ public class ModelInterface {
     
     public List<Message> getMessage(){
         return myUserManager.getMessage();
+    }
+    
+    public void sendTweet(String name, String tweetText){
+        //TODO: implement
+    }
+    
+    public void disassociateTwitter(String name){
+        //TODO: implement
     }
 }

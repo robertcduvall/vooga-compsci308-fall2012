@@ -23,6 +23,7 @@ public class User {
     private String myFirstName;
     private String myLastName;
     private boolean myAdminStatus;
+    private UserXMLWriter myXmlWriter;
 
     /**
      * Constructs a new User
@@ -41,6 +42,7 @@ public class User {
         myFirstName = firstName;
         myLastName = lastName;
         setMyAdminStatus(false);
+        myXmlWriter=new UserXMLWriter();
 
     }
 
@@ -48,7 +50,7 @@ public class User {
         return myPassword;
     }
 
-    protected String getName () {
+    public String getName () {
         return myName;
     }
 
@@ -66,15 +68,13 @@ public class User {
 
     public void setPicture (String picture) {
         myPicture = picture;
+        myXmlWriter.updateUserInfo(myName,"picture",picture);
     }
 
-    protected void setName (String newName) {
-        myName = newName;
-    }
-
+    
     public GameData getGameData (String gameName) {
         for (GameData gd : myGameData) {
-            if (gd.getGameInfo("myGameName").equals(gameName)) return gd;
+            if (gd.getGameInfo("name").equals(gameName)) return gd;
 
         }
         return null;

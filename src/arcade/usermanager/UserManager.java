@@ -8,12 +8,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import twitter4j.auth.AccessToken;
 import util.encrypt.Encrypter;
 import arcade.usermanager.exception.PasswordNotMatchException;
 import arcade.usermanager.exception.UserNotExistException;
@@ -40,6 +42,7 @@ public class UserManager {
     private final String successString = "Successful";
     private User myCurrentUser;
     private Set<String> myAdminHashes;
+    private Map<String, String[]> myTwitterTokens;
 
     public static UserManager getInstance () {
         if (myUserManager == null) {
@@ -65,6 +68,9 @@ public class UserManager {
         myAdminHashes = new HashSet<String>();
         readAdminFile();
 
+        myTwitterTokens = new HashMap<String, String[]>();
+        readTwitterFile();
+        
         File folder = new File(myUserBasicFilePath);
         File[] listOfFiles = folder.listFiles();
 
@@ -74,12 +80,57 @@ public class UserManager {
                 User newUser = myXMLReader.getUser(name);
                 newUser.setMyAdminStatus(checkAdminStatus(name));
                 myAllUser.put(name, newUser);
-
             }
 
         }
     }
 
+    /**
+     * Reads the twitter.txt file.
+     */
+    private void readTwitterFile () {
+        try {
+            BufferedReader br =
+                    new BufferedReader(new FileReader(myDatabaseFilePath + "twitter.txt"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] linearray = line.split(",");
+                String[] tokenarray = { linearray[1], linearray[2], linearray[3] };
+                myTwitterTokens.put(linearray[0], tokenarray);
+            }
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Writes the twitter token file
+     * 
+     * @param name
+     */
+    private void writeTwitterFile () {
+        try {
+            BufferedWriter bw =
+                    new BufferedWriter(new FileWriter(myDatabaseFilePath + "twitter.txt"));
+            for (String name : myTwitterTokens.keySet()) {
+                bw.write(name + "," + myTwitterTokens.get(name)[0] + "," +
+                         myTwitterTokens.get(name)[1]+","+myTwitterTokens.get(name)[2]);
+                bw.newLine();
+                bw.flush();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Reads the admins.txt file.
+     */
     private void readAdminFile () {
         try {
             BufferedReader br =
@@ -147,7 +198,9 @@ public class UserManager {
     }
 
     protected User getUser (String userName) {
-        if (myAllUser.containsKey(userName)) return myAllUser.get(userName);
+        if (myAllUser.containsKey(userName)){
+            return myAllUser.get(userName);
+        }
         return null;
 
     }
@@ -176,10 +229,18 @@ public class UserManager {
 
     }
 
+    /**
+     * 
+     * @return modifable user class
+     */
     public User getCurrentUser () {
         return myCurrentUser;
     }
-    public String getCurrentUserName(){
+    /**
+     * 
+     * @return modifable user class
+     */
+    public String getCurrentUserName () {
         return myCurrentUser.getName();
     }
 
@@ -187,6 +248,12 @@ public class UserManager {
         myCurrentUser = getUser(userName);
 
     }
+    
+    /**
+     * 
+     * @param userName
+     * @return un modifable user profile
+     */
 
     public UserProfile getUserProfile (String userName) {
         User user = getUser(userName);
@@ -196,6 +263,11 @@ public class UserManager {
         String lastName = user.getLastName();
         return new UserProfile(name, picture, firstName, lastName);
     }
+    
+    /**
+     * 
+     * @return a list of unmodifable user profile
+     */
 
     public List<UserProfile> getAllUserProfile () {
         List<UserProfile> userProfileList = new ArrayList<UserProfile>();
@@ -210,14 +282,37 @@ public class UserManager {
     protected void updateMessage (String sender, String receiver, String content) {
         getUser(receiver).updateMyMessage(sender, content);
     }
-    
-    public GameData getGame(String userName, String gameName){
-     return   getUser(userName).getGameData(gameName);
-        
+
+    public GameData getGame (String userName, String gameName) {
+        return getUser(userName).getGameData(gameName);
+
     }
-    
-    public List<Message> getMessage(){
+
+    /**
+     * 
+     * @return current user's message
+     */
+    public List<Message> getMessage () {
         return myCurrentUser.getMyMessage();
+    }
+
+    public Map<String, String[]> getTwitterTokens () {
+        return myTwitterTokens;
+    }
+
+    /**
+     * Adds a twitter token to the map of tokens and writes to file.
+     * 
+     * @param name Arcade username of the user
+     * @param at AccessToken to save
+     */
+    public void addTwitterToken (String name, AccessToken at) {
+        String token = at.getToken();
+        String tokenSecret = at.getTokenSecret();
+        String[] tokenarray = {token, tokenSecret,Long.toString(at.getUserId()) };
+        myTwitterTokens.put(name, tokenarray);
+        writeTwitterFile();
+
     }
 
 }
