@@ -99,17 +99,6 @@ public class LevelFileReader {
     }
 
     /**
-     * Gets the image that is to be the background scenery of the level. This
-     * will be rendered behind the Sprites.
-     * 
-     * @return Image representing the background of the level
-     */
-    public Image getBackgroundImage () {
-        return XmlUtilities.fileNameToImage(myLevelFile, XmlUtilities
-                .getChildContent(myRoot, XmlTags.BACKGROUND_IMAGE));
-    }
-
-    /**
      * Gets the class name of the Camera to use for this particular level.
      * 
      * @return class name of this level's Camera subclass

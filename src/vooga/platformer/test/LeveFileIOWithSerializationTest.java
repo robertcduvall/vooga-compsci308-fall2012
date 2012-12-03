@@ -8,7 +8,9 @@ import org.junit.Test;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
+import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
 
@@ -25,7 +27,7 @@ public class LeveFileIOWithSerializationTest {
     private static final String LEVEL_ID = "Level Name";
     private static final int LEVEL_WIDTH = 20;
     private static final int LEVEL_HEIGHT = 20;
-    private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.jpg";
+    private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.png";
     private static final String COLLISION_CHECKER_PATH = "someCollisionCheckerPath";
     private static final String CAMERA_TYPE = "vooga.platformer.someCamera";
 
@@ -43,10 +45,14 @@ public class LeveFileIOWithSerializationTest {
 
     @Before
     public void setUp () throws Exception {
+        
         myStaticObj =
                 new StaticObject(X_POS, Y_POS, SPRITE_WIDTH, SPRITE_HEIGHT, SPRITE_ID,
                                  new File(TEST_IMAGE));
         gameObjects.add(myStaticObj);
+        conditions.add(new DefeatAllEnemiesCondition());
+        plugins.add(new SimpleBackgroundPainter(new File(TEST_IMAGE)));
+        
         LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
                                    gameObjects, conditions, plugins, CAMERA_TYPE,
                                    COLLISION_CHECKER_PATH);
@@ -70,11 +76,6 @@ public class LeveFileIOWithSerializationTest {
     }
 
     @Test
-    public void testGetBackgroundImage () throws Exception {
-        Assert.assertNotNull(lfr.getBackgroundImage());
-    }
-
-    @Test
     public void testGetCamera () throws Exception {
         Assert.assertEquals(CAMERA_TYPE, lfr.getCameraType());
     }
@@ -88,11 +89,12 @@ public class LeveFileIOWithSerializationTest {
     public void testGameObjectX () throws Exception {
         Assert.assertEquals(myStaticObj.getX(), getFirstGameObject().getX());
     }
+    
+    
 
     private GameObject getFirstGameObject () {
         ArrayList<GameObject> go = new ArrayList<GameObject>(lfr.getGameObjects());
         return go.get(0);
     }
 
-    // TODO test update more parameters (update Strategy)
 }

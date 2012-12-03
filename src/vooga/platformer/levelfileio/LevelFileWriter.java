@@ -93,7 +93,6 @@ public final class LevelFileWriter {
         XmlUtilities.appendElement(doc, level, XmlTags.LEVEL_NAME, levelName);
         XmlUtilities.appendElement(doc, level, XmlTags.WIDTH, String.valueOf(width));
         XmlUtilities.appendElement(doc, level, XmlTags.HEIGHT, String.valueOf(height));
-        XmlUtilities.appendElement(doc, level, XmlTags.BACKGROUND_IMAGE, backgroundImage);
         XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionChecker);
         XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
 
