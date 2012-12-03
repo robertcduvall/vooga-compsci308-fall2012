@@ -55,7 +55,7 @@ public class ChatService implements Service {
                 ChatCommand type = myProtocol.getType(input);
                 Method m;
                 m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
-                m.invoke(input, socket);
+                m.invoke(this, input, socket);
             }
             catch (IOException e) {
                 if ("Connection reset".equals(e.getMessage())) {
@@ -200,6 +200,7 @@ public class ChatService implements Service {
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             out.println(text);
+            out.flush();
             System.out.println("Server sending: " + text);
         }
         catch (IOException e) {
