@@ -46,7 +46,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
     private MultiFieldJOptionPane<String> spriteOptionsPane;
 
-    private File openFile; // currently open file
+    private File myOpenFile; // currently open file
     private Level myLevel; // level object for editing
 
     /* Toolbar buttons, self-explanatory */
@@ -166,7 +166,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
         if (source == newBtn) {
             newFile();
-            openFile = null;
+            myOpenFile = null;
             myLevel = new Level();
             myBackground = null;
         }
@@ -175,7 +175,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             myBackground = null;
         }
         else if (source == saveBtn) {
-            if (openFile == null) {
+            if (myOpenFile == null) {
                 // file has never ben saved, so we need to save as instead
                 MultiFieldJOptionPane<String> saveAsOptionsPane = new MultiFieldJOptionPane<String>(
                         mainFrame, "Save Xml File as");
@@ -183,25 +183,24 @@ public class LevelEditor implements DrawableComponent, ActionListener {
                         new JTextField(10));
                 saveAsOptionsPane.display();
                 String fileNameString = saveAsOptionsPane
-                        .getResult(SAVE_AS_KEY);
+                       .getResult(SAVE_AS_KEY);
                 String filePath = System.getProperty("user.dir")
                         + "/src/vooga/shooter/levels/" + fileNameString
                         + ".xml";
-                System.out.println(filePath);
-                XmlUtilities.write(myLevel.pack(), filePath);
-
-                // String file_path =
-                // System.getProperty("user.dir") +
-                // "/src/vooga/shooter/levels/level1.xml";
-                // XmlUtilities.write(myLevel.pack(), file_path);
+                myOpenFile = new File(filePath);
+                saveFile(myOpenFile);
+                System.out.println("save as");
             }
             else {
-                saveFile(openFile);
+                //standard save
+                saveFile(myOpenFile);
+                System.out.println("save");
             }
         }
         else if (source == openBtn) {
             int success = levelChooser.showOpenDialog(mainFrame);
             if (success == JFileChooser.APPROVE_OPTION) {
+                myOpenFile = levelChooser.getSelectedFile();
                 openFile(levelChooser.getSelectedFile());
             }
         }
@@ -245,9 +244,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
                     .getResult(X_POSITION_KEY)),
                     Integer.parseInt(spriteOptionsPane
                             .getResult(Y_POSITION_KEY)));
+            
             Dimension size = new Dimension(Integer.parseInt(spriteOptionsPane
                     .getResult(WIDTH_KEY)), Integer.parseInt(spriteOptionsPane
                     .getResult(HEIGHT_KEY)));
+            
             Dimension bounds = myCanvas.getSize();
             Point velocity = new Point(0, 0);
             int health = Integer.parseInt(spriteOptionsPane
@@ -266,9 +267,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     private void saveFile (File file) {
-        // TODO implement
-        // needs to use XML utility to convert current Level to File then save
+        //use XML utility to convert current Level to File then save
         // that File
+        file.getPath();
+        XmlUtilities.write(myLevel.pack(), file.getPath());
     }
 
     public void newFile () {
