@@ -334,8 +334,7 @@ public class GameManager implements InputAPI {
                     // System.out.println(newC[0].toGenericString());
                     myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
                 }
-                catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException e) {
+                catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("Unable to create mode " + modeName + " of class " +
                                        c.toString());
