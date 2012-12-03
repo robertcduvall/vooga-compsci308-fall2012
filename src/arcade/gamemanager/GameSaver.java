@@ -38,7 +38,7 @@ public class GameSaver {
      * @param value string describing the value of that property
      */
     public void saveUserProperty (String property, String value) {
-        myUser.getGameData(myGame.getName()).setGameInfo(property, value);
+        myUser.getGameData(myGame.getName()).setGameInfo(myUser.getName(),property, value);
     }
 
     /**

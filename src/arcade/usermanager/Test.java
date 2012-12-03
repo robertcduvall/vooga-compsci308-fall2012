@@ -29,8 +29,9 @@ public class Test {
          //testRegister();
       //  testDeleteUser();
        // testSendMessage();
-        myUserManager=UserManager.getInstance();
+       myUserManager=UserManager.getInstance();
         testGetGame();
+     //   testReadGameList();
        
        
 
@@ -88,6 +89,11 @@ public class Test {
         GameData dg=Howard.getGameData("Platformer");
         dg.setGameInfo("Howard","timesplayed", "5");
         
+        
+    }
+    
+    private static void testReadGameList(){
+        UserXMLReader reader=new UserXMLReader();
         
     }
 

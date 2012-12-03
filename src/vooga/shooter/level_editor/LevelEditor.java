@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.graphics.*;
 import vooga.shooter.graphics.Canvas;
 
@@ -25,111 +26,120 @@ import vooga.shooter.graphics.Canvas;
  * @author guytracy
  */
 public class LevelEditor implements DrawableComponent, ActionListener {
-    
+
     private static final Dimension DEFAULT_SIZE = new Dimension(600, 400);
     private static final String IMAGE_LOCATION = "/vooga/shooter/images/";
 
     private JFrame mainFrame; // The main window
     private JFileChooser levelChooser; // For saving and loading levels
-    private JFileChooser imageChooser;  //For assigning images to Sprites
+    private JFileChooser imageChooser;  // For assigning images to Sprites
     private static Canvas myCanvas; // drawing canvas
 
     private File openFile; // currently open file
     private Level myLevel; // level object for editing
 
     /* Toolbar buttons, self-explanatory */
-    JToolBar      myToolBar;
+    JToolBar myToolBar;
     private JButton newBtn;
     private JButton openBtn;
     private JButton saveBtn;
     private JButton clearBtn;
     private JButton backgroundBtn;
     private JButton makeSpriteBtn;
-    
-    /*Listeners*/
+
+    /* Listeners */
     private MouseListener myMouseListener;
     private MouseMotionListener myMouseMotionListener;
     private MouseListener myButtonListener;
 
     public static void main (String args[]) {
-        myCanvas = new Canvas(new LevelEditor());
+
+        new LevelEditor();
+   
     }
 
     public LevelEditor () {
-        // TODO initialize all variables and load a level to edit/make a new
-        // level
-        
-        myLevel = null;
-        
+
+        myLevel = new Level();
+
         mainFrame = new JFrame("Level Editor");
         mainFrame.setPreferredSize(DEFAULT_SIZE);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setBackground(Color.WHITE);
-        
-        JPanel myToolPane = (JPanel)mainFrame.getContentPane();
-        
-        myToolPane.setLayout(new BorderLayout());
-        setupToolbars();
-        
-        /* Toolbar placement */
-        myToolPane.add(myToolBar, BorderLayout.NORTH);
 
+        myCanvas = new Canvas(this);
+        myCanvas.start();
+        
+        mainFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
+        setupToolbars();
+        setupChoosers();
+
+        /* Toolbar placement */
+        mainFrame.getContentPane().add(myToolBar, BorderLayout.NORTH);
         mainFrame.pack();
         mainFrame.setVisible(true);
 
     }
-    
+
     private void setupChoosers () {
-        levelChooser = new JFileChooser("/vooga/shooter/levels");
-        FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter("XML Level files", "xml");
+
+        levelChooser = new JFileChooser(System.getProperties().getProperty(
+                "user.dir"));
+        FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter(
+                "XML Level files", "xml");
         levelChooser.setFileFilter(XMLFilter);
-        imageChooser = new JFileChooser("/vooga/shooter/images");
-        FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter("gif and png image files", "gif","png");
+        imageChooser = new JFileChooser(System.getProperties().getProperty(
+                "user.dir"));
+        FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter(
+                "gif and png image files", "gif", "png");
         imageChooser.setFileFilter(ImageFilter);
-                                                             
+
     }
 
     private void setupToolbars () {
         myToolBar = new JToolBar();
-        
+
         /* Map file buttons */
-        saveBtn  = makeBtn("Save",    "/vooga/shooter/resources/save.gif",  "Save level");
-        openBtn  = makeBtn("Open...", "/vooga/shooter/resources/open.gif",  "Open level...");
-        newBtn   = makeBtn("New",     "/vooga/shooter/resources/new.gif",   "New level");
-        clearBtn = makeBtn("Clear",   "/vooga/shooter/resources/clear.gif", "Reset level (Delete all sprites)");
-        backgroundBtn = makeBtn("Set Background",   "/vooga/shooter/resources/background.gif", "Set Background");
-        makeSpriteBtn = makeBtn("Make Sprite", "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
+        saveBtn = makeBtn("Save", "/vooga/shooter/resources/save.gif",
+                "Save level");
+        openBtn = makeBtn("Open...", "/vooga/shooter/resources/open.gif",
+                "Open level...");
+        newBtn = makeBtn("New", "/vooga/shooter/resources/new.gif", "New level");
+        clearBtn = makeBtn("Clear", "/vooga/shooter/resources/clear.gif",
+                "Reset level (Delete all sprites)");
+        backgroundBtn = makeBtn("Set Background",
+                "/vooga/shooter/resources/background.gif", "Set Background");
+        makeSpriteBtn = makeBtn("Make Sprite",
+                "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
         myToolBar.add(clearBtn);
         myToolBar.add(backgroundBtn);
+        myToolBar.add(makeSpriteBtn);
     }
-    
-    private List<ImageIcon> loadImages (String directory)
-    {
-        try
-        {
+
+    private List<ImageIcon> loadImages (String directory) {
+        try {
             URL path = getClass().getResource(directory);
             List<ImageIcon> results = new ArrayList<ImageIcon>();
 
-            for (String file : new File(path.toURI()).list())
-            {
-                //System.out.println(path + file);
-                ImageIcon icon = new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + file));
-                results.add(makeScaledIcon(50,50,icon));
+            for (String file : new File(path.toURI()).list()) {
+                // System.out.println(path + file);
+                ImageIcon icon = new ImageIcon(this.getClass().getResource(
+                        "/vooga/shooter/images/" + file));
+                results.add(makeScaledIcon(50, 50, icon));
             }
             return results;
 
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             // should not happen
             System.out.println("this should not happen");
-            return new ArrayList<ImageIcon>(); 
+            return new ArrayList<ImageIcon>();
         }
     }
-    
+
     /**
      * 
      * @param xSize the x dimension size of the new image
@@ -137,13 +147,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      * @param icon the icon to be scaled to the new size
      * @return the newly scaled ImageIcon
      */
-    private ImageIcon makeScaledIcon(int xSize, int ySize, ImageIcon icon) {
+    private ImageIcon makeScaledIcon (int xSize, int ySize, ImageIcon icon) {
         Image image = icon.getImage();
-        Image scaledImage = image.getScaledInstance(100,100,java.awt.Image.SCALE_SMOOTH);
+        Image scaledImage = image.getScaledInstance(100, 100,
+                java.awt.Image.SCALE_SMOOTH);
         ImageIcon newIcon = new ImageIcon(scaledImage);
         return newIcon;
     }
-
 
     @Override
     public void actionPerformed (ActionEvent e) {
@@ -152,7 +162,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         if (source == newBtn) {
             newFile();
             openFile = null;
-            
+
         }
         else if (source == clearBtn) {
             // clear current wave
@@ -160,7 +170,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         else if (source == saveBtn) {
             if (openFile == null) {
                 // file has never ben saved, so we need to save as instead
-                String file_path = System.getProperty("user.dir") + "/src/vooga/shooter/levels/level1.xml";
+                String file_path = System.getProperty("user.dir")
+                        + "/src/vooga/shooter/levels/level1.xml";
                 XmlUtilities.write(myLevel.pack(), file_path);
             }
             else {
@@ -173,24 +184,37 @@ public class LevelEditor implements DrawableComponent, ActionListener {
                 openFile(levelChooser.getSelectedFile());
             }
         }
-        
+
         else if (source == backgroundBtn) {
-            //int success = chooser.showOpenDialog(mainFrame);
-            //if (success == JFileChooser.APPROVE_OPTION) {
-            //    openFile(chooser.getSelectedFile());
-            //}
-            //myLevel.setBackgroundImage( IMAGE_LOCATION + "alienship.gif");
-            JFileChooser backchooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
-            int response = backchooser.showOpenDialog(null);
+
+            // JFileChooser backchooser = new
+            // JFileChooser(System.getProperties().getProperty("user.dir"));
+            int response = imageChooser.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
-                myLevel.setBackgroundImage(backchooser.getSelectedFile());
+                myLevel.setBackgroundImage(imageChooser.getSelectedFile());
             }
-            //ImageIcon backGroundIcon = new ImageIcon(this.getClass().getResource("/vooga/shooter/images/" + "alienship.gif"));
-            //JButton newButton = new JButton();
-            //newButton.setIcon(backGroundIcon);
-            //rightPanel.add(newButton);
-            //newBtn.setBorder(new EmptyBorder(0, 0, 0, 0));
-           // myCanvas.paint()
+
+        }
+
+        else if (source == makeSpriteBtn) {
+            int response = imageChooser.showOpenDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+
+                String imagePath = imageChooser.getSelectedFile().getPath();
+                Image spriteImage = (new ImageIcon(imagePath)).getImage();
+
+                Enemy newEnemy = new Enemy(new Point(300 + (150), 150),
+                        new Dimension(20, 17), new Dimension(20, 17),
+                        spriteImage, new Point(0, 5), 15);
+
+                myLevel.addSprite(newEnemy);
+
+                // public Enemy (Point position, Dimension size, Dimension
+                // bounds,
+                // Image image, Point velocity, int health) {
+
+                // imageChooser.getSelectedFile());
+            }
         }
 
     }
@@ -203,7 +227,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
     private void saveFile (File file) {
         // TODO implement
-        //needs to use XML utility to convert current Level to File then save that File
+        // needs to use XML utility to convert current Level to File then save
+        // that File
     }
 
     public void newFile () {
@@ -236,26 +261,24 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     @Override
     public void update () {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void paint (Graphics g) {
-        // TODO Auto-generated method stub
-        
+        myLevel.paintSprites(g, 0, 0);
     }
 
     @Override
     public void setMouseListener (MouseMotionListener m) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void setKeyboardListener (KeyListener k) {
         // TODO Auto-generated method stub
-        
+
     }
 
-    
 }

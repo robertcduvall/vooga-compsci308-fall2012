@@ -2,6 +2,7 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Set;
 import javax.swing.ImageIcon;
 
 
@@ -17,20 +18,25 @@ import javax.swing.ImageIcon;
 public abstract class GameObject {
 
     private int myID;
-    private final String myModeEvent;
-    private Image myImage;
+    private Set<String> myAllowableModes;
+    private final String myConditionFlag;
+    protected Image myImage;
 
     /**
      * Construct the new game object.
      * 
      * @param objectID The ID number of the new object.
-     * @param modeEvent The event describing the current action occurring.
+     * @param condition The condition flagged my interacting with this object.
      * @param image The image associated with the new object.
      */
-    public GameObject (int objectID, String modeEvent, Image image) {
-        myID = objectID;
-        myModeEvent = modeEvent;
+    public GameObject (Set<String> allowableModes, String condition, Image image) {
+        myAllowableModes = allowableModes;
+        myConditionFlag = condition;
         setImage(image);
+    }
+    
+    public boolean isValidMode(String modeName) {
+        return myAllowableModes.contains(modeName);
     }
 
     /**
@@ -56,8 +62,8 @@ public abstract class GameObject {
      * 
      * @return myGameEvent The GameEvent that does with this object.
      */
-    public String getModeEvent () {
-        return myModeEvent;
+    public String getConditionFlag () {
+        return myConditionFlag;
     }
 
     /**
@@ -68,7 +74,7 @@ public abstract class GameObject {
      * @param width Width of image.
      * @param height Height of image.
      */
-    public void paint (Graphics g, int x, int y, int width, int height) {
+    public void drawRectangularImage (Graphics g, int x, int y, int width, int height) {
         g.drawImage(myImage, x, y, width, height, null);
     }
 
@@ -99,7 +105,13 @@ public abstract class GameObject {
 
     /**
      * Updates game after some time delay (to be implemented by child classes).
-     * @param delayTime Int amount of time to wait between updates.
      */
-    public abstract void update (int delayTime);
+    public abstract void update ();
+    
+    public abstract void paint (Graphics g);
+
+    /**
+     * Remove all occurences of this object in the program.
+     */
+    public abstract void clear();
 }

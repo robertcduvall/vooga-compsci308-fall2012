@@ -34,7 +34,6 @@ public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionLi
         MigLayout layout = new MigLayout("", "", "[][][]push[][][]");
         myPanel.setLayout(layout);
         retrievedListOfTaggedGames = (String[]) getArcade().getVariable("taggedGames");
-        
         JLabel gamesFoundLabel = new JLabel("The following games matched your tag '"
                 + getArcade().getVariable("tag") + "" +"' :");
         
