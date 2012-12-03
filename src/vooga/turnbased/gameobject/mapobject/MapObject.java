@@ -19,14 +19,12 @@ import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
  * 
  */
 public class MapObject extends GameObject {
-    protected Dimension myTileDimensions;
-    protected Point myCameraOrigin;
-    protected Point myOffset;
-
+    private Dimension myTileDimension;
+    private Point myCameraOrigin;
+    private Point myOffset;
     private Point myLocation;
     private boolean myIsVisible;
     private MapMode myMapMode;
-
     private List<MapStrategy> myMapStrategies;
 
     /**
@@ -37,7 +35,8 @@ public class MapObject extends GameObject {
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      */
-    public MapObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+    public MapObject (Set<String> allowableModes, String condition, Point location, 
+            Image mapImage) {
         super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
@@ -47,12 +46,34 @@ public class MapObject extends GameObject {
     }
 
     /**
-     * Sets associated MapMode to the given MapMode.
-     * 
-     * @param mapMode MapMode to be associated with MapObject.
+    * Sets associated MapMode to the given MapMode.
+    * 
+    * @param mapMode MapMode to be associated with MapObject.
      */
     public void setMapMode (MapMode mapMode) {
         myMapMode = mapMode;
+    }
+    
+    /**
+     * Get the dimension of the tiles
+     * @return
+     */
+    public Dimension getTileDimension() {
+        return myTileDimension;
+    }
+    /**
+     * Get the origin of the camera window
+     * @return
+     */
+    public Point getCameraOrigin() {
+        return myCameraOrigin;
+    }
+    /**
+     * Get the Offset
+     * @return
+     */
+    public Point getOffset() {
+        return myOffset;
     }
 
     /**
@@ -83,10 +104,16 @@ public class MapObject extends GameObject {
     }
 
     /**
+<<<<<<< HEAD
      * Increments the location of the object from the given point.
      * 
      * @param p Point at which the object starts.
      * @return Point that has been incremented.
+=======
+     * Change the current location by p
+     * @param p the amount of change
+     * @return
+>>>>>>> ac7d8c88c2b2d6a08a51a8b070748ef44c6f5bff
      */
     public Point incrementLocation (Point p) {
         int x = getLocation().x + p.x;
@@ -128,8 +155,6 @@ public class MapObject extends GameObject {
     }
 
     private void interactWithPlayer (MapPlayerObject player) {
-        // if conversation has started, there is no need to start again in the
-        // same interact method
         boolean conversationStarted = false;
         for (MapStrategy strategy : myMapStrategies) {
             if (strategy.isDisplayable()) {
@@ -184,14 +209,16 @@ public class MapObject extends GameObject {
     }
 
     /**
-     * Updates MapObject; delayTime not used.
+     * Updates MapObject
+     * 
      */
+
     public void update () {
-        myTileDimensions = new Dimension(myMapMode.getTileDimensions());
+        myTileDimension = new Dimension(myMapMode.getTileDimensions());
         myCameraOrigin = new Point(myMapMode.getOrigin());
         Rectangle camera = myMapMode.getCamera();
-        int xOffset = (getLocation().x - (camera.x)) * myTileDimensions.width + myCameraOrigin.x;
-        int yOffset = (getLocation().y - (camera.y)) * myTileDimensions.height + myCameraOrigin.y;
+        int xOffset = (getLocation().x - (camera.x)) * myTileDimension.width + myCameraOrigin.x;
+        int yOffset = (getLocation().y - (camera.y)) * myTileDimension.height + myCameraOrigin.y;
         myOffset = new Point(xOffset, yOffset);
     }
 
@@ -201,11 +228,19 @@ public class MapObject extends GameObject {
      * @param g Graphics object.
      */
     public void paint (Graphics g) {
-        paintInProportion(g, myOffset, myTileDimensions, 1);
+        paintInProportion(g, myOffset, myTileDimension, 1);
     }
 
-    protected void paintInProportion (Graphics g, Point offset, Dimension tileDimension,
-            double proportion) {
+
+    /**
+     * Paint the object in proportion
+     * @param g 
+     * @param offset 
+     * @param tileDimension 
+     * @param proportion 
+     */
+    public void paintInProportion (Graphics g, Point offset, Dimension tileDimension,
+                                      double proportion) {
         if (getImage() == null || offset == null || tileDimension == null) { return; }
         offset.x += (1 - proportion) / 2 * tileDimension.width;
         offset.y += (1 - proportion) / 2 * tileDimension.height;
@@ -224,7 +259,8 @@ public class MapObject extends GameObject {
      * @param conditionName String name of condition to apply to sprites.
      * @param involvedSpriteIDs List of sprites to apply the condition to.
      */
-    public void flagCondition (String conditionName, List<Integer> involvedSpriteIDs) {
+
+    public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs) {
         myMapMode.flagCondition(conditionName, involvedSpriteIDs);
     }
 }

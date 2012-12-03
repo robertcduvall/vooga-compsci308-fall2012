@@ -77,7 +77,7 @@ public class MovingMapObject extends MapObject {
         if (myTimePassed >= myMovementTimePerTile) {
             finishMovement();
         }
-        calcScreenDisplacement(myTileDimensions.width, myTileDimensions.height);
+        calcScreenDisplacement(getTileDimension().width, getTileDimension().height);
     }
 
     /**
@@ -105,12 +105,12 @@ public class MovingMapObject extends MapObject {
      * @param g Graphics object onto which the MapObject is painted
      */
     public void paint (Graphics g) {
-        Point offset = new Point(myOffset);
+        Point offset = new Point(getOffset());
         if (isMoving()) {
-            offset.x = myOffset.x - myDirection.x * myTileDimensions.width + myXOriginInTile;
-            offset.y = myOffset.y - myDirection.y * myTileDimensions.height + myYOriginInTile;
+            offset.x = getOffset().x - myDirection.x * getTileDimension().width + myXOriginInTile;
+            offset.y = getOffset().y - myDirection.y * getTileDimension().height + myYOriginInTile;
         }
-        paintInProportion(g, offset, myTileDimensions, SIZE_RELATIVE_TO_TILE);
+        paintInProportion(g, offset, getTileDimension(), SIZE_RELATIVE_TO_TILE);
     }
 
     @Override
