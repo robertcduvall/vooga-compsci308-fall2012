@@ -17,6 +17,10 @@ public class NumericJTextField extends JTextField {
     public NumericJTextField(int cols) {
         super(cols);
     }
+    
+    public NumericJTextField(String text, int cols) {
+        super(text,cols);
+    }
 
     protected Document createDefaultModel() {
         return new NumericDocument();
