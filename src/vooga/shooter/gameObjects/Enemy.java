@@ -121,6 +121,7 @@ public class Enemy extends Sprite implements Packable {
         
         Document doc = XmlUtilities.makeDocument();
         Element root = XmlUtilities.makeElement(doc, "Player");
+        doc.appendChild(root);
                 
         // convert position...
         double pointX = getPosition().getX();
@@ -134,16 +135,16 @@ public class Enemy extends Sprite implements Packable {
         double sizeWidth = getSize().getWidth();
         double sizeHeight = getSize().getHeight();
         HashMap<String, String> sizeMap = new HashMap<String, String>();
-        sizeMap.put("width", Double.toString(sizeWidth));
-        sizeMap.put("height", Double.toString(sizeHeight));
+        sizeMap.put("width", Integer.toString((int) sizeWidth));
+        sizeMap.put("height", Integer.toString((int) sizeHeight));
         XmlUtilities.appendElement(doc, root, "size", sizeMap);
         
         // convert bounds...
         double boundsWidth = getBounds().getWidth();
         double boundsHeight = getBounds().getHeight();
         HashMap<String, String> boundsMap = new HashMap<String, String>();
-        boundsMap.put("width", Double.toString(boundsWidth));
-        boundsMap.put("height", Double.toString(boundsHeight));
+        boundsMap.put("width", Integer.toString((int) boundsWidth));
+        boundsMap.put("height", Integer.toString((int) boundsHeight));
         XmlUtilities.appendElement(doc, root, "bounds", boundsMap);
         
         // convert image...
@@ -163,8 +164,7 @@ public class Enemy extends Sprite implements Packable {
         return doc;
     }
 
-    @Override
-    public Enemy unpack (Document xmlData) {
+    public static Enemy unpack (Document xmlData) {
       
         Element root = (Element) xmlData.getFirstChild();
         
@@ -198,8 +198,9 @@ public class Enemy extends Sprite implements Packable {
         
         // parse health...
         Element healthElement = XmlUtilities.getElement(root, "health");
-        int health = XmlUtilities.getAttributeAsInt(healthElement, "health");
+        int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
         
         return new Enemy(position, size, bounds, imagePath, velocity, health);
     }
+
 }
