@@ -56,6 +56,7 @@ public class EditorPane extends DisplayPane {
     private Map<Point, List<Image>> myImageMap;
     private int myMapCounter = 1;
     private List<Point> myPaintedSprites = new ArrayList<Point>();
+    private PlayerEditor myPlayerEditor;
 
     /**
      * 
@@ -127,12 +128,12 @@ public class EditorPane extends DisplayPane {
         
         JPanel p = new JPanel(new GridLayout(20,20));
         addMenuButton();
-        JButton playerButton = addPlayerButton();
-        add(playerButton);
         JButton spriteButton = setUpSpriteButton(l, OBJECTS, OBJECTS_DEFAULTS);
         add(spriteButton);
         JButton nextMap = addNewMapButton(l);
         add(nextMap);
+        JButton playerButton = addPlayerButton();
+        add(playerButton);
         JButton finishedButton = addDoneButton(l);
         add(finishedButton);
         add(p);
@@ -147,8 +148,8 @@ public class EditorPane extends DisplayPane {
                 fc.addChoosableFileFilter(new XmlFileFilter());
                 int returnVal = fc.showSaveDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    PlayerEditor p = new PlayerEditor(fc.getSelectedFile().toString());
-                    editPlayer(p);
+                    myPlayerEditor = new PlayerEditor(fc.getSelectedFile().toString());
+                    editPlayer(myPlayerEditor);
                 }
                 repaint();
             }
@@ -157,16 +158,69 @@ public class EditorPane extends DisplayPane {
     }
 
     private void editPlayer (PlayerEditor p) {
-        Map<String, String> imagePaths = new HashMap<String,String>();
-        // TODO: Get player imagePaths here (as in PlayerFinal.xml)
+        Map<String, String> imagePaths = getHardcodedImagePaths();
         p.addMapObject("", "map", "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
                 "NO_ACTION", myCurrentTile.x, myCurrentTile.y, imagePaths);
         // TODO: add battle objects here
+        final int NUM_PAIRS = OBJECTS.length;
+        final JPanel P = setUpJPanel(OBJECTS, OBJECTS_DEFAULTS, NUM_PAIRS);
+        InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 35, 6, 6);
+        final JFrame FRAME = new JFrame(
+                "Player Information (Select Add Object when all fields are ready)");
+        JButton nextButton = makeNextButtonAndAddXml(NUM_PAIRS, P);
+        setUpFrameAndPanel(P, FRAME, nextButton);
+    }
+
+    private JButton makeNextButtonAndAddXml (final int NUM_PAIRS, final JPanel P) {
+        JButton nextButton = new JButton("Add Battle Object");
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                String[] returnedValues = new String[NUM_PAIRS];
+                Component[] allComponents = P.getComponents();
+                int index = 0;
+                for (Component current : allComponents) {
+                    if (current.getClass().getName().contains("JTextField")) {
+                        returnedValues[index] = ((JTextComponent) current).getText();
+                        index++;
+                    }
+                }
+                addObjectXmlInformation(returnedValues, myPlayerEditor);
+                newPopUpMessage(
+                        "Successfully Added Object!", "To add another object, change the " +
+                        "fields to desired values.  When done, close the window to continue " +
+                        "game building.");
+            }
+        });
+        return nextButton;
+    }
+
+    protected void addObjectXmlInformation (String[] returnedValues,
+            PlayerEditor p) {
+        p.addBattleObject("", "battle", returnedValues[0], returnedValues[1],
+                returnedValues[3], returnedValues[4], returnedValues[2]);
+    }
+
+    private Map<String, String> getHardcodedImagePaths () {
+        // TODO: find more dynamic way to do this
+        Map<String, String> imagePaths = new HashMap<String,String>();
+        imagePaths.put("down", "src/vooga/turnbased/resources/image/player/Down.png");
+        imagePaths.put("down1", "src/vooga/turnbased/resources/image/player/Down1.png");
+        imagePaths.put("down2", "src/vooga/turnbased/resources/image/player/Down2.png");
+        imagePaths.put("up", "src/vooga/turnbased/resources/image/player/Up.png");
+        imagePaths.put("up1", "src/vooga/turnbased/resources/image/player/Up1.png");
+        imagePaths.put("up2", "src/vooga/turnbased/resources/image/player/Up2.png");
+        imagePaths.put("right", "src/vooga/turnbased/resources/image/player/Right.png");
+        imagePaths.put("right1", "src/vooga/turnbased/resources/image/player/Right1.png");
+        imagePaths.put("right2", "src/vooga/turnbased/resources/image/player/Right2.png");
+        imagePaths.put("left", "src/vooga/turnbased/resources/image/player/Left.png");
+        imagePaths.put("left1", "src/vooga/turnbased/resources/image/player/Left1.png");
+        imagePaths.put("left2", "src/vooga/turnbased/resources/image/player/Left2.png");
+        return imagePaths;
     }
 
     private JButton setUpSpriteButton (final LevelEditor l, final String[] objects,
             final String[] objectsDefaultValues) {
-        JButton spriteButton = new JButton("Add Sprites");
+        JButton spriteButton = new JButton("Add Sprite");
         spriteButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 displayAndGetSpriteInfo(objects, objectsDefaultValues, l);
@@ -345,6 +399,8 @@ public class EditorPane extends DisplayPane {
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 l.saveXmlDocument();
+                myPlayerEditor.modifyModes(myMapCounter);
+                myPlayerEditor.saveXmlDocument();
                 clear();
                 getGameWindow().changeActivePane(GameWindow.MENU);
             }

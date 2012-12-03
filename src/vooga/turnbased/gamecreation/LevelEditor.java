@@ -205,27 +205,8 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myXmlDocument, location, "y", y);
         addImagesToXml(objectElement, imagePaths);
         Element statsElement = XmlUtilities.appendElement(myXmlDocument, objectElement, "stats");
-        addStatsToXml(statsElement, stats);
+        addStatsToXml(myXmlDocument, statsElement, stats);
         XmlUtilities.appendElement(myXmlDocument, objectElement, NAME, name);
-    }
-
-    private void addImagesToXml (Element objectElement, String imagePaths) {
-        imagePaths.replaceAll("\\s", "");
-        String[] allImages = imagePaths.split("\\s*,\\s*");
-        for (String image : allImages) {
-            XmlUtilities.appendElement(myXmlDocument, objectElement, IMAGE, image);
-        }
-    }
-
-    private void addStatsToXml (Element e, String stats) {
-        if (!stats.equals("")) {
-            stats.replaceAll("\\s", "");
-            String[] allStats = stats.split("\\s*,\\s*");
-            for (String stat : allStats) {
-                String[] singleStat = stat.split("\\s*:\\s*");
-                XmlUtilities.appendElement(myXmlDocument, e, singleStat[0], singleStat[1]);
-            }
-        }
     }
 
     private void addDimension (String tagName, String width, String height) {
@@ -240,6 +221,25 @@ public class LevelEditor extends Editor {
         Element h = XmlUtilities.getElement(dimension, HEIGHT);
         XmlUtilities.setContent(w, width);
         XmlUtilities.setContent(h, height);
+    }
+
+    private void addStatsToXml (Document d, Element e, String stats) {
+        if (!stats.equals("")) {
+            stats.replaceAll("\\s", "");
+            String[] allStats = stats.split("\\s*,\\s*");
+            for (String stat : allStats) {
+                String[] singleStat = stat.split("\\s*:\\s*");
+                XmlUtilities.appendElement(d, e, singleStat[0], singleStat[1]);
+            }
+        }
+    }
+
+    private void addImagesToXml (Element objectElement, String imagePaths) {
+        imagePaths.replaceAll("\\s", "");
+        String[] allImages = imagePaths.split("\\s*,\\s*");
+        for (String image : allImages) {
+            XmlUtilities.appendElement(myXmlDocument, objectElement, "image", image);
+        }
     }
 
     /**

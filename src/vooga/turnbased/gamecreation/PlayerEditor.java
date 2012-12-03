@@ -90,21 +90,16 @@ public class PlayerEditor extends Editor {
      * @param imagePath Path to the Battle Image
      */
     public void addBattleObject (String createOn, String modes, String battleClass,
-            String condition, Map<String, Number> stats, String name, String[] imagePath) {
+            String condition, String stats, String name, String imagePath) {
         Element object = XmlUtilities.appendElement(myXmlDocument, myRootElement, OBJECT);
         XmlUtilities.appendElement(myXmlDocument, object, CREATE_ON, createOn);
         XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
         XmlUtilities.appendElement(myXmlDocument, object, CLASS, battleClass);
         XmlUtilities.appendElement(myXmlDocument, object, CONDITION, condition);
         Element statsElement = XmlUtilities.appendElement(myXmlDocument, object, "stats");
-        for (String key : stats.keySet()) {
-            XmlUtilities.appendElement(myXmlDocument, statsElement, key,
-                    stats.get(key).toString());
-        }
+        addStatsToXml(myXmlDocument, statsElement, stats);
         XmlUtilities.appendElement(myXmlDocument, object, NAME, name);
-        for (String image : imagePath) {
-            XmlUtilities.appendElement(myXmlDocument, object, IMAGE, image);
-        }
+        addImagesToXml(object, imagePath);
     }
 
     /**
@@ -132,6 +127,25 @@ public class PlayerEditor extends Editor {
         }
     }
 
+    private void addStatsToXml (Document d, Element e, String stats) {
+        if (!stats.equals("")) {
+            stats.replaceAll("\\s", "");
+            String[] allStats = stats.split("\\s*,\\s*");
+            for (String stat : allStats) {
+                String[] singleStat = stat.split("\\s*:\\s*");
+                XmlUtilities.appendElement(d, e, singleStat[0], singleStat[1]);
+            }
+        }
+    }
+
+    private void addImagesToXml (Element objectElement, String imagePaths) {
+        imagePaths.replaceAll("\\s", "");
+        String[] allImages = imagePaths.split("\\s*,\\s*");
+        for (String image : allImages) {
+            XmlUtilities.appendElement(myXmlDocument, objectElement, "image", image);
+        }
+    }
+
     /**
      * Save Xml Document.
      */
@@ -144,5 +158,19 @@ public class PlayerEditor extends Editor {
      */
     public Document getXmlDocument () {
         return myXmlDocument;
+    }
+
+    /**
+     * 
+     * @param i Number of maps used for this player.
+     */
+    public void modifyModes (int i) {
+        Element mode = XmlUtilities.getElement(myRootElement, MODES);
+        String content = "";
+        for (int j = 0; j < i; j++) {
+            content = content + ", map" + ((Integer) i).toString();
+        }
+        content = content.substring(2);
+        XmlUtilities.setContent(mode, content);
     }
 }
