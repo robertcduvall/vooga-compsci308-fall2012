@@ -23,8 +23,7 @@ public class GameOverMode extends GameMode {
 
     @Override
     public void resume () {
-        // TODO Auto-generated method stub
-        
+        playModeEntranceSound("GameOverSound");
     }
 
     @Override
