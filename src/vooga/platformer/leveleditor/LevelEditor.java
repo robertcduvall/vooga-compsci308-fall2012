@@ -45,7 +45,7 @@ import vooga.platformer.gameobject.StaticObject;
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
-    private static final String DATA_FOLDER = "/src/vooga/platformer/data/";
+    private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -79,8 +79,12 @@ public class LevelEditor extends JPanel {
         return myKeyListener;
     }
     
-    public void addAttribute(String attribute) {
-        if("Gravity".equals(attribute)) { 
+    /**
+     * 
+     * @param plugin
+     */
+    public void addLevelPlugin(String plugin) {
+        if("Gravity".equals(plugin)) { 
             final LevelBoard current = myBoard;
             final JPopupMenu jpop = new JPopupMenu();
             JLabel gravitylabel = new JLabel("Enter Gravity Value:");
@@ -107,6 +111,7 @@ public class LevelEditor extends JPanel {
             jpop.add(accept);
             jpop.show(this, getWidth()/2-50, getHeight()/2-40);
         }
+        
     }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();
@@ -186,7 +191,7 @@ public class LevelEditor extends JPanel {
     }
 
     protected void load() {
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir")+DATA_PATH);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "XML Level files", "xml");
         chooser.setFileFilter(filter);
@@ -197,7 +202,7 @@ public class LevelEditor extends JPanel {
                 myBoard.load(myURL);
             } 
             catch (IOException io) {
-                System.out.println("File not found. Try again");
+                io.printStackTrace();
             }
         }
     }
