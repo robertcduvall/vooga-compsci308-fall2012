@@ -17,4 +17,7 @@ public class StaticObject extends GameObject {
     public StaticObject(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
         super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
     }
+    public StaticObject () {
+        super();
+    }
 }

@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
@@ -49,15 +50,16 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * Represents the main window for the level editor. Will display a collection
  * of Sprites and will oversee the results of all user actions.
  * 
- * @author Paul Dannenberg, Sam Rang
+ * @author Paul Dannenberg
+ * @author Sam Rang
  * 
  */
-public class LevelBoard extends JPanel implements ISavable {
+public class LevelBoard extends JPanel {
 
     private static final int SCROLL_SPEED = 2;
-    private static final long serialVersionUID = -3528519211577278934L;
+    private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Collection<GameObject> myGameObjects;
-    private Collection<String> myAvailableAttributes;
+    private Collection<String> myAttributes;
     private IEditorMode myCurrentMode;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
@@ -84,22 +86,18 @@ public class LevelBoard extends JPanel implements ISavable {
         setSize(d);
         myKeyHeld = new ArrayList<Integer>();
         myGameObjects = new ArrayList<GameObject>();
-        myAvailableAttributes = new ArrayList<String>();
-        myAvailableAttributes.add("HP");
-        myAvailableAttributes.add("Shooting");
-        myAvailableAttributes.add("Flying");
-        myAvailableAttributes.add("Patrolling");
-        myAvailableAttributes.add("Teammate");
+        myAttributes = new ArrayList<String>();
+        myAttributes.add("HP");
+        myAttributes.add("Shooting");
+        myAttributes.add("Flying");
+        myAttributes.add("Patrolling");
+        myAttributes.add("Teammate");
         myCurrentMode = new PlacementMode();
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
         setupMouseInput();
         myOffset = 0;
-    }
-
-    public void incLength () {
-
     }
 
     private void setupMouseInput () {
@@ -218,14 +216,14 @@ public class LevelBoard extends JPanel implements ISavable {
     /**
      * Updates the buffer preparing for the next paint call.
      */
-    @Override
-    public void update (Graphics g) {
+    public void update () {
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
-                                   this);
+                this);
         for (GameObject obj : myGameObjects) {
-            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(),
-                                       (int) obj.getWidth(), (int) obj.getHeight(), null);
+            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(), (int) obj.getWidth(), (int) obj.getHeight(), null);
+//            myBufferGraphics.setColor(Color.WHITE);
+//            myBufferGraphics.drawRect((int)obj.getX()-myOffset, (int)obj.getY(), (int)obj.getWidth(), (int)obj.getHeight());
         }
         if (myCurrentObject != null) {
             myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
@@ -233,7 +231,7 @@ public class LevelBoard extends JPanel implements ISavable {
             myBufferGraphics.setColor(Color.ORANGE);
         }
         myBufferGraphics.drawString("Current Sprite = (" + mouseX + ", " + mouseY + ")",
-                                    getWidth() - 250, 30);
+                getWidth() - 250, 30);
         for (int i = 0; i < myKeyHeld.size(); i++) {
             myBufferGraphics.drawString(((Integer) myKeyHeld.get(i)).toString(), 20, (i + 1) * 10);
         }
@@ -244,14 +242,14 @@ public class LevelBoard extends JPanel implements ISavable {
      * 
      * @param g Graphics attached to level.
      */
+    @Override
     public void paint (Graphics g) {
-        update(g);
+        update();
         g.drawImage(myBuffer, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(), this);
         super.paintComponents(g);
 
     }
 
-    @Override
     public void save () {
         JFileChooser fc = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("XML file", "xml");
@@ -274,7 +272,6 @@ public class LevelBoard extends JPanel implements ISavable {
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
 
-    @Override
     public void load (URL path) {
         new LevelFileReader(path.getPath());
     }
@@ -299,7 +296,7 @@ public class LevelBoard extends JPanel implements ISavable {
         j4.addActionListener(sh);
         pop.add(j4);
         pop.show(this.getParent(), (int) (g.getX() + g.getWidth() / 2),
-                 (int) (g.getY() + g.getHeight()));
+                (int) (g.getY() + g.getHeight()));
     }
 
     /**
@@ -319,6 +316,8 @@ public class LevelBoard extends JPanel implements ISavable {
      */
     protected void add (GameObject obj) {
         myGameObjects.add(obj);
+        obj.setSize(20, 20);
+        obj.setImage(getImage(IMAGE_PATH+"Default.png"));
         myCurrentObject = obj;
     }
 
@@ -328,8 +327,12 @@ public class LevelBoard extends JPanel implements ISavable {
      * @param sprite The sprite that should
      *        be removed.
      */
-    protected void remove (Sprite sprite) {
-        myGameObjects.remove(sprite);
+    protected void remove (GameObject obj) {
+        myGameObjects.remove(obj);
+    }
+
+    protected void setGrav(int value) {
+        System.out.println(value);
     }
 
     private class SelectionHelper implements ActionListener {
@@ -345,9 +348,13 @@ public class LevelBoard extends JPanel implements ISavable {
                 myObject.flipImage();
             }
             else if ("Duplicate".equals(event.getActionCommand())) {
-                // GameObject nobj = new
-                // GameObject(myObject.getConfigStringParams());
-                // LevelBoard.this.add(nobj);
+                GameObject nobj = new StaticObject();
+                nobj.setSize(20, 20);
+                nobj.setImage(getImage(IMAGE_PATH+"Default.png"));
+                nobj.setX(getMousePosition().x);
+                nobj.setY(getMousePosition().y);
+                myCurrentObject = nobj;
+                LevelBoard.this.add(nobj);
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
                 createAttributeWindow();
@@ -363,19 +370,31 @@ public class LevelBoard extends JPanel implements ISavable {
 
         private void createAttributeWindow () {
             JPopupMenu pop = new JPopupMenu();
-            for (String att : myAvailableAttributes) {
+            for (String att : myAttributes) {
                 JMenuItem j = new JMenuItem(att);
                 j.addActionListener(this);
                 pop.add(j);
             }
             pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
-                     (int) (myObject.getY() + myObject.getHeight() / 2));
+                    (int) (myObject.getY() + myObject.getHeight() / 2));
 
             /*
              * create a list of attributes from the resource file
              * and get appropriate values for certain attributes.
              */
         }
+    }
+
+    private Image getImage (String filename) {
+        Image ret = null;
+        try {
+            ret = ImageIO.read(new File(filename));
+        }
+        catch (IOException e) {
+            System.out.println("file was not found");
+            e.printStackTrace();
+        }
+        return ret;
     }
 
     /**
@@ -402,7 +421,6 @@ public class LevelBoard extends JPanel implements ISavable {
                 myCurrentMode.secondaryButtonPress(e.getX(), e.getY());
             }
         }
-
     }
 
     /**
