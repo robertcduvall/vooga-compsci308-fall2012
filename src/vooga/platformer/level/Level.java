@@ -7,11 +7,13 @@ import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
 import util.input.core.KeyboardController;
+import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
+import vooga.platformer.util.camera.UpdatableCamera;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -25,12 +27,23 @@ public class Level {
     private List<GameObject> objectList;
     private List<LevelPlugin> pluginList;
     private List<Condition> conditionList;
-    private Camera cam;
+    private UpdatableCamera cam;
     private Dimension myDimension;
     private String myNextLevelName;
     private CollisionChecker myCollisionChecker;
     private Player myPlayer;
+    private boolean myPaused;
 
+    public Level (Dimension dim, UpdatableCamera inCam, String fileName) {
+        objectList = new ArrayList<GameObject>();
+        pluginList = new ArrayList<LevelPlugin>();
+        myDimension = dim;
+        myCollisionChecker = new BasicCollisionChecker(fileName);
+        cam = inCam;
+        myPaused = false;
+    }
+
+    
     /**
      * Paint the level, including all its GameObjects.
      * 
@@ -43,14 +56,6 @@ public class Level {
         for (GameObject go : objectList) {
             go.paint(pen, cam);
         }
-    }
-
-    public Level (Dimension dim, CollisionChecker inChecker, Camera inCam) {
-        objectList = new ArrayList<GameObject>();
-        pluginList = new ArrayList<LevelPlugin>();
-        myDimension = dim;
-        myCollisionChecker = inChecker;
-        cam = inCam;
     }
 
     /**
@@ -115,25 +120,38 @@ public class Level {
      * @param elapsedTime time since last update cycle
      */
     public void update (long elapsedTime) {
-        List<GameObject> removalList = new ArrayList<GameObject>();
-        for (GameObject go : objectList) {
-            go.update(this, elapsedTime);
-            if (go.checkForRemoval()) {
-                removalList.add(go);
+        if (!myPaused) {
+            List<GameObject> removalList = new ArrayList<GameObject>();
+            for (GameObject go : objectList) {
+                go.update(this, elapsedTime);
+                if (go.checkForRemoval()) {
+                    removalList.add(go);
+                }
+            }
+
+            for (GameObject removeObj : removalList) {
+                objectList.remove(removeObj);
+            }
+
+            // modified here
+            myCollisionChecker.checkCollisions(this);
+            cam.update(elapsedTime);
+
+            for (LevelPlugin lp : pluginList) {
+                lp.update(objectList);
             }
         }
-
-        for (GameObject removeObj : removalList) {
-            objectList.remove(removeObj);
-        }
-
-        // modified here
-        myCollisionChecker.checkCollisions(this);
-
-        for (LevelPlugin lp : pluginList) {
-            lp.update(objectList);
-        }
-
+    }
+    
+    /**
+     * Pause the game, temporarily stopping it from updating
+     */
+    public void pause() {
+        myPaused = true;
+    }
+    
+    public void unpause() {
+        myPaused = false;
     }
 
     /**
@@ -148,7 +166,7 @@ public class Level {
      * 
      * @param c
      */
-    public void setCamera (Camera c) {
+    public void setCamera (UpdatableCamera c) {
         cam = c;
     }
 

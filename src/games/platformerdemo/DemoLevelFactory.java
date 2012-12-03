@@ -6,7 +6,7 @@ import vooga.platformer.level.LevelFactory;
 public class DemoLevelFactory {
 
     public Level loadLevel (String levelName) {
-        return LevelFactory.loadLevel("src/games/platformerdemo/demoLevel.xml", "vooga.platformer.gameobject.Player");
+        return LevelFactory.loadLevel("src/games/platformerdemo/demoLevel.xml");
         
         /*
          * The level name "level1" corresponds to an instance of TestLevel with the listed GameObjects added to it. Multiple

@@ -421,13 +421,17 @@ public class LevelBoard extends JPanel {
                 myCurrentMode.secondaryButtonPress(e.getX(), e.getY());
             }
         }
-
-
-
     }
 
-    public void setMode (IEditorMode mode) {
-        myCurrentMode = mode;
+    /**
+     * Sets the current editor mode.
+     * @param nextMode The mode that the editor will transition to. 
+     */
+    public void setMode (IEditorMode nextMode) {
+        if (nextMode == null) {
+            throw new IllegalArgumentException();
+        }
+        myCurrentMode = nextMode;
     }
 
 }

@@ -1,6 +1,7 @@
 package arcade.gui.panel.search;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ import arcade.usermanager.UserProfile;
  */
 public class NormSearchPanel extends ASearchPanel implements ActionListener{
 
+//    private static final int PANEL_WIDTH = 250; //300
+//    private static final int PANEL_HEIGHT = 800; // 450
+    
     private List<String> myGameList;
     private List<String> myUserList;
     private JList searchedThroughList = new JList();
@@ -49,6 +53,9 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        
+//        myPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        
         MigLayout layout = new MigLayout("", "", "[][][][][][][][][][]push[]");
         myPanel.setLayout(layout);
         
@@ -105,7 +112,7 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
         JLabel userSearchPrompt = new JLabel("Search for a user by Name:");
         JLabel userListSelectPrompt = new JLabel("Select a user: ");
         JButton userGoButton = new JButton("Go to Profile");
-        userGoButton.setActionCommand(GO+USER);
+        userGoButton.setActionCommand(USER);
         userGoButton.addActionListener(this);
         
         /*JLabel label = new JLabel();
@@ -143,7 +150,11 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
             getArcade().replacePanel("GameTagSearch");
         }
         if (e.getActionCommand() == USER) {
-            getArcade().replacePanel("UserSearch");
+            String userSelected = (String) userSearchedThroughList.getSelectedValue();
+            if (userSelected != null){
+                getArcade().saveVariable("UserName", userSelected);
+                getArcade().replacePanel("UserProfile");
+            }
         }       
     }
 

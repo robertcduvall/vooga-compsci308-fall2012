@@ -15,9 +15,10 @@ import vooga.platformer.util.enums.PlayState;
  *
  */
 public class DefeatAllEnemiesCondition implements Condition {
-    
+
+    private static final long serialVersionUID = 1L;
     protected static final String LEVEL_NAME_TAG = "nextlevel";
-    
+
     private String myNextLevelName;
     
     /**

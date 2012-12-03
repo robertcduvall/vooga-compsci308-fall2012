@@ -8,9 +8,11 @@ import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import edu.cmu.relativelayout.Direction;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
@@ -55,33 +57,56 @@ public class UserProfileMainPanel extends AMainPanel {
         profileNameLabel.setForeground(Color.WHITE);
         profileNameLabel.setVerticalTextPosition(JLabel.CENTER);
         profileNameLabel.setHorizontalTextPosition(JLabel.CENTER);
-        
+
         // Add the First & Last name:
         JLabel blankLabel = new JLabel("Username : " + myUser.getUserName());
         blankLabel.setForeground(Color.WHITE);
         blankLabel.setVerticalTextPosition(JLabel.CENTER);
         blankLabel.setHorizontalTextPosition(JLabel.CENTER);
-        
+
         // Add send message button:
         JButton sendMessageButton = new JButton("Send this player a message."); 
         sendMessageButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("SendMessage...");
-                    //getArcade().replacePanel("SendMessage");
+                getArcade().saveVariable("UserName", userToLoad);
+                getArcade().replacePanel("SendMessage");
             }
-              
-          });
-        JButton editButton = new JButton("Edit Profile"); 
+
+        });
+        JButton editButton = new JButton("Edit Profile Picture"); 
         editButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("Edit Profile...");
-                    //getArcade().replacePanel("SendMessage");
+                editProfilePicture();
+
+
+
+                //getArcade().replacePanel("SendMessage");
             }
-              
-          });
-        gameStats = "Testing!";
+
+            private void editProfilePicture () {
+                String newImageName = new String();
+                final JFileChooser ourChooser = new JFileChooser(System
+                        .getProperties().getProperty("user.dir") + "/src/arcade/database/images");
+                ourChooser.setAcceptAllFileFilterUsed(false);
+                ourChooser.setFileFilter(new FileNameExtensionFilter("JPEG Images", "jpg"));
+
+                int response = ourChooser.showOpenDialog(null);
+                if (response == JFileChooser.APPROVE_OPTION) {
+                    newImageName = ourChooser.getSelectedFile().getName();
+                    getArcade().getModelInterface().getEditableCurrentUser()
+                    .setPicture("src/arcade/database/images/" + newImageName);
+                    getArcade().replacePanel("UserProfile");
+                }
+
+
+            }
+
+        });
+        gameStats = "No game stats... Yet...";
         statsArea = new JTextArea(gameStats, 10, 20);
         statsArea.setLineWrap(true);
         statsArea.setWrapStyleWord(true);
@@ -102,15 +127,16 @@ public class UserProfileMainPanel extends AMainPanel {
 
         return myPanel;
     }
-    
-    
+
+
     private Image getUserPicture() {
         String fullLocation = myUser.getUserPicture();
+        System.out.println("Profile picture is: " + fullLocation);
         String fileName = fullLocation.substring(fullLocation.lastIndexOf("/"));
         String directoryLocation = fullLocation.substring(0,fullLocation.lastIndexOf("/"));
         return ImageReader.loadImage(directoryLocation, fileName);
     }
-    
+
     /*
      * 
        MigLayout layout = new MigLayout();
@@ -126,8 +152,8 @@ public class UserProfileMainPanel extends AMainPanel {
         myPanel.add(writeReviewAndRatingBut, "growx, spanx");
         myPanel.add(reviewsTitleLabel, "grow, span, wrap");
         myPanel.add(scrollingReviews, "grow, span");
-        
-        
+
+
         return myPanel;
 
     }
