@@ -36,6 +36,7 @@ public class Level {
 
     public Level (Dimension dim, UpdatableCamera inCam, String fileName) {
         objectList = new ArrayList<GameObject>();
+        conditionList = new ArrayList<Condition>();
         pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
         myCollisionChecker = new BasicCollisionChecker(fileName);
