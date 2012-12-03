@@ -286,6 +286,9 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myLevel = new Level();
         myLevel = myLevel.unpack(XmlUtilities.makeDocument(file));
         myBackground = myLevel.getBackgroundImage();
+        myBackground = myBackground.getScaledInstance(myCanvas.getWidth(), myCanvas.getHeight(),
+                java.awt.Image.SCALE_SMOOTH);
+        
     }
 
     private void saveFile (File file) {
