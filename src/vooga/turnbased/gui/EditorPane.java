@@ -47,6 +47,8 @@ public class EditorPane extends DisplayPane {
     private static final int BOX_SIZE = 25;
     static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
     private static final Image SPRITE_IMG = new ImageIcon(sprite.getAbsolutePath()).getImage();
+    static File player = new File("src/vooga/turnbased/resources/image/player.png");
+    private static final Image PLAYER_IMG = new ImageIcon(player.getAbsolutePath()).getImage();
     File flashingBox = new File("src/vooga/turnbased/resources/image/flashing-box.png");
     Image flash = new ImageIcon(flashingBox.getAbsolutePath()).getImage();
     private Point[][] GRID;
@@ -56,6 +58,8 @@ public class EditorPane extends DisplayPane {
     private Map<Point, List<Image>> myImageMap;
     private int myMapCounter = 1;
     private List<Point> myPaintedSprites = new ArrayList<Point>();
+    private Point myPlayerPoint;
+    private boolean displayPlayer;
     private PlayerEditor myPlayerEditor;
 
     /**
@@ -69,6 +73,7 @@ public class EditorPane extends DisplayPane {
         addMouseListener(new GameMouseListener());
         myDimension = new Dimension (-1, -1);
         myCurrentTile = new Point(-1, -1);
+        myPlayerPoint = new Point(-1, -1);
         myImageMap = new HashMap<Point, List<Image>>();
     }
 
@@ -106,6 +111,9 @@ public class EditorPane extends DisplayPane {
         }
         for (Point s : myPaintedSprites) {
             g.drawImage(SPRITE_IMG, s.x, s.y, BOX_SIZE, BOX_SIZE, null);
+        }
+        if (displayPlayer) {
+            g.drawImage(PLAYER_IMG, myPlayerPoint.x, myPlayerPoint.y, BOX_SIZE, BOX_SIZE, null);
         }
     }
 
@@ -149,6 +157,11 @@ public class EditorPane extends DisplayPane {
                 int returnVal = fc.showSaveDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     myPlayerEditor = new PlayerEditor(fc.getSelectedFile().toString());
+                    //TODO
+                    Point player = GRID[myCurrentTile.x][myCurrentTile.y];
+                    myPlayerPoint = new Point(player.x, player.y);
+                    displayPlayer = true;
+                    repaint();
                     editPlayer(myPlayerEditor);
                 }
                 repaint();
@@ -161,7 +174,6 @@ public class EditorPane extends DisplayPane {
         Map<String, String> imagePaths = getHardcodedImagePaths();
         p.addMapObject("", "map", "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
                 "NO_ACTION", myCurrentTile.x, myCurrentTile.y, imagePaths);
-        // TODO: add battle objects here
         final int NUM_PAIRS = OBJECTS.length;
         final JPanel P = setUpJPanel(OBJECTS, OBJECTS_DEFAULTS, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 35, 6, 6);
@@ -186,7 +198,7 @@ public class EditorPane extends DisplayPane {
                 }
                 addObjectXmlInformation(returnedValues, myPlayerEditor);
                 newPopUpMessage(
-                        "Successfully Added Object!", "To add another object, change the " +
+                        "Successfully Added Battle Object!", "To add another object, change the " +
                         "fields to desired values.  When done, close the window to continue " +
                         "game building.");
             }
