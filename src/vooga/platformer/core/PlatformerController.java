@@ -39,9 +39,6 @@ public class PlatformerController extends JPanel implements Runnable {
 
     // TODO: Make this variable hold a LevelFactory
     private DemoLevelFactory myLevelFactory;
-    private GameInitializer myGameInitializer;
-    private Player myPlayer;
-    private Image myBackground;
     private Map<String, Point> myStringMap = new HashMap<String, Point>();
     private Dimension mySize;
 
@@ -167,43 +164,7 @@ public class PlatformerController extends JPanel implements Runnable {
     }
 
 
-    /**
-     * TODO: should be removed
-     */
-    private PlatformerController myCanvas = this;
 
-    /**
-     * should be moved out of API
-     * @return
-     */
-    public KeyListener setMenuKeyListener () {
-        KeyListener kl = new KeyAdapter() {
-            @Override
-            public void keyPressed (KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_M) {
-                    final Menu menu = new Menu(myCanvas);
-                    GameButton gb1 = new GameButton("greenbutton", "Back");
-                    MouseListener gl = new MouseAdapter() {
-                        @Override
-                        public void mouseClicked (MouseEvent arg0) {
-                            myCanvas.remove(menu);
-                            myCanvas.repaint();
-                        }
-                    };
-                    gb1.addMouseListener(gl);
-                    GameButton gb2 = new GameButton("button", "Exit");
-                    gb2.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked (MouseEvent arg0) {
-                            System.exit(0);
-                        }
-                    });
-                    gb2.setSize(new Dimension(130, 130));
-                    menu.addButtons(gb1);
-                    menu.addButtons(gb2);
-                }
-            }
-        };
-        return kl;
-    }
+
+    
 }

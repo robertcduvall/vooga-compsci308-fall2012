@@ -3,6 +3,7 @@ package util.networking.chat;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import util.networking.Client;
 
@@ -13,7 +14,9 @@ import util.networking.Client;
  */
 
 public class ChatClient extends Client {
-
+    
+    private static final int TIMEOUT = 10000;
+    
     private ChatProtocol myProtocol;
     private String myUser;
     private boolean myLoggedIn;
@@ -23,6 +26,9 @@ public class ChatClient extends Client {
     public ChatClient(String host, ChatProtocol c) throws IOException{
         super(host, c.getPort());
         myProtocol = c;
+        myChatListeners = new ArrayList<ChatListener>();
+        myListUsers = new ArrayList<String>();
+        myLoggedIn = false;
     }
 
     public void login(String user, String password) {
@@ -37,6 +43,34 @@ public class ChatClient extends Client {
         send(myProtocol.createRegister(user, password));
     }
 
+    public boolean registerWithTimeout(String user, String password, int timeout) {
+        register(user, password);
+        try {
+            Thread.sleep(timeout);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (myLoggedIn) {
+            myUser = user;
+        }
+        return myLoggedIn;
+    }
+    
+    public boolean loginWithTimeout(String user, String password, int timeout) {
+        login(user, password);
+        try {
+            Thread.sleep(timeout);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (myLoggedIn) {
+            myUser = user;
+        }
+        return myLoggedIn;
+    }
+    
     public void switchUser(String user, String password) {
         logout();
         login(user, password);
@@ -53,15 +87,22 @@ public class ChatClient extends Client {
     public boolean getLoggedInStatus() {
         return myLoggedIn;
     }
+    
+    public String getUserName(){
+        return myUser;
+    }
 
     @Override
     public void processInputFromServer(String input) {
-        System.out.println("server received: " + input);
+        if (input == null || "".equals(input.trim()) )
+            return;
+        System.out.println("client received: " + input);
         ChatCommand type = myProtocol.getType(input);
         Method m;
         try {
-            m = this.getClass().getMethod(type.getMethodName(), String.class);
-            m.invoke(input);
+            m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class);
+            m.setAccessible(true);
+            m.invoke(this, input);
         }
         catch (SecurityException e) {
         }
@@ -101,11 +142,13 @@ public class ChatClient extends Client {
     @SuppressWarnings("unused")
     private void processAddUser(String input) {
         myListUsers.add(myProtocol.getUser(input));
+        fireUsersUpdateEvent();
     }
 
     @SuppressWarnings("unused")
     private void processRemoveUser(String input) {
         myListUsers.remove(myProtocol.getUser(input));
+        fireUsersUpdateEvent();
     }
 
     private synchronized void fireMessageReceivedEvent(String to, String from, String body) {
@@ -122,6 +165,13 @@ public class ChatClient extends Client {
         }
     }
 
+    private synchronized void fireUsersUpdateEvent() {
+        UsersUpdateEvent e = new UsersUpdateEvent(this, myListUsers);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleUsersUpdateEvent(e);
+        }
+    }
+    
     public synchronized void addListener(ChatListener cl){
         myChatListeners.add(cl);
     }

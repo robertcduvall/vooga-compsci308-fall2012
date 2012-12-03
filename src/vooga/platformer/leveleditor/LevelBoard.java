@@ -38,6 +38,7 @@ import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
+import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
 
@@ -67,7 +68,7 @@ public class LevelBoard extends JPanel {
     private static final String DEFAULT_COLLISION_CHECKER = "/src/vooga/platformer/";
     private static final int DEFAULT_SIZE = 30;
 
-    //Editor fields
+    // Editor fields
     private Collection<String> myAttributes;
     private int myObjID;
     private IEditorMode myCurrentMode;
@@ -82,7 +83,7 @@ public class LevelBoard extends JPanel {
     private int myHeight;
     private int myOffset;
 
-    //Level state
+    // Level state
     private Collection<GameObject> myGameObjects;
     private Collection<Condition> myConditions;
     private Collection<LevelPlugin> myPlugins;
@@ -92,7 +93,8 @@ public class LevelBoard extends JPanel {
     private String myBackgroundPath;
     private String myLevelName;
     private String myCamera;
-    //    private List<Integer> myKeyHeld;
+
+    // private List<Integer> myKeyHeld;
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
@@ -101,9 +103,8 @@ public class LevelBoard extends JPanel {
      * @param d Dimension for initial level size (determined by Frame)
      */
     public LevelBoard (Dimension d) {
-        setSize(d); 
+        setSize(d);
         initLevelDefaults();
-        myCurrentMode = new PlacementMode();
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
@@ -124,27 +125,28 @@ public class LevelBoard extends JPanel {
         myLevelName = "Level";
         myGameObjects = new ArrayList<GameObject>();
         myConditions = new ArrayList<Condition>();
-        myPlugins = new ArrayList<LevelPlugin>(); 
+        myPlugins = new ArrayList<LevelPlugin>();
         myPlayer = null;
     }
 
     private void setupInput () {
         myPlacementManager = new PlacementMouseListener(this);
-        //                        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
-        //                        FileNameExtensionFilter filter =
-        //                                new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
-        //                        chooser.setFileFilter(filter);
-        //                        int returnVal = chooser.showOpenDialog(chooser);
-        //                        if (returnVal == JFileChooser.APPROVE_OPTION) {
-        //                            try {
-        //                                myBackground = ImageIO.read(chooser.getSelectedFile());
-        //                                myBackgroundPath = chooser.getSelectedFile().getPath();
-        //                            }
-        //                            catch (IOException io) {
-        //                                System.out.println("File not found. Try again");
-        //                                myBackground = null;
-        //                            }
-        //                        }
+        // JFileChooser chooser = new
+        // JFileChooser(System.getProperty("user.dir"));
+        // FileNameExtensionFilter filter =
+        // new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
+        // chooser.setFileFilter(filter);
+        // int returnVal = chooser.showOpenDialog(chooser);
+        // if (returnVal == JFileChooser.APPROVE_OPTION) {
+        // try {
+        // myBackground = ImageIO.read(chooser.getSelectedFile());
+        // myBackgroundPath = chooser.getSelectedFile().getPath();
+        // }
+        // catch (IOException io) {
+        // System.out.println("File not found. Try again");
+        // myBackground = null;
+        // }
+        // }
         myKeyListener = new ScrollingKeyListener(this);
 
         myButtonListener = new MouseAdapter() {
@@ -176,10 +178,10 @@ public class LevelBoard extends JPanel {
                     else if ("Plugin".equals(cmmd)) {
                         System.out.println("plugin");
                     }
-                    ((PlacementMouseListener)myPlacementManager).setCurrent(obj);
+                    ((PlacementMouseListener) myPlacementManager).setCurrent(obj);
                     myGameObjects.add(obj);
                 }
-                catch(IOException ex) {
+                catch (IOException ex) {
                     ex.printStackTrace();
                 }
 
@@ -217,11 +219,11 @@ public class LevelBoard extends JPanel {
         return myPlacementManager;
     }
 
-    public void setOffset(int offset) {
+    public void setOffset (int offset) {
         myOffset = offset;
     }
 
-    public void setMouseLoc(int xloc, int yloc) {
+    public void setMouseLoc (int xloc, int yloc) {
         mouseX = xloc;
         mouseY = yloc;
     }
@@ -236,25 +238,27 @@ public class LevelBoard extends JPanel {
         }
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
-                this);
+                                   this);
         for (GameObject obj : myGameObjects) {
-            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX() - myOffset, (int) obj.getY(),
-                    (int) obj.getWidth(), (int) obj.getHeight(), null);
+            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX() - myOffset,
+                                       (int) obj.getY(), (int) obj.getWidth(),
+                                       (int) obj.getHeight(), null);
         }
         String mousemsg = "";
         if (myCurrentObject != null) {
             myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2 + myOffset);
             myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
-            myBufferGraphics.drawRect((int)myCurrentObject.getX()-myOffset, (int)myCurrentObject.getY(),
-                    (int)myCurrentObject.getWidth(), (int)myCurrentObject.getHeight());
+            myBufferGraphics.drawRect((int) myCurrentObject.getX() - myOffset,
+                                      (int) myCurrentObject.getY(),
+                                      (int) myCurrentObject.getWidth(),
+                                      (int) myCurrentObject.getHeight());
             mousemsg = "Current Sprite = (";
         }
         else {
             mousemsg = "Mouse Location = ";
         }
-        myBufferGraphics.drawString(mousemsg + mouseX + ", " + mouseY + ")",
-                getWidth() - 250, 30);
+        myBufferGraphics.drawString(mousemsg + mouseX + ", " + mouseY + ")", getWidth() - 250, 30);
     }
 
     /**
@@ -299,7 +303,7 @@ public class LevelBoard extends JPanel {
         myGameObjects = loader.getGameObjects();
         myConditions = loader.getConditions();
         myPlugins = loader.getLevelPlugins();
-        myLevelName = loader.getLevelType();
+        myLevelName = loader.getLevelName();
         myWidth = loader.getWidth();
         myHeight = loader.getHeight();
     }
@@ -321,7 +325,7 @@ public class LevelBoard extends JPanel {
         j3.addActionListener(sh);
         pop.add(j3);
         pop.show(this.getParent(), (int) (g.getX() + g.getWidth() / 2),
-                (int) (g.getY() + g.getHeight()));
+                 (int) (g.getY() + g.getHeight()));
     }
 
     /**
@@ -354,7 +358,7 @@ public class LevelBoard extends JPanel {
         myGameObjects.remove(obj);
     }
 
-    protected void setGrav(int value) {
+    protected void setGrav (int value) {
         System.out.println(value);
     }
 
@@ -390,7 +394,7 @@ public class LevelBoard extends JPanel {
                 pop.add(j);
             }
             pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
-                    (int) (myObject.getY() + myObject.getHeight() / 2));
+                     (int) (myObject.getY() + myObject.getHeight() / 2));
 
             /*
              * create a list of attributes from the resource file
@@ -426,13 +430,32 @@ public class LevelBoard extends JPanel {
     }
 
     /**
-     * Sets the current editor mode.
-     * @param nextMode The mode that the editor will transition to. 
+     * Switches from one mode to the next, saving objects from the first and
+     * ensuring
+     * these are successfully handed to the next mode.
+     * 
+     * @param currentMode The current mode the editor is in.
+     * @param nextMode The next mode the editor is about to transition to.
+     */
+    private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
+        if (currentMode != null) {
+            Collection<IEditorObject> editorObjectsToKeep = currentMode.getEditorObjects();
+            for (IEditorObject objectFromPreviousMode : editorObjectsToKeep) {
+                nextMode.add(objectFromPreviousMode);
+            }
+        }
+    }
+
+    /**
+     * Switches the current mode of the editor (e.g. drawing mode or game object
+     * placement mode) to another mode specified by the parameter
+     * <code>nextmode</code>.
+     * 
+     * @param nextMode The mode which the editor should switch to.
      */
     public void setMode (IEditorMode nextMode) {
-        if (nextMode == null) {
-            throw new IllegalArgumentException();
-        }
+        if (nextMode == null) { throw new IllegalArgumentException(); }
+        transitionBetweenModes(myCurrentMode, nextMode);
         myCurrentMode = nextMode;
     }
 }

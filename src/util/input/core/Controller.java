@@ -25,11 +25,11 @@ import util.input.inputhelpers.UKeyCode;
 public abstract class Controller<T> {
 
     protected static final int NO_ACTION = -1;
+    private static final int NUM_COLUMNS = 4;
     private static final String BUTTON_DESCRIPTION = "Button Description";
     private static final String ACTION_DESCRIPTION = "Action Description";
     private static final String KEYCODE = "KeyCode";
     private static final String TUPLE = "Tuple";
-    private static final int NUM_COLUMNS = 4;
 
     private String[] myColumnName;
 
@@ -196,6 +196,7 @@ public abstract class Controller<T> {
         Map<String, Object> dataIn = new HashMap<String, Object>();
         dataIn.put(TUPLE, new FlagPair<Class, Method>(c, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
+
         myDataTable.addNewRow(dataIn);
     }
 

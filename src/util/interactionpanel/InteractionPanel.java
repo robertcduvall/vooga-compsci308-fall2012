@@ -1,4 +1,4 @@
-package vooga.turnbased.gui.interactionpanel;
+package util.interactionpanel;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -26,7 +26,7 @@ public class InteractionPanel {
     private static final int COLUMN_NUMBER = 2;
     private static final double MARGIN_PROPORTION = 0.1;
     private static Image myBulletPointImage = Toolkit.getDefaultToolkit()
-            .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
+           .createImage("src/vooga/turnbased/resources/image/GUI/bullet-point-1.png");
     private static Dimension ourBulletSize = new Dimension(40, 40);
 
     private int myBulletPointIndex;
@@ -39,11 +39,18 @@ public class InteractionPanel {
     private List<StrategyOption> myOptions;
     private List<Point> myOptionPositions;
 
+    /**
+     * 
+     * @param options
+     */
     public InteractionPanel (List<String> options) {
         this();
         myOptions = addOptions(options);
     }
-    
+    /**
+     * 
+     * @param options
+     */
     public InteractionPanel (Set<String> options) {
         this();
         myOptions = addOptions(options);

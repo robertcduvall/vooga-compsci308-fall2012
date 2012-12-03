@@ -23,6 +23,21 @@ import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
  * by the user. Each mode must be able to paint the objects it manipulates,
  * if need be.
  * 
+ * There are two scenarios that you may encounter if you want to get a
+ * class that implements this interface to work with the rest of the
+ * level editor. 
+ * 
+ * 1) If the implementing class uses a constructor that takes
+ * particular parameters, you must add some instantiation logic to the
+ * editor's factory (the ModeChooser class). 
+ * 
+ * 2) If the class that implements
+ * this interface has a parameterless constructor then nothing whatsoever
+ * needs to be done to get the level editor to work with your new class.
+ * The factory will automatically find it, offer the user an option to
+ * switch the editor to the new mode and will switch to it if the user
+ * selects it.
+ * 
  * @author Paul Dannenberg
  * 
  */

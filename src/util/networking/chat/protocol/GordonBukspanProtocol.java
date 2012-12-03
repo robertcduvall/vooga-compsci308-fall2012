@@ -232,13 +232,13 @@ public class GordonBukspanProtocol implements ChatProtocol {
         String xmlString = null;
         Document doc = XmlUtilities.makeDocument();
         Element root = XmlUtilities.makeElement(doc, parent);
-        for (String tag : xmlMap.values()) {
+        for (String tag : xmlMap.keySet()) {
             Element current = XmlUtilities.makeElement(doc, tag, xmlMap.get(tag));
             root.appendChild(current);
         }
         doc.appendChild(root);
         try {
-            xmlString = XmlUtilities.getXmlAsString(doc);
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
         }
         catch (TransformerException e) {
         }

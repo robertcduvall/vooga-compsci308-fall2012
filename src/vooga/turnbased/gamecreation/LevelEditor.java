@@ -65,6 +65,22 @@ public class LevelEditor extends Editor {
         myFileName = fileName;
     }
 
+    public void initialize () {
+        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map1");
+        Element battleMode = addMode("battle", "vooga.turnbased.gamecore.gamemodes.BattleMode",
+                "dobattle");
+        XmlUtilities.appendElement(myModeElement, battleMode);
+        Element gameOver = addMode("gameOver", "vooga.turnbased.gamecore.gamemodes.GameOverMode",
+                "endgame");
+        XmlUtilities.appendElement(myModeElement, gameOver);
+        Element option = addMode("optionMode", "vooga.turnbased.gamecore.gamemodes.OptionMode",
+                "optionstuff");
+        XmlUtilities.appendElement(myModeElement, option);
+        Element map1 = addMode("map1", "vooga.turnbased.gamecore.gamemodes.MapMode",
+                "entermap1");
+        XmlUtilities.appendElement(myModeElement, map1);
+    }
+
     /**
      * 
      * @param width Describes width of the Map dimension
@@ -120,30 +136,25 @@ public class LevelEditor extends Editor {
     }
 
     /**
-     * Adds the start mode element, which is always map.
-     */
-    public void addStartMode () {
-        XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map");
-    }
-
-    /**
      * 
      * @param name Name of Declared mode
      * @param classMode Class used for the mode
      * @param conditions Either single string value or multiple comma separated strings
      */
-    public void addMode (String name, String classMode, String conditions) {
+    public Element addMode (String name, String classMode, String conditions) {
+        Element mode = null;
         if (conditions.contains(",")) {
             conditions.replaceAll("\\s", "");
             String[] newConditions = conditions.split("\\s*,\\s*");
-            addMode(name, classMode, newConditions);
+            mode = addMode(name, classMode, newConditions);
         }
         else {
-            Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
+            mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
             XmlUtilities.appendElement(myXmlDocument, mode, NAME, name);
             XmlUtilities.appendElement(myXmlDocument, mode, CLASS, classMode);
             XmlUtilities.appendElement(myXmlDocument, mode, CONDITION, conditions);
         }
+        return mode;
     }
 
     /**
@@ -152,13 +163,14 @@ public class LevelEditor extends Editor {
      * @param classMode Class used for the mode
      * @param conditions multiple condition tags to be added
      */
-    public void addMode (String name, String classMode, String[] conditions) {
+    public Element addMode (String name, String classMode, String[] conditions) {
         Element mode = XmlUtilities.appendElement(myXmlDocument, myModeElement, MODE);
         XmlUtilities.appendElement(myXmlDocument, mode, NAME, name);
         XmlUtilities.appendElement(myXmlDocument, mode, CLASS, classMode);
         for (String condition : conditions) {
             XmlUtilities.appendElement(myXmlDocument, mode, CONDITION, condition);
         }
+        return mode;
     }
 
     /**
@@ -193,27 +205,8 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myXmlDocument, location, "y", y);
         addImagesToXml(objectElement, imagePaths);
         Element statsElement = XmlUtilities.appendElement(myXmlDocument, objectElement, "stats");
-        addStatsToXml(statsElement, stats);
+        addStatsToXml(myXmlDocument, statsElement, stats);
         XmlUtilities.appendElement(myXmlDocument, objectElement, NAME, name);
-    }
-
-    private void addImagesToXml (Element objectElement, String imagePaths) {
-        imagePaths.replaceAll("\\s", "");
-        String[] allImages = imagePaths.split("\\s*,\\s*");
-        for (String image : allImages) {
-            XmlUtilities.appendElement(myXmlDocument, objectElement, IMAGE, image);
-        }
-    }
-
-    private void addStatsToXml (Element e, String stats) {
-        if (!stats.equals("")) {
-            stats.replaceAll("\\s", "");
-            String[] allStats = stats.split("\\s*,\\s*");
-            for (String stat : allStats) {
-                String[] singleStat = stat.split("\\s*:\\s*");
-                XmlUtilities.appendElement(myXmlDocument, e, singleStat[0], singleStat[1]);
-            }
-        }
     }
 
     private void addDimension (String tagName, String width, String height) {
@@ -228,6 +221,25 @@ public class LevelEditor extends Editor {
         Element h = XmlUtilities.getElement(dimension, HEIGHT);
         XmlUtilities.setContent(w, width);
         XmlUtilities.setContent(h, height);
+    }
+
+    private void addStatsToXml (Document d, Element e, String stats) {
+        if (!stats.equals("")) {
+            stats.replaceAll("\\s", "");
+            String[] allStats = stats.split("\\s*,\\s*");
+            for (String stat : allStats) {
+                String[] singleStat = stat.split("\\s*:\\s*");
+                XmlUtilities.appendElement(d, e, singleStat[0], singleStat[1]);
+            }
+        }
+    }
+
+    private void addImagesToXml (Element objectElement, String imagePaths) {
+        imagePaths.replaceAll("\\s", "");
+        String[] allImages = imagePaths.split("\\s*,\\s*");
+        for (String image : allImages) {
+            XmlUtilities.appendElement(myXmlDocument, objectElement, "image", image);
+        }
     }
 
     /**

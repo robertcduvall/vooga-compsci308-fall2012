@@ -16,8 +16,14 @@ public class TransportStrategy extends MapStrategy {
 
     private static final String MODE_EVENT = "map2";
     private Point myNewPlayerLocation;
-    private MapObject myMapObject; //should be moved to parent class MapStrategy
+  //should be moved to parent class MapStrategy
+    private MapObject myMapObject; 
 
+    /**
+     * Constructor
+     * @param mapObject The mapObject that is being transported
+     * @param location The location of the MapObject
+     */
     public TransportStrategy (MapObject mapObject, Point location) {
         super();
         myMapObject = mapObject;
@@ -30,7 +36,7 @@ public class TransportStrategy extends MapStrategy {
      * perform the strategy
      * on an object that should be ported to another location
      * 
-     * @param s The MapObject on which the strategy is applied
+     * @param target The MapObject on which the strategy is applied
      */
     @Override
     public void performStrategy (MapObject target) {

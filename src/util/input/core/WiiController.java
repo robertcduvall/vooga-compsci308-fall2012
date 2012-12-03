@@ -45,12 +45,12 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
 
     /**
      * Create a new Wii controller.
-     * 
+     *
      */
-    public WiiController () {
+    public WiiController (int controllerNum) {
         super();
         Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
-        Wiimote wiimote = wiimotes[0];
+        Wiimote wiimote = wiimotes[controllerNum];
         wiimote.addWiiMoteEventListeners(this);
     }
 
@@ -86,7 +86,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onMotionSensingEvent (MotionSensingEvent arg0) {
         try {
-            performReflections(arg0, "onMotionSensingEvent", -1);
+            performReflections(arg0, "onMotionSensingEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -102,7 +102,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onClassicControllerInsertedEvent (ClassicControllerInsertedEvent arg0) {
         try {
-            performReflections(arg0, "onClassicControllerInsertedEvent", -1);
+            performReflections(arg0, "onClassicControllerInsertedEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -118,7 +118,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onClassicControllerRemovedEvent (ClassicControllerRemovedEvent arg0) {
         try {
-            performReflections(arg0, "onClassicControllerRemovedEvent", -1);
+            performReflections(arg0, "onClassicControllerRemovedEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -134,7 +134,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onDisconnectionEvent (DisconnectionEvent arg0) {
         try {
-            performReflections(arg0, "onDisconnectionEvent", -1);
+            performReflections(arg0, "onDisconnectionEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -150,7 +150,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onExpansionEvent (ExpansionEvent arg0) {
         try {
-            performReflections(arg0, "onExpansionEvent", -1);
+            performReflections(arg0, "onExpansionEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -167,7 +167,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onGuitarHeroInsertedEvent (GuitarHeroInsertedEvent arg0) {
         try {
-            performReflections(arg0, "onGuitarHeroInsertedEvent", -1);
+            performReflections(arg0, "onGuitarHeroInsertedEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -183,7 +183,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onGuitarHeroRemovedEvent (GuitarHeroRemovedEvent arg0) {
         try {
-            performReflections(arg0, "onGuitarHeroRemovedEvent", -1);
+            performReflections(arg0, "onGuitarHeroRemovedEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -199,7 +199,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onIrEvent (IREvent arg0) {
         try {
-            performReflections(arg0, "onIrEvent", -1);
+            performReflections(arg0, "onIrEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -215,7 +215,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onNunchukInsertedEvent (NunchukInsertedEvent arg0) {
         try {
-            performReflections(arg0, "onNunchukInsertedEvent", -1);
+            performReflections(arg0, "onNunchukInsertedEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -231,7 +231,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onNunchukRemovedEvent (NunchukRemovedEvent arg0) {
         try {
-            performReflections(arg0, "onNunchukRemovedEvent", -1);
+            performReflections(arg0, "onNunchukRemovedEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously
@@ -248,7 +248,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
     @Override
     public void onStatusEvent (StatusEvent arg0) {
         try {
-            performReflections(arg0, "onStatusEvent", -1);
+            performReflections(arg0, "onStatusEvent", Controller.NO_ACTION);
         }
         catch (IllegalAccessException e1) {
             // this will never be thrown because it was checked for previously

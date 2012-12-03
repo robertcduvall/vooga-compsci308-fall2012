@@ -66,7 +66,7 @@ public class LevelFileIOWithSerializationTest {
 
     @Test
     public void testgetLevelID () throws Exception {
-        Assert.assertEquals(LEVEL_ID, lfr.getLevelID());
+        Assert.assertEquals(LEVEL_ID, lfr.getLevelName());
     }
 
     @Test
