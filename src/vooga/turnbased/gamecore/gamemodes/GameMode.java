@@ -31,8 +31,8 @@ public abstract class GameMode {
      * 
      * @param gm The GameManager which receives information about how sprites
      *        interact.
-     * @param allowableModes Type of GameObject associated with GameMode
-     *        being constructed.
+     * @param modeName String name of the type of mode to create.
+     * @param involvedIDs List of IDs of sprites involved in the gamemode.
      */
     public GameMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         myGameManager = gm;
@@ -42,45 +42,62 @@ public abstract class GameMode {
         isOver = false;
         acquireGameObjects();
     }
-    
-    protected void acquireGameObjects() {
+
+    protected void acquireGameObjects () {
         myGameObjects = new ArrayList<GameObject>();
         myGameObjects.addAll(myGameManager.getGameObjects(getName()));
     }
-    
-    protected List<? extends GameObject> getGameObjects() {
+
+    protected List<? extends GameObject> getGameObjects () {
         return myGameObjects;
     }
-    
-    protected List<? extends GameObject> getGameObjectsByID(int spriteID) {
+
+    protected List<? extends GameObject> getGameObjectsByID (int spriteID) {
         List<GameObject> gameObjectsOfID = new ArrayList<GameObject>();
-        for(GameObject go : myGameObjects) {
+        for (GameObject go : myGameObjects) {
             if (go.getID() == spriteID) {
                 gameObjectsOfID.add(go);
             }
         }
         return gameObjectsOfID;
     }
-    
-    public String getName() {
+
+    /**
+     * Returns the name of the mode.
+     * 
+     * @return Name of mode.
+     */
+    public String getName () {
         return myModeName;
     }
-    
+
+    /**
+     * Returns the GameManager currently associated with the mode.
+     * 
+     * @return myGameManager
+     */
+
     public GameManager getGameManager () {
         return myGameManager;
     }
 
+    /**
+     * Associates the list of involved sprites with the condition detailed in the string.
+     * 
+     * @param conditionName String name of condition to be assigned to the sprites.
+     * @param involvedSpriteIDs List of sprites to which the condition will be applied.
+     */
     public void flagCondition (String conditionName, List<Integer> involvedSpriteIDs) {
         myGameManager.flagCondition(conditionName, involvedSpriteIDs);
     }
 
     /**
-     * Call when gamemode if first created
+     * Call when gamemode if first created.
      */
     public abstract void initialize ();
 
     /**
-     * Suspend a mode while entering a different mode
+     * Suspend a mode while entering a different mode.
      */
     public abstract void pause ();
 
@@ -101,6 +118,11 @@ public abstract class GameMode {
      */
     public abstract void update ();
 
+    /**
+     * Returns whether or not the mode has focus.
+     * 
+     * @return myHasFocus
+     */
     public boolean hasFocus () {
         return myHasFocus;
     }
@@ -108,26 +130,44 @@ public abstract class GameMode {
     protected void setFocus (boolean isFocus) {
         myHasFocus = isFocus;
     }
-    
-    protected void setActive() {
+
+    protected void setActive () {
         isActive = true;
     }
-    
-    protected void setInactive() {
+
+    protected void setInactive () {
         isActive = false;
     }
-    
-    public boolean isActive() {
+
+    /**
+     * Returns whether or not the mode is active.
+     * 
+     * @return Boolean true if mode is active, false if not.
+     */
+    public boolean isActive () {
         return isActive;
     }
-    
-    public boolean isOver() {
+
+    /**
+     * Returns whether or not the mode should be over.
+     * 
+     * @return Boolean true if mode should be over, false if not.
+     */
+    public boolean isOver () {
         return isOver;
     }
 
+    /**
+     * Takes mouse input and decides how to deal with this input; to be implemented by child
+     * classes.
+     * 
+     * @param mousePressed int 1 if mouse is pressed, 0 if not.
+     * @param mousePosition Point position of mouse cursor.
+     * @param mouseButton int of button of mouse.
+     */
     public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
-    
-    protected void setModeIsOver() {
+
+    protected void setModeIsOver () {
         isOver = true;
     }
     
