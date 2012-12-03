@@ -3,28 +3,21 @@ package vooga.platformer.leveleditor;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -40,8 +33,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
-import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.StaticObject;
 
 /**
  * Frame containing all the elements needed to build and save a level
@@ -52,6 +45,7 @@ import vooga.platformer.gameobject.GameObject;
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
+    private static final String DATA_FOLDER = "/src/vooga/platformer/data/";
     private Map<String, List<String>> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -102,8 +96,8 @@ public class LevelEditor extends JPanel {
                          current.setGrav(temp);
                     }
                     catch (NumberFormatException e) {
-                        JLabel error = new JLabel("Entry invalid.\n Enter an integer.");
-                        jpop.add(error);
+                        JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
+                        jpop.add(errormsg);
                         jpop.pack();
                         jpop.repaint();
                     }
@@ -161,11 +155,32 @@ public class LevelEditor extends JPanel {
             j.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent event) {
+                    GameObject obj;
+                    File f = new File(System.getProperty("user.dir")+DATA_FOLDER+"Default.png");
+                    if("StaticObject".equals(event.getActionCommand())) {
+                        try {
+                            obj = new StaticObject((double)comp.getX(), (double)comp.getY(), (double)OBJECT_BUTTON_SIZE, (double)OBJECT_BUTTON_SIZE,
+                                    myBoard.nextID(), f);
+                            myBoard.addObject(obj);
+                        }
+                        catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
                     // TODO replace null value for spriteID with a unique id value
 //                    Sprite s = new Sprite(event.getActionCommand(), x, y, OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
 //                            null, IMAGE_PATH + event.getActionCommand() + ".png");
-                    GameObject obj = new StaticObject();
-                    myBoard.add(obj);
+//                    try {
+//                        GameObject obj = new StaticObject(comp.getX(), comp.getY(), OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
+//                                myObjID++, new File(IMAGE_PATH+"Default.png"));
+//                        myBoard.add(obj);
+//                    }
+//                    catch (IOException e) {
+//                        // TODO Auto-generated catch block
+//                        e.printStackTrace();
+//                    }
+//                    myBoard.addObject(//"vooga.platformer.gameobject."+event.getActionCommand(), comp.getX(), comp.getY(), OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
                 }
             });
             pop.add(j);
@@ -216,19 +231,13 @@ public class LevelEditor extends JPanel {
     private void fillMap() {
         myObjectTypes = new HashMap<String, List<String>>();
         List<String> list = new ArrayList<String>();
-        list.add("Yoshi");
-        list.add("Pink Yoshi");
-        myObjectTypes.put("Yoshi", list);
-        list = new ArrayList<String>();
-        list.add("Mario");
+        list.add("StaticObject");
         myObjectTypes.put("Mario", list);
         list = new ArrayList<String>();
-        list.add("Bowser");
-        list.add("Baby Bowser");
-        myObjectTypes.put("Bowser", list);
+        list.add("Enemy");
+        myObjectTypes.put("Koopa", list);
         list = new ArrayList<String>();
-        list.add("StaticObject");
-        list.add("Question Block");
-        myObjectTypes.put("Block", list);
+        list.add("Player");
+        myObjectTypes.put("Goomba", list);
     }
 }
