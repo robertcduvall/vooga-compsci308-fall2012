@@ -2,6 +2,7 @@ package vooga.platformer.leveleditor;
 
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
@@ -42,13 +43,14 @@ public class EditorMenuBar extends JMenuBar{
                 myEditor.save();
             }
         });
-        levelMenu.add(new AbstractAction("Add Level Attribute") {
+        JMenu attributeMenu = new JMenu("Add Level Attribute");
+        attributeMenu.add(new AbstractAction("Gravity") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: add submenu for default level attributes and new attributes 
+                myEditor.addAttribute(e.getActionCommand());
             }
         });
-
+        levelMenu.add(attributeMenu);
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("New") {
             @Override

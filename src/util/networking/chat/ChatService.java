@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ public class ChatService implements Service {
         myUsersToSockets = new HashMap<String, Socket>();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void serve (Socket socket, Server server) {
         myServer = (ChatServer) server;
@@ -43,11 +45,13 @@ public class ChatService implements Service {
         }
         catch (IOException e) {
         }
-
+        
+        write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet().toArray(new String[0]))));
+        
         while (true && in != null) {
             try {
                 String input = in.readLine();
-                System.out.println("received: " + input);
+                System.out.println("server received: " + input);
                 ChatCommand type = myProtocol.getType(input);
                 Method m;
                 m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
@@ -85,7 +89,7 @@ public class ChatService implements Service {
         String user = myProtocol.getUser(input);
         if (authorized(user, socket)) {
             removeUser(user, socket);
-            write(socket, myProtocol.createLoggedIn(false));
+            write(socket, myProtocol.createLoggedIn(user, false));
             try {
                 socket.close();
             }
@@ -106,11 +110,11 @@ public class ChatService implements Service {
             write(socket, myProtocol.createError("User already logged in."));
         }
         else if (myServer.login(user, password)) {
-            write(socket, myProtocol.createLoggedIn(true));
+            write(socket, myProtocol.createLoggedIn(user, true));
             addUser(user, socket);
         }
         else {
-            write(socket, myProtocol.createLoggedIn(false));
+            write(socket, myProtocol.createLoggedIn(user, false));
         }
     }
 
@@ -126,7 +130,7 @@ public class ChatService implements Service {
             myServer.addUser(user, password);
             myServer.login(user, password);
             addUser(user, socket);
-            write(socket, myProtocol.createLoggedIn(true));
+            write(socket, myProtocol.createLoggedIn(user, true));
         }
     }
 

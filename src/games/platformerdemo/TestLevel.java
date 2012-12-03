@@ -19,7 +19,7 @@ public class TestLevel extends Level {
     private Player myPlayer;
 
     public TestLevel(Dimension dim, CollisionChecker cc, Camera c) {
-        super(dim, c);
+        super(dim, c, "src/games/platformerdemo/demoCollisionEvents.xml");
         numEnemies = 0;
         myPlayer = null;
     }

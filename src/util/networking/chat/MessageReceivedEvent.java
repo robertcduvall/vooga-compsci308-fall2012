@@ -1,6 +1,5 @@
 package util.networking.chat;
 import java.util.EventObject; 
-import util.networking.ClientEvent;
 
 
 /**
@@ -8,7 +7,9 @@ import util.networking.ClientEvent;
  * @author Connor Gordon
  *
  */
-public class MessageReceivedEvent extends EventObject implements ClientEvent {
+public class MessageReceivedEvent extends EventObject{
+
+    private static final long serialVersionUID = -5925559604006719359L;
     private String myRecipient;
     private String mySender;
     private String myMessageBody;
@@ -30,9 +31,5 @@ public class MessageReceivedEvent extends EventObject implements ClientEvent {
     
     public String getMessageBody(){
         return myMessageBody;
-    }
-    
-    public String getName() {
-        return "NewMessage";
     }
 }

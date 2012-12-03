@@ -7,6 +7,8 @@ import java.util.Collection;
 import util.reflection.ReflectionException;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.util.camera.FollowingCamera;
@@ -42,23 +44,26 @@ public final class LevelFactory {
      */
     public static Level loadLevel (String levelName) throws LevelFileIOException {
         try {
+            
             LevelFileReader lfr = new LevelFileReader(levelName);
             Dimension levelDimension = new Dimension(lfr.getWidth(), lfr.getHeight());
             Collection<GameObject> levelGameObjects = lfr.getGameObjects();
             GameObject player = findPlayerGameObject(levelGameObjects);
             UpdatableCamera followCam =
                     new FollowingCamera(DEFAULT_CAMERA_SIZE, new Rectangle(levelDimension.width,
-                                                                           levelDimension.width),
+                                                                           levelDimension.height),
                                         player);
 
-            Level level = new Level(levelDimension, followCam);
+            Level level = new Level(levelDimension, followCam, lfr.getCollisionCheckerPath());
 
             for (GameObject g : levelGameObjects) {
                 level.addGameObject(g);
             }
             level.setPlayer((Player) player);
+            addConditionsAndPlugins(lfr, level);
 
             return level;
+            
         }
         catch (ReflectionException e) {
             throw new LevelFileIOException("Class name in Level file not found.", e);
@@ -71,10 +76,25 @@ public final class LevelFactory {
         }
     }
 
+    private static void addConditionsAndPlugins (LevelFileReader lfr, Level level) {
+
+        Collection<Condition> levelConditions = lfr.getConditions();
+        for (Condition c : levelConditions) {
+            level.addCondition(c);
+        }
+
+        Collection<LevelPlugin> levelPlugins = lfr.getLevelPlugins();
+        for (LevelPlugin lp : levelPlugins) {
+            level.addPlugin(lp);
+        }
+
+    }
+
     private static GameObject findPlayerGameObject (Collection<GameObject> gameObjects) {
         for (GameObject g : gameObjects) {
             if (g instanceof Player) { return g; }
         }
+
         throw new LevelFileIOException("No Player GameObject in data file");
     }
 

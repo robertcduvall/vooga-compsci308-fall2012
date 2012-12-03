@@ -107,22 +107,22 @@ public class GameCenter {
     public List<String> getGameListByTagName (String tag) {
         List<String> gameList = new ArrayList<String>();
         for (Game gm : myGames) {
-            if (gm.getGameInfoList().contains(tag)) {
+            if (gm.getTags().contains(tag)) {
                 gameList.add(gm.getGameName());
             }
         }
         return gameList;
     }
 
-    // public static void main (String args[]) {
-    // System.out.println("haha");
-    // GameCenter gc = new GameCenter();
-    // gc.getGameList();
-    // System.out.println(gc.myGames.size());
-    // Game rpg = gc.getGame("Turnbased RPG");
-    // System.out.println(rpg.getGameInfoList());
-    // System.out.println(rpg.getAverageRating());
-    // rpg.getReviews();
-    // System.out.println(gc.getGameListByTagName("turnbased"));
-    // }
+//     public static void main (String args[]) {
+//     System.out.println("haha");
+//     GameCenter gc = new GameCenter();
+//     gc.getGameList();
+//     System.out.println(gc.myGames.size());
+//     Game rpg = gc.getGame("Turnbased RPG");
+//     System.out.println(rpg.getGameInfoList());
+//     System.out.println(rpg.getAverageRating());
+//     rpg.getReviews();
+//     System.out.println(gc.getGameListByTagName("fun"));
+//     }
 }
