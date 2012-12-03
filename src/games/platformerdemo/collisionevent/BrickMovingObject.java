@@ -11,46 +11,43 @@ import vooga.platformer.util.enums.Direction;
 
 public class BrickMovingObject extends CollisionEvent {
 
-    private StaticObject myBrick;
-    private MovingObject myMovingObject;
-
-    public BrickMovingObject (StaticObject a, MovingObject b) {
-        super(a, b);
-        myBrick = (StaticObject) this.a();
-        myMovingObject = (MovingObject) this.b();
+    public BrickMovingObject (Class typeA, Class typeB) {
+        super(typeA, typeB);
     }
 
-    public BrickMovingObject (MovingObject a, StaticObject b) {
-        this(b, a);
-    }
+    /**
+     * gameObjectA is StaticObject, gameObjectB is MovingObject
+     */
     @Override
     public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {
-        Rectangle2D intersection = myBrick.getShape().createIntersection(
-                myMovingObject.getShape());
+        StaticObject brick = (StaticObject)gameObjectA;
+        MovingObject moveObj = (MovingObject)gameObjectB;
+        Rectangle2D intersection = brick.getShape().createIntersection(
+                moveObj.getShape());
         double dy = intersection.getHeight();
         double dx = intersection.getWidth();
         if (direction() == Direction.DOWN) {
-            myMovingObject.setY(myMovingObject.getY() - dy);
+            moveObj.setY(moveObj.getY() - dy);
             // changed here
-            myMovingObject.setVelocity(myMovingObject.getVelocity().getX(), 0);
+            moveObj.setVelocity(moveObj.getVelocity().getX(), 0);
         }
         else if (direction() == Direction.UP) {
-            myMovingObject.setY(myMovingObject.getY() + dy);
+            moveObj.setY(moveObj.getY() + dy);
         }
         if (direction() == Direction.RIGHT) {
-            resetCenterRight(dx);
+            resetCenterRight(moveObj, dx);
         }
         else if (direction() == Direction.LEFT) {
-            resetCenterLeft(dx);
+            resetCenterLeft(moveObj, dx);
         }
-        myMovingObject.setOnGround();
+        moveObj.setOnGround();
     }
 
-    protected void resetCenterLeft (double dx) {
-        myMovingObject.setX(myMovingObject.getX() + dx);
+    protected void resetCenterLeft (GameObject gameObj, double dx) {
+        gameObj.setX(gameObj.getX() + dx);
     }
 
-    protected void resetCenterRight (double dx) {
-        myMovingObject.setX(myMovingObject.getX() - dx);
+    protected void resetCenterRight (GameObject gameObj, double dx) {
+        gameObj.setX(gameObj.getX() - dx);
     }
 }
