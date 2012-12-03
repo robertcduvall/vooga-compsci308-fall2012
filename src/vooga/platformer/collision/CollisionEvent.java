@@ -20,25 +20,38 @@ import vooga.platformer.util.enums.Direction;
  * 
  */
 public abstract class CollisionEvent {
-    private GameObject a;
-    private GameObject b;
+    private Class myTypeA;
+    private Class myTypeB;
+    private GameObject myObjectA;
+    private GameObject myObjectB;
     private Direction myDirection;
     private Dimension2D myIntersectSize = new Dimension();;
 
-    public CollisionEvent (GameObject a, GameObject b) {
-        this.a = a;
-        this.b = b;
+    public CollisionEvent (GameObject objectA, GameObject objectB) {
+        myTypeA = objectA.getClass();
+        myTypeB = objectB.getClass();
+        myObjectA = objectA;
+        myObjectB = objectB;
         computeDirection();
     }
 
-    public abstract void applyCollision (Level level);
+    public abstract void applyCollision (Level level, GameObject objectA, GameObject objectB);
+    
+    public void apply(Level level, GameObject objectA, GameObject objectB){
+        if(myTypeA.equals(objectA.getClass()) && myTypeB.equals(objectB.getClass())) {
+            applyCollision(level, objectA, objectB);
+        }
+        else {
+            applyCollision(level, objectB, objectA);
+        }
+    }
 
     protected GameObject a () {
-        return a;
+        return myObjectA;
     }
 
     protected GameObject b () {
-        return b;
+        return myObjectB;
     }
 
     protected Direction direction () {
@@ -46,13 +59,13 @@ public abstract class CollisionEvent {
     }
 
     private void computeDirection () {
-        Rectangle2D intersection = a.getShape()
-                .createIntersection(b.getShape());
+        Rectangle2D intersection = myObjectA.getShape()
+                .createIntersection(myObjectB.getShape());
         myIntersectSize.setSize(intersection.getWidth(),
                 intersection.getHeight());
         // lateral collision ?
         if (myIntersectSize.getHeight() > myIntersectSize.getWidth()) {
-            if (a.getX() > b.getX()) { // determine collision direction
+            if (myObjectA.getX() > myObjectB.getX()) { // determine collision direction
                 myDirection = Direction.RIGHT;
             }
             else {
@@ -61,7 +74,7 @@ public abstract class CollisionEvent {
         }
         // vertical collision
         else {
-            if (a.getY() > b.getY()) { // determine collision direction
+            if (myObjectA.getY() > myObjectB.getY()) { // determine collision direction
                 myDirection = Direction.DOWN;
             }
             else {

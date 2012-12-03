@@ -41,5 +41,13 @@ public interface XmlTags {
     public static final String ID = "id";
 
     public static final String GAMEOBJECT_DATA = "gameObjectData";
+    
+    public static final String COLLISIONEVENT = "collisionEvent";
+    
+    public static final String COLLISIONEVENTCLASS = "collisionEventClass";
+    
+    public static final String GAMEOBJECTA = "gameObjectA";
+    
+    public static final String GAMEOBJECTB = "gameObjectB";
 
 }

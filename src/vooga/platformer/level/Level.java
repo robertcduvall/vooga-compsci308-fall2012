@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
 import util.input.core.KeyboardController;
+import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
@@ -33,12 +34,12 @@ public class Level {
     private Player myPlayer;
     private boolean myPaused;
 
-    public Level (Dimension dim, UpdatableCamera inCam) {
+    public Level (Dimension dim, UpdatableCamera inCam, String fileName) {
         objectList = new ArrayList<GameObject>();
         pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
         // TODO set to a default collision checker
-        myCollisionChecker = null;
+        myCollisionChecker = new BasicCollisionChecker(fileName);
         cam = inCam;
         myPaused = false;
     }
