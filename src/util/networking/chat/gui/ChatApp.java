@@ -24,6 +24,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
+import util.encrypt.Encrypter;
 import util.networking.chat.ChatClient;
 import util.networking.chat.protocol.GordonBukspanProtocol;
 
@@ -106,11 +107,11 @@ public class ChatApp {
             else if (password.length < 5)
                 return login("<html>Error: Password must be at least 5 characters<br><br></html>",c);
             if(login.isSelected()){
-                boolean status = c.loginWithTimeout(userName, new String(password), 3000);
+                boolean status = c.loginWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
                 if(!status) return login("<html>Error: Could not login. Please check your server connection.<br><br>", c);
             }
             else{
-                boolean status = c.registerWithTimeout(userName, new String(password), 3000);
+                boolean status = c.registerWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
                 if(!status) return login("<html>Error: Could not Properly Register. Please Try Again.<br><br>",c);
             }
             return userName;
