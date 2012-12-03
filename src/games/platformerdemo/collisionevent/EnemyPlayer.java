@@ -1,35 +1,31 @@
 package games.platformerdemo.collisionevent;
 
 import vooga.platformer.collision.CollisionEvent;
-import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.Level;
 import vooga.platformer.util.enums.Direction;
 
-public class EnemyPlayer extends CollisionEvent{
-    private Player myPlayer;
-    private Enemy myEnemy;
 
-    public EnemyPlayer (Enemy a, Player b) {
-        super(a, b);
-        myPlayer = (Player) this.b();
-        myEnemy = (Enemy) this.a();
-    }
-    
-    public EnemyPlayer (Player a, Enemy b) {
-        this(b,a);
+/**
+ * Type A is the one 
+ * @author Yaqi
+ *
+ */
+public class EnemyPlayer extends CollisionEvent {
+    public EnemyPlayer (Class typeA, Class typeB) {
+        super(typeA, typeB);
     }
 
     @Override
-    public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {
+    public void applyCollision (Level level, GameObject gameObjectA,
+            GameObject gameObjectB) {
         if (this.direction() == Direction.DOWN) {
-            myEnemy.markForRemoval();
+            gameObjectA.markForRemoval();
         }
-        
+
         else {
-            myPlayer.markForRemoval();
+            gameObjectB.markForRemoval();
         }
     }
-    
+
 }

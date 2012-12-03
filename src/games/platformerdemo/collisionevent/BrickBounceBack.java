@@ -10,18 +10,6 @@ import vooga.platformer.gameobject.MovingObject;
  * 
  */
 public class BrickBounceBack extends BrickMovingObject {
-    private StaticObject myBrick;
-    private MovingObject myMO;
-
-    public BrickBounceBack (StaticObject a, MovingObject b) {
-        super(a, b);
-        myBrick = (StaticObject) this.a();
-        myMO = (MovingObject) this.b();
-    }
-
-    public BrickBounceBack (MovingObject a, StaticObject b) {
-        this(b, a);
-    }
 
     @Override
     protected void resetCenterLeft (double dx) {
