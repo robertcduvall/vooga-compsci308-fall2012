@@ -55,7 +55,7 @@ public class ChatService implements Service {
                     System.out.println("server received: " + input);
                     ChatCommand type = myProtocol.getType(input);
                     Method m;
-                    m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
+                    m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class, Socket.class);
                     m.setAccessible(true);
                     m.invoke(this, input, socket);
                 }

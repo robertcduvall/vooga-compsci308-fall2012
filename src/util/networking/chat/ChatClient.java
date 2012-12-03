@@ -87,7 +87,7 @@ public class ChatClient extends Client {
         ChatCommand type = myProtocol.getType(input);
         Method m;
         try {
-            m = this.getClass().getMethod(type.getMethodName(), String.class);
+            m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class);
             m.setAccessible(true);
             m.invoke(this, input);
         }
