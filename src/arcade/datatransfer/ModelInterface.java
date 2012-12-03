@@ -1,6 +1,7 @@
 package arcade.datatransfer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import twitter4j.auth.AccessToken;
@@ -10,6 +11,7 @@ import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
 import arcade.usermanager.EditableUserProfile;
+import arcade.usermanager.GameData;
 import arcade.usermanager.Message;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
@@ -224,8 +226,8 @@ public class ModelInterface {
      * @return
      */
     public int getMostRecentHighScore (String userName, String gameName) {
-        return 0;
-        // TODO: IMPLEMENT THIS
+       return  Integer.parseInt(myUserManager.getGame(userName, gameName).getGameInfo("highscore"));
+       
     }
 
     /**
@@ -248,8 +250,15 @@ public class ModelInterface {
      * @return
      */
     public List<String> getListOfHighScoresForUser (String userName) {
-        return null;
-        // TODO: imple
+        List<String> list=new ArrayList<String>();
+      List<GameData> gameList=  myUserManager.getGameList(userName);
+      for(GameData gd :gameList){
+          String str=gd.getGameInfo("name")+" - "+gd.getGameInfo("highscore");
+          list.add(str);
+           
+      }
+      
+      return list;
     }
 
     /**
