@@ -52,6 +52,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private JButton backgroundBtn;
     private JButton makeSpriteBtn;
     private JButton deleteSpriteBtn;
+    private JButton showInfoBtn;
 
     /* Listeners */
     private LevelEditorMouseListener myMouseListener;
@@ -152,6 +153,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         makeSpriteBtn =
                 makeBtn("New Sprite", "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
         deleteSpriteBtn = makeBtn("Delete Sprite", "/vooga/shooter/resources/deleteSprite.gif", "Delete Sprite");
+        showInfoBtn = makeBtn("Info", "/vooga/shooter/resources/showInfo.gif", "Show Current Level Info");
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
@@ -159,6 +161,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myToolBar.add(backgroundBtn);
         myToolBar.add(makeSpriteBtn);
         myToolBar.add(deleteSpriteBtn);
+        myToolBar.add(showInfoBtn);
     }
 
     @Override
@@ -232,9 +235,55 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             myCurrentSprite = null;
         }
         
+        else if (source == showInfoBtn) {
+            showLevelInfo();
+        }
+        
         else {
             throw new LevelEditorException("Invalid action source", source);
         }
+    }
+    
+    /**
+     * Displays information about all of the Sprites in the current Level, in table form.
+     */
+    private void showLevelInfo() {
+        //count Sprites(need to count with a for loop because getSpriteList returns Iterable<Sprite>)
+        int count = 1;
+        for(Sprite s: myLevel.getSpriteList()) {
+            count++;
+        }
+        //initialize table and attribute titles
+        JFrame frame = new JFrame("Current Sprite Information");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JTable table = new JTable(count,6);
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);
+       
+        table.setValueAt("Index",0,0);
+        table.setValueAt("X Position",0,1);
+        table.setValueAt("Y Position", 0, 2);
+        table.setValueAt("Width",0,3);
+        table.setValueAt("Height", 0, 4);
+        table.setValueAt("Health",0,5);
+        //fill in Sprite attributes
+        int index = 1;
+        for(Sprite s: myLevel.getSpriteList()) {
+            table.setValueAt(index,index, 0);
+            table.setValueAt(s.getLeft(), index, 1);
+            table.setValueAt(s.getTop(), index, 2);
+            table.setValueAt(s.getSize().width, index, 3);
+            table.setValueAt(s.getSize().height, index, 4);
+            table.setValueAt(s.getCurrentHealth(), index, 5);
+            index++;
+        }
+        JScrollPane pane = new JScrollPane(table);
+        panel.add(pane, BorderLayout.CENTER);
+        frame.getContentPane().add(panel);
+
+        frame.pack();
+        frame.setVisible(true);
     }
     
     /**
