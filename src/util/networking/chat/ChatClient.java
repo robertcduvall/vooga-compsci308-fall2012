@@ -81,6 +81,8 @@ public class ChatClient extends Client {
 
     @Override
     public void processInputFromServer(String input) {
+        if (!"".equals(input))
+            return;
         System.out.println("client received: " + input);
         ChatCommand type = myProtocol.getType(input);
         Method m;
