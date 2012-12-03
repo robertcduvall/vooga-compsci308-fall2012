@@ -37,12 +37,10 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants{
 
+    //TODO:REFACTORING
     private List<String> myGameList;
-    private List<Image> myGameProfilePictures;
     private String gameSelected;
     private JList gameList;
-    private ListSelectionModel listSelectionModel;
-    private int listIndexCurrentlySelected;
     
     public GameListMainPanel (Arcade a) {
         super(a);
@@ -62,15 +60,13 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         MigLayout layout = new MigLayout("align center, fill");
         myPanel.setLayout(layout);
 
+        
         JList listOfGames = new JList(arrayOfGames);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
         gameList = listOfGames;
-        /*listSelectionModel = gameList.getSelectionModel();
-        listSelectionModel.addListSelectionListener(
-                                new SharedListSelectionHandler());*/
-        //gameList.setPreferredSize(new Dimension(150, 150));
+
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         
         
@@ -103,29 +99,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         myPanel.add(goButton, "dock south, span, grow, align center");
 
         return myPanel;
-        /*class SharedListSelectionHandler implements ListSelectionListener {
-            public void valueChanged(ListSelectionEvent e) {
-                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-
-                int firstIndex = e.getFirstIndex();
-                int lastIndex = e.getLastIndex();
-                boolean isAdjusting = e.getValueIsAdjusting();
-
-                if (lsm.isSelectionEmpty()) {
-                    output.append(" <none>");
-                } else {
-                    // Find out which indexes are selected.
-                    int minIndex = lsm.getMinSelectionIndex();
-                    int maxIndex = lsm.getMaxSelectionIndex();
-                    for (int i = minIndex; i <= maxIndex; i++) {
-                        if (lsm.isSelectedIndex(i)) {
-                            output.append(" " + i);
-                        }
-                    }
-                }
-                output.append(newline);
-            }
-        }*/
+        
     }
     
 }

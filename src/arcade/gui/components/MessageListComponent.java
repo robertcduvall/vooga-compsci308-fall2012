@@ -78,7 +78,7 @@ import arcade.utility.ImageReader;
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.setColor(Color.red);
+            g.setColor(Color.blue);
             g.fillRect(25, 5, this.getWidth()-75, this.getHeight()-5);
             g.setColor(Color.black);
             g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
