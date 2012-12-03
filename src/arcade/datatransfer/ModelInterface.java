@@ -284,7 +284,8 @@ public class ModelInterface {
             AccessToken at;
             if (!myTokens.keySet().contains(name)) {
                 at = myTwitterTools.requestAccessToken();
-                myUserManager.addTwitterToken(name, at); 
+                if (at == null) { return false; }
+                myUserManager.addTwitterToken(name, at);
             }
             else {
                 at = myTokens.get(name);
