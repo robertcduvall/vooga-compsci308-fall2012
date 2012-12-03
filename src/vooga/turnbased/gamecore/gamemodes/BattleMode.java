@@ -52,12 +52,11 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private final String MENU_FONT = "Sans_Serif";
 
-
     /**
      * Constructor for a Battle.
      * 
-     * @param gameManager The parent GameManager that is creating this battle. Will be 
-     * alerted when battle ends.
+     * @param gameManager The parent GameManager that is creating this battle. Will be
+     *        alerted when battle ends.
      * @param modeName The name of this BattleMode
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
@@ -206,8 +205,8 @@ public class BattleMode extends GameMode implements InputAPI {
             double horizontalShift = (double) ((width / TEXT_SCALAR) * 3);
             double verticalShift = (double) (height / TEXT_SCALAR * 4.5);
             double spacingBetweenLines = (double) 1.2 * fontSize * i;
-            Point paintPosition = new Point((int) horizontalShift, (int) ((2 * height
-                    / HEIGHT_SCALAR + verticalShift + spacingBetweenLines)));
+            Point paintPosition = new Point((int) horizontalShift, (int) ((2 * height /
+                    HEIGHT_SCALAR + verticalShift + spacingBetweenLines)));
             myFontEffect.shodowEffect(currentMessage, Color.blue, paintPosition);
         }
         g2d.drawImage(box, width / 2, 0, width / 2, height, null);
@@ -263,32 +262,33 @@ public class BattleMode extends GameMode implements InputAPI {
         drawArrow(g, x, y, leftShift, rightShift, topShift, bottomShift);
     }
 
-    private void drawArrow (Graphics g, int x, int y, int leftShift,
-            int rightShift, int topShift, int bottomShift) {
+    private void drawArrow (Graphics g, int x, int y, int leftShift, int rightShift, int topShift,
+            int bottomShift) {
         File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
         Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         switch (mySelection) {
             case OPTION1:
                 g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                        (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
+                        (int) (y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
                         arrow.getWidth(null), arrow.getHeight(null), null);
                 break;
             case OPTION2:
                 g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                        (int)(y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                        (int) (y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
                         arrow.getWidth(null), arrow.getHeight(null), null);
                 break;
             case OPTION3:
                 g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                        (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                        (int) (y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
                         arrow.getWidth(null), arrow.getHeight(null), null);
                 break;
             case OPTION4:
                 g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                        (int)(y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR), 
+                        (int) (y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
                         arrow.getWidth(null), arrow.getHeight(null), null);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -298,7 +298,7 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     /**
-     * end a battle and report the event (whether player is dead) to GameManager
+     * End a battle and report the event (whether player is dead) to GameManager.
      */
     private void endBattle () {
         setModeIsOver();
@@ -327,8 +327,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption1Event () {
         myPlayerObject.doOption1(myEnemyObject);
-        myMessages.add(myPlayerObject.getCurrentMessage());
-        continueBattle();
+        addOptionMessage();
     }
 
     /**
@@ -336,8 +335,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption2Event () {
         myPlayerObject.doOption2(null);
-        myMessages.add(myPlayerObject.getCurrentMessage());
-        continueBattle();
+        addOptionMessage();
     }
 
     /**
@@ -345,8 +343,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption3Event () {
         myPlayerObject.doOption3(null);
-        myMessages.add(myPlayerObject.getCurrentMessage());
-        continueBattle();
+        addOptionMessage();
     }
 
     /**
@@ -354,6 +351,10 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerOption4Event () {
         myPlayerObject.doOption4(null);
+        addOptionMessage();
+    }
+
+    private void addOptionMessage () {
         myMessages.add(myPlayerObject.getCurrentMessage());
         continueBattle();
     }
@@ -422,7 +423,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public void triggerSelectEvent () {
         switch (mySelection) {
-            case OPTION1: 
+            case OPTION1:
                 triggerOption1Event();
                 break;
             case OPTION2:
