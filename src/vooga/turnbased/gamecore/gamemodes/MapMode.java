@@ -28,6 +28,7 @@ import vooga.turnbased.gui.InputAPI;
  * @author Tony, Rex
  **/
 public class MapMode extends GameMode implements InputAPI {
+
     public static final Point UP = new Point(0, -1);
     public static final Point RIGHT = new Point(1, 0);
     public static final Point DOWN = new Point(0, 1);
@@ -48,12 +49,12 @@ public class MapMode extends GameMode implements InputAPI {
     /**
      * Constructor of MapMode
      * 
-     * @param gm
-     *        the GameManager which manages the mode
+     * @param gm GameManager that manages the mode.
+     * @param modeName String name of mode.
+     * @param involvedIDs List of the IDS of sprites involved in MapMode.
      */
     public MapMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
-        
         initialize();
     }
 
@@ -80,10 +81,10 @@ public class MapMode extends GameMode implements InputAPI {
         int playerID = getGameManager().getPlayerSpriteID();
         setCameraSize(getGameManager().getCameraSize());
         setMapSize(getGameManager().getMapSize());
-        
+
         myMapObjects = new HashMap<Point, List<MapObject>>();
         @SuppressWarnings("unchecked")
-        //the getGameObjects method has already taken care of correct casting
+        // the getGameObjects method has already taken care of correct casting
         List<MapObject> mapObjects = (List<MapObject>) getGameObjects();
         for (MapObject mapObject : mapObjects) {
             mapObject.setMapMode(this);
@@ -129,6 +130,11 @@ public class MapMode extends GameMode implements InputAPI {
         }
     }
 
+    /**
+     * Removes a MapObject from the active mapMode.
+     * 
+     * @param mapObject MapObject to be removed.
+     */
     public void removeMapObject (MapObject mapObject) {
         myMapObjects.get(mapObject.getLocation()).remove(mapObject);
     }
@@ -197,30 +203,32 @@ public class MapMode extends GameMode implements InputAPI {
      * movement
      */
     private void updateCameraPosition () {
-        Point displacement =
-                myPlayer.calcScreenDisplacement(myCurrentTileWidth, myCurrentTileHeight);
+        Point displacement = myPlayer.calcScreenDisplacement(myCurrentTileWidth,
+                myCurrentTileHeight);
         myTopLeftCoord = calculateTopLeftCoordinate();
         if (myTopLeftCoord.x * myCurrentTileWidth + myPlayer.getDirection().x < 0) {
-            myTopLeftCoord.x = 0; // player near the left boundary
-            displacement.x = 0; // screen fixed when player moves to the edge
+            // player near the left boundary
+            myTopLeftCoord.x = 0;
+            // screen fixed when player moves to the edge
+            displacement.x = 0;
         }
         else if ((myTopLeftCoord.x + myNumDisplayCols) * myCurrentTileWidth +
-                 myPlayer.getDirection().x > myMapSize.width * myCurrentTileWidth) {
+                myPlayer.getDirection().x > myMapSize.width * myCurrentTileWidth) {
             myTopLeftCoord.x = myMapSize.width - myNumDisplayCols;
             displacement.x = 0;
         }
         if (myTopLeftCoord.y * myCurrentTileHeight + myPlayer.getDirection().y < 0) {
-            myTopLeftCoord.y = 0; // player near the top boundary
+            // player near the top boundary
+            myTopLeftCoord.y = 0;
             displacement.y = 0;
         }
         else if ((myTopLeftCoord.y + myNumDisplayRows) * myCurrentTileHeight +
-                 myPlayer.getDirection().y > myMapSize.height * myCurrentTileHeight) {
+                myPlayer.getDirection().y > myMapSize.height * myCurrentTileHeight) {
             myTopLeftCoord.y = myMapSize.height - myNumDisplayRows;
             displacement.y = 0;
         }
-        myCurrentCamera =
-                new Rectangle(myTopLeftCoord.x - 1, myTopLeftCoord.y - 1, myNumDisplayCols + 2,
-                              myNumDisplayRows + 2);
+        myCurrentCamera = new Rectangle(myTopLeftCoord.x - 1, myTopLeftCoord.y - 1,
+                myNumDisplayCols + 2, myNumDisplayRows + 2);
         myOrigin = changeOriginForPlayer(displacement);
     }
 
@@ -234,7 +242,8 @@ public class MapMode extends GameMode implements InputAPI {
             while (it.hasNext()) {
                 MapObject nextObject = it.next();
                 if (!nextObject.isVisible()) {
-                    it.remove(); // entire sprite should be removed???
+                    // entire sprite should be removed???
+                    it.remove();
                 }
                 else {
                     nextObject.update();
@@ -252,7 +261,8 @@ public class MapMode extends GameMode implements InputAPI {
      */
     private Point changeOriginForPlayer (Point displacement) {
         Point result = new Point(myOrigin.x + displacement.x, myOrigin.y + displacement.y);
-        if (result.x == 0) { // screen movement done!
+        if (result.x == 0) {
+            // screen movement done!
             result = initializeOrigin();
         }
         return result;
@@ -295,27 +305,43 @@ public class MapMode extends GameMode implements InputAPI {
         return new Point(-myCurrentTileWidth, -myCurrentTileHeight);
     }
 
+    /**
+     * Decides what to do when mouse is clicked.
+     * 
+     * @param e MouseEvent representing current mouse action.
+     */
     public void handleMouseClicked (MouseEvent e) {
         // right click
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             if (myPathFinder != null) {
                 myPathFinder.stop();
             }
-            Point target =
-                    new Point(e.getX() / myCurrentTileWidth + myTopLeftCoord.x,
-                              e.getY() / myCurrentTileHeight + myTopLeftCoord.y);
+            Point target = new Point(e.getX() / myCurrentTileWidth + myTopLeftCoord.x, e.getY() /
+                    myCurrentTileHeight + myTopLeftCoord.y);
             myPathFinder = new MapModePathFinder(this, myPlayer, target, myMapSize);
         }
     }
 
+    /**
+     * Returns the camera currently in use.
+     * @return Camera
+     */
     public Rectangle getCamera () {
         return myCurrentCamera;
     }
 
+    /**
+     * Returns the current tile dimensions.
+     * @return Dimension using current tile width and height.
+     */
     public Dimension getTileDimensions () {
         return new Dimension(myCurrentTileWidth, myCurrentTileHeight);
     }
 
+    /**
+     * Returns Point at which origin is currently located.
+     * @return
+     */
     public Point getOrigin () {
         return myOrigin;
     }
@@ -324,20 +350,20 @@ public class MapMode extends GameMode implements InputAPI {
     public void configureInputHandling () {
         try {
             GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED,
-                                                   myPlayer, "moveLeft");
+                    myPlayer, "moveLeft");
             GamePane.keyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED,
-                                                   myPlayer, "moveUp");
+                    myPlayer, "moveUp");
             GamePane.keyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED,
-                                                   myPlayer, "moveRight");
+                    myPlayer, "moveRight");
             GamePane.keyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED,
-                                                   myPlayer, "moveDown");
+                    myPlayer, "moveDown");
             GamePane.keyboardController.setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
-                                                   myPlayer, "toggleRunning");
-            //enable/disable multi-destination feature in PathFinder
+                    myPlayer, "toggleRunning");
+            // enable/disable multi-destination feature in PathFinder
             GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
-                                                   myPathFinder, "activateMultiDestination");
+                    myPathFinder, "activateMultiDestination");
             GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.RELEASED,
-                                                   myPathFinder, "deactivateMultiDestination");
+                    myPathFinder, "deactivateMultiDestination");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -345,6 +371,10 @@ public class MapMode extends GameMode implements InputAPI {
 
     }
 
+    /**
+     * Returns current mapsize.
+     * @return myMapSize
+     */
     public Dimension getMapSize () {
         return myMapSize;
     }
@@ -357,10 +387,19 @@ public class MapMode extends GameMode implements InputAPI {
         myPlayer = p;
     }
 
+    /**
+     * Returns current player.
+     * @return myPlayer
+     */
     public MapPlayerObject getPlayer () {
         return myPlayer;
     }
 
+    /**
+     * Returns boolean of whether point is within current bounds.
+     * @param dest Point to check.
+     * @return Boolean true if point is within bounds, false if not.
+     */
     public boolean isWithinBounds (Point dest) {
         return myMapSize.height > dest.y && myMapSize.width > dest.x && dest.x >= 0 && dest.y >= 0;
     }
@@ -369,9 +408,9 @@ public class MapMode extends GameMode implements InputAPI {
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
         if (mousePressed == GamePane.MOUSE_CLICKED && myMouseButton == MouseEvent.BUTTON3) {
             myPathFinder.stop();
-            Point target =
-                    new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
-                              (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);
+            Point target = new Point((int) myMousePosition.getX() / myCurrentTileWidth +
+                    myTopLeftCoord.x, (int) myMousePosition.getY() / myCurrentTileHeight +
+                    myTopLeftCoord.y);
             myPathFinder = new MapModePathFinder(this, myPlayer, target, myMapSize);
             myPathFinder.executeSearch();
         }
