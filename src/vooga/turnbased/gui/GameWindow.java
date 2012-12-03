@@ -16,7 +16,6 @@ import javax.swing.JFrame;
  **/
 @SuppressWarnings("serial")
 public class GameWindow extends JFrame {
-
     /**
      * Index values for each card in the CardLayout
      */
@@ -36,14 +35,18 @@ public class GameWindow extends JFrame {
     /**
      * Constructor construct a game window given the size of the window
      * 
+<<<<<<< HEAD
+     * @param settingsResource the location of the resources
+=======
      * @param title The title of the game
      * @param settingsResource name of game configuration file
+>>>>>>> 4c227f5d7ca4c896f3802e014543a4c868e4c052
      * @param width Width of the window
      * @param height Height of the window
      */
     public GameWindow (String title, String settingsResource, int width, int height) {
         setTitle(title);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(width, height);
         setResizable(true);
         addResourceBundle(settingsResource);

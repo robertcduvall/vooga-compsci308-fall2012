@@ -89,6 +89,7 @@ public class BattleMode extends GameMode implements InputAPI {
         myMessages.add(myEnemyObject.getStartFightingMessage(false));
         myMessages.add(myPlayerObject.getStartFightingMessage(true));
         configureInputHandling();
+        playModeEntranceSound("BattleStartSound");
     }
 
     /**

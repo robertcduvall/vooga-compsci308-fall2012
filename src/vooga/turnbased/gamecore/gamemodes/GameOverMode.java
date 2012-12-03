@@ -32,6 +32,7 @@ public class GameOverMode extends GameMode {
 
     @Override
     public void resume () {
+        playModeEntranceSound("GameOverSound");
     }
 
     @Override

@@ -4,8 +4,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import util.sound.SoundPlayer;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gui.GameWindow;
 
 
 /**
@@ -167,5 +169,11 @@ public abstract class GameMode {
 
     protected void setModeIsOver () {
         isOver = true;
+    }
+    
+    protected void playModeEntranceSound(String soundFileURL) {
+        getGameManager().turnOffSoundTrack();
+        SoundPlayer p = new SoundPlayer(GameWindow.importString(soundFileURL));
+        p.playOnce();
     }
 }

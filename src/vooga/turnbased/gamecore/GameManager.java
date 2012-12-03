@@ -62,8 +62,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
-        // myGameSoundTrack = new
-        // SoundPlayer(GameWindow.importString("GameSoundTrack"));
+        myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         initializeGameLevel(GameWindow.importString("GameXML"),
                             GameWindow.importString("PlayerXML"));
         configureInputHandling();
@@ -356,6 +355,14 @@ public class GameManager implements InputAPI {
             myGameSoundTrack.startLoop();
         }
     }
+    
+    /**
+     * Turn off background soundtrack if any.
+     */
+    public void turnOffSoundTrack() {
+        myGameSoundTrack.stopLoop();
+    }
+    
     private class MouseAction {
         private int myMouseEventType;
         private Point myMousePosition;
