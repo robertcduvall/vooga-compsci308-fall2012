@@ -56,8 +56,7 @@ public class Sprite {
 
     /**
      * Returns all GameObjects from myGameObjects that are instance of clazz
-     * @param <T>
-     * @param clazz The class that you are looking for
+     * @param T
      * @return
      */
     public <T extends GameObject> List<T> getObjects (String modeName) {
