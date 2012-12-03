@@ -3,7 +3,9 @@ package vooga.turnbased.gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -35,6 +37,9 @@ public class EditorPane extends DisplayPane {
     private static final String[] OBJECTS = {"Create On: ", "Modes: ", "Class: ", "Condition: ",
         "X-Coordinate: ", "Y-Coordinate: ", "Images: ", "Stats: ", "Name: "};
     private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", "", "", "", "", ""};
+    private static final Point DISPLAY_MAP_DIMENSION = new Point (700, 500);
+    private static final Point DISPLAY_MAP_ORIGIN = new Point (50, 85);
+    private static final int BOX_SIZE = 20;
 
     /**
      * 
@@ -60,19 +65,21 @@ public class EditorPane extends DisplayPane {
         });
         add(newLevelButton);
     }
-
+    
     /**
      * paint components of the Canvas
      * 
-     * @param g
-     *            Graphics
+     * @param g Graphics
      */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image background = GameWindow.importImage("EditorBackgroundImage");
-        g.drawImage(background, 0, 0, background.getWidth(null),
-                background.getHeight(null), this);
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 20; j++) {
+                g.drawRect(DISPLAY_MAP_ORIGIN.x + i * BOX_SIZE,
+                        DISPLAY_MAP_ORIGIN.y + j * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+            }
+        }
     }
 
     private LevelEditor makeFile () {

@@ -9,7 +9,6 @@ package vooga.turnbased.gui;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -21,7 +20,6 @@ import javax.swing.JFrame;
  * @author David, Rex, Tony
  **/
 public class GameWindow extends JFrame {
-
     // denotes the index of the prototype in myCanvases
     public static final String MENU = "0";
     public static final String EDITOR = "1";
@@ -36,13 +34,14 @@ public class GameWindow extends JFrame {
     /**
      * Constructor construct a game window given the size of the window
      * 
+     * @param settingsResource the location of the resources
      * @param width Width of the window
      * @param height Height of the window
      * @param title The title of the game
      */
     public GameWindow (String title, String settingsResource, int width, int height) {
         setTitle(title);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(width, height);
         setResizable(true);
         addResourceBundle(settingsResource);
@@ -78,7 +77,6 @@ public class GameWindow extends JFrame {
     /**
      * import images from ResourceBundle
      * 
-     * @param resources ResourceBundle object
      * @param imageName image name under the image folder
      * @return Image object
      */
