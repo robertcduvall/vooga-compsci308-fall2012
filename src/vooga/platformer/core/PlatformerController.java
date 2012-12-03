@@ -22,7 +22,9 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
+import util.input.core.Controller;
 import util.input.core.KeyboardController;
+import vooga.platformer.core.inputinitializer.InputInitializer;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.strategy.ShootingStrategy;
 import vooga.platformer.level.Level;
@@ -38,7 +40,6 @@ public class PlatformerController extends JPanel implements Runnable {
     // TODO: Make this variable hold a LevelFactory
     private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
-    private KeyboardController myInputController;
     private Player myPlayer;
     private Image myBackground;
     private Map<String, Point> myStringMap = new HashMap<String, Point>();
@@ -46,18 +47,19 @@ public class PlatformerController extends JPanel implements Runnable {
 
     private Thread animator;
 
-    public PlatformerController (DemoLevelFactory lf, GameInitializer gi) {
+    public PlatformerController (DemoLevelFactory lf, String firstLevelName, InputInitializer ii) {
         myLevelFactory = lf;
-        myGameInitializer = gi;
-        myInputController = null;
+        
+        this.setFocusable(true);
 
-        // this.setFocusable(true);
+        setupLevel(firstLevelName);
+        
+        ii.setUpInput(myCurrentLevel.getObjectList(), this);
 
-        setupLevel(myGameInitializer.getFirstLevelName());
-        myPlayer = myCurrentLevel.getPlayer();
         animator = new Thread(this);
         animator.start();
     }
+    
 
     /**
      * The main update cycle method.
@@ -74,25 +76,12 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
 
-    // TODO: Figure out how to use input team's API
-    /*
-     * public void setInputController(KeyboardController ic) {
-     * myInputController = ic;
-     * myCurrentLevel.setInputController(myInputController);
-     * }
-     */
-
     private void setupLevel (String lvlName) {
         myCurrentLevel = myLevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
         mySize = new Dimension((int) cameraBounds.getWidth(),
                 (int) cameraBounds.getHeight());
         setPreferredSize(mySize);
-        /*
-         * if (myInputController != null) {
-         * myCurrentLevel.setInputController(myInputController);
-         * }
-         */
     }
 
     @Override
@@ -177,42 +166,6 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * This is used to test sample implemented game before registered with input
-     * team.
-     * should be //TODO: removed
-     */
-    public KeyListener setTemporaryInputListener () {
-        KeyListener kl = new KeyAdapter() {
-            @Override
-            public void keyPressed (KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    myPlayer.fireControlStrategy("GoLeft");
-                }
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    myPlayer.fireControlStrategy("GoRight");
-                }
-                if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.fireControlStrategy("Jump");
-                }
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    myPlayer.fireControlStrategy("Shoot");
-                }
-            }
-
-            public void keyReleased (KeyEvent e) {
-                myPlayer.fireControlStrategy("Stop");
-
-            }
-        };
-        MouseMotionListener mml = new MouseAdapter() {
-            @Override
-            public void mouseClicked (MouseEvent e) {
-                // not used so far
-            }
-        };
-        return kl;
-    }
 
     /**
      * TODO: should be removed
