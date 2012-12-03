@@ -7,7 +7,7 @@
 	<collisionEvent>
 		<gameObjectA>vooga.platformer.gameobject.StaticObject</gameObjectA>
 		<gameObjectB>vooga.platformer.gameobject.Player</gameObjectB>
-		<collisionEventClass>vooga.platformerdemo.collisionevent.BrickBounceBack</collisionEventClass>
+		<collisionEventClass>vooga.platformerdemo.collisionevent.BrickMovingObject</collisionEventClass>
 	</collisionEvent>
 	<collisionEvent>
 		<gameObjectA>vooga.platformer.gameobject.StaticObject</gameObjectA>
