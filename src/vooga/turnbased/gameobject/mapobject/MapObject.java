@@ -12,7 +12,6 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
 
-
 /**
  * Map Object class that is extended to create objects to exist in the MapMode.
  * 
@@ -31,7 +30,7 @@ public class MapObject extends GameObject {
     /**
      * Creates the MapObject that will be used in MapMode.
      * 
-     * @param allowableModes Modes that are allowed
+     * @param allowableModes Set of string names of the modes allowed.
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
@@ -41,16 +40,20 @@ public class MapObject extends GameObject {
         super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
+        // setMapMode(mapMode);
         myMapStrategies = new ArrayList<MapStrategy>();
+        // myMapStrategies.add(new NullStrategy(mapMode));
     }
 
     /**
-     * Set the mode that this object belongs to
-     * @param mapMode 
+    * Sets associated MapMode to the given MapMode.
+    * 
+    * @param mapMode MapMode to be associated with MapObject.
      */
     public void setMapMode (MapMode mapMode) {
         myMapMode = mapMode;
     }
+    
     /**
      * Get the dimension of the tiles
      * @return
@@ -101,9 +104,16 @@ public class MapObject extends GameObject {
     }
 
     /**
+<<<<<<< HEAD
+     * Increments the location of the object from the given point.
+     * 
+     * @param p Point at which the object starts.
+     * @return Point that has been incremented.
+=======
      * Change the current location by p
      * @param p the amount of change
      * @return
+>>>>>>> ac7d8c88c2b2d6a08a51a8b070748ef44c6f5bff
      */
     public Point incrementLocation (Point p) {
         int x = getLocation().x + p.x;
@@ -135,7 +145,7 @@ public class MapObject extends GameObject {
      */
     public void interact (MapObject target) {
         if (target instanceof MapPlayerObject) {
-            interactWithPlayer((MapPlayerObject)target);
+            interactWithPlayer((MapPlayerObject) target);
         }
         else {
             for (MapStrategy strategy : myMapStrategies) {
@@ -143,9 +153,8 @@ public class MapObject extends GameObject {
             }
         }
     }
-    private void interactWithPlayer(MapPlayerObject player) {
-     // if conversation has started, there is no need to start again in the
-        // same interact method
+
+    private void interactWithPlayer (MapPlayerObject player) {
         boolean conversationStarted = false;
         for (MapStrategy strategy : myMapStrategies) {
             if (strategy.isDisplayable()) {
@@ -174,16 +183,20 @@ public class MapObject extends GameObject {
         involvedSpriteIDs.add(involvedObject.getID());
         getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
     }
+
     /**
-     * Add a map strategy to the object
-     * @param mapStrategy 
+     * Adds a strategy to the object's list of strategies.
+     * 
+     * @param mapStrategy Strategy to add.
      */
     public void addStrategy (MapStrategy mapStrategy) {
         myMapStrategies.add(mapStrategy);
     }
+
     /**
-     * Get the list of all displayble strategies
-     * @return
+     * Returns list of strategies that can be displayed.
+     * 
+     * @return List of strategies that can be displayed.
      */
     public List<MapStrategy> getDisplayableStrategies () {
         List<MapStrategy> displayableStrategies = new ArrayList<MapStrategy>();
@@ -197,7 +210,9 @@ public class MapObject extends GameObject {
 
     /**
      * Updates MapObject
+     * 
      */
+
     public void update () {
         myTileDimension = new Dimension(myMapMode.getTileDimensions());
         myCameraOrigin = new Point(myMapMode.getOrigin());
@@ -215,6 +230,7 @@ public class MapObject extends GameObject {
     public void paint (Graphics g) {
         paintInProportion(g, myOffset, myTileDimension, 1);
     }
+
 
     /**
      * Paint the object in proportion
@@ -237,11 +253,13 @@ public class MapObject extends GameObject {
     public void clear () {
         myMapMode.removeMapObject(this);
     }
+
     /**
-     * Have the map mode that the object belongs to flag a condition
-     * @param conditionName 
-     * @param involvedSpriteIDs 
+     * Flags a given condition to be associated with a list of sprites.
+     * @param conditionName String name of condition to apply to sprites.
+     * @param involvedSpriteIDs List of sprites to apply the condition to.
      */
+
     public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs) {
         myMapMode.flagCondition(conditionName, involvedSpriteIDs);
     }
