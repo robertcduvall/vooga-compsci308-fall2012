@@ -52,6 +52,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private JButton backgroundBtn;
     private JButton makeSpriteBtn;
     private JButton deleteSpriteBtn;
+    private JButton helpBtn;
 
     /* Listeners */
     private LevelEditorMouseListener myMouseListener;
@@ -152,6 +153,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         makeSpriteBtn =
                 makeBtn("New Sprite", "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
         deleteSpriteBtn = makeBtn("Delete Sprite", "/vooga/shooter/resources/deleteSprite.gif", "Delete Sprite");
+        helpBtn = makeBtn("Editor Help", "/vooga/shooter/resources/help.gif", "Editor Help");
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
@@ -159,6 +161,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myToolBar.add(backgroundBtn);
         myToolBar.add(makeSpriteBtn);
         myToolBar.add(deleteSpriteBtn);
+        myToolBar.add(helpBtn);
     }
 
     @Override
@@ -230,6 +233,14 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         else if (source == deleteSpriteBtn) {
             myLevel.removeSprite(myCurrentSprite);
             myCurrentSprite = null;
+        }
+        
+        else if (source == helpBtn) {
+               JOptionPane myJOptionPane = new JOptionPane(); 
+               JOptionPane.showMessageDialog(null, "left click and existing sprite to select it"   + "\n" +
+                                                      "once selected you can delete it" + "\n" +
+                                       "right click to create a sprite at a location" + "\n" +
+                                         "click save sprite to create a new xml file");
         }
         
         else {
