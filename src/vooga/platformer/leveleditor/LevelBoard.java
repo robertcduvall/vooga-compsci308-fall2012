@@ -25,12 +25,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import vooga.platformer.gameobject.Enemy;
+import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
@@ -59,29 +62,36 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * 
  */
 public class LevelBoard extends JPanel {
+    private static final String DATA_PATH = "/src/vooga/platformer/data/";
+    private static final String DEFAULT_CAMERA = "FollowingCamera";
+    private static final String DEFAULT_COLLISION_CHECKER = "BasicCollisionChecker";
+    private static final int DEFAULT_SIZE = 30;
 
-    private static final int SCROLL_SPEED = 2;
-    private static final String DATA_PATH = "src/vooga/platformer/data/";
-    private Collection<GameObject> myGameObjects;
-    private Collection<Condition> myConditions;
-    private Collection<LevelPlugin> myPlugins;
+    //Editor fields
     private Collection<String> myAttributes;
     private int myObjID;
     private IEditorMode myCurrentMode;
     private BufferedImage myBuffer;
     private Graphics2D myBufferGraphics;
-    private LevelEditorMouseListener myMouseListener;
-    private Image myBackground;
-    private GameObject myCurrentObject;
-    private String myLevelName;
-    private String myLevelType;
-    private String myBackgroundPath;
+    private MouseAdapter myPlacementManager;
+    private KeyListener myKeyListener;
+    private MouseListener myButtonListener;
     private int mouseX;
     private int mouseY;
     private int myLength;
     private int myOffset;
-    private KeyListener myKeyListener;
-    private List<Integer> myKeyHeld;
+
+    //Level state
+    private Collection<GameObject> myGameObjects;
+    private Collection<Condition> myConditions;
+    private Collection<LevelPlugin> myPlugins;
+    private GameObject myCurrentObject;
+    private Player myPlayer;
+    private Image myBackground;
+    private String myBackgroundPath;
+    private String myLevelName;
+    private String myCamera;
+    //    private List<Integer> myKeyHeld;
 
     /**
      * Creates a new LevelBoard, visible to the user. The LevelBoard starts
@@ -90,109 +100,86 @@ public class LevelBoard extends JPanel {
      * @param d Dimension for initial level size (determined by Frame)
      */
     public LevelBoard (Dimension d) {
-        setSize(d);
-        myObjID = 0;
-        myKeyHeld = new ArrayList<Integer>();
-        myGameObjects = new ArrayList<GameObject>();
-        myAttributes = new ArrayList<String>();
-        myConditions = new ArrayList<Condition>();
-        myPlugins = new ArrayList<LevelPlugin>(); 
+        setSize(d); 
+        initLevelDefaults();
         myCurrentMode = new PlacementMode();
         myBackground = null;
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
-        setupMouseInput();
-        myOffset = 0;
+        myAttributes = getAttributes();
+        setupInput();
     }
 
-    private void setupMouseInput () {
-        LevelEditorMouseListener mouseListener = new LevelEditorMouseListener() {
-            @Override
-            public void mousePressed (MouseEvent e) {
-                if (myCurrentObject != null) {
-                    myCurrentObject = null;
-                }
-                else {
-                    for (GameObject g : myGameObjects) {
-                        if (g.containsPoint(e.getPoint())) {
-                            if (e.getButton() == MouseEvent.BUTTON3) {
-                                objectPopupMenu(g, e);
-                            }
-                            else if (e.getButton() == MouseEvent.BUTTON1) {
-                                myCurrentObject = g;
-                            }
-                            return;
-                        }
-                    }
-                    if (e.getButton() == MouseEvent.BUTTON3) {
-                        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
-                        FileNameExtensionFilter filter =
-                                new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-                        chooser.setFileFilter(filter);
-                        int returnVal = chooser.showOpenDialog(chooser);
-                        if (returnVal == JFileChooser.APPROVE_OPTION) {
-                            try {
-                                myBackground = ImageIO.read(chooser.getSelectedFile());
-                                myBackgroundPath = chooser.getSelectedFile().getPath();
-                            }
-                            catch (IOException io) {
-                                System.out.println("File not found. Try again");
-                                myBackground = null;
-                            }
-                        }
-                    }
+    private Collection<String> getAttributes () {
 
+        return null;
+    }
+
+    public void initLevelDefaults () {
+        myObjID = 0;
+        myCamera = DEFAULT_CAMERA;
+        myLevelName = "Level";
+        myGameObjects = new ArrayList<GameObject>();
+        myConditions = new ArrayList<Condition>();
+        myPlugins = new ArrayList<LevelPlugin>(); 
+        myPlayer = null;
+    }
+
+    private void setupInput () {
+        myPlacementManager = new PlacementMouseListener(this);
+        //                        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
+        //                        FileNameExtensionFilter filter =
+        //                                new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
+        //                        chooser.setFileFilter(filter);
+        //                        int returnVal = chooser.showOpenDialog(chooser);
+        //                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        //                            try {
+        //                                myBackground = ImageIO.read(chooser.getSelectedFile());
+        //                                myBackgroundPath = chooser.getSelectedFile().getPath();
+        //                            }
+        //                            catch (IOException io) {
+        //                                System.out.println("File not found. Try again");
+        //                                myBackground = null;
+        //                            }
+        //                        }
+        myKeyListener = new ScrollingKeyListener(this);
+
+        myButtonListener = new MouseAdapter() {
+            @Override
+            public void mouseReleased (MouseEvent e) {
+                GameObject obj = null;
+                try {
+                    String cmmd = e.getComponent().getName();
+                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "Default.png");
+                    ImageIcon ii = new ImageIcon(ImageIO.read(f));
+                    int x = LevelBoard.this.getWidth() / 2;
+                    int y = LevelBoard.this.getHeight() / 2;
+                    int w = ii.getIconWidth() / ii.getIconHeight() * DEFAULT_SIZE;
+                    int h = ii.getIconHeight() / ii.getIconWidth() * DEFAULT_SIZE;
+                    if ("StaticObject".equals(cmmd)) {
+                        obj = new StaticObject((double)x, (double)y, (double)w, (double)h, myObjID++, f);
+                    }
+                    else if ("Enemy".equals(cmmd)) {
+                        obj = new Enemy((double)x, (double)y, (double)w, (double)h, myObjID++, f);
+                    }
+                    else if ("Player".equals(cmmd)) {
+                        obj = new Player((double)x, (double)y, (double)w, (double)h, myObjID++, f);
+                    }
+                    else if ("Plugin".equals(cmmd)) {
+                        System.out.println("plugin");
+                    }
+                    ((PlacementMouseListener)myPlacementManager).setCurrent(obj);
+                    myGameObjects.add(obj);
                 }
+                catch(IOException ex) {
+                    ex.printStackTrace();
+                }
+
             }
 
-            @Override
-            public void mouseMoved (MouseEvent e) {
-                mouseX = e.getX();
-                mouseY = e.getY();
-            }
         };
-        myKeyListener = new KeyAdapter() {
-            @Override
-            public void keyPressed (KeyEvent ke) {
-                myKeyHeld.add(ke.getKeyCode());
-                int accel = 0;
-                for (Integer kevent : myKeyHeld) {
-                    if (kevent == KeyEvent.VK_LEFT) {
-                        accel++;
-                    }
-                }
-                switch (ke.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:
-                        if (myOffset == 0) {
-                            bumpLeft();
-                        }
-                        else {
-                            myOffset -= SCROLL_SPEED + accel;
-                        }
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        if (myOffset + getWidth() == myLength) {
-                            myLength += SCROLL_SPEED + accel;
-                        }
-                        myOffset += SCROLL_SPEED + accel;
-                }
-            }
-
-            @Override
-            public void keyReleased (KeyEvent ke) {
-                while (myKeyHeld.contains((Integer) ke.getKeyCode())) {
-                    myKeyHeld.remove((Integer) ke.getKeyCode());
-                }
-            }
-
-            private void bumpLeft () {
-                System.out.println("Already at beginning!");
-                // TODO: add code to animate bumping motion (if theres time)
-            }
-        };
-        addMouseListener(mouseListener);
-        addMouseMotionListener(mouseListener);
-        myMouseListener = mouseListener;
+        addMouseListener(myPlacementManager);
+        addMouseMotionListener(myPlacementManager);
     }
 
     /**
@@ -202,40 +189,63 @@ public class LevelBoard extends JPanel {
      * @return MouseListener attached to component
      */
     public MouseListener getMouseListener () {
-        return myMouseListener;
+        return myPlacementManager;
     }
 
     public KeyListener getKeyListener () {
         return myKeyListener;
     }
 
+    public MouseListener getButtonListener () {
+        return myButtonListener;
+    }
+
     /**
-     * Passes the LevelEditorMouseListener as a MouseMotionListener.
+     * Passes the MouseAdapter as a MouseMotionListener.
      * 
      * @return MouseMotionListener attached to component
      */
     public MouseMotionListener getMouseMotionListener () {
-        return myMouseListener;
+        return myPlacementManager;
+    }
+
+    public void setOffset(int offset) {
+        myOffset = offset;
+    }
+
+    public void setMouseLoc(int xloc, int yloc) {
+        mouseX = xloc;
+        mouseY = yloc;
     }
 
     /**
      * Updates the buffer preparing for the next paint call.
      */
     public void update () {
+        myCurrentObject = ((PlacementMouseListener)myPlacementManager).getCurrent();
+        if(myLength <= getWidth() + myOffset) {
+            myLength = getWidth() + myOffset;
+        }
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
                 this);
         for (GameObject obj : myGameObjects) {
-            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX(), (int) obj.getY(), (int) obj.getWidth(), (int) obj.getHeight(), null);
+            myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX() - myOffset, (int) obj.getY(),
+                    (int) obj.getWidth(), (int) obj.getHeight(), null);
         }
+        String mousemsg = "";
         if (myCurrentObject != null) {
-            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
+            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2 + myOffset);
             myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
-          myBufferGraphics.drawRect((int)myCurrentObject.getX()-myOffset, (int)myCurrentObject.getY(), (int)myCurrentObject.getWidth(), (int)myCurrentObject.getHeight());
-
+            myBufferGraphics.drawRect((int)myCurrentObject.getX()-myOffset, (int)myCurrentObject.getY(),
+                    (int)myCurrentObject.getWidth(), (int)myCurrentObject.getHeight());
+            mousemsg = "Current Sprite = (";
         }
-        myBufferGraphics.drawString("Current Sprite = (" + mouseX + ", " + mouseY + ")",
+        else {
+            mousemsg = "Mouse Location = ";
+        }
+        myBufferGraphics.drawString(mousemsg + mouseX + ", " + mouseY + ")",
                 getWidth() - 250, 30);
     }
 
@@ -268,10 +278,10 @@ public class LevelBoard extends JPanel {
             saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
             // log.append("Save command cancelled by user." + newline);
         }
-        LevelFileWriter.writeLevel(saveFile.getPath(), "LevelTitle", myLength, getHeight(),
-                DATA_PATH+"mario.background.jpg", myGameObjects,
+        LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myLength, getHeight(),
+                myBackgroundPath, myGameObjects,
                 myConditions, myPlugins,
-                "Default_Camera",
+                myCamera,
                 "Default_Collision_Checker");
         // "LevelTitle", getWidth(), getHeight(),
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
@@ -291,15 +301,12 @@ public class LevelBoard extends JPanel {
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(sh);
         pop.add(j);
-        JMenuItem j2 = new JMenuItem("Duplicate");
+        JMenuItem j2 = new JMenuItem("Edit");
         j2.addActionListener(sh);
         pop.add(j2);
-        JMenuItem j3 = new JMenuItem("Edit");
+        JMenuItem j3 = new JMenuItem("Delete");
         j3.addActionListener(sh);
         pop.add(j3);
-        JMenuItem j4 = new JMenuItem("Delete");
-        j4.addActionListener(sh);
-        pop.add(j4);
         pop.show(this.getParent(), (int) (g.getX() + g.getWidth() / 2),
                 (int) (g.getY() + g.getHeight()));
     }
@@ -316,57 +323,12 @@ public class LevelBoard extends JPanel {
      * Adds a sprite to the board. This method does not
      * check for any conditions (such as sprites being)
      * added on top of each other.
-     * @param h 
-     * @param w 
-     * @param y 
-     * @param x 
      * 
-     * @param sprite
+     * @param obj GameObject being added
      */
-    protected void addObject (GameObject obj) {//String objectType, int x, int y, int w, int h) {
+    protected void addObject (GameObject obj) {
         myCurrentObject = obj;
         myGameObjects.add(obj);
-//        GameObject obj = null;
-//        Object[] args = new Object[] {x, y, w, h, myObjID++, new File(DATA_PATH+"Default.png")};
-//        try {
-//            Class clazz = Class.forName(objectType);
-//            System.out.println("step1");
-////            Constructor cnstr = clazz.getConstructor();
-//            System.out.println("step2");
-//            if(clazz.isInstance(GameObject.class)) {
-//                System.out.println("probably not gonna get here the first time");
-////                obj = (GameObject) cnstr.newInstance(args);
-////                myGameObjects.add(obj);
-////                myCurrentObject = obj;
-//            }
-//        }
-//        catch(ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        catch (SecurityException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-////        catch (NoSuchMethodException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
-////        catch (InstantiationException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
-////        catch (IllegalAccessException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
-//        catch (IllegalArgumentException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-////        catch (InvocationTargetException e) {
-////            // TODO Auto-generated catch block
-////            e.printStackTrace();
-////        }
     }
 
     /**
@@ -395,16 +357,6 @@ public class LevelBoard extends JPanel {
             if ("Flip".equals(event.getActionCommand())) {
                 myObject.flipImage();
             }
-            else if ("Duplicate".equals(event.getActionCommand())) {
-//                GameObject nobj = new StaticObject();
-//                nobj.setSize(20, 20);
-//                nobj.setImage(getImage(IMAGE_PATH+"Default.png"));
-//                nobj.setX(getMousePosition().x);
-//                nobj.setY(getMousePosition().y);
-//                myCurrentObject = nobj;
-//                LevelBoard.this.add(nobj);
-                System.out.println("poopface");
-            }
             else if ("Add attribute".equals(event.getActionCommand())) {
                 createAttributeWindow();
             }
@@ -432,18 +384,6 @@ public class LevelBoard extends JPanel {
              * and get appropriate values for certain attributes.
              */
         }
-    }
-
-    private Image getImage (String filename) {
-        Image ret = null;
-        try {
-            ret = ImageIO.read(new File(filename));
-        }
-        catch (IOException e) {
-            System.out.println("file was not found");
-            e.printStackTrace();
-        }
-        return ret;
     }
 
     /**
@@ -482,10 +422,4 @@ public class LevelBoard extends JPanel {
         }
         myCurrentMode = nextMode;
     }
-
-    public int nextID () {
-        
-        return myObjID++;
-    }
-
 }

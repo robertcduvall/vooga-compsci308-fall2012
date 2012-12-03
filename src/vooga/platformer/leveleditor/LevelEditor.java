@@ -46,10 +46,9 @@ public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
     private static final String DATA_FOLDER = "/src/vooga/platformer/data/";
-    private Map<String, List<String>> myObjectTypes;
+    private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
-    private MouseListener myButtonListener;
     private JPanel myButtonPanel;
     private JMenuBar myMenuBar;
 
@@ -72,7 +71,7 @@ public class LevelEditor extends JPanel {
         myMenuBar = new EditorMenuBar(this);
         add(myMenuBar, BorderLayout.NORTH);
         add(myBoard, BorderLayout.CENTER);
-        myBoard.add(myButtonPanel, BorderLayout.EAST);
+        myBoard.add(myButtonPanel, BorderLayout.SOUTH);
 
     }
 
@@ -111,24 +110,11 @@ public class LevelEditor extends JPanel {
     }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();
-        myButtonListener = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent arg0) {
-                try{
-                    createSpriteTypePopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
-                }
-                catch(NullPointerException e){
-                    if("plugin".equals(arg0.getComponent().getName())) {
-                        System.out.println("add level plugin");
-                    }
-                }
-            }
-        };
     }
 
     private GameButton createButton(String objectname) {
         GameButton gb = new GameButton(objectname);
-        gb.addMouseListener(myButtonListener);
+        gb.addMouseListener(myBoard.getButtonListener());
         gb.setButtonSize(OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
         return gb;
     }
@@ -136,57 +122,45 @@ public class LevelEditor extends JPanel {
     private JPanel createButtonPanel() {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
-        subpanel.setLayout(new GridLayout(myObjectTypes.size(), 1));
+        subpanel.setLayout(new GridLayout(1, myObjectTypes.size()));
         subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, 
                 BUTTON_BAR_WIDTH * myObjectTypes.size()));
-        for (String sprite : myObjectTypes.keySet()) {
-            subpanel.add(createButton(sprite));
+        for (String type : myObjectTypes) {
+            subpanel.add(createButton(type));
         }
         subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         panel.add(subpanel);
-        panel.addMouseMotionListener(myBoard.getMouseMotionListener());
+        panel.setOpaque(false);
         return panel;
     }
-    private void createSpriteTypePopupMenu(final Component comp, final int x,
-            final int y) {
-        JPopupMenu pop = new JPopupMenu();
-        for (String subsprite : myObjectTypes.get(comp.getName())) {
-            JMenuItem j = new JMenuItem(subsprite);
-            j.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    GameObject obj;
-                    File f = new File(System.getProperty("user.dir")+DATA_FOLDER+"Default.png");
-                    if("StaticObject".equals(event.getActionCommand())) {
-                        try {
-                            obj = new StaticObject((double)comp.getX(), (double)comp.getY(), (double)OBJECT_BUTTON_SIZE, (double)OBJECT_BUTTON_SIZE,
-                                    myBoard.nextID(), f);
-                            myBoard.addObject(obj);
-                        }
-                        catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                    // TODO replace null value for spriteID with a unique id value
-//                    Sprite s = new Sprite(event.getActionCommand(), x, y, OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
-//                            null, IMAGE_PATH + event.getActionCommand() + ".png");
-//                    try {
-//                        GameObject obj = new StaticObject(comp.getX(), comp.getY(), OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
-//                                myObjID++, new File(IMAGE_PATH+"Default.png"));
-//                        myBoard.add(obj);
+//    private void createSpriteTypePopupMenu(final Component comp, final int x,
+//            final int y) {
+//        JPopupMenu pop = new JPopupMenu();
+//        for (String subsprite : myObjectTypes.get(comp.getName())) {
+//            JMenuItem j = new JMenuItem(subsprite);
+//            j.addActionListener(new ActionListener() {
+//                @Override
+//                public void actionPerformed(ActionEvent event) {
+//                    GameObject obj;
+//                    File f = new File(System.getProperty("user.dir")+DATA_FOLDER+"Default.png");
+//                    if("StaticObject".equals(event.getActionCommand())) {
+//                        try {
+//                            obj = new StaticObject((double)comp.getX(), (double)comp.getY(),
+//                                    (double)OBJECT_BUTTON_SIZE, (double)OBJECT_BUTTON_SIZE,
+//                                    myBoard.nextID(), f);
+//                            myBoard.addObject(obj);
+//                        }
+//                        catch (IOException e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                        }
 //                    }
-//                    catch (IOException e) {
-//                        // TODO Auto-generated catch block
-//                        e.printStackTrace();
-//                    }
-//                    myBoard.addObject(//"vooga.platformer.gameobject."+event.getActionCommand(), comp.getX(), comp.getY(), OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
-                }
-            });
-            pop.add(j);
-        }
-        pop.show(comp, x, y);
-    }
+//                }
+//            });
+//            pop.add(j);
+//        }
+//        pop.show(comp, x, y);
+//    }
 
     protected void save() {
         myBoard.save();
@@ -229,15 +203,10 @@ public class LevelEditor extends JPanel {
     }
 
     private void fillMap() {
-        myObjectTypes = new HashMap<String, List<String>>();
-        List<String> list = new ArrayList<String>();
-        list.add("StaticObject");
-        myObjectTypes.put("Mario", list);
-        list = new ArrayList<String>();
-        list.add("Enemy");
-        myObjectTypes.put("Koopa", list);
-        list = new ArrayList<String>();
-        list.add("Player");
-        myObjectTypes.put("Goomba", list);
+        myObjectTypes = new ArrayList<String>();
+        myObjectTypes.add("StaticObject");
+        myObjectTypes.add("Enemy");
+        myObjectTypes.add("Player");
+        myObjectTypes.add("Plugin");
     }
 }
