@@ -90,7 +90,7 @@ public class SoundPlayer {
     class SinglePlayback extends Thread {
 
         public SinglePlayback () {
-            setDaemon(false);
+            setDaemon(true);
         }
 
         @Override
@@ -102,6 +102,7 @@ public class SoundPlayer {
                     Thread.sleep(TIME_DELAY);
                 }
                 singlePlayback.close();
+                singlePlayback.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
@@ -121,7 +122,7 @@ public class SoundPlayer {
         private Player myLoop;
 
         public LoopPlayback () {
-            setDaemon(false);
+            setDaemon(true);
         }
 
         @SuppressWarnings("static-access")
@@ -139,6 +140,7 @@ public class SoundPlayer {
                     }
                 }
                 myLoop.close();
+                myLoop.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");

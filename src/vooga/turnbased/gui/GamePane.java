@@ -17,7 +17,7 @@ import vooga.turnbased.gamecore.GameManager;
  * The canvas that paints game objects every for every myDelayTime milliseconds
  * Responds to input events
  * 
- * @author Rex, Vo
+ * @author Rex, volodymyr
  */
 public class GamePane extends DisplayPane implements Runnable {
 
@@ -50,6 +50,7 @@ public class GamePane extends DisplayPane implements Runnable {
     public void initialize () {
         //myGameManager = new GameManager(this);
         myGameThread = new Thread(this);
+        myGameThread.setDaemon(true);
         myGameThread.start();
         repaint();
     }

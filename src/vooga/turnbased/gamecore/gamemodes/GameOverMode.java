@@ -11,7 +11,7 @@ import vooga.turnbased.gui.GameWindow;
 
 /**
  * Mode designed to manage what happens when the game ends. 
- * @author RPG team
+ * @author volodymyr
  *
  */
 public class GameOverMode extends GameMode {

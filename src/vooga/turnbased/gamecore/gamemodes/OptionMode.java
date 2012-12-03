@@ -52,6 +52,12 @@ public class OptionMode extends GameMode {
         myOrigin = getDefaultPosition();
     }
 
+    /**
+     * find the mapobject using index
+     * @param involvedIDs a list of involved IDs for an event
+     * @param index the index in the list
+     * @return the MapObject inside the Sprites specified by the ID
+     */
     private MapObject findMapObjectByIndex (List<Integer> involvedIDs, int index) {
         return getGameManager().findSpriteWithID(involvedIDs.get(index)).getMapObject();
     }
