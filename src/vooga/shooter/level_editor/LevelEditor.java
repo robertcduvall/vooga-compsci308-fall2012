@@ -87,12 +87,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         mainFrame.getContentPane().add(myToolBar, BorderLayout.NORTH);
         mainFrame.pack();
         mainFrame.setVisible(true);
-
     }
 
     private void initializeSpriteOptionsPane () {
-        MultiFieldJOptionPane<String> spriteOptionsPane =
-                new MultiFieldJOptionPane(mainFrame, "Sprite Options");
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
         spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(3));
         spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(3));
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
@@ -211,25 +209,25 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      * the current Level. Calls validateSpriteAttributes to validate user input.
      */
     private void makeSprite () {
-
-        spriteOptionsPane.display();
         int response = imageChooser.showOpenDialog(null);
         if (response == JFileChooser.APPROVE_OPTION) {
 
             String imagePath = imageChooser.getSelectedFile().getPath();
             Image spriteImage = (new ImageIcon(imagePath)).getImage();
-
-            Enemy newEnemy =
-                    new Enemy(new Point(300 + (150), 150), new Dimension(20, 17),
-                              new Dimension(20, 17), spriteImage, new Point(0, 5), 15);
+            
+            spriteOptionsPane.display();
+            
+            Point position =
+                    new Point(Integer.parseInt(spriteOptionsPane.getResult(X_POSITION_KEY)),
+                              Integer.parseInt(spriteOptionsPane.getResult(Y_POSITION_KEY)));
+            Dimension size = new Dimension(Integer.parseInt(spriteOptionsPane.getResult(WIDTH_KEY)),
+                              Integer.parseInt(spriteOptionsPane.getResult(HEIGHT_KEY)));
+            Dimension bounds = myCanvas.getSize();
+            Point velocity = new Point(0,0);
+            int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
+            Enemy newEnemy = new Enemy(position, size, bounds, spriteImage, velocity, health);
 
             myLevel.addSprite(newEnemy);
-
-            // public Enemy (Point position, Dimension size, Dimension
-            // bounds,
-            // Image image, Point velocity, int health) {
-
-            // imageChooser.getSelectedFile());
         }
     }
 
