@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.BorderFactory;
@@ -30,11 +31,13 @@ public class ExampleGUI extends JPanel implements KeyListener {
     private ChatClient myChatClient; 
     private JTabbedPane tabbedPane;
     private JTextArea buddyList;
+    private List<String> usersOnline;
     private JTextArea userInput;
     private Map<String, JTextArea> recipientsToTextArea;
     
-    public ExampleGUI(/*ChatClient c,*/){
-        myChatClient = null;
+    public ExampleGUI(ChatClient c, List<String> buddyList){
+        myChatClient = c;
+        usersOnline = buddyList;
         recipientsToTextArea = new TreeMap<String, JTextArea>();
         setUpChatGUI();
     }
@@ -50,6 +53,9 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
      private JTextArea initBuddyList () {
         buddyList = new JTextArea("Buddy List", 5, 15);
+        for (String s: usersOnline){
+            buddyList.append("\n" + s);
+        }
         buddyList.setEditable(false);
         buddyList.setWrapStyleWord(true);
         buddyList.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));

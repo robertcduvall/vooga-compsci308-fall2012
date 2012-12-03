@@ -34,34 +34,28 @@ public class ChatApp {
     
     public static void main (String[] args) {
         try {
-            ChatClient c = new ChatClient("wl-10-190-55-34.wireless.duke.local", new GordonBukspanProtocol());
+            ChatClient c = new ChatClient("wl-10-190-41-57.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            ExampleGUI eg;
+            eg = new ExampleGUI(c, c.getListUsers());
+            frame.add(eg);
+            JMenuBar menuBar = new JMenuBar();
+            JMenu menu = new JMenu("File");
+            menuBar.add(menu);
+            JMenuItem newConvoItem = new JMenuItem(new NewConversationAction(eg));
+            JMenuItem closeConvoItem = new JMenuItem(new CloseConversation(eg));
+            menu.add(newConvoItem);
+            menu.add(closeConvoItem);
+
+            frame.setJMenuBar(menuBar);
+            frame.pack();
+            frame.setVisible(true);
         }
         catch (IOException e) {
             System.out.println("Cannot connect to server");
         }
-        
-        
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ExampleGUI eg;
-        eg = new ExampleGUI(/*new ChatClient("", new GordonBukspanProtocol()),*/);
-        frame.add(eg);
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("File");
-        menuBar.add(menu);
-        JMenuItem newConvoItem = new JMenuItem(new NewConversationAction(eg));
-        JMenuItem closeConvoItem = new JMenuItem(new CloseConversation(eg));
-        menu.add(newConvoItem);
-        menu.add(closeConvoItem);
-
-        frame.setJMenuBar(menuBar);
-        frame.pack();
-        frame.setVisible(true);
-        
-
-       
-
     }
     
     private static String login (String errorMessage, ChatClient c) {
@@ -112,11 +106,11 @@ public class ChatApp {
             else if (password.length < 5)
                 return login("<html>Error: Password must be at least 5 characters<br><br></html>",c);
             if(login.isSelected()){
-                boolean status = c.loginWithTimeout(userName, new String(password), 5000);
+                boolean status = c.loginWithTimeout(userName, new String(password), 3000);
                 if(!status) return login("<html>Error: Could not login. Please check your server connection.<br><br>", c);
             }
             else{
-                boolean status = c.registerWithTimeout(userName, new String(password), 5000);
+                boolean status = c.registerWithTimeout(userName, new String(password), 3000);
                 if(!status) return login("<html>Error: Could not Properly Register. Please Try Again.<br><br>",c);
             }
             return userName;
