@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,18 +40,22 @@ public class EditorPane extends DisplayPane {
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
     private static final String[] GAME_SETUP_DEFAULTS = {"20", "20", "15", "11",
         "src/vooga/turnbased/resources/image/grass.png"};
-    private static final String[] OBJECTS = {"Create On: ", "Modes: ", "Class: ", "Condition: ",
-        "X-Coordinate: ", "Y-Coordinate: ", "Images: ", "Stats: ", "Name: "};
-    private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", "", "", "", "", ""};
+    private static final String[] OBJECTS = {"Modes: ", "Class: ", "Condition: ",
+        "Images: ", "Stats: ", "Name: "};
+    private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", "", ""};
     private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
     private static final int BOX_SIZE = 25;
+    static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
+    private static final Image SPRITE_IMG = new ImageIcon(sprite.getAbsolutePath()).getImage();
     File flashingBox = new File("src/vooga/turnbased/resources/image/flashing-box.png");
     Image flash = new ImageIcon(flashingBox.getAbsolutePath()).getImage();
     private Point[][] GRID;
     private Point myCurrentTile;
     private Image myBackground;
     private Dimension myDimension;
+    private boolean mySpriteHere = false;
     private Map<Point, List<Image>> myImageMap;
+    private List<Point> myPaintedSprites = new ArrayList<Point>();
 
     /**
      * 
@@ -100,6 +105,9 @@ public class EditorPane extends DisplayPane {
                     g.drawImage(flash, x, y, BOX_SIZE, BOX_SIZE, null);
                 GRID[i][j] = new Point(x, y);
             }
+        }
+        for (Point s : myPaintedSprites) {
+            g.drawImage(SPRITE_IMG, s.x, s.y, BOX_SIZE, BOX_SIZE, null);
         }
     }
 
@@ -167,6 +175,9 @@ public class EditorPane extends DisplayPane {
 
     private JButton makeNextButtonAndAddObjectXml (final LevelEditor l,
             final Element sprite, final int NUM_PAIRS, final JPanel P, final JFrame FRAME) {
+        Point toPaint = GRID[myCurrentTile.x][myCurrentTile.y];
+        myPaintedSprites.add(toPaint);
+        repaint();
         JButton nextButton = new JButton("Add Object");
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
@@ -200,9 +211,11 @@ public class EditorPane extends DisplayPane {
 
     private void addObjectXmlInformation (String[] returnedValues,
                     LevelEditor l, Element sprite) {
-        l.addObject(sprite, returnedValues[0], returnedValues[1], returnedValues[2],
-                returnedValues[3], returnedValues[4], returnedValues[5], returnedValues[6],
-                returnedValues[7], returnedValues[8]);
+        Integer x = myCurrentTile.x;
+        Integer y = myCurrentTile.y;
+        l.addObject(sprite, "", returnedValues[0], returnedValues[1],
+                returnedValues[2], x.toString(), y.toString(), returnedValues[3],
+                returnedValues[4], returnedValues[5]);
     }
 
     private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
@@ -321,26 +334,6 @@ public class EditorPane extends DisplayPane {
                     }
                 }
             }
-        }
-
-        @Override
-        public void mouseEntered (MouseEvent e) {
-            //System.out.println(e);
-        }
-
-        @Override
-        public void mouseExited (MouseEvent e) {
-           // System.out.println(e);
-        }
-
-        @Override
-        public void mousePressed (MouseEvent e) {
-           // System.out.println(e);
-        }
-
-        @Override
-        public void mouseReleased (MouseEvent e) {
-            //System.out.println(e);
         }
     }
 }
