@@ -117,7 +117,7 @@ public class UserXMLWriter {
 
     protected void updateGameInfo (String userName, String gameName,
             String tagName, String content) {
-        String filePath = myUserBasicFilePath + userName + ".xml";
+        String filePath = myUserGameFilePath + userName + ".xml";
 
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();

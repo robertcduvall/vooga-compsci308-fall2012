@@ -29,7 +29,7 @@ public class Test {
          //testRegister();
       //  testDeleteUser();
        // testSendMessage();
-        myUserManager=UserManager.getInstance();
+       myUserManager=UserManager.getInstance();
         testGetGame();
      //   testReadGameList();
        
