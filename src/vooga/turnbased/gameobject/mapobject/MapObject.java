@@ -8,12 +8,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
-import vooga.turnbased.gameobject.mapstrategy.NullStrategy;
-
 
 /**
  * Map Object class that is extended to create objects to exist in the MapMode.
@@ -30,27 +27,30 @@ public class MapObject extends GameObject {
     private boolean myIsVisible;
     private MapMode myMapMode;
 
-    private List<MapStrategy> myMapStrategies; // addition of Strategy hardcoded
-                                               // right now
+    private List<MapStrategy> myMapStrategies;
 
     /**
      * Creates the MapObject that will be used in MapMode.
      * 
-     * @param id Integer ID associated with the MapObject.
+     * @param allowableModes Set of string names of the modes allowed.
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
-     * @param mapMode MapMode in which the object exists.
      */
     public MapObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
         super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
-        //setMapMode(mapMode);
+        // setMapMode(mapMode);
         myMapStrategies = new ArrayList<MapStrategy>();
-        //myMapStrategies.add(new NullStrategy(mapMode));
+        // myMapStrategies.add(new NullStrategy(mapMode));
     }
 
+    /**
+     * Sets associated MapMode to the given MapMode.
+     * 
+     * @param mapMode MapMode to be associated with MapObject.
+     */
     public void setMapMode (MapMode mapMode) {
         myMapMode = mapMode;
     }
@@ -82,6 +82,12 @@ public class MapObject extends GameObject {
         return myLocation;
     }
 
+    /**
+     * Increments the location of the object from the given point.
+     * 
+     * @param p Point at which the object starts.
+     * @return Point that has been incremented.
+     */
     public Point incrementLocation (Point p) {
         int x = getLocation().x + p.x;
         int y = getLocation().y + p.y;
@@ -112,7 +118,7 @@ public class MapObject extends GameObject {
      */
     public void interact (MapObject target) {
         if (target instanceof MapPlayerObject) {
-            interactWithPlayer((MapPlayerObject)target);
+            interactWithPlayer((MapPlayerObject) target);
         }
         else {
             for (MapStrategy strategy : myMapStrategies) {
@@ -120,9 +126,9 @@ public class MapObject extends GameObject {
             }
         }
     }
-    
-    private void interactWithPlayer(MapPlayerObject player) {
-     // if conversation has started, there is no need to start again in the
+
+    private void interactWithPlayer (MapPlayerObject player) {
+        // if conversation has started, there is no need to start again in the
         // same interact method
         boolean conversationStarted = false;
         for (MapStrategy strategy : myMapStrategies) {
@@ -153,10 +159,20 @@ public class MapObject extends GameObject {
         getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
     }
 
+    /**
+     * Adds a strategy to the object's list of strategies.
+     * 
+     * @param mapStrategy Strategy to add.
+     */
     public void addStrategy (MapStrategy mapStrategy) {
         myMapStrategies.add(mapStrategy);
     }
 
+    /**
+     * Returns list of strategies that can be displayed.
+     * 
+     * @return List of strategies that can be displayed.
+     */
     public List<MapStrategy> getDisplayableStrategies () {
         List<MapStrategy> displayableStrategies = new ArrayList<MapStrategy>();
         for (MapStrategy strategy : myMapStrategies) {
@@ -169,8 +185,6 @@ public class MapObject extends GameObject {
 
     /**
      * Updates MapObject; delayTime not used.
-     * 
-     * @param delayTime Not used.
      */
     public void update () {
         myTileDimensions = new Dimension(myMapMode.getTileDimensions());
@@ -191,7 +205,7 @@ public class MapObject extends GameObject {
     }
 
     protected void paintInProportion (Graphics g, Point offset, Dimension tileDimension,
-                                      double proportion) {
+            double proportion) {
         if (getImage() == null || offset == null || tileDimension == null) { return; }
         offset.x += (1 - proportion) / 2 * tileDimension.width;
         offset.y += (1 - proportion) / 2 * tileDimension.height;
@@ -204,8 +218,13 @@ public class MapObject extends GameObject {
     public void clear () {
         myMapMode.removeMapObject(this);
     }
-    
-    public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs){
+
+    /**
+     * Flags a given condition to be associated with a list of sprites.
+     * @param conditionName String name of condition to apply to sprites.
+     * @param involvedSpriteIDs List of sprites to apply the condition to.
+     */
+    public void flagCondition (String conditionName, List<Integer> involvedSpriteIDs) {
         myMapMode.flagCondition(conditionName, involvedSpriteIDs);
     }
 }
