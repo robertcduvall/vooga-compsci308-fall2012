@@ -11,9 +11,8 @@ import util.reflection.Reflection;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 
 /*
- * I haven't yet tested this class and I'm not entirely sure how
- * JMenus work. If this class works full time it would be a miracle.
- * It won't though.
+ * I haven't yet tested this class. If it works first
+ * time it would be a miracle. It won't though.
  */
 
 /**
