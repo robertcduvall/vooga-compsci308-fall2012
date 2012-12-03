@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.ImageIcon;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import util.pack.Packable;
-import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
@@ -21,14 +17,14 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * @author Jesse Starr
  * (add your own name as you edit)
  */
-public class Enemy extends Sprite implements Packable {
+public class Enemy extends Sprite {
     
     private String imagePath;
 
     /**
      * @deprecated Please pass in the imagePath instead of an image.
      * (See the constructor below). We need the imagePath so that we 
-     * can recreate the Enemy object in the unpack() method. The original
+     * can recreate the Enemy from xml data. The original
      * path of the image source file cannot be retrieved from an Image
      * object.
      * 
@@ -115,92 +111,4 @@ public class Enemy extends Sprite implements Packable {
         //do nothing if an enemy intersects an enemy
         getMapper().addPair(HIT_BY_ENEMY, this);
     }
-
-    @Override
-    public Document pack () {
-        
-        Document doc = XmlUtilities.makeDocument();
-        Element root = XmlUtilities.makeElement(doc, "Enemy");
-        doc.appendChild(root);
-                
-        // convert position...
-        double pointX = getPosition().getX();
-        double pointY = getPosition().getY();
-        HashMap<String, String> positionMap = new HashMap<String, String>();
-        positionMap.put("x", Integer.toString((int) pointX));
-        positionMap.put("y", Integer.toString((int) pointY));
-        XmlUtilities.appendElement(doc, root, "position", positionMap);
-        
-        // convert size...
-        double sizeWidth = getSize().getWidth();
-        double sizeHeight = getSize().getHeight();
-        HashMap<String, String> sizeMap = new HashMap<String, String>();
-        sizeMap.put("width", Integer.toString((int) sizeWidth));
-        sizeMap.put("height", Integer.toString((int) sizeHeight));
-        XmlUtilities.appendElement(doc, root, "size", sizeMap);
-        
-        // convert bounds...
-        double boundsWidth = getBounds().getWidth();
-        double boundsHeight = getBounds().getHeight();
-        HashMap<String, String> boundsMap = new HashMap<String, String>();
-        boundsMap.put("width", Integer.toString((int) boundsWidth));
-        boundsMap.put("height", Integer.toString((int) boundsHeight));
-        XmlUtilities.appendElement(doc, root, "bounds", boundsMap);
-        
-        // convert image...
-        XmlUtilities.appendElement(doc, root, "image", "path", imagePath);
-        
-        // convert velocity...
-        double velX = getVelocity().getX();
-        double velY = getVelocity().getY();
-        HashMap<String, String> velMap = new HashMap<String, String>();
-        velMap.put("x", Integer.toString((int) velX));
-        velMap.put("y", Integer.toString((int) velY));
-        XmlUtilities.appendElement(doc, root, "velocity", velMap);
-        
-        // convert health...
-        XmlUtilities.appendElement(doc, root, "health", "value", Integer.toString(getHealth()));
-        
-        return doc;
-    }
-
-    public static Enemy unpack (Document xmlData) {
-      
-        Element root = (Element) xmlData.getFirstChild();
-        
-        // parse position...
-        Element positionElement = XmlUtilities.getElement(root, "position");
-        int pointX = XmlUtilities.getAttributeAsInt(positionElement, "x");
-        int pointY = XmlUtilities.getAttributeAsInt(positionElement, "y");
-        Point position = new Point(pointX, pointY);
-        
-        // parse size...
-        Element sizeElement = XmlUtilities.getElement(root, "size");
-        int sizeWidth = XmlUtilities.getAttributeAsInt(sizeElement, "width");
-        int sizeHeight = XmlUtilities.getAttributeAsInt(sizeElement, "height");
-        Dimension size = new Dimension(sizeWidth, sizeHeight);
-        
-        // parse bounds...
-        Element boundsElement = XmlUtilities.getElement(root, "bounds");
-        int boundsWidth = XmlUtilities.getAttributeAsInt(boundsElement, "width");
-        int boundsHeight = XmlUtilities.getAttributeAsInt(boundsElement, "height");
-        Dimension bounds = new Dimension(boundsWidth, boundsHeight);
-        
-        // parse image...
-        Element imageElement = XmlUtilities.getElement(root, "image");
-        String imagePath = imageElement.getAttribute("path");
-        
-        // parse velocity...
-        Element velElement = XmlUtilities.getElement(root, "velocity");
-        int velX = XmlUtilities.getAttributeAsInt(velElement, "x");
-        int velY = XmlUtilities.getAttributeAsInt(velElement, "y");
-        Point velocity = new Point(velX, velY);
-        
-        // parse health...
-        Element healthElement = XmlUtilities.getElement(root, "health");
-        int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
-        
-        return new Enemy(position, size, bounds, imagePath, velocity, health);
-    }
-
 }

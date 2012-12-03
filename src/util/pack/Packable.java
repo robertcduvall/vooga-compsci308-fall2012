@@ -7,6 +7,9 @@ import org.w3c.dom.Document;
 public interface Packable<T> {
 
     /**
+     * @deprecated I've decided not to use this. It appears that
+     * noone else is using it. It will be removed soon.
+     * 
      * Serializes or "packs" an object of class T
      * into an xml format. This stores all the parameters
      * that can be passed to the objects constructor to

@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import util.pack.Packable;
 import vooga.shooter.gameObjects.intelligence.AI;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
@@ -419,7 +418,9 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * This is needed for pack() method.
+     * Returns the bounds of the sprite.
+     * This is needed for storing the data
+     * to xml.
      * 
      * @return the myBounds
      */
@@ -428,7 +429,9 @@ public abstract class Sprite implements SpriteActionInterface {
     }
     
     /**
-     * This is needed for pack() method.
+     * Returns the health of the sprite.
+     * This is needed for storing the data
+     * to xml.
      * 
      * @return the health
      */
