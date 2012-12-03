@@ -1,4 +1,4 @@
-package vooga.turnbased.gui.interactionpanel;
+package util.interactionpanel;
 
 import java.awt.Color;
 import java.awt.Dimension;

@@ -11,7 +11,7 @@ import vooga.turnbased.gui.GameWindow;
 
 /**
  * Mode designed to manage what happens when the game ends. 
- * @author RPG team
+ * @author volodymyr
  *
  */
 public class GameOverMode extends GameMode {
@@ -52,7 +52,6 @@ public class GameOverMode extends GameMode {
 
     @Override
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
-        
     }
 
 }

@@ -12,14 +12,25 @@ import util.input.factories.ControllerFactory;
 /**
  * The abstract class that describe the feature of a displayable pane in this game
  * including editor, game, menu 
- * @author rex
+ * @author rex, volodymyr
  *
  */
 public abstract class DisplayPane extends JPanel {
-    private GameWindow myGameWindow;
-    public static KeyboardController keyboardController;
-    public static MouseController mouseController;
 
+    /**
+     * The keyboard controller that takes input for our game
+     */
+    public static KeyboardController keyboardController;
+    /**
+     * The mouse input controller that takes input for our game
+     */
+    public static MouseController mouseController;
+    private GameWindow myGameWindow;
+
+    /**
+     * Constructor
+     * @param gameWindow The gameWindow where this will exist
+     */
     public DisplayPane (GameWindow gameWindow) {
         myGameWindow = gameWindow;
         setSize(myGameWindow.getSize());
@@ -33,10 +44,17 @@ public abstract class DisplayPane extends JPanel {
         mouseController = (MouseController) ControllerFactory.createMouseController(this);
     }
 
+    /**
+     * Gets the game window.
+     * @return This is the game window
+     */
     public GameWindow getGameWindow () {
         return myGameWindow;
     }
 
+    /**
+     * Allows the display to have a focus
+     */
     public void enableFocus () {
         setFocusable(true);
         addComponentListener(new ComponentAdapter() {
@@ -47,6 +65,9 @@ public abstract class DisplayPane extends JPanel {
         });
     }
 
+    /**
+     * Initializes the pane, however, is currently empty
+     */
     public void initialize () {
     }
 }

@@ -184,7 +184,7 @@ public abstract class PathFinder {
      */
     public boolean updatePath () {
         if ((!myHasTask) || myCancelMovement) { return false; }
-        
+
         if (myPathIndex >= getImmutablePath().size()) { return false; }
         if (!myIsHighlighted) {
             highlightPath();

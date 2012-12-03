@@ -7,7 +7,7 @@ package util.sound;
  *
  */
 public class Example {
-    public static void main (String[] args) {
+    public void test () {
         try {
             SoundPlayer p = new SoundPlayer("src/util/sound/sounds/teleport.wav");
             // every time playOnce is called, a new thread is created. it would
