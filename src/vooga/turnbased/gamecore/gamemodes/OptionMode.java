@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import util.interactionpanel.InteractionPanel;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
 import vooga.turnbased.gui.GamePane;
-import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 
 /**
