@@ -43,11 +43,11 @@ public class BrickMovingObject extends CollisionEvent {
         moveObj.setOnGround();
     }
 
-    protected void resetCenterLeft (GameObject gameObj, double dx) {
+    protected void resetCenterLeft (MovingObject gameObj, double dx) {
         gameObj.setX(gameObj.getX() + dx);
     }
 
-    protected void resetCenterRight (GameObject gameObj, double dx) {
+    protected void resetCenterRight (MovingObject gameObj, double dx) {
         gameObj.setX(gameObj.getX() - dx);
     }
 }
