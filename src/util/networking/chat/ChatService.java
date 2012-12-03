@@ -35,7 +35,6 @@ public class ChatService implements Service {
         myUsersToSockets = new HashMap<String, Socket>();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void serve (Socket socket, Server server) {
         myServer = (ChatServer) server;
@@ -45,29 +44,41 @@ public class ChatService implements Service {
         }
         catch (IOException e) {
         }
-        
-        write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet().toArray(new String[0]))));
-        
+
+        write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet()
+                .toArray(new String[0]))));
+
         while (true && in != null) {
             try {
                 String input = in.readLine();
-                System.out.println("server received: " + input);
-                ChatCommand type = myProtocol.getType(input);
-                Method m;
-                m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
-                m.invoke(input, socket);
+                if (input != null && !"".equals(input.trim())) {
+                    System.out.println("server received from "+ socket.getInetAddress() + ": " + input);
+                    ChatCommand type = myProtocol.getType(input);
+                    Method m;
+                    m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class, Socket.class);
+                    m.setAccessible(true);
+                    m.invoke(this, input, socket);
+                }
             }
             catch (IOException e) {
+                if ("Connection reset".equals(e.getMessage())) {
+                    break;
+                }
             }
             catch (SecurityException e) {
+                System.out.println("2: " + e.getMessage());
             }
             catch (NoSuchMethodException e) {
+                System.out.println("3: " + e.getMessage());
             }
             catch (IllegalArgumentException e) {
+                System.out.println("4: " + e.getMessage());
             }
             catch (IllegalAccessException e) {
+                System.out.println("5: " + e.getMessage());
             }
             catch (InvocationTargetException e) {
+                System.out.println("6: " + e.getMessage());
             }
         }
         try {
@@ -149,26 +160,26 @@ public class ChatService implements Service {
                                          from + "."));
         }
     }
-    
+
     @SuppressWarnings("unused")
-    private void processUnknown(String input, Socket socket) {
-        //log the input
+    private void processUnknown (String input, Socket socket) {
+        // log the input
         System.out.println("unrecognized command from: " + socket.getInetAddress() + ": " + input);
     }
 
     private void addUser (String user, Socket socket) {
-        //notify all clients of new user
+        // notify all clients of new user
         for (Socket s : myUsersToSockets.values()) {
             write(s, myProtocol.createAddUser(user));
         }
-        //add new user to list
+        // add new user to list
         myUsersToSockets.put(user, socket);
     }
-    
+
     private void removeUser (String user, Socket socket) {
-        //remove user from list
+        // remove user from list
         myUsersToSockets.remove(user);
-        //notify all clients to remove user
+        // notify all clients to remove user
         for (Socket s : myUsersToSockets.values()) {
             write(s, myProtocol.createRemoveUser(user));
         }
@@ -192,6 +203,8 @@ public class ChatService implements Service {
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             out.println(text);
+            out.flush();
+            System.out.println("Server sending to " + socket.getInetAddress() + ": " + text);
         }
         catch (IOException e) {
         }

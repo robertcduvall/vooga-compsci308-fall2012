@@ -170,7 +170,7 @@ public abstract class GameMode {
     protected void setModeIsOver () {
         isOver = true;
     }
-    
+
     protected void playModeEntranceSound(String soundFileURL) {
         getGameManager().turnOffSoundTrack();
         SoundPlayer p = new SoundPlayer(GameWindow.importString(soundFileURL));

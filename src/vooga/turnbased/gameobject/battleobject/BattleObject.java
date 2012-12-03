@@ -21,7 +21,7 @@ import vooga.turnbased.gameobject.GameObject;
  */
 public abstract class BattleObject extends GameObject {
     private String myCurrentMessage = null;
-    private final String HEALTH = "health";
+    private final String myHEALTH = "health";
     private Map<String, Number> myStats;
     private String myName;
     private ImageLoop myImageLoop;
@@ -139,8 +139,8 @@ public abstract class BattleObject extends GameObject {
      * @return True if health > 0.
      */
     public boolean isAlive() {
-        if (myStats.containsKey(HEALTH)) {
-            Number health = myStats.get(HEALTH);
+        if (myStats.containsKey(myHEALTH)) {
+            Number health = myStats.get(myHEALTH);
             return health.intValue() > 0;
         }
         else {
@@ -202,7 +202,7 @@ public abstract class BattleObject extends GameObject {
 
     /**
      * Paints the current stats for this BattleObject. Will be drawn at x,y, with given 
-     * width and height.  
+     * width and height.
      * @param g This is passed in to draw the stats.
      * @param x The x location of where the stats should be drawn
      * @param y  The y location of where the stats should be drawn
@@ -248,7 +248,11 @@ public abstract class BattleObject extends GameObject {
     public void paint (Graphics g) {
 
     }
-    
+
+    /**
+     * Sets the animation loop of images.
+     * @param imgLoop The ImageLoop that will be used for animation
+     */
     public void setImageLoop (ImageLoop imgLoop) {
         myImageLoop = imgLoop;
     }

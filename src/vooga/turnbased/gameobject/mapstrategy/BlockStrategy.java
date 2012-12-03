@@ -1,6 +1,5 @@
 package vooga.turnbased.gameobject.mapstrategy;
 
-import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MovingMapObject;
 
@@ -11,6 +10,9 @@ import vooga.turnbased.gameobject.mapobject.MovingMapObject;
  */
 public class BlockStrategy extends MapStrategy {
 
+    /**
+     * Constructor for the Block Strategy
+     */
     public BlockStrategy () {
         super();
     }

@@ -3,6 +3,7 @@ package vooga.platformer.leveleditor;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 
 
@@ -44,7 +45,8 @@ public class PlacementMode implements IEditorMode {
                     mySelected = toSelect;
                 }
             }
-        } else {
+        }
+        else {
             placeSelected(x, y);
         }
     }
@@ -68,7 +70,7 @@ public class PlacementMode implements IEditorMode {
 
     @Override
     public void secondaryButtonPress(int x, int y) {
-
+        //TODO THIS ISN'T SUPPOSED TO BE EMPTY.
     }
 
     @Override
@@ -76,6 +78,16 @@ public class PlacementMode implements IEditorMode {
         for (IEditorObject toPaint : mySelectables) {
             toPaint.paint(pen);
         }
+    }
+
+    @Override
+    public void add (IEditorObject editorObject) {
+        mySelectables.add(editorObject);
+    }
+
+    @Override
+    public Collection<IEditorObject> getEditorObjects () {
+        return Collections.unmodifiableCollection(mySelectables);
     }
 
 }

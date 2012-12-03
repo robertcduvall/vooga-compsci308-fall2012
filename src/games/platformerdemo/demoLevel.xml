@@ -24,7 +24,7 @@
 <imagePath>src/games/platformerdemo/enemy.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>4</x>
 <y>300</y>
 <width>50</width>
@@ -33,7 +33,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>54</x>
 <y>300</y>
 <width>50</width>
@@ -42,7 +42,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>105</x>
 <y>300</y>
 <width>50</width>
@@ -51,7 +51,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>4</x>
 <y>300</y>
 <width>50</width>
@@ -60,7 +60,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>350</x>
 <y>250</y>
 <width>50</width>
@@ -69,7 +69,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>350</x>
 <y>300</y>
 <width>50</width>
@@ -78,7 +78,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>400</x>
 <y>300</y>
 <width>50</width>
@@ -87,7 +87,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>450</x>
 <y>300</y>
 <width>50</width>
@@ -96,7 +96,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>500</x>
 <y>300</y>
 <width>50</width>
@@ -105,7 +105,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>550</x>
 <y>300</y>
 <width>50</width>
@@ -114,7 +114,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>600</x>
 <y>300</y>
 <width>50</width>
@@ -123,7 +123,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>650</x>
 <y>300</y>
 <width>50</width>
@@ -132,7 +132,7 @@
 <imagePath>src/games/platformerdemo/brick-small.png</imagePath>
 </gameObject>
 
-<gameObject class="vooga.platformer.gameobject.Brick">
+<gameObject class="vooga.platformer.gameobject.StaticObject">
 <x>650</x>
 <y>250</y>
 <width>50</width>

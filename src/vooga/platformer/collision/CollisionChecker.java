@@ -1,11 +1,17 @@
 package vooga.platformer.collision;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import util.reflection.Reflection;
+import util.xml.XmlUtilities;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
+import vooga.platformer.levelfileio.XmlTags;
 
 
 /**
@@ -17,8 +23,27 @@ import vooga.platformer.level.Level;
  * 
  */
 public abstract class CollisionChecker {
-    private Map<String, HashMap<String, String>> collisionEventsMap = new HashMap<String, HashMap<String, String>>();
+    private Map<String, HashMap<String, CollisionEvent>> collisionEventsMap = new HashMap<String, HashMap<String, CollisionEvent>>();
 
+    public CollisionChecker(String fileName) {
+        Document myDocument = XmlUtilities.makeDocument(new File(fileName));
+        NodeList collisionEventNodes = myDocument.getElementsByTagName(XmlTags.COLLISIONEVENT);
+        
+        for (int i = 0; i < collisionEventNodes.getLength(); i++) {
+            Node collisionEventNode = collisionEventNodes.item(i);
+            Element collisionEventElement = (Element) collisionEventNode;
+   
+            String objectAName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTA).toString();
+            String objectBName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTB).toString();
+            String collisionEventName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.COLLISIONEVENTCLASS).toString();
+            
+            GameObject objectA = (GameObject) Reflection.createInstance(objectAName);
+            GameObject objectB = (GameObject) Reflection.createInstance(objectBName);
+            CollisionEvent collisionEventAB = (CollisionEvent) Reflection.createInstance(
+                    collisionEventName, objectA, objectB);
+            this.addCollisionEvents(objectAName, objectAName, collisionEventAB);
+        }
+    }
     /**
      * This method detects collisions for all the GameObjects within the Level
      * and return
@@ -34,45 +59,35 @@ public abstract class CollisionChecker {
      * CollsionEvent
      * object handling that specific collision.
      * 
-     * @param a
-     * @param b
+     * @param objectA
+     * @param objectB
      * @return
      */
-    public CollisionEvent buildCollisionEvent (GameObject a, GameObject b) {
-        String className;
+    public CollisionEvent getCollisionEvent (GameObject objectA, GameObject objectB) {
 
-        if (collisionEventsMap.containsKey(a.getClass().getCanonicalName())
-                && collisionEventsMap.get(a.getClass().getCanonicalName())
-                        .containsKey(b.getClass().getCanonicalName())) {
-            className = collisionEventsMap.get(a.getClass().getCanonicalName())
-                    .get(b.getClass().getCanonicalName());
+        if (collisionEventsMap.containsKey(objectA.getClass().getCanonicalName())
+                && collisionEventsMap.get(objectA.getClass().getCanonicalName())
+                        .containsKey(objectB.getClass().getCanonicalName())) {
+            return collisionEventsMap.get(objectA.getClass().getCanonicalName())
+                    .get(objectB.getClass().getCanonicalName());
         }
         else if (collisionEventsMap
-                .containsKey(b.getClass().getCanonicalName())
-                && collisionEventsMap.get(b.getClass().getCanonicalName())
-                        .containsKey(a.getClass().getCanonicalName())) {
-            className = collisionEventsMap.get(b.getClass().getCanonicalName())
-                    .get(a.getClass().getCanonicalName());
-        }
-        else {
-            return null;
-        }
-
-        if (className != null) {
-            CollisionEvent ce = (CollisionEvent) Reflection.createInstance(
-                    className, a, b);
-            return ce;
+                .containsKey(objectB.getClass().getCanonicalName())
+                && collisionEventsMap.get(objectB.getClass().getCanonicalName())
+                        .containsKey(objectA.getClass().getCanonicalName())) {
+            return collisionEventsMap.get(objectB.getClass().getCanonicalName())
+                    .get(objectA.getClass().getCanonicalName());
         }
         else {
             return null;
         }
     }
 
-    public void addCollisionEvents (String a, String b, String ab) {
-        if (!collisionEventsMap.containsKey(a)) {
-            collisionEventsMap.put(a, new HashMap<String, String>());
+    public void addCollisionEvents (String nameA, String nameB, CollisionEvent collisionEventAB) {
+        if (!collisionEventsMap.containsKey(nameA)) {
+            collisionEventsMap.put(nameA, new HashMap<String, CollisionEvent>());
         }
-        collisionEventsMap.get(a).put(b, ab);
+        collisionEventsMap.get(nameA).put(nameB, collisionEventAB);
     }
 
 }

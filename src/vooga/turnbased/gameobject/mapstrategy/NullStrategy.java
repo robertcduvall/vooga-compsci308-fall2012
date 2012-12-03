@@ -1,6 +1,6 @@
 package vooga.turnbased.gameobject.mapstrategy;
 
-import vooga.turnbased.gamecore.gamemodes.MapMode;
+
 import vooga.turnbased.gameobject.mapobject.MapObject;
 
 
@@ -12,6 +12,9 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
  */
 public class NullStrategy extends MapStrategy {
 
+    /**
+     * constructor
+     */
     public NullStrategy () {
         super();
     }

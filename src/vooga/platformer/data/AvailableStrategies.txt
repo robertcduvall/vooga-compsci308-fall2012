@@ -1,0 +1,9 @@
+src.vooga.platformer.gameobject.strategy.movement.GoLeftStrategy
+src.vooga.platformer.gameobject.strategy.movement.GoRightStrategy
+src.vooga.platformer.gameobject.strategy.movement.JumpStrategy
+src.vooga.platformer.gameobject.strategy.movement.StopStrategy
+src.vooga.platformer.gameobject.strategy.update.EnemyMoveStrategy
+src.vooga.platformer.gameobject.strategy.update.GravityStrategy
+src.vooga.platformer.gameobject.strategy.update.MovementUpdateStrategy
+src.vooga.platformer.gameobject.strategy.PlayerMoveStrategy
+src.vooga.platformer.gameobject.strategy.ShootingStrategy
