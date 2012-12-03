@@ -44,7 +44,8 @@ public class PlacementMode implements IEditorMode {
                     mySelected = toSelect;
                 }
             }
-        } else {
+        }
+        else {
             placeSelected(x, y);
         }
     }

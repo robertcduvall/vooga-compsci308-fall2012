@@ -40,7 +40,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
-import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 
 /**
@@ -52,7 +52,6 @@ import vooga.platformer.gameobject.GameObject;
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
-    private static final String IMAGE_PATH = "src/vooga/platformer/data/";
     private Map<String, List<String>> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -165,8 +164,7 @@ public class LevelEditor extends JPanel {
                     // TODO replace null value for spriteID with a unique id value
 //                    Sprite s = new Sprite(event.getActionCommand(), x, y, OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE,
 //                            null, IMAGE_PATH + event.getActionCommand() + ".png");
-                    GameObject obj = new Brick();
-                    obj.setSize(20, 20);
+                    GameObject obj = new StaticObject();
                     myBoard.add(obj);
                 }
             });

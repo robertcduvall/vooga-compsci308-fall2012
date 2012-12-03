@@ -17,7 +17,7 @@ public class StaticObject extends GameObject {
     public StaticObject(String configString) {
         super(configString);
     }
-    public Brick () {
+    public StaticObject () {
         super();
     }
 }
