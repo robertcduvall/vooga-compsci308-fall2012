@@ -279,9 +279,8 @@ public class LevelBoard extends JPanel {
             // log.append("Save command cancelled by user." + newline);
         }
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myLength, getHeight(),
-                myBackgroundPath, myGameObjects,
-                myConditions, myPlugins,
-                myCamera,
+                myGameObjects, myConditions,
+                myPlugins, myCamera,
                 "Default_Collision_Checker");
         // "LevelTitle", getWidth(), getHeight(),
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");

@@ -55,9 +55,8 @@ public class LevelFactoryTest {
         conditions.add(new DefeatAllEnemiesCondition());
         plugins.add(new SimpleBackgroundPainter(new File(TEST_IMAGE)));
         
-        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
-                                   gameObjects, conditions, plugins, CAMERA_TYPE,
-                                   COLLISION_CHECKER_PATH);
+        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, gameObjects,
+                                   conditions, plugins, CAMERA_TYPE, COLLISION_CHECKER_PATH);
         lfr = new LevelFileReader(XML_FILE_PATH);
         Assert.assertNotNull(lfr);
     }

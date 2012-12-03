@@ -34,7 +34,6 @@ public final class LevelFileWriter {
      * @param levelName Name of the level to display to the user
      * @param width overall width of the level
      * @param height overall height of the level
-     * @param backgroundImage image to display in the background of the level
      * @param gameObjects Collection of the all the GameObjects that should be
      *        loaded when the user plays or edits the level. One GameObject
      *        <strong>must</strong> of type Player for LevelFactory to be able
@@ -47,10 +46,9 @@ public final class LevelFileWriter {
      *        CollisionChecker to use for this level
      */
     public static void writeLevel (String filePath, String levelName, int width, int height,
-                                   String backgroundImage, Collection<GameObject> gameObjects,
-                                   Collection<Condition> conditions,
-                                   Collection<LevelPlugin> plugins, String cameraType,
-                                   String collisionChecker) {
+                                   Collection<GameObject> gameObjects, Collection<Condition> conditions,
+                                   Collection<LevelPlugin> plugins,
+                                   String cameraType, String collisionChecker) {
         
         Collection<Object> gameObjectsAsObjects = new ArrayList<Object>(gameObjects);
         Collection<Object> conditionsAsObjects = new ArrayList<Object>(conditions);
@@ -64,9 +62,8 @@ public final class LevelFileWriter {
         String serializedConditionsFilePath = filePath.split("\\.")[0] + "Conditions.bin";
         String serializedPluginsFilePath = filePath.split("\\.")[0] + "Plugins.bin";
 
-        appendXmlElements(levelName, width, height, backgroundImage, cameraType, collisionChecker,
-                          doc, level, serializedGameObjectFilePath, serializedConditionsFilePath,
-                          serializedPluginsFilePath);
+        appendXmlElements(levelName, width, height, cameraType, collisionChecker, doc,
+                          level, serializedGameObjectFilePath, serializedConditionsFilePath, serializedPluginsFilePath);
 
         try {
             serializeCollection(gameObjectsAsObjects, doc, level, serializedGameObjectFilePath);
@@ -84,9 +81,8 @@ public final class LevelFileWriter {
     }
 
     private static void appendXmlElements (String levelName, int width, int height,
-                                           String backgroundImage, String cameraType,
-                                           String collisionChecker, Document doc, Element level,
-                                           String serializedGameObjectFilePath,
+                                           String cameraType, String collisionChecker,
+                                           Document doc, Element level, String serializedGameObjectFilePath,
                                            String serializedConditionsFilePath,
                                            String serializedPluginsFilePath) {
         
