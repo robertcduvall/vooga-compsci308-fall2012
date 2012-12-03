@@ -50,6 +50,7 @@ public class GamePane extends DisplayPane implements Runnable {
     public void initialize () {
         //myGameManager = new GameManager(this);
         myGameThread = new Thread(this);
+        myGameThread.setDaemon(true);
         myGameThread.start();
         repaint();
     }
