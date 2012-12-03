@@ -143,11 +143,10 @@ public class Level implements Packable<Level> {
         return doc;
     }
 
-    @Override
-    public Level unpack (Document xmlData) {
+    public static Level unpack (Document xmlData) {
         Element root = xmlData.getDocumentElement();
         String bgImagePath = root.getAttribute("backgroundImage");
-        String className = this.getClass().getName();
+        String className = Level.class.getName();
         return (Level) Reflection.createInstance(className, bgImagePath);
     }
 

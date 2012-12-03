@@ -33,8 +33,7 @@ import arcade.utility.FileOperation;
  * 
  */
 
-public class UserManager {
-    private Map<String, User> myAllUser;
+public final class UserManager {
     private static UserManager myUserManager;
     private static String myUserBasicFilePath;
     private static String myUserMessageFilePath;
@@ -42,12 +41,18 @@ public class UserManager {
     private static String myDatabaseFilePath;
     private static String myTwitterFilePath;
     private static ResourceBundle resource;
+    private Map<String, User> myAllUser;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
     private User myCurrentUser;
     private Set<String> myAdminHashes;
     private Map<String, AccessToken> myTwitterTokens;
 
+    /**
+     * Gets an instance of UserManager.
+     * 
+     * @return
+     */
     public static UserManager getInstance () {
         if (myUserManager == null) {
             myUserManager = new UserManager();
@@ -55,6 +60,9 @@ public class UserManager {
         return myUserManager;
     }
 
+    /**
+     * Constructs a user manager.
+     */
     private UserManager () {
 
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
@@ -95,11 +103,11 @@ public class UserManager {
         File[] listOfFiles = folder.listFiles();
         for (File fi : listOfFiles) {
             if (fi.isFile()) {
-                FileInputStream f_in;
+                FileInputStream fileIn;
                 try {
-                    f_in = new FileInputStream(fi);
-                    ObjectInputStream obj_in = new ObjectInputStream(f_in);
-                    Object obj = obj_in.readObject();
+                    fileIn = new FileInputStream(fi);
+                    ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+                    Object obj = objectIn.readObject();
                     myTwitterTokens.put(FileOperation.stripExtension(fi.getName()),
                                         (AccessToken) obj);
                 }
@@ -228,6 +236,7 @@ public class UserManager {
     public User getCurrentUser () {
         return myCurrentUser;
     }
+
     /**
      * 
      * @return modifable user class
@@ -240,7 +249,7 @@ public class UserManager {
         myCurrentUser = getUser(userName);
 
     }
-    
+
     /**
      * 
      * @param userName
@@ -255,7 +264,7 @@ public class UserManager {
         String lastName = user.getLastName();
         return new UserProfile(name, picture, firstName, lastName);
     }
-    
+
     /**
      * 
      * @return a list of unmodifable user profile

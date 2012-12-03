@@ -3,7 +3,6 @@ package vooga.shooter.level_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
@@ -53,6 +52,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private JButton backgroundBtn;
     private JButton makeSpriteBtn;
     private JButton deleteSpriteBtn;
+    private JButton showInfoBtn;
+    private JButton helpBtn;
 
     /* Listeners */
     private LevelEditorMouseListener myMouseListener;
@@ -95,6 +96,32 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
     }
+    
+    /**
+     * Fills the Sprite Options Pane with location information from a Point
+     * @param p point from which we extract location information
+     */
+    private void fillSpriteOptionsPane (Point p) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(p.x), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(p.y), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+    }
+    
+    /**
+     * Fills in values in the Sprite Options Pane based on a sprite's attributes.
+     * @param s the selected sprite who's attributes are used to fill the pane
+     */
+    private void fillSpriteOptionsPane (Sprite s) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(s.getLeft()), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(s.getTop()), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(Integer.toString(s.getSize().width), 3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
+    }
 
     private void setupChoosers () {
         levelChooser = new JFileChooser(System.getProperties().getProperty(
@@ -127,6 +154,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         makeSpriteBtn =
                 makeBtn("New Sprite", "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
         deleteSpriteBtn = makeBtn("Delete Sprite", "/vooga/shooter/resources/deleteSprite.gif", "Delete Sprite");
+        showInfoBtn = makeBtn("Info", "/vooga/shooter/resources/showInfo.gif", "Show Current Level Info");
+        helpBtn = makeBtn("Editor Help", "/vooga/shooter/resources/help.gif", "Editor Help");
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
@@ -134,6 +163,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myToolBar.add(backgroundBtn);
         myToolBar.add(makeSpriteBtn);
         myToolBar.add(deleteSpriteBtn);
+        myToolBar.add(showInfoBtn);
+        myToolBar.add(helpBtn);
     }
 
     @Override
@@ -207,9 +238,63 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             myCurrentSprite = null;
         }
         
+        else if (source == showInfoBtn) {
+            showLevelInfo();
+        }
+        
+        else if (source == helpBtn) {
+               JOptionPane myJOptionPane = new JOptionPane(); 
+               JOptionPane.showMessageDialog(null, "Left click an existing sprite to select it."   + "\n" +
+                                                      "A selected sprite can be deleted by clicking the delete button." + "\n" +
+                                       "Right click to create a sprite at the pointer's location." + "\n" +
+                                         "Click save to save your level to XML.");
+        }
+        
         else {
             throw new LevelEditorException("Invalid action source", source);
         }
+    }
+    
+    /**
+     * Displays information about all of the Sprites in the current Level, in table form.
+     */
+    private void showLevelInfo() {
+        //count Sprites(need to count with a for loop because getSpriteList returns Iterable<Sprite>)
+        int count = 1;
+        for(Sprite s: myLevel.getSpriteList()) {
+            count++;
+        }
+        //initialize table and attribute titles
+        JFrame frame = new JFrame("Current Sprite Information");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JTable table = new JTable(count,6);
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);
+       
+        table.setValueAt("Index",0,0);
+        table.setValueAt("X Position",0,1);
+        table.setValueAt("Y Position", 0, 2);
+        table.setValueAt("Width",0,3);
+        table.setValueAt("Height", 0, 4);
+        table.setValueAt("Health",0,5);
+        //fill in Sprite attributes
+        int index = 1;
+        for(Sprite s: myLevel.getSpriteList()) {
+            table.setValueAt(index,index, 0);
+            table.setValueAt(s.getLeft(), index, 1);
+            table.setValueAt(s.getTop(), index, 2);
+            table.setValueAt(s.getSize().width, index, 3);
+            table.setValueAt(s.getSize().height, index, 4);
+            table.setValueAt(s.getCurrentHealth(), index, 5);
+            index++;
+        }
+        JScrollPane pane = new JScrollPane(table);
+        panel.add(pane, BorderLayout.CENTER);
+        frame.getContentPane().add(panel);
+
+        frame.pack();
+        frame.setVisible(true);
     }
     
     /**
@@ -218,6 +303,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      * with the newly entered attributes.
      */
     private void editCurrentSprite() {
+        System.out.println("editing");
         Enemy newEnemy = makeEnemy();
         myLevel.removeSprite(myCurrentSprite);
         myLevel.addSprite(newEnemy);
@@ -259,6 +345,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         // convert XML to Level object then display sprites
         myLevel = new Level();
         myLevel = myLevel.unpack(XmlUtilities.makeDocument(file));
+        myBackground = myLevel.getBackgroundImage();
+        myBackground = myBackground.getScaledInstance(myCanvas.getWidth(), myCanvas.getHeight(),
+                java.awt.Image.SCALE_SMOOTH);
+        
     }
 
     private void saveFile (File file) {
@@ -291,7 +381,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         newBtn.setToolTipText(tooltip);
         newBtn.addActionListener(this);
-        newBtn.setBorder(new LineBorder(Color.gray, 1, false));
+        newBtn.setBorder(BorderFactory.createRaisedBevelBorder());
         return newBtn;
     }
 
@@ -328,7 +418,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         int xPos = p.x;
         int yPos = p.y;
         for(Sprite s: myLevel.getSpriteList()) {
-            if(xPos <= s.getRight() && xPos >= s.getLeft() && yPos <= s.getTop() && yPos >= s.getBottom()) {
+            if(xPos <= s.getRight() && xPos >= s.getLeft() && yPos >= s.getTop() && yPos <= s.getBottom()) {
                 return s;
             }
         }
@@ -366,8 +456,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             else if (e.getButton() == MouseEvent.BUTTON3) {
                 System.out.println("Right click at point (" + e.getX() + ", " + e.getY() + ")");
                 if(myCurrentSprite != null) {
+                    fillSpriteOptionsPane(myCurrentSprite);
                     editCurrentSprite();
                 } else {
+                    fillSpriteOptionsPane(p);
                     Enemy newEnemy = makeEnemy();
                     myLevel.addSprite(newEnemy);
                     myCurrentSprite = newEnemy;

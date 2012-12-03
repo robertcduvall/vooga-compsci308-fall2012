@@ -39,7 +39,7 @@ public class TwitterMainPanel extends AMainPanel{
         MigLayout layout = new MigLayout("", "[c][c]", "[][][][]push[]");
         myPanel.setLayout(layout);
         
-        JLabel welcomeLabel = new JLabel("Welcome to the twitter connect! Share the CS 308 Arcade with your Friends!");
+        JLabel welcomeLabel = new JLabel("Welcome to the twitter connect! \nTweet from the comfort of the arcade.");
         welcomeLabel.setForeground(Color.WHITE);
         JLabel tweetPrompt = new JLabel("Tweet here: ");
         tweetPrompt.setForeground(Color.WHITE);
@@ -61,7 +61,7 @@ public class TwitterMainPanel extends AMainPanel{
         
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/twitterbird.jpg");
         JButton tweetBut = new JButton("Tweet");
-        JButton tweetDisconnectBut = new JButton("Disconnect from Twitter");
+        JButton tweetDisconnectBut = new JButton("Disconnect Twitter Account");
         
         tweetBut.addActionListener(new ActionListener(){
             @Override
@@ -79,7 +79,8 @@ public class TwitterMainPanel extends AMainPanel{
                   return;
               }
               if (tweetSuccessful) {
-                  JOptionPane.showMessageDialog(null, "Tweet was succesful!");
+                  textToTweet.setText("");
+                  JOptionPane.showMessageDialog(null, "Tweet was successful!");
               }
               else {
                   JOptionPane.showMessageDialog(null, "Tweet failed Q_Q");
@@ -103,7 +104,7 @@ public class TwitterMainPanel extends AMainPanel{
         
         myPanel.add(twitterPicture, "align right");
         myPanel.add(welcomeLabel, "align left, wrap");
-        myPanel.add(tweetPrompt, "align center, span, wrap");
+        //myPanel.add(tweetPrompt, "align center, span, wrap");
         myPanel.add(textToTweet, "grow, split 2, align center, span");
         myPanel.add(tweetBut, "wrap, grow,");
         myPanel.add(instructionTextScroller, "wrap, grow, align center, span");

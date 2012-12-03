@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import util.pack.Packable;
 import vooga.shooter.gameObjects.intelligence.AI;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
@@ -151,6 +152,10 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void decreaseHealth(int damage) {
         myHealth -= damage;
+    }
+    
+    public int getCurrentHealth() {
+        return myHealth;
     }
 
     /**
@@ -412,4 +417,23 @@ public abstract class Sprite implements SpriteActionInterface {
     public void setAI (AI newAI) {
         myAI = newAI;
     }
+
+    /**
+     * This is needed for pack() method.
+     * 
+     * @return the myBounds
+     */
+    public Dimension getBounds () {
+        return myBounds;
+    }
+    
+    /**
+     * This is needed for pack() method.
+     * 
+     * @return the health
+     */
+    public int getHealth () {
+        return myHealth;
+    }
+    
 }
