@@ -234,7 +234,11 @@ public class GameManager implements InputAPI {
             GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
                                                    myGamePane, "returnToMenu");
         }
-        catch (Exception e) {
+        catch (NoSuchMethodException e) {
+            System.out.println("A method was called that does not exist!");
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -355,14 +359,14 @@ public class GameManager implements InputAPI {
             myGameSoundTrack.startLoop();
         }
     }
-    
+
     /**
      * Turn off background soundtrack if any.
      */
     public void turnOffSoundTrack() {
         myGameSoundTrack.stopLoop();
     }
-    
+
     private class MouseAction {
         private int myMouseEventType;
         private Point myMousePosition;
