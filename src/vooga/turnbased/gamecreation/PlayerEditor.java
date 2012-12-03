@@ -28,7 +28,7 @@ public class PlayerEditor extends Editor {
     private String myFileName;
 
     /**
-     * Instantiates a LevelEditor for modifying an Xml document.
+     * Instantiates a PlayerEditor for modifying an Xml document.
      *
      * @param xmlDocument Already formed Xml document for modifying
      * @param fileName File name (with path) of Xml document
@@ -40,29 +40,20 @@ public class PlayerEditor extends Editor {
     }
 
     /**
-     * Creates a LevelEditor for a new Xml document.
+     * Creates a PlayerEditor for a new Xml document.
      * 
      * @param fileName File name (with path) of Xml document
      */
     public PlayerEditor(String fileName) {
         myXmlDocument = XmlUtilities.makeDocument();
-        myRootElement = myXmlDocument.createElement("players");
+        myRootElement = myXmlDocument.createElement("player");
         myXmlDocument.appendChild(myRootElement);
         myFileName = fileName;
     }
 
     /**
-     * 
-     * @return The new Player element that was just added to the Xml Document
-     */
-    public Element addPlayer () {
-        return XmlUtilities.appendElement(myXmlDocument, myRootElement, "player");
-    }
-
-    /**
      * Creates a map object and adds it to a sprite.
      * 
-     * @param player Object element to which the mapObject is added
      * @param createOn When to create the object
      * @param modes Comma-separated modes this object is in
      * @param mapClass Specific concrete class for the map object
@@ -71,9 +62,9 @@ public class PlayerEditor extends Editor {
      * @param y Map y-coordinate
      * @param imagePaths Paths to the Map Image (maps <source, direction>)
      */
-    public void addMapObject (Element player, String createOn, String modes, String mapClass,
+    public void addMapObject (String createOn, String modes, String mapClass,
             String condition, Number x, Number y, Map<String, String> imagePaths) {
-        Element object = XmlUtilities.appendElement(myXmlDocument, player, OBJECT);
+        Element object = XmlUtilities.appendElement(myXmlDocument, myRootElement, OBJECT);
         XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
         XmlUtilities.appendElement(myXmlDocument, object, CLASS, mapClass);
         XmlUtilities.appendElement(myXmlDocument, object, CONDITION, condition);
@@ -90,7 +81,6 @@ public class PlayerEditor extends Editor {
     /**
      * Creates a battle object and adds it to a sprite.
      * 
-     * @param s Sprite to which the battleObject is added
      * @param createOn When to create the object
      * @param modes Comma-separated modes this object is in
      * @param battleClass Specific concrete class for the battle object
@@ -99,9 +89,9 @@ public class PlayerEditor extends Editor {
      * @param name Name of the battle object (i.e. Pikachu)
      * @param imagePath Path to the Battle Image
      */
-    public void addBattleObject (Element s, String createOn, String modes, String battleClass,
+    public void addBattleObject (String createOn, String modes, String battleClass,
             String condition, Map<String, Number> stats, String name, String[] imagePath) {
-        Element object = XmlUtilities.appendElement(myXmlDocument, s, OBJECT);
+        Element object = XmlUtilities.appendElement(myXmlDocument, myRootElement, OBJECT);
         XmlUtilities.appendElement(myXmlDocument, object, CREATE_ON, createOn);
         XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
         XmlUtilities.appendElement(myXmlDocument, object, CLASS, battleClass);
@@ -118,12 +108,11 @@ public class PlayerEditor extends Editor {
     }
 
     /**
-     * @param s object element for which the battle stats need altering
      * @param stats Map of battle attributes and their values
      * @param name Name of the battle object that stat changes in
      */
-    public void modifyBattleStats (Element s, Map<String, Number> stats, String name) {
-        List<Element> allObjects = (List<Element>) XmlUtilities.getElements(s, OBJECT);
+    public void modifyBattleStats (Map<String, Number> stats, String name) {
+        List<Element> allObjects = (List<Element>) XmlUtilities.getElements(myRootElement, OBJECT);
         List<Element> battleObjects = new ArrayList<Element>();
         for (Element current : allObjects) {
             if (XmlUtilities.getChildContent(current, MODES).contains("battle")) {
