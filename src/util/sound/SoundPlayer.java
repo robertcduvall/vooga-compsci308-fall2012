@@ -25,9 +25,11 @@ import javax.media.format.AudioFormat;
  * 
  */
 public class SoundPlayer {
-    private LoopPlayback loop;
-    private URL soundURL;
-    private boolean loopIsPlaying;
+    private LoopPlayback myLoop;
+    private URL mySoundURL;
+    private boolean myLoopIsPlaying;
+
+    private final int TIME_DELAY = 100;
 
     /**
      * Player constructor
@@ -36,13 +38,12 @@ public class SoundPlayer {
      */
     public SoundPlayer (String soundFilePath) {
         try {
-            soundURL = new File(soundFilePath).toURI().toURL();
+            mySoundURL = new File(soundFilePath).toURI().toURL();
             Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
             Format input2 = new AudioFormat(AudioFormat.MPEG);
             Format output = new AudioFormat(AudioFormat.LINEAR);
-            PlugInManager.addPlugIn("com.sun.media.codec.audio.mp3.JavaDecoder",
-                                    new Format[] { input1, input2 }, new Format[] { output },
-                                    PlugInManager.CODEC);
+            PlugInManager.addPlugIn("com.sun.media.codec.audio.mp3.JavaDecoder", new Format[] {
+                    input1, input2 }, new Format[] { output }, PlugInManager.CODEC);
         }
         catch (Exception e) {
 
@@ -61,10 +62,10 @@ public class SoundPlayer {
      * Start playing in a loop
      */
     public void startLoop () {
-        if (!loopIsPlaying) {
-            loop = new LoopPlayback();
-            loop.start();
-            loopIsPlaying = true;
+        if (!myLoopIsPlaying) {
+            myLoop = new LoopPlayback();
+            myLoop.start();
+            myLoopIsPlaying = true;
         }
     }
 
@@ -72,32 +73,36 @@ public class SoundPlayer {
      * Loop needs to be stopped at some point.
      */
     public void stopLoop () {
-        loop.stopLoop();
-        loopIsPlaying = false;
-        loop = null;
+        if (myLoopIsPlaying) {
+            myLoop.stopLoop();
+            myLoopIsPlaying = false;
+            myLoop = null;
+        }
     }
 
     /**
      * See if loop is currently playing
      */
     public boolean loopIsRunning () {
-        return loopIsPlaying;
+        return myLoopIsPlaying;
     }
 
     class SinglePlayback extends Thread {
 
-        public SinglePlayback() {
-            setDaemon(false);
+        public SinglePlayback () {
+            setDaemon(true);
         }
+
         @Override
         public void run () {
             try {
-                Player singlePlayback = Manager.createPlayer(new MediaLocator(soundURL));
+                Player singlePlayback = Manager.createPlayer(new MediaLocator(mySoundURL));
                 singlePlayback.start();
-                while(singlePlayback.getState() != Player.Prefetched) {
-                    Thread.sleep(100);
+                while (singlePlayback.getState() != Player.Prefetched) {
+                    Thread.sleep(TIME_DELAY);
                 }
                 singlePlayback.close();
+                singlePlayback.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
@@ -106,32 +111,36 @@ public class SoundPlayer {
                 System.err.println("Wrong Sound File");
             }
             catch (InterruptedException e) {
+                System.err.println("Process interrupted");
             }
         }
 
     }
 
     class LoopPlayback extends Thread {
-        private boolean isRunning;
-        private Player loop;
+        private boolean myIsRunning;
+        private Player myLoop;
 
-        public LoopPlayback() {
-            setDaemon(false);
+        public LoopPlayback () {
+            setDaemon(true);
         }
+
+        @SuppressWarnings("static-access")
         @Override
         public void run () {
-            isRunning = true;
+            myIsRunning = true;
             try {
-                loop = Manager.createPlayer(new MediaLocator(soundURL));
-                loop.start();
-                while (isRunning) {
-                    Thread.sleep(100);
-                    if (loop.getState() == loop.Prefetched) {
-                        loop.setMediaTime(new Time(0));
-                        loop.start();
+                myLoop = Manager.createPlayer(new MediaLocator(mySoundURL));
+                myLoop.start();
+                while (myIsRunning) {
+                    Thread.sleep(TIME_DELAY);
+                    if (myLoop.getState() == Player.Prefetched) {
+                        myLoop.setMediaTime(new Time(0));
+                        myLoop.start();
                     }
                 }
-                loop.close();
+                myLoop.close();
+                myLoop.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
@@ -140,11 +149,12 @@ public class SoundPlayer {
                 System.err.println("Wrong Sound File");
             }
             catch (InterruptedException e) {
+                System.err.println("Process interrupted");
             }
         }
 
         public void stopLoop () {
-            isRunning = false;
+            myIsRunning = false;
         }
     }
 }
