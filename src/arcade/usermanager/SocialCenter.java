@@ -40,9 +40,10 @@ public class SocialCenter {
     private static ResourceBundle resource;
     private UserManager myUserManager;
 
-    /*
-     * initiate user list
+    /**
+     * constructor
      */
+     
     public SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
@@ -54,10 +55,14 @@ public class SocialCenter {
 
     }
 
-    /*
-     * 
-     * return log on status
+    /**
+     * log on user
+     * @param userName
+     * @param password
+     * @return operaton status
+     * @throws ValidationException 
      */
+     
     public boolean logOnUser (String userName, String password) throws ValidationException {
         myUserManager.validateUser(userName, password);
 
@@ -68,9 +73,17 @@ public class SocialCenter {
         return true;
     }
 
-    /*
-     * return log on status
+    /**
+     * register new user, new user will automatically be log on after registration
+     * @param userName
+     * @param password
+     * @param firstName 
+     * @param lastName
+     * @return
+     * @throws ValidationException
+     * @throws IOException
      */
+     
     public boolean registerUser (String userName, String password, String firstName, String lastName)
                                                                                                      throws ValidationException, IOException {
         // check validity
@@ -92,9 +105,14 @@ public class SocialCenter {
         return false;
     }
 
-    /*
-     * return operation status
+    /**
+     * delete user profile when user decide to cancel the account
+     * @param userName
+     * @param password
+     * @return operation status
+     * @throws ValidationException
      */
+     
     public boolean deleteUser (String userName, String password) throws ValidationException {
         // check validity
         myUserManager.validateUser(userName, password);
@@ -107,9 +125,13 @@ public class SocialCenter {
         return true;
     }
 
-    /*
-     * return operation status
+    /**
+     * send message between users
+     * @param receiver
+     * @param content
+     * @return   operation status
      */
+     
     public boolean sendMessage (String receiver, String content) {
         String sender=myUserManager.getCurrentUserName();
         myXMLWriter.appendMessage(sender, receiver, content);
@@ -127,72 +149,6 @@ public class SocialCenter {
         return true;
     }
 
-    //
-    // /*
-    // * return whether the operation is successful
-    // */
-    //
-    // public boolean writeGameScore (String gameName, int score) {
-    // myCurrentUser.getGameData(gameName).setMyHighScore(score);
-    //
-    // // write xml
-    // String filePath = "myUserGameFilePath" + myCurrentUser.getName() +
-    // ".xml";
-    // File f = new File(filePath);
-    // XmlParser parser = new XmlParser(f);
-    // Document doc = parser.getDocument();
-    // Element root = (Element) parser.getDocumentElement();
-    // NodeList children = root.getChildNodes();
-    // for (int i = 0; i < children.getLength(); i++) {
-    // Element child = (Element) children.item(i);
-    // if (parser.getTextContent(child, "name").equals(gameName)) {
-    // XmlBuilder.modifyTag(child, "highscore", Integer.toString(score));
-    // }
-    // }
-    //
-    // XmlWriter.writeXML(doc, filePath);
-    //
-    // return true;
-    //
-    // }
-    //
-    // public boolean writeGameInfo (String gameName, String info) {
-    // myCurrentUser.getGameData(gameName).setMyGameInfo(info);
-    //
-    // String filePath = "myUserGameFilePath" + myCurrentUser.getName() +
-    // ".xml";
-    // File f = new File(filePath);
-    // XmlParser parser = new XmlParser(f);
-    // Document doc = parser.getDocument();
-    // Element root = (Element) parser.getDocumentElement();
-    // NodeList children = root.getChildNodes();
-    // for (int i = 0; i < children.getLength(); i++) {
-    // Element child = (Element) children.item(i);
-    // if (parser.getTextContent(child, "name").equals(gameName)) {
-    // XmlBuilder.modifyTag(child, "gameinfo", info);
-    // }
-    // }
-    //
-    // XmlWriter.writeXML(doc, filePath);
-    //
-    // return true;
-    //
-    // }
-    //
-    // /*
-    // * return game history for certain game
-    // */
-    //
-    // public int readGameScore (String gameName) {
-    // return myCurrentUser.getGameData(gameName).getMyHighScore();
-    //
-    // }
-    //
-    // public String readGameInfo (String gameName) {
-    // return myCurrentUser.getGameData(gameName).getMyGameInfo();
-    //
-    // }
-    //
-    //
+    
 
 }

@@ -1,3 +1,4 @@
+
 package vooga.turnbased;
 
 import vooga.turnbased.gui.GameWindow;
@@ -5,14 +6,11 @@ import vooga.turnbased.gui.GameWindow;
 
 /**
  * Main entrance of the game
+ * For Testing the sample game
  * 
  * @author Rex
  */
-
-
 public class Main {
-
-
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 

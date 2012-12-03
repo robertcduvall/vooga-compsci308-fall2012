@@ -1,30 +1,33 @@
+package vooga.turnbased.gui;
+
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import vooga.turnbased.gamecore.GameManager;
+
+
+@SuppressWarnings("serial")
 /**
  * The canvas that paints game objects every for every myDelayTime milliseconds
  * Responds to input events
  * 
  * @author Rex, Vo
  */
-package vooga.turnbased.gui;
-
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import util.input.core.Controller;
-import vooga.turnbased.gamecore.GameManager;
-import wiiusej.wiiusejevents.physicalevents.WiimoteButtonsEvent;
-
-
-@SuppressWarnings("serial")
 public class GamePane extends DisplayPane implements Runnable {
 
+    public static final int MOUSE_PRESSED = 0;
+    public static final int MOUSE_RELEASED = 1;
+    public static final int MOUSE_DRAGGED = 2;
+    public static final int MOUSE_CLICKED = 3;
     private GameManager myGameManager;
     private Thread myGameThread;
-    private int myDelayTime;
-
-    // InfoPanel infoPanel;
+    private static int delayBetweenGameLoopCycles;
 
     /**
      * Constructor of the canvas which displays the game
@@ -34,40 +37,39 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
-        myGameThread = new Thread(this);
-        myDelayTime = Integer.parseInt(GameWindow.importString("Delay"));
-        addKeyListener(this);
-        addMouseListener(new GameMouseListener());
+        delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
+        //addMouseListener(new GameMouseListener());
+        initMouseListener();
         myGameManager = new GameManager(this);
         enableFocus();
-        configureInputHandling();
     }
 
     /**
      * initialize properties when user switch to game
      */
     public void initialize () {
-        repaint();
+        //myGameManager = new GameManager(this);
+        myGameThread = new Thread(this);
         myGameThread.start();
+        repaint();
     }
 
     /**
      * update game
      */
-    //@Override
     public void update () {
-       myGameManager.update();
+        myGameManager.update();
     }
 
     /**
      * Paint gameobjects and background to the canvas using double buffering
      */
-    // @Override
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
         Graphics nextFrameGraphics = nextFrameImage.getGraphics();
+        Graphics2D g2d = (Graphics2D) g;
         myGameManager.paint(nextFrameGraphics);
-        g.drawImage(nextFrameImage, 0, 0, null);
+        g2d.drawImage(nextFrameImage, 0, 0, null);
     }
 
     /**
@@ -81,7 +83,7 @@ public class GamePane extends DisplayPane implements Runnable {
             update();
             repaint();
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = myDelayTime - timeDiff;
+            sleep = delayBetweenGameLoopCycles - timeDiff;
             if (sleep < 0) {
                 sleep = 0;
             }
@@ -94,44 +96,43 @@ public class GamePane extends DisplayPane implements Runnable {
         }
     }
 
-    public void configureInputHandling () {
-        // handle actions that shouldn't be passed down to gamemanager
+    public static int getDelayTime () {
+        return delayBetweenGameLoopCycles;
+    }
+    
+    private void initMouseListener() { //TODO: subscribe to input team
+        addMouseListener(new MouseAdapter(){
+            @Override
+            public void mousePressed (MouseEvent e) {
+                myGameManager.addMouseAction(MOUSE_PRESSED, e.getPoint(), e.getButton());
+            }
+            @Override
+            public void mouseReleased (MouseEvent e) {
+                myGameManager.addMouseAction(MOUSE_RELEASED, e.getPoint(), e.getButton());
+            }
+            @Override
+            public void mouseClicked (MouseEvent e) {
+                myGameManager.addMouseAction(MOUSE_CLICKED, e.getPoint(), e.getButton());
+            }
+        });
+        
+        addMouseMotionListener(new MouseMotionListener() {
+
+            @Override
+            public void mouseDragged (MouseEvent e) {
+                myGameManager.addMouseAction(MOUSE_DRAGGED, e.getPoint(), e.getButton());
+                //myGameManager.handleMouseDragged(e.getPoint());
+                //System.out.println("press: "+e.getClickCount()+", pos: "+e.getPoint()+", button: "+e.getButton());
+            }
+
+            @Override
+            public void mouseMoved (MouseEvent e) {
+            }
+        });
     }
 
-    /**
-     * event handling when user types anything
-     */
-    @Override
-    public void keyTyped (KeyEvent e) {
-        // System.out.println("Typed " + e.getKeyCode());
-    }
-
-    /**
-     * event handling when any key is pressed
-     */
-    @Override
-    public void keyPressed (KeyEvent e) {
-        // System.out.println("Pressed " + e.getKeyCode());
-        myGameManager.handleKeyPressed(e);
-    }
-
-    /**
-     * event handling when any key is released
-     */
-    @Override
-    public void keyReleased (KeyEvent e) {
-        // System.out.println("Released " + e.getKeyCode());
-        myGameManager.handleKeyReleased(e);
-    }
-
-    public int getDelayTime () {
-        return myDelayTime;
-    }
-
-    private class GameMouseListener extends MouseAdapter {
-        @Override
-        public void mouseClicked (MouseEvent e) {
-            myGameManager.handleMouseClicked(e);
-        }
+    public void returnToMenu() {
+        myGameThread.stop();
+        getGameWindow().changeActivePane(GameWindow.MENU);
     }
 }
