@@ -1,6 +1,6 @@
 <level>
 <levelName>Level</levelName>
-<width>640</width>
+<width>757</width>
 <height>480</height>
 <collisionChecker>Default_Collision_Checker</collisionChecker>
 <camera>FollowingCamera</camera>

@@ -156,7 +156,6 @@ public class LevelBoard extends JPanel {
                 try {
                     String cmmd = e.getComponent().getName();
                     File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd+".png");
-                    System.out.println(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd+".png");
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
