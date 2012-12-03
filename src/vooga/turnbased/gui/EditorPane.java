@@ -40,9 +40,9 @@ public class EditorPane extends DisplayPane {
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
     private static final String[] GAME_SETUP_DEFAULTS = {"20", "20", "15", "11",
         "src/vooga/turnbased/resources/image/grass.png"};
-    private static final String[] OBJECTS = {"Modes: ", "Class: ", "Condition: ",
+    private static final String[] OBJECTS = {"Class: ", "Condition: ",
         "Images: ", "Stats: ", "Name: "};
-    private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", "", ""};
+    private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", ""};
     private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
     private static final int BOX_SIZE = 25;
     static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
@@ -53,8 +53,8 @@ public class EditorPane extends DisplayPane {
     private Point myCurrentTile;
     private Image myBackground;
     private Dimension myDimension;
-    private boolean mySpriteHere = false;
     private Map<Point, List<Image>> myImageMap;
+    private int myMapCounter = 1;
     private List<Point> myPaintedSprites = new ArrayList<Point>();
 
     /**
@@ -133,6 +133,8 @@ public class EditorPane extends DisplayPane {
         JButton spriteButton = setUpSpriteButton(l, OBJECTS, OBJECTS_DEFAULTS);
         add(spriteButton);
         // TODO: Add create player button somewhere in this mess
+        JButton nextMap = addNewMapButton(l);
+        add(nextMap);
         JButton finishedButton = addDoneButton(l);
         add(finishedButton);
         add(p);
@@ -213,9 +215,10 @@ public class EditorPane extends DisplayPane {
                     LevelEditor l, Element sprite) {
         Integer x = myCurrentTile.x;
         Integer y = myCurrentTile.y;
-        l.addObject(sprite, "", returnedValues[0], returnedValues[1],
-                returnedValues[2], x.toString(), y.toString(), returnedValues[3],
-                returnedValues[4], returnedValues[5]);
+        String mode = "map" + ((Integer) myMapCounter).toString();
+        l.addObject(sprite, "", mode, returnedValues[0],
+                returnedValues[1], x.toString(), y.toString(), returnedValues[2],
+                returnedValues[3], returnedValues[4]);
     }
 
     private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
@@ -313,6 +316,21 @@ public class EditorPane extends DisplayPane {
             public void actionPerformed (ActionEvent e) {
                 l.saveXmlDocument();
                 getGameWindow().changeActivePane(GameWindow.MENU);
+            }
+        });
+        return doneButton;
+    }
+    
+    private JButton addNewMapButton(final LevelEditor l) {
+        JButton doneButton = new JButton("Make another map");
+        doneButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                myMapCounter++;
+                String mapNumber = ((Integer)myMapCounter).toString();
+                l.addMode("map" + mapNumber, "vooga.turnbased.gamecore.gamemodes.MapMode",
+                        "entermap" + mapNumber);
+                myPaintedSprites.clear();
+                repaint();
             }
         });
         return doneButton;
