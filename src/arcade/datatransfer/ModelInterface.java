@@ -200,4 +200,12 @@ public class ModelInterface {
     public List<Message> getMessage(){
         return myUserManager.getMessage();
     }
+    
+    public void sendTweet(String name, String tweetText){
+        //TODO: implement
+    }
+    
+    public void disassociateTwitter(String name){
+        //TODO: implement
+    }
 }

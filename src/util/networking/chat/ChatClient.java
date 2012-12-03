@@ -43,6 +43,10 @@ public class ChatClient extends Client {
         send(myProtocol.createLogout(myUser));
     }
 
+    public void register(String user, String password){
+        send(myProtocol.createRegister(user, password));
+    }
+    
     public void switchUser(String user, String password) {
         logout();
         login(user, password);

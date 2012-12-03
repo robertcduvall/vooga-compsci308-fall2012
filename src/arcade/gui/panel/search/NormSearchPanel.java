@@ -1,6 +1,7 @@
 package arcade.gui.panel.search;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,6 +25,9 @@ import arcade.usermanager.UserProfile;
  */
 public class NormSearchPanel extends ASearchPanel implements ActionListener{
 
+//    private static final int PANEL_WIDTH = 250; //300
+//    private static final int PANEL_HEIGHT = 800; // 450
+    
     private List<String> myGameList;
     private List<String> myUserList;
     private JList searchedThroughList = new JList();
@@ -49,6 +53,9 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
+        
+//        myPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        
         MigLayout layout = new MigLayout("", "", "[][][][][][][][][][]push[]");
         myPanel.setLayout(layout);
         
