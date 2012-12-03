@@ -3,18 +3,11 @@ package vooga.shooter.level_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
-import util.input.core.MouseController;
 import util.xml.XmlUtilities;
 import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.*;
@@ -39,36 +32,36 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private static final String SAVE_AS_KEY = "save as";
 
     private JFrame mainFrame; // The main window
-    private JFileChooser levelChooser; // For saving and loading levels
+    private JFileChooser levelChooser; // For loading levels
     private JFileChooser imageChooser;  // For assigning images to Sprites
     private static Canvas myCanvas; // drawing canvas
     private Image myBackground;
 
     private MultiFieldJOptionPane<String> spriteOptionsPane;
+    private Sprite myCurrentSprite;
 
-    private File openFile; // currently open file
+    private File myOpenFile; // currently open file
     private Level myLevel; // level object for editing
 
     /* Toolbar buttons, self-explanatory */
-    JToolBar myToolBar;
+    private JToolBar myToolBar;
     private JButton newBtn;
     private JButton openBtn;
     private JButton saveBtn;
     private JButton clearBtn;
     private JButton backgroundBtn;
     private JButton makeSpriteBtn;
+    private JButton deleteSpriteBtn;
+    private JButton showInfoBtn;
+    private JButton helpBtn;
 
     /* Listeners */
-    private MouseListener myMouseListener;
-    private MouseMotionListener myMouseMotionListener;
-    private MouseListener myButtonListener;
+    private LevelEditorMouseListener myMouseListener;
 
     public static void main (String args[]) {
-
         new LevelEditor();
-
     }
-
+    
     public LevelEditor () {
 
         myLevel = new Level();
@@ -85,7 +78,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         setupToolbars();
         setupChoosers();
         initializeSpriteOptionsPane();
-
+        myCurrentSprite = null;
+        myMouseListener = new LevelEditorMouseListener();
+        myCanvas.addMouseListener(myMouseListener);
+        
         /* Toolbar placement */
         mainFrame.getContentPane().add(myToolBar, BorderLayout.NORTH);
         mainFrame.pack();
@@ -93,22 +89,41 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     private void initializeSpriteOptionsPane () {
-        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame,
-                "Sprite Options");
-        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:",
-                new NumericJTextField(3));
-        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:",
-                new NumericJTextField(3));
-        spriteOptionsPane
-                .addField(WIDTH_KEY, "Width", new NumericJTextField(3));
-        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(
-                3));
-        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(
-                2));
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+    }
+    
+    /**
+     * Fills the Sprite Options Pane with location information from a Point
+     * @param p point from which we extract location information
+     */
+    private void fillSpriteOptionsPane (Point p) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(p.x), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(p.y), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+    }
+    
+    /**
+     * Fills in values in the Sprite Options Pane based on a sprite's attributes.
+     * @param s the selected sprite who's attributes are used to fill the pane
+     */
+    private void fillSpriteOptionsPane (Sprite s) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(s.getLeft()), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(s.getTop()), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(Integer.toString(s.getSize().width), 3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
     }
 
     private void setupChoosers () {
-
         levelChooser = new JFileChooser(System.getProperties().getProperty(
                 "user.dir"));
         FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter(
@@ -119,7 +134,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter(
                 "gif and png image files", "gif", "png");
         imageChooser.setFileFilter(ImageFilter);
-
     }
 
     private void setupToolbars () {
@@ -131,33 +145,26 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         openBtn = makeBtn("Open...", "/vooga/shooter/resources/open.gif",
                 "Open level...");
         newBtn = makeBtn("New", "/vooga/shooter/resources/new.gif", "New level");
-        clearBtn = makeBtn("Clear", "/vooga/shooter/resources/clear.gif",
-                "Reset level (Delete all sprites)");
-        backgroundBtn = makeBtn("Set Background",
-                "/vooga/shooter/resources/background.gif", "Set Background");
-        makeSpriteBtn = makeBtn("Make Sprite",
-                "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
+        clearBtn =
+                makeBtn("Clear", "/vooga/shooter/resources/clear.gif",
+                        "Reset level (Delete all sprites)");
+        backgroundBtn =
+                makeBtn("Set Background", "/vooga/shooter/resources/background.gif",
+                        "Set Background");
+        makeSpriteBtn =
+                makeBtn("New Sprite", "/vooga/shooter/resources/makeSprite.gif", "Make Sprite");
+        deleteSpriteBtn = makeBtn("Delete Sprite", "/vooga/shooter/resources/deleteSprite.gif", "Delete Sprite");
+        showInfoBtn = makeBtn("Info", "/vooga/shooter/resources/showInfo.gif", "Show Current Level Info");
+        helpBtn = makeBtn("Editor Help", "/vooga/shooter/resources/help.gif", "Editor Help");
         myToolBar.add(saveBtn);
         myToolBar.add(openBtn);
         myToolBar.add(newBtn);
         myToolBar.add(clearBtn);
         myToolBar.add(backgroundBtn);
         myToolBar.add(makeSpriteBtn);
-    }
-
-    /**
-     * 
-     * @param xSize the x dimension size of the new image
-     * @param ySize the y dimension size of the new image
-     * @param icon the icon to be scaled to the new size
-     * @return the newly scaled ImageIcon
-     */
-    private ImageIcon makeScaledIcon (int xSize, int ySize, ImageIcon icon) {
-        Image image = icon.getImage();
-        Image scaledImage = image.getScaledInstance(xSize, ySize,
-                java.awt.Image.SCALE_SMOOTH);
-        ImageIcon newIcon = new ImageIcon(scaledImage);
-        return newIcon;
+        myToolBar.add(deleteSpriteBtn);
+        myToolBar.add(showInfoBtn);
+        myToolBar.add(helpBtn);
     }
 
     @Override
@@ -166,7 +173,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
         if (source == newBtn) {
             newFile();
-            openFile = null;
+            myOpenFile = null;
             myLevel = new Level();
             myBackground = null;
         }
@@ -175,33 +182,32 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             myBackground = null;
         }
         else if (source == saveBtn) {
-            if (openFile == null) {
-                // file has never ben saved, so we need to save as instead
+            if (myOpenFile == null) {
+                // file has never been saved, so we need to save as instead
                 MultiFieldJOptionPane<String> saveAsOptionsPane = new MultiFieldJOptionPane<String>(
                         mainFrame, "Save Xml File as");
                 saveAsOptionsPane.addField(SAVE_AS_KEY, "Save as:",
                         new JTextField(10));
                 saveAsOptionsPane.display();
                 String fileNameString = saveAsOptionsPane
-                        .getResult(SAVE_AS_KEY);
+                       .getResult(SAVE_AS_KEY);
                 String filePath = System.getProperty("user.dir")
                         + "/src/vooga/shooter/levels/" + fileNameString
                         + ".xml";
-                System.out.println(filePath);
-                XmlUtilities.write(myLevel.pack(), filePath);
-
-                // String file_path =
-                // System.getProperty("user.dir") +
-                // "/src/vooga/shooter/levels/level1.xml";
-                // XmlUtilities.write(myLevel.pack(), file_path);
+                myOpenFile = new File(filePath);
+                saveFile(myOpenFile);
+                System.out.println("save as");
             }
             else {
-                saveFile(openFile);
+                //standard save
+                saveFile(myOpenFile);
+                System.out.println("save");
             }
         }
         else if (source == openBtn) {
             int success = levelChooser.showOpenDialog(mainFrame);
             if (success == JFileChooser.APPROVE_OPTION) {
+                myOpenFile = levelChooser.getSelectedFile();
                 openFile(levelChooser.getSelectedFile());
             }
         }
@@ -222,53 +228,139 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
 
         else if (source == makeSpriteBtn) {
-            makeSprite();
+            Enemy newEnemy = makeEnemy();
+            myLevel.addSprite(newEnemy);
+            myCurrentSprite = newEnemy;
         }
+        
+        else if (source == deleteSpriteBtn) {
+            myLevel.removeSprite(myCurrentSprite);
+            myCurrentSprite = null;
+        }
+        
+        else if (source == showInfoBtn) {
+            showLevelInfo();
+        }
+        
+        else if (source == helpBtn) {
+               JOptionPane myJOptionPane = new JOptionPane(); 
+               JOptionPane.showMessageDialog(null, "Left click an existing sprite to select it."   + "\n" +
+                                                      "A selected sprite can be deleted by clicking the delete button." + "\n" +
+                                       "Right click to create a sprite at the pointer's location." + "\n" +
+                                         "Click save to save your level to XML.");
+        }
+        
+        else {
+            throw new LevelEditorException("Invalid action source", source);
+        }
+    }
+    
+    /**
+     * Displays information about all of the Sprites in the current Level, in table form.
+     */
+    private void showLevelInfo() {
+        //count Sprites(need to count with a for loop because getSpriteList returns Iterable<Sprite>)
+        int count = 1;
+        for(Sprite s: myLevel.getSpriteList()) {
+            count++;
+        }
+        //initialize table and attribute titles
+        JFrame frame = new JFrame("Current Sprite Information");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JTable table = new JTable(count,6);
+        table.setShowGrid(true);
+        table.setGridColor(Color.BLACK);
+       
+        table.setValueAt("Index",0,0);
+        table.setValueAt("X Position",0,1);
+        table.setValueAt("Y Position", 0, 2);
+        table.setValueAt("Width",0,3);
+        table.setValueAt("Height", 0, 4);
+        table.setValueAt("Health",0,5);
+        //fill in Sprite attributes
+        int index = 1;
+        for(Sprite s: myLevel.getSpriteList()) {
+            table.setValueAt(index,index, 0);
+            table.setValueAt(s.getLeft(), index, 1);
+            table.setValueAt(s.getTop(), index, 2);
+            table.setValueAt(s.getSize().width, index, 3);
+            table.setValueAt(s.getSize().height, index, 4);
+            table.setValueAt(s.getCurrentHealth(), index, 5);
+            index++;
+        }
+        JScrollPane pane = new JScrollPane(table);
+        panel.add(pane, BorderLayout.CENTER);
+        frame.getContentPane().add(panel);
 
+        frame.pack();
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Prompts the user to enter new attributes for the selected sprite.
+     * If changes are entered, the selected sprite is replaced with a new Sprite
+     * with the newly entered attributes.
+     */
+    private void editCurrentSprite() {
+        System.out.println("editing");
+        Enemy newEnemy = makeEnemy();
+        myLevel.removeSprite(myCurrentSprite);
+        myLevel.addSprite(newEnemy);
+        myCurrentSprite = newEnemy;
     }
 
     /**
-     * Prompts the user to sprite attributes and then adds an Enemy with the
-     * given attributes to
-     * the current Level.
+     * Prompts the user to input sprite attributes and then returns a Sprite object with the given
+     * attributes.
      */
-    private void makeSprite () {
+    private Enemy makeEnemy () {
         int response = imageChooser.showOpenDialog(null);
         if (response == JFileChooser.APPROVE_OPTION) {
 
             String imagePath = imageChooser.getSelectedFile().getPath();
             Image spriteImage = (new ImageIcon(imagePath)).getImage();
-
+            
             spriteOptionsPane.display();
-
-            Point position = new Point(Integer.parseInt(spriteOptionsPane
-                    .getResult(X_POSITION_KEY)),
-                    Integer.parseInt(spriteOptionsPane
-                            .getResult(Y_POSITION_KEY)));
-            Dimension size = new Dimension(Integer.parseInt(spriteOptionsPane
-                    .getResult(WIDTH_KEY)), Integer.parseInt(spriteOptionsPane
-                    .getResult(HEIGHT_KEY)));
+            
+            Point position =
+                    new Point(Integer.parseInt(spriteOptionsPane.getResult(X_POSITION_KEY)),
+                              Integer.parseInt(spriteOptionsPane.getResult(Y_POSITION_KEY)));
+            Dimension size = new Dimension(Integer.parseInt(spriteOptionsPane.getResult(WIDTH_KEY)),
+                              Integer.parseInt(spriteOptionsPane.getResult(HEIGHT_KEY)));
             Dimension bounds = myCanvas.getSize();
-            Point velocity = new Point(0, 0);
-            int health = Integer.parseInt(spriteOptionsPane
-                    .getResult(HEALTH_KEY));
-            Enemy newEnemy = new Enemy(position, size, bounds, spriteImage,
-                    velocity, health);
+            Point velocity = new Point(0,0);
+            int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
+            Enemy newEnemy = new Enemy(position, size, bounds, spriteImage, velocity, health);
 
-            myLevel.addSprite(newEnemy);
+            return newEnemy;
         }
+        throw new LevelEditorException("Invalid attributes selected.");
+
     }
 
     private void openFile (File file) {
         // TODO implement
         // Uses XML Utility
         // convert XML to Level object then display sprites
+        
+//        myLevel = new Level();
+//        myLevel = myLevel.unpack(XmlUtilities.makeDocument(file));
+        // TODO: update pack() / unpack() to newer factory implementation
+        
+        myBackground = myLevel.getBackgroundImage();
+        myBackground = myBackground.getScaledInstance(myCanvas.getWidth(), myCanvas.getHeight(),
+                java.awt.Image.SCALE_SMOOTH);
+        
     }
 
     private void saveFile (File file) {
-        // TODO implement
-        // needs to use XML utility to convert current Level to File then save
+        //use XML utility to convert current Level to File then save
         // that File
+        file.getPath();
+        
+        // TODO: fix this pack() call
+        // XmlUtilities.write(myLevel.pack(), file.getPath());
     }
 
     public void newFile () {
@@ -277,10 +369,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     /**
-     * Makes a JButton with the given icon and tooltop.
+     * Makes a JButton with the given icon and tool tip.
      * If the icon cannot be loaded, then the text will be used instead.
      * 
-     * Adds this LevelEditor as an actionListener.
+     * Adds this Level Editor as an actionListener.
      * 
      * @return the new JButton
      **/
@@ -294,7 +386,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         newBtn.setToolTipText(tooltip);
         newBtn.addActionListener(this);
-        newBtn.setBorder(new LineBorder(Color.gray, 1, false));
+        newBtn.setBorder(BorderFactory.createRaisedBevelBorder());
         return newBtn;
     }
 
@@ -321,5 +413,69 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         // TODO Auto-generated method stub
 
     }
+    
+    /**
+     * Checks if a given point intersects any Sprites in the current Level.
+     * @param p point to check intersection
+     * @return the Sprite object the point intersects or null if no intersection occurs
+     */
+    private Sprite doesPointIntersectSprite(Point p) {
+        int xPos = p.x;
+        int yPos = p.y;
+        for(Sprite s: myLevel.getSpriteList()) {
+            if(xPos <= s.getRight() && xPos >= s.getLeft() && yPos >= s.getTop() && yPos <= s.getBottom()) {
+                return s;
+            }
+        }
+        return null;
+    }
+    /**
+     * Inner class to handle mouse interaction with the Level canvas.
+     * @author Zachary Hopping
+     *
+     */
+    private class LevelEditorMouseListener implements MouseListener {
 
+        @Override
+        public void mouseClicked (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited (MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed (MouseEvent e) {
+            Point p = new Point(e.getX(), e.getY());
+            myCurrentSprite = doesPointIntersectSprite(p);
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                System.out.println("Left click at point (" + e.getX() + ", " + e.getY() + ")");
+            }
+            else if (e.getButton() == MouseEvent.BUTTON3) {
+                System.out.println("Right click at point (" + e.getX() + ", " + e.getY() + ")");
+                if(myCurrentSprite != null) {
+                    fillSpriteOptionsPane(myCurrentSprite);
+                    editCurrentSprite();
+                } else {
+                    fillSpriteOptionsPane(p);
+                    Enemy newEnemy = makeEnemy();
+                    myLevel.addSprite(newEnemy);
+                    myCurrentSprite = newEnemy;
+                }
+            }
+        }
+
+        @Override
+        public void mouseReleased (MouseEvent e) {
+
+        }
+
+    }
 }

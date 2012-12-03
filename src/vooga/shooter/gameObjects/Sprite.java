@@ -152,6 +152,10 @@ public abstract class Sprite implements SpriteActionInterface {
     public void decreaseHealth(int damage) {
         myHealth -= damage;
     }
+    
+    public int getCurrentHealth() {
+        return myHealth;
+    }
 
     /**
      * This method draws the image at the sprite's
@@ -412,4 +416,27 @@ public abstract class Sprite implements SpriteActionInterface {
     public void setAI (AI newAI) {
         myAI = newAI;
     }
+
+    /**
+     * Returns the bounds of the sprite.
+     * This is needed for storing the data
+     * to xml.
+     * 
+     * @return the myBounds
+     */
+    public Dimension getBounds () {
+        return myBounds;
+    }
+    
+    /**
+     * Returns the health of the sprite.
+     * This is needed for storing the data
+     * to xml.
+     * 
+     * @return the health
+     */
+    public int getHealth () {
+        return myHealth;
+    }
+    
 }

@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
@@ -16,8 +18,16 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * (add your own name as you edit)
  */
 public class Enemy extends Sprite {
+    
+    private String imagePath;
 
     /**
+     * @deprecated Please pass in the imagePath instead of an image.
+     * (See the constructor below). We need the imagePath so that we 
+     * can recreate the Enemy from xml data. The original
+     * path of the image source file cannot be retrieved from an Image
+     * object.
+     * 
      * Constructs an enemy character for the game.
      * @param position the center of the image
      * @param size the size of the image
@@ -29,6 +39,12 @@ public class Enemy extends Sprite {
     public Enemy (Point position, Dimension size, Dimension bounds,
             Image image, Point velocity, int health) {
         super(position, size, bounds, image, velocity, health);
+    }
+    
+    public Enemy (Point position, Dimension size, Dimension bounds,
+        String imagePath, Point velocity, int health) {
+        super(position, size, bounds, (new ImageIcon(imagePath)).getImage(), velocity, health);
+        this.imagePath = imagePath;
     }
 
     /**
