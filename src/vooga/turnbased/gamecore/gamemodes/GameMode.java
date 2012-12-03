@@ -64,10 +64,6 @@ public abstract class GameMode {
         return myModeName;
     }
     
-    public void setModeName(String s){
-        myModeName = s; //hackhackhack mode name should be final
-    }
-
     public GameManager getGameManager () {
         return myGameManager;
     }
