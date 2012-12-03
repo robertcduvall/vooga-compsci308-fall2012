@@ -54,9 +54,7 @@ public class MapMode extends GameMode implements InputAPI {
     public MapMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
         
-        //initialize();
-        setModeName("map"); //hackhackhack
-        resume(); //hackhackhack
+        initialize();
     }
 
     @Override

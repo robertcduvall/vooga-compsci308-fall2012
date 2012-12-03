@@ -112,7 +112,7 @@ public class MapModePathFinder extends PathFinder {
 
     /**
      * highlight the path by generating a series of path indicators
-     * Could be overriden if other ways of highlighting path are needed
+     * Could be overridden if other ways of highlighting path are needed
      */
     @Override
     protected void highlightPath () {

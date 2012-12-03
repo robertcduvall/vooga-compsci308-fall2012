@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,9 +64,10 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
-        // myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        // initializeGameLevel(GameWindow.importString("Entrance"));
-        initializeGameLevel(GameWindow.importString("GameXML"), GameWindow.importString("PlayerXML"));
+        // myGameSoundTrack = new
+        // SoundPlayer(GameWindow.importString("GameSoundTrack"));
+        initializeGameLevel(GameWindow.importString("GameXML"),
+                            GameWindow.importString("PlayerXML"));
         configureInputHandling();
     }
 
@@ -78,36 +80,33 @@ public class GameManager implements InputAPI {
      *        The MapObject which will used for the MapMode of this level.
      */
     private void initializeGameLevel (String gameFileName, String playerFileName) {
-        LevelXmlParser test = new LevelXmlParser(gameFileName, playerFileName, this);
-        myMapSize = test.getMapSize();
-        myCameraSize = test.getCameraSize();
-        
-//        MapMode mapMode = (MapMode) test.getMapMode();
-//        myGameModes.add(mapMode);
+        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, playerFileName, this);
+        myMapSize = levelLoader.getMapSize();
+        myCameraSize = levelLoader.getCameraSize();
 
-        addSprites(test.parseSprites());
-        
-        myPlayerSpriteID = test.getPlayerID();
-        
-        myAvailableModeTypes = test.getUserDefinedModes();
-        
-        myGameLogic.addEventConditions(test.getEventConditionMapping());
+        addSprites(levelLoader.parseSprites());
 
-        startFirstMode(test.getStartMode());
+        myPlayerSpriteID = levelLoader.getPlayerID();
+
+        myAvailableModeTypes = levelLoader.getUserDefinedModes();
+
+        myGameLogic.addEventConditions(levelLoader.getEventConditionMapping());
+
+        startFirstMode(levelLoader.getStartMode());
     }
-    
-    public Dimension getMapSize() {
+
+    public Dimension getMapSize () {
         return myMapSize;
     }
-    
-    public Dimension getCameraSize() {
+
+    public Dimension getCameraSize () {
         return myCameraSize;
     }
 
-     private void startFirstMode(String entryMode) {
-         handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
-         //myGameModes.get(0).resume();
-     }
+    private void startFirstMode (String entryMode) {
+        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+        // myGameModes.get(0).resume();
+    }
 
     /**
      * find the Sprite with specific ID
@@ -131,9 +130,9 @@ public class GameManager implements InputAPI {
         }
     }
 
-    public List<GameObject> getGameObjects(String modeName) {
+    public List<GameObject> getGameObjects (String modeName) {
         List<GameObject> modeObjects = new ArrayList<GameObject>();
-        for(Sprite s : mySprites.values()){
+        for (Sprite s : mySprites.values()) {
             modeObjects.addAll(s.getObjects(modeName));
         }
         return modeObjects;
@@ -148,7 +147,7 @@ public class GameManager implements InputAPI {
      */
     public void clearSprite (int spriteID) {
         findSpriteWithID(spriteID).clear();
-        //mySprites.put(spriteID, null);
+        // mySprites.put(spriteID, null);
     }
 
     /**
@@ -177,18 +176,17 @@ public class GameManager implements InputAPI {
             if (mode.isOver()) {
                 finishedModes.add(mode);
             }
-            else {
-                if (mode.isActive()) {
-                    mode.update();
-                }
-                // if (mode.hasFocus()) {
-                // handleMouseActions(mode);
-                // }
-            }
+            // else {
+            // if (mode.isActive()) {
+            // mode.update();
+            // }
+            // if (mode.hasFocus()) { // TODO this is wrong
+            // handleMouseActions(mode);
+            // }
+            // }
         }
-        handleMouseActions(myGameModes.get(myGameModes.size() - 1)); // assume
-                                                                     // latest
-                                                                     // is focus
+        myGameModes.get(myGameModes.size() - 1).update();
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
         for (GameMode mode : finishedModes) { // avoid concurrent modifcation
                                               // over myGameModes list
             killMode(mode);
@@ -232,9 +230,10 @@ public class GameManager implements InputAPI {
     @Override
     public void configureInputHandling () {
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED, this, "toggleSoundTrack");
-            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE,
-                                                   KeyboardController.PRESSED, myGamePane, "returnToMenu");
+            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
+                                                   this, "toggleSoundTrack");
+            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
+                                                   myGamePane, "returnToMenu");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -302,28 +301,45 @@ public class GameManager implements InputAPI {
             handleEvent(m);
         }
     }
+    
+    private boolean modeAlreadyExists (String modeName) {
+        for(GameMode g : myGameModes) {
+            if(modeName.equals(g.getName())){
+                myGameModes.get(myGameModes.size()-1).pause();
+                myGameModes.remove(g);
+                myGameModes.add(g);
+                g.resume();
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void handleEvent (ModeEvent event) {
-//        System.out.println("doing event: "+event.getName());
-//        System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
+        // System.out.println("doing event: "+event.getName());
+        // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
-        if (myAvailableModeTypes.containsKey(modeName)) {
-            if (!myGameModes.isEmpty()) {
-                myGameModes.get(myGameModes.size() - 1).pause();
-                // TODO: again assuming latest is active for now
-            }
-            Class c = myAvailableModeTypes.get(modeName);
-            Constructor[] newC = c.getConstructors();
-            try {
-//                System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
-//                System.out.println(newC[0].toGenericString());
-                myGameModes.add((GameMode) newC[0]
-                        .newInstance(this, modeName, myInvolvedIDs));
-            }
-            catch (Exception e) {
-                System.out.println("Unable to create mode "+modeName+" of class "+c.toString());
-                e.printStackTrace();
+        if (!modeAlreadyExists(modeName)) {
+            if (myAvailableModeTypes.containsKey(modeName)) {
+                if (!myGameModes.isEmpty()) {
+                    myGameModes.get(myGameModes.size() - 1).pause();
+                    // TODO: again assuming latest is active for now
+                }
+                Class c = myAvailableModeTypes.get(modeName);
+                Constructor[] newC = c.getConstructors();
+
+                try {
+                    // System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
+                    // System.out.println(newC[0].toGenericString());
+                    myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
+                }
+                catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    e.printStackTrace();
+                    System.out.println("Unable to create mode " + modeName + " of class " +
+                                       c.toString());
+                }
             }
         }
     }
@@ -351,9 +367,9 @@ public class GameManager implements InputAPI {
             myGameModes.get(myGameModes.size() - 1).resume();
         }
     }
-    
-    public void toggleSoundTrack() {
-        if(myGameSoundTrack.loopIsRunning()) {
+
+    public void toggleSoundTrack () {
+        if (myGameSoundTrack.loopIsRunning()) {
             myGameSoundTrack.stopLoop();
         }
         else {
