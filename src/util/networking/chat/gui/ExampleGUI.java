@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.URL;
 import java.util.Map;
 import java.util.TreeMap;
@@ -21,7 +23,7 @@ import javax.swing.border.EtchedBorder;
 import util.networking.chat.ChatClient;
 
 
-public class ExampleGUI extends JPanel {
+public class ExampleGUI extends JPanel implements KeyListener {
     
     
     
@@ -74,6 +76,7 @@ public class ExampleGUI extends JPanel {
         userInput.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         userInput.setLineWrap(true);
         userInput.setWrapStyleWord(true);
+        userInput.addKeyListener(this);
         JScrollPane chatInput = new JScrollPane(userInput);
         chatInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chatInput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -81,7 +84,7 @@ public class ExampleGUI extends JPanel {
         chatInput.setFocusable(true);
         return chatInput;
     }
-    
+
     private JPanel getWelcomePage(){
         JPanel jp = new JPanel();
         JEditorPane textArea = new JEditorPane("text/html", "");
@@ -92,7 +95,7 @@ public class ExampleGUI extends JPanel {
     }
 
 
-    static class ChatDialog extends JPanel {
+    private static class ChatDialog extends JPanel {
         private JTextArea textArea;
 
         public ChatDialog (String text) {
@@ -122,5 +125,18 @@ public class ExampleGUI extends JPanel {
             return null;
         }
     }
+
+    @Override
+    public void keyPressed (KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            return;
+            //sendMessage
+    }
+
+    @Override
+    public void keyReleased (KeyEvent e) {}
+
+    @Override
+    public void keyTyped (KeyEvent e) {}
 }
     
