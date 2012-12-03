@@ -65,14 +65,8 @@ public final class LevelFactory {
             return level;
             
         }
-        catch (ReflectionException e) {
-            throw new LevelFileIOException("Class name in Level file not found.", e);
-        }
         catch (LevelFileIOException e) {
             throw e;
-        }
-        catch (Exception e) {
-            throw new LevelFileIOException("Failed to load level", e.getCause());
         }
     }
 
