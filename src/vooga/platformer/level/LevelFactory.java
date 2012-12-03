@@ -7,6 +7,8 @@ import java.util.Collection;
 import util.reflection.ReflectionException;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.util.camera.FollowingCamera;
@@ -44,7 +46,9 @@ public final class LevelFactory {
         try {
             LevelFileReader lfr = new LevelFileReader(levelName);
             Dimension levelDimension = new Dimension(lfr.getWidth(), lfr.getHeight());
+
             Collection<GameObject> levelGameObjects = lfr.getGameObjects();
+
             GameObject player = findPlayerGameObject(levelGameObjects);
             UpdatableCamera followCam =
                     new FollowingCamera(DEFAULT_CAMERA_SIZE, new Rectangle(levelDimension.width,
@@ -58,6 +62,8 @@ public final class LevelFactory {
             }
             level.setPlayer((Player) player);
 
+            addConditionsAndPlugins(lfr, level);
+
             return level;
         }
         catch (ReflectionException e) {
@@ -68,6 +74,17 @@ public final class LevelFactory {
         }
         catch (Exception e) {
             throw new LevelFileIOException("Failed to load level", e.getCause());
+        }
+    }
+
+    private static void addConditionsAndPlugins (LevelFileReader lfr, Level level) {
+        Collection<Condition> levelConditions = lfr.getConditions();
+        for (Condition c : levelConditions) {
+            level.addCondition(c);
+        }
+        Collection<LevelPlugin> levelPlugins = lfr.getLevelPlugins();
+        for (LevelPlugin lp : levelPlugins) {
+            level.addPlugin(lp);
         }
     }
 
