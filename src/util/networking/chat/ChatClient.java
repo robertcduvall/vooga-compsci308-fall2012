@@ -25,6 +25,7 @@ public class ChatClient extends Client {
     public ChatClient(String host, ChatProtocol c) throws IOException{
         super(host, c.getPort());
         myProtocol = c;
+        myLoggedIn = false;
     }
 
     public void login(String user, String password) {
@@ -42,7 +43,7 @@ public class ChatClient extends Client {
     public boolean registerWithTimeout(String user, String password, int timeout) {
         register(user, password);
         try {
-            this.wait(10000);
+            Thread.sleep(timeout);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -53,7 +54,7 @@ public class ChatClient extends Client {
     public boolean loginWithTimeout(String user, String password, int timeout) {
         login(user, password);
         try {
-            this.wait(10000);
+            Thread.sleep(timeout);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
@@ -80,7 +81,7 @@ public class ChatClient extends Client {
 
     @Override
     public void processInputFromServer(String input) {
-        System.out.println("server received: " + input);
+        System.out.println("client received: " + input);
         ChatCommand type = myProtocol.getType(input);
         Method m;
         try {

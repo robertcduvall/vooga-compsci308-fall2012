@@ -43,6 +43,7 @@ public abstract class Client {
     
     public void send(String text) {
         try {
+            System.out.println("SENDING" + text);
             PrintWriter out = new PrintWriter(myServer.getOutputStream());
             out.println(text);
         }

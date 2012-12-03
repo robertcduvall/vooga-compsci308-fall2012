@@ -28,15 +28,13 @@ public class ExampleGUI extends JPanel implements KeyListener {
     
     
     private ChatClient myChatClient; 
-    private String myUser;
     private JTabbedPane tabbedPane;
     private JTextArea buddyList;
     private JTextArea userInput;
     private Map<String, JTextArea> recipientsToTextArea;
     
-    public ExampleGUI(/*ChatClient c,*/ String userName){
+    public ExampleGUI(/*ChatClient c,*/){
         myChatClient = null;
-        myUser = userName;
         recipientsToTextArea = new TreeMap<String, JTextArea>();
         setUpChatGUI();
     }
@@ -125,12 +123,16 @@ public class ExampleGUI extends JPanel implements KeyListener {
             return null;
         }
     }
+    
+    private void sendMessage(){
+        String body = userInput.getText();
+        userInput.setText("");
+    }
 
     @Override
     public void keyPressed (KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            return;
-            //sendMessage
+            sendMessage();
     }
 
     @Override
