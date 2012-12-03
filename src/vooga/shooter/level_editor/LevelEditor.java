@@ -81,6 +81,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
     
     private void setupChoosers () {
+  
         levelChooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
         FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter("XML Level files", "xml");
         levelChooser.setFileFilter(XMLFilter);
