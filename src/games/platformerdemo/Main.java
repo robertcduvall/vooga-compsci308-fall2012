@@ -3,6 +3,7 @@ package games.platformerdemo;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,7 +32,7 @@ public class Main {
         //KeyboardController testController = new KeyboardController(pc);
         //pc.setInputController(testController);
         frame.getContentPane().add(controller);
-        frame.addKeyListener(controller.setMenuKeyListener());
+        //frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
         paintString(controller);
         frame.setVisible(true);
@@ -47,5 +48,45 @@ public class Main {
         controller.paintString("Space - Shoot", canvasSize.width * 3 / 5,
                 canvasSize.height / 4 + 45);
     }
+    
+    
+    
+//    /**
+//     * should be moved out of API
+//     * @return
+//     */
+//    public KeyListener setMenuKeyListener () {
+//        
+//        PlatformerController myCanvas = this;
+//        
+//        KeyListener kl = new KeyAdapter() {
+//            @Override
+//            public void keyPressed (KeyEvent e) {
+//                if (e.getKeyCode() == KeyEvent.VK_M) {
+//                    final Menu menu = new Menu(myCanvas);
+//                    GameButton gb1 = new GameButton("greenbutton", "Back");
+//                    MouseListener gl = new MouseAdapter() {
+//                        @Override
+//                        public void mouseClicked (MouseEvent arg0) {
+//                            myCanvas.remove(menu);
+//                            myCanvas.repaint();
+//                        }
+//                    };
+//                    gb1.addMouseListener(gl);
+//                    GameButton gb2 = new GameButton("button", "Exit");
+//                    gb2.addMouseListener(new MouseAdapter() {
+//                        @Override
+//                        public void mouseClicked (MouseEvent arg0) {
+//                            System.exit(0);
+//                        }
+//                    });
+//                    gb2.setSize(new Dimension(130, 130));
+//                    menu.addButtons(gb1);
+//                    menu.addButtons(gb2);
+//                }
+//            }
+//        };
+//        return kl;
+//    }
 
 }
