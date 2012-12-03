@@ -16,6 +16,7 @@ import vooga.platformer.util.enums.PlayState;
  */
 public class DestroySpecificObjectCondition implements Condition {
 
+    private static final long serialVersionUID = 1L;
     protected static final String LEVEL_NAME_TAG = "nextlevel";
     protected static final String OBJECT_TAG = "object";
     

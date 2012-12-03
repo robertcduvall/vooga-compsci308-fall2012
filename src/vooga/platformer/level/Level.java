@@ -12,6 +12,7 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
+import vooga.platformer.util.camera.UpdatableCamera;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -25,7 +26,7 @@ public class Level {
     private List<GameObject> objectList;
     private List<LevelPlugin> pluginList;
     private List<Condition> conditionList;
-    private Camera cam;
+    private UpdatableCamera cam;
     private Dimension myDimension;
     private String myNextLevelName;
     private CollisionChecker myCollisionChecker;
@@ -45,7 +46,7 @@ public class Level {
         }
     }
 
-    public Level (Dimension dim, Camera inCam) {
+    public Level (Dimension dim, UpdatableCamera inCam) {
         objectList = new ArrayList<GameObject>();
         pluginList = new ArrayList<LevelPlugin>();
         myDimension = dim;
@@ -130,7 +131,8 @@ public class Level {
 
         // modified here
         myCollisionChecker.checkCollisions(this);
-
+        cam.update(elapsedTime);
+        
         for (LevelPlugin lp : pluginList) {
             lp.update(objectList);
         }
@@ -149,7 +151,7 @@ public class Level {
      * 
      * @param c
      */
-    public void setCamera (Camera c) {
+    public void setCamera (UpdatableCamera c) {
         cam = c;
     }
 
