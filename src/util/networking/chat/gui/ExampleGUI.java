@@ -38,7 +38,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
     private JTextArea buddyList;
     private List<String> usersOnline;
     private JTextArea userInput;
-    private Map<String, JTextArea> recipientsToTextArea;
+    private Map<String, ChatDialog> usersToDialogs;
     
     public ExampleGUI(ChatClient c, List<String> buddyList){
         myChatClient = c;
@@ -46,7 +46,14 @@ public class ExampleGUI extends JPanel implements KeyListener {
         myChatClient.addListener(new ChatListener() {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
-                
+                if(usersToDialogs.keySet().contains(e.getSender())){
+                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">" + e.getMessageBody());
+                }else{
+                    ChatDialog cd = new ChatDialog(e.getMessageBody());
+                    usersToDialogs.put(e.getSender(), cd);
+                    tabbedPane.add(e.getSender(), cd);
+                }
+                    
             }
 
             @Override
@@ -62,7 +69,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
             }});
         
         
-        recipientsToTextArea = new TreeMap<String, JTextArea>();
+        usersToDialogs = new TreeMap<String, ChatDialog>();
         setUpChatGUI();
     }
     
@@ -94,9 +101,11 @@ public class ExampleGUI extends JPanel implements KeyListener {
      
     protected void newConversation(String userName){
         if (userName != null) {
+            ChatDialog cd = new ChatDialog("");
             tabbedPane.addTab(userName, createImageIcon("images/chat-icon.png"),
-                              new ChatDialog(""));
+                              cd);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+            usersToDialogs.put(userName, cd);
         }    
     }
     
@@ -165,6 +174,8 @@ public class ExampleGUI extends JPanel implements KeyListener {
         String to = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
         myChatClient.sendMessage(to, body);
         userInput.setText("");
+        ChatDialog cd = (ChatDialog)(tabbedPane.getSelectedComponent());
+        cd.getTextArea().append("<" + myChatClient.getUserName() + ">:" + body);
     }
 
     @Override

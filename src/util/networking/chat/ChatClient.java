@@ -87,6 +87,10 @@ public class ChatClient extends Client {
     public boolean getLoggedInStatus() {
         return myLoggedIn;
     }
+    
+    public String getUserName(){
+        return myUser;
+    }
 
     @Override
     public void processInputFromServer(String input) {
