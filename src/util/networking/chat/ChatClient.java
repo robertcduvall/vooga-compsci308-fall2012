@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.List;
-import util.networking.ClientListener;
 import util.networking.Client;
 
 /**
