@@ -421,15 +421,18 @@ public class XmlUtilities {
      */
 
     public static Collection<Element> replaceAllTagNames (Element parent, String oldTag,
-                                                          String newTag) {
-        NodeList nodeList = parent.getElementsByTagName(oldTag);
+                                                          String content) {
+        NodeList nodeList =  parent.getElementsByTagName(oldTag);
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            node.setNodeValue(newTag);
+            node.setTextContent(content);
+           
         }
         return convertNodeListToCollection(nodeList);
     }
-
+    
+    
+    
     /**
      * Sets an existing attribute of an element. If the attribute did not
      * previously exist, throws a warning and creates it.
