@@ -3,7 +3,6 @@ package vooga.turnbased.gamecore.graphutility;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -56,7 +55,8 @@ public abstract class PathSearch {
      */
     public boolean checkVisited (int x, int y) {
         if (myVisited[x][y]) { return true; }
-        markVisited(x, y); // mark visited if the node has not yet been visited
+     // mark visited if the node has not yet been visited
+        markVisited(x, y); 
         return false;
     }
 
@@ -86,8 +86,12 @@ public abstract class PathSearch {
      * @return if a movement is possible
      */
     public boolean validateMove (Point position, Point direction) {
-        if ((position.x + direction.x >= mySize.width) || (position.x + direction.x < 0)) { return false; }
-        if ((position.y + direction.y >= mySize.height) || (position.y + direction.y < 0)) { return false; }
+        if ((position.x + direction.x >= mySize.width) || (position.x + direction.x < 0)) {
+            return false;
+        }
+        if ((position.y + direction.y >= mySize.height) || (position.y + direction.y < 0)) {
+            return false;
+        }
         return true;
     }
 
@@ -117,7 +121,7 @@ public abstract class PathSearch {
     public List<Point> getPath () {
         return myPath;
     }
-    
+
     protected void setPath(List<Point> path) {
         myPath = path;
     }

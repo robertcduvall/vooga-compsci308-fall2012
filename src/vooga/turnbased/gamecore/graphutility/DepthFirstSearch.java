@@ -17,6 +17,12 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
  */
 public class DepthFirstSearch extends PathSearch {
 
+    /**
+     * constructor
+     * @param start Starting point
+     * @param end Ending point
+     * @param size Size of the table
+     */
     public DepthFirstSearch (Point start, Point end, Dimension size) {
         super(start, end, size);
     }
@@ -29,13 +35,16 @@ public class DepthFirstSearch extends PathSearch {
      */
     public boolean findPath (Point current) {
         if (checkVisited(current.x, current.y)) { return false; }
-        if (current.equals(getEnd())) { return true; // found the path
+     // found the path
+        if (current.equals(getEnd())) {
+            return true; 
         }
         Queue<Point> myOptions = validateMovements(current);
         while (!myOptions.isEmpty()) {
             Point p = new Point(myOptions.poll());
             addToPath(p);
-            if (findPath(p)) { // recursion
+         // recursion
+            if (findPath(p)) { 
                 return true;
             }
             else {
