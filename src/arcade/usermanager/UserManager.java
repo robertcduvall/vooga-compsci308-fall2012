@@ -112,15 +112,15 @@ public final class UserManager {
                                         (AccessToken) obj);
                 }
                 catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
+                    
                     e.printStackTrace();
                 }
                 catch (IOException e) {
-                    // TODO Auto-generated catch block
+                    
                     e.printStackTrace();
                 }
                 catch (ClassNotFoundException e) {
-                    // TODO Auto-generated catch block
+                    
                     e.printStackTrace();
                 }
 
@@ -204,6 +204,8 @@ public final class UserManager {
         return null;
 
     }
+    
+    
 
     protected boolean validateUser (String userName, String password) {
         if (!myAllUser.containsKey(userName)) throw new UserNotExistException();
@@ -233,8 +235,14 @@ public final class UserManager {
      * 
      * @return modifable user class
      */
-    public User getCurrentUser () {
-        return myCurrentUser;
+    public EditableUserProfile getEditableCurrentUser () {
+        User user = getUser(getCurrentUserName());
+        String name = user.getName();
+        String picture = user.getPicture();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+       
+        return  new EditableUserProfile(name, picture, firstName, lastName);
     }
 
     /**
