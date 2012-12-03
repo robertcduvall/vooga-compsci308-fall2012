@@ -215,7 +215,14 @@ public class EditorPane extends DisplayPane {
                     LevelEditor l, Element sprite) {
         Integer x = myCurrentTile.x;
         Integer y = myCurrentTile.y;
-        String mode = "map" + ((Integer) myMapCounter).toString();
+        String mode = "";
+        //TODO: Better way than this to figure out correct mode
+        if (returnedValues[0].toLowerCase().contains("map")) {
+            mode = "map" + ((Integer) myMapCounter).toString();
+        }
+        else if (returnedValues[0].toLowerCase().contains("battle")) {
+            mode = "battle";
+        }
         l.addObject(sprite, "", mode, returnedValues[0],
                 returnedValues[1], x.toString(), y.toString(), returnedValues[2],
                 returnedValues[3], returnedValues[4]);
@@ -315,8 +322,10 @@ public class EditorPane extends DisplayPane {
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 l.saveXmlDocument();
+                clear();
                 getGameWindow().changeActivePane(GameWindow.MENU);
             }
+
         });
         return doneButton;
     }
@@ -353,5 +362,15 @@ public class EditorPane extends DisplayPane {
                 }
             }
         }
+    }
+
+    private void clear () {
+        removeAll();
+        addInitialButtons();
+        validate();
+        repaint();
+        myDimension = new Dimension (-1, -1);
+        myCurrentTile = new Point(-1, -1);
+        myPaintedSprites.clear();
     }
 }
