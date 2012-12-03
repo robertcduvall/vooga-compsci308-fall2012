@@ -53,7 +53,7 @@ public class MapObject extends GameObject {
     public void setMapMode (MapMode mapMode) {
         myMapMode = mapMode;
     }
-    
+
     /**
      * Get the dimension of the tiles
      * @return
@@ -104,16 +104,11 @@ public class MapObject extends GameObject {
     }
 
     /**
-<<<<<<< HEAD
-     * Increments the location of the object from the given point.
-     * 
-     * @param p Point at which the object starts.
-     * @return Point that has been incremented.
-=======
-     * Change the current location by p
-     * @param p the amount of change
-     * @return
->>>>>>> ac7d8c88c2b2d6a08a51a8b070748ef44c6f5bff
+     * Increments the location of the object by the value of the parameter point.
+     *
+     * @param p The amount you want to shift X and Y given as a point
+     * @return A new point that has taken the old center and added the x and y values of the
+     * point passed in
      */
     public Point incrementLocation (Point p) {
         int x = getLocation().x + p.x;
