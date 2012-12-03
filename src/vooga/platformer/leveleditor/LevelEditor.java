@@ -84,34 +84,36 @@ public class LevelEditor extends JPanel {
      * @param plugin
      */
     public void addLevelPlugin(String plugin) {
-        if("Gravity".equals(plugin)) { 
-            final LevelBoard current = myBoard;
-            final JPopupMenu jpop = new JPopupMenu();
-            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
-            final JTextField gravityfield = new JTextField();
-            JButton accept = new JButton("OK");
-            accept.addActionListener(new ActionListener(){
-                @Override
-                public void actionPerformed (ActionEvent arg0) {
-                    String val = gravityfield.getText();
-                    try {
-                        int temp = Integer.parseInt(val);
-                        current.setGrav(temp);
-                    }
-                    catch (NumberFormatException e) {
-                        JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
-                        jpop.add(errormsg);
-                        jpop.pack();
-                        jpop.repaint();
-                    }
-                }
-            });
-            jpop.add(gravitylabel);
-            jpop.add(gravityfield);
-            jpop.add(accept);
-            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
+//        if("Gravity".equals(plugin)) { 
+//            final LevelBoard current = myBoard;
+//            final JPopupMenu jpop = new JPopupMenu();
+//            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
+//            final JTextField gravityfield = new JTextField();
+//            JButton accept = new JButton("OK");
+//            accept.addActionListener(new ActionListener(){
+//                @Override
+//                public void actionPerformed (ActionEvent arg0) {
+//                    String val = gravityfield.getText();
+//                    try {
+//                        int temp = Integer.parseInt(val);
+//                        current.setGrav(temp);
+//                    }
+//                    catch (NumberFormatException e) {
+//                        JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
+//                        jpop.add(errormsg);
+//                        jpop.pack();
+//                        jpop.repaint();
+//                    }
+//                }
+//            });
+//            jpop.add(gravitylabel);
+//            jpop.add(gravityfield);
+//            jpop.add(accept);
+//            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
+//        }
+        if("SimpleBackgroundPainter".equals(plugin)) {
+            
         }
-
     }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();
@@ -191,7 +193,7 @@ public class LevelEditor extends JPanel {
     }
 
     protected void load() {
-        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir")+DATA_PATH);
+        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir") + DATA_PATH);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "XML Level files", "xml");
         chooser.setFileFilter(filter);

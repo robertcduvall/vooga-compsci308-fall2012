@@ -275,7 +275,7 @@ public class LevelBoard extends JPanel {
     }
 
     public void save () {
-        JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+        JFileChooser fc = new JFileChooser(System.getProperty("user.dir") + DATA_PATH);
         FileFilter filter = new FileNameExtensionFilter("XML file", "xml");
         fc.addChoosableFileFilter(filter);
         int returnVal = fc.showSaveDialog(this);
