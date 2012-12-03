@@ -16,7 +16,7 @@ import vooga.turnbased.gui.GamePane;
  */
 public class MovingMapObject extends MapObject {
     private static final double SIZE_RELATIVE_TO_TILE = 1;
-    private static final double RUN_MULTIPLIER = 2; 
+    private static final double RUN_MULTIPLIER = 2;
     private static final int INITIAL_MOVEMENT_TIME = 600;
     private int myMovementTimePerTile;
     private int myTimePassed;
@@ -33,13 +33,13 @@ public class MovingMapObject extends MapObject {
     /**
      * Creates the MovingMapObject that will be used in MapMode.
      * 
-     * @param allowableModes 
+     * @param allowableModes
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      */
-    public MovingMapObject (Set<String> allowableModes, String condition, 
-            Point location, Image mapImage) {
+    public MovingMapObject (Set<String> allowableModes, String condition, Point location,
+                            Image mapImage) {
         super(allowableModes, condition, location, mapImage);
         myMovementTimePerTile = INITIAL_MOVEMENT_TIME;
         myXOriginInTile = 0;
@@ -82,9 +82,8 @@ public class MovingMapObject extends MapObject {
     /**
      * Sets direction
      * 
-     * @param dir Point destination.
+     * @param dir direction the object is currently facing.
      */
-    // this is also poorly named
     public void setDirection (Point dir) {
         myDirection = dir;
     }
@@ -126,8 +125,9 @@ public class MovingMapObject extends MapObject {
     public Point getPreviousLocation () {
         return myPreviousLocation;
     }
+
     /**
-     * Reset all the movement related variables 
+     * Reset all the movement related variables
      */
     public void finishMovement () {
         setMoving(false);
@@ -175,15 +175,16 @@ public class MovingMapObject extends MapObject {
     public boolean isMoving () {
         return myIsMoving;
     }
+
     /**
      * 
      * @param dir the direction of movement
-     * @return
+     * @return if the move was successful
      */
     public boolean tryMove (Point dir) {
         if (isMoving()) { return false; }
         // direction changes even if not going to move
-        setDirection(dir); 
+        setDirection(dir);
         Point dest = incrementLocation(dir);
         if (getMapMode().isWithinBounds(dest)) {
             for (MapObject m : getMapMode().getSpritesOnTile(dest.x, dest.y)) {
@@ -196,7 +197,7 @@ public class MovingMapObject extends MapObject {
             }
             else {
                 // reset for the next round of movement
-                setCanMove(true); 
+                setCanMove(true);
                 return false;
             }
         }
@@ -205,6 +206,11 @@ public class MovingMapObject extends MapObject {
         }
     }
 
+    /**
+     * carry out the movement of this MovingMapObject to destination
+     * 
+     * @param dest the destination on the map
+     */
     private void moveTo (Point dest) {
         getMapMode().removeMapObject(this);
         getMapMode().addMapObject(dest, this);
@@ -239,10 +245,11 @@ public class MovingMapObject extends MapObject {
     public void moveRight () {
         tryMove(MapMode.RIGHT);
     }
+
     /**
      * Toggle running
      */
-    public void toggleRunning() {
+    public void toggleRunning () {
         if (myIsRunning) {
             myIsRunning = false;
             myMovementTimePerTile *= RUN_MULTIPLIER;

@@ -91,23 +91,29 @@ public class GameManager implements InputAPI {
 
         startFirstMode(levelLoader.getStartMode());
     }
+
     private void startFirstMode (String entryMode) {
         handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
     }
+
     /**
      * Get the dimension of the map
+     * 
      * @return
      */
     public Dimension getMapSize () {
         return myMapSize;
     }
+
     /**
      * Get the dimension of the camera window
+     * 
      * @return
      */
     public Dimension getCameraSize () {
         return myCameraSize;
     }
+
     /**
      * find the Sprite with specific ID
      * 
@@ -128,9 +134,12 @@ public class GameManager implements InputAPI {
             mySprites.put(s.getID(), s);
         }
     }
+
     /**
-     * Get a list of all the GameObjects that belong to the given certain GameMode
-     * @param modeName 
+     * Get a list of all the GameObjects that belong to the given certain
+     * GameMode
+     * 
+     * @param modeName
      * @return
      */
     public List<GameObject> getGameObjects (String modeName) {
@@ -190,7 +199,7 @@ public class GameManager implements InputAPI {
         }
         myGameModes.get(myGameModes.size() - 1).update();
         handleMouseActions(myGameModes.get(myGameModes.size() - 1));
-        for (GameMode mode : finishedModes) { 
+        for (GameMode mode : finishedModes) {
             killMode(mode);
         }
     }
@@ -251,8 +260,10 @@ public class GameManager implements InputAPI {
     public void setNewMapResources (String uri) {
         myNewMapResource = uri;
     }
+
     /**
      * Get the sprite ID of the player
+     * 
      * @return
      */
     public int getPlayerSpriteID () {
@@ -263,11 +274,11 @@ public class GameManager implements InputAPI {
         return myNewMapResource;
     }
 
-
     /**
      * Flag an event using the GameLogic
-     * @param eventName 
-     * @param involvedSpriteIDs 
+     * 
+     * @param eventName
+     * @param involvedSpriteIDs
      */
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
@@ -294,11 +305,12 @@ public class GameManager implements InputAPI {
             handleEvent(m);
         }
     }
+
     private boolean modeAlreadyExists (String modeName) {
         for (GameMode g : myGameModes) {
             if (modeName.equals(g.getName())) {
                 myGameModes.get(myGameModes.size() - 1).pause();
-                myGameModes.remove(g); 
+                myGameModes.remove(g);
                 myGameModes.add(g);
                 g.resume();
                 return true;
@@ -307,6 +319,10 @@ public class GameManager implements InputAPI {
         return false;
     }
 
+    /**
+     * handle event that occured after a cycle of update
+     * @param event the event that records involved IDs and the event type
+     */
     private void handleEvent (ModeEvent event) {
         // System.out.println("doing event: "+event.getName());
         // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
@@ -334,20 +350,27 @@ public class GameManager implements InputAPI {
 
     /**
      * Add a mouse action
-     * @param mousePressed 
-     * @param mousePos 
-     * @param mouseButton 
+     * 
+     * @param mousePressed int value that indicates what kind of mouse action is
+     *        this (see GamePane for constant values)
+     * @param mousePos the position of the mouse
+     * @param mouseButton the button of the mouse (see KeyEvent constants)
      */
     public void addMouseAction (int mousePressed, Point mousePos, int mouseButton) {
         myMouseActions.add(new MouseAction(mousePressed, mousePos, mouseButton));
     }
 
+    /**
+     * remove the mode from know modes
+     * @param mode the GameMode to be removed
+     */
     private void killMode (GameMode mode) {
         myGameModes.remove(mode);
         if (!myGameModes.isEmpty()) {
             myGameModes.get(myGameModes.size() - 1).resume();
         }
     }
+
     /**
      * Toggle the background sound track being played
      */
@@ -363,7 +386,7 @@ public class GameManager implements InputAPI {
     /**
      * Turn off background soundtrack if any.
      */
-    public void turnOffSoundTrack() {
+    public void turnOffSoundTrack () {
         myGameSoundTrack.stopLoop();
     }
 
@@ -378,6 +401,7 @@ public class GameManager implements InputAPI {
             myMouseButton = mouseButton;
         }
     }
+
     private class ModeEvent {
         private final String myName;
         private final List<Integer> myInvolvedIDs;
