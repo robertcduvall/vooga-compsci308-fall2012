@@ -58,6 +58,7 @@ public class EditorPane extends DisplayPane {
                         "/src/vooga/turnbased/resources/level/testPlayer.xml");
             }
         });
+        add(newLevelButton);
     }
 
     /**
@@ -191,14 +192,14 @@ public class EditorPane extends DisplayPane {
         final JPanel P = setUpJPanel(labels, defaultValues, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 6, 6, 6);
         final JFrame FRAME = new JFrame("Modes Information");
-        JButton doneButton = makeDoneButtonAndAddModeXml(l, NUM_PAIRS, P, FRAME);
-        setUpFrameAndPanel(P, FRAME, doneButton);
+        JButton addButton = makeAddButtonAndAddModeXml(l, NUM_PAIRS, P, FRAME);
+        setUpFrameAndPanel(P, FRAME, addButton);
     }
 
-    private JButton makeDoneButtonAndAddModeXml (final LevelEditor l,
+    private JButton makeAddButtonAndAddModeXml (final LevelEditor l,
             final int NUM_PAIRS, final JPanel P, final JFrame FRAME) {
-        JButton doneButton = new JButton("Done");
-        doneButton.addActionListener(new ActionListener() {
+        JButton addButton = new JButton("Add Mode");
+        addButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 String[] returnedValues = new String[NUM_PAIRS];
                 Component[] allComponents = P.getComponents();
@@ -210,10 +211,9 @@ public class EditorPane extends DisplayPane {
                     }
                 }
                 addModesXmlInformation(returnedValues, l);
-                FRAME.dispose();
             }
         });
-        return doneButton;
+        return addButton;
     }
 
     private void addModesXmlInformation (
