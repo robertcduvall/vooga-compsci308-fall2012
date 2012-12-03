@@ -13,7 +13,7 @@ import vooga.platformer.util.DimensionDouble;
  * 
  * @author Mark Govea
  */
-public class DriftingCamera extends SizedCamera implements Camera {
+public class DriftingCamera extends UpdatableCamera {
     private DimensionDouble mySpeed;
 
     /**

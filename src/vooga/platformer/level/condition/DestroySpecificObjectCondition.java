@@ -14,8 +14,9 @@ import vooga.platformer.util.enums.PlayState;
  * @author Niel Lebeck
  *
  */
-public class DestroySpecificObjectWinCondition implements Condition {
+public class DestroySpecificObjectCondition implements Condition {
 
+    private static final long serialVersionUID = 1L;
     protected static final String LEVEL_NAME_TAG = "nextlevel";
     protected static final String OBJECT_TAG = "object";
     
@@ -25,7 +26,7 @@ public class DestroySpecificObjectWinCondition implements Condition {
     /**
      * 
      */
-    public DestroySpecificObjectWinCondition() {
+    public DestroySpecificObjectCondition() {
         
     }
 
@@ -33,10 +34,20 @@ public class DestroySpecificObjectWinCondition implements Condition {
      * 
      * @param configString config string
      */
-    public DestroySpecificObjectWinCondition(String configString) {
+    public DestroySpecificObjectCondition(String configString) {
         Map<String, String> configStringMap = ConfigStringParser.parseConfigString(configString);
         myNextLevelName = configStringMap.get(LEVEL_NAME_TAG);
         myObjectId = Integer.parseInt(configStringMap.get(OBJECT_TAG));
+    }
+    
+    /**
+     * 
+     * @param nextLevelName name of next level
+     * @param objectIdString object id
+     */
+    public DestroySpecificObjectCondition(String nextLevelName, int objectId) {
+        myNextLevelName = nextLevelName;
+        myObjectId = objectId;
     }
     
     @Override

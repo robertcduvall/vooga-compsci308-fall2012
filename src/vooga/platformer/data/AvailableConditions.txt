@@ -1,0 +1,2 @@
+src.vooga.platformer.level.condition.DestroySpecificObjectCondition
+src.vooga.platformer.level.condition.DefeatAllEnemiesCondition

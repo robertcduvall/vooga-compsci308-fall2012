@@ -1,6 +1,7 @@
 package vooga.platformer.level.levelplugin;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import util.camera.Camera;
@@ -12,7 +13,8 @@ import vooga.platformer.gameobject.GameObject;
  * @author Niel Lebeck
  *
  */
-public abstract class LevelPlugin implements Comparable<LevelPlugin> {
+public abstract class LevelPlugin implements Comparable<LevelPlugin>, Serializable {
+    private static final long serialVersionUID = 1L;
     protected final static int MIN_PRIORITY = 0;
     protected final static int MAX_PRIORITY = 99;
     

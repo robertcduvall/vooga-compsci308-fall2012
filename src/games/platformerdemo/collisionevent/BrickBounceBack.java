@@ -1,8 +1,7 @@
 package games.platformerdemo.collisionevent;
 
-import vooga.platformer.gameobject.Brick;
+import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.MovingObject;
-import vooga.platformer.level.Level;
 
 
 /**
@@ -11,16 +10,16 @@ import vooga.platformer.level.Level;
  * 
  */
 public class BrickBounceBack extends BrickMovingObject {
-    private Brick myBrick;
+    private StaticObject myBrick;
     private MovingObject myMO;
 
-    public BrickBounceBack (Brick a, MovingObject b) {
+    public BrickBounceBack (StaticObject a, MovingObject b) {
         super(a, b);
-        myBrick = (Brick) this.a();
+        myBrick = (StaticObject) this.a();
         myMO = (MovingObject) this.b();
     }
 
-    public BrickBounceBack (MovingObject a, Brick b) {
+    public BrickBounceBack (MovingObject a, StaticObject b) {
         this(b, a);
     }
 

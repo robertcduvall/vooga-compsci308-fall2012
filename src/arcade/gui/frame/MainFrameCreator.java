@@ -1,6 +1,8 @@
 package arcade.gui.frame;
 
 import java.awt.Dimension;
+import javax.swing.BorderFactory;
+import javax.swing.border.EtchedBorder;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -64,6 +66,13 @@ public class MainFrameCreator extends AbstractFrameCreator {
         panel7.setPreferredSize(new Dimension(1100, 50));
         panel7.setMaximumSize(new Dimension(10000, 50));
 
+//        panel3.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//        panel4.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//        panel5.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//        panel6.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+//        panel7.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        
+        
         // setup subpanels
         setupPanel("logo", panel1);
         setupPanel("blank", panel2);

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import util.configstring.ConfigStringParser;
 import vooga.platformer.gameobject.GameObject;
 
@@ -18,7 +19,7 @@ import vooga.platformer.gameobject.GameObject;
 public class SimpleBackgroundPainter extends BackgroundPainter {
     protected static final String IMAGE_TAG = "image"; 
     
-    private Image myBgImg;
+    private ImageIcon myBgImg;
     
     /**
      * Default constructor. To be used only for the purposes of getting the config
@@ -35,10 +36,22 @@ public class SimpleBackgroundPainter extends BackgroundPainter {
         Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
         String imagePath = configMap.get(IMAGE_TAG);
         try {
-            myBgImg = ImageIO.read(new File(imagePath));
+            myBgImg = new ImageIcon(ImageIO.read(new File(imagePath)));
         }
         catch (IOException e) {
             System.out.println("invalid image path: " + imagePath);
+        }
+    }
+    
+    /**
+     * @param bgImg background image
+     */
+    public SimpleBackgroundPainter(File imgFile) {
+        try {
+            myBgImg = new ImageIcon(ImageIO.read(imgFile));
+        }
+        catch (IOException e) {
+            System.out.println("invalid image path: " + imgFile);
         }
     }
     
@@ -51,7 +64,7 @@ public class SimpleBackgroundPainter extends BackgroundPainter {
 
     @Override
     public Image getCurrentBackgroundImage (List<GameObject> objList) {
-        return myBgImg;
+        return myBgImg.getImage();
     }
 
 }
