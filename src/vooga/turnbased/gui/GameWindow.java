@@ -1,32 +1,32 @@
-/**
- * The main game frame that switch between menu, game and editor canvases.
- * Also It is responsible to load general game settings from the resource file
- * 
- * @author Rex, Volodymyr
- */
 package vooga.turnbased.gui;
 
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Image;
-import java.awt.Dimension;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 
 /**
- * contains a Canvas, and menu that respond to change in games
+ * The main game frame that switch between menu, game and editor canvases.
+ * Also It is responsible to load general game settings from the resource file
  * 
  * @author David, Rex, Tony
  **/
+@SuppressWarnings("serial")
 public class GameWindow extends JFrame {
 
-    // denotes the index of the prototype in myCanvases
+    /**
+     * Index values for each card in the CardLayout
+     */
     public static final String MENU = "0";
     public static final String EDITOR = "1";
     public static final String GAME = "2";
 
+    /**
+     * Location for game configuration resource bundles
+     */
     private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
     private static ResourceBundle myResources;
 
@@ -36,9 +36,10 @@ public class GameWindow extends JFrame {
     /**
      * Constructor construct a game window given the size of the window
      * 
+     * @param title The title of the game
+     * @param settingsResource name of game configuration file
      * @param width Width of the window
      * @param height Height of the window
-     * @param title The title of the game
      */
     public GameWindow (String title, String settingsResource, int width, int height) {
         setTitle(title);
@@ -78,7 +79,6 @@ public class GameWindow extends JFrame {
     /**
      * import images from ResourceBundle
      * 
-     * @param resources ResourceBundle object
      * @param imageName image name under the image folder
      * @return Image object
      */

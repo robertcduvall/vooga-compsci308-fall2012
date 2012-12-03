@@ -31,11 +31,10 @@ import vooga.turnbased.sprites.Sprite;
 public class GameManager implements InputAPI {
 
     private final GamePane myGamePane;
-    // private GameLevelManager myLevelManager;
     private GameLogic myGameLogic;
     private boolean myGameIsOver;
     private Map<Integer, Sprite> mySprites;
-    private Map<String, Class> myAvailableModeTypes;
+    private Map<String, Class<? extends GameMode>> myAvailableModeTypes;
     private List<ModeEvent> myModeEvents;
     private List<MouseAction> myMouseActions;
     private List<GameMode> myGameModes;
@@ -56,7 +55,7 @@ public class GameManager implements InputAPI {
         myGameIsOver = false;
 
         mySprites = new HashMap<Integer, Sprite>();
-        myAvailableModeTypes = new HashMap<String, Class>();
+        myAvailableModeTypes = new HashMap<String, Class<? extends GameMode>>();
         myGameModes = new ArrayList<GameMode>();
 
         myModeEvents = new LinkedList<ModeEvent>();
