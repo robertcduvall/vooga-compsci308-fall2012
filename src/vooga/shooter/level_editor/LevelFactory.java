@@ -1,174 +1,142 @@
 package vooga.shooter.level_editor;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.HashMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import util.reflection.*;
-import vooga.shooter.gameObjects.Sprite;
+import util.xml.XmlUtilities;
+import vooga.shooter.gameObjects.Enemy;
 
+public class LevelFactory {
 
-/**
- * @deprecated Use the Packable interface and
- * the pack() and unpack() methods on level
- * instead of this.
- * 
- * Level Factory.java
- * Instantiates Levels from an XML file
- * 
- * NOTE: This is going to be subject heavy modification since
- * I've decided to go with the Packable interface.
- * 
- * @author Alex Browne
- */
-public abstract class LevelFactory {
-
-
-    /**
-     * @deprecated
-     * Creates Level object from XML file
-     * 
-     * @param f XML file input
-     * @return
-     */
-    public Level createLevel (File f) {
-        Level level = new Level();
-
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder dBuilder = null;
-        try {
-            dBuilder = dbFactory.newDocumentBuilder();
-        }
-        catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        Document doc = null;
-        try {
-            doc = dBuilder.parse(f);
-        }
-        catch (SAXException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        doc.getDocumentElement().normalize();
-        Element root = doc.getDocumentElement();
-
-        if (!root.getTagName().equals("Level")) {
-            System.out.println("ERROR: the xml document isn't formatted correctly. "
-                               + "It most have <Level> as the root element.");
-            return null;
-        }
-
-        NodeList nodeList = root.getChildNodes();
-
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) node;
-                String elementName = element.getTagName();
-
-                // you can comment out or remove this print statment...
-                System.out.println("Detected Sprite of type: " + elementName);
-
-                if (!element.hasAttributes()) {
-                    // if the element has no attributes, we assume the class has
-                    // no arguments
-                    // in the constructor.
-
-                    // we need to add the package name to create a fully
-                    // qualified class name
-                    String packageName = this.getClass().getPackage().getName();
-                    Sprite s = (Sprite) Reflection.createInstance(packageName + "." + elementName);
-
-                    // add the sprite to the level we're constructing
-                    level.addSprite(s);
-                }
-                else {
-                    // if the element has attributes, we put them in a format
-                    // that the Reflection
-                    // utility can handle, and then instantiate the class with
-                    // the attributes being
-                    // used as arguments in the constructor.
-
-                    NamedNodeMap attributes = element.getAttributes();
-
-                    ArrayList<String> argList = new ArrayList<String>();
-
-                    for (int j = 0; j < attributes.getLength(); j++) {
-                        Node attr = attributes.item(j);
-                        String value = attr.getNodeValue();
-                        // you can comment out or remove this print statment...
-                        System.out.println("Detected argument: " + value);
-                        argList.add(value);
-                    }
-
-                    String packageName = this.getClass().getPackage().getName();
-
-                    Sprite s = null;
-
-                    try {
-                        s =
-                                (Sprite) Reflection.createInstance(packageName + "." + elementName,
-                                                                   argList.toArray());
-                    }
-                    catch (Exception e) {
-                        // try converting the args to integers, as this is a
-                        // common case...
-                        ArrayList<Integer> argsAsInts = new ArrayList<Integer>();
-                        for (String arg : argList) {
-                            argsAsInts.add(Integer.valueOf(arg));
-                        }
-                        s =
-                                (Sprite) Reflection.createInstance(packageName + "." + elementName,
-                                                                   argsAsInts.toArray());
-                    }
-
-                    // add the sprite to the level we're constructing
-                    level.addSprite(s);
-
-                    // TODO: evaluate attribute names to make sure they are the
-                    // same
-                    // arguments that the constructor expects and are in the
-                    // right order
-
-                    // TODO: make argument evaluation more robust for complex
-                    // arguments
-                    // currently we only support Strings and Integers.
-
-                }
-
-            }
-        }
-
-        return level;
+    public static Level loadLevel(Document xmlDoc) {
+        return null;
+        
     }
-
-    /**
-     * @deprecated
-     * @param path the path to the xml file relative to the
-     *        project root directory (e.g. levels/level1.xml).
-     * 
-     * @return the Level that was created by the factory
-     */
-    public Level createLevel (String path) {
-        String current_dir = System.getProperty("user.dir");
-        return createLevel(new File(current_dir + "/src/" + path));
+    
+    public static Level loadLevel(File xmlFile) {
+        return null;
+        
     }
+  
+// From Level
+    
+//    @Override
+//    public Document pack () {
+//        Document doc = XmlUtilities.makeDocument();
+//        Element element = XmlUtilities.makeElement(doc, "Level", "backgroundImage", myBackgroundImagePath);
+//        doc.appendChild(element);
+//        
+//        for (Sprite sprite : mySprites) {
+//            if (sprite.getClass().getName() == Enemy.class.getName()) {
+//                Enemy enemy = (Enemy) sprite;
+//                Document enemyDoc = sprite.pack();
+//            }
+//        }
+//        
+//        return doc;
+//    }
+//
+//    public static Level unpack (Document xmlData) {
+//        Element root = xmlData.getDocumentElement();
+//        String bgImagePath = root.getAttribute("backgroundImage");
+//        String className = Level.class.getName();
+//        return (Level) Reflection.createInstance(className, bgImagePath);
+//    }
+    
 
+// From Enemy    
+//    
+//    @Override
+//    public Document pack () {
+//        
+//        Document doc = XmlUtilities.makeDocument();
+//        Element root = XmlUtilities.makeElement(doc, "Enemy");
+//        doc.appendChild(root);
+//                
+//        // convert position...
+//        double pointX = getPosition().getX();
+//        double pointY = getPosition().getY();
+//        HashMap<String, String> positionMap = new HashMap<String, String>();
+//        positionMap.put("x", Integer.toString((int) pointX));
+//        positionMap.put("y", Integer.toString((int) pointY));
+//        XmlUtilities.appendElement(doc, root, "position", positionMap);
+//        
+//        // convert size...
+//        double sizeWidth = getSize().getWidth();
+//        double sizeHeight = getSize().getHeight();
+//        HashMap<String, String> sizeMap = new HashMap<String, String>();
+//        sizeMap.put("width", Integer.toString((int) sizeWidth));
+//        sizeMap.put("height", Integer.toString((int) sizeHeight));
+//        XmlUtilities.appendElement(doc, root, "size", sizeMap);
+//        
+//        // convert bounds...
+//        double boundsWidth = getBounds().getWidth();
+//        double boundsHeight = getBounds().getHeight();
+//        HashMap<String, String> boundsMap = new HashMap<String, String>();
+//        boundsMap.put("width", Integer.toString((int) boundsWidth));
+//        boundsMap.put("height", Integer.toString((int) boundsHeight));
+//        XmlUtilities.appendElement(doc, root, "bounds", boundsMap);
+//        
+//        // convert image...
+//        XmlUtilities.appendElement(doc, root, "image", "path", imagePath);
+//        
+//        // convert velocity...
+//        double velX = getVelocity().getX();
+//        double velY = getVelocity().getY();
+//        HashMap<String, String> velMap = new HashMap<String, String>();
+//        velMap.put("x", Integer.toString((int) velX));
+//        velMap.put("y", Integer.toString((int) velY));
+//        XmlUtilities.appendElement(doc, root, "velocity", velMap);
+//        
+//        // convert health...
+//        XmlUtilities.appendElement(doc, root, "health", "value", Integer.toString(getHealth()));
+//        
+//        return doc;
+//    }
+//
+//    public static Enemy unpack (Document xmlData) {
+//      
+//        Element root = (Element) xmlData.getFirstChild();
+//        
+//        // parse position...
+//        Element positionElement = XmlUtilities.getElement(root, "position");
+//        int pointX = XmlUtilities.getAttributeAsInt(positionElement, "x");
+//        int pointY = XmlUtilities.getAttributeAsInt(positionElement, "y");
+//        Point position = new Point(pointX, pointY);
+//        
+//        // parse size...
+//        Element sizeElement = XmlUtilities.getElement(root, "size");
+//        int sizeWidth = XmlUtilities.getAttributeAsInt(sizeElement, "width");
+//        int sizeHeight = XmlUtilities.getAttributeAsInt(sizeElement, "height");
+//        Dimension size = new Dimension(sizeWidth, sizeHeight);
+//        
+//        // parse bounds...
+//        Element boundsElement = XmlUtilities.getElement(root, "bounds");
+//        int boundsWidth = XmlUtilities.getAttributeAsInt(boundsElement, "width");
+//        int boundsHeight = XmlUtilities.getAttributeAsInt(boundsElement, "height");
+//        Dimension bounds = new Dimension(boundsWidth, boundsHeight);
+//        
+//        // parse image...
+//        Element imageElement = XmlUtilities.getElement(root, "image");
+//        String imagePath = imageElement.getAttribute("path");
+//        
+//        // parse velocity...
+//        Element velElement = XmlUtilities.getElement(root, "velocity");
+//        int velX = XmlUtilities.getAttributeAsInt(velElement, "x");
+//        int velY = XmlUtilities.getAttributeAsInt(velElement, "y");
+//        Point velocity = new Point(velX, velY);
+//        
+//        // parse health...
+//        Element healthElement = XmlUtilities.getElement(root, "health");
+//        int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
+//        
+//        return new Enemy(position, size, bounds, imagePath, velocity, health);
+//    }
+
+    
+
+    
 }

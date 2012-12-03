@@ -12,22 +12,23 @@ import util.xml.XmlUtilities;
  * Writes user data to an XML file.
  * 
  * @author Howard, Difan
- *         TODO: message XML should contain sender, not receiver tag
- * 
  */
 public class UserXMLWriter {
     private String myUserBasicFilePath;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
-    private ResourceBundle resource;
+    private ResourceBundle myResource;
     private String myUserImageFilePath;
 
+    /**
+     * Constructs a writer.
+     */
     public UserXMLWriter () {
-        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
-        myUserBasicFilePath = resource.getString("BasicFilePath");
-        myUserMessageFilePath = resource.getString("MessageFilePath");
-        myUserGameFilePath = resource.getString("GameFilePath");
-        myUserImageFilePath = resource.getString("ImageFilePath");
+        myResource = ResourceBundle.getBundle("arcade.usermanager.filePath");
+        myUserBasicFilePath = myResource.getString("BasicFilePath");
+        myUserMessageFilePath = myResource.getString("MessageFilePath");
+        myUserGameFilePath = myResource.getString("GameFilePath");
+        myUserImageFilePath = myResource.getString("ImageFilePath");
     }
 
     /**
@@ -40,17 +41,16 @@ public class UserXMLWriter {
      * @throws IOException
      */
 
-    public void makeUserXML (String userName, String password, String picture,
-            String firstName, String lastName) throws IOException {
+    public void makeUserXML (String userName, String password, String picture, String firstName,
+                             String lastName) throws IOException {
 
         makeBasicXml(userName, password, picture, firstName, lastName);
         makeMessageXml(userName);
         makeGameXml(userName);
     }
 
-    private void makeBasicXml (String userName, String password,
-            String picture, String firstName, String lastName)
-            throws IOException {
+    private void makeBasicXml (String userName, String password, String picture, String firstName,
+                               String lastName) throws IOException {
         String basicInfoFilePath = myUserBasicFilePath + userName + ".xml";
 
         Document doc = XmlUtilities.makeDocument();
@@ -62,8 +62,7 @@ public class UserXMLWriter {
         XmlUtilities.appendElement(doc, rootElement, "firstname", firstName);
         XmlUtilities.appendElement(doc, rootElement, "lastname", lastName);
         XmlUtilities.appendElement(doc, rootElement, "password", password);
-        XmlUtilities.appendElement(doc, rootElement, "picture",
-                myUserImageFilePath + picture);
+        XmlUtilities.appendElement(doc, rootElement, "picture", myUserImageFilePath + picture);
         XmlUtilities.appendElement(doc, rootElement, "credits", "0");
         XmlUtilities.write(doc, basicInfoFilePath);
 
@@ -105,8 +104,7 @@ public class UserXMLWriter {
 
     }
 
-    protected void updateUserInfo (String userName, String tagName,
-            String newContent) {
+    protected void updateUserInfo (String userName, String tagName, String newContent) {
         String filePath = myUserBasicFilePath + userName + ".xml";
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
@@ -115,14 +113,12 @@ public class UserXMLWriter {
 
     }
 
-    protected void updateGameInfo (String userName, String gameName,
-            String tagName, String content) {
+    protected void updateGameInfo (String userName, String gameName, String tagName, String content) {
         String filePath = myUserGameFilePath + userName + ".xml";
 
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         NodeList gameList = root.getElementsByTagName("game");
-        
 
         if (gameList != null) {
             for (int i = 0; i < gameList.getLength(); i++) {

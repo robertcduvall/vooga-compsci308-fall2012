@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import vooga.platformer.core.GameInitializer;
-import vooga.platformer.core.TestInputController;
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
 import vooga.platformer.core.PlatformerController;
