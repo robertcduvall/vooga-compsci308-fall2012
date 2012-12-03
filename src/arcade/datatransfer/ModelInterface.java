@@ -189,6 +189,21 @@ public class ModelInterface {
 
     }
 
+    public int getMostRecentHighScore(String userName, Game game) {
+        return 0;
+        //TODO: IMPLEMENT THIS
+    }
+    
+    public int getHighestScoreforGame(String userName, Game game) {
+        return 0;
+        //TODO: implement dis
+    }
+    
+    public List<String> getListOfHighScores(String userName) {
+        return null;
+        //TODO: imple
+    }
+    
     public void changeAdminStatus (String name, boolean adminStatus) {
         myUserManager.changeAdminStatus(name, adminStatus);
     }
