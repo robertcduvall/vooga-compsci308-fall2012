@@ -97,6 +97,8 @@ public class EditorPane extends DisplayPane {
         add(spriteButton);
         // TODO: Add create player button somewhere in this mess
         // TODO: Done button that saves all levelEditor changes (remove saves throughout)
+        JButton finishedButton = addDoneButton(l);
+        add(finishedButton);
         validate();
     }
 
@@ -149,7 +151,6 @@ public class EditorPane extends DisplayPane {
                     }
                 }
                 addObjectXmlInformation(returnedValues, l, sprite);
-                l.saveXmlDocument();
                 newPopUpMessage(
                         "Successfully Added Object!", "To add another object, change the " +
                         "fields to desired values.  When done, close the window to continue " +
@@ -219,7 +220,6 @@ public class EditorPane extends DisplayPane {
     private void addModesXmlInformation (
             String[] returnedValues, LevelEditor l) {
         l.addMode(returnedValues[0], returnedValues[1], returnedValues[2]);
-        l.saveXmlDocument();
     }
 
     private void displayAndGetSetupInformation (String[] labels, String[] defaultValues,
@@ -292,7 +292,6 @@ public class EditorPane extends DisplayPane {
         l.addCameraDimension(returnedValues[2], returnedValues[3]);
         l.addBackgroundImage(returnedValues[4]);
         l.addStartMode();
-        l.saveXmlDocument();
     }
  
     private void addMenuButton () {
@@ -303,5 +302,16 @@ public class EditorPane extends DisplayPane {
             }
         });
         add(menuButton);
+    }
+
+    private JButton addDoneButton (final LevelEditor l) {
+        JButton doneButton = new JButton("Finished");
+        doneButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                l.saveXmlDocument();
+                getGameWindow().changeActivePane(GameWindow.MENU);
+            }
+        });
+        return doneButton;
     }
 }
