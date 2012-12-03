@@ -3,18 +3,12 @@ package vooga.shooter.level_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
-import util.input.core.MouseController;
 import util.xml.XmlUtilities;
 import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.*;
@@ -103,7 +97,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     private void setupChoosers () {
-
         levelChooser = new JFileChooser(System.getProperties().getProperty(
                 "user.dir"));
         FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter(
@@ -114,7 +107,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter(
                 "gif and png image files", "gif", "png");
         imageChooser.setFileFilter(ImageFilter);
-
     }
 
     private void setupToolbars () {
@@ -160,7 +152,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         else if (source == saveBtn) {
             if (myOpenFile == null) {
-                // file has never ben saved, so we need to save as instead
+                // file has never been saved, so we need to save as instead
                 MultiFieldJOptionPane<String> saveAsOptionsPane = new MultiFieldJOptionPane<String>(
                         mainFrame, "Save Xml File as");
                 saveAsOptionsPane.addField(SAVE_AS_KEY, "Save as:",
@@ -212,6 +204,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         
         else if (source == deleteSpriteBtn) {
             myLevel.removeSprite(myCurrentSprite);
+            myCurrentSprite = null;
         }
         
         else {
@@ -219,8 +212,16 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
     }
     
+    /**
+     * Prompts the user to enter new attributes for the selected sprite.
+     * If changes are entered, the selected sprite is replaced with a new Sprite
+     * with the newly entered attributes.
+     */
     private void editCurrentSprite() {
-        myCurrentSprite = makeEnemy();
+        Enemy newEnemy = makeEnemy();
+        myLevel.removeSprite(myCurrentSprite);
+        myLevel.addSprite(newEnemy);
+        myCurrentSprite = newEnemy;
     }
 
     /**
@@ -274,7 +275,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      * Makes a JButton with the given icon and tool tip.
      * If the icon cannot be loaded, then the text will be used instead.
      * 
-     * Adds this LevelEditor as an actionListener.
+     * Adds this Level Editor as an actionListener.
      * 
      * @return the new JButton
      **/
@@ -316,6 +317,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
     }
     
+    /**
+     * Checks if a given point intersects any Sprites in the current Level.
+     * @param p point to check intersection
+     * @return the Sprite object the point intersects or null if no intersection occurs
+     */
     private Sprite doesPointIntersectSprite(Point p) {
         int xPos = p.x;
         int yPos = p.y;
@@ -326,6 +332,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         return null;
     }
+    /**
+     * Inner class to handle mouse interaction with the Level canvas.
+     * @author Zachary Hopping
+     *
+     */
     private class LevelEditorMouseListener implements MouseListener {
 
         @Override
@@ -346,19 +357,18 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         @Override
         public void mousePressed (MouseEvent e) {
             Point p = new Point(e.getX(), e.getY());
-            Sprite target = doesPointIntersectSprite(p);
+            myCurrentSprite = doesPointIntersectSprite(p);
             if (e.getButton() == MouseEvent.BUTTON1) {
                 System.out.println("Left click at point (" + e.getX() + ", " + e.getY() + ")");
-                myCurrentSprite = target;
             }
-            
             else if (e.getButton() == MouseEvent.BUTTON3) {
                 System.out.println("Right click at point (" + e.getX() + ", " + e.getY() + ")");
-                if(target != null) {
-                    myCurrentSprite = target;
+                if(myCurrentSprite != null) {
                     editCurrentSprite();
                 } else {
-                    myLevel.addSprite(makeEnemy());
+                    Enemy newEnemy = makeEnemy();
+                    myLevel.addSprite(newEnemy);
+                    myCurrentSprite = newEnemy;
                 }
             }
         }
