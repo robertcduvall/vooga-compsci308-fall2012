@@ -65,7 +65,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
 public class LevelBoard extends JPanel {
     private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
-    private static final String DEFAULT_COLLISION_CHECKER = "BasicCollisionChecker";
+    private static final String DEFAULT_COLLISION_CHECKER = "/src/vooga/platformer/";
     private static final int DEFAULT_SIZE = 30;
 
     // Editor fields
@@ -79,7 +79,8 @@ public class LevelBoard extends JPanel {
     private MouseListener myButtonListener;
     private int mouseX;
     private int mouseY;
-    private int myLength;
+    private int myWidth;
+    private int myHeight;
     private int myOffset;
 
     // Level state
@@ -118,6 +119,8 @@ public class LevelBoard extends JPanel {
 
     public void initLevelDefaults () {
         myObjID = 0;
+        myWidth = getWidth();
+        myHeight = getHeight();
         myCamera = DEFAULT_CAMERA;
         myLevelName = "Level";
         myGameObjects = new ArrayList<GameObject>();
@@ -152,26 +155,25 @@ public class LevelBoard extends JPanel {
                 GameObject obj = null;
                 try {
                     String cmmd = e.getComponent().getName();
-                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "Default.png");
+                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd+".png");
+                    System.out.println(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd+".png");
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
-                    int x = LevelBoard.this.getWidth() / 2;
-                    int y = LevelBoard.this.getHeight() / 2;
-                    int w = ii.getIconWidth() / ii.getIconHeight() * DEFAULT_SIZE;
-                    int h = ii.getIconHeight() / ii.getIconWidth() * DEFAULT_SIZE;
+                    double x = LevelBoard.this.getWidth() / 2;
+                    double y = LevelBoard.this.getHeight() / 2;
+                    double w = ii.getIconWidth() / ii.getIconHeight() * DEFAULT_SIZE;
+                    double h = ii.getIconHeight() / ii.getIconWidth() * DEFAULT_SIZE;
                     if ("StaticObject".equals(cmmd)) {
-                        obj =
-                                new StaticObject((double) x, (double) y, (double) w, (double) h,
-                                                 myObjID++, f);
+                        obj = new StaticObject(x, y, w, h, myObjID++, f);
                     }
                     else if ("Enemy".equals(cmmd)) {
-                        obj =
-                                new Enemy((double) x, (double) y, (double) w, (double) h,
-                                          myObjID++, f);
+                        obj = new Enemy(x, y, w, h, myObjID++, f);
                     }
                     else if ("Player".equals(cmmd)) {
-                        obj =
-                                new Player((double) x, (double) y, (double) w, (double) h,
-                                           myObjID++, f);
+                        if(myPlayer != null) {
+                            myGameObjects.remove(myPlayer);
+                        }
+                        obj = new Player((double)x, (double)y, (double)w, (double)h, myObjID++, f);
+                        myPlayer = (Player) obj;
                     }
                     else if ("Plugin".equals(cmmd)) {
                         System.out.println("plugin");
@@ -230,9 +232,9 @@ public class LevelBoard extends JPanel {
      * Updates the buffer preparing for the next paint call.
      */
     public void update () {
-        myCurrentObject = ((PlacementMouseListener) myPlacementManager).getCurrent();
-        if (myLength <= getWidth() + myOffset) {
-            myLength = getWidth() + myOffset;
+        myCurrentObject = ((PlacementMouseListener)myPlacementManager).getCurrent();
+        if(myWidth <= getWidth() + myOffset) {
+            myWidth = getWidth() + myOffset;
         }
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
@@ -288,9 +290,10 @@ public class LevelBoard extends JPanel {
             saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
             // log.append("Save command cancelled by user." + newline);
         }
-        LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myLength, getHeight(),
-                                   myGameObjects, myConditions, myPlugins, myCamera,
-                                   "Default_Collision_Checker");
+        LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
+                myGameObjects, myConditions,
+                myPlugins, myCamera,
+                "Default_Collision_Checker");
         // "LevelTitle", getWidth(), getHeight(),
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
@@ -300,6 +303,9 @@ public class LevelBoard extends JPanel {
         myGameObjects = loader.getGameObjects();
         myConditions = loader.getConditions();
         myPlugins = loader.getLevelPlugins();
+        myLevelName = loader.getLevelName();
+        myWidth = loader.getWidth();
+        myHeight = loader.getHeight();
     }
 
     public void clear () {
