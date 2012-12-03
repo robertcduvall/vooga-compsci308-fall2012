@@ -256,6 +256,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         // TODO implement
         // Uses XML Utility
         // convert XML to Level object then display sprites
+        myLevel = new Level();
+        myLevel = myLevel.unpack(XmlUtilities.makeDocument(file));
     }
 
     private void saveFile (File file) {
