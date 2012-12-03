@@ -1,5 +1,7 @@
 package vooga.platformer.gameobject.strategy;
 
+import java.io.File;
+import java.io.IOException;
 import games.platformerdemo.Bullet;
 import vooga.platformer.gameobject.ControlStrategy;
 import vooga.platformer.gameobject.GameObject;
@@ -14,6 +16,7 @@ import vooga.platformer.gameobject.MovingObject;
 public class ShootingStrategy implements ControlStrategy {
     private static final int Y_OFFSET = 20;
     private GameObject myGO;
+    private static final int BULLET_SIZE = 8;
 
     /**
      * @param go GameObject using this strategy
@@ -27,7 +30,13 @@ public class ShootingStrategy implements ControlStrategy {
      */
     @Override
     public void fire() {
-        Bullet bullet = new Bullet();
+        Bullet bullet = null;
+        try {
+            bullet = new Bullet(0, 0, BULLET_SIZE, BULLET_SIZE, 0, new File("src/games/platformerdemo/bullet.png"));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         bullet.setX(myGO.getX());
         bullet.setY(myGO.getY() + Y_OFFSET);
         if (myGO instanceof MovingObject) {
