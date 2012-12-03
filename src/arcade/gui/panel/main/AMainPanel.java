@@ -14,8 +14,8 @@ import arcade.gui.panel.ArcadePanel;
 abstract public class AMainPanel extends AbstractPanelCreator {
 
     private static final String PANEL_TYPE = "main";
-    private static final int PANEL_WIDTH = 800;
-    private static final int PANEL_HEIGHT = 450;
+    private static final int PANEL_WIDTH = 800; // 800
+    private static final int PANEL_HEIGHT = 450; // 450
 
     public AMainPanel (Arcade a) {
         super(a);
