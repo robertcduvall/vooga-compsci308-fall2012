@@ -72,9 +72,11 @@ public class SoundPlayer {
      * Loop needs to be stopped at some point.
      */
     public void stopLoop () {
-        loop.stopLoop();
-        loopIsPlaying = false;
-        loop = null;
+        if (loopIsPlaying) {
+            loop.stopLoop();
+            loopIsPlaying = false;
+            loop = null;   
+        }
     }
 
     /**
