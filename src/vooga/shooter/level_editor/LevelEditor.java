@@ -3,8 +3,6 @@ package vooga.shooter.level_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
@@ -95,6 +93,32 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+    }
+    
+    /**
+     * Fills the Sprite Options Pane with location information from a Point
+     * @param p point from which we extract location information
+     */
+    private void fillSpriteOptionsPane (Point p) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(p.x), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(p.y), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+    }
+    
+    /**
+     * Fills in values in the Sprite Options Pane based on a sprite's attributes.
+     * @param s the selected sprite who's attributes are used to fill the pane
+     */
+    private void fillSpriteOptionsPane (Sprite s) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(s.getLeft()), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(s.getTop()), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(Integer.toString(s.getSize().width), 3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
     }
 
     private void setupChoosers () {
@@ -331,15 +355,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         int xPos = p.x;
         int yPos = p.y;
         for(Sprite s: myLevel.getSpriteList()) {
-            System.out.println(s.getRight());
-            System.out.println(s.getLeft());
-            System.out.println(s.getTop());
-            System.out.println(s.getBottom());
             if(xPos <= s.getRight() && xPos >= s.getLeft() && yPos >= s.getTop() && yPos <= s.getBottom()) {
                 return s;
             }
         }
-        System.out.println("returning null");
         return null;
     }
     /**
@@ -374,8 +393,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             else if (e.getButton() == MouseEvent.BUTTON3) {
                 System.out.println("Right click at point (" + e.getX() + ", " + e.getY() + ")");
                 if(myCurrentSprite != null) {
+                    fillSpriteOptionsPane(myCurrentSprite);
                     editCurrentSprite();
                 } else {
+                    fillSpriteOptionsPane(p);
                     Enemy newEnemy = makeEnemy();
                     myLevel.addSprite(newEnemy);
                     myCurrentSprite = newEnemy;

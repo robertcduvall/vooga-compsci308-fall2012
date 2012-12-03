@@ -152,6 +152,10 @@ public abstract class Sprite implements SpriteActionInterface {
     public void decreaseHealth(int damage) {
         myHealth -= damage;
     }
+    
+    public int getCurrentHealth() {
+        return myHealth;
+    }
 
     /**
      * This method draws the image at the sprite's
