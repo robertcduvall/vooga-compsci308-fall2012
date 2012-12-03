@@ -80,6 +80,11 @@ public class Level implements Packable<Level> {
     public void removeSprite (Sprite s) {
         mySprites.remove(s);
     }
+    
+    
+    public void removeAllSprites() {
+        mySprites.clear();
+    }
 
     /**
      * Paints each sprite in the level
