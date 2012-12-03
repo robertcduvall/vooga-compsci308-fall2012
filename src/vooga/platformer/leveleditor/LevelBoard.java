@@ -171,7 +171,7 @@ public class LevelBoard extends JPanel {
                         if(myPlayer != null) {
                             myGameObjects.remove(myPlayer);
                         }
-                        obj = new Player((double)x, (double)y, (double)w, (double)h, myObjID++, f);
+                        obj = new Player(x, y, w, h, myObjID++, f);
                         myPlayer = (Player) obj;
                     }
                     else if ("Plugin".equals(cmmd)) {
@@ -255,7 +255,7 @@ public class LevelBoard extends JPanel {
             mousemsg = "Current Sprite = (";
         }
         else {
-            mousemsg = "Mouse Location = ";
+            mousemsg = "Mouse Location = (";
         }
         myBufferGraphics.drawString(mousemsg + mouseX + ", " + mouseY + ")", getWidth() - 250, 30);
     }
@@ -274,6 +274,16 @@ public class LevelBoard extends JPanel {
     }
 
     public void save () {
+        if(myPlayer == null) {
+            try {
+                myPlayer = new Player (30.0, (double)myHeight/2, (double)DEFAULT_SIZE, (double)DEFAULT_SIZE, myObjID++,
+                        new File(System.getProperty("user.dir")+DATA_PATH+"DEFAULTPlayer.png"));
+                myGameObjects.add(myPlayer);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         JFileChooser fc = new JFileChooser(System.getProperty("user.dir") + DATA_PATH);
         FileFilter filter = new FileNameExtensionFilter("XML file", "xml");
         fc.addChoosableFileFilter(filter);
