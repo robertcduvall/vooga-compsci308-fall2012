@@ -198,6 +198,10 @@ public class EditorPane extends DisplayPane {
                         returnedValues[index] = ((JTextComponent) current).getText();
                         index++;
                     }
+                    else if (current.getClass().getName().contains("JComboBox")) {
+                        returnedValues[index] = ((JComboBox) current).getSelectedItem().toString();
+                        index++;
+                    }
                 }
                 addObjectXmlInformation(returnedValues, myPlayerEditor);
                 newPopUpMessage(
@@ -281,6 +285,10 @@ public class EditorPane extends DisplayPane {
                 for (Component current : allComponents) {
                     if (current.getClass().getName().contains("JTextField")) {
                         returnedValues[index] = ((JTextComponent) current).getText();
+                        index++;
+                    }
+                    else if (current.getClass().getName().contains("JComboBox")) {
+                        returnedValues[index] = ((JComboBox) current).getSelectedItem().toString();
                         index++;
                     }
                 }
