@@ -64,7 +64,8 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
-        //myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
+        // myGameSoundTrack = new
+        // SoundPlayer(GameWindow.importString("GameSoundTrack"));
         initializeGameLevel(GameWindow.importString("GameXML"),
                             GameWindow.importString("PlayerXML"));
         configureInputHandling();
@@ -175,15 +176,17 @@ public class GameManager implements InputAPI {
             if (mode.isOver()) {
                 finishedModes.add(mode);
             }
-            else {
-                if (mode.isActive()) {
-                    mode.update();
-                }
-                if (mode.hasFocus()) { // TODO this is wrong
-                    handleMouseActions(mode);
-                }
-            }
+            // else {
+            // if (mode.isActive()) {
+            // mode.update();
+            // }
+            // if (mode.hasFocus()) { // TODO this is wrong
+            // handleMouseActions(mode);
+            // }
+            // }
         }
+        myGameModes.get(myGameModes.size() - 1).update();
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
         for (GameMode mode : finishedModes) { // avoid concurrent modifcation
                                               // over myGameModes list
             killMode(mode);
@@ -275,7 +278,6 @@ public class GameManager implements InputAPI {
 
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
         System.out.println(eventName);
-        myGameLogic.flagCondition(eventName, involvedSpriteIDs);
     }
 
     /**
@@ -299,29 +301,45 @@ public class GameManager implements InputAPI {
             handleEvent(m);
         }
     }
+    
+    private boolean modeAlreadyExists (String modeName) {
+        for(GameMode g : myGameModes) {
+            if(modeName.equals(g.getName())){
+                myGameModes.get(myGameModes.size()-1).pause();
+                myGameModes.remove(g);
+                myGameModes.add(g);
+                g.resume();
+                return true;
+            }
+        }
+        return false;
+    }
 
     private void handleEvent (ModeEvent event) {
         // System.out.println("doing event: "+event.getName());
         // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
-        if (myAvailableModeTypes.containsKey(modeName)) {
-            if (!myGameModes.isEmpty()) {
-                myGameModes.get(myGameModes.size() - 1).pause();
-                // TODO: again assuming latest is active for now
-            }
-            Class c = myAvailableModeTypes.get(modeName);
-            Constructor[] newC = c.getConstructors();
+        if (!modeAlreadyExists(modeName)) {
+            if (myAvailableModeTypes.containsKey(modeName)) {
+                if (!myGameModes.isEmpty()) {
+                    myGameModes.get(myGameModes.size() - 1).pause();
+                    // TODO: again assuming latest is active for now
+                }
+                Class c = myAvailableModeTypes.get(modeName);
+                Constructor[] newC = c.getConstructors();
 
-            try {
-                // System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
-                // System.out.println(newC[0].toGenericString());
-                myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
-            }
-            catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException e) {
-                e.printStackTrace();
-                System.out.println("Unable to create mode " + modeName + " of class " + c.toString());
+                try {
+                    // System.out.println(this.toString()+" "+modeName+" "+myInvolvedIDs.toString());
+                    // System.out.println(newC[0].toGenericString());
+                    myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
+                }
+                catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    e.printStackTrace();
+                    System.out.println("Unable to create mode " + modeName + " of class " +
+                                       c.toString());
+                }
             }
         }
     }

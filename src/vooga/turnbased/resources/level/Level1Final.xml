@@ -134,6 +134,17 @@
 				</location>
 				<image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
 			</object>
+			<object>
+				<createOn>start</createOn>
+				<modes>map2</modes>
+				<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+				<condition>entermap1</condition>
+				<location>
+					<x>10</x>
+					<y>3</y>
+				</location>
+				<image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
+			</object>
 		</sprite>
 		<sprite>
 			<object>
