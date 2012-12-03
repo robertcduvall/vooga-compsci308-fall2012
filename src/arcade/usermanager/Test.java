@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -25,13 +26,16 @@ public class Test {
     public static void main (String[] args) throws Exception {
 
         mySocialCenter = new SocialCenter();
-        // testLogOn();
+         
          //testRegister();
       //  testDeleteUser();
        // testSendMessage();
        myUserManager=UserManager.getInstance();
-        testGetGame();
+        //testGetGame();
      //   testReadGameList();
+      //  testModifyXml();
+       testLogOn();
+       testGetMessage();
        
        
 
@@ -50,7 +54,7 @@ public class Test {
     }
 
     private static void testLogOn () throws Exception {
-        boolean status = mySocialCenter.logOnUser("Howard", "password");
+        boolean status = mySocialCenter.logOnUser("test", "364492");
         System.out.println(status);
 
     }
@@ -77,12 +81,16 @@ public class Test {
     }
     
     private static void testModifyXml(){
-        User test=myUserManager.getUser("test");
+        
+        EditableUserProfile test=myUserManager.getEditableCurrentUser();
         test.setPicture("haha");
     }
     private static void testGetMessage(){
-        User test=myUserManager.getUser("test");
-        test.getMyMessage();
+//        User test=myUserManager.getUser("test");
+//        test.getMyMessage();
+        List<Message> messageList=myUserManager.getMessage();
+        String str="wula";
+        
     }
     private static void testGetGame(){
         User Howard=myUserManager.getUser("Howard");
@@ -96,5 +104,7 @@ public class Test {
         UserXMLReader reader=new UserXMLReader();
         
     }
+    
+   
 
 }
