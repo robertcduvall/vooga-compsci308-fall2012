@@ -65,7 +65,6 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         JRadioButton fiveButton = new JRadioButton("5");
         fiveButton.setMnemonic(KeyEvent.VK_B);
         fiveButton.setActionCommand("5");
-        fiveButton.setSelected(true);
 
         JRadioButton sixButton = new JRadioButton("6");
         sixButton.setMnemonic(KeyEvent.VK_B);
