@@ -50,7 +50,7 @@ public class User {
         return myPassword;
     }
 
-    protected String getName () {
+    public String getName () {
         return myName;
     }
 

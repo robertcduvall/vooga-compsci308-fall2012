@@ -1,9 +1,6 @@
 package arcade.usermanager;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -98,7 +95,7 @@ public class UserXMLWriter {
 
     protected void appendMessage (String sender, String receiver, String content) {
         String filePath = myUserMessageFilePath + receiver + ".xml";
-        
+
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         Element message = XmlUtilities.appendElement(doc, root, "message", "");
@@ -107,39 +104,37 @@ public class UserXMLWriter {
         XmlUtilities.write(doc, filePath);
 
     }
-    
-    protected void updateUserInfo(String userName, String tagName, String newContent){
-        String filePath= myUserBasicFilePath + userName + ".xml";
+
+    protected void updateUserInfo (String userName, String tagName,
+            String newContent) {
+        String filePath = myUserBasicFilePath + userName + ".xml";
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         XmlUtilities.replaceAllTagNames(root, tagName, newContent);
         XmlUtilities.write(doc, filePath);
-        
-        
-        
+
     }
-    protected void updateGameInfo(String userName, String gameName, String tagName, String content){
-        String filePath= myUserBasicFilePath + userName + ".xml";
-        
-        
-        
-        
+
+    protected void updateGameInfo (String userName, String gameName,
+            String tagName, String content) {
+        String filePath = myUserBasicFilePath + userName + ".xml";
+
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
-        NodeList gameList=root.getElementsByTagName("game");
-       
+        NodeList gameList = root.getElementsByTagName("game");
+        
+
         if (gameList != null) {
             for (int i = 0; i < gameList.getLength(); i++) {
-            Element game=(Element) gameList.item(i);
-            String name = XmlUtilities.getChildContent(game, "name");
-            if(name.equals(gameName)){
-            XmlUtilities.replaceAllTagNames(game, tagName, content);
-            XmlUtilities.write(doc, filePath);
+                Element game = (Element) gameList.item(i);
+                String name = XmlUtilities.getChildContent(game, "name");
+                if (name.equals(gameName)) {
+                    XmlUtilities.replaceAllTagNames(game, tagName, content);
+                    XmlUtilities.write(doc, filePath);
+                }
             }
-            }  
-            
+
         }
-        
-        
+
     }
 }
