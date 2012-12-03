@@ -46,6 +46,7 @@ public class Explosion extends ParticleSystem {
      * length - the average time a particle exists before fading away
      * numDirections - the number of directions that particles start out at.
      *                 These are in reference to the origin point of the effect
+     * density - the number of particles to be created for each particleEngine
      * loop - whether or not the particleEngines will continuously loop
      */
     private static int explosionTolerance = 50;
