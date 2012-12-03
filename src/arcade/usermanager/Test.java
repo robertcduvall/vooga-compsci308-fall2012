@@ -36,7 +36,7 @@ public class Test {
     }
 
     private static void testSendMessage () {
-        mySocialCenter.sendMessage("Howard", "mdeng1990", "Hi");
+        mySocialCenter.sendMessage("mdeng1990", "Hi");
     }
 
     private static void testRegister () throws Exception {

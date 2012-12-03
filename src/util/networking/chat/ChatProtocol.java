@@ -1,6 +1,11 @@
 package util.networking.chat;
 
+import java.util.List;
+
+
 /**
+ * 
+ * Javadoc comment.
  * 
  * @author Connor Gordon
  * @author Oren Bukspan
@@ -23,20 +28,34 @@ public interface ChatProtocol {
     
     String getFrom(String input);
     
+    String getErrorMessage(String input);
+    
+    String getBody(String input);
+    
+    boolean getStatus(String input);
+    
+    List<String> getListUsers(String input);
     
     
     //Methods to create Protocol Strings
 
-    String createLoggedIn (boolean b);
+    String createLoggedIn (String user, boolean b);
 
     String createAddUser (String user);
     
     String createRemoveUser (String user);
 
-    String createError (String string);
+    String createError (String message);
     
-    String createMessage (String to, String dest, String body);
+    String createMessage (String from, String to, String body);
     
+    String createListUsers(List<String> users);
+    
+    String createLogin(String user, String password);
+    
+    String createLogout(String user);
+    
+    String createRegister(String user, String password);
     
     
     //Protocol-specific port

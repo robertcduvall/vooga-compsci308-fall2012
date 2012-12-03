@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import util.searchbar.JListSearcher;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
+import arcade.usermanager.UserProfile;
 
 
 /**
@@ -27,7 +29,9 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
 //    private static final int PANEL_HEIGHT = 800; // 450
     
     private List<String> myGameList;
+    private List<String> myUserList;
     private JList searchedThroughList = new JList();
+    private JList userSearchedThroughList = new JList();
     private String gameSelected;
     private String GO = "Go";
     private String USER = "User";
@@ -37,6 +41,13 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
     public NormSearchPanel (Arcade a) {
         super(a);
         myGameList = a.getModelInterface().getGameList();
+        myUserList = new ArrayList<String>();
+        
+        List <UserProfile> tempUserList = a.getModelInterface().getAllUsers();
+        for (UserProfile user : tempUserList) {
+            myUserList.add(user.getUserName());
+        }
+        
     }
 
     @Override
@@ -45,7 +56,7 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
         
 //        myPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         
-        MigLayout layout = new MigLayout("", "", "[][][][][]push[][]");
+        MigLayout layout = new MigLayout("", "", "[][][][][][][][][][]push[]");
         myPanel.setLayout(layout);
         
         myPanel.setBackground(Color.LIGHT_GRAY);
@@ -77,6 +88,33 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
         JButton goToUserSearchButton = new JButton("Search for Arcade Users!");
         goToUserSearchButton.setActionCommand(USER);
         goToUserSearchButton.addActionListener(this);
+        
+        // User Search Section:
+        
+        
+        String[] arrayOfUsers = new String[myUserList.size()];
+        for (int i = 0; i < myUserList.size(); i++) {
+            arrayOfUsers[i] = myUserList.get(i);
+        }
+        JList jListOfUsers = new JList(arrayOfUsers);
+        jListOfUsers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jListOfUsers.setLayoutOrientation(JList.VERTICAL);   
+        jListOfUsers.setVisibleRowCount(3);
+        JListSearcher userSearchArea = new JListSearcher("", jListOfUsers);
+        searchArea.setColumns(10);
+
+        userSearchedThroughList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        userSearchedThroughList.setLayoutOrientation(JList.VERTICAL);
+        userSearchedThroughList.setVisibleRowCount(5);
+        userSearchedThroughList = jListOfUsers;
+        JScrollPane userSearchedListScroller = new JScrollPane(userSearchedThroughList);
+        
+        JLabel userSearchPrompt = new JLabel("Search for a user by Name:");
+        JLabel userListSelectPrompt = new JLabel("Select a user: ");
+        JButton userGoButton = new JButton("Go to Profile");
+        userGoButton.setActionCommand(USER);
+        userGoButton.addActionListener(this);
+        
         /*JLabel label = new JLabel();
         label.setText("This is the Norm Search page.");
         label.setForeground(Color.WHITE);
@@ -87,8 +125,13 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
         myPanel.add(searchArea, "align center, grow, span, wrap");
         myPanel.add(listSelectPrompt, "wrap, grow, span");
         myPanel.add(searchedListScroller, "wrap, grow, span");
-        myPanel.add(goButton);
-        myPanel.add(goToUserSearchButton, "dock south, grow, span");
+        myPanel.add(goButton, "wrap");
+        myPanel.add(userSearchPrompt, "wrap");
+        myPanel.add(userSearchArea, "align center, grow, span, wrap");
+        myPanel.add(userListSelectPrompt, "wrap, grow, span");
+        myPanel.add(userSearchedListScroller, "wrap, grow, span");
+        myPanel.add(userGoButton);
+        //myPanel.add(goToUserSearchButton, "dock south, grow, span");
         myPanel.add(goToTagSearchButton, "dock south, grow, span");
 
         return myPanel;
@@ -107,7 +150,11 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener{
             getArcade().replacePanel("GameTagSearch");
         }
         if (e.getActionCommand() == USER) {
-            getArcade().replacePanel("UserSearch");
+            String userSelected = (String) userSearchedThroughList.getSelectedValue();
+            if (userSelected != null){
+                getArcade().saveVariable("UserName", userSelected);
+                getArcade().replacePanel("UserProfile");
+            }
         }       
     }
 

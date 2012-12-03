@@ -5,6 +5,7 @@ package arcade.usermanager;
  * 
  * @author Howard
  *         modifed by difan zhao
+ *         re-modified by Robert Bruce
  * 
  */
 public class Message {
@@ -21,8 +22,12 @@ public class Message {
         mySender = sender;
         myContent = content;
     }
+    
+    public String getSender() {
+        return mySender;
+    }
 
     public String getMessage () {
-        return "From " + mySender + ":" + "\n" + myContent;
+        return myContent;
     }
 }
