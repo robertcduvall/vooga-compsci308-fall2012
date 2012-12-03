@@ -6,13 +6,15 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import util.input.core.MouseController;
 import util.xml.XmlUtilities;
-import vooga.shooter.graphics.DrawableComponent;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import vooga.shooter.graphics.*;
+import vooga.shooter.graphics.Canvas;
 
 
 /**
@@ -23,13 +25,14 @@ import java.util.List;
  * @author guytracy
  */
 public class LevelEditor implements DrawableComponent, ActionListener {
-
-    private static final Dimension FRAME_SIZE = new Dimension(1000, 800);
+    
+    private static final Dimension DEFAULT_SIZE = new Dimension(600, 400);
     private static final String IMAGE_LOCATION = "/vooga/shooter/images/";
 
     private JFrame mainFrame; // The main window
-    private JFileChooser chooser; // For saving and loading levels
-    private Canvas myCanvas; // drawing canvas
+    private JFileChooser levelChooser; // For saving and loading levels
+    private JFileChooser imageChooser;  //For assigning images to Sprites
+    private static Canvas myCanvas; // drawing canvas
 
     private File openFile; // currently open file
     private Level myLevel; // level object for editing
@@ -49,17 +52,17 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private MouseListener myButtonListener;
 
     public static void main (String args[]) {
-        new LevelEditor();
+        myCanvas = new Canvas(new LevelEditor());
     }
 
     public LevelEditor () {
         // TODO initialize all variables and load a level to edit/make a new
         // level
         
-        myLevel = new Level();
+        myLevel = null;
         
         mainFrame = new JFrame("Level Editor");
-        mainFrame.setPreferredSize(FRAME_SIZE);
+        mainFrame.setPreferredSize(DEFAULT_SIZE);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.setBackground(Color.WHITE);
         
@@ -74,6 +77,16 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         mainFrame.pack();
         mainFrame.setVisible(true);
 
+    }
+    
+    private void setupChoosers () {
+        levelChooser = new JFileChooser("/vooga/shooter/levels");
+        FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter("XML Level files", "xml");
+        levelChooser.setFileFilter(XMLFilter);
+        imageChooser = new JFileChooser("/vooga/shooter/images");
+        FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter("gif and png image files", "gif","png");
+        imageChooser.setFileFilter(ImageFilter);
+                                                             
     }
 
     private void setupToolbars () {
@@ -155,9 +168,9 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             }
         }
         else if (source == openBtn) {
-            int success = chooser.showOpenDialog(mainFrame);
+            int success = levelChooser.showOpenDialog(mainFrame);
             if (success == JFileChooser.APPROVE_OPTION) {
-                openFile(chooser.getSelectedFile());
+                openFile(levelChooser.getSelectedFile());
             }
         }
         
