@@ -3,11 +3,12 @@ package vooga.turnbased.gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -49,6 +50,7 @@ public class EditorPane extends DisplayPane {
     public EditorPane(GameWindow gameWindow) {
         super(gameWindow);
         addInitialButtons();
+        addMouseListener(new GameMouseListener());
     }
 
     private void addInitialButtons () {
@@ -97,6 +99,7 @@ public class EditorPane extends DisplayPane {
         removeAll();
         repaint();
         displayAndGetSetupInformation(GAME_SETUP, GAME_SETUP_DEFAULTS, l);
+        JPanel p = new JPanel(new GridLayout(20,20));
         addMenuButton();
         JButton modeButton = setUpModeButton(l, MODES, MODES_DEFAULTS);
         add(modeButton);
@@ -105,6 +108,7 @@ public class EditorPane extends DisplayPane {
         // TODO: Add create player button somewhere in this mess
         JButton finishedButton = addDoneButton(l);
         add(finishedButton);
+        add(p);
         validate();
     }
 
@@ -319,5 +323,32 @@ public class EditorPane extends DisplayPane {
             }
         });
         return doneButton;
+    }
+    
+    private class GameMouseListener extends MouseAdapter {
+        @Override
+        public void mouseClicked (MouseEvent e) {
+            System.out.println(e);
+        }
+
+        @Override
+        public void mouseEntered (MouseEvent e) {
+            System.out.println(e);
+        }
+
+        @Override
+        public void mouseExited (MouseEvent e) {
+            System.out.println(e);
+        }
+
+        @Override
+        public void mousePressed (MouseEvent e) {
+            System.out.println(e);
+        }
+
+        @Override
+        public void mouseReleased (MouseEvent e) {
+            System.out.println(e);
+        }
     }
 }
