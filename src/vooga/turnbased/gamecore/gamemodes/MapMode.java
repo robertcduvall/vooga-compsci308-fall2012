@@ -25,7 +25,7 @@ import vooga.turnbased.gui.InputAPI;
 /**
  * Map Mode on which players move around and interact with other game objects
  * 
- * @author Tony, Rex
+ * @author Tony, Rex, volodymyr
  **/
 public class MapMode extends GameMode implements InputAPI {
 

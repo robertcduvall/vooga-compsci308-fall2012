@@ -1,5 +1,11 @@
 package util.sound;
 
+/**
+ * Example usage of Sound Player utility
+ * 
+ * @author volodymyr
+ *
+ */
 public class Example {
     public static void main (String[] args) {
         try {

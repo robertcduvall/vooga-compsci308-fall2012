@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
  * Thus there will not be any actual classes that implement GameObject directly, but rather
  * BattleObject or MapObject, etc.
  * 
- * @author Michael Elgart
+ * @author Michael Elgart, volodymyr, Rex
  * 
  */
 public abstract class GameObject {

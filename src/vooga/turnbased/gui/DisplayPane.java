@@ -12,7 +12,7 @@ import util.input.factories.ControllerFactory;
 /**
  * The abstract class that describe the feature of a displayable pane in this game
  * including editor, game, menu 
- * @author rex
+ * @author rex, volodymyr
  *
  */
 public abstract class DisplayPane extends JPanel {
