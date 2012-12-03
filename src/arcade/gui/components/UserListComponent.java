@@ -80,7 +80,7 @@ public class UserListComponent extends JComponent implements ActionListener {
         g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
         g.drawImage(profilePic, 35, 12, 81, 81, Color.black, this);
         g.setColor(Color.white);
-        g.setFont(new Font("sansserif", Font.BOLD, 40));
+        g.setFont(new Font("sansserif", Font.BOLD, 32));
         g.drawString(userName, 125, 60);
         g.setFont(new Font("sansserif", Font.ITALIC, 18));
         g.drawString(userInfo, 145, 85); 

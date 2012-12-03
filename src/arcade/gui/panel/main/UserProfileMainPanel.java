@@ -49,7 +49,7 @@ public class UserProfileMainPanel extends AMainPanel {
 
         // Add the profile picture:
         Image profilePic = getUserPicture();
-        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePic));
+        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePic.getScaledInstance(175, 175, 0)));
 
         // Add the username:
         String info = myUser.getUserFirstName() + " " + myUser.getUserLastName();

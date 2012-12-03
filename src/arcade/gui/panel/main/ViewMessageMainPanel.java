@@ -41,7 +41,7 @@ public class ViewMessageMainPanel extends AMainPanel {
 
         // Add the profile picture:
         Image profilePic = getUserPicture();
-        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePic));
+        JLabel profilePictureLabel = new JLabel(new ImageIcon(profilePic.getScaledInstance(175, 175, 0)));
 
         // Add the username:
         String info = "<html><font size='6'><b>From:</b></font><br/><b>Username: </b>" + myUser.getUserName()
