@@ -280,16 +280,18 @@ public class LevelBoard extends JPanel {
             // log.append("Save command cancelled by user." + newline);
         }
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myLength, getHeight(),
-                myBackgroundPath, myGameObjects,
-                myConditions, myPlugins,
-                myCamera,
+                myGameObjects, myConditions,
+                myPlugins, myCamera,
                 "Default_Collision_Checker");
         // "LevelTitle", getWidth(), getHeight(),
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
 
-    public void load (URL path) {
-        new LevelFileReader(path.getPath());
+    public void load (String path) {
+        LevelFileReader loader = new LevelFileReader(path);
+        myGameObjects = loader.getGameObjects();
+        myConditions = loader.getConditions();
+        myPlugins = loader.getLevelPlugins();
     }
 
     public void clear () {

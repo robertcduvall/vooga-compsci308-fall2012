@@ -7,11 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import util.pack.Packable;
-import util.reflection.Reflection;
-import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Sprite;
 
 
@@ -24,7 +19,7 @@ import vooga.shooter.gameObjects.Sprite;
  *      edited by Tommy Petrilak
  * 
  */
-public class Level implements Packable<Level> {
+public class Level {
     private Image myBackgroundImage;
     private String myBackgroundImagePath;
     private List<Sprite> mySprites;
@@ -80,6 +75,11 @@ public class Level implements Packable<Level> {
     public void removeSprite (Sprite s) {
         mySprites.remove(s);
     }
+    
+    
+    public void removeAllSprites() {
+        mySprites.clear();
+    }
 
     /**
      * Paints each sprite in the level
@@ -130,21 +130,7 @@ public class Level implements Packable<Level> {
         this.myBackgroundImagePath = imagePath;
     }
 
-    @Override
-    public Document pack () {
-        Document doc = XmlUtilities.makeDocument();
-        Element element = XmlUtilities.makeElement(doc, "Level", "backgroundImage", myBackgroundImagePath);
-        doc.appendChild(element);
-        return doc;
-    }
-
-    @Override
-    public Level unpack (Document xmlData) {
-        Element root = xmlData.getDocumentElement();
-        String bgImagePath = root.getAttribute("backgroundImage");
-        String className = this.getClass().getName();
-        return (Level) Reflection.createInstance(className, bgImagePath);
-    }
+    
 
     /**
      * startLevel method will be overridden at the beginning of each Level,

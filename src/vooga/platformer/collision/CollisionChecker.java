@@ -11,6 +11,7 @@ import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
+import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.XmlTags;
 
 
@@ -37,10 +38,17 @@ public abstract class CollisionChecker {
             String objectBName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTB).toString();
             String collisionEventName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.COLLISIONEVENTCLASS).toString();
             
-            GameObject objectA = (GameObject) Reflection.createInstance(objectAName);
-            GameObject objectB = (GameObject) Reflection.createInstance(objectBName);
+            Class typeA = null;
+            Class typeB = null;
+            try {
+                typeA = Class.forName(objectAName);
+                typeB = Class.forName(objectBName);
+            }
+            catch (ClassNotFoundException e) {
+                throw new LevelFileIOException("CollisionChecker: class not found", e);
+            }
             CollisionEvent collisionEventAB = (CollisionEvent) Reflection.createInstance(
-                    collisionEventName, objectA, objectB);
+                    collisionEventName, typeA, typeB);
             this.addCollisionEvents(objectAName, objectAName, collisionEventAB);
         }
     }

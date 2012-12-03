@@ -13,7 +13,7 @@
 </game>
 	<game id="2">
 		<name>Space Invaders</name>
-		<rating>4 2 2 3 1 9 10 7 7</rating>
+		<rating>4 2 2 3 1 9 10 7 7 3</rating>
 		<filepath>vooga.shooter.gameplay.Game</filepath>
 		<review>shooter game. haha.</review>
 	<review>game is 2hard- Kannan</review>
@@ -21,5 +21,6 @@
 <review>blah blah- michaeldeng</review>
 <tags>fun shooter</tags>
 <review>This game is pretty cool - not gonna lie- Howard</review>
+<review>WHY DOES EVERYTHING GO AWAY WHEN I MISS AN ALIEN?!- Howard</review>
 </game>
 </gamelist>

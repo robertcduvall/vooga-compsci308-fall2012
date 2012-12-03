@@ -6,8 +6,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -43,13 +45,16 @@ public class EditorMenuBar extends JMenuBar{
                 myEditor.save();
             }
         });
-        JMenu attributeMenu = new JMenu("Add Level Attribute");
-        attributeMenu.add(new AbstractAction("Gravity") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                myEditor.addAttribute(e.getActionCommand());
-            }
-        });
+        JMenu attributeMenu = new JMenu("Add Level Plugin");
+        List<String> plugins = getLevelPlugins();
+        for(String plugin : plugins) {
+            attributeMenu.add(new AbstractAction(plugin) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    myEditor.addLevelPlugin(e.getActionCommand());
+                }
+            });
+        }
         levelMenu.add(attributeMenu);
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("New") {
@@ -60,6 +65,15 @@ public class EditorMenuBar extends JMenuBar{
         });
         add(levelMenu);
         add(spriteMenu);
+    }
+
+    private List<String> getLevelPlugins () {
+        List<String> list = new ArrayList<String>();
+        list.add("Background Painter");
+        list.add("Message Painter");
+//        Scanner s = new Scanner(System.getProperty("user.dir")+"/src/vooga/platformer/data/");
+//        String s.nextLine();
+        return list;
     }
 
 }

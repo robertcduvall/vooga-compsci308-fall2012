@@ -1,15 +1,7 @@
 package arcade.usermanager;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.ResourceBundle;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import util.xml.XmlBuilder;
-import util.xml.XmlParser;
-import util.xml.XmlUtilities;
-import util.xml.XmlWriter;
 import arcade.usermanager.exception.UserNotExistException;
 import arcade.usermanager.exception.ValidationException;
 import arcade.utility.FileOperation;
@@ -23,7 +15,7 @@ import arcade.utility.FileOperation;
  * 
  * @author Difan Zhao
  *         modified by Howard Chung
- *         
+ * 
  */
 public class SocialCenter {
 
@@ -43,7 +35,7 @@ public class SocialCenter {
     /**
      * constructor
      */
-     
+
     public SocialCenter () {
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
@@ -57,35 +49,39 @@ public class SocialCenter {
 
     /**
      * log on user
+     * 
      * @param userName
      * @param password
      * @return operaton status
-     * @throws ValidationException 
+     * @throws ValidationException
      */
-     
+
     public boolean logOnUser (String userName, String password) throws ValidationException {
         myUserManager.validateUser(userName, password);
 
         // set current user
-        
+
         myUserManager.setCurrentUser(userName);
 
         return true;
     }
 
     /**
-     * register new user, new user will automatically be log on after registration
+     * register new user, new user will automatically be log on after
+     * registration
+     * 
      * @param userName
      * @param password
-     * @param firstName 
+     * @param firstName
      * @param lastName
      * @return
      * @throws ValidationException
      * @throws IOException
      */
-     
+
     public boolean registerUser (String userName, String password, String firstName, String lastName)
-                                                                                                     throws ValidationException, IOException {
+                                                                                                     throws ValidationException,
+                                                                                                     IOException {
         // check validity
 
         try {
@@ -101,18 +97,19 @@ public class SocialCenter {
 
             return true;
         }
-        
+
         return false;
     }
 
     /**
      * delete user profile when user decide to cancel the account
+     * 
      * @param userName
      * @param password
      * @return operation status
      * @throws ValidationException
      */
-     
+
     public boolean deleteUser (String userName, String password) throws ValidationException {
         // check validity
         myUserManager.validateUser(userName, password);
@@ -127,28 +124,27 @@ public class SocialCenter {
 
     /**
      * send message between users
+     * 
      * @param receiver
      * @param content
-     * @return   operation status
+     * @return operation status
      */
-     
+
     public boolean sendMessage (String receiver, String content) {
-        String sender=myUserManager.getCurrentUserName();
+        String sender = myUserManager.getCurrentUserName();
         myXMLWriter.appendMessage(sender, receiver, content);
-       // myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        // myUserManager.getUser(receiver).updateMyMessage(sender, content);
         myUserManager.updateMessage(sender, receiver, content);
 
         return true;
     }
-    
+
     public boolean sendMessage (String sender, String receiver, String content) {
         myXMLWriter.appendMessage(sender, receiver, content);
-       // myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        // myUserManager.getUser(receiver).updateMyMessage(sender, content);
         myUserManager.updateMessage(sender, receiver, content);
 
         return true;
     }
-
-    
 
 }

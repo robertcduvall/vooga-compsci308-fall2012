@@ -45,7 +45,7 @@ import vooga.platformer.gameobject.StaticObject;
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
-    private static final String DATA_FOLDER = "/src/vooga/platformer/data/";
+    private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -78,9 +78,13 @@ public class LevelEditor extends JPanel {
     public KeyListener getKeyListener() {
         return myKeyListener;
     }
-    
-    public void addAttribute(String attribute) {
-        if("Gravity".equals(attribute)) { 
+
+    /**
+     * 
+     * @param plugin
+     */
+    public void addLevelPlugin(String plugin) {
+        if("Gravity".equals(plugin)) { 
             final LevelBoard current = myBoard;
             final JPopupMenu jpop = new JPopupMenu();
             JLabel gravitylabel = new JLabel("Enter Gravity Value:");
@@ -91,8 +95,8 @@ public class LevelEditor extends JPanel {
                 public void actionPerformed (ActionEvent arg0) {
                     String val = gravityfield.getText();
                     try {
-                         int temp = Integer.parseInt(val);
-                         current.setGrav(temp);
+                        int temp = Integer.parseInt(val);
+                        current.setGrav(temp);
                     }
                     catch (NumberFormatException e) {
                         JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
@@ -107,6 +111,7 @@ public class LevelEditor extends JPanel {
             jpop.add(accept);
             jpop.show(this, getWidth()/2-50, getHeight()/2-40);
         }
+
     }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();
@@ -133,34 +138,34 @@ public class LevelEditor extends JPanel {
         panel.setOpaque(false);
         return panel;
     }
-//    private void createSpriteTypePopupMenu(final Component comp, final int x,
-//            final int y) {
-//        JPopupMenu pop = new JPopupMenu();
-//        for (String subsprite : myObjectTypes.get(comp.getName())) {
-//            JMenuItem j = new JMenuItem(subsprite);
-//            j.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent event) {
-//                    GameObject obj;
-//                    File f = new File(System.getProperty("user.dir")+DATA_FOLDER+"Default.png");
-//                    if("StaticObject".equals(event.getActionCommand())) {
-//                        try {
-//                            obj = new StaticObject((double)comp.getX(), (double)comp.getY(),
-//                                    (double)OBJECT_BUTTON_SIZE, (double)OBJECT_BUTTON_SIZE,
-//                                    myBoard.nextID(), f);
-//                            myBoard.addObject(obj);
-//                        }
-//                        catch (IOException e) {
-//                            // TODO Auto-generated catch block
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            });
-//            pop.add(j);
-//        }
-//        pop.show(comp, x, y);
-//    }
+    //    private void createSpriteTypePopupMenu(final Component comp, final int x,
+    //            final int y) {
+    //        JPopupMenu pop = new JPopupMenu();
+    //        for (String subsprite : myObjectTypes.get(comp.getName())) {
+    //            JMenuItem j = new JMenuItem(subsprite);
+    //            j.addActionListener(new ActionListener() {
+    //                @Override
+    //                public void actionPerformed(ActionEvent event) {
+    //                    GameObject obj;
+    //                    File f = new File(System.getProperty("user.dir")+DATA_FOLDER+"Default.png");
+    //                    if("StaticObject".equals(event.getActionCommand())) {
+    //                        try {
+    //                            obj = new StaticObject((double)comp.getX(), (double)comp.getY(),
+    //                                    (double)OBJECT_BUTTON_SIZE, (double)OBJECT_BUTTON_SIZE,
+    //                                    myBoard.nextID(), f);
+    //                            myBoard.addObject(obj);
+    //                        }
+    //                        catch (IOException e) {
+    //                            // TODO Auto-generated catch block
+    //                            e.printStackTrace();
+    //                        }
+    //                    }
+    //                }
+    //            });
+    //            pop.add(j);
+    //        }
+    //        pop.show(comp, x, y);
+    //    }
 
     protected void save() {
         myBoard.save();
@@ -186,19 +191,13 @@ public class LevelEditor extends JPanel {
     }
 
     protected void load() {
-        JFileChooser chooser = new JFileChooser();
+        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir")+DATA_PATH);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "XML Level files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            try {
-                URL myURL = new URL(chooser.getSelectedFile().getPath());
-                myBoard.load(myURL);
-            } 
-            catch (IOException io) {
-                System.out.println("File not found. Try again");
-            }
+            myBoard.load(chooser.getSelectedFile().getPath());
         }
     }
 
