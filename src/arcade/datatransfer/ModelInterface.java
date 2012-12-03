@@ -9,6 +9,7 @@ import util.twitter.TwitterTools;
 import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
+import arcade.usermanager.EditableUserProfile;
 import arcade.usermanager.Message;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
@@ -172,8 +173,8 @@ public class ModelInterface {
      * @return get an editable user class for the current user
      */
 
-    public User getEditableCurrentUser () {
-        return myUserManager.getCurrentUser();
+    public EditableUserProfile getEditableCurrentUser () {
+        return myUserManager.getEditableCurrentUser();
 
     }
 
