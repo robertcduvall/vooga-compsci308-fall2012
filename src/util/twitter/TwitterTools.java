@@ -19,9 +19,10 @@ import twitter4j.conf.ConfigurationBuilder;
  * 
  */
 public class TwitterTools {
+    private static String myConsumerKey;
+    private static String myConsumerSecret;
     private Twitter myTwitter;
-    private String myConsumerKey;
-    private String myConsumerSecret;
+    private RequestToken myRequestToken;
 
     /**
      * Constructs an instance.
@@ -31,6 +32,13 @@ public class TwitterTools {
         myConsumerSecret = "T7whmI8IBtcHUEBNsWoQhu39f68loybHOmSYl8DMDg";
         myTwitter = TwitterFactory.getSingleton();
         myTwitter.setOAuthConsumer(myConsumerKey, myConsumerSecret);
+        try {
+            myRequestToken = myTwitter.getOAuthRequestToken();
+        }
+        catch (TwitterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -39,18 +47,13 @@ public class TwitterTools {
      * @return
      */
     public AccessToken requestAccessToken () throws IOException, URISyntaxException {
+
         AccessToken accessToken = null;
         try {
-            RequestToken requestToken = myTwitter.getOAuthRequestToken();
             while (null == accessToken) {
-                java.awt.Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
+                java.awt.Desktop.getDesktop().browse(new URI(myRequestToken.getAuthorizationURL()));
                 String pin = javax.swing.JOptionPane.showInputDialog("Enter PIN:");
-                if (pin.length() > 0) {
-                    accessToken = myTwitter.getOAuthAccessToken(requestToken, pin);
-                }
-                else {
-                    accessToken = myTwitter.getOAuthAccessToken();
-                }
+                accessToken = myTwitter.getOAuthAccessToken(myRequestToken, pin);
             }
         }
         catch (TwitterException te) {
@@ -61,22 +64,25 @@ public class TwitterTools {
                 te.printStackTrace();
             }
         }
-
         return accessToken;
     }
-/**
- * Posts a status to Twitter.
- * @param statusText Text of the messsage.
- * @param at AccessToken to validate with
- * @throws Exception
- */
+
+    /**
+     * Posts a status to Twitter.
+     * 
+     * @param statusText Text of the messsage.
+     * @param at AccessToken to validate with
+     * @throws Exception
+     */
     public void updateStatus (String statusText, AccessToken at) throws Exception {
+
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true);
         cb.setOAuthConsumerKey(myConsumerKey);
         cb.setOAuthConsumerSecret(myConsumerSecret);
         cb.setOAuthAccessToken(at.getToken());
         cb.setOAuthAccessTokenSecret(at.getTokenSecret());
+
         myTwitter.setOAuthAccessToken(at);
 
         Status status = myTwitter.updateStatus(statusText);

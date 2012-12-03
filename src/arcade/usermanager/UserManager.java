@@ -322,7 +322,9 @@ public class UserManager {
      * 
      * @param name
      */
-    public void deleteAccessToken (String name) {
+    public boolean deleteAccessToken (String name) {
         FileOperation.deleteFile(myTwitterFilePath + name + ".at");
+        myTwitterTokens.remove(name);
+        return true;
     }
 }

@@ -36,6 +36,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private static final String WIDTH_KEY = "width";
     private static final String HEIGHT_KEY = "height";
     private static final String HEALTH_KEY = "health";
+    private static final String SAVE_AS_KEY = "save as";
 
     private JFrame mainFrame; // The main window
     private JFileChooser levelChooser; // For loading levels
@@ -46,7 +47,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private MultiFieldJOptionPane<String> spriteOptionsPane;
     private Sprite myCurrentSprite;
 
-    private File openFile; // currently open file
+    private File myOpenFile; // currently open file
     private Level myLevel; // level object for editing
 
     /* Toolbar buttons, self-explanatory */
@@ -103,12 +104,15 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
     private void setupChoosers () {
 
-        levelChooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
-        FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter("XML Level files", "xml");
+        levelChooser = new JFileChooser(System.getProperties().getProperty(
+                "user.dir"));
+        FileNameExtensionFilter XMLFilter = new FileNameExtensionFilter(
+                "XML Level files", "xml");
         levelChooser.setFileFilter(XMLFilter);
-        imageChooser = new JFileChooser(System.getProperties().getProperty("user.dir"));
-        FileNameExtensionFilter ImageFilter =
-                new FileNameExtensionFilter("gif and png image files", "gif", "png");
+        imageChooser = new JFileChooser(System.getProperties().getProperty(
+                "user.dir"));
+        FileNameExtensionFilter ImageFilter = new FileNameExtensionFilter(
+                "gif and png image files", "gif", "png");
         imageChooser.setFileFilter(ImageFilter);
 
     }
@@ -117,8 +121,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myToolBar = new JToolBar();
 
         /* Map file buttons */
-        saveBtn = makeBtn("Save", "/vooga/shooter/resources/save.gif", "Save level");
-        openBtn = makeBtn("Open...", "/vooga/shooter/resources/open.gif", "Open level...");
+        saveBtn = makeBtn("Save", "/vooga/shooter/resources/save.gif",
+                "Save level");
+        openBtn = makeBtn("Open...", "/vooga/shooter/resources/open.gif",
+                "Open level...");
         newBtn = makeBtn("New", "/vooga/shooter/resources/new.gif", "New level");
         clearBtn =
                 makeBtn("Clear", "/vooga/shooter/resources/clear.gif",
@@ -144,27 +150,41 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
         if (source == newBtn) {
             newFile();
-            openFile = null;
-            myLevel = new Level(); // is this necessary????
+            myOpenFile = null;
+            myLevel = new Level();
+            myBackground = null;
         }
         else if (source == clearBtn) {
             myLevel = new Level();
             myBackground = null;
         }
         else if (source == saveBtn) {
-            if (openFile == null) {
-                // file has never been saved, so we need to save as instead
-                String file_path =
-                        System.getProperty("user.dir") + "/src/vooga/shooter/levels/level1.xml";
-                XmlUtilities.write(myLevel.pack(), file_path);
+            if (myOpenFile == null) {
+                // file has never ben saved, so we need to save as instead
+                MultiFieldJOptionPane<String> saveAsOptionsPane = new MultiFieldJOptionPane<String>(
+                        mainFrame, "Save Xml File as");
+                saveAsOptionsPane.addField(SAVE_AS_KEY, "Save as:",
+                        new JTextField(10));
+                saveAsOptionsPane.display();
+                String fileNameString = saveAsOptionsPane
+                       .getResult(SAVE_AS_KEY);
+                String filePath = System.getProperty("user.dir")
+                        + "/src/vooga/shooter/levels/" + fileNameString
+                        + ".xml";
+                myOpenFile = new File(filePath);
+                saveFile(myOpenFile);
+                System.out.println("save as");
             }
             else {
-                saveFile(openFile);
+                //standard save
+                saveFile(myOpenFile);
+                System.out.println("save");
             }
         }
         else if (source == openBtn) {
             int success = levelChooser.showOpenDialog(mainFrame);
             if (success == JFileChooser.APPROVE_OPTION) {
+                myOpenFile = levelChooser.getSelectedFile();
                 openFile(levelChooser.getSelectedFile());
             }
         }
@@ -173,12 +193,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             int response = imageChooser.showOpenDialog(null);
             if (response == JFileChooser.APPROVE_OPTION) {
                 myLevel.setBackgroundImage(imageChooser.getSelectedFile());
-                String backgroundPath = imageChooser.getSelectedFile().getPath();
-                Image backgroundImage = (new ImageIcon(backgroundPath)).getImage();
-                Image scaledImage =
-                        backgroundImage.getScaledInstance(myCanvas.getWidth(),
-                                                          myCanvas.getHeight(),
-                                                          java.awt.Image.SCALE_SMOOTH);
+                String backgroundPath = imageChooser.getSelectedFile()
+                        .getPath();
+                Image backgroundImage = (new ImageIcon(backgroundPath))
+                        .getImage();
+                Image scaledImage = backgroundImage.getScaledInstance(
+                        myCanvas.getWidth(), myCanvas.getHeight(),
+                        java.awt.Image.SCALE_SMOOTH);
                 myBackground = scaledImage;
             }
         }
@@ -238,9 +259,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     private void saveFile (File file) {
-        // TODO implement
-        // needs to use XML utility to convert current Level to File then save
+        //use XML utility to convert current Level to File then save
         // that File
+        file.getPath();
+        XmlUtilities.write(myLevel.pack(), file.getPath());
     }
 
     public void newFile () {
