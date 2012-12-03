@@ -3,7 +3,6 @@ package util.particleEngine;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import util.mathvector.*;
@@ -36,46 +35,10 @@ public class ParticleEngine {
     private Boolean loop;
     private double angleSpan;
 
+    private float[] myRGBAscales;
+    private float[] myRGBAtolerances;
+
     private List<Particle> particles;
-
-    /**
-     * Construct the ParticleEngine object using default values
-     * 
-     * @param particleImage the image to use as the particle
-     */
-    protected ParticleEngine (Image particleImage,
-            MathVector2D initialPosition, MathVector2D inputDirection,
-            Boolean loopValue) {
-        this(DEFAULT_COUNT, particleImage, initialPosition, inputDirection,
-                DEFAULT_VARIANCE, DEFAULT_DURATION, DEFAULT_ANGLESPAN,
-                DEFAULT_NUMBEROFDIRECTIONS, loopValue);
-    }
-
-    /**
-     * Constructor
-     * 
-     * @param particleImage Image to be used to visualize the particles in this
-     *        particle engine
-     * @param initialPosition Initial position of the particles in this particle
-     *        engine
-     * @param angleSpan The angle through which the collection of particles are
-     *        distributed;
-     *        e.g. if angleSpan = 360, then the particles are constructed with
-     *        varying directions
-     *        so that they move (more or less) straight outwards in a full
-     *        circle (sorry if this is confusing)
-     * @param numberOfDirections The total number of different directions given
-     *        to the collection of particles (the different
-     *        directions will be calculated using the given or default
-     *        direction, angleSpan, and the numberOfDirections)
-     */
-    protected ParticleEngine (Image particleImage,
-            MathVector2D initialPosition, MathVector2D inputDirection, double inputAngleSpan,
-            int numberOfDirections, Boolean loopValue) {
-        this(DEFAULT_COUNT, particleImage, initialPosition, inputDirection,
-                DEFAULT_VARIANCE, DEFAULT_DURATION, inputAngleSpan,
-                numberOfDirections, loopValue);
-    }
 
     /**
      * Constructs the ParticleEngine object with custom values
@@ -91,7 +54,9 @@ public class ParticleEngine {
     protected ParticleEngine (int density, Image particleImage,
             MathVector2D position, MathVector2D velocity, int tolerance,
             int length, double inputAngleSpan, int numberOfDirections,
-            Boolean loopValue) {
+            float[] RGBAscales, float[] RGBAtolerances, Boolean loopValue) {
+        myRGBAscales = RGBAscales;
+        myRGBAtolerances = RGBAtolerances;
         spriteCount = density;
         spriteImage = particleImage;
         initialPosition = position;
@@ -132,12 +97,14 @@ public class ParticleEngine {
         double velocityAngle = mainVelocity.calculateAngleInRadians();
 
         MathVector2D startingPosition = new MathVector2D();
-        startingPosition.setComponent(MathVector2D.X, initialPosition.getComponent(MathVector2D.X));
-        startingPosition.setComponent(MathVector2D.Y, initialPosition.getComponent(MathVector2D.Y));
+        startingPosition.setComponent(MathVector2D.X,
+                initialPosition.getComponent(MathVector2D.X));
+        startingPosition.setComponent(MathVector2D.Y,
+                initialPosition.getComponent(MathVector2D.Y));
 
         particles.add(new Particle(startingPosition, particleSize, spriteImage,
                 velocityMagnitude, velocityAngle + angleInterval * i, variance,
-                duration));
+                duration, myRGBAscales, myRGBAtolerances));
     }
 
     protected void draw (Graphics g) {
@@ -188,6 +155,10 @@ public class ParticleEngine {
 
     protected MathVector2D getStartingPosition () {
         return initialPosition;
+    }
+
+    protected int getSpriteCount () {
+        return particles.size();
     }
 
 }

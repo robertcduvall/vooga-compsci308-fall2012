@@ -65,8 +65,10 @@ import arcade.utility.ImageReader;
             sendMessageButton.addActionListener(new ActionListener(){
                 @Override
                 public void actionPerformed (ActionEvent arg0) {
-                    System.out.println("Send message to " + myUser);
-                    //getArcade().replacePanel("SendMessage");
+                    System.out.println("Opening Message.");
+                    myContainer.getArcade().saveVariable("UserName", mySender);
+                    myContainer.getArcade().saveVariable("Message", myMessage);
+                    myContainer.getArcade().replacePanel("ViewMessage");
                 }
 
             });
@@ -85,7 +87,11 @@ import arcade.utility.ImageReader;
             g.setFont(new Font("sansserif", Font.BOLD, 40));
             g.drawString(mySender, 125, 60);
             g.setFont(new Font("sansserif", Font.ITALIC, 18));
-            g.drawString(myMessage.substring(0,50) + "...", 145, 85);
+            String displayMessage = myMessage;
+            if (displayMessage.length() > 50) {
+                displayMessage = displayMessage.substring(0,50) + "...";
+            }
+            g.drawString(displayMessage, 145, 85);
         }
 
         @Override

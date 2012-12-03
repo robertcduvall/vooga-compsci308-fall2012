@@ -216,7 +216,7 @@ public class UserManager {
         
     }
     
-    public List<String> getMessage(){
+    public List<Message> getMessage(){
         return myCurrentUser.getMyMessage();
     }
 

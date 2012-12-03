@@ -60,24 +60,12 @@ public abstract class ParticleSystem {
      */
     protected void addParticleEngine (int density, Image particleImage,
             MathVector2D position, MathVector2D velocity, int tolerance, int length,
-            double angleSpan, int numberOfDirections, Boolean loop) {
+            double angleSpan, int numberOfDirections, float[] RGBAscales, float[] RGBAtolerances, Boolean loop) {
         myParticleEngines.add(new ParticleEngine(density, particleImage,
                 position, velocity, tolerance, length, angleSpan,
-                numberOfDirections, loop));
+                numberOfDirections, RGBAscales, RGBAtolerances, loop));
     }
-
-    protected void addParticleEngine (Image particleImage, MathVector2D position,
-            Boolean loop) {
-        myParticleEngines
-                .add(new ParticleEngine(particleImage, position, velocity, loop));
-    }
-
-    protected void addParticleEngine (Image particleImage, MathVector2D position,
-            double angleSpan, int numberOfDirections, Boolean loop) {
-        myParticleEngines.add(new ParticleEngine(particleImage, position, velocity,
-                angleSpan, numberOfDirections, loop));
-    }
-
+    
     public void update () {
         Stack<ParticleEngine> remove = new Stack<ParticleEngine>();
         for (ParticleEngine p : myParticleEngines) {
@@ -112,12 +100,12 @@ public abstract class ParticleSystem {
             p.draw(g);
     }
 
-    public void setParticleVelocity (MathVector2D velocity) {
+    public void setDirection (MathVector2D velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(velocity);
     }
     
-    public void setParticleVelocity (Point velocity) {
+    public void setDirection (Point velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(new MathVector2D(velocity));
     }
@@ -130,5 +118,12 @@ public abstract class ParticleSystem {
     public void setLoop(Boolean setLoopValue) {
         for (ParticleEngine p : myParticleEngines)
             p.setLoop(setLoopValue);
+    }
+    public int spriteCount() {
+        int count = 0;
+        for(ParticleEngine p: myParticleEngines) {
+            count+=p.getSpriteCount();
+        }
+        return count;
     }
 }
