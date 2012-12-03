@@ -32,7 +32,7 @@ public class Main {
         //KeyboardController testController = new KeyboardController(pc);
         //pc.setInputController(testController);
         frame.getContentPane().add(controller);
-        frame.addKeyListener(controller.setMenuKeyListener());
+        //frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
         paintString(controller);
         frame.setVisible(true);
