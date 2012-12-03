@@ -23,6 +23,6 @@ public class LevelFactoryTest {
 
     @Test
     public void testLevelIsCreated () throws Exception {
-        Assert.assertNotNull(LevelFactory.loadLevel(XML_FILE_PATH, "games.platformerdemo.Player"));
+        Assert.assertNotNull(LevelFactory.loadLevel(XML_FILE_PATH));
     }
 }
