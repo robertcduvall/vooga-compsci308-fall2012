@@ -39,9 +39,6 @@ public class PlatformerController extends JPanel implements Runnable {
 
     // TODO: Make this variable hold a LevelFactory
     private DemoLevelFactory myLevelFactory;
-    private GameInitializer myGameInitializer;
-    private Player myPlayer;
-    private Image myBackground;
     private Map<String, Point> myStringMap = new HashMap<String, Point>();
     private Dimension mySize;
 
