@@ -50,7 +50,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private final double SHIFT_BOTTOM_SCALAR = .75;
     private final double ADJUST_ARROW_SCALAR = .80;
 
-    private final String MENU_FONT = "Sans_Serif";
+    private final String myMENU_FONT = "Sans_Serif";
 
     /**
      * Constructor for a Battle.
@@ -119,7 +119,11 @@ public class BattleMode extends GameMode implements InputAPI {
             GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, this,
                     "triggerSelectEvent");
         }
-        catch (Exception e) {
+        catch (NoSuchMethodException e) {
+            System.out.println("A method was called that does not exist!");
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -199,7 +203,7 @@ public class BattleMode extends GameMode implements InputAPI {
         }
         Graphics2D g2d = (Graphics2D) g;
         int fontSize = calculateFontSize(width, height);
-        Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
+        Font font = new Font(myMENU_FONT, Font.PLAIN, fontSize);
         FontEffect myFontEffect = new FontEffect(g, font);
         for (int i = 0; counter + i < myMessages.size(); i++) {
             String currentMessage = myMessages.get(counter + i);
@@ -227,7 +231,7 @@ public class BattleMode extends GameMode implements InputAPI {
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         // format positions based on width and height of the box...maybe?
         int fontSize = calculateFontSize(width, height) * width / height;
-        Font font = new Font(MENU_FONT, Font.PLAIN, fontSize);
+        Font font = new Font(myMENU_FONT, Font.PLAIN, fontSize);
         FontEffect fontEffect = new FontEffect(g, font);
         String[] options = myPlayerObject.getOptions();
         // position determines where the strings are painted
