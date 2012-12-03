@@ -96,7 +96,6 @@ public class EditorPane extends DisplayPane {
         JButton spriteButton = setUpSpriteButton(l, OBJECTS, OBJECTS_DEFAULTS);
         add(spriteButton);
         // TODO: Add create player button somewhere in this mess
-        // TODO: Done button that saves all levelEditor changes (remove saves throughout)
         JButton finishedButton = addDoneButton(l);
         add(finishedButton);
         validate();
