@@ -286,8 +286,11 @@ public class LevelBoard extends JPanel {
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
 
-    public void load (URL path) {
-        new LevelFileReader(path.getPath());
+    public void load (String path) {
+        LevelFileReader loader = new LevelFileReader(path);
+        myGameObjects = loader.getGameObjects();
+        myConditions = loader.getConditions();
+        myPlugins = loader.getLevelPlugins();
     }
 
     public void clear () {
