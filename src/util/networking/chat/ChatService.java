@@ -35,7 +35,6 @@ public class ChatService implements Service {
         myUsersToSockets = new HashMap<String, Socket>();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void serve (Socket socket, Server server) {
         myServer = (ChatServer) server;
@@ -57,6 +56,7 @@ public class ChatService implements Service {
                     ChatCommand type = myProtocol.getType(input);
                     Method m;
                     m = this.getClass().getMethod(type.getMethodName(), String.class, Socket.class);
+                    m.setAccessible(true);
                     m.invoke(this, input, socket);
                 }
             }

@@ -88,7 +88,8 @@ public class ChatClient extends Client {
         Method m;
         try {
             m = this.getClass().getMethod(type.getMethodName(), String.class);
-            m.invoke(input);
+            m.setAccessible(true);
+            m.invoke(this, input);
         }
         catch (SecurityException e) {
         }

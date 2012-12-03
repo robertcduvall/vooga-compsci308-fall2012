@@ -238,7 +238,7 @@ public class GordonBukspanProtocol implements ChatProtocol {
         }
         doc.appendChild(root);
         try {
-            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "");
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
         }
         catch (TransformerException e) {
         }
