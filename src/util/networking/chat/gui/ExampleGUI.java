@@ -22,6 +22,10 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 import util.networking.chat.ChatClient;
+import util.networking.chat.ErrorEvent;
+import util.networking.chat.ChatAdapter;
+import util.networking.chat.MessageReceivedEvent;
+import util.networking.chat.UsersUpdateEvent;
 
 
 public class ExampleGUI extends JPanel implements KeyListener {
@@ -38,6 +42,21 @@ public class ExampleGUI extends JPanel implements KeyListener {
     public ExampleGUI(ChatClient c, List<String> buddyList){
         myChatClient = c;
         usersOnline = buddyList;
+        myChatClient.addListener(new ChatAdapter() {
+            public void handleMessageReceivedEvent (MessageReceivedEvent e) {
+                
+            }
+
+            public void handleErrorEvent (ErrorEvent e) {
+            }
+            
+            public void handleUsersUpdateEvent(UsersUpdateEvent e){
+                updateBuddyList(e.getUsers());
+            }
+            
+        });
+        
+        
         recipientsToTextArea = new TreeMap<String, JTextArea>();
         setUpChatGUI();
     }
@@ -61,6 +80,11 @@ public class ExampleGUI extends JPanel implements KeyListener {
         buddyList.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         return buddyList;
     }
+     
+     private void updateBuddyList(List<String> newUsers){
+         usersOnline = newUsers;
+         buddyList = initBuddyList();
+     }
      
     protected void newConversation(String userName){
         if (userName != null) {
@@ -132,6 +156,8 @@ public class ExampleGUI extends JPanel implements KeyListener {
     
     private void sendMessage(){
         String body = userInput.getText();
+        String to = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+        myChatClient.sendMessage(to, body);
         userInput.setText("");
     }
 

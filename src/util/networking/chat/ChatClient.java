@@ -129,11 +129,13 @@ public class ChatClient extends Client {
     @SuppressWarnings("unused")
     private void processAddUser(String input) {
         myListUsers.add(myProtocol.getUser(input));
+        fireUsersUpdateEvent();
     }
 
     @SuppressWarnings("unused")
     private void processRemoveUser(String input) {
         myListUsers.remove(myProtocol.getUser(input));
+        fireUsersUpdateEvent();
     }
 
     private synchronized void fireMessageReceivedEvent(String to, String from, String body) {
@@ -150,6 +152,13 @@ public class ChatClient extends Client {
         }
     }
 
+    private synchronized void fireUsersUpdateEvent() {
+        UsersUpdateEvent e = new UsersUpdateEvent(this, myListUsers);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleUsersUpdateEvent(e);
+        }
+    }
+    
     public synchronized void addListener(ChatListener cl){
         myChatListeners.add(cl);
     }
