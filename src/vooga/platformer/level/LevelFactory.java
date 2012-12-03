@@ -4,13 +4,13 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
 import java.util.Collection;
-import util.camera.Camera;
 import util.reflection.ReflectionException;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.util.camera.FollowingCamera;
+import vooga.platformer.util.camera.UpdatableCamera;
 
 
 /**
@@ -46,7 +46,7 @@ public final class LevelFactory {
             Dimension levelDimension = new Dimension(lfr.getWidth(), lfr.getHeight());
             Collection<GameObject> levelGameObjects = lfr.getGameObjects();
             GameObject player = findPlayerGameObject(levelGameObjects);
-            Camera followCam =
+            UpdatableCamera followCam =
                     new FollowingCamera(DEFAULT_CAMERA_SIZE, new Rectangle(levelDimension.width,
                                                                            levelDimension.width),
                                         player);
