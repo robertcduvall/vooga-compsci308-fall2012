@@ -38,6 +38,7 @@ import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
+import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.levelfileio.LevelFileWriter;
 
@@ -413,13 +414,25 @@ public class LevelBoard extends JPanel {
     }
 
     /**
-     * Sets the current editor mode.
-     * @param nextMode The mode that the editor will transition to. 
+     * Switches from one mode to the next, saving objects from the first and
+     * ensuring
+     * these are successfully handed to the next mode.
+     * 
+     * @param currentMode The current mode the editor is in.
+     * @param nextMode The next mode the editor is about to transition to.
      */
-    public void setMode (IEditorMode nextMode) {
-        if (nextMode == null) {
-            throw new IllegalArgumentException();
+    private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
+        if (currentMode != null) {
+            Collection<IEditorObject> editorObjectsToKeep = currentMode.getEditorObjects();
+            for (IEditorObject objectFromPreviousMode : editorObjectsToKeep) {
+                nextMode.add(objectFromPreviousMode);
+            }
         }
+    }
+
+    public void setMode (IEditorMode nextMode) {
+        if (nextMode == null) { throw new IllegalArgumentException(); }
+        transitionBetweenModes(myCurrentMode, nextMode);
         myCurrentMode = nextMode;
     }
 }
