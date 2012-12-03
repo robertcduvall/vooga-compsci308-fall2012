@@ -63,6 +63,7 @@ public class GamePane extends DisplayPane implements Runnable {
 
     /**
      * Paint gameobjects and background to the canvas using double buffering
+     * @param g the graphics pen you are writing with
      */
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
@@ -96,10 +97,14 @@ public class GamePane extends DisplayPane implements Runnable {
         }
     }
 
+    /**
+     * Returns the delay time
+     * @return Returns the time between game cycles
+     */
     public static int getDelayTime () {
         return delayBetweenGameLoopCycles;
     }
-    
+
     private void initMouseListener() { //TODO: subscribe to input team
         addMouseListener(new MouseAdapter(){
             @Override
@@ -115,14 +120,12 @@ public class GamePane extends DisplayPane implements Runnable {
                 myGameManager.addMouseAction(MOUSE_CLICKED, e.getPoint(), e.getButton());
             }
         });
-        
+
         addMouseMotionListener(new MouseMotionListener() {
 
             @Override
             public void mouseDragged (MouseEvent e) {
                 myGameManager.addMouseAction(MOUSE_DRAGGED, e.getPoint(), e.getButton());
-                //myGameManager.handleMouseDragged(e.getPoint());
-                //System.out.println("press: "+e.getClickCount()+", pos: "+e.getPoint()+", button: "+e.getButton());
             }
 
             @Override
@@ -130,7 +133,9 @@ public class GamePane extends DisplayPane implements Runnable {
             }
         });
     }
-
+    /**
+     * Returns to menu pane 
+     */
     public void returnToMenu() {
         myGameThread.stop();
         getGameWindow().changeActivePane(GameWindow.MENU);
