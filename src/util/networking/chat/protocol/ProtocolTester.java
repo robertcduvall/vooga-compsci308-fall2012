@@ -28,11 +28,6 @@ public final class ProtocolTester {
         File file = new File("src/util/networking/chat/users.xml");
         GordonBukspanProtocol gbp = new GordonBukspanProtocol();
         new ChatServer(gbp, file, MAX_CONNECTIONS);
-        
-        
-       
-        //ProtocolXMPP xmpp = new ProtocolXMPP();
-        //System.out.println(xmpp.sendMessage("Connor Gordon", "Oren Bukspan", "goduke."));
     }
 
 }

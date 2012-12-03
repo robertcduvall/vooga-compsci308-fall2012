@@ -2,13 +2,11 @@ package arcade.datatransfer;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import twitter4j.auth.AccessToken;
 import util.encrypt.Encrypter;
-import util.twitter.TwitterTools;
 import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
+import arcade.usermanager.EditableUserProfile;
 import arcade.usermanager.Message;
 import arcade.usermanager.SocialCenter;
 import arcade.usermanager.User;
@@ -30,7 +28,6 @@ public class ModelInterface {
     private GameCenter myGameCenter;
     private SocialCenter mySocialCenter;
     private UserManager myUserManager;
-    private TwitterTools myTwitterTools;
 
     /**
      * 
@@ -41,7 +38,6 @@ public class ModelInterface {
         mySocialCenter = new SocialCenter();
         myGameCenter = new GameCenter();
         myUserManager = UserManager.getInstance();
-        myTwitterTools = new TwitterTools();
     }
 
     // #############################################################
@@ -172,8 +168,8 @@ public class ModelInterface {
      * @return get an editable user class for the current user
      */
 
-    public User getEditableCurrentUser () {
-        return myUserManager.getCurrentUser();
+    public EditableUserProfile getEditableCurrentUser () {
+        return myUserManager.getEditableCurrentUser();
 
     }
 
@@ -273,30 +269,13 @@ public class ModelInterface {
     }
 
     /**
-     * Sends a tweet to twitter.
+     * Sends a tweet to Twitter.
      * 
      * @param name
      * @param tweetText
      */
     public boolean sendTweet (String name, String tweetText) {
-        try {
-            Map<String, AccessToken> myTokens = myUserManager.getTwitterTokens();
-            AccessToken at;
-            if (!myTokens.keySet().contains(name)) {
-                at = myTwitterTools.requestAccessToken();
-                if (at == null) { return false; }
-                myUserManager.addTwitterToken(name, at);
-            }
-            else {
-                at = myTokens.get(name);
-            }
-            myTwitterTools.updateStatus(tweetText, at);
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return mySocialCenter.sendTweet(name, tweetText);
     }
 
     /**

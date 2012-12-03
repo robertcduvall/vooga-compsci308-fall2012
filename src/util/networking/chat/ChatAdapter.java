@@ -13,5 +13,9 @@ public abstract class ChatAdapter implements ChatListener {
     @Override
     public void handleErrorEvent (ErrorEvent e) {
     }
+    
+    public void handleUsersChangeEvent(UsersUpdateEvent e){
+    }
+   
 
 }

@@ -8,7 +8,7 @@ package util.networking.chat;
 public enum ChatCommand {
 
     //Miscellaneous
-    UNKNOWN ("processUnkown", "UNKNOWN"),
+    UNKNOWN ("processUnknown", "UNKNOWN"),
     
     //Server Processes
     LOGIN ("processLogin", "LOGIN"),

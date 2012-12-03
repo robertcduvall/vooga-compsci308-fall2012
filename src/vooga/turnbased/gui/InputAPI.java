@@ -15,5 +15,8 @@ package vooga.turnbased.gui;
  * @author Volodymyr
  */
 public interface InputAPI {
-    public void configureInputHandling ();
+    /**
+     * Subscribe to the input API
+     */
+    void configureInputHandling ();
 }

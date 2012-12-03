@@ -30,7 +30,8 @@ public class Explosion extends ParticleSystem {
         super(new MathVector2D(startingPosition));
     }
 
-    // The different velocities that the explosion can take
+    // The different velocities that the explosion can take, note that these are
+    // all of magnitude sqrt(8)
     private static MathVector2D[] velocities = { new MathVector2D(-2, 2),
             new MathVector2D(-2, -2), new MathVector2D(2, -2),
             new MathVector2D(2, 2), new MathVector2D(-Math.sqrt(8), 0),
@@ -38,20 +39,32 @@ public class Explosion extends ParticleSystem {
             new MathVector2D(0, -Math.sqrt(8)),
             new MathVector2D(0, Math.sqrt(8)) };
 
-    // These following constants define this particular system
+    /**
+     * These following constants define the particleEngine
+     * 
+     * tolerance - the variation allowed in the particles' velocity
+     * length - the average time a particle exists before fading away
+     * numDirections - the number of directions that particles start out at.
+     *                 These are in reference to the origin point of the effect
+     * density - the number of particles to be created for each particleEngine
+     * loop - whether or not the particleEngines will continuously loop
+     */
     private static int explosionTolerance = 50;
     private static int explosionLength = 30;
     private static int explosionDensity = 30;
     private static int explosionNumDirections = 10;
+    private static boolean explosionLoop = false;
+
     private static int smokeTolerance = 50;
     private static int smokeLength = 50;
     private static int smokeDensity = 70;
     private static int smokeNumDirections = 1;
+    private static boolean smokeLoop = false;
 
     // Each particle is drawn with a RGBA scaling factor that is chosen randomly
     // from this scale +/- these tolerances
-    private static float[] RGBAscales =         { 3.0f, 1.2f, 1.2f, 0.4f };
-    private static float[] RGBAtolerances =     { 0.2f, 0.4f, 0.4f, 0.1f };
+    private static float[] RGBAscales = { 3.0f, 1.2f, 1.2f, 0.4f };
+    private static float[] RGBAtolerances = { 0.2f, 0.4f, 0.4f, 0.1f };
 
     @Override
     protected void setUpParticleEngines () {
@@ -64,10 +77,11 @@ public class Explosion extends ParticleSystem {
         for (int j = 0; j < velocities.length; j++) {
             addParticleEngine(smokeDensity, smokeImage, position,
                     velocities[j], smokeTolerance, smokeLength, 0.0,
-                    smokeNumDirections, RGBAscales, RGBAtolerances, false);
+                    smokeNumDirections, RGBAscales, RGBAtolerances, smokeLoop);
             addParticleEngine(explosionDensity, explosionImage, position,
                     velocities[j], explosionTolerance, explosionLength, 0.0,
-                    explosionNumDirections, RGBAscales, RGBAtolerances, false);
+                    explosionNumDirections, RGBAscales, RGBAtolerances,
+                    explosionLoop);
         }
 
     }

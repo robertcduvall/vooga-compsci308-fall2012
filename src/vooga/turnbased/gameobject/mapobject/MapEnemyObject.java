@@ -6,12 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import vooga.turnbased.gamecore.gamemodes.MapMode;
-
-
+/**
+ * A map object that triggers a battle
+ * @author Turnbased team
+ */
 public class MapEnemyObject extends MapObject {
-
-    public MapEnemyObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+    /**
+     * Constructor
+     * @param allowableModes 
+     * @param condition 
+     * @param location 
+     * @param mapImage 
+     */
+    public MapEnemyObject (Set<String> allowableModes, String condition, 
+            Point location, Image mapImage) {
         super(allowableModes, condition, location, mapImage);
     }
 
