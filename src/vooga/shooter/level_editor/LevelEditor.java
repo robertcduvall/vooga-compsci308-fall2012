@@ -3,6 +3,7 @@ package vooga.shooter.level_editor;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.gui.MultiFieldJOptionPane;
@@ -291,7 +292,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         newBtn.setToolTipText(tooltip);
         newBtn.addActionListener(this);
-        newBtn.setBorder(new LineBorder(Color.gray, 1, false));
+        newBtn.setBorder(BorderFactory.createRaisedBevelBorder());
         return newBtn;
     }
 
