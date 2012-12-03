@@ -3,6 +3,7 @@ package util.networking.chat.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Arrays;
@@ -132,7 +133,11 @@ public class ChatApp {
 
         @Override
         public void actionPerformed (ActionEvent e) {
-
+            List<String> usersOnline = eg.getUsersOnline();
+            if(usersOnline.size() == 0){
+                JOptionPane.showMessageDialog(frame, "No users online.");
+                return;
+            }
             String userName =
                     (String)JOptionPane
                             .showInputDialog(frame,

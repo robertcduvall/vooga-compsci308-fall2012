@@ -16,12 +16,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import util.networking.chat.ChatClient;
 import util.networking.chat.ChatListener;
 import util.networking.chat.ErrorEvent;
@@ -59,8 +62,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             @Override
             public void handleErrorEvent (ErrorEvent e) {
-                System.out.println(e.getErrorMessage());
-                
+                JOptionPane.showMessageDialog(null, e.getErrorMessage());
             }
 
             @Override
@@ -82,6 +84,12 @@ public class ExampleGUI extends JPanel implements KeyListener {
         add(tabbedPane, BorderLayout.CENTER);
         add(initBuddyList(), BorderLayout.AFTER_LINE_ENDS);
         add(initChatInput(), BorderLayout.AFTER_LAST_LINE);
+        tabbedPane.addChangeListener(new ChangeListener() {
+
+            public void stateChanged (ChangeEvent arg0) {
+                System.out.println("HI");
+                
+            }});
     }
 
      private JTextArea initBuddyList () {
