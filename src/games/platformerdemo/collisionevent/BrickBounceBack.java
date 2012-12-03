@@ -1,5 +1,6 @@
 package games.platformerdemo.collisionevent;
 
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.MovingObject;
 
@@ -11,18 +12,24 @@ import vooga.platformer.gameobject.MovingObject;
  */
 public class BrickBounceBack extends BrickMovingObject {
 
+    public BrickBounceBack (Class typeA, Class typeB) {
+        super(typeA, typeB);
+    }
+
     @Override
-    protected void resetCenterLeft (double dx) {
-        super.resetCenterLeft(dx);
-        flipHorizontalVelocity();
+    protected void resetCenterLeft (MovingObject mo, double dx) {
+        super.resetCenterLeft(mo,dx);
+        flipHorizontalVelocity(mo);
     }
 
-    protected void resetCenterRight (double dx) {
-        super.resetCenterRight(dx);
-        flipHorizontalVelocity();
+    @Override
+    protected void resetCenterRight (MovingObject mo, double dx) {
+        super.resetCenterRight(mo);
+        flipHorizontalVelocity(mo);
     }
 
-    private void flipHorizontalVelocity () {
-        myMO.setVelocity(-myMO.getVelocity().getX(), myMO.getVelocity().getY());
+    private void flipHorizontalVelocity (MovingObject mo) {
+        ((MovingObject) mo).setVelocity(-((MovingObject) mo).getVelocity().getX(),
+                ((MovingObject) mo).getVelocity().getY());
     }
 }
