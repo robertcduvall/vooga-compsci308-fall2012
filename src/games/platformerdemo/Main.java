@@ -8,9 +8,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import vooga.platformer.core.GameInitializer;
+import vooga.platformer.core.TestInputController;
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
 import vooga.platformer.core.PlatformerController;
+import vooga.platformer.core.inputinitializer.SimpleOnePlayerInputInitializer;
 
 /**
  * A class that creates a JFrame to hold the Game object
@@ -24,12 +26,12 @@ public class Main {
     public static void main (String[] args) {
         JFrame frame = new JFrame("Demo Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController(new DemoLevelFactory(), new DemoInitializer());
+        PlatformerController controller = new PlatformerController(new DemoLevelFactory(), "demoLevel",
+                new SimpleOnePlayerInputInitializer());
         //TODO:Should use follow eventually
         //KeyboardController testController = new KeyboardController(pc);
         //pc.setInputController(testController);
         frame.getContentPane().add(controller);
-        frame.addKeyListener(controller.setTemporaryInputListener());
         frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
         paintString(controller);
