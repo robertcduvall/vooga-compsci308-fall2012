@@ -1,12 +1,12 @@
 package games.platformerdemo.collisionevent;
 
-import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.MovingObject;
 
 
 /**
- * @author Probably Niel
+ * Type B bounces back when hits Type A.
+ * 
+ * @author Niel
  * @author Yaqi
  * 
  */
@@ -18,18 +18,18 @@ public class BrickBounceBack extends BrickMovingObject {
 
     @Override
     protected void resetCenterLeft (MovingObject mo, double dx) {
-        super.resetCenterLeft(mo,dx);
+        super.resetCenterLeft(mo, dx);
         flipHorizontalVelocity(mo);
     }
 
     @Override
     protected void resetCenterRight (MovingObject mo, double dx) {
-        super.resetCenterRight(mo);
+        super.resetCenterRight(mo, dx);
         flipHorizontalVelocity(mo);
     }
 
     private void flipHorizontalVelocity (MovingObject mo) {
-        ((MovingObject) mo).setVelocity(-((MovingObject) mo).getVelocity().getX(),
-                ((MovingObject) mo).getVelocity().getY());
+        ((MovingObject) mo).setVelocity(-((MovingObject) mo).getVelocity()
+                .getX(), ((MovingObject) mo).getVelocity().getY());
     }
 }

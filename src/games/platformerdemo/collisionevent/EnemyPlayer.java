@@ -7,9 +7,11 @@ import vooga.platformer.util.enums.Direction;
 
 
 /**
- * Type A is the one 
+ * Type A is the one that been killed if Type B comes from top of Type A.
+ * Otherwise Type B gets killed.
+ * 
  * @author Yaqi
- *
+ * 
  */
 public class EnemyPlayer extends CollisionEvent {
     public EnemyPlayer (Class typeA, Class typeB) {
@@ -22,7 +24,6 @@ public class EnemyPlayer extends CollisionEvent {
         if (this.direction() == Direction.DOWN) {
             gameObjectA.markForRemoval();
         }
-
         else {
             gameObjectB.markForRemoval();
         }

@@ -16,7 +16,7 @@ public class BrickMovingObject extends CollisionEvent {
     }
 
     /**
-     * gameObjectA is StaticObject, gameObjectB is MovingObject
+     * gameObjectA is a StaticObject, gameObjectB is a MovingObject
      */
     @Override
     public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {

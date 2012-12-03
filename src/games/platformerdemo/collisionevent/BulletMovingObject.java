@@ -10,6 +10,7 @@ import vooga.platformer.level.Level;
 
 
 /**
+ * When Type A and Type B collides, both been killed.
  * @author Yaqi
  * 
  */
@@ -23,6 +24,5 @@ public class BulletMovingObject extends CollisionEvent {
             GameObject gameObjectB) {
         gameObjectA.markForRemoval();
         gameObjectB.markForRemoval();
-
     }
 }
