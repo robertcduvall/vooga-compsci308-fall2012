@@ -120,7 +120,7 @@ public class Enemy extends Sprite implements Packable {
     public Document pack () {
         
         Document doc = XmlUtilities.makeDocument();
-        Element root = XmlUtilities.makeElement(doc, "Player");
+        Element root = XmlUtilities.makeElement(doc, "Enemy");
         doc.appendChild(root);
                 
         // convert position...

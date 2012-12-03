@@ -49,6 +49,17 @@ public class TestLevelEditor {
         }
         
         Enemy newEnemy = Enemy.unpack(enemy.pack());
+        
+        try {
+            System.out.println(XmlUtilities.getXmlAsString(newEnemy.pack()));
+            System.out.println("done");
+        }
+        catch (TransformerException e) {
+            // TODO Auto-generated catch block
+            System.err.println("ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
     }
     
 }
