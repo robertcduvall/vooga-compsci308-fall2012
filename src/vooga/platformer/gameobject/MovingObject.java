@@ -1,6 +1,8 @@
 package vooga.platformer.gameobject;
 
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.io.IOException;
 
 import vooga.platformer.gameobject.strategy.update.MovementUpdateStrategy;
 import vooga.platformer.util.enums.Direction;
@@ -17,21 +19,8 @@ public class MovingObject extends GameObject {
     private boolean onGround = false;
     private Direction myFacingDirection = Direction.RIGHT;
 
-    /**
-     * @param configString String to parse parameters of this player
-     */
-    public MovingObject (String configString) {
-        super(configString);
-        myVelocity = new Point2D.Double(0, 0);
-        // all MovingObjects have a MovementUpdateStrategy
-        this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));
-    }
-
-    /**
-     * 
-     */
-    public MovingObject () {
-        super();
+    public MovingObject(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
+        super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
         myVelocity = new Point2D.Double(0, 0);
         // all MovingObjects have a MovementUpdateStrategy
         this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));

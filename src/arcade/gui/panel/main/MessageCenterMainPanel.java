@@ -3,6 +3,8 @@ package arcade.gui.panel.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -35,6 +37,14 @@ public class MessageCenterMainPanel extends AMainPanel {
         ArcadePanel myPanel = initializeNewPanel();
         myPanel.setPreferredSize(new Dimension(750, 900));
         JButton composeMessageButton = new JButton("Compose A Message.");
+        composeMessageButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                getArcade().saveVariable("UserName", "");
+                getArcade().replacePanel("SendMessage");
+            }
+
+        });
 
         myPanel.add(composeMessageButton);
 

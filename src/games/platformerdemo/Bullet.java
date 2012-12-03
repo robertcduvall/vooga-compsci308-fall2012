@@ -18,15 +18,14 @@ import java.io.IOException;
  */
 public class Bullet extends MovingObject {
     private static final int VELOCITY = 3;
-    private static final int SIZE = 8;
 
     /**
      * 
      */
-    public Bullet () {
-        super();
+    public Bullet(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
+        super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
         setVelocity(VELOCITY, 0);
-        setSize(SIZE, SIZE);
+        setSize(inWidth, inHeight);
         String defaultImageName = "src/games/platformerdemo/bullet.png";
         try {
             Image img = ImageIO.read(new File(defaultImageName));

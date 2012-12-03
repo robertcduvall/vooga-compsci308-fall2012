@@ -32,12 +32,6 @@ import vooga.platformer.level.Level;
 public abstract class GameObject implements Comparable<GameObject>,
         Serializable {
     private static final long serialVersionUID = 1L;
-    protected static final String X_TAG = "x";
-    protected static final String Y_TAG = "y";
-    protected static final String WIDTH_TAG = "width";
-    protected static final String HEIGHT_TAG = "height";
-    protected static final String DEFAULT_IMAGE_TAG = "imagePath";
-    private static final String ID_TAG = "id";
 
     private boolean removeFlag;
     private Map<String, UpdateStrategy> strategyMap;
@@ -51,14 +45,7 @@ public abstract class GameObject implements Comparable<GameObject>,
     private int hp;
     private Level myLevel;
 
-    // Change this to public because no config str provided when creating
-    // GameObject during runtime
-    /**
-     * Create GameObject during runtime of the
-     */
-    public GameObject () {
-        strategyMap = new HashMap<String, UpdateStrategy>();
-    }
+
 
     /**
      * @param configString containing key-value pairs for the GameObject's
@@ -68,97 +55,16 @@ public abstract class GameObject implements Comparable<GameObject>,
      *        each pair, the key should be separated from the value by an '='
      *        character.
      */
-    public GameObject (String configString) {
-        this();
-        Map<String, String> configMap = ConfigStringParser
-                .parseConfigString(configString);
-        x = Double.parseDouble(configMap.get(X_TAG));
-        y = Double.parseDouble(configMap.get(Y_TAG));
-        width = Double.parseDouble(configMap.get(WIDTH_TAG));
-        height = Double.parseDouble(configMap.get(HEIGHT_TAG));
-        id = Integer.parseInt(configMap.get(ID_TAG));
-        String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
-        try {
-            defaultImage = new ImageIcon(
-                    ImageIO.read(new File(defaultImageName)));
-        }
-        catch (IOException e) {
-            // TODO Handle this exception in a more acceptable manner, or do not
-            // use config string instantiation.
-            System.out.println("could not load image " + defaultImageName);
-            System.exit(0);
-        }
-    }
-
-    /**
-     * @author Yaqi
-     * @param ele XML element of this GameObject.
-     */
-    public GameObject (Element ele) {
-        this();
-        attributeMap = new HashMap<String, String>();
-        NodeList attrNodes = ele.getChildNodes();
-        for (int i = 0; i < attrNodes.getLength(); i++) {
-            Element attr = (Element) attrNodes.item(i);
-            attributeMap.put(attr.getTagName(), attr.getNodeValue());
-        }
-        convertValue();
-    }
-
-    /**
-     * This method convert String value of x, y, width, height, id in
-     * attributeMap to the proper format and save them to the instance variable.
-     */
-    private void convertValue () {
-        x = Double.parseDouble(attributeMap.get(X_TAG));
-        y = Double.parseDouble(attributeMap.get(Y_TAG));
-        width = Double.parseDouble(attributeMap.get(WIDTH_TAG));
-        height = Double.parseDouble(attributeMap.get(HEIGHT_TAG));
-        id = Integer.parseInt(attributeMap.get(ID_TAG));
-        String defaultImageName = attributeMap.get(DEFAULT_IMAGE_TAG);
-        try {
-            defaultImage = new ImageIcon(
-                    ImageIO.read(new File(defaultImageName)));
-        }
-        catch (IOException e) {
-            // TODO Handle this exception in a more acceptable manner, or do not
-            // use config string instantiation.
-            System.out.println("could not load image " + defaultImageName);
-            System.exit(0);
-        }
-    }
-
-    /**
-     * @return the attributeMap, which is a map between name of the attribute
-     *         and String value of the attribute.
-     */
-    public Map<String, String> getAttributeMap () {
-        return attributeMap;
-    }
-
-    /**
-     * Gets a map in which the keys are parameter tag names, and the strings
-     * that they map to are the descriptions of the values that should be passed
-     * for that tag.
-     * 
-     * A null return value means that this GameObject subclass requires no
-     * additional parameters be passed in its config string in order to be
-     * instantiated.
-     * 
-     * @return a map of config string parameter tags and descriptions of the
-     *         values that should be passed with these tags
-     * @author Grant Oakley
-     */
-    public Map<String, String> getConfigStringParams () {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(X_TAG, "x position of the object");
-        params.put(Y_TAG, "y position of the object");
-        params.put(WIDTH_TAG, "width of the object");
-        params.put(HEIGHT_TAG, "height of the object");
-        params.put(ID_TAG, "ID for sprite. Should be unique.");
-        params.put(DEFAULT_IMAGE_TAG,
-                "file name of the image to the be the default image.");
-        return params;
+    public GameObject (double inX, double inY, double inWidth, double inHeight, int inId,
+            File defaultImageFile)
+        throws IOException {
+        strategyMap = new HashMap<String, UpdateStrategy>();
+        x = inX;
+        y = inY;
+        width = inWidth;
+        height = inHeight;
+        id = inId;
+        defaultImage = new ImageIcon(ImageIO.read(defaultImageFile));
     }
 
     public double getX () {

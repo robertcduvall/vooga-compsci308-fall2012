@@ -1,6 +1,7 @@
 package arcade.gui.panel.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
