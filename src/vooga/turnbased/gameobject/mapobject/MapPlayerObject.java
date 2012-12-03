@@ -19,7 +19,6 @@ public class MapPlayerObject extends MovingMapObject {
     private static final int ANIMATION_FRAME_RATE = 3;
     private Map<String, Image> myImages;
     private Map<String, ImageLoop> myImageLoops;
-    // feel free to rename
     private String myDownLabel = "down";
     private String myUpLabel = "up";
     private String myLeftLabel = "left";
@@ -29,13 +28,13 @@ public class MapPlayerObject extends MovingMapObject {
     /**
      * Creates the MovingMapObject that will be used in MapMode.
      * 
-     * @param id Integer ID associated with the MapObject.
+     * @param allowableModes 
      * @param condition GameEvent that can be passed to GameManager.
      * @param coord Point at which object is located.
      * @param mapImage Image of the object.
-     * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (Set<String> allowableModes, String condition, Point coord, Image mapImage) {
+    public MapPlayerObject (Set<String> allowableModes, String condition, 
+            Point coord, Image mapImage) {
         super(allowableModes, condition, coord, mapImage);
         myFrameCount = 0;
     }
@@ -44,22 +43,17 @@ public class MapPlayerObject extends MovingMapObject {
      * Creates a MapPlayerObject with a series of images instead of a single
      * image.
      * 
-     * @param id Integer ID associated with the MapObject.
+     * @param allowableModes 
      * @param condition GameEvent that can be passed to GameManager.
      * @param coord Point at which object is located.
      * @param mapImages Map of strings to images that will be used for
      *        animation of the player object.
-     * @param mapMode MapMode in which the object exists.
      */
-    public MapPlayerObject (Set<String> allowableModes, String condition, Point coord, Map<String, Image> mapImages) {
+    public MapPlayerObject (Set<String> allowableModes, String condition, 
+            Point coord, Map<String, Image> mapImages) {
         super(allowableModes, condition, coord, mapImages.get(0));
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
-    }
-
-    // for testing with Xml parsing, can be deleted later
-    public Map<String, Image> getImageMap () {
-        return myImages;
     }
 
     /**
