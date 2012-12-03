@@ -16,18 +16,20 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 
 public class ExampleGUI {
 
-    static class TextDemoPanel extends JPanel{
+    static class ChatDialog extends JPanel{
         private JTextArea textArea;
 
-        public TextDemoPanel(String text){
+        public ChatDialog(String text){
             textArea = new JTextArea(17, 40);
             textArea.setText("<Server>: You are connected. Start Chatting!");
             textArea.setEditable(false);
+            textArea.setBackground(new Color(220, 226, 255));
             JScrollPane scrollPane = new JScrollPane(textArea);
 
             add(scrollPane);
@@ -38,10 +40,10 @@ public class ExampleGUI {
         }
     }
 
-    static class SetTextAction extends AbstractAction {
+    static class NewConversationAction extends AbstractAction {
         private JTabbedPane tabbedPane;
 
-        public SetTextAction(JTabbedPane tabbedPane){
+        public NewConversationAction(JTabbedPane tabbedPane){
             super("New Conversation");
             this.tabbedPane = tabbedPane;
         }
@@ -49,15 +51,17 @@ public class ExampleGUI {
         @Override
         public void actionPerformed(ActionEvent e) {
            
-            String value = JOptionPane.showInputDialog(tabbedPane, "Please enter the name of the user youwould like to converse with.", "Start a New Conversation", JOptionPane.QUESTION_MESSAGE);
-            if (value != null){
-                TextDemoPanel panel = (TextDemoPanel)tabbedPane.getSelectedComponent();
-                if (panel != null)
-                    panel.getTextArea().setText(value);
+            String userName = JOptionPane.showInputDialog(tabbedPane, "Please enter the name of the user youwould like to converse with.", "Start a New Conversation", JOptionPane.QUESTION_MESSAGE);
+            if (userName != null){
+                if(userName.length() > 7){
+                    userName = userName.substring(0,6) + "...";
+                }
+                tabbedPane.addTab(userName, createImageIcon("images/chat-icon.png"), new ChatDialog(""));
             }
         }
     }
     
+        
     protected static ImageIcon createImageIcon(String path) {
         URL imgURL = ExampleGUI.class.getResource(path);
         if (imgURL != null) {
@@ -74,25 +78,26 @@ public class ExampleGUI {
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("Tab 1", new TextDemoPanel("Tab 1 text"));
-        tabbedPane.addTab("Tab1", createImageIcon("images/chat.png"), new TextDemoPanel(""));
-        tabbedPane.addTab("Tab 2", new TextDemoPanel("Tab 2 text"));
-        tabbedPane.addTab("Tab 3", new TextDemoPanel("Tab 3 text"));
+        tabbedPane.addTab("Tab 1", createImageIcon("images/chat-icon2.png"), new ChatDialog("Tab 1 text"));
+        tabbedPane.addTab("Tab 2", createImageIcon("images/chat-icon.png"), new ChatDialog(""));
+        tabbedPane.addTab("Tab 3", createImageIcon("images/chat-icon.png"), new ChatDialog("Tab 2 text"));
+        
+        //tabbedPane.setIconAt(1, createImageIcon("images/chat-icon2.png"));
 
         frame.add(tabbedPane, BorderLayout.CENTER);
         
-        JTextArea buddyList = new JTextArea("Hello", 5, 15);
+        JTextArea buddyList = new JTextArea("Buddy List", 5, 15);
         buddyList.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         frame.add(buddyList, BorderLayout.AFTER_LINE_ENDS);
 
-        JTextArea buddyList2 = new JTextArea("Hello", 3, 10);
+        JTextArea buddyList2 = new JTextArea("Enter Chat Here", 3, 10);
         buddyList2.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         frame.add(buddyList2, BorderLayout.AFTER_LAST_LINE);
         
         JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("File");
         menuBar.add(menu);
-        JMenuItem item = new JMenuItem(new SetTextAction(tabbedPane));
+        JMenuItem item = new JMenuItem(new NewConversationAction(tabbedPane));
 
         menu.add(item);
 

@@ -2,7 +2,10 @@ package arcade.datatransfer;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import twitter4j.auth.AccessToken;
 import util.encrypt.Encrypter;
+import util.twitter.TwitterTools;
 import arcade.gamemanager.Game;
 import arcade.gamemanager.GameCenter;
 import arcade.gui.Arcade;
@@ -27,6 +30,7 @@ public class ModelInterface {
     private GameCenter myGameCenter;
     private SocialCenter mySocialCenter;
     private UserManager myUserManager;
+    private TwitterTools myTwitterTools;
 
     /**
      * 
@@ -35,8 +39,8 @@ public class ModelInterface {
     public ModelInterface (Arcade a) {
         myArcade = a;
         mySocialCenter = new SocialCenter();
-        myGameCenter = new GameCenter(); // GameCenter is currently broken.
-        myUserManager=UserManager.getInstance();
+        myGameCenter = new GameCenter();
+        myUserManager = UserManager.getInstance();
     }
 
     // #############################################################
@@ -113,10 +117,10 @@ public class ModelInterface {
      * if the new user is created successfully, the new user is automatically
      * logged in (do not need to go through login screen).
      * 
-     * @param username
-     * @param password
-     * @param fn
-     * @param ln
+     * @param username username of user
+     * @param password password of user
+     * @param fn first name of user
+     * @param ln last name of user
      * @return true if successful, false if unsuccessful
      */
     public boolean executeNewUser (String username, String password, String fn, String ln) {
@@ -141,13 +145,15 @@ public class ModelInterface {
      * @return A list of all the users in the system.
      */
     public List<UserProfile> getAllUsers () {
-        return  myUserManager.getAllUserProfile();
+        return myUserManager.getAllUserProfile();
     }
+
     /**
      * This is useful for sizing components.
+     * 
      * @return The number of profiles in the system.
      */
-    public int getNumUsers() {
+    public int getNumUsers () {
         return myUserManager.getAllUserProfile().size();
     }
 
@@ -165,87 +171,136 @@ public class ModelInterface {
      * @return get an editable user class for the current user
      */
 
-    public User getEditableCurrentUser(){
+    public User getEditableCurrentUser () {
         return myUserManager.getCurrentUser();
 
     }
 
     /**
+     * Sends a message to a user.
      * 
+     * @param
      */
-    public boolean sendMessage(String sender, String recipient, String messageContent) {
+    public boolean sendMessage (String sender, String recipient, String messageContent) {
         return mySocialCenter.sendMessage(sender, recipient, messageContent);
     }
 
     /**
      * delete user profile
+     * 
      * @param userName
      * @param password
      * @return
      */
-
-    public boolean deleteUser(String userName, String password){
-        return   mySocialCenter.deleteUser(userName, password);
+    /**
+     * Deletes a user.
+     * 
+     * @param userName
+     * @param password
+     * @return
+     */
+    public boolean deleteUser (String userName, String password) {
+        return mySocialCenter.deleteUser(userName, password);
 
     }
+
+    /**
+     * Changes a user's admin status.
+     * 
+     * @param name
+     * @param adminStatus
+     */
+    public void changeAdminStatus (String name, boolean adminStatus) {
+        myUserManager.changeAdminStatus(name, adminStatus);
+    }
+
     /**
      * Should return the highscore of the game that was just played and ended.
+     * 
      * @param userName The name of the user in question
      * @param gameName The nameof the game in question
      * @return
      */
-    public int getMostRecentHighScore(String userName, String gameName) {
+    public int getMostRecentHighScore (String userName, String gameName) {
         return 0;
-        //TODO: IMPLEMENT THIS
+        // TODO: IMPLEMENT THIS
     }
+
     /**
      * Should return the highest score a user has gotten for a specific game.
+     * 
      * @param userName The name of the user in question
      * @param gameName The name of the game in question
      * @return
      */
-    public int getHighestScoreforGame(String userName, String gameName) {
+    public int getHighestScoreforGame (String userName, String gameName) {
         return 0;
-        //TODO: implement dis
+        // TODO: implement dis
     }
+
     /**
      * Should return a list with elements in the format:
      * "NameofGame - highscore"
+     * 
      * @param userName The name of the user in question
      * @return
      */
-    public List<String> getListOfHighScoresForUser(String userName) {
+    public List<String> getListOfHighScoresForUser (String userName) {
         return null;
-        //TODO: imple
+        // TODO: imple
     }
+
     /**
      * Should return a list with elements in the format:
      * "username - highscore"
+     * 
      * @param gameName
      * @return
      */
-    public List<String> getListOfHighScoresForGame(String gameName) {
+    public List<String> getListOfHighScoresForGame (String gameName) {
         return null;
-        //TODO: todo
+        // TODO: todo
     }
-    
-    public void changeAdminStatus (String name, boolean adminStatus) {
-        myUserManager.changeAdminStatus(name, adminStatus);
-    }
-    
-    public void sendMessage(String receiver, String content){
-        mySocialCenter.sendMessage(receiver, content);
-    }
-    
-    public List<Message> getMessage(){
+
+    /**
+     * Gets the current user's list of messages.
+     * 
+     * @return
+     */
+    public List<Message> getMessage () {
         return myUserManager.getMessage();
     }
-    
-    public void sendTweet(String name, String tweetText){
-        //TODO: implement
+
+    /**
+     * Sends a tweet to twitter.
+     * 
+     * @param name
+     * @param tweetText
+     */
+    public void sendTweet (String name, String tweetText) {
+        try {
+            Map<String, AccessToken> myTokens = myUserManager.getTwitterTokens();
+            AccessToken at;
+            if (!myTokens.keySet().contains(name)) {
+                at = myTwitterTools.requestAccessToken();
+                myUserManager.addTwitterToken(name, at);
+            }
+            else {
+                at = myTokens.get(name);
+            }
+            myTwitterTools.updateStatus(tweetText, at);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
-    public void disassociateTwitter(String name){
-        //TODO: implement
+
+    /**
+     * Disconnects a user's connection to a Twitter account.
+     * 
+     * @param name
+     */
+    public void disconnectTwitter (String name) {
+        myUserManager.deleteAccessToken(name);
     }
 }
