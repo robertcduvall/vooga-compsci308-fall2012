@@ -20,7 +20,7 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
 public class BreadthFirstSearch extends PathSearch {
 
     /**
-     * constructor
+     * constructor of the BFS
      * @param start Starting point
      * @param end Ending point
      * @param size Size of the table
