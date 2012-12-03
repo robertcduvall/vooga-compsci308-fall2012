@@ -31,11 +31,10 @@ import vooga.turnbased.sprites.Sprite;
 public class GameManager implements InputAPI {
 
     private final GamePane myGamePane;
-    // private GameLevelManager myLevelManager;
     private GameLogic myGameLogic;
     private boolean myGameIsOver;
     private Map<Integer, Sprite> mySprites;
-    private Map<String, Class> myAvailableModeTypes;
+    private Map<String, Class<? extends GameMode>> myAvailableModeTypes;
     private List<ModeEvent> myModeEvents;
     private List<MouseAction> myMouseActions;
     private List<GameMode> myGameModes;
@@ -56,15 +55,14 @@ public class GameManager implements InputAPI {
         myGameIsOver = false;
 
         mySprites = new HashMap<Integer, Sprite>();
-        myAvailableModeTypes = new HashMap<String, Class>();
+        myAvailableModeTypes = new HashMap<String, Class<? extends GameMode>>();
         myGameModes = new ArrayList<GameMode>();
 
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
-        // myGameSoundTrack = new
-        // SoundPlayer(GameWindow.importString("GameSoundTrack"));
+        myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         initializeGameLevel(GameWindow.importString("GameXML"),
                             GameWindow.importString("PlayerXML"));
         configureInputHandling();
@@ -357,6 +355,14 @@ public class GameManager implements InputAPI {
             myGameSoundTrack.startLoop();
         }
     }
+    
+    /**
+     * Turn off background soundtrack if any.
+     */
+    public void turnOffSoundTrack() {
+        myGameSoundTrack.stopLoop();
+    }
+    
     private class MouseAction {
         private int myMouseEventType;
         private Point myMousePosition;
