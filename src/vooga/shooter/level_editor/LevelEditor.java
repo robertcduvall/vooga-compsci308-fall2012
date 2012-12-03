@@ -215,7 +215,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             newBtn = new JButton(text);
         }
         newBtn.setToolTipText(tooltip);
-        //newBtn.addActionListener(this);
+        newBtn.addActionListener(this);
         newBtn.setBorder(new LineBorder(Color.gray, 1, false));
         return newBtn;
     }
