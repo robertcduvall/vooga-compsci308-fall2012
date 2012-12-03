@@ -244,10 +244,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         
         else if (source == helpBtn) {
                JOptionPane myJOptionPane = new JOptionPane(); 
-               JOptionPane.showMessageDialog(null, "left click and existing sprite to select it"   + "\n" +
-                                                      "once selected you can delete it" + "\n" +
-                                       "right click to create a sprite at a location" + "\n" +
-                                         "click save sprite to create a new xml file");
+               JOptionPane.showMessageDialog(null, "Left click an existing sprite to select it."   + "\n" +
+                                                      "A selected sprite can be deleted by clicking the delete button." + "\n" +
+                                       "Right click to create a sprite at the pointer's location." + "\n" +
+                                         "Click save to save your level to XML.");
         }
         
         else {
