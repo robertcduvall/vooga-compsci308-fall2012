@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -35,7 +36,7 @@ public class ChatApp {
     
     public static void main (String[] args) {
         try {
-            ChatClient c = new ChatClient("wl-10-190-41-57.wireless.duke.local", new GordonBukspanProtocol());
+            ChatClient c = new ChatClient("wl-10-190-79-174.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,11 +134,12 @@ public class ChatApp {
         public void actionPerformed (ActionEvent e) {
 
             String userName =
-                    JOptionPane
+                    (String)JOptionPane
                             .showInputDialog(frame,
-                                             "Please enter the name of the user you would like to converse with.",
+                                             "Choose the name of the user you would like to converse with.",
                                              "Start a New Conversation",
-                                             JOptionPane.QUESTION_MESSAGE);
+                                             JOptionPane.QUESTION_MESSAGE, null,
+                                             eg.getUsersOnline().toArray(new String[0]), eg.getUsersOnline().toArray(new String[0])[0]);
             eg.newConversation(userName); 
         }
     }

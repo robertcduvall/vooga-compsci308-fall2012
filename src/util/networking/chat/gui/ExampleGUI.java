@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -47,7 +48,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 if(usersToDialogs.keySet().contains(e.getSender())){
-                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">" + e.getMessageBody());
+                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">" + e.getMessageBody() + "\n");
                 }else{
                     ChatDialog cd = new ChatDialog(e.getMessageBody());
                     usersToDialogs.put(e.getSender(), cd);
@@ -114,12 +115,17 @@ public class ExampleGUI extends JPanel implements KeyListener {
         tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
     }
     
+    public List<String> getUsersOnline(){
+        return Collections.unmodifiableList(usersOnline);
+    }
+    
     private JScrollPane initChatInput(){
         userInput = new JTextArea(3, 40);
         userInput.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         userInput.setLineWrap(true);
         userInput.setWrapStyleWord(true);
         userInput.addKeyListener(this);
+        userInput.setCaretPosition(0);
         JScrollPane chatInput = new JScrollPane(userInput);
         chatInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chatInput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -175,7 +181,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
         myChatClient.sendMessage(to, body);
         userInput.setText("");
         ChatDialog cd = (ChatDialog)(tabbedPane.getSelectedComponent());
-        cd.getTextArea().append("<" + myChatClient.getUserName() + ">:" + body);
+        cd.getTextArea().append("<" + myChatClient.getUserName() + ">:" + body +"\n");
     }
 
     @Override
