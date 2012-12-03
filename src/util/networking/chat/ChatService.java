@@ -58,16 +58,22 @@ public class ChatService implements Service {
                 m.invoke(input, socket);
             }
             catch (IOException e) {
+                System.out.println("1: "+e.getMessage());
             }
             catch (SecurityException e) {
+                System.out.println("2: "+e.getMessage());
             }
             catch (NoSuchMethodException e) {
+                System.out.println("3: "+e.getMessage());
             }
             catch (IllegalArgumentException e) {
+                System.out.println("4: "+e.getMessage());
             }
             catch (IllegalAccessException e) {
+                System.out.println("5: "+e.getMessage());
             }
             catch (InvocationTargetException e) {
+                System.out.println("6: "+e.getMessage());
             }
         }
         try {
@@ -192,6 +198,7 @@ public class ChatService implements Service {
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             out.println(text);
+            System.out.println("Server sending: " + text);
         }
         catch (IOException e) {
         }
