@@ -26,22 +26,27 @@ public class Test {
 
         mySocialCenter = new SocialCenter();
         // testLogOn();
-        // testRegister();
-
+         //testRegister();
+      //  testDeleteUser();
        // testSendMessage();
-        myUserManager=UserManager.getInstance();
-        testUserProfile();
+       myUserManager=UserManager.getInstance();
+        testGetGame();
+     //   testReadGameList();
+       
        
 
     }
 
     private static void testSendMessage () {
-        mySocialCenter.sendMessage("mdeng1990", "Hi");
+        mySocialCenter.sendMessage("Howard","test", "xin ru zhi shui");
     }
 
     private static void testRegister () throws Exception {
         boolean status2 =
-                mySocialCenter.registerUser("testuser2", "password", "firstname", "lastname");
+                mySocialCenter.registerUser("testuser3", "password", "firstname", "lastname");
+    }
+    private static void testDeleteUser(){
+        mySocialCenter.deleteUser("testuser3", "password");
     }
 
     private static void testLogOn () throws Exception {
@@ -68,6 +73,27 @@ public class Test {
     private static void testUserProfile(){
        //myUserManager.getUserProfile(userName);
         myUserManager.getAllUserProfile();
+        
+    }
+    
+    private static void testModifyXml(){
+        User test=myUserManager.getUser("test");
+        test.setPicture("haha");
+    }
+    private static void testGetMessage(){
+        User test=myUserManager.getUser("test");
+        test.getMyMessage();
+    }
+    private static void testGetGame(){
+        User Howard=myUserManager.getUser("Howard");
+        GameData dg=Howard.getGameData("Platformer");
+        dg.setGameInfo("Howard","timesplayed", "5");
+        
+        
+    }
+    
+    private static void testReadGameList(){
+        UserXMLReader reader=new UserXMLReader();
         
     }
 
