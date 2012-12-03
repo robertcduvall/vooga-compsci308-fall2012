@@ -76,11 +76,8 @@ public class EditorPane extends DisplayPane {
         JButton newLevelButton = new JButton("Create Level");
         newLevelButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                String dir = System.getProperty(USER_DIR);
                 LevelEditor l = makeFile();
                 editLevelDocument(l);
-                PlayerEditor p = new PlayerEditor(dir +
-                        "/src/vooga/turnbased/resources/level/testPlayer.xml");
             }
         });
         add(newLevelButton);
@@ -130,15 +127,38 @@ public class EditorPane extends DisplayPane {
         
         JPanel p = new JPanel(new GridLayout(20,20));
         addMenuButton();
+        JButton playerButton = addPlayerButton();
+        add(playerButton);
         JButton spriteButton = setUpSpriteButton(l, OBJECTS, OBJECTS_DEFAULTS);
         add(spriteButton);
-        // TODO: Add create player button somewhere in this mess
         JButton nextMap = addNewMapButton(l);
         add(nextMap);
         JButton finishedButton = addDoneButton(l);
         add(finishedButton);
         add(p);
         validate();
+    }
+
+    private JButton addPlayerButton () {
+        JButton b = new JButton("Make Player");
+        b.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                JFileChooser fc = new JFileChooser(System.getProperty(USER_DIR));
+                fc.addChoosableFileFilter(new XmlFileFilter());
+                int returnVal = fc.showSaveDialog(null);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    PlayerEditor p = new PlayerEditor(fc.getSelectedFile().toString());
+                    editPlayer(p);
+                }
+                repaint();
+            }
+
+        });
+        return b;
+    }
+
+    private void editPlayer (PlayerEditor p) {
+        // TODO: Edit player here
     }
 
     private JButton setUpSpriteButton (final LevelEditor l, final String[] objects,
