@@ -51,7 +51,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 if(usersToDialogs.keySet().contains(e.getSender())){
-                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">" + e.getMessageBody() + "\n");
+                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
                 }else{
                     ChatDialog cd = new ChatDialog(e.getMessageBody());
                     usersToDialogs.put(e.getSender(), cd);
@@ -128,12 +128,13 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
     
     private JScrollPane initChatInput(){
-        userInput = new JTextArea(3, 40);
+        userInput = new JTextArea(3, 42);
         userInput.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         userInput.setLineWrap(true);
         userInput.setWrapStyleWord(true);
         userInput.addKeyListener(this);
         userInput.setCaretPosition(0);
+        userInput.append("\n");
         JScrollPane chatInput = new JScrollPane(userInput);
         chatInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chatInput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -187,9 +188,12 @@ public class ExampleGUI extends JPanel implements KeyListener {
         String body = userInput.getText();
         String to = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
         myChatClient.sendMessage(to, body);
-        userInput.setText("");
+        userInput.replaceRange(null, 0, 0);
+        userInput.moveCaretPosition(0);
         ChatDialog cd = (ChatDialog)(tabbedPane.getSelectedComponent());
-        cd.getTextArea().append("<" + myChatClient.getUserName() + ">:" + body +"\n");
+        String content = "<" + myChatClient.getUserName() + ">:     " + body;
+        content = content.replace("\r\n", "").replace("\n","");
+        cd.getTextArea().append(content+"\n");
     }
 
     @Override
