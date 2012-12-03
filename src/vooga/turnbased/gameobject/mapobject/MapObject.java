@@ -8,11 +8,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
-import vooga.turnbased.gameobject.mapstrategy.NullStrategy;
 
 
 /**
@@ -22,37 +20,57 @@ import vooga.turnbased.gameobject.mapstrategy.NullStrategy;
  * 
  */
 public class MapObject extends GameObject {
-    protected Dimension myTileDimensions;
-    protected Point myCameraOrigin;
-    protected Point myOffset;
-
+    private Dimension myTileDimension;
+    private Point myCameraOrigin;
+    private Point myOffset;
     private Point myLocation;
     private boolean myIsVisible;
     private MapMode myMapMode;
-
-    private List<MapStrategy> myMapStrategies; // addition of Strategy hardcoded
-                                               // right now
+    private List<MapStrategy> myMapStrategies;
 
     /**
      * Creates the MapObject that will be used in MapMode.
      * 
-     * @param id Integer ID associated with the MapObject.
+     * @param allowableModes Modes that are allowed
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
-     * @param mapMode MapMode in which the object exists.
      */
-    public MapObject (Set<String> allowableModes, String condition, Point location, Image mapImage) {
+    public MapObject (Set<String> allowableModes, String condition, Point location, 
+            Image mapImage) {
         super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
-        //setMapMode(mapMode);
         myMapStrategies = new ArrayList<MapStrategy>();
-        //myMapStrategies.add(new NullStrategy(mapMode));
     }
 
+    /**
+     * Set the mode that this object belongs to
+     * @param mapMode 
+     */
     public void setMapMode (MapMode mapMode) {
         myMapMode = mapMode;
+    }
+    /**
+     * Get the dimension of the tiles
+     * @return
+     */
+    public Dimension getTileDimension() {
+        return myTileDimension;
+    }
+    /**
+     * Get the origin of the camera window
+     * @return
+     */
+    public Point getCameraOrigin() {
+        return myCameraOrigin;
+    }
+    /**
+     * Get the Offset
+     * @return
+     */
+    public Point getOffset() {
+        return myOffset;
     }
 
     /**
@@ -82,6 +100,11 @@ public class MapObject extends GameObject {
         return myLocation;
     }
 
+    /**
+     * Change the current location by p
+     * @param p the amount of change
+     * @return
+     */
     public Point incrementLocation (Point p) {
         int x = getLocation().x + p.x;
         int y = getLocation().y + p.y;
@@ -120,7 +143,6 @@ public class MapObject extends GameObject {
             }
         }
     }
-    
     private void interactWithPlayer(MapPlayerObject player) {
      // if conversation has started, there is no need to start again in the
         // same interact method
@@ -152,11 +174,17 @@ public class MapObject extends GameObject {
         involvedSpriteIDs.add(involvedObject.getID());
         getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
     }
-
+    /**
+     * Add a map strategy to the object
+     * @param mapStrategy 
+     */
     public void addStrategy (MapStrategy mapStrategy) {
         myMapStrategies.add(mapStrategy);
     }
-
+    /**
+     * Get the list of all displayble strategies
+     * @return
+     */
     public List<MapStrategy> getDisplayableStrategies () {
         List<MapStrategy> displayableStrategies = new ArrayList<MapStrategy>();
         for (MapStrategy strategy : myMapStrategies) {
@@ -168,16 +196,14 @@ public class MapObject extends GameObject {
     }
 
     /**
-     * Updates MapObject; delayTime not used.
-     * 
-     * @param delayTime Not used.
+     * Updates MapObject
      */
     public void update () {
-        myTileDimensions = new Dimension(myMapMode.getTileDimensions());
+        myTileDimension = new Dimension(myMapMode.getTileDimensions());
         myCameraOrigin = new Point(myMapMode.getOrigin());
         Rectangle camera = myMapMode.getCamera();
-        int xOffset = (getLocation().x - (camera.x)) * myTileDimensions.width + myCameraOrigin.x;
-        int yOffset = (getLocation().y - (camera.y)) * myTileDimensions.height + myCameraOrigin.y;
+        int xOffset = (getLocation().x - (camera.x)) * myTileDimension.width + myCameraOrigin.x;
+        int yOffset = (getLocation().y - (camera.y)) * myTileDimension.height + myCameraOrigin.y;
         myOffset = new Point(xOffset, yOffset);
     }
 
@@ -187,10 +213,17 @@ public class MapObject extends GameObject {
      * @param g Graphics object.
      */
     public void paint (Graphics g) {
-        paintInProportion(g, myOffset, myTileDimensions, 1);
+        paintInProportion(g, myOffset, myTileDimension, 1);
     }
 
-    protected void paintInProportion (Graphics g, Point offset, Dimension tileDimension,
+    /**
+     * Paint the object in proportion
+     * @param g 
+     * @param offset 
+     * @param tileDimension 
+     * @param proportion 
+     */
+    public void paintInProportion (Graphics g, Point offset, Dimension tileDimension,
                                       double proportion) {
         if (getImage() == null || offset == null || tileDimension == null) { return; }
         offset.x += (1 - proportion) / 2 * tileDimension.width;
@@ -204,8 +237,12 @@ public class MapObject extends GameObject {
     public void clear () {
         myMapMode.removeMapObject(this);
     }
-    
-    public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs){
+    /**
+     * Have the map mode that the object belongs to flag a condition
+     * @param conditionName 
+     * @param involvedSpriteIDs 
+     */
+    public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs) {
         myMapMode.flagCondition(conditionName, involvedSpriteIDs);
     }
 }

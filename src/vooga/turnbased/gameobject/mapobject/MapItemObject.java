@@ -5,9 +5,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.Set;
 
-import vooga.turnbased.gamecore.gamemodes.MapMode;
-
-
 /**
  * items that could be picked up on the map
  * 
@@ -15,7 +12,6 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
  * 
  */
 public class MapItemObject extends MapObject {
-	
 	private static final double SIZE_RELATIVE_TO_TILE = 0.34;
 
     /**
@@ -43,6 +39,6 @@ public class MapItemObject extends MapObject {
 
     @Override
     public void paint (Graphics g) {
-        paintInProportion(g, myOffset, myTileDimensions, SIZE_RELATIVE_TO_TILE);
+        paintInProportion(g, getOffset(), getTileDimension(), SIZE_RELATIVE_TO_TILE);
     }
 }
