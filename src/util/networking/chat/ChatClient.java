@@ -48,7 +48,10 @@ public class ChatClient extends Client {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return getLoggedInStatus();
+        if (myLoggedIn) {
+            myUser = user;
+        }
+        return myLoggedIn;
     }
     
     public boolean loginWithTimeout(String user, String password, int timeout) {
@@ -59,7 +62,10 @@ public class ChatClient extends Client {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return getLoggedInStatus();
+        if (myLoggedIn) {
+            myUser = user;
+        }
+        return myLoggedIn;
     }
     
     public void switchUser(String user, String password) {
