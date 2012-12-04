@@ -23,21 +23,19 @@ public class Messenger {
      * Create a messenger with the active stream connection.
      * 
      * @param stream the active stream connection.
+     * @throws IOException
      */
-    public Messenger (StreamConnection stream) {
-        try {
-            myOutput = stream.openOutputStream();
-        }
-        // should never occur
-        catch (IOException e) {
+    public Messenger (StreamConnection stream) throws IOException {
 
-        }
+        myOutput = stream.openOutputStream();
+
     }
 
     /**
      * Write a message to the active connection.
      * 
      * @param m the message to write
+     * @throws IOException
      */
     public void write (AndroidServerMessage m) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -52,16 +50,17 @@ public class Messenger {
             myOutput.write(outBytes);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            //should never happen
         }
+
         finally {
             try {
                 out.close();
                 bos.close();
             }
-            // should never occur
+            
             catch (IOException e) {
-
+             //should never happen
             }
         }
     }

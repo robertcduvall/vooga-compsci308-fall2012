@@ -16,9 +16,7 @@ import java.util.Map;
  */
 public class AndroidServerMessage implements Serializable {
 
-    /**
-     * 
-     */
+   
     /**
      * Use this constant to represent that the string message should set the
      * description of the gameboy controller.

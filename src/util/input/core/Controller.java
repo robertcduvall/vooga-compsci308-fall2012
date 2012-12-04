@@ -29,7 +29,7 @@ public abstract class Controller<T> {
     private static final String ACTION_DESCRIPTION = "Action Description";
     private static final String KEYCODE = "KeyCode";
     private static final String TUPLE = "Tuple";
-    private static final int NUM_COLUMNS = 4;
+    private static int NUM_COLUMNS = 4;
 
     private String[] myColumnName;
 
@@ -157,9 +157,7 @@ public abstract class Controller<T> {
         Map<String, Object> dataIn = new HashMap<String, Object>();
         dataIn.put(TUPLE, new FlagPair<Object, Method>(o, m));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-
         myDataTable.addNewRow(dataIn);
-
         // myDataTable.viewContents();
     }
 
