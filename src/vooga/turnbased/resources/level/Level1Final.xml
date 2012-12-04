@@ -35,9 +35,9 @@
 			<condition>entermap2</condition>
 		</mode>
 		<mode>
-			<name>optionMode</name>
+			<name>option</name>
 			<class>vooga.turnbased.gamecore.gamemodes.OptionMode</class>
-			<condition>optionstuff</condition>
+			<condition>dooption</condition>
 		</mode>
 	</modeDeclarations>
 	<spriteDeclarations>
@@ -100,7 +100,7 @@
 				<createOn>start</createOn>
 				<modes>map1</modes>
 	            <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
-	            <condition>optionstuff</condition>
+	            <condition>dooption</condition>
 	            <location>
 	                    <x>10</x>
 	                    <y>10</y>
@@ -109,14 +109,14 @@
 		    </object>
 		    <object>
 		    	<createOn>start</createOn>
-		    	<mode>optionMode</mode>
+		    	<modes>option</modes>
 		    	<class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
 		    	<value>Go to map 1!</value>
 		    	<condition>entermap1</condition>
 		    </object>
 		    <object>
 		    	<createOn>start</createOn>
-		    	<mode>optionMode</mode>
+		    	<modes>option</modes>
 		    	<class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
 		    	<value>Quit</value>
 		    	<condition>NO_ACTION</condition>

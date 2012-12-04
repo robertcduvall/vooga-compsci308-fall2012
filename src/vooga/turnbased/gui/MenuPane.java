@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
-import util.sound.SoundPlayer;
 
 
 @SuppressWarnings("serial")
@@ -16,12 +15,14 @@ import util.sound.SoundPlayer;
  * Buttons will responds to user input and the screen will show game, editor or
  * some new menus
  * 
- * @author rex, volodymyr
+ * @author rex, volodymyr, Jenni
  *
  */
 public class MenuPane extends DisplayPane {
 
-    private String myDefaultXML = "vooga.turnbased.resources.level";
+    private String myDefaultFilepath = "src/vooga/turnbased/resources/level/Level1Final.xml";
+    private JTextField myTextField;
+    private int myTextFieldLength = 75;
 
     /**
      * Constructor
@@ -42,6 +43,7 @@ public class MenuPane extends DisplayPane {
         JButton startButton = new JButton(gameIcon);
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
+                getGameWindow().setXmlPath(myTextField.getText());
                 getGameWindow().changeActivePane(GameWindow.GAME);
             }
         });
@@ -59,20 +61,24 @@ public class MenuPane extends DisplayPane {
         JButton loadXMLButton = new JButton("Load XML");
         loadXMLButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                JFileChooser fc = new JFileChooser();
+                JFileChooser fc = new JFileChooser(myDefaultFilepath);
                 int returnVal = fc.showOpenDialog(MenuPane.this);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
+                    myTextField.setText(file.getPath());
                 } 
             }
         });
         add(loadXMLButton);
     }
 
-
+    /**
+     * Creates a text field on the menu and populates it with default xml level filepath.
+     */
     public void createXMLEntryTextField () {
-        JTextField tf = new JTextField(30);
-        tf.setText(myDefaultXML + ".Level1Final");
-        add(tf);
+        myTextField = new JTextField(myTextFieldLength);
+        myTextField.setText(myDefaultFilepath);
+        getGameWindow().setXmlPath(myDefaultFilepath);
+        add(myTextField);
     }
 }
