@@ -141,6 +141,9 @@ public class LevelEditor extends JPanel {
             if("DefeatAllEnemiesCondition".equals(con)) {
                 myBoard.addCondition(new DefeatAllEnemiesCondition(chooser.getSelectedFile().getPath()));
             }
+            else if("DestroySpecificObjectCondition".equals(con)) {
+                System.out.println("haha funny");
+            }
         }
     }
     private void createListeners() {

@@ -58,7 +58,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * 
  */
 public class LevelBoard extends JPanel {
-    private static final String DATA_PATH = "src/vooga/platformer/data/";
+    private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
     private static final String DEFAULT_COLLISION_CHECKER = "src/vooga/platformer/collision/collisionEvents.xml";
     private static final int DEFAULT_SIZE = 30;
