@@ -95,6 +95,7 @@ public class BattleMode extends GameMode implements InputAPI {
         initialize();
         myMessages.add(myEnemyObject.getStartFightingMessage(false));
         myEnemyObject.initializeStats();
+
         myMessages.add(myPlayerObject.getStartFightingMessage(true));
         myPlayerObject.initializeStats();
         configureInputHandling();
@@ -138,12 +139,12 @@ public class BattleMode extends GameMode implements InputAPI {
     private void makeTeams () {
         // adding player
         List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
-        myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(0)));
+        myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(1)));
         myTeam = new Team(myBattleObjects);
 
         // adding enemy
         List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
-        enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(1)));
+        enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(0)));
         myEnemyTeam = new Team(enemyBattleObjects);
     }
 
