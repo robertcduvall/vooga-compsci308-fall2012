@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
 
+/**
+ * subclass of Option Object that does a specific job
+ * @author rex
+ *
+ */
 public class TransportOption extends OptionObject {
 
     public TransportOption (Set<String> allowableModes, String condition, String message) {

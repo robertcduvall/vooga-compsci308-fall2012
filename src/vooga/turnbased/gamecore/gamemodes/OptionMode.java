@@ -115,7 +115,8 @@ public class OptionMode extends GameMode {
 
     @Override
     public void update () {
-
+        //option mode does not get updated now because it contains no animation
+        //subclass could override this
     }
 
     private Point getPositionOnPanel (Point position) {
@@ -141,7 +142,6 @@ public class OptionMode extends GameMode {
             myPanel.dehighlightOption();
         }
         else {
-            //flagCondition("entermap2", new ArrayList<Integer>());
             OptionObject selectedOption = myPanel.triggerOption(getPositionOnPanel(mousePosition));
             if (selectedOption != null) {
                 selectedOption.executeOption(this);

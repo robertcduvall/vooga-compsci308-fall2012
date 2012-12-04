@@ -14,6 +14,13 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 
 
+/**
+ * option object that describes an option being displayed in an Option Mode.
+ * Such as transport to another level, talking etc.
+ * 
+ * @author rex
+ * 
+ */
 public class OptionObject extends GameObject {
 
     private static final int FONT_SIZE = 16;
@@ -35,8 +42,8 @@ public class OptionObject extends GameObject {
         myColor = DEFAULT_COLOR;
         isHighlighted = false;
     }
-    
-    public void setPosition(Point paintPosition) {
+
+    public void setPosition (Point paintPosition) {
         myPosition = paintPosition;
     }
 
@@ -60,8 +67,7 @@ public class OptionObject extends GameObject {
         Color topColor = new Color(0, 10, 115);
         Color sideColor = new Color(60, 0, 115);
         int layer = 4;
-        myGameFont.threeDimensionEffect(myMessage, myColor, topColor, sideColor, layer,
-                                        myPosition);
+        myGameFont.threeDimensionEffect(myMessage, myColor, topColor, sideColor, layer, myPosition);
     }
 
     private void calculateRespondRegion () {
@@ -95,12 +101,12 @@ public class OptionObject extends GameObject {
     public boolean optionIsHighlighted () {
         return isHighlighted;
     }
-    
-    public boolean isTriggered(Point focusPosition) {
+
+    public boolean isTriggered (Point focusPosition) {
         return myRespondRegion.contains(focusPosition);
     }
-    
-    public void executeOption(OptionMode myOptionMode) {
+
+    public void executeOption (OptionMode myOptionMode) {
         myOptionMode.setModeIsOver();
     }
 
