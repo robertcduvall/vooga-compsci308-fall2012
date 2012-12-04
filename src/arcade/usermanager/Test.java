@@ -36,11 +36,16 @@ public class Test {
       //  testModifyXml();
        testLogOn();
        testGetMessage();
+       testSendFacebook();
        
        
 
     }
 
+    private static void testSendFacebook () {
+        mySocialCenter.sendPost("Howard","testing facebook poster");
+    }
+    
     private static void testSendMessage () {
         mySocialCenter.sendMessage("Howard","test", "xin ru zhi shui");
     }

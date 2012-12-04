@@ -41,9 +41,8 @@ public class ExampleGUI extends JPanel implements KeyListener {
     private JTextArea userInput;
     private Map<String, ChatDialog> usersToDialogs;
     
-    public ExampleGUI(ChatClient c, List<String> buddyList){
+    public ExampleGUI(ChatClient c){
         myChatClient = c;
-        usersOnline = buddyList;
         myChatClient.addListener(new ChatListener() {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
@@ -68,7 +67,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             @Override
             public void handleUsersUpdateEvent (UsersUpdateEvent e) {
-                updateBuddyList(e.getUsers());
+                updateBuddyList();
                 
             }});
         
@@ -102,10 +101,10 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
 
      private JTextArea initBuddyList () {
-        buddyList = new JTextArea("BUDDY LIST", 5, 15);
+        buddyList = new JTextArea("Users Online:\n\n", 5, 15);
+        usersOnline = myChatClient.getListUsers();
         for (String s: usersOnline){
-            buddyList.append("\n" + s);
-            System.out.println("I GOT" + s);
+            buddyList.append(s + "\n");
         }
         buddyList.setEditable(false);
         buddyList.setWrapStyleWord(true);
@@ -113,12 +112,11 @@ public class ExampleGUI extends JPanel implements KeyListener {
         return buddyList;
     }
      
-     private void updateBuddyList(List<String> newUsers){
-         usersOnline = newUsers;
-         buddyList.setText("BUDDY LIST\n\n");
-         for(String name : newUsers){
+     private void updateBuddyList(){
+         usersOnline = myChatClient.getListUsers();
+         buddyList.setText("Users Online:\n\n");
+         for(String name : usersOnline){
              buddyList.append(name + "\n");
-             System.out.println("Updated GOT" + name);
          }
      }
      

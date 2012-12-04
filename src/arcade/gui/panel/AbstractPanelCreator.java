@@ -2,12 +2,7 @@ package arcade.gui.panel;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
-import arcade.utility.ImageReader;
 
 
 /**
@@ -23,7 +18,6 @@ public abstract class AbstractPanelCreator {
     private Arcade myArcade;
 
     public AbstractPanelCreator (Arcade a) {
-        System.out.println(this.getClass().toString());
         myArcade = a;
     }
 
@@ -36,10 +30,8 @@ public abstract class AbstractPanelCreator {
         ArcadePanel newPanel = new ArcadePanel(myArcade, myPanelType);
         newPanel.setBackground(Color.BLACK);
 
-        // set the preferred size of the panel based on space available
-        // this can be overriden later
-//        newPanel.setPreferredSize(getArcade().getPanelSize(newPanel));
-        newPanel.setPreferredSize(new Dimension(0,0));
+        // set panel to smallest size possible
+        newPanel.setPreferredSize(null);
 
         return preparePanel(newPanel);
     }
