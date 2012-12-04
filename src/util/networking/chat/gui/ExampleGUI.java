@@ -114,7 +114,10 @@ public class ExampleGUI extends JPanel implements KeyListener {
      
      private void updateBuddyList(List<String> newUsers){
          usersOnline = newUsers;
-         buddyList = initBuddyList();
+         buddyList.setText("BUDDY LIST\n\n");
+         for(String name : newUsers){
+             buddyList.append(name + "\n");
+         }
      }
      
     protected void newConversation(String userName){
