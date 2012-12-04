@@ -47,8 +47,9 @@ public class EditorMenuBar extends JMenuBar{
                 myEditor.save();
             }
         });
+        levelMenu.addSeparator();
         JMenu attributeMenu = new JMenu("Add Level Plugin");
-        List<String> plugins = getLevelPlugins();
+        List<String> plugins = getLevelItems("AvailableLevelPlugins.txt");
         for(String plugin : plugins) {
             attributeMenu.add(new AbstractAction(plugin) {
                 @Override
@@ -58,6 +59,19 @@ public class EditorMenuBar extends JMenuBar{
             });
         }
         levelMenu.add(attributeMenu);
+        JMenu conditionMenu = new JMenu("Add Level Condition");
+        List<String> conditions = getLevelItems("AvailableConditions.txt");
+        for(String cond : conditions) {
+            conditionMenu.add(new AbstractAction(cond) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    myEditor.addLevelCondtions(e.getActionCommand());
+                }
+            });
+        }
+        levelMenu.add(conditionMenu);
+        
+        
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("New") {
             @Override
@@ -69,23 +83,21 @@ public class EditorMenuBar extends JMenuBar{
         add(spriteMenu);
     }
 
-    private List<String> getLevelPlugins () {
+    private List<String> getLevelItems (String str) {
         List<String> list = new ArrayList<String>();
         Scanner s = null;
         try {
-            s = new Scanner(new File(System.getProperty("user.dir")+"/src/vooga/platformer/data/AvailableLevelPlugins.txt"));
+            s = new Scanner(new File(System.getProperty("user.dir") + "/src/vooga/platformer/data/"+str));
         }
         catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         while(s.hasNext()) {
-            String plug = s.nextLine();
-            plug = plug.substring(plug.lastIndexOf(".")+1, plug.length());
-            list.add(plug);
+            String item = s.nextLine();
+            item = item.substring(item.lastIndexOf(".")+1, item.length());
+            list.add(item);
         }
-        list.add("Background Painter");
-        list.add("Message Painter");
         list.add("Other");
         return list;
     }
