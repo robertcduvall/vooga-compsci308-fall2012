@@ -47,7 +47,7 @@ public abstract class BattleObject extends GameObject {
         myDefaultStats = new HashMap<String, Number>();
         myChangingStats = new HashMap<String, Number>();
         setDefaultStats(stats);
-        
+        initializeStats();
         myName = name;
     }
 
@@ -66,7 +66,7 @@ public abstract class BattleObject extends GameObject {
      * @return
      */
     public Number getStat (String statName) {
-        if (myDefaultStats.containsKey(statName)) {
+        if (myChangingStats.containsKey(statName)) {
             return myChangingStats.get(statName);
         }
         else {
