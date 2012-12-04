@@ -45,9 +45,8 @@ public class EditorPane extends DisplayPane {
     private static final String[] OBJECTS = {"Class: ", "Condition: ",
         "Images: ", "Stats: ", "Name: ", "Strategy: "};
     private static final String[] OBJECTS_DEFAULTS = {
-        MAKE_CLASS_OPTIONS,//"vooga.turnbased.gameobject.[battleobject/mapobject].[specific instance]",
-        "", "vooga.turnbased.resources.image.[specific image path]",
-        "maxHealth:30 health:30, attack:10, defense:10", "", ""};
+        MAKE_CLASS_OPTIONS, "", "src/vooga/turnbased/resources/image/[specific image path]",
+        "maxHealth:30, health:30, attack:10, defense:10", "", ""};
     private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
     private static final int BOX_SIZE = 25;
     static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
@@ -66,6 +65,7 @@ public class EditorPane extends DisplayPane {
     private Point myPlayerPoint;
     private boolean displayPlayer;
     private PlayerEditor myPlayerEditor;
+    private String myBackgroundPath;
 
     /**
      * 
@@ -220,20 +220,19 @@ public class EditorPane extends DisplayPane {
     }
 
     private Map<String, String> getHardcodedImagePaths () {
-        // TODO: find more dynamic way to do this
         Map<String, String> imagePaths = new HashMap<String,String>();
-        imagePaths.put("down", "src/vooga/turnbased/resources/image/player/Down.png");
-        imagePaths.put("down1", "src/vooga/turnbased/resources/image/player/Down1.png");
-        imagePaths.put("down2", "src/vooga/turnbased/resources/image/player/Down2.png");
-        imagePaths.put("up", "src/vooga/turnbased/resources/image/player/Up.png");
-        imagePaths.put("up1", "src/vooga/turnbased/resources/image/player/Up1.png");
-        imagePaths.put("up2", "src/vooga/turnbased/resources/image/player/Up2.png");
-        imagePaths.put("right", "src/vooga/turnbased/resources/image/player/Right.png");
-        imagePaths.put("right1", "src/vooga/turnbased/resources/image/player/Right1.png");
-        imagePaths.put("right2", "src/vooga/turnbased/resources/image/player/Right2.png");
-        imagePaths.put("left", "src/vooga/turnbased/resources/image/player/Left.png");
-        imagePaths.put("left1", "src/vooga/turnbased/resources/image/player/Left1.png");
-        imagePaths.put("left2", "src/vooga/turnbased/resources/image/player/Left2.png");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Down.png", "down");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Down1.png", "down1");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Down2.png", "down2");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Up.png", "up");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Up1.png", "up1");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Up2.png", "up2");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Right.png", "right");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Right1.png", "right1");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Right2.png", "right2");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Left.png", "left");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Left1.png", "left1");
+        imagePaths.put("src/vooga/turnbased/resources/image/player/Left2.png", "left2");
         return imagePaths;
     }
 
@@ -407,6 +406,7 @@ public class EditorPane extends DisplayPane {
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
         String imagePath = returnedValues[4];
         File imageFile = new File(imagePath);
+        myBackgroundPath = imageFile.getPath();
         myBackground = new ImageIcon(imageFile.getAbsolutePath()).getImage();
         myDimension = new Dimension(Integer.parseInt(returnedValues[0]),
                 Integer.parseInt(returnedValues[1]));
@@ -432,6 +432,7 @@ public class EditorPane extends DisplayPane {
         JButton doneButton = new JButton("Finished");
         doneButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
+                l.addStaticSprites(myBackgroundPath, myMapCounter);
                 l.saveXmlDocument();
                 myPlayerEditor.modifyModes(myMapCounter);
                 myPlayerEditor.saveXmlDocument();
@@ -483,6 +484,7 @@ public class EditorPane extends DisplayPane {
         repaint();
         myDimension = new Dimension (-1, -1);
         myCurrentTile = new Point(-1, -1);
+        myPlayerPoint = new Point(-1, -1);
         myPaintedSprites.clear();
         displayPlayer = false;
     }

@@ -89,7 +89,7 @@
 	</sprite><!-- THIS IS HARDCODED AND WOULD NOT BE NECESSARY IN FUTURE. IGNORE IT FOR LEVELEDITOR -->
 	<staticSprite>
 		<class>vooga.turnbased.gameobject.mapobject.MapObject</class>
-		<event>NO_ACTION</event>
+		<condition>NO_ACTION</condition>
 		<image>src/vooga/turnbased/resources/image/grass.png</image>
 	</staticSprite>
 </level>
