@@ -40,7 +40,8 @@ public class GamePane extends DisplayPane implements Runnable {
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
         //addMouseListener(new GameMouseListener());
         initMouseListener();
-        myGameManager = new GameManager(this);
+        // myGameManager = new GameManager(this);
+        
         enableFocus();
     }
 
@@ -49,6 +50,7 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     public void initialize () {
         //myGameManager = new GameManager(this);
+        myGameManager = new GameManager(this, getGameWindow().getXmlPath());
         myGameThread = new Thread(this);
         myGameThread.setDaemon(true);
         myGameThread.start();

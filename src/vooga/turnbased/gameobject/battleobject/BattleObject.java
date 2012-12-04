@@ -92,32 +92,45 @@ public abstract class BattleObject extends GameObject {
     /**
      * Will randomly select an option, based on game designer's choice
      * @param target The target enemy of this object, should it choose to attack it.
+     * @return Returns the message that describes what was the BattleObject just did
      */
-    public abstract void doRandomOption(BattleObject target);
+    public abstract String doRandomOption(BattleObject target);
+
+    /**
+     * This controls the BattleObject and receives which option was selected
+     * @param MenuOptionSelected The int of the Option that was selected
+     * @param target The target of the option
+     * @return Returns a message that describes what the Action was that the BattleObject just took. 
+     */
+    public abstract String doOption(int MenuOptionSelected, BattleObject target);
 
     /**
      * Executes the first option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
+     * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    public abstract void doOption1(BattleObject target);
+    protected abstract String doOption1(BattleObject target);
 
     /**
      * Executes the second option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
+     * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    public abstract void doOption2(BattleObject target);
+    protected abstract String doOption2(BattleObject target);
 
     /**
      * Executes the third option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
+     * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    public abstract void doOption3(BattleObject target);
+    protected abstract String doOption3(BattleObject target);
 
     /**
      * Executes the fourth option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
+     * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    public abstract void doOption4(BattleObject target);
+    protected abstract String doOption4(BattleObject target);
 
     /**
      * Implement this method to determine how much of the attack done to this monster

@@ -50,7 +50,7 @@ public class GameManager implements InputAPI {
      * @param gameCanvas
      *        The GameCanvas it paints to
      */
-    public GameManager (GamePane gameCanvas) {
+    public GameManager (GamePane gameCanvas, String xmlPath) {
         myGamePane = gameCanvas;
         myGameIsOver = false;
 
@@ -63,8 +63,11 @@ public class GameManager implements InputAPI {
         // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        initializeGameLevel(GameWindow.importString("GameXML"),
-                            GameWindow.importString("PlayerXML"));
+        // initializeGameLevel(GameWindow.importString("GameXML"),
+        // GameWindow.importString("PlayerXML"));
+        System.out.println(GameWindow.importString("GameXML") + "\n"
+                + GameWindow.importString("PlayerXML"));
+        initializeGameLevel(xmlPath, GameWindow.importString("PlayerXML"));
         configureInputHandling();
     }
 
@@ -239,9 +242,9 @@ public class GameManager implements InputAPI {
     public void configureInputHandling () {
         try {
             GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
-                                                   this, "toggleSoundTrack");
+                    this, "toggleSoundTrack");
             GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
-                                                   myGamePane, "returnToMenu");
+                    myGamePane, "returnToMenu");
         }
         catch (NoSuchMethodException e) {
             System.out.println("A method was called that does not exist!");
@@ -321,6 +324,7 @@ public class GameManager implements InputAPI {
 
     /**
      * handle event that occured after a cycle of update
+     * 
      * @param event the event that records involved IDs and the event type
      */
     private void handleEvent (ModeEvent event) {
@@ -341,8 +345,8 @@ public class GameManager implements InputAPI {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println("Unable to create mode " + modeName + " of class " +
-                                       c.toString());
+                    System.out.println("Unable to create mode " + modeName + " of class "
+                            + c.toString());
                 }
             }
         }
@@ -362,6 +366,7 @@ public class GameManager implements InputAPI {
 
     /**
      * remove the mode from know modes
+     * 
      * @param mode the GameMode to be removed
      */
     private void killMode (GameMode mode) {

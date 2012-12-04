@@ -22,7 +22,6 @@ public class GameWindow extends JFrame {
     public static final String MENU = "0";
     public static final String EDITOR = "1";
     public static final String GAME = "2";
-    
 
     /**
      * Location for game configuration resource bundles
@@ -32,6 +31,7 @@ public class GameWindow extends JFrame {
 
     private Container myContentPane;
     private CardLayout myLayout;
+    private String myXmlPath;
 
     /**
      * Constructor construct a game window given the size of the window
@@ -105,5 +105,13 @@ public class GameWindow extends JFrame {
      */
     private void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
+    }
+
+    public void setXmlPath(String path) {
+        myXmlPath = path;
+    }
+    
+    public String getXmlPath () {
+        return myXmlPath;
     }
 }
