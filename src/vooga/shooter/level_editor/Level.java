@@ -15,7 +15,7 @@ import vooga.shooter.gameObjects.Sprite;
  * Maintains/Updates Sprites contained in a single level of the game
  * (This is derived from a previous cs308 project)
  * 
- * @author Niel Lebeck, Connor Gordon, Alex Browne
+ * @author Alex Browne, Niel Lebeck, Connor Gordon
  *      edited by Tommy Petrilak
  * 
  */
@@ -152,6 +152,10 @@ public class Level {
      */
     public void setNextLevel (Level myNextLevel) {
         this.myNextLevel = myNextLevel;
+    }
+    
+    public String getBackgroundImagePath() {
+        return myBackgroundImagePath;
     }
 
     // /**
