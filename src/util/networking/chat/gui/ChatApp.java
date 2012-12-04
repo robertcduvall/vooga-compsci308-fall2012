@@ -45,7 +45,7 @@ public class ChatApp {
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             ExampleGUI eg;
-            eg = new ExampleGUI(c,c.getListUsers());
+            eg = new ExampleGUI(c);
             frame.add(eg);
             JMenuBar menuBar = new JMenuBar();
             JMenu menu = new JMenu("File");
