@@ -220,5 +220,9 @@ public class ExampleGUI extends JPanel implements KeyListener {
         if(e.getKeyCode() == KeyEvent.VK_ENTER)
             sendMessage();
     }
+    
+    protected void logout(){
+        myChatClient.logout();
+    }
 }
     

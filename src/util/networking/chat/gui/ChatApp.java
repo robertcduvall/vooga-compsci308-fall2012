@@ -49,8 +49,10 @@ public class ChatApp {
             menuBar.add(menu);
             JMenuItem newConvoItem = new JMenuItem(new NewConversationAction(eg));
             JMenuItem closeConvoItem = new JMenuItem(new CloseConversation(eg));
+            JMenuItem logoutItem = new JMenuItem(new LogoutAction(eg));
             menu.add(newConvoItem);
             menu.add(closeConvoItem);
+            menu.add(logoutItem);
 
             frame.setJMenuBar(menuBar);
             frame.pack();
@@ -160,6 +162,20 @@ public class ChatApp {
         @Override
         public void actionPerformed (ActionEvent e) {
             eg.closeConversation();
+        }
+    }
+    
+    static class LogoutAction extends AbstractAction {
+        private ExampleGUI eg;
+
+        public LogoutAction(ExampleGUI exampleGUI) {
+            super("Log Out");
+            this.eg = exampleGUI;
+        }
+
+        @Override
+        public void actionPerformed (ActionEvent e) {
+            eg.logout();
         }
     }
 
