@@ -25,11 +25,11 @@ import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
  * 
  * There are two scenarios that you may encounter if you want to get a
  * class that implements this interface to work with the rest of the
- * level editor. 
+ * level editor.
  * 
  * 1) If the implementing class uses a constructor that takes
  * particular parameters, you must add some instantiation logic to the
- * editor's factory (the ModeChooser class). 
+ * editor's factory (the ModeChooser class).
  * 
  * 2) If the class that implements
  * this interface has a parameterless constructor then nothing whatsoever
@@ -44,7 +44,11 @@ import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 public interface IEditorMode extends IPaintable {
 
     /**
-     * Sends the IEditorMode the current cursor position.
+     * Sends the IEditorMode the current cursor position. This
+     * method will be called by the level editor once per frame.
+     * This means that every frame, the implementing class will
+     * receive the location of the user's cursor. It is up to
+     * this implementing class to decide what to do with this.
      * 
      * @param x The x coordinates of the current cursor position.
      * @param y The y coordinates of the current cursor position.
