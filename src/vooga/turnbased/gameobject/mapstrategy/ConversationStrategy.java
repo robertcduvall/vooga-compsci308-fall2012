@@ -22,7 +22,6 @@ public class ConversationStrategy extends MapStrategy {
      */
     public ConversationStrategy () {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     @Override
