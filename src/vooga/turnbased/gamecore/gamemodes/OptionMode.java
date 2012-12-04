@@ -141,8 +141,9 @@ public class OptionMode extends GameMode {
             myPanel.dehighlightOption();
         }
         else {
-            flagCondition("entermap2", new ArrayList<Integer>());
-            setModeIsOver();
+            //flagCondition("entermap2", new ArrayList<Integer>());
+            myPanel.triggerOption(getPositionOnPanel(mousePosition));
+            //setModeIsOver();
         }
     }
 }

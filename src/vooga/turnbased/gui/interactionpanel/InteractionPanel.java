@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 
@@ -37,7 +36,6 @@ public class InteractionPanel {
 
     // to be passed down for drawing
     private Graphics myImageGraphics;
-    private List<StrategyOption> myOptions;
     private List<OptionObject> myOptionObjects;
     private List<Point> myOptionPositions;
     
@@ -55,23 +53,6 @@ public class InteractionPanel {
         myOptionPositions = initializeOptionPositions();
         myBulletPointIndex = 0;
         myPreviousPosition = null;
-    }
-    
-    private List<StrategyOption> addOptions (List<String> options) {
-        List<StrategyOption> strategyOptions = new ArrayList<StrategyOption>();
-        options.add(QUIT_MESSAGE);
-        for (int i = 0; i < options.size(); i++) {
-            strategyOptions.add(new StrategyOption(options.get(i), myOptionPositions.get(i)));
-        }
-        return strategyOptions;
-    }
-    
-    private List<StrategyOption> addOptions (Set<String> options) {
-        List<String> strategyOptions = new ArrayList<String>();
-        for (String option: options) {
-            strategyOptions.add(option);
-        }
-        return addOptions(strategyOptions);
     }
 
     public Image renderImage () {
@@ -161,5 +142,14 @@ public class InteractionPanel {
      */
     public void setPreviousPosition(Point newPosition) {
         myPreviousPosition = newPosition;
+    }
+    
+    public OptionObject triggerOption(Point focusPosition) {
+        for (OptionObject option: myOptionObjects) {
+            if (option.isTriggered(focusPosition)) {
+                return option;
+            }
+        }
+        return null;
     }
 }
