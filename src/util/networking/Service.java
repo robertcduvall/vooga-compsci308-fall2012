@@ -4,7 +4,7 @@ import java.net.Socket;
 
 
 /**
- *.The Service interface has only one method - the serve() method.
+ * The Service interface has only one method - the serve() method.
  * It takes in a socket and a server and is designed to be called
  * by a Connection - with each Socket representing one Connection.
  * 
@@ -14,7 +14,7 @@ import java.net.Socket;
 public interface Service {
 
     /**
-     * Designed to be called by a Connection - with each Socket 
+     * Designed to be called by a Connection - with each Socket
      * representing a single client. The method should handle
      * interactions with the clients I/O streams.
      * 

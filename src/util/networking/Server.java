@@ -1,6 +1,5 @@
 package util.networking;
 
-
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.PrintWriter;
@@ -36,6 +35,7 @@ public class Server {
 
     /**
      * Instantiates a server with at most DEFAULT_MAX_CONNECTIONS connections.
+     * 
      * @throws UnknownHostException Could not determine HostName.
      */
     public Server () throws UnknownHostException {
@@ -54,7 +54,7 @@ public class Server {
         myServices = new HashMap<Integer, Listener>();
         myConnections = new HashSet<Connection>(maxConnections);
 
-        //Print host name - to make sure we have correct address
+        // Print host name - to make sure we have correct address
         InetAddress addr = InetAddress.getLocalHost();
         String hostname = addr.getHostName();
         System.out.println(hostname);
@@ -71,9 +71,8 @@ public class Server {
      **/
     public synchronized void addService (Service service, int port) throws IOException {
         Integer key = new Integer(port);
-        if (myServices.get(key) != null) { 
-            throw new IllegalArgumentException("Port " + port + " already in use."); 
-        }
+        if (myServices.get(key) != null) { throw new IllegalArgumentException("Port " + port +
+                                                                              " already in use."); }
         Listener listener = new Listener(myThreadGroup, port, service);
         myServices.put(key, listener);
         listener.start();
@@ -89,9 +88,7 @@ public class Server {
     public synchronized void removeService (int port) {
         Integer key = new Integer(port);
         final Listener LISTENER = (Listener) myServices.get(key);
-        if (LISTENER == null) { 
-            return; 
-        }
+        if (LISTENER == null) { return; }
         LISTENER.pleaseStop();
         myServices.remove(key);
     }
@@ -108,8 +105,8 @@ public class Server {
         if (myConnections.size() >= myMaxConnections) {
             try {
                 PrintWriter out = new PrintWriter(s.getOutputStream());
-                out.print("Connection refused; " +
-                           "the server is busy; please try again later.\r\n");
+                out.print("Connection refused; "
+                          + "the server is busy; please try again later.\r\n");
                 out.flush();
                 s.close();
             }
@@ -135,6 +132,7 @@ public class Server {
 
     /**
      * Change the current connection limit
+     * 
      * @param max The maximum number of connections.
      * */
     public synchronized void setMaxConnections (int max) {
@@ -144,7 +142,7 @@ public class Server {
     /**
      * This nested Thread subclass is a "listener". It listens for
      * connections on a specified port and calls addConnection() to
-     * process the connection according to Server specifications. There 
+     * process the connection according to Server specifications. There
      * is one Listener for each Service being provided by the Server.
      **/
     public class Listener extends Thread {
@@ -153,9 +151,9 @@ public class Server {
         private volatile boolean myStop = false;
 
         /**
-         * On a new thread, creates a ServerSocket to listen for connections 
-         * on the specified port. 
-         *
+         * On a new thread, creates a ServerSocket to listen for connections
+         * on the specified port.
+         * 
          * @param group ThreadGroup to add this listener Thread to.
          * @param port Port on which to listen for connections.
          * @param service Service to call for every connection on this port.
@@ -164,7 +162,7 @@ public class Server {
         public Listener (ThreadGroup group, int port, Service service) throws IOException {
             super(group, "Listener:" + port);
             myListenSocket = new ServerSocket(port);
-            //myListenSocket.setSoTimeout(TIMEOUT);
+            // myListenSocket.setSoTimeout(TIMEOUT);
             this.myService = service;
         }
 
