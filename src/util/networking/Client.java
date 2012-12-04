@@ -24,6 +24,7 @@ public abstract class Client {
 
     /**
      * Connects the Client to the Server at a specified Port
+     * 
      * @param host server address
      * @param port server access point
      * @throws IOException
@@ -42,6 +43,7 @@ public abstract class Client {
 
     /**
      * Write data from Client to the Server
+     * 
      * @param text data that is outputted to server
      */
     public void send (String text) {
