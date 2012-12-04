@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,10 +71,17 @@ public class EditorMenuBar extends JMenuBar{
 
     private List<String> getLevelPlugins () {
         List<String> list = new ArrayList<String>();
-        Scanner s = new Scanner(System.getProperty("user.dir")+"/src/vooga/platformer/data/AvailableLevelPlugins.txt");
+        Scanner s = null;
+        try {
+            s = new Scanner(new File(System.getProperty("user.dir")+"/src/vooga/platformer/data/AvailableLevelPlugins.txt"));
+        }
+        catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         while(s.hasNext()) {
             String plug = s.nextLine();
-            plug.substring(plug.lastIndexOf("."), plug.length());
+            plug = plug.substring(plug.lastIndexOf(".")+1, plug.length());
             list.add(plug);
         }
         list.add("Background Painter");
