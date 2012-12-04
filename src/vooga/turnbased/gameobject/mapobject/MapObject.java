@@ -163,6 +163,7 @@ public class MapObject extends GameObject {
                 strategy.performStrategy(player);
             }
         }
+        
     }
 
     /**
