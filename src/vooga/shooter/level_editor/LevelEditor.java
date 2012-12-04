@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.w3c.dom.Document;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
 import util.xml.XmlUtilities;
@@ -340,13 +341,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     private void openFile (File file) {
-        // TODO implement
-        // Uses XML Utility
-        // convert XML to Level object then display sprites
-        
-//        myLevel = new Level();
-//        myLevel = myLevel.unpack(XmlUtilities.makeDocument(file));
-        // TODO: update pack() / unpack() to newer factory implementation
+
+        myLevel = LevelFactory.loadLevel(file);
         
         myBackground = myLevel.getBackgroundImage();
         myBackground = myBackground.getScaledInstance(myCanvas.getWidth(), myCanvas.getHeight(),
@@ -355,12 +351,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     private void saveFile (File file) {
-        //use XML utility to convert current Level to File then save
-        // that File
-        file.getPath();
-        
-        // TODO: fix this pack() call
-        // XmlUtilities.write(myLevel.pack(), file.getPath());
+        Document levelDoc = LevelFactory.storeLevel(myLevel);
+        XmlUtilities.write(levelDoc, file.getPath());
     }
 
     public void newFile () {
