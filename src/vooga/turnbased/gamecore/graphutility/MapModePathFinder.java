@@ -41,7 +41,6 @@ public class MapModePathFinder extends PathFinder {
         super(object.getLocation(), target, new Dimension(mapSize));
         initialize(map, object);
         setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
-        myPreviousLocation = getStart();
     }
 
     /**
@@ -65,6 +64,7 @@ public class MapModePathFinder extends PathFinder {
         myMap = map;
         myMovingObject = object;
         myHighlightObjects = new ArrayList<MapObject>();
+        myPreviousLocation = getStart();
     }
 
     @Override
@@ -89,14 +89,11 @@ public class MapModePathFinder extends PathFinder {
      */
     public void addTask (MovingMapObject object, Point target, Dimension mapSize) {
         super.addTask(object.getLocation(), target, new Dimension(mapSize));
+        initialize(myMap, object);
     }
 
-    /**
-     * stop the moving process and the highlighted path disappeared
-     */
     @Override
-    public void stop () {
-        super.stop();
+    protected void dehighlightPath() {
         for (MapObject m : myHighlightObjects) {
             m.setVisible(false);
         }

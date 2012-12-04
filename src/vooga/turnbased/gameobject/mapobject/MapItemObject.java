@@ -17,7 +17,7 @@ public class MapItemObject extends MapObject {
 
     /**
      * Creates the MapItemObject that will be used in MapMode.
-     * 
+     *
      * @param allowableModes 
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.

@@ -67,7 +67,10 @@ public abstract class PathFinder {
     public void executeSearch () {
         myPath = searchPath();
         if (!pathIsEmpty()) {
+            myIsHighlighted = false;
+            myPathIndex = 0;
             myHasTask = true;
+            myCancelMovement = false;
         }
     }
 
@@ -79,7 +82,7 @@ public abstract class PathFinder {
      * @param end ending point
      * @param size size of the grid
      */
-    protected void addTask (Point start, Point end, Dimension size) {
+    public void addTask (Point start, Point end, Dimension size) {
         if (myIsMultiDestination) {
             myTaskCache.add(new GraphTask(myStart, myEnd, mySize));
         }
@@ -92,11 +95,9 @@ public abstract class PathFinder {
 
     /**
      * Use PathSearch for finding path
-     * It can either be a DepthFirstSearch, BreadthFirstSearch, Dijkstra or
-     * BellmanFord
-     * Dijkstra should be used for dense graphs, BellmanFord used for sparse
-     * graph
-     * Default is BFS
+     * It can either be a DepthFirstSearch, BreadthFirstSearch, Dijkstra.
+     * Dijkstra should be used for dense graphs.
+     * Default is BFS.
      * subclasses can set this as different algorithms, see the example of
      * MapModePathFinder
      * 
@@ -209,8 +210,14 @@ public abstract class PathFinder {
             myCancelMovement = true;
             myPath.clear();
             myTaskCache.clear();
+            dehighlightPath();
         }
     }
+
+    /**
+     * de-highlight the path when it is no longer needed (canceled movement)
+     */
+    protected abstract void dehighlightPath();
 
     /**
      * get the path search instance which determines what kind of algorithm is
@@ -272,26 +279,26 @@ public abstract class PathFinder {
      * 
      */
     private class GraphTask {
-        private Point start;
-        private Point end;
-        private Dimension size;
+        private Point myStart;
+        private Point myEnd;
+        private Dimension mySize;
 
         protected GraphTask (Point start, Point end, Dimension size) {
-            this.start = start;
-            this.end = end;
-            this.size = size;
+            myStart = start;
+            myEnd = end;
+            mySize = size;
         }
 
         protected Point getStart () {
-            return start;
+            return myStart;
         }
 
         protected Point getEnd () {
-            return end;
+            return myEnd;
         }
 
         protected Dimension getSize () {
-            return size;
+            return mySize;
         }
     }
 }

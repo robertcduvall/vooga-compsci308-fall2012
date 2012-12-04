@@ -99,16 +99,16 @@ public abstract class PathSearch {
         return myStart;
     }
 
-    protected void setStart (Point myStart) {
-        this.myStart = myStart;
+    protected void setStart (Point start) {
+        myStart = start;
     }
 
     protected Point getEnd () {
         return myEnd;
     }
 
-    protected void setEnd (Point myEnd) {
-        this.myEnd = myEnd;
+    protected void setEnd (Point end) {
+        myEnd = end;
     }
 
     /**
