@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,27 +36,35 @@ import vooga.turnbased.gamecreation.PlayerEditor;
 @SuppressWarnings("serial")
 public class EditorPane extends DisplayPane {
 
+    private static final String MAKE_CLASS_OPTIONS = "MAKE_CLASS_OPTIONS";
     private static final String USER_DIR = "user.dir";
     private static final String[] GAME_SETUP = {"Dimension Width: ", "Dimension Height: ",
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
     private static final String[] GAME_SETUP_DEFAULTS = {"20", "20", "15", "11",
         "src/vooga/turnbased/resources/image/grass.png"};
     private static final String[] OBJECTS = {"Class: ", "Condition: ",
-        "Images: ", "Stats: ", "Name: "};
-    private static final String[] OBJECTS_DEFAULTS = {"", "", "", "", ""};
+        "Images: ", "Stats: ", "Name: ", "Strategy: "};
+    private static final String[] OBJECTS_DEFAULTS = {
+        MAKE_CLASS_OPTIONS,//"vooga.turnbased.gameobject.[battleobject/mapobject].[specific instance]",
+        "", "vooga.turnbased.resources.image.[specific image path]",
+        "maxHealth:30 health:30, attack:10, defense:10", "", ""};
     private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
     private static final int BOX_SIZE = 25;
     static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
     private static final Image SPRITE_IMG = new ImageIcon(sprite.getAbsolutePath()).getImage();
+    static File player = new File("src/vooga/turnbased/resources/image/player.png");
+    private static final Image PLAYER_IMG = new ImageIcon(player.getAbsolutePath()).getImage();
+    
     File flashingBox = new File("src/vooga/turnbased/resources/image/flashing-box.png");
     Image flash = new ImageIcon(flashingBox.getAbsolutePath()).getImage();
     private Point[][] GRID;
     private Point myCurrentTile;
     private Image myBackground;
     private Dimension myDimension;
-    private Map<Point, List<Image>> myImageMap;
     private int myMapCounter = 1;
     private List<Point> myPaintedSprites = new ArrayList<Point>();
+    private Point myPlayerPoint;
+    private boolean displayPlayer;
     private PlayerEditor myPlayerEditor;
 
     /**
@@ -69,7 +78,7 @@ public class EditorPane extends DisplayPane {
         addMouseListener(new GameMouseListener());
         myDimension = new Dimension (-1, -1);
         myCurrentTile = new Point(-1, -1);
-        myImageMap = new HashMap<Point, List<Image>>();
+        myPlayerPoint = new Point(-1, -1);
     }
 
     private void addInitialButtons () {
@@ -106,6 +115,9 @@ public class EditorPane extends DisplayPane {
         }
         for (Point s : myPaintedSprites) {
             g.drawImage(SPRITE_IMG, s.x, s.y, BOX_SIZE, BOX_SIZE, null);
+        }
+        if (displayPlayer) {
+            g.drawImage(PLAYER_IMG, myPlayerPoint.x, myPlayerPoint.y, BOX_SIZE, BOX_SIZE, null);
         }
     }
 
@@ -149,6 +161,10 @@ public class EditorPane extends DisplayPane {
                 int returnVal = fc.showSaveDialog(null);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     myPlayerEditor = new PlayerEditor(fc.getSelectedFile().toString());
+                    Point player = GRID[myCurrentTile.x][myCurrentTile.y];
+                    myPlayerPoint = new Point(player.x, player.y);
+                    displayPlayer = true;
+                    repaint();
                     editPlayer(myPlayerEditor);
                 }
                 repaint();
@@ -161,7 +177,6 @@ public class EditorPane extends DisplayPane {
         Map<String, String> imagePaths = getHardcodedImagePaths();
         p.addMapObject("", "map", "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
                 "NO_ACTION", myCurrentTile.x, myCurrentTile.y, imagePaths);
-        // TODO: add battle objects here
         final int NUM_PAIRS = OBJECTS.length;
         final JPanel P = setUpJPanel(OBJECTS, OBJECTS_DEFAULTS, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(P, NUM_PAIRS, 2, 6, 35, 6, 6);
@@ -183,10 +198,14 @@ public class EditorPane extends DisplayPane {
                         returnedValues[index] = ((JTextComponent) current).getText();
                         index++;
                     }
+                    else if (current.getClass().getName().contains("JComboBox")) {
+                        returnedValues[index] = ((JComboBox) current).getSelectedItem().toString();
+                        index++;
+                    }
                 }
                 addObjectXmlInformation(returnedValues, myPlayerEditor);
                 newPopUpMessage(
-                        "Successfully Added Object!", "To add another object, change the " +
+                        "Successfully Added Battle Object!", "To add another object, change the " +
                         "fields to desired values.  When done, close the window to continue " +
                         "game building.");
             }
@@ -268,6 +287,10 @@ public class EditorPane extends DisplayPane {
                         returnedValues[index] = ((JTextComponent) current).getText();
                         index++;
                     }
+                    else if (current.getClass().getName().contains("JComboBox")) {
+                        returnedValues[index] = ((JComboBox) current).getSelectedItem().toString();
+                        index++;
+                    }
                 }
                 addObjectXmlInformation(returnedValues, l, sprite);
                 newPopUpMessage(
@@ -293,11 +316,10 @@ public class EditorPane extends DisplayPane {
         Integer x = myCurrentTile.x;
         Integer y = myCurrentTile.y;
         String mode = "";
-        //TODO: Better way than this to figure out correct mode
-        if (returnedValues[0].toLowerCase().contains("map")) {
+        if (returnedValues[0].toLowerCase().contains("mapobject")) {
             mode = "map" + ((Integer) myMapCounter).toString();
         }
-        else if (returnedValues[0].toLowerCase().contains("battle")) {
+        else if (returnedValues[0].toLowerCase().contains("battleobject")) {
             mode = "battle";
         }
         l.addObject(sprite, "", mode, returnedValues[0],
@@ -344,9 +366,24 @@ public class EditorPane extends DisplayPane {
         for (int i = 0; i < NUM_PAIRS; i++) {
             JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
             P.add(l1);
-            JTextField textField = new JTextField(defaultValues[i], 10);
-            l1.setLabelFor(textField);
-            P.add(textField);
+            if (defaultValues[i].equals(MAKE_CLASS_OPTIONS)) {
+                String[] options = {
+                        "vooga.turnbased.gameobject.mapobject.MapEnemyObject",
+                        "vooga.turnbased.gameobject.mapobject.MapItemObject",
+                        "vooga.turnbased.gameobject.mapobject.MapObject",
+                        "vooga.turnbased.gameobject.mapobject.MapObstacleObject",
+                        "vooga.turnbased.gameobject.mapobject.MovingMapObject",
+                        "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
+                        "vooga.turnbased.gameobject.battleobject.BattleObject",
+                        "vooga.turnbased.gameobject.battleobject.TestMonster"};
+                JComboBox box = new JComboBox(options);
+                P.add(box);
+            }
+            else {
+                JTextField textField = new JTextField(defaultValues[i], 10);
+                l1.setLabelFor(textField);
+                P.add(textField);
+            }
         }
         return P;
     }
@@ -368,9 +405,6 @@ public class EditorPane extends DisplayPane {
     }
 
     private void addBackgroundXmlInformation (String[] returnedValues, LevelEditor l) {
-        for (String now : returnedValues) {
-            System.out.println(now);
-        }
         String imagePath = returnedValues[4];
         File imageFile = new File(imagePath);
         myBackground = new ImageIcon(imageFile.getAbsolutePath()).getImage();
@@ -404,7 +438,6 @@ public class EditorPane extends DisplayPane {
                 clear();
                 getGameWindow().changeActivePane(GameWindow.MENU);
             }
-
         });
         return doneButton;
     }
@@ -451,5 +484,6 @@ public class EditorPane extends DisplayPane {
         myDimension = new Dimension (-1, -1);
         myCurrentTile = new Point(-1, -1);
         myPaintedSprites.clear();
+        displayPlayer = false;
     }
 }
