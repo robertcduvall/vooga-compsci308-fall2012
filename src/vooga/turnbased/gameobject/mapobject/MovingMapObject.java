@@ -154,7 +154,6 @@ public class MovingMapObject extends MapObject {
      * 
      * @param b Boolean to set state of "can move".
      */
-    @Override
     public void setCanMove (boolean b) {
         myCanMove = b;
     }
