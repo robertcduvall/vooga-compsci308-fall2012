@@ -208,13 +208,13 @@
                         <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
                         <modes>map1</modes>
                         <condition>NO_ACTION</condition>
-                        <image>src/vooga/turnbased/resources/image/grass.png</image>
+                        <image>src/vooga/turnbased/resources/image/mapobject/grass.png</image>
                 </staticSprite>
                 <staticSprite>
                         <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
                         <modes>map2</modes>
                         <condition>NO_ACTION</condition>
-                        <image>src/vooga/turnbased/resources/image/dirt.jpg</image>
+                        <image>src/vooga/turnbased/resources/image/mapobject/dirt.jpg</image>
                 </staticSprite>
         </spriteDeclarations>
 </rpggame>
