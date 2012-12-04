@@ -20,7 +20,7 @@ import vooga.shooter.gameObjects.Enemy;
  * @author Alex Browne
  * 
  */
-public class TestLevelEditor extends TestCase {
+public class TestLevelFactory extends TestCase {
 
     public void testLevelStoreAndLoad () {
 
