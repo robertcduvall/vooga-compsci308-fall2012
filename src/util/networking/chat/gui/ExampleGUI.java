@@ -52,10 +52,14 @@ public class ExampleGUI extends JPanel implements KeyListener {
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 if(usersToDialogs.keySet().contains(e.getSender())){
                     usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
+                    if(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()) != e.getSender()){
+                        tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
+                    }
                 }else{
                     ChatDialog cd = new ChatDialog(e.getMessageBody());
                     usersToDialogs.put(e.getSender(), cd);
                     tabbedPane.add(e.getSender(), cd);
+                    tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
                 }
                     
             }
@@ -87,8 +91,16 @@ public class ExampleGUI extends JPanel implements KeyListener {
         tabbedPane.addChangeListener(new ChangeListener() {
 
             public void stateChanged (ChangeEvent arg0) {
-                System.out.println("HI");
-                
+                int currentIndex = tabbedPane.getSelectedIndex();
+                if(currentIndex != 0){
+                    userInput.setEditable(true);
+                    userInput.setText("");
+                    tabbedPane.setIconAt(currentIndex, createImageIcon("images/chat-icon.png"));
+                }
+                else{
+                    userInput.setText("");
+                    userInput.setEditable(false);
+                }
             }});
     }
 
@@ -128,12 +140,13 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
     
     private JScrollPane initChatInput(){
-        userInput = new JTextArea(3, 42);
+        userInput = new JTextArea("Type message here", 3, 42);
         userInput.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         userInput.setLineWrap(true);
         userInput.setWrapStyleWord(true);
         userInput.addKeyListener(this);
         userInput.setCaretPosition(0);
+        userInput.setEditable(false);
         userInput.append("\n");
         JScrollPane chatInput = new JScrollPane(userInput);
         chatInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -160,6 +173,8 @@ public class ExampleGUI extends JPanel implements KeyListener {
             textArea = new JTextArea(17, 40);
             textArea.setText(text);
             textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
             textArea.setBackground(new Color(220, 226, 255));
             JScrollPane scrollPane = new JScrollPane(textArea);
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -188,8 +203,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
         String body = userInput.getText();
         String to = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
         myChatClient.sendMessage(to, body);
-        userInput.replaceRange(null, 0, 0);
-        userInput.moveCaretPosition(0);
+        userInput.setText("");
         ChatDialog cd = (ChatDialog)(tabbedPane.getSelectedComponent());
         String content = "<" + myChatClient.getUserName() + ">:     " + body;
         content = content.replace("\r\n", "").replace("\n","");
@@ -198,8 +212,6 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
     @Override
     public void keyPressed (KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SHIFT)
-            sendMessage();
     }
 
     @Override
