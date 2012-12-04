@@ -22,16 +22,17 @@ public class GameWindow extends JFrame {
     public static final String MENU = "0";
     public static final String EDITOR = "1";
     public static final String GAME = "2";
-    
+
 
     /**
      * Location for game configuration resource bundles
      */
-    private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
     private static ResourceBundle myResources;
+    private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
 
     private Container myContentPane;
     private CardLayout myLayout;
+    private String myXmlPath;
 
     /**
      * Constructor construct a game window given the size of the window
@@ -71,8 +72,8 @@ public class GameWindow extends JFrame {
      */
     public void changeActivePane (String paneName) {
         myLayout.show(myContentPane, paneName);
-        DisplayPane myCurrentPane =
-                (DisplayPane) myContentPane.getComponent(Integer.parseInt(paneName));
+        DisplayPane myCurrentPane = (DisplayPane) myContentPane.getComponent(Integer
+                .parseInt(paneName));
         myCurrentPane.initialize();
     }
 
@@ -105,5 +106,23 @@ public class GameWindow extends JFrame {
      */
     private void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
+    }
+
+    /**
+     * Sets the xml path to be the given string.
+     * 
+     * @param path String path name to xml level.
+     */
+    public void setXmlPath (String path) {
+        myXmlPath = path;
+    }
+
+    /**
+     * Returns the string path of the xml file to be loaded.
+     * 
+     * @return String path.
+     */
+    public String getXmlPath () {
+        return myXmlPath;
     }
 }
