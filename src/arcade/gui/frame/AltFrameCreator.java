@@ -13,6 +13,21 @@ import arcade.gui.Arcade;
  */
 public class AltFrameCreator extends MigFrameCreator {
 
+    private static final int LOGO_WIDTH = 300;
+    private static final int LOGO_HEIGHT = 100;
+    private static final int BLANK_WIDTH = 500;
+    private static final int BLANK_HEIGHT = 100;
+    private static final int USER_WIDTH = 300;
+    private static final int USER_HEIGHT = 100;
+    private static final int NAV_WIDTH = 1100;
+    private static final int NAV_HEIGHT = 50;
+    private static final int MAIN_WIDTH = 800;
+    private static final int MAIN_HEIGHT = 450;
+    private static final int SEARCH_WIDTH = 300;
+    private static final int SEARCH_HEIGHT = 450;
+    private static final int FOOT_WIDTH = 1100;
+    private static final int FOOT_HEIGHT = 50;
+
     /**
      * Constructor for AltFrameCreator
      * 
@@ -29,26 +44,17 @@ public class AltFrameCreator extends MigFrameCreator {
 
     @Override
     protected void addSubPanels () {
-        // logo panel
-        addPanelWithoutBorder(300, 100, "logo", "align center");
 
-        // blank panel
-        addPanelWithoutBorder(500, 100, "blank", "growx, align center");
+        addPanelWithoutBorder(LOGO_WIDTH, LOGO_HEIGHT, "logo", "align center");
+        addPanelWithoutBorder(BLANK_WIDTH, BLANK_HEIGHT, "blank", "growx, align center");
+        addPanelWithBorder(USER_WIDTH, USER_HEIGHT, "user", "align center, wrap");
+        addPanelWithoutBorder(NAV_WIDTH, NAV_HEIGHT, "nav", "span, growx, wrap");
 
-        // user panel
-        addPanelWithoutBorder(300, 100, "user", "align center, wrap");
+        addPanelWithoutBorder(FOOT_WIDTH, FOOT_HEIGHT, "foot", "span, growx");
 
-        // nav panel
-        addPanelWithoutBorder(1100, 50, "nav", "span, growx, wrap");
+        addPanelWithBorder(MAIN_WIDTH, MAIN_HEIGHT, "main", "span 2, grow");
+        addPanelWithBorder(SEARCH_WIDTH, SEARCH_HEIGHT, "search", "growy, wrap");
 
-        // foot panel
-        addPanelWithoutBorder(1100, 50, "foot", "span, growx");
-
-        // main panel
-        addPanelWithBorder(800, 450, "main", "span 2, grow");
-
-        // search panel
-        addPanelWithBorder(300, 450, "search", "growy, wrap");
     }
 
 }

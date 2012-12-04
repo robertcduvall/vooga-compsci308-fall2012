@@ -23,6 +23,11 @@ public class CreatorFactory {
     private Arcade myArcade;
     private Map<String, AbstractPanelCreator> myPanelCreatorMap;
 
+    /**
+     * Constructor for factory
+     * 
+     * @param a arcade
+     */
     public CreatorFactory (Arcade a) {
         myArcade = a;
         myResources = ResourceBundle.getBundle("arcade.gui.resources.Factory");
@@ -32,12 +37,11 @@ public class CreatorFactory {
     /**
      * method to create a panelcreator
      * 
-     * @param panelCreatorName
-     * @return
+     * @param panelCreatorName name of the panelcreator
+     * @return returns the requested panelcreator
      */
     public AbstractPanelCreator createPanelCreator (String panelCreatorName) {
 
-        System.out.println(panelCreatorName);
         if (!myPanelCreatorMap.containsKey(panelCreatorName)) {
             myPanelCreatorMap.put(panelCreatorName, createPanelCreatorInstance(panelCreatorName));
         }
@@ -49,11 +53,10 @@ public class CreatorFactory {
     /**
      * method to create a framecreator
      * 
-     * @param frameCreatorName
-     * @return
+     * @param frameCreatorName name of the framecreator
+     * @return returns the requested framecreator
      */
     public AbstractFrameCreator createFrameCreator (String frameCreatorName) {
-
         return createFrameCreatorInstance(frameCreatorName);
     }
 
@@ -69,7 +72,7 @@ public class CreatorFactory {
 
     /**
      * 
-     * @param panelCreatorName
+     * @param panelCreatorName name of the panelcreator
      * @return a panelcreator
      */
     private AbstractPanelCreator createPanelCreatorInstance (String panelCreatorName) {
@@ -79,7 +82,7 @@ public class CreatorFactory {
 
     /**
      * 
-     * @param frameCreatorName
+     * @param frameCreatorName name of the framecreator
      * @return a framecreator
      */
     private AbstractFrameCreator createFrameCreatorInstance (String frameCreatorName) {

@@ -46,11 +46,13 @@ public class HelpMainPanel extends AMainPanel {
         helpTextArea = new JTextArea(helpText, 20, 60);
         helpTextArea.setLineWrap(true);
         helpTextArea.setWrapStyleWord(true);
+        helpTextArea.setEditable(false);
         JScrollPane scrollingHelpTextArea = new JScrollPane(helpTextArea);
 
-        myPanel.setLayout(new MigLayout("flowy"));
-        myPanel.add(helpTitle, "align center");
-        myPanel.add(scrollingHelpTextArea);
+//        myPanel.setLayout(new MigLayout("flowy"));
+        myPanel.setLayout(new MigLayout("", "[grow]", "[]20[c]"));
+        myPanel.add(helpTitle, "align center, wrap");
+        myPanel.add(scrollingHelpTextArea, "align center");
         return myPanel;
     }
 
