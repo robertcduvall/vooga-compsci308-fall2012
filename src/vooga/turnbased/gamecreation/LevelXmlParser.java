@@ -182,25 +182,25 @@ public class LevelXmlParser {
      * @return List of background sprites that don't do anything
      */
     private List<Sprite> parseStaticSprites () {
+        List<Element> staticSprites = (List<Element>) XmlUtilities.getElements(myDocumentElement, "staticSprite");
         List<Sprite> spriteList = new ArrayList<Sprite>();
-        Sprite s = new Sprite();
-        for (int i = 0; i < myMapSize.width; i++) {
-            for (int j = 0; j < myMapSize.height; j++) {
-                Point point = new Point(i, j);
-                s = new Sprite();
-                Element staticSprite = XmlUtilities.getElement(
-                        myDocumentElement, "staticSprite");
-                String className = XmlUtilities.getChildContent(staticSprite,
-                        CLASS);
-                String condition = XmlUtilities.getChildContent(staticSprite,
-                        CONDITION);
-                Set<String> modes = getObjectsModes(staticSprite);
-                Image image = XmlUtilities.getChildContentAsImage(staticSprite,
-                        IMAGE);
-                MapObject mapTile = (MapObject) Reflection.createInstance(
-                        className, modes, condition, point, image);
-                s.addGameObject(mapTile);
-                spriteList.add(s);
+        for (Element staticSprite : staticSprites) {
+            for (int i = 0; i < myMapSize.width; i++) {
+                for (int j = 0; j < myMapSize.height; j++) {
+                    Point point = new Point(i, j);
+                    Sprite s = new Sprite();
+                    String className = XmlUtilities.getChildContent(staticSprite,
+                            CLASS);
+                    String condition = XmlUtilities.getChildContent(staticSprite,
+                            CONDITION);
+                    Set<String> modes = getObjectsModes(staticSprite);
+                    Image image = XmlUtilities.getChildContentAsImage(staticSprite,
+                            IMAGE);
+                    MapObject mapTile = (MapObject) Reflection.createInstance(
+                            className, modes, condition, point, image);
+                    s.addGameObject(mapTile);
+                    spriteList.add(s);
+                }
             }
         }
         return spriteList;
