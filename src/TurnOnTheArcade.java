@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import arcade.gui.Arcade;
 import arcade.utility.ImageReader;
 
-
 /**
  * This class turns on the arcade. Just press the On Button.
  * 

@@ -40,6 +40,7 @@ public final class UserManager {
     private static String myUserGameFilePath;
     private static String myDatabaseFilePath;
     private static String myTwitterFilePath;
+    private static String myFacebookFilePath;
     private static ResourceBundle resource;
     private Map<String, User> myAllUser;
     private UserXMLReader myXMLReader;
@@ -47,6 +48,7 @@ public final class UserManager {
     private User myCurrentUser;
     private Set<String> myAdminHashes;
     private Map<String, AccessToken> myTwitterTokens;
+    private Map<String, com.restfb.FacebookClient.AccessToken> myFacebookTokens;
 
     /**
      * Gets an instance of UserManager.
@@ -71,6 +73,7 @@ public final class UserManager {
         myUserGameFilePath = resource.getString("GameFilePath");
         myDatabaseFilePath = resource.getString("DatabaseFilePath");
         myTwitterFilePath = resource.getString("TwitterFilePath");
+        myFacebookFilePath = resource.getString("FacebookFilePath");
 
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
@@ -79,7 +82,39 @@ public final class UserManager {
 
         readAdminFile();
         loadTwitterTokens();
+        loadFacebookTokens();
         loadUserData();
+    }
+
+    private void loadFacebookTokens () {
+        myFacebookTokens = new HashMap<String, com.restfb.FacebookClient.AccessToken>();
+        File folder = new File(myFacebookFilePath);
+        File[] listOfFiles = folder.listFiles();
+        for (File fi : listOfFiles) {
+            if (fi.isFile()) {
+                FileInputStream fileIn;
+                try {
+                    fileIn = new FileInputStream(fi);
+                    ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+                    Object obj = objectIn.readObject();
+                    myFacebookTokens.put(FileOperation.stripExtension(fi.getName()),
+                                         (com.restfb.FacebookClient.AccessToken) obj);
+                }
+                catch (FileNotFoundException e) {
+
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
+
+                    e.printStackTrace();
+                }
+                catch (ClassNotFoundException e) {
+
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 
     private void loadUserData () {
@@ -112,15 +147,15 @@ public final class UserManager {
                                         (AccessToken) obj);
                 }
                 catch (FileNotFoundException e) {
-                    
+
                     e.printStackTrace();
                 }
                 catch (IOException e) {
-                    
+
                     e.printStackTrace();
                 }
                 catch (ClassNotFoundException e) {
-                    
+
                     e.printStackTrace();
                 }
 
@@ -204,8 +239,6 @@ public final class UserManager {
         return null;
 
     }
-    
-    
 
     protected boolean validateUser (String userName, String password) {
         if (!myAllUser.containsKey(userName)) throw new UserNotExistException();
@@ -241,8 +274,8 @@ public final class UserManager {
         String picture = user.getPicture();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
-       
-        return  new EditableUserProfile(name, picture, firstName, lastName);
+
+        return new EditableUserProfile(name, picture, firstName, lastName);
     }
 
     /**
@@ -296,7 +329,7 @@ public final class UserManager {
         return getUser(userName).getGameData(gameName);
 
     }
-    
+
     public List<GameData> getGameList (String userName) {
         return getUser(userName).getAllGameData();
 
@@ -340,13 +373,42 @@ public final class UserManager {
     }
 
     /**
-     * Deletes a user's access token.
+     * Deletes a user's Twitter access token.
      * 
      * @param name
      */
-    public boolean deleteAccessToken (String name) {
+    public boolean deleteTwitterAccessToken (String name) {
         FileOperation.deleteFile(myTwitterFilePath + name + ".at");
         myTwitterTokens.remove(name);
         return true;
     }
+
+    public Map<String, com.restfb.FacebookClient.AccessToken> getFacebookTokens () {
+        return myFacebookTokens;
+    }
+
+    public void addFacebookToken (String name, com.restfb.FacebookClient.AccessToken at) {
+        FileOutputStream f_out;
+        try {
+            f_out = new FileOutputStream(myFacebookFilePath + name + ".at");
+            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+            obj_out.writeObject(at);
+        }
+        catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        loadFacebookTokens();
+
+    }
+
+    public boolean deleteFacebookAccessToken (String name) {
+        FileOperation.deleteFile(myFacebookFilePath + name + ".at");
+        myTwitterTokens.remove(name);
+        return true;
+    }
+
 }
