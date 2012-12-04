@@ -22,9 +22,9 @@ import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 /**
  * This class allows users to enter input through the Wiimote.
- * 
+ *
  * @author Amay
- * 
+ *
  */
 public class WiiController extends Controller<WiimoteListener> implements WiimoteListener {
 
