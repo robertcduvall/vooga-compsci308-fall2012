@@ -266,6 +266,9 @@ public class MapMode extends GameMode implements InputAPI {
                 if (!endPos.equals(startPos)) {
                     movedObjects.put(startPos, currentObject);
                 }
+                if (!currentObject.isVisible()) {
+                    it.remove();
+                }
             }
         }
         for (Point startPos : movedObjects.keySet()) {
@@ -275,7 +278,6 @@ public class MapMode extends GameMode implements InputAPI {
                 myMapObjects.get(currentObject.getLocation()).add(currentObject);
             }
         }
-
     }
 
     /**
