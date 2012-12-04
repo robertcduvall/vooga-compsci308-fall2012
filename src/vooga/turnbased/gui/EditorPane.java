@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,10 @@ import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.text.JTextComponent;
 import org.w3c.dom.Element;
+import util.projectsearcher.SubClassFinder;
 import vooga.turnbased.gamecreation.LevelEditor;
 import vooga.turnbased.gamecreation.PlayerEditor;
+import vooga.turnbased.gameobject.GameObject;
 
 /**
  * @author Mark Hoffman
@@ -368,15 +371,14 @@ public class EditorPane extends DisplayPane {
             JLabel l1 = new JLabel(labels[i], JLabel.TRAILING);
             P.add(l1);
             if (defaultValues[i].equals(MAKE_CLASS_OPTIONS)) {
-                String[] options = {
-                        "vooga.turnbased.gameobject.mapobject.MapEnemyObject",
-                        "vooga.turnbased.gameobject.mapobject.MapItemObject",
-                        "vooga.turnbased.gameobject.mapobject.MapObject",
-                        "vooga.turnbased.gameobject.mapobject.MapObstacleObject",
-                        "vooga.turnbased.gameobject.mapobject.MovingMapObject",
-                        "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
-                        "vooga.turnbased.gameobject.battleobject.BattleObject",
-                        "vooga.turnbased.gameobject.battleobject.TestMonster"};
+                SubClassFinder cf = new SubClassFinder();
+                Collection<Class<?>> subClassesOfGameObject = cf.getSubClasses(GameObject.class);
+                String[] options = new String[subClassesOfGameObject.size()];
+                int index = 0;
+                for (Class<?> c : subClassesOfGameObject) {
+                    options[index] = c.toString();
+                    index++;
+                }
                 JComboBox box = new JComboBox(options);
                 P.add(box);
             }

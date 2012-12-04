@@ -22,7 +22,7 @@ public class MenuPane extends DisplayPane {
 
     private String myDefaultFilepath = "src/vooga/turnbased/resources/level/Level1Final.xml";
     private JTextField myTextField;
-    private int myTextFieldLength = 75;
+    private int myTextFieldLength = 65;
 
     /**
      * Constructor
@@ -57,6 +57,14 @@ public class MenuPane extends DisplayPane {
             }
         });
         add(editorButton);
+
+        JButton controlButton = new JButton("See Controls");
+        controlButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                getGameWindow().changeActivePane(GameWindow.CONTROLS);
+            }
+        });
+        add(controlButton);
 
         JButton loadXMLButton = new JButton("Load XML");
         loadXMLButton.addActionListener(new ActionListener() {

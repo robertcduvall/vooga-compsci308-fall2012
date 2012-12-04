@@ -81,6 +81,7 @@ public class BattleMode extends GameMode implements InputAPI {
         mySelection = OPTION1;
         myPlayerObject = myTeam.getActivePlayer();
         myEnemyObject = myEnemyTeam.getActivePlayer();
+        
     }
 
     @Override
@@ -93,7 +94,9 @@ public class BattleMode extends GameMode implements InputAPI {
         makeTeams();
         initialize();
         myMessages.add(myEnemyObject.getStartFightingMessage(false));
+        myEnemyObject.initializeStats();
         myMessages.add(myPlayerObject.getStartFightingMessage(true));
+        myPlayerObject.initializeStats();
         configureInputHandling();
         playModeEntranceSound("BattleStartSound");
     }
@@ -154,6 +157,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myTeam.switchPlayer(myTeam.nextPlayer());
             myPlayerObject = myTeam.getActivePlayer();
             myMessages.add(myPlayerObject.getStartFightingMessage(true));
+            myPlayerObject.initializeStats();
         }
         else {
             myPlayerObject.update();
@@ -163,6 +167,7 @@ public class BattleMode extends GameMode implements InputAPI {
             myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
             myEnemyObject = myEnemyTeam.getActivePlayer();
             myMessages.add(myEnemyObject.getStartFightingMessage(false));
+            myEnemyObject.initializeStats();
         }
     }
 
@@ -390,8 +395,15 @@ public class BattleMode extends GameMode implements InputAPI {
 
     /**
      * trigger the selected event
+     * @throws Exception When mySelection is greater than 4, selecting an option that
+     * is not supported
      */
-    public void triggerSelectEvent () {
+    public void triggerSelectEvent () throws Exception {
+        if (mySelection > 4) {
+            myMessages.add("Option does not exist");
+            System.out.println("Error: MySelection on option that does not exist");
+            throw new Exception();
+        }
         switch (mySelection) {
             case OPTION1:
                 triggerOption(1);

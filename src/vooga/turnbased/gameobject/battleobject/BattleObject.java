@@ -22,7 +22,8 @@ import vooga.turnbased.gameobject.GameObject;
 public abstract class BattleObject extends GameObject {
     private String myCurrentMessage = null;
     private final String myHEALTH = "health";
-    private Map<String, Number> myStats;
+    private Map<String, Number> myDefaultStats;
+    private Map<String, Number> myChangingStats;
     private String myName;
     private ImageLoop myImageLoop;
 
@@ -43,8 +44,10 @@ public abstract class BattleObject extends GameObject {
     public BattleObject(Set<String> allowableModes, String condition, Map<String, Number>
     stats, String name, Image image) {
         super(allowableModes, condition, image);
-        myStats = new HashMap<String, Number>();
-        setStats(stats);
+        myDefaultStats = new HashMap<String, Number>();
+        myChangingStats = new HashMap<String, Number>();
+        setDefaultStats(stats);
+        initializeStats();
         myName = name;
     }
 
@@ -52,9 +55,9 @@ public abstract class BattleObject extends GameObject {
      * Set the stats of the battle object
      * @param stats A map of Attributes (Strings) to values (Numbers)
      */
-    public void setStats (Map<String, Number> stats) {
+    public void setDefaultStats (Map<String, Number> stats) {
         for (String key:stats.keySet()) {
-            myStats.put(key, stats.get(key));
+            myDefaultStats.put(key, stats.get(key));
         }
     }
     /**
@@ -63,8 +66,8 @@ public abstract class BattleObject extends GameObject {
      * @return
      */
     public Number getStat (String statName) {
-        if (myStats.containsKey(statName)) {
-            return myStats.get(statName);
+        if (myChangingStats.containsKey(statName)) {
+            return myChangingStats.get(statName);
         }
         else {
             return 0;
@@ -76,8 +79,8 @@ public abstract class BattleObject extends GameObject {
      * @param value The value you want to change the stat to
      */
     protected void changeStat (String statName, Number value) {
-        if (myStats.containsKey(statName)) {
-            myStats.put(statName, value);
+        if (myChangingStats.containsKey(statName)) {
+            myChangingStats.put(statName, value);
         }
     }
 
@@ -152,8 +155,8 @@ public abstract class BattleObject extends GameObject {
      * @return True if health > 0.
      */
     public boolean isAlive() {
-        if (myStats.containsKey(myHEALTH)) {
-            Number health = myStats.get(myHEALTH);
+        if (myDefaultStats.containsKey(myHEALTH)) {
+            Number health = myDefaultStats.get(myHEALTH);
             return health.intValue() > 0;
         }
         else {
@@ -175,6 +178,14 @@ public abstract class BattleObject extends GameObject {
      */
     public abstract String getStartFightingMessage(boolean isPlayerControlled);
 
+    /**
+     * Initializes the stats of the BattleObjects to their default values (i.e. before each 
+     * battle)
+     */
+    public void initializeStats(){
+        myChangingStats = myDefaultStats;
+    }
+    
     /**
      * Gets the options that this BattleObject can perform, to be displayed in the GUI
      * @return String array of the options, paradigm is defaulted to 4,
