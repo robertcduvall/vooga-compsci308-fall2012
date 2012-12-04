@@ -69,7 +69,6 @@ public class TestLevelEditor extends TestCase {
         // and loaded the level correctly.
         assertEquals("The new level is an exact duplicate of the original",
                 originalString, newString);
-
     }
 
 }
