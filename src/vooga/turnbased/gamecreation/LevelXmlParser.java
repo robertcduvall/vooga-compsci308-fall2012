@@ -23,8 +23,6 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
-import vooga.turnbased.gameobject.mapobject.NpcMovingObject;
-import vooga.turnbased.gameobject.mapobject.TeleportMapObject;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
@@ -274,14 +272,6 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseMapPlayer(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.mapobject.NpcMovingObject"
-                .equals(objectClass)) {
-            return (GameObject) parseNpcMovingObject(objectElement);
-        }
-        else if ("vooga.turnbased.gameobject.mapobject.TeleportMapObject"
-                .equals(objectClass)) {
-            return (GameObject) parseTeleportMapObject(objectElement);
-        }
         else if ("vooga.turnbased.gameobject.battleobject.TestMonster"
                 .equals(objectClass)) {
             return (GameObject) parseBattleObject(objectElement);
@@ -324,19 +314,6 @@ public class LevelXmlParser {
         Map<String, Image> playerImages = parsePlayerImages(mapPlayer);
         Map<String, ImageLoop> imageMap = parseImageLoops(playerImages);
         MapPlayerObject myMapPlayer = (MapPlayerObject) Reflection
-                .createInstance(className, modes, event, point, playerImages);
-        myMapPlayer.setImageLoops(imageMap);
-        return myMapPlayer;
-    }
-    
-    private NpcMovingObject parseNpcMovingObject (Element mapPlayer) {
-        String className = XmlUtilities.getChildContent(mapPlayer, CLASS);
-        String event = XmlUtilities.getChildContent(mapPlayer, CONDITION);
-        Set<String> modes = getObjectsModes(mapPlayer);
-        Point point = parseLocation(mapPlayer);
-        Map<String, Image> playerImages = parsePlayerImages(mapPlayer);
-        Map<String, ImageLoop> imageMap = parseImageLoops(playerImages);
-        NpcMovingObject myMapPlayer = (NpcMovingObject) Reflection
                 .createInstance(className, modes, event, point, playerImages);
         myMapPlayer.setImageLoops(imageMap);
         return myMapPlayer;
@@ -515,37 +492,6 @@ public class LevelXmlParser {
                     IMAGE);
             MapObject mapObject = (MapObject) Reflection.createInstance(
                     className, modes, condition, point, image);
-
-            return mapObject;
-        }
-        return null;
-    }
-    
-    private TeleportMapObject parseTeleportMapObject (Element teleportObjectElement) {
-        if (teleportObjectElement.hasChildNodes()) {
-            String className = XmlUtilities.getChildContent(teleportObjectElement,
-                    CLASS);
-            String condition = XmlUtilities.getChildContent(teleportObjectElement,
-                    CONDITION);
-            Element location = XmlUtilities.getElement(teleportObjectElement,
-                    LOCATION);
-            Set<String> modes = getObjectsModes(teleportObjectElement);
-            int xPos = XmlUtilities.getChildContentAsInt(location, X);
-            int yPos = XmlUtilities.getChildContentAsInt(location, Y);
-            Point locationPoint = new Point(xPos, yPos);
-            
-            Element destLocation = XmlUtilities.getElement(teleportObjectElement,
-                    "destLocation");
-            xPos = XmlUtilities.getChildContentAsInt(destLocation, X);
-            yPos = XmlUtilities.getChildContentAsInt(destLocation, Y);
-            Point destLocationPoint = new Point(xPos,yPos);
-            
-            String destMode = XmlUtilities.getChildContent(teleportObjectElement, "destMode");
-            
-            Image image = XmlUtilities.getChildContentAsImage(teleportObjectElement,
-                    IMAGE);
-            TeleportMapObject mapObject = (TeleportMapObject) Reflection.createInstance(
-                    className, modes, condition, locationPoint, image, destLocationPoint, destMode);
 
             return mapObject;
         }
