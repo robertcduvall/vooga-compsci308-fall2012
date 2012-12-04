@@ -37,6 +37,7 @@ import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.BackgroundPainter;
 import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 import vooga.platformer.levelfileio.LevelFileReader;
@@ -212,6 +213,15 @@ public class LevelBoard extends JPanel {
         mouseY = yloc;
     }
 
+    public void setBackground (File back) {
+        try {
+            myBackground = ImageIO.read(back);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Updates the buffer preparing for the next paint call.
      */
@@ -343,6 +353,10 @@ public class LevelBoard extends JPanel {
         myGameObjects.add(obj);
     }
 
+    protected void addPlugin (LevelPlugin plug)  {
+        myPlugins.add(plug);
+    }
+
     /**
      * Will remove a sprite from the board.
      * 
@@ -351,10 +365,6 @@ public class LevelBoard extends JPanel {
      */
     protected void remove (GameObject obj) {
         myGameObjects.remove(obj);
-    }
-
-    protected void setGrav (int value) {
-        System.out.println(value);
     }
 
     private class SelectionHelper implements ActionListener {
@@ -378,7 +388,6 @@ public class LevelBoard extends JPanel {
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-
         }
 
         private void createAttributeWindow () {

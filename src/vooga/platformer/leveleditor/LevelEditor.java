@@ -85,34 +85,6 @@ public class LevelEditor extends JPanel {
      * @param plugin
      */
     public void addLevelPlugin(String plugin) {
-        final LevelBoard current = myBoard;
-
-//        if("Gravity".equals(plugin)) { 
-//            final JPopupMenu jpop = new JPopupMenu();
-//            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
-//            final JTextField gravityfield = new JTextField();
-//            JButton accept = new JButton("OK");
-//            accept.addActionListener(new ActionListener(){
-//                @Override
-//                public void actionPerformed (ActionEvent arg0) {
-//                    String val = gravityfield.getText();
-//                    try {
-//                        int temp = Integer.parseInt(val);
-//                        current.setGrav(temp);
-//                    }
-//                    catch (NumberFormatException e) {
-//                        JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
-//                        jpop.add(errormsg);
-//                        jpop.pack();
-//                        jpop.repaint();
-//                    }
-//                }
-//            });
-//            jpop.add(gravitylabel);
-//            jpop.add(gravityfield);
-//            jpop.add(accept);
-//            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
-//        }
         if("SimpleBackgroundPainter".equals(plugin)) {
             JFileChooser chooser = new
                     JFileChooser(System.getProperty("user.dir"));
@@ -120,17 +92,39 @@ public class LevelEditor extends JPanel {
                     new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(chooser);
-//            if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                try {
-//                    SimpleBackgroundPainter myBackground = new SimpleBackgroundPainter(chooser.getSelectedFile());
-//                    myBackgroundPath = chooser.getSelectedFile().getPath();
-//                }
-//                catch (IOException io) {
-//                    System.out.println("File not found. Try again");
-//                    myBackground = null;
-//                }
-//            }
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                SimpleBackgroundPainter myBackground = new SimpleBackgroundPainter(chooser.getSelectedFile());
+                myBoard.addPlugin(myBackground);
+                myBoard.setBackground(chooser.getSelectedFile());
             }
+        }
+
+        //        if("Gravity".equals(plugin)) { 
+        //            final JPopupMenu jpop = new JPopupMenu();
+        //            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
+        //            final JTextField gravityfield = new JTextField();
+        //            JButton accept = new JButton("OK");
+        //            accept.addActionListener(new ActionListener(){
+        //                @Override
+        //                public void actionPerformed (ActionEvent arg0) {
+        //                    String val = gravityfield.getText();
+        //                    try {
+        //                        int temp = Integer.parseInt(val);
+        //                        current.setGrav(temp);
+        //                    }
+        //                    catch (NumberFormatException e) {
+        //                        JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
+        //                        jpop.add(errormsg);
+        //                        jpop.pack();
+        //                        jpop.repaint();
+        //                    }
+        //                }
+        //            });
+        //            jpop.add(gravitylabel);
+        //            jpop.add(gravityfield);
+        //            jpop.add(accept);
+        //            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
+        //        }
     }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();
