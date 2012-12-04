@@ -1,6 +1,7 @@
 package arcade.gui.panel.nav;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -18,6 +19,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class NormNavPanel extends ANavPanel {
 
+    private static final int BTN_WIDTH = 150;
+    private static final int BTN_HEIGHT = 30;
+    
     public NormNavPanel (Arcade a) {
         super(a);
     }
@@ -27,10 +31,15 @@ public class NormNavPanel extends ANavPanel {
         ArcadePanel myPanel = initializeNewPanel();
 
         JButton allgamesBut = new JButton("All Games");
+        allgamesBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JButton allusersBut = new JButton("All Users");
+        allusersBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JButton myprofileBut = new JButton("My Profile");
+        myprofileBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JButton messagecenterBut = new JButton("Message Center");
+        messagecenterBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JButton twitterBut = new JButton("Twitter Connect");
+        twitterBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 
         allgamesBut.addActionListener(new ActionListener() {
             @Override

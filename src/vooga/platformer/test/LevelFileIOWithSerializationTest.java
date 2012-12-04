@@ -25,8 +25,8 @@ public class LevelFileIOWithSerializationTest {
     private static final String XML_FILE_PATH =
             "src/vooga/platformer/test/testIOWithSerialziation.xml";
     private static final String LEVEL_ID = "Level Name";
-    private static final int LEVEL_WIDTH = 20;
-    private static final int LEVEL_HEIGHT = 20;
+    private static final int LEVEL_WIDTH = 1000;
+    private static final int LEVEL_HEIGHT = 800;
     private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.png";
     private static final String COLLISION_CHECKER_PATH = "someCollisionCheckerPath";
     private static final String CAMERA_TYPE = "vooga.platformer.someCamera";
@@ -53,9 +53,8 @@ public class LevelFileIOWithSerializationTest {
         conditions.add(new DefeatAllEnemiesCondition());
         plugins.add(new SimpleBackgroundPainter(new File(TEST_IMAGE)));
         
-        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
-                                   gameObjects, conditions, plugins, CAMERA_TYPE,
-                                   COLLISION_CHECKER_PATH);
+        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, gameObjects,
+                                   conditions, plugins, CAMERA_TYPE, COLLISION_CHECKER_PATH);
         lfr = new LevelFileReader(XML_FILE_PATH);
         Assert.assertNotNull(lfr);
     }
@@ -67,7 +66,7 @@ public class LevelFileIOWithSerializationTest {
 
     @Test
     public void testgetLevelID () throws Exception {
-        Assert.assertEquals(LEVEL_ID, lfr.getLevelID());
+        Assert.assertEquals(LEVEL_ID, lfr.getLevelName());
     }
 
     @Test
@@ -77,7 +76,7 @@ public class LevelFileIOWithSerializationTest {
 
     @Test
     public void testGetHeight () throws Exception {
-        Assert.assertEquals(LEVEL_WIDTH, lfr.getHeight());
+        Assert.assertEquals(LEVEL_HEIGHT, lfr.getHeight());
     }
     
     @Test
