@@ -7,23 +7,35 @@ import java.util.ArrayList;
 import java.util.List;
 import util.networking.Client;
 
+
 /**
+ * A ChatClient allows users to communicate with each other from multiple
+ * computers over a designated ChatServer using a defined protocol.
  * 
  * @author Connor Gordon
  * @author Oren Bukspan
  */
 
 public class ChatClient extends Client {
-    
+
     private static final int TIMEOUT = 10000;
-    
+
     private ChatProtocol myProtocol;
     private String myUser;
     private boolean myLoggedIn;
     private List<String> myListUsers;
     private List<ChatListener> myChatListeners;
 
-    public ChatClient(String host, ChatProtocol c) throws IOException{
+    /**
+     * Creates a ChatClient connected to a designated host, which will
+     * pass/receive data using the following protocol
+     * 
+     * @param host the Server address
+     * @param c the protocol which will encrypt client commands and decrypt
+     *        server responses
+     * @throws IOException if Socket cannot be opened properly
+     */
+    public ChatClient (String host, ChatProtocol c) throws IOException {
         super(host, c.getPort());
         myProtocol = c;
         myChatListeners = new ArrayList<ChatListener>();
@@ -31,19 +43,41 @@ public class ChatClient extends Client {
         myLoggedIn = false;
     }
 
-    public void login(String user, String password) {
+    /**
+     * Notifies server that the user wants to log in
+     */
+    public void login (String user, String password) {
         send(myProtocol.createLogin(user, password));
     }
 
-    public void logout() {
+    /**
+     * Notifies server that the user is logging out
+     */
+    public void logout () {
         send(myProtocol.createLogout(myUser));
     }
 
-    public void register(String user, String password){
+    /**
+     * Sends a server-side request to register a new user
+     * 
+     * @param user name of new user
+     * @param password new user's password
+     */
+    public void register (String user, String password) {
         send(myProtocol.createRegister(user, password));
     }
 
-    public boolean registerWithTimeout(String user, String password, int timeout) {
+    /**
+     * Makes registration request to server and waits a designated period of
+     * time before checking log-in status
+     * 
+     * @param user name of user running client
+     * @param password password of user running client
+     * @param timeout period time between making request to server and checking
+     *        status
+     * @return whether or not the user is now logged in
+     */
+    public boolean registerWithTimeout (String user, String password, int timeout) {
         register(user, password);
         try {
             Thread.sleep(timeout);
@@ -56,8 +90,18 @@ public class ChatClient extends Client {
         }
         return myLoggedIn;
     }
-    
-    public boolean loginWithTimeout(String user, String password, int timeout) {
+
+    /**
+     * Makes login request to server and waits a designated period of time
+     * before checking log-in status
+     * 
+     * @param user name of user running client
+     * @param password password of user running client
+     * @param timeout period time between making request to server and checking
+     *        status
+     * @return whether or not the user is now logged in
+     */
+    public boolean loginWithTimeout (String user, String password, int timeout) {
         login(user, password);
         try {
             Thread.sleep(timeout);
@@ -70,32 +114,52 @@ public class ChatClient extends Client {
         }
         return myLoggedIn;
     }
-    
-    public void switchUser(String user, String password) {
+
+    /**
+     * Allows user to switch users within the same client
+     * 
+     * @param user new username
+     * @param password new password
+     */
+    public void switchUser (String user, String password) {
         logout();
         login(user, password);
     }
 
-    public void sendMessage(String userDest, String body){
+    public void sendMessage (String userDest, String body) {
         send(myProtocol.createMessage(myUser, userDest, body));
     }
 
-    public List<String> getListUsers() {
+    /**
+     * Returns a list containing the names of users who are currently online
+     * 
+     * @return list of online users
+     */
+    public List<String> getListUsers () {
         return myListUsers;
     }
 
-    public boolean getLoggedInStatus() {
+    /**
+     * Returns login status of user who is running this client
+     * 
+     * @return login status
+     */
+    public boolean getLoggedInStatus () {
         return myLoggedIn;
     }
-    
-    public String getUserName(){
+
+    /**
+     * Returns name of user who is running this client
+     * 
+     * @return username
+     */
+    public String getUserName () {
         return myUser;
     }
 
     @Override
-    public void processInputFromServer(String input) {
-        if (input == null || "".equals(input.trim()) )
-            return;
+    public void processInputFromServer (String input) {
+        if (input == null || "".equals(input.trim())) return;
         System.out.println("client received: " + input);
         ChatCommand type = myProtocol.getType(input);
         Method m;
@@ -117,7 +181,7 @@ public class ChatClient extends Client {
     }
 
     @SuppressWarnings("unused")
-    private void processMessage(String input) {
+    private void processMessage (String input) {
         String from = myProtocol.getFrom(input);
         String to = myProtocol.getTo(input);
         String body = myProtocol.getBody(input);
@@ -125,58 +189,70 @@ public class ChatClient extends Client {
     }
 
     @SuppressWarnings("unused")
-    private void processError(String input) {
+    private void processError (String input) {
         fireErrorEvent(myProtocol.getErrorMessage(input));
     }
 
     @SuppressWarnings("unused")
-    private void processLoggedIn(String input) {
+    private void processLoggedIn (String input) {
         myLoggedIn = myProtocol.getStatus(input);
     }
 
     @SuppressWarnings("unused")
-    private void processListUsers(String input) {
+    private void processListUsers (String input) {
         myListUsers = myProtocol.getListUsers(input);
     }
 
     @SuppressWarnings("unused")
-    private void processAddUser(String input) {
+    private void processAddUser (String input) {
         myListUsers.add(myProtocol.getUser(input));
         fireUsersUpdateEvent();
     }
 
     @SuppressWarnings("unused")
-    private void processRemoveUser(String input) {
+    private void processRemoveUser (String input) {
         myListUsers.remove(myProtocol.getUser(input));
         fireUsersUpdateEvent();
     }
 
-    private synchronized void fireMessageReceivedEvent(String to, String from, String body) {
+    private synchronized void fireMessageReceivedEvent (String to, String from, String body) {
         MessageReceivedEvent e = new MessageReceivedEvent(this, to, from, body);
         for (ChatListener cl : myChatListeners) {
             cl.handleMessageReceivedEvent(e);
         }
     }
 
-    private synchronized void fireErrorEvent(String message) {
+    private synchronized void fireErrorEvent (String message) {
         ErrorEvent e = new ErrorEvent(this, message);
         for (ChatListener cl : myChatListeners) {
             cl.handleErrorEvent(e);
         }
     }
 
-    private synchronized void fireUsersUpdateEvent() {
+    private synchronized void fireUsersUpdateEvent () {
         UsersUpdateEvent e = new UsersUpdateEvent(this, myListUsers);
         for (ChatListener cl : myChatListeners) {
             cl.handleUsersUpdateEvent(e);
         }
     }
-    
-    public synchronized void addListener(ChatListener cl){
+
+    /**
+     * Adds ChatListener to list of ChatListners that are iterated through when
+     * an event is triggered
+     * 
+     * @param cl new ChatListener which will handle triggered events
+     */
+    public synchronized void addListener (ChatListener cl) {
         myChatListeners.add(cl);
     }
 
-    public synchronized void removeListener(ChatListener cl){
+    /**
+     * Removes ChatListener from list of ChatListeners iterated through when
+     * event is triggered
+     * 
+     * @param cl reference to ChatListener being removed
+     */
+    public synchronized void removeListener (ChatListener cl) {
         myChatListeners.remove(cl);
     }
 }

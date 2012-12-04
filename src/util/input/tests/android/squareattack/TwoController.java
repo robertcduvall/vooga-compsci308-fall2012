@@ -1,4 +1,4 @@
-package util.input.tests.twocontroller;
+package util.input.tests.android.squareattack;
 
 import java.awt.Color;
 import java.awt.Graphics;
