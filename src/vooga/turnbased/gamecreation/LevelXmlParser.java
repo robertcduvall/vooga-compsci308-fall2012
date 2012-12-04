@@ -25,6 +25,7 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
 import vooga.turnbased.gameobject.mapstrategy.ConversationStrategy;
 import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
+import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
 
@@ -261,8 +262,10 @@ public class LevelXmlParser {
     private GameObject parseGameObject (Element objectElement) {
         String createCondition = XmlUtilities.getChildContent(objectElement,
                 CREATE_ON);
-        boolean playerOwnsObject = objectElement.getParentNode().getNodeName().equals(PLAYER);
-        if (createCondition != null || playerOwnsObject) {
+        boolean playerOwnsObject = objectElement.getParentNode().getNodeName()
+                .equals(PLAYER);
+        if (createCondition != null || playerOwnsObject) {// TODO: fix, was just
+            // a test
             // this is nasty... given more time, reflection could have solved
             // this
             String objectClass = XmlUtilities.getChildContent(objectElement,
@@ -288,9 +291,7 @@ public class LevelXmlParser {
                 return (GameObject) parseMapObject(objectElement);
             }
             else if ("vooga.turnbased.gameobject.optionobject.OptionObject"
-                    .equals(objectClass)) {
-                // OptionObject not yet implemented
-            }
+                    .equals(objectClass)) { return (GameObject) parseOptionObject(objectElement); }
         }
         return null;
     }
@@ -476,7 +477,7 @@ public class LevelXmlParser {
         if (mapObjectElement.hasChildNodes()) {
             String className = XmlUtilities.getChildContent(mapObjectElement,
                     CLASS);
-            String event = XmlUtilities.getChildContent(mapObjectElement,
+            String condition = XmlUtilities.getChildContent(mapObjectElement,
                     CONDITION);
             Element location = XmlUtilities.getElement(mapObjectElement,
                     LOCATION);
@@ -487,7 +488,7 @@ public class LevelXmlParser {
             Image image = XmlUtilities.getChildContentAsImage(mapObjectElement,
                     IMAGE);
             MapObject mapObject = (MapObject) Reflection.createInstance(
-                    className, modes, event, point, image);
+                    className, modes, condition, point, image);
             // I'll delete it as soon as possible
             if (point.equals(new Point(10, 10))) {
                 mapObject.addStrategy(new TransportStrategy(mapObject,
@@ -501,6 +502,17 @@ public class LevelXmlParser {
             return mapObject;
         }
         return null;
+    }
+
+    private OptionObject parseOptionObject (Element optionElement) {
+        String className = XmlUtilities.getChildContent(optionElement, CLASS);
+        String condition = XmlUtilities.getChildContent(optionElement,
+                CONDITION);
+        Set<String> modes = getObjectsModes(optionElement);
+        String nameValue = XmlUtilities.getChildContent(optionElement, NAME);
+        OptionObject optionObject = (OptionObject) Reflection.createInstance(
+                className, modes, condition, nameValue);
+        return optionObject;
     }
 
     /**
