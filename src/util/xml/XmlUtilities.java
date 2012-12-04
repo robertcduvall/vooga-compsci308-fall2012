@@ -28,7 +28,7 @@ import org.w3c.dom.NodeList;
  * A general-use xml utility class.
  * 
  * IMPORTANT: There are other xml utilities but this is the one that everyone
- * should use. The 5-6 of us got together to make one Utility class that has 
+ * should use. The 5-6 of us got together to make one Utility class that has
  * the best from all the others and is more robust. All other xml utilities
  * have been deprecated.
  * 
@@ -52,11 +52,11 @@ import org.w3c.dom.NodeList;
  * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
  * 
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov,
- *      Difan Zhao, Mark Hoffman
+ *         Difan Zhao, Mark Hoffman
  */
 
 public class XmlUtilities {
-    
+
     /**
      * Creates a new (empty) Document.
      * 
@@ -445,8 +445,8 @@ public class XmlUtilities {
     public static Element setAttribute (Element element, String attributeName,
             String newAttributeContent) {
         if (element.getAttribute(attributeName) == null) {
-            System.err.println("WARNING: Tried to set an attribute " +
-            		"that doesn't yet exist! Added it as a new attribute.");
+            System.err.println("WARNING: Tried to set an attribute "
+                    + "that doesn't yet exist! Added it as a new attribute.");
         }
         element.setAttribute(attributeName, newAttributeContent);
         return element;
@@ -583,7 +583,8 @@ public class XmlUtilities {
      */
     public static String getChildContent (Element parent, String tag) {
         Node child = getElement(parent, tag);
-        return child.getTextContent();
+        if (child != null) { return child.getTextContent(); }
+        return null;
     }
 
     /**
@@ -731,7 +732,7 @@ public class XmlUtilities {
         // (This is necessary for setting it as a DOMSource).
         Document doc = makeDocument();
         doc.appendChild(element);
-        
+
         StringWriter sw = new StringWriter();
         StreamResult result = new StreamResult(sw);
         DOMSource source = new DOMSource(doc);
@@ -768,7 +769,7 @@ public class XmlUtilities {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Writes an element to an xml file
      * 
@@ -777,7 +778,7 @@ public class XmlUtilities {
      */
 
     public static void write (Element element, String filePath) {
-        
+
         FileWriter writer = null;
         String xmlString = null;
         try {
@@ -804,7 +805,7 @@ public class XmlUtilities {
      * @param nodeList the NodeList to convert.
      * @return a collection of elements.
      */
-    
+
     public static Collection<Element> convertNodeListToCollection (
             NodeList nodeList) {
         ArrayList<Element> list = new ArrayList<Element>();

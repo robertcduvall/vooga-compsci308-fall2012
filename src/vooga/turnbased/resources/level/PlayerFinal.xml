@@ -1,6 +1,5 @@
 <player>
 	  <object>
-	  	<createOn>start</createOn>
 	  	<modes>map1, map2</modes>
 		<class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
 		<condition>NO_ACTION</condition>

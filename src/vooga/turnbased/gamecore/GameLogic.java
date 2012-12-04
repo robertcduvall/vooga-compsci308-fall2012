@@ -39,7 +39,8 @@ public class GameLogic {
      * 
      * @param eventConditions - {mode name -> list of list of conditions}
      */
-    public void addEventConditions (Map<String, List<List<String>>> eventConditions) {
+    public void addEventConditions (
+            Map<String, List<List<String>>> eventConditions) {
         myEventConditions.putAll(eventConditions);
     }
 
@@ -65,9 +66,12 @@ public class GameLogic {
      * @param involvedSpriteIDs - list of Sprite IDs involved in this condition
      *        occurrence
      */
-    public void flagCondition (String newCondition, List<Integer> involvedSpriteIDs) {
-        myGameConditions.add(newCondition);
-        checkConditions(involvedSpriteIDs);
+    public void flagCondition (String newCondition,
+            List<Integer> involvedSpriteIDs) {
+        if (!myGameConditions.contains(newCondition)) {
+            myGameConditions.add(newCondition);
+            checkConditions(involvedSpriteIDs);
+        }
     }
 
     /**
@@ -79,7 +83,8 @@ public class GameLogic {
     private void checkConditions (List<Integer> involvedSpriteIDs) {
         Set<String> usedConditions = new TreeSet<String>();
         for (String eventName : myEventConditions.keySet()) {
-            for (List<String> requiredConditions : myEventConditions.get(eventName)) {
+            for (List<String> requiredConditions : myEventConditions
+                    .get(eventName)) {
                 if (myGameConditions.containsAll(requiredConditions)) {
                     myGameManager.flagEvent(eventName, involvedSpriteIDs);
                     usedConditions.addAll(requiredConditions);
