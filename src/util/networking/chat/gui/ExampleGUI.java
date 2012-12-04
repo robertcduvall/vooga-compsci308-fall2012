@@ -102,9 +102,10 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
 
      private JTextArea initBuddyList () {
-        buddyList = new JTextArea("Buddy List", 5, 15);
+        buddyList = new JTextArea("BUDDY LIST", 5, 15);
         for (String s: usersOnline){
             buddyList.append("\n" + s);
+            System.out.println("I GOT" + s);
         }
         buddyList.setEditable(false);
         buddyList.setWrapStyleWord(true);
@@ -117,6 +118,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
          buddyList.setText("BUDDY LIST\n\n");
          for(String name : newUsers){
              buddyList.append(name + "\n");
+             System.out.println("Updated GOT" + name);
          }
      }
      

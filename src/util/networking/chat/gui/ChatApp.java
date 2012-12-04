@@ -38,11 +38,12 @@ public class ChatApp {
     public static void main (String[] args) {
         try {
             ChatClient c = new ChatClient("wl-10-190-55-243.wireless.duke.local", new GordonBukspanProtocol());
-            String userName = login("", c);
+            List<String> users;
+            String userName = login("", c, users);
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             ExampleGUI eg;
-            eg = new ExampleGUI(c, c.getListUsers());
+            eg = new ExampleGUI(c, users;
             frame.add(eg);
             JMenuBar menuBar = new JMenuBar();
             JMenu menu = new JMenu("File");
@@ -63,10 +64,10 @@ public class ChatApp {
         }
     }
     
-    private static String login (String errorMessage, ChatClient c) {
+    private static String login (String errorMessage, ChatClient c, List<String> u) {
         JPanel userPassPanel = new JPanel(new GridLayout(3,2));
         JLabel userLabel = new JLabel("Username (<12 char)");
-        JLabel passLabel = new JLabel("Password (<5 char)");
+        JLabel passLabel = new JLabel("Password (>5 char)");
         JTextField userTA = new JTextField(10);
         JPasswordField pass = new JPasswordField(10);
         userPassPanel.add(userLabel);
@@ -100,28 +101,29 @@ public class ChatApp {
         int option = JOptionPane.showOptionDialog(null, loginPanel, "Please Enter a Username and Password",
                                  JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
                                  null, options, loginPanel.getComponent(1));
+        u = c.getListUsers();
         if(option == 0) // pressing OK button
         {
             String userName = userTA.getText().trim();
             char[] password = pass.getPassword();
             if(userName.length() > MAX_USER_CHAR)
-                return login("<html>Error: UserName entered is too long<br><br></html>", c);
+                return login("<html>Error: UserName entered is too long<br><br></html>", c, u);
             else if(userName.length() == 0)
-                return login("<html>Error: A Zero Character UserName is NOT ALLOWED<br><br></html>", c);
+                return login("<html>Error: A Zero Character UserName is NOT ALLOWED<br><br></html>", c, u);
             else if (password.length < 5)
-                return login("<html>Error: Password must be at least 5 characters<br><br></html>",c);
+                return login("<html>Error: Password must be at least 5 characters<br><br></html>",c, u);
             if(login.isSelected()){
                 boolean status = c.loginWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
-                if(!status) return login("<html>Error: Could not login. Please check your server connection.<br><br>", c);
+                if(!status) return login("<html>Error: Could not login. Please check your server connection.<br><br>", c, u);
             }
             else{
                 boolean status = c.registerWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
-                if(!status) return login("<html>Error: Could not Properly Register. Please Try Again.<br><br>",c);
+                if(!status) return login("<html>Error: Could not Properly Register. Please Try Again.<br><br>",c, u);
             }
             return userName;
         }
         else if(option == 1)
-            return login("<html>Error: Please Enter a Username and Password. Otherwise you cannot chat.<br><br></html>", c);
+            return login("<html>Error: Please Enter a Username and Password. Otherwise you cannot chat.<br><br></html>", c,u);
         System.exit(0);
         return "";
     }
