@@ -11,7 +11,6 @@ import java.util.Map;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
-import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
@@ -31,7 +30,6 @@ public class OptionMode extends GameMode {
     private InteractionPanel myPanel;
     private Image myPanelImage;
     private Point myOrigin;
-    private Map<String, MapStrategy> myDisplayedStrategies;
     private Map<String, OptionObject> myOptions;
     private Rectangle myBounds;
 
@@ -44,13 +42,8 @@ public class OptionMode extends GameMode {
      */
     public OptionMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
-        myDisplayedStrategies = new HashMap<String, MapStrategy>();
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
         findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
-        List<MapStrategy> optionStrategies = myNPC.getDisplayableStrategies();
-        for (MapStrategy strategy : optionStrategies) {
-            myDisplayedStrategies.put(strategy.getDisplayMessage(), strategy);
-        }
         List<OptionObject> options = new ArrayList<OptionObject>();
         myOptions = new HashMap<String, OptionObject>();
         for (GameObject option : getGameObjects()) {
