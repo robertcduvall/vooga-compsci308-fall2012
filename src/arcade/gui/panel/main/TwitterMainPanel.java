@@ -36,7 +36,7 @@ public class TwitterMainPanel extends AMainPanel{
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         myPanel.setBackground(Color.BLUE);
-        MigLayout layout = new MigLayout("", "[50%, grow]", "[][][][]push[]");
+        MigLayout layout = new MigLayout("", "100[c]", "[][][]100[][]");
         myPanel.setLayout(layout);
         
         JLabel welcomeLabel = new JLabel("Welcome to the twitter connect! \nTweet from the comfort of the arcade.");
@@ -104,13 +104,11 @@ public class TwitterMainPanel extends AMainPanel{
         
         myPanel.add(twitterPicture, "align center, split 2");
         myPanel.add(welcomeLabel, "align center, wrap");
-        //myPanel.add(tweetPrompt, "align center, span, wrap");
+        myPanel.add(tweetPrompt, "align left, span, wrap");
         myPanel.add(textToTweet, "grow, split 2, align center, span");
         myPanel.add(tweetBut, "grow, wrap");
         myPanel.add(instructionTextScroller, "wrap, grow, align center, span");
         myPanel.add(tweetDisconnectBut, "align left");
-        
-        
         
         
         
