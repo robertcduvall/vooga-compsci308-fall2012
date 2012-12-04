@@ -45,7 +45,7 @@ public class AndroidVibration implements Serializable {
 
     /**
      * 
-     * @return
+     * @return the total time a vibration lasts
      */
     public int getVibrationTime () {
         return myVibrationTime;
@@ -53,7 +53,7 @@ public class AndroidVibration implements Serializable {
 
     /**
      * 
-     * @return
+     * @return the time in ms that the vibration is on per cycle
      */
     public int getOnTime () {
         return myOnTime;
@@ -61,7 +61,7 @@ public class AndroidVibration implements Serializable {
 
     /**
      * 
-     * @return
+     * @return the time in ms that the vibration is off per cycle
      */
     public int getOffTime () {
         return myOffTime;

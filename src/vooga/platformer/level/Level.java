@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
+import util.camera.UpdatableCamera;
 import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
-import vooga.platformer.util.camera.UpdatableCamera;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -129,10 +129,11 @@ public class Level {
                 }
             }
 
-            for (GameObject removeObj : removalList) {
-                objectList.remove(removeObj);
+            for (int i = removalList.size() - 1; i >= 0; i--) {
+                System.out.println("removing!");
+                objectList.remove(removalList.get(i));
             }
-
+            
             // modified here
             myCollisionChecker.checkCollisions(this);
             cam.update(elapsedTime);

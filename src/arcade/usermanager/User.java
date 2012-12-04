@@ -77,6 +77,12 @@ public class User {
         }
         return null;
     }
+    
+    protected List<GameData> getAllGameData(){
+        return myGameData;
+    }
+    
+    
 
     public List<Message> getMyMessage () {
         return myMessages;

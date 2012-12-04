@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 /**
  * This program connects to a server at a specified host and port.
  * It reads text from the console and sends it to the server.
@@ -22,11 +21,11 @@ import java.util.List;
 public abstract class Client {
 
     private Socket myServer;
-    
+
     /**
-     * 
-     * @param host
-     * @param port
+     * Connects the Client to the Server at a specified Port
+     * @param host server address
+     * @param port server access point
      * @throws IOException
      */
     public Client (String host, int port) throws IOException {
@@ -35,13 +34,17 @@ public abstract class Client {
         System.out.println("Connected to " + myServer.getInetAddress() + ":" + myServer.getPort());
         startListening();
     }
-    
-    private void startListening() {
+
+    private void startListening () {
         Receiver r = new Receiver();
         r.start();
     }
-    
-    public void send(String text) {
+
+    /**
+     * Write data from Client to the Server
+     * @param text data that is outputted to server
+     */
+    public void send (String text) {
         try {
             System.out.println("SENDING" + text);
             PrintWriter out = new PrintWriter(myServer.getOutputStream());
@@ -51,19 +54,34 @@ public abstract class Client {
         catch (IOException e) {
         }
     }
-    
-    public abstract void processInputFromServer(String input);
-    
-    class Receiver extends Thread{
+
+    /**
+     * Given input from the Server, process it appropriately
+     * 
+     * @param input Server data streamed to client
+     */
+    public abstract void processInputFromServer (String input);
+
+    /**
+     * A Thread that continuously processes ServerInput
+     * 
+     * @author Oren Bukspan
+     * 
+     */
+    class Receiver extends Thread {
+        /**
+         * Starts the thread and allows it to run infinitely.
+         */
         public void run () {
             try {
-                BufferedReader fromServer = new BufferedReader(new InputStreamReader(myServer.getInputStream()));
-                
+                BufferedReader fromServer =
+                        new BufferedReader(new InputStreamReader(myServer.getInputStream()));
+
                 while (true && fromServer != null) {
                     String input = fromServer.readLine();
                     processInputFromServer(input);
                 }
-                
+
                 myServer.close();
             }
             catch (IOException e) {

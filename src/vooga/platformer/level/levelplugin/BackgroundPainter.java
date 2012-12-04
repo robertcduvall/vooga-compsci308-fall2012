@@ -29,7 +29,8 @@ public abstract class BackgroundPainter extends LevelPlugin {
 
     @Override
     public void paint (Graphics pen, List<GameObject> objList, Camera cam) {
-        pen.drawImage(getCurrentBackgroundImage(objList), 0, 0, null);
+        pen.drawImage(getCurrentBackgroundImage(objList), 0, 0, (int)cam.getBounds().getWidth(),
+                (int)cam.getBounds().getHeight(), null);
     }
     
     /**

@@ -2,9 +2,9 @@
 <levelName>Level</levelName>
 <width>640</width>
 <height>480</height>
-<collisionChecker>/src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
 <camera>FollowingCamera</camera>
-<gameObjectData>/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelGameObjects.bin</gameObjectData>
-<conditionData>/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelConditions.bin</conditionData>
-<pluginData>/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelPlugins.bin</pluginData>
+<gameObjectData>/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelGameObjects.bin</gameObjectData>
+<conditionData>/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelConditions.bin</conditionData>
+<pluginData>/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelPlugins.bin</pluginData>
 </level>

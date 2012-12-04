@@ -1,4 +1,4 @@
-package util.input.tests.twocontroller;
+package util.input.tests.android.squareattack;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -27,6 +27,14 @@ public class Square {
     private int nextYMove;
     private double myRotation = 0;
     private static final int MOVE_PIXEL = 3;
+    private boolean[][] myHitPoints;
+    private int lifeLeft;
+
+    // attacker squares
+    // attacked square
+    // draw box
+    // breakable square
+    // etc. etc.
 
     /**
      * Create a new square at start position with the given color.
@@ -38,6 +46,8 @@ public class Square {
         myX = startPosition.x;
         myY = startPosition.y;
         myColor = color;
+        //myHitPoints array = new boolean[size][size];
+        //Arrays.fill(array, Boolean.FALSE);
 
     }
 
