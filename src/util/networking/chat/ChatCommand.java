@@ -47,7 +47,7 @@ public enum ChatCommand {
     /**
      * Represents a list of users currently online.
      */
-    LISTUSERS ("processUsers", "LISTUSERS"),
+    LISTUSERS ("processListUsers", "LISTUSERS"),
     /**
      * Represents an addition to the list of users currently online.
      */

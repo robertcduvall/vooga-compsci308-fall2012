@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,11 +46,6 @@ public class ChatService implements Service {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         }
         catch (IOException e) {
-        }
-
-        synchronized (myUsersToSockets) {
-            write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet()
-                    .toArray(new String[0]))));
         }
 
         while (true && in != null) {
@@ -102,6 +98,7 @@ public class ChatService implements Service {
             for (String user : myUsersToSockets.keySet()) {
                 if (myUsersToSockets.get(user).equals(socket)) {
                     removeUser(user, socket);
+                    break;
                 }
             }
         }
@@ -136,6 +133,10 @@ public class ChatService implements Service {
         else if (myServer.login(user, password)) {
             write(socket, myProtocol.createLoggedIn(user, true));
             addUser(user, socket);
+            synchronized (myUsersToSockets) {
+                write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet()
+                        .toArray(new String[0]))));
+            }
         }
         else {
             write(socket, myProtocol.createLoggedIn(user, false));
@@ -154,8 +155,12 @@ public class ChatService implements Service {
             else {
                 myServer.addUser(user, password);
                 myServer.login(user, password);
-                addUser(user, socket);
                 write(socket, myProtocol.createLoggedIn(user, true));
+                addUser(user, socket);
+                synchronized (myUsersToSockets) {
+                    write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets
+                            .keySet().toArray(new String[0]))));
+                }
             }
         }
     }
@@ -186,23 +191,21 @@ public class ChatService implements Service {
 
     private void addUser (String user, Socket socket) {
         synchronized (myUsersToSockets) {
-            // add new user to list
-            myUsersToSockets.put(user, socket);
             // notify all clients of new user
             for (Socket s : myUsersToSockets.values()) {
                 write(s, myProtocol.createAddUser(user));
             }
+            // add new user to list
+            myUsersToSockets.put(user, socket);
         }
     }
 
     private void removeUser (String user, Socket socket) {
-        synchronized (myUsersToSockets) {
-            // notify all clients to remove user
-            for (Socket s : myUsersToSockets.values()) {
-                write(s, myProtocol.createRemoveUser(user));
-            }
-         // remove user from list
-            myUsersToSockets.remove(user);
+        // remove user from list
+        myUsersToSockets.remove(user);
+        // notify all clients to remove user
+        for (Socket s : myUsersToSockets.values()) {
+            write(s, myProtocol.createRemoveUser(user));
         }
     }
 
