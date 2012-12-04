@@ -155,7 +155,7 @@ public class LevelBoard extends JPanel {
                 GameObject obj = null;
                 try {
                     String cmmd = e.getComponent().getName();
-                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd+".png");
+                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd + ".png");
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
@@ -296,9 +296,10 @@ public class LevelBoard extends JPanel {
             // log.append("Saving: " + file.getName() + "." + newline);
         }
         else {
-            saveFile = new File(System.getProperty("user.dir"), "myLevel.xml");
+            saveFile = new File(System.getProperty("user.dir") + DATA_PATH, "myLevel.xml");
             // log.append("Save command cancelled by user." + newline);
         }
+//        String relativePath = saveFile.getPath().substring(System.getProperty("user.dir").length(), saveFile.getPath().length());
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
                 myGameObjects, myConditions,
                 myPlugins, myCamera,
