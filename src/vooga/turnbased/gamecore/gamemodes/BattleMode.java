@@ -154,6 +154,9 @@ public class BattleMode extends GameMode implements InputAPI {
         }
         if (!myPlayerObject.isAlive()) {
             myMessages.add(myPlayerObject.getDeathMessage());
+            List<Integer> list = new ArrayList<Integer>();
+            list.add(new Integer(myPlayerObject.getID()));
+            flagCondition(myPlayerObject.getConditionFlag(), list);
             myTeam.switchPlayer(myTeam.nextPlayer());
             myPlayerObject = myTeam.getActivePlayer();
             myMessages.add(myPlayerObject.getStartFightingMessage(true));
@@ -164,6 +167,9 @@ public class BattleMode extends GameMode implements InputAPI {
         }
         if (!myEnemyObject.isAlive()) {
             myMessages.add(myEnemyObject.getDeathMessage());
+            List<Integer> list = new ArrayList<Integer>();
+            list.add(new Integer(myEnemyObject.getID()));
+            flagCondition(myEnemyObject.getConditionFlag(), list);
             myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
             myEnemyObject = myEnemyTeam.getActivePlayer();
             myMessages.add(myEnemyObject.getStartFightingMessage(false));
