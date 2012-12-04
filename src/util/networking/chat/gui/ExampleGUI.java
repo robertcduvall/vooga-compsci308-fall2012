@@ -3,7 +3,6 @@ package util.networking.chat.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
@@ -14,8 +13,7 @@ import java.util.TreeMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,7 +26,6 @@ import javax.swing.event.ChangeListener;
 import util.networking.chat.ChatClient;
 import util.networking.chat.ChatListener;
 import util.networking.chat.ErrorEvent;
-import util.networking.chat.ChatAdapter;
 import util.networking.chat.MessageReceivedEvent;
 import util.networking.chat.UsersUpdateEvent;
 
