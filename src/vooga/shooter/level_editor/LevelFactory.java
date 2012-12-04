@@ -18,9 +18,6 @@ import vooga.shooter.gameObjects.Sprite;
  *
  */
 public class LevelFactory {
-    
-    private static Document doc;
-    private static Element root;
 
     public static Level loadLevel (Document xmlDoc) {
          Element root = xmlDoc.getDocumentElement();
@@ -63,20 +60,14 @@ public class LevelFactory {
         for (Sprite sprite : level.getSpriteList()) {
             if (sprite.getClass().getName() == Enemy.class.getName()) {
                 Enemy enemy = (Enemy) sprite;
-                packEnemy(enemy);
+                packEnemy(enemy, doc, root);
             }
         }
 
         return doc;
     }
 
-    
-    //
-    // public static Level unpack (Document xmlData) {
-    
-    // }
-
-    private static Element packEnemy (Enemy enemy) {
+    private static Element packEnemy (Enemy enemy, Document doc, Element root) {
 
         Element enemyElement = XmlUtilities.appendElement(doc, root, "Enemy");
 
