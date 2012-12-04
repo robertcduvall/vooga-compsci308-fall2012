@@ -1,33 +1,17 @@
 package vooga.platformer.core;
 
-import games.platformerdemo.DemoLevelFactory;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import util.ingamemenu.GameButton;
-import util.ingamemenu.Menu;
-import util.input.core.Controller;
-import util.input.core.KeyboardController;
 import vooga.platformer.core.inputinitializer.InputInitializer;
-import vooga.platformer.gameobject.Player;
-import vooga.platformer.gameobject.strategy.ShootingStrategy;
 import vooga.platformer.level.Level;
+import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -38,14 +22,12 @@ public class PlatformerController extends JPanel implements Runnable {
     private Level myCurrentLevel;
 
     // TODO: Make this variable hold a LevelFactory
-    private DemoLevelFactory myLevelFactory;
     private Map<String, Point> myStringMap = new HashMap<String, Point>();
     private Dimension mySize;
 
     private Thread animator;
 
-    public PlatformerController (DemoLevelFactory lf, String firstLevelName, InputInitializer ii) {
-        myLevelFactory = lf;
+    public PlatformerController (String firstLevelName, InputInitializer ii) {
         
         this.setFocusable(true);
 
@@ -74,7 +56,7 @@ public class PlatformerController extends JPanel implements Runnable {
     }
 
     private void setupLevel (String lvlName) {
-        myCurrentLevel = myLevelFactory.loadLevel(lvlName);
+        myCurrentLevel = LevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
         mySize = new Dimension((int) cameraBounds.getWidth(),
                 (int) cameraBounds.getHeight());
@@ -84,6 +66,14 @@ public class PlatformerController extends JPanel implements Runnable {
     @Override
     public Dimension getSize () {
         return mySize;
+    }
+    
+    /**
+     * Return the current level of this controller
+     * @return
+     */
+    public Level getLevel() {
+        return myCurrentLevel;
     }
 
     @Override

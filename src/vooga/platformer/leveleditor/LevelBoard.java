@@ -37,6 +37,7 @@ import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.BackgroundPainter;
 import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
 import vooga.platformer.levelfileio.LevelFileReader;
@@ -140,12 +141,12 @@ public class LevelBoard extends JPanel {
                 GameObject obj = null;
                 try {
                     String cmmd = e.getComponent().getName();
-                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT" + cmmd + ".png");
+                    File f = new File(System.getProperty("user.dir") + DATA_PATH + cmmd + ".png");
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
-                    double w = ii.getIconWidth() / ii.getIconHeight() * DEFAULT_SIZE;
-                    double h = ii.getIconHeight() / ii.getIconWidth() * DEFAULT_SIZE;
+                    double w = (double)ii.getIconWidth() / (double)ii.getIconHeight() * DEFAULT_SIZE;
+                    double h = (double)ii.getIconHeight() / (double)ii.getIconWidth() * DEFAULT_SIZE;
                     if ("StaticObject".equals(cmmd)) {
                         obj = new StaticObject(x, y, w, h, myObjID++, f);
                     }
@@ -212,6 +213,15 @@ public class LevelBoard extends JPanel {
         mouseY = yloc;
     }
 
+    public void setBackground (File back) {
+        try {
+            myBackground = ImageIO.read(back);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Updates the buffer preparing for the next paint call.
      */
@@ -262,7 +272,7 @@ public class LevelBoard extends JPanel {
         if(myPlayer == null) {
             try {
                 myPlayer = new Player (30.0, (double)myHeight/2, (double)DEFAULT_SIZE, (double)DEFAULT_SIZE, myObjID++,
-                        new File(System.getProperty("user.dir")+DATA_PATH+"DEFAULTPlayer.png"));
+                        new File(System.getProperty("user.dir")+DATA_PATH+"Player.png"));
                 myGameObjects.add(myPlayer);
             }
             catch (IOException e) {
@@ -288,7 +298,7 @@ public class LevelBoard extends JPanel {
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
                 myGameObjects, myConditions,
                 myPlugins, myCamera,
-                "Default_Collision_Checker");
+                DEFAULT_COLLISION_CHECKER);
         // "LevelTitle", getWidth(), getHeight(),
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
@@ -343,6 +353,10 @@ public class LevelBoard extends JPanel {
         myGameObjects.add(obj);
     }
 
+    protected void addPlugin (LevelPlugin plug)  {
+        myPlugins.add(plug);
+    }
+
     /**
      * Will remove a sprite from the board.
      * 
@@ -351,10 +365,6 @@ public class LevelBoard extends JPanel {
      */
     protected void remove (GameObject obj) {
         myGameObjects.remove(obj);
-    }
-
-    protected void setGrav (int value) {
-        System.out.println(value);
     }
 
     private class SelectionHelper implements ActionListener {
@@ -378,7 +388,6 @@ public class LevelBoard extends JPanel {
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-
         }
 
         private void createAttributeWindow () {
