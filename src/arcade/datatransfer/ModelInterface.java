@@ -89,15 +89,6 @@ public class ModelInterface {
      * @return True if successful login, false if unsuccessful.
      */
     public boolean executeLogin (String username, String password) {
-        // TODO Implement this. Return true if login successful, false if
-        // unsuccessful.
-        /*
-         * // test code
-         * if (username.equals("mdeng1990") && password.equals("pswd")) { return
-         * true; }
-         * 
-         * return false;
-         */
         try {
             return mySocialCenter.logOnUser(username, Encrypter.hashCode(password));
         }
