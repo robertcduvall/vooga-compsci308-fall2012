@@ -24,7 +24,7 @@ public abstract class MigFrameCreator extends AbstractFrameCreator {
     protected ArcadePanel addPanelWithBorder (int width, int height, String panelName, String migLayout) {
 
         ArcadePanel panel = addPanelWithoutBorder(width, height, panelName, migLayout);
-        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 5));
+        panel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
         
         return panel;
     }
