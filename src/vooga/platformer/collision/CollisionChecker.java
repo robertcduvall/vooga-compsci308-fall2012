@@ -47,9 +47,10 @@ public abstract class CollisionChecker {
             catch (ClassNotFoundException e) {
                 throw new LevelFileIOException("CollisionChecker: class not found", e);
             }
+            
             CollisionEvent collisionEventAB = (CollisionEvent) Reflection.createInstance(
                     collisionEventName, typeA, typeB);
-            this.addCollisionEvents(objectAName, objectAName, collisionEventAB);
+            this.addCollisionEvents(objectAName, objectBName, collisionEventAB);
         }
     }
     /**
@@ -72,7 +73,6 @@ public abstract class CollisionChecker {
      * @return
      */
     public CollisionEvent getCollisionEvent (GameObject objectA, GameObject objectB) {
-
         if (collisionEventsMap.containsKey(objectA.getClass().getCanonicalName())
                 && collisionEventsMap.get(objectA.getClass().getCanonicalName())
                         .containsKey(objectB.getClass().getCanonicalName())) {

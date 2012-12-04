@@ -28,7 +28,6 @@ public class BasicCollisionChecker extends CollisionChecker {
                     CollisionEvent ce = getCollisionEvent(a, b);
                     if (ce != null) {
                         ce.apply(level, a, b);
-                        System.out.println(ce.getClass().toString() + " " + a.getId() + " " + b.getId());
                     }
                 }
             }
