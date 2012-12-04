@@ -18,7 +18,7 @@ public class Main {
     public static void main (String[] args) {
         JFrame frame = new JFrame("Demo Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController("/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevel.xml",
+        PlatformerController controller = new PlatformerController("src/vooga/platformer/test/testLevelFactory.xml",
                 new SimpleOnePlayerInputInitializer());
 
         frame.getContentPane().add(controller);
