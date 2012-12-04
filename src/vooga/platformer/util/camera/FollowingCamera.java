@@ -4,6 +4,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import util.camera.Camera;
 import util.camera.SizedCamera;
+import util.camera.UpdatableCamera;
 import vooga.platformer.gameobject.GameObject;
 
 
@@ -15,7 +16,7 @@ import vooga.platformer.gameobject.GameObject;
  * 
  * @author Mark Govea
  */
-public class FollowingCamera extends UpdatableCamera {
+public class FollowingCamera extends SizedCamera {
     private GameObject myTarget;
 
     /**
