@@ -124,6 +124,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
                               cd);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             usersToDialogs.put(userName, cd);
+            System.out.println(userName);
         }    
     }
     
@@ -213,16 +214,18 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased (KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            sendMessage();
     }
 
     @Override
     public void keyTyped (KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            sendMessage();
     }
     
     protected void logout(){
         myChatClient.logout();
+        this.setVisible(false);
+        ChatApp.main(null);
     }
 }
     
