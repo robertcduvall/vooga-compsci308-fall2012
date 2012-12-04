@@ -49,7 +49,7 @@ public class GameProfileMainPanel extends AMainPanel {
         listOfTags = getArcade().getModelInterface().getGame(gameName).getTags();
         Collections.sort(listOfRatings);
         
-        MigLayout layout = new MigLayout("", "[50%, grow][50%, grow]", "[][][][][][]");
+        MigLayout layout = new MigLayout("", "[][]", "[][][][][][]");
         myPanel.setLayout(layout);
 
         System.out.println(myPanel.getSize());
