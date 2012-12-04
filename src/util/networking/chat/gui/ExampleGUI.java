@@ -53,7 +53,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
                         tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
                     }
                 }else{
-                    ChatDialog cd = new ChatDialog(e.getMessageBody());
+                    ChatDialog cd = new ChatDialog("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
                     usersToDialogs.put(e.getSender(), cd);
                     tabbedPane.add(e.getSender(), cd);
                     tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
@@ -102,9 +102,10 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
 
      private JTextArea initBuddyList () {
-        buddyList = new JTextArea("Buddy List", 5, 15);
+        buddyList = new JTextArea("BUDDY LIST", 5, 15);
         for (String s: usersOnline){
             buddyList.append("\n" + s);
+            System.out.println("I GOT" + s);
         }
         buddyList.setEditable(false);
         buddyList.setWrapStyleWord(true);
@@ -114,7 +115,11 @@ public class ExampleGUI extends JPanel implements KeyListener {
      
      private void updateBuddyList(List<String> newUsers){
          usersOnline = newUsers;
-         buddyList = initBuddyList();
+         buddyList.setText("BUDDY LIST\n\n");
+         for(String name : newUsers){
+             buddyList.append(name + "\n");
+             System.out.println("Updated GOT" + name);
+         }
      }
      
     protected void newConversation(String userName){
@@ -124,6 +129,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
                               cd);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             usersToDialogs.put(userName, cd);
+            System.out.println(userName);
         }    
     }
     
@@ -213,12 +219,18 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased (KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            sendMessage();
     }
 
     @Override
     public void keyTyped (KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            sendMessage();
+    }
+    
+    protected void logout(){
+        myChatClient.logout();
+        this.setVisible(false);
+        ChatApp.main(null);
     }
 }
     

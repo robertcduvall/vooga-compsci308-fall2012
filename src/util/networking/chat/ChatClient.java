@@ -229,7 +229,7 @@ public class ChatClient extends Client {
         }
     }
 
-    private synchronized void fireUsersUpdateEvent () {
+    private void fireUsersUpdateEvent () {
         UsersUpdateEvent e = new UsersUpdateEvent(this, myListUsers);
         for (ChatListener cl : myChatListeners) {
             cl.handleUsersUpdateEvent(e);

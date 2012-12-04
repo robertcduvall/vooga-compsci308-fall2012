@@ -197,12 +197,12 @@ public class ChatService implements Service {
 
     private void removeUser (String user, Socket socket) {
         synchronized (myUsersToSockets) {
-            // remove user from list
-            myUsersToSockets.remove(user);
             // notify all clients to remove user
             for (Socket s : myUsersToSockets.values()) {
                 write(s, myProtocol.createRemoveUser(user));
             }
+         // remove user from list
+            myUsersToSockets.remove(user);
         }
     }
 
