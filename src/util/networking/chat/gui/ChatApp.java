@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.AbstractAction;
@@ -38,12 +39,12 @@ public class ChatApp {
     public static void main (String[] args) {
         try {
             ChatClient c = new ChatClient("wl-10-190-55-243.wireless.duke.local", new GordonBukspanProtocol());
-            List<String> users;
+            List<String> users = new ArrayList<String>();
             String userName = login("", c, users);
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             ExampleGUI eg;
-            eg = new ExampleGUI(c, users;
+            eg = new ExampleGUI(c, users);
             frame.add(eg);
             JMenuBar menuBar = new JMenuBar();
             JMenu menu = new JMenu("File");
