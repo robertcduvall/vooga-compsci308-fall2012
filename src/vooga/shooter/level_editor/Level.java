@@ -153,6 +153,10 @@ public class Level {
     public void setNextLevel (Level myNextLevel) {
         this.myNextLevel = myNextLevel;
     }
+    
+    public String getBackgroundImagePath() {
+        return myBackgroundImagePath;
+    }
 
     // /**
     // * Resets level to beginning
