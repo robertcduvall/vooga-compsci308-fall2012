@@ -1,9 +1,6 @@
 package vooga.platformer.levelfileio;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.w3c.dom.Document;
@@ -66,6 +63,12 @@ public final class LevelFileWriter {
         String serializedConditionsFilePath = filePath.split("\\.")[0] + "Conditions.bin";
         String serializedPluginsFilePath = filePath.split("\\.")[0] + "Plugins.bin";
 
+        // convert to relative paths
+        String base = System.getProperty("user.dir");
+        serializedGameObjectFilePath = relativizePath(base, serializedGameObjectFilePath);
+        serializedConditionsFilePath = relativizePath(base, serializedConditionsFilePath);
+        serializedPluginsFilePath    = relativizePath(base, serializedPluginsFilePath);
+
         appendXmlElements(levelName, width, height, cameraType, collisionChecker, doc, level,
                           serializedGameObjectFilePath, serializedConditionsFilePath,
                           serializedPluginsFilePath);
@@ -83,6 +86,10 @@ public final class LevelFileWriter {
         }
 
         XmlUtilities.write(doc, filePath);
+    }
+
+    private static String relativizePath(String base, String path) {
+        return new File(base).toURI().relativize(new File(path).toURI()).getPath();
     }
 
     private static void appendXmlElements (String levelName, int width, int height,
