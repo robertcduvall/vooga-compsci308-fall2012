@@ -330,6 +330,7 @@ public class GameManager implements InputAPI {
                 catch (Exception e) {
                     System.out.println("Unable to create mode " + modeName + " of class " +
                             c.toString());
+                    e.printStackTrace();
                 }
             }
         }

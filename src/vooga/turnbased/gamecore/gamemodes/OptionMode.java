@@ -8,11 +8,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import util.interactionpanel.InteractionPanel;
 import vooga.turnbased.gamecore.GameManager;
+import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
+import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 
 /**
@@ -30,6 +32,7 @@ public class OptionMode extends GameMode {
     private Image myPanelImage;
     private Point myOrigin;
     private Map<String, MapStrategy> myDisplayedStrategies;
+    private Map<String, OptionObject> myOptions;
     private Rectangle myBounds;
 
     /**
@@ -48,12 +51,19 @@ public class OptionMode extends GameMode {
         for (MapStrategy strategy : optionStrategies) {
             myDisplayedStrategies.put(strategy.getDisplayMessage(), strategy);
         }
-        myPanel = new InteractionPanel(myDisplayedStrategies.keySet());
+        List<OptionObject> options = new ArrayList<OptionObject>();
+        myOptions = new HashMap<String, OptionObject>();
+        for (GameObject option : getGameObjects()) {
+            options.add((OptionObject)option);
+            myOptions.put(((OptionObject) option).getMessage(), (OptionObject) option);
+        }
+        myPanel = new InteractionPanel(options);
         myOrigin = getDefaultPosition();
     }
 
     /**
      * find the mapobject using index
+     * 
      * @param involvedIDs a list of involved IDs for an event
      * @param index the index in the list
      * @return the MapObject inside the Sprites specified by the ID
@@ -78,7 +88,8 @@ public class OptionMode extends GameMode {
     }
 
     /**
-     * Returns a boolean of whether the current option mode's NPC is equal to that of another
+     * Returns a boolean of whether the current option mode's NPC is equal to
+     * that of another
      * OptionMode.
      * 
      * @param conversation OptionMode to compare to.

@@ -40,30 +40,18 @@ public class InteractionPanel {
     private List<StrategyOption> myOptions;
     private List<OptionObject> myOptionObjects;
     private List<Point> myOptionPositions;
-
-    /**
-     * 
-     * @param options
-     */
-    /*public InteractionPanel (List<String> options) {
-        this();
-        myOptions = addOptions(options);
-    }*/
-    /**
-     * 
-     * @param options
-     */
-    public InteractionPanel (Set<String> options) {
-        this();
-        myOptions = addOptions(options);
-    }
     
     public InteractionPanel (List<OptionObject> optionObjects) {
+        this();
         myOptionObjects = optionObjects;
+        for (int i = 0; i < myOptionObjects.size(); i++) {
+            myOptionObjects.get(i).setPosition(myOptionPositions.get(i));
+        }
     }
     
     protected InteractionPanel() {
         initializePanelImage();
+        myOptionObjects = new ArrayList<OptionObject>();
         myOptionPositions = initializeOptionPositions();
         myBulletPointIndex = 0;
         myPreviousPosition = null;
@@ -88,8 +76,8 @@ public class InteractionPanel {
 
     public Image renderImage () {
         initializePanelImage();
-        for (StrategyOption option : myOptions) {
-            option.paintOption(myImageGraphics);
+        for (OptionObject option : myOptionObjects) {
+            option.paint(myImageGraphics);
         }
         drawBulletPoint(myImageGraphics);
         return myPanelImage;
@@ -113,11 +101,11 @@ public class InteractionPanel {
      */
     public boolean highlightOption (Point position) {
         boolean highlighted = false;
-        for (int i = 0; i < myOptions.size(); i++) {
-            if (myOptions.get(i).highlight(position)) {
+        for (int i = 0; i < myOptionObjects.size(); i++) {
+            if (myOptionObjects.get(i).highlight(position)) {
                 highlighted = true;
             }
-            if (myOptions.get(i).optionIsHighlighted()) {
+            if (myOptionObjects.get(i).optionIsHighlighted()) {
                 myBulletPointIndex = i;
             }
         }
@@ -128,7 +116,7 @@ public class InteractionPanel {
     }
 
     public void dehighlightOption () {
-        for (StrategyOption option : myOptions) {
+        for (OptionObject option : myOptionObjects) {
             option.dehighlight();
         }
         myPreviousPosition = null;
