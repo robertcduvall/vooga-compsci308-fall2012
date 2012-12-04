@@ -432,4 +432,8 @@ public class MapMode extends GameMode implements InputAPI {
             myPathFinder.executeSearch();
         }
     }
+    
+    public boolean hasOption(int ID) {
+        return getGameManager().findSpriteWithID(ID).hasOption();
+    }
 }

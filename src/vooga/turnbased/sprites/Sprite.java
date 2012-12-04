@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
+import vooga.turnbased.gameobject.optionobject.OptionObject;
 
 /**
  * This class is bucket. It holds several GameObjects, one for each mode this sprite
@@ -88,5 +89,12 @@ public class Sprite {
             if (object instanceof MapObject) { return (MapObject)object; }
         }
         return null;
+    }
+    
+    public boolean hasOption() {
+        for (GameObject object: myGameObjects) {
+            if (object instanceof OptionObject) { return true; }
+        }
+        return false;
     }
 }
