@@ -70,7 +70,7 @@ public class OptionObject extends GameObject {
         myRespondRegion = new Rectangle(x, y, width, height);
     }
 
-    protected boolean highlight (Point mousePosition) {
+    public boolean highlight (Point mousePosition) {
         if (myRespondRegion.contains(mousePosition)) {
             myColor = HIGHLIGHT_COLOR;
             isHighlighted = true;
