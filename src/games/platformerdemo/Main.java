@@ -1,16 +1,8 @@
 package games.platformerdemo;
 
 import java.awt.Dimension;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
-import vooga.platformer.core.GameInitializer;
-import util.ingamemenu.GameButton;
-import util.ingamemenu.Menu;
 import vooga.platformer.core.PlatformerController;
 import vooga.platformer.core.inputinitializer.SimpleOnePlayerInputInitializer;
 
@@ -26,7 +18,7 @@ public class Main {
     public static void main (String[] args) {
         JFrame frame = new JFrame("Demo Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController(new DemoLevelFactory(), "/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/NewLevel.xml",
+        PlatformerController controller = new PlatformerController("/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevel.xml",
                 new SimpleOnePlayerInputInitializer());
 
         frame.getContentPane().add(controller);
@@ -45,45 +37,4 @@ public class Main {
         controller.paintString("Space - Shoot", canvasSize.width * 3 / 5,
                 canvasSize.height / 4 + 45);
     }
-    
-    
-    
-//    /**
-//     * should be moved out of API
-//     * @return
-//     */
-//    public KeyListener setMenuKeyListener () {
-//        
-//        PlatformerController myCanvas = this;
-//        
-//        KeyListener kl = new KeyAdapter() {
-//            @Override
-//            public void keyPressed (KeyEvent e) {
-//                if (e.getKeyCode() == KeyEvent.VK_M) {
-//                    final Menu menu = new Menu(myCanvas);
-//                    GameButton gb1 = new GameButton("greenbutton", "Back");
-//                    MouseListener gl = new MouseAdapter() {
-//                        @Override
-//                        public void mouseClicked (MouseEvent arg0) {
-//                            myCanvas.remove(menu);
-//                            myCanvas.repaint();
-//                        }
-//                    };
-//                    gb1.addMouseListener(gl);
-//                    GameButton gb2 = new GameButton("button", "Exit");
-//                    gb2.addMouseListener(new MouseAdapter() {
-//                        @Override
-//                        public void mouseClicked (MouseEvent arg0) {
-//                            System.exit(0);
-//                        }
-//                    });
-//                    gb2.setSize(new Dimension(130, 130));
-//                    menu.addButtons(gb1);
-//                    menu.addButtons(gb2);
-//                }
-//            }
-//        };
-//        return kl;
-//    }
-
 }
