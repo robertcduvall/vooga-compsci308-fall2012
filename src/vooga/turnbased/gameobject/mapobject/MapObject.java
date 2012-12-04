@@ -40,9 +40,7 @@ public class MapObject extends GameObject {
         super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
-        // setMapMode(mapMode);
         myMapStrategies = new ArrayList<MapStrategy>();
-        // myMapStrategies.add(new NullStrategy(mapMode));
     }
 
     /**
@@ -139,35 +137,17 @@ public class MapObject extends GameObject {
      * @param target MapObject to be interacted with.
      */
     public void interact (MapObject target) {
-        if (target instanceof MapPlayerObject) {
-            interactWithPlayer((MapPlayerObject) target);
-        }
-        else {
-            for (MapStrategy strategy : myMapStrategies) {
-                strategy.performStrategy(target);
-            }
-        }
-    }
-
-    private void interactWithPlayer (MapPlayerObject player) {
-        boolean conversationStarted = false;
         for (MapStrategy strategy : myMapStrategies) {
-            if (strategy.isDisplayable()) {
-                if (conversationStarted) {
-                    continue;
-                }
-                startConversation(player);
-                conversationStarted = true;
-            }
-            else {
-                strategy.performStrategy(player);
-            }
-        } 
+            strategy.performStrategy(target);
+        }
+        if (target instanceof MapPlayerObject) {
+            startConversation(target);
+        }
     }
 
     /**
-     * start conversation if there are strategies to be displayed in the
-     * Conversation Mode
+     * start conversation if there are options to be displayed in the
+     * Option Mode
      * 
      * @param involvedObject the object involved in the conversation with this
      *        MapObject

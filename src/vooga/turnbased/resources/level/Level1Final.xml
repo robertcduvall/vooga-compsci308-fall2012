@@ -110,7 +110,7 @@
 		    <object>
 		    	<createOn>start</createOn>
 		    	<modes>option</modes>
-		    	<class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
+		    	<class>vooga.turnbased.gameobject.optionobject.TransportOption</class>
 		    	<name>Go to map 2!</name>
 		    	<condition>entermap2</condition>
 		    </object>

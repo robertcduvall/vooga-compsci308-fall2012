@@ -54,7 +54,7 @@ public class OptionMode extends GameMode {
         List<OptionObject> options = new ArrayList<OptionObject>();
         myOptions = new HashMap<String, OptionObject>();
         for (GameObject option : getGameObjects()) {
-            options.add((OptionObject)option);
+            options.add((OptionObject) option);
             myOptions.put(((OptionObject) option).getMessage(), (OptionObject) option);
         }
         myPanel = new InteractionPanel(options);
@@ -142,8 +142,10 @@ public class OptionMode extends GameMode {
         }
         else {
             //flagCondition("entermap2", new ArrayList<Integer>());
-            myPanel.triggerOption(getPositionOnPanel(mousePosition));
-            //setModeIsOver();
+            OptionObject selectedOption = myPanel.triggerOption(getPositionOnPanel(mousePosition));
+            if (selectedOption != null) {
+                selectedOption.executeOption(this);
+            }
         }
     }
 }

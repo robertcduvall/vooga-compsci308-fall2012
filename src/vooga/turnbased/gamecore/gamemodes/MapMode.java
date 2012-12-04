@@ -149,6 +149,7 @@ public class MapMode extends GameMode implements InputAPI {
      * @param mapObject MapObject to be removed.
      */
     public void removeMapObject (MapObject mapObject) {
+        if (mapObject == null) { return; }
         myMapObjects.get(mapObject.getLocation()).remove(mapObject);
     }
 

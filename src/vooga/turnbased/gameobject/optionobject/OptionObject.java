@@ -9,7 +9,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
 import util.graphicprocessing.FontEffect;
+import vooga.turnbased.gamecore.gamemodes.OptionMode;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.mapobject.MapObject;
 
 
 public class OptionObject extends GameObject {
@@ -96,6 +98,10 @@ public class OptionObject extends GameObject {
     
     public boolean isTriggered(Point focusPosition) {
         return myRespondRegion.contains(focusPosition);
+    }
+    
+    public void executeOption(OptionMode myOptionMode) {
+        myOptionMode.setModeIsOver();
     }
 
     @Override

@@ -23,8 +23,6 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapPlayerObject;
-import vooga.turnbased.gameobject.mapstrategy.ConversationStrategy;
-import vooga.turnbased.gameobject.mapstrategy.TransportStrategy;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.sprites.Sprite;
@@ -294,6 +292,10 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }
+        else if ("vooga.turnbased.gameobject.optionobject.TransportOption"
+                .equals(objectClass)) {
+            return (GameObject) parseOptionObject(objectElement);
+        }
         // }
         return null;
     }
@@ -491,15 +493,6 @@ public class LevelXmlParser {
                     IMAGE);
             MapObject mapObject = (MapObject) Reflection.createInstance(
                     className, modes, condition, point, image);
-            // I'll delete it as soon as possible
-            if (point.equals(new Point(10, 10))) {
-                mapObject.addStrategy(new TransportStrategy(mapObject,
-                        new Point(8, 8)));
-            }
-            if (point.equals(new Point(9, 3))) {
-                mapObject.addStrategy(new ConversationStrategy());
-                // mapObject.addStrategy(mapStrategy);
-            }
 
             return mapObject;
         }
