@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import com.restfb.DefaultFacebookClient;
 import twitter4j.auth.AccessToken;
 import util.encrypt.Encrypter;
 import arcade.usermanager.exception.PasswordNotMatchException;
@@ -92,23 +92,18 @@ public final class UserManager {
         File[] listOfFiles = folder.listFiles();
         for (File fi : listOfFiles) {
             if (fi.isFile()) {
-                FileInputStream fileIn;
                 try {
-                    fileIn = new FileInputStream(fi);
-                    ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-                    Object obj = objectIn.readObject();
+                    BufferedReader br = new BufferedReader(new FileReader(fi));
+                    String line = br.readLine();
                     myFacebookTokens.put(FileOperation.stripExtension(fi.getName()),
-                                         (com.restfb.FacebookClient.AccessToken) obj);
+                                         DefaultFacebookClient.AccessToken
+                                                 .fromQueryString("access_token=" + line));
                 }
                 catch (FileNotFoundException e) {
 
                     e.printStackTrace();
                 }
                 catch (IOException e) {
-
-                    e.printStackTrace();
-                }
-                catch (ClassNotFoundException e) {
 
                     e.printStackTrace();
                 }
@@ -388,21 +383,18 @@ public final class UserManager {
     }
 
     public void addFacebookToken (String name, com.restfb.FacebookClient.AccessToken at) {
-        FileOutputStream f_out;
         try {
-            f_out = new FileOutputStream(myFacebookFilePath + name + ".at");
-            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
-            obj_out.writeObject(at);
-        }
-        catch (FileNotFoundException e) {
-
-            e.printStackTrace();
+            BufferedWriter bw =
+                    new BufferedWriter(new FileWriter(myFacebookFilePath + name + ".at"));
+            bw.write(at.getAccessToken());
+            bw.newLine();
+            bw.flush();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        loadFacebookTokens();
 
+        loadFacebookTokens();
     }
 
     public boolean deleteFacebookAccessToken (String name) {
