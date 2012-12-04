@@ -39,7 +39,7 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         ArcadePanel myPanel = initializeNewPanel();
         gameName = (String) getArcade().getVariable("GameName");
 
-        MigLayout layout = new MigLayout("flowy", "[50%, grow]push[50%, grow]", "[]10[][][]push[]");
+        MigLayout layout = new MigLayout("flowy", "[]push[]", "[]10[][][]push[]");
         myPanel.setLayout(layout);
 
         JLabel titleLabel = new JLabel("Leave your feedback for " + gameName + " below!");
