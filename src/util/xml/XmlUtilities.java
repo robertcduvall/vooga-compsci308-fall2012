@@ -12,35 +12,44 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
+ * <p>
  * A general-use xml utility class.
+ * </p>
  * 
+ * <p>
  * IMPORTANT: There are other xml utilities but this is the one that everyone
- * should use. The 5-6 of us got together to make one Utility class that has
- * the best from all the others and is more robust. All other xml utilities
- * have been deprecated.
+ * should use. The 5-6 of us got together to make one Utility class that has the
+ * best from all the others and is more robust. All other xml utilities have
+ * been deprecated.
+ * </p>
  * 
- * TODO: Include more robust error checking and throw an XmlException when
- * appropriate.
- * 
+ * <p>
  * If you have any suggestions/changes email stephenalexbrowne@gmail.com.
+ * </p>
  * 
- * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * <hr/>
  * 
  * Example of the semantics used here:
  * 
+ * <pre>
+ * {@code
  * <tag attribute="value"> content </tag>
  * ~or~
  * <tag attributeName="attributeValue"> content </tag>
@@ -48,8 +57,9 @@ import org.w3c.dom.NodeList;
  * <parent>
  * <child></child>
  * </parent>
- * 
- * 行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行行
+ * }
+ * </pre>
+ * <hr/>
  * 
  * @author Seon Kang, Alex Browne, Grant Oakley, Zach Michaelov,
  *         Difan Zhao, Mark Hoffman
@@ -69,11 +79,8 @@ public class XmlUtilities {
         try {
             doc = dbFactory.newDocumentBuilder().newDocument();
         }
-        catch (Exception e) {
-            System.err
-                    .println("ERROR: Could not instantiate a Document element! "
-                            + e.getMessage());
-            e.printStackTrace();
+        catch (ParserConfigurationException e) {
+            throw new XmlException("Could not instantiate a Document element!", e);
         }
         return doc;
     }
@@ -93,15 +100,13 @@ public class XmlUtilities {
             doc = dbFactory.newDocumentBuilder().parse(file);
         }
         catch (IOException e) {
-            System.err.println("ERROR: Could not open the file! "
-                    + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not open the specified file.", e);
         }
-        catch (Exception e) {
-            System.err
-                    .println("ERROR: Could not instantiate a Document element! "
-                            + e.getMessage());
-            e.printStackTrace();
+        catch (ParserConfigurationException e) {
+            throw new XmlException("Could not instantiate a Document element!", e);
+        }
+        catch (SAXException e) {
+            throw new XmlException("Error occured while parsing XML document.", e);
         }
 
         return doc;
@@ -157,8 +162,8 @@ public class XmlUtilities {
      * @return the newly created element.
      */
 
-    public static Element makeElement (Document doc, String tag,
-            String attributeName, String attributeValue) {
+    public static Element makeElement (Document doc, String tag, String attributeName,
+                                       String attributeValue) {
         Element e = doc.createElement(tag);
         return addAttribute(e, attributeName, attributeValue);
     }
@@ -175,8 +180,8 @@ public class XmlUtilities {
      * @return the newly created element.
      */
 
-    public static Element makeElement (Document doc, String tag,
-            String content, String attributeName, String attributeValue) {
+    public static Element makeElement (Document doc, String tag, String content,
+                                       String attributeName, String attributeValue) {
         Element e = doc.createElement(tag);
         setContent(e, content);
         return addAttribute(e, attributeName, attributeValue);
@@ -191,8 +196,7 @@ public class XmlUtilities {
      * @return the newly created element.
      */
 
-    public static Element makeElement (Document doc, String tag,
-            Map<String, String> attributesMap) {
+    public static Element makeElement (Document doc, String tag, Map<String, String> attributesMap) {
         Element e = doc.createElement(tag);
         return addAttributes(e, attributesMap);
     }
@@ -207,8 +211,8 @@ public class XmlUtilities {
      * @return the newly created element.
      */
 
-    public static Element makeElement (Document doc, String tag,
-            String content, Map<String, String> attributesMap) {
+    public static Element makeElement (Document doc, String tag, String content,
+                                       Map<String, String> attributesMap) {
         Element e = doc.createElement(tag);
         setContent(e, content);
         return addAttributes(e, attributesMap);
@@ -238,8 +242,7 @@ public class XmlUtilities {
      * @return the new element that was appended.
      */
 
-    public static Element appendElement (Document doc, Element parent,
-            String tag) {
+    public static Element appendElement (Document doc, Element parent, String tag) {
         Element child = doc.createElement(tag);
         return appendElement(parent, child);
     }
@@ -255,8 +258,7 @@ public class XmlUtilities {
      * @return the new element that was appended.
      */
 
-    public static Element appendElement (Document doc, Element parent,
-            String tag, String content) {
+    public static Element appendElement (Document doc, Element parent, String tag, String content) {
         Element child = makeElement(doc, tag, content);
         return appendElement(parent, child);
     }
@@ -274,8 +276,8 @@ public class XmlUtilities {
      * @return the new element that was appended to parent.
      */
 
-    public static Element appendElement (Document doc, Element parent,
-            String tag, String attributeName, String attributeValue) {
+    public static Element appendElement (Document doc, Element parent, String tag,
+                                         String attributeName, String attributeValue) {
         Element child = makeElement(doc, tag, attributeName, attributeValue);
         return appendElement(parent, child);
     }
@@ -294,11 +296,9 @@ public class XmlUtilities {
      * @return the new element that was appended to parent.
      */
 
-    public static Element appendElement (Document doc, Element parent,
-            String tag, String content, String attributeName,
-            String attributeValue) {
-        Element child = makeElement(doc, tag, content, attributeName,
-                attributeValue);
+    public static Element appendElement (Document doc, Element parent, String tag, String content,
+                                         String attributeName, String attributeValue) {
+        Element child = makeElement(doc, tag, content, attributeName, attributeValue);
         return appendElement(parent, child);
     }
 
@@ -314,8 +314,8 @@ public class XmlUtilities {
      * @return the new element that was appended to parent.
      */
 
-    public static Element appendElement (Document doc, Element parent,
-            String tag, Map<String, String> attributeMap) {
+    public static Element appendElement (Document doc, Element parent, String tag,
+                                         Map<String, String> attributeMap) {
         Element child = makeElement(doc, tag, attributeMap);
         return appendElement(parent, child);
     }
@@ -333,8 +333,8 @@ public class XmlUtilities {
      * @return the new element that was appended to parent.
      */
 
-    public static Element appendElement (Document doc, Element parent,
-            String tag, String content, Map<String, String> attributeMap) {
+    public static Element appendElement (Document doc, Element parent, String tag, String content,
+                                         Map<String, String> attributeMap) {
         Element child = makeElement(doc, tag, content, attributeMap);
         return appendElement(parent, child);
     }
@@ -354,8 +354,8 @@ public class XmlUtilities {
      * @return the new element that was appended.
      */
 
-    public static Collection<Element> appendElements (Document doc,
-            Element parent, String tag, List<String> content) {
+    public static Collection<Element> appendElements (Document doc, Element parent, String tag,
+                                                      List<String> content) {
         ArrayList<Element> list = new ArrayList<Element>();
         for (String s : content) {
             list.add(appendElement(doc, parent, tag, s));
@@ -387,8 +387,7 @@ public class XmlUtilities {
      * @return the element to which the new attribute was added.
      */
 
-    public static Element addAttribute (Element element, String attributeName,
-            String attributeValue) {
+    public static Element addAttribute (Element element, String attributeName, String attributeValue) {
         element.setAttribute(attributeName, attributeValue);
         return element;
     }
@@ -403,8 +402,7 @@ public class XmlUtilities {
      * @return the element to which the new attributes were added.
      */
 
-    public static Element addAttributes (Element element,
-            Map<String, String> attributeMap) {
+    public static Element addAttributes (Element element, Map<String, String> attributeMap) {
         for (String name : attributeMap.keySet()) {
             String value = attributeMap.get(name);
             addAttribute(element, name, value);
@@ -422,16 +420,19 @@ public class XmlUtilities {
      * @return a collection of the elements whose names were changed.
      */
 
-    public static Collection<Element> replaceAllTagNames (Element parent,
-            String oldTag, String newTag) {
-        NodeList nodeList = parent.getElementsByTagName(oldTag);
+    public static Collection<Element> replaceAllTagNames (Element parent, String oldTag,
+                                                          String content) {
+        NodeList nodeList =  parent.getElementsByTagName(oldTag);
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            node.setNodeValue(newTag);
+            node.setTextContent(content);
+           
         }
         return convertNodeListToCollection(nodeList);
     }
-
+    
+    
+    
     /**
      * Sets an existing attribute of an element. If the attribute did not
      * previously exist, throws a warning and creates it.
@@ -443,10 +444,10 @@ public class XmlUtilities {
      */
 
     public static Element setAttribute (Element element, String attributeName,
-            String newAttributeContent) {
+                                        String newAttributeContent) {
         if (element.getAttribute(attributeName) == null) {
             System.err.println("WARNING: Tried to set an attribute "
-                    + "that doesn't yet exist! Added it as a new attribute.");
+                               + "that doesn't yet exist! Added it as a new attribute.");
         }
         element.setAttribute(attributeName, newAttributeContent);
         return element;
@@ -462,8 +463,7 @@ public class XmlUtilities {
      * @return the Image imageFileName refers to
      */
 
-    public static Image fileNameToImage (File configFileName,
-            String imageFileName) {
+    public static Image fileNameToImage (File configFileName, String imageFileName) {
 
         File imageFile = new File(configFileName.getParentFile(), imageFileName);
 
@@ -502,11 +502,24 @@ public class XmlUtilities {
     }
 
     /**
+     * Retrieves all child elements from a parent, regardless of tag value.
+     * 
+     * @param parent element for which to return all children
+     * @return all elements under this parent
+     */
+
+    public static Collection<Element> getElements (Element parent) {
+        NodeList list = parent.getChildNodes();
+        return convertNodeListToCollection(list);
+    }
+
+    /**
      * helper for retrieving a list of elements by tag
      * 
      * @param tag name of the elements we want to retrieve
      * @param parent the parent element from which we start our search
-     * @return a NodeList which contains all the elements specified by tag
+     * @return a Collection of elements which contains all the elements
+     *         specified by tag
      */
 
     public static Collection<Element> getElements (Element parent, String tag) {
@@ -524,6 +537,17 @@ public class XmlUtilities {
 
     public static Element getElement (Element parent, String tag) {
         return (Element) parent.getElementsByTagName(tag).item(0);
+    }
+
+    /**
+     * Gets the tag name of the element.
+     * 
+     * @param element element for which to find the tag name
+     * @return value of this element's tag
+     */
+
+    public static String getTagName (Element element) {
+        return element.getTagName();
     }
 
     /**
@@ -583,8 +607,7 @@ public class XmlUtilities {
      */
     public static String getChildContent (Element parent, String tag) {
         Node child = getElement(parent, tag);
-        if (child != null) { return child.getTextContent(); }
-        return null;
+        return child.getTextContent();
     }
 
     /**
@@ -626,6 +649,57 @@ public class XmlUtilities {
     public static Image getChildContentAsImage (Element parent, String tag) {
         return fileNameToImage(getChildContent(parent, tag));
     }
+    
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name. Note: this can also be done directly via
+     * element.getAttribute()
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute
+     */
+    public static String getAttribute (Element element, String name) {
+        return element.getAttribute(name);
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and converts it to an int.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute (converted to int)
+     */
+
+    public static int getAttributeAsInt (Element element, String name) {
+        return Integer.parseInt(getAttribute(element, name));
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and converts it to a double.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute (converted to double)
+     */
+    public static double getAttributeAsDouble (Element element, String name) {
+        return Double.parseDouble(getAttribute(element, name));
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and creates an Image object. We assume that the attribute
+     * is the full pathname to a valid image file.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return an image created from the attribute value
+     */
+    public static Image getAttributeAsImage (Element element, String name) {
+        return fileNameToImage(getAttribute(element, name));
+    }
 
     /**
      * Iterates over the child elements of a specified parent element. The tag
@@ -659,8 +733,8 @@ public class XmlUtilities {
      *        to be written as child Elements of the new Element
      * @return a new Element built using the Map parameter
      */
-    public static Element generateElementFromMap (Document doc,
-            String elementName, Map<String, String> map) {
+    public static Element generateElementFromMap (Document doc, String elementName,
+                                                  Map<String, String> map) {
         Element mapElement = doc.createElement(elementName);
         for (String key : map.keySet()) {
             appendElement(doc, mapElement, key, map.get(key));
@@ -674,17 +748,16 @@ public class XmlUtilities {
      * keys of the Map, and values, which are the values of the Map.
      * 
      * @param doc Document in which the Element is being created
-     * @param parentElement Xml Element in which to place the contents of the
+     * @param parent Xml Element in which to place the contents of the
      *        map as tags and values
      * @param childElementName name of child element, under which the map
      *        entries will appear
      * @param map map of Strings onto Strings representing the tags and values
      *        to be written as child Elements of the new Element
      */
-    public static void appendMapContents (Document doc, Element parent,
-            String childElementName, Map<String, String> map) {
-        Element childElement = generateElementFromMap(doc, childElementName,
-                map);
+    public static void appendMapContents (Document doc, Element parent, String childElementName,
+                                          Map<String, String> map) {
+        Element childElement = generateElementFromMap(doc, childElementName, map);
         parent.appendChild(childElement);
     }
 
@@ -697,19 +770,9 @@ public class XmlUtilities {
      * @throws TransformerException thrown if Document cannot be converted to a
      *         String
      */
-    public static String getXmlAsString (Document doc)
-            throws TransformerException {
-        TransformerFactory transfac = TransformerFactory.newInstance();
-        Transformer trans = transfac.newTransformer();
-        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-        StringWriter sw = new StringWriter();
-        StreamResult result = new StreamResult(sw);
+    public static String getXmlAsString (Document doc) throws TransformerException {
         DOMSource source = new DOMSource(doc);
-        trans.transform(source, result);
-        String xmlString = sw.toString();
-        return xmlString;
+        return documentToString(source);
     }
 
     /**
@@ -721,21 +784,27 @@ public class XmlUtilities {
      * @throws TransformerException thrown if Document cannot be converted to a
      *         String
      */
-    public static String getXmlAsString (Element element)
-            throws TransformerException {
+    public static String getXmlAsString (Element element) throws TransformerException {
+        // Make a document and add the element to it
+        // (This is necessary for setting it as a DOMSource).
+        Document doc = makeDocument();
+        doc.appendChild(element);
+        DOMSource source = new DOMSource(doc);
+
+        return documentToString(source);
+    }
+
+    private static String documentToString (DOMSource source)
+                                                             throws TransformerFactoryConfigurationError,
+                                                             TransformerConfigurationException,
+                                                             TransformerException {
         TransformerFactory transfac = TransformerFactory.newInstance();
         Transformer trans = transfac.newTransformer();
         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         trans.setOutputProperty(OutputKeys.INDENT, "yes");
 
-        // Make a document and add the element to it
-        // (This is necessary for setting it as a DOMSource).
-        Document doc = makeDocument();
-        doc.appendChild(element);
-
         StringWriter sw = new StringWriter();
         StreamResult result = new StreamResult(sw);
-        DOMSource source = new DOMSource(doc);
         trans.transform(source, result);
         String xmlString = sw.toString();
         return xmlString;
@@ -749,25 +818,15 @@ public class XmlUtilities {
      */
 
     public static void write (Document doc, String filePath) {
+        String xmlString;
 
-        FileWriter writer = null;
-        String xmlString = null;
         try {
             xmlString = getXmlAsString(doc);
         }
         catch (TransformerException e) {
-            System.err.println("ERROR: " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not convert Document to a String", e);
         }
-        try {
-            writer = new FileWriter(filePath);
-            writer.write(xmlString);
-            writer.close();
-        }
-        catch (IOException e) {
-            System.err.println("ERROR: could not open file! " + e.getMessage());
-            e.printStackTrace();
-        }
+        writeStringToFile(filePath, xmlString);
     }
 
     /**
@@ -778,24 +837,26 @@ public class XmlUtilities {
      */
 
     public static void write (Element element, String filePath) {
+        String xmlString;
 
-        FileWriter writer = null;
-        String xmlString = null;
         try {
             xmlString = getXmlAsString(element);
         }
         catch (TransformerException e) {
-            System.err.println("ERROR: " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not convert Element to a String", e);
         }
+        writeStringToFile(filePath, xmlString);
+    }
+
+    private static void writeStringToFile (String filePath, String xmlString) {
+        FileWriter writer;
         try {
             writer = new FileWriter(filePath);
             writer.write(xmlString);
             writer.close();
         }
         catch (IOException e) {
-            System.err.println("ERROR: could not open file! " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not write to file", e);
         }
     }
 
@@ -806,17 +867,23 @@ public class XmlUtilities {
      * @return a collection of elements.
      */
 
-    public static Collection<Element> convertNodeListToCollection (
-            NodeList nodeList) {
+    public static Collection<Element> convertNodeListToCollection (NodeList nodeList) {
         ArrayList<Element> list = new ArrayList<Element>();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 list.add((Element) node);
             }
+            else if (node.getNodeType() == Node.TEXT_NODE &&
+                     (node.getNodeValue().trim().length() == 0)) {
+                /*
+                 * Do nothing. This is a bug fix to keep the warning from being
+                 * thrown for row returns, which are stored as text elements.
+                 */
+            }
             else {
-                System.err
-                        .println("WARNING: Node could not be converted to element!");
+                throw new XmlException("The Node " + node.getNodeName() +
+                                       " could not be converted to element!");
             }
         }
         return list;
