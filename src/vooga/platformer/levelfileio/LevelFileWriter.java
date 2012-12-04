@@ -1,6 +1,10 @@
 package vooga.platformer.levelfileio;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.w3c.dom.Document;
@@ -20,6 +24,12 @@ import vooga.platformer.level.levelplugin.LevelPlugin;
  * 
  */
 public final class LevelFileWriter {
+
+    private LevelFileWriter () {
+        /*
+         * Empty constructor for util class
+         */
+    }
 
     /**
      * Method that writes the data describing a platformer level to an XML file
@@ -59,15 +69,19 @@ public final class LevelFileWriter {
         Element level = doc.createElement(XmlTags.DOCUMENT);
         doc.appendChild(level);
 
-        String serializedGameObjectFilePath = filePath.split("\\.")[0] + "GameObjects.bin";
-        String serializedConditionsFilePath = filePath.split("\\.")[0] + "Conditions.bin";
-        String serializedPluginsFilePath = filePath.split("\\.")[0] + "Plugins.bin";
+        String periodDeliminator = "\\.";
+
+        String serializedGameObjectFilePath =
+                filePath.split(periodDeliminator)[0] + "GameObjects.bin";
+        String serializedConditionsFilePath =
+                filePath.split(periodDeliminator)[0] + "Conditions.bin";
+        String serializedPluginsFilePath = filePath.split(periodDeliminator)[0] + "Plugins.bin";
 
         // convert to relative paths
         String base = System.getProperty("user.dir");
         serializedGameObjectFilePath = relativizePath(base, serializedGameObjectFilePath);
         serializedConditionsFilePath = relativizePath(base, serializedConditionsFilePath);
-        serializedPluginsFilePath    = relativizePath(base, serializedPluginsFilePath);
+        serializedPluginsFilePath = relativizePath(base, serializedPluginsFilePath);
 
         appendXmlElements(levelName, width, height, cameraType, collisionChecker, doc, level,
                           serializedGameObjectFilePath, serializedConditionsFilePath,
@@ -88,7 +102,7 @@ public final class LevelFileWriter {
         XmlUtilities.write(doc, filePath);
     }
 
-    private static String relativizePath(String base, String path) {
+    private static String relativizePath (String base, String path) {
         return new File(base).toURI().relativize(new File(path).toURI()).getPath();
     }
 
@@ -105,15 +119,13 @@ public final class LevelFileWriter {
         XmlUtilities.appendElement(doc, level, XmlTags.COLLISION_CHECKER, collisionChecker);
         XmlUtilities.appendElement(doc, level, XmlTags.CAMERA, cameraType);
         XmlUtilities.appendElement(doc, level, XmlTags.GAMEOBJECT_DATA, serializedGameObjectPath);
-        XmlUtilities.appendElement(doc, level, XmlTags.CONDITION, serializedConditionsPath);
-        XmlUtilities.appendElement(doc, level, XmlTags.PLUGIN, serializedPluginsPath);
+        XmlUtilities.appendElement(doc, level, XmlTags.CONDITION_DATA, serializedConditionsPath);
+        XmlUtilities.appendElement(doc, level, XmlTags.PLUGIN_DATA, serializedPluginsPath);
 
     }
 
     private static void serializeCollection (Collection<Object> serializableObjects, Document doc,
-                                             Element level, String filePath)
-                                                                            throws FileNotFoundException,
-                                                                            IOException {
+                                             Element level, String filePath) throws IOException {
         FileOutputStream fos = new FileOutputStream(filePath);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         for (Object g : serializableObjects) {

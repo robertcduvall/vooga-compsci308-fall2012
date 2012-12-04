@@ -123,7 +123,7 @@ public class LevelFileReader {
      * @return a collection of the saved Conditions
      */
     public Collection<Condition> getConditions () {
-        String conditionDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.CONDITION);
+        String conditionDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.CONDITION_DATA);
         Collection<Condition> castConditions = new ArrayList<Condition>();
 
         for (Object c : readSerializedObjects(conditionDataFile)) {
@@ -141,7 +141,7 @@ public class LevelFileReader {
      * @return a collection of the saved LevelPlugins
      */
     public Collection<LevelPlugin> getLevelPlugins () {
-        String pluginDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.PLUGIN);
+        String pluginDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.PLUGIN_DATA);
         Collection<LevelPlugin> castPlugins = new ArrayList<LevelPlugin>();
 
         for (Object lp : readSerializedObjects(pluginDataFile)) {
@@ -167,7 +167,7 @@ public class LevelFileReader {
             ObjectInputStream ois = new ObjectInputStream(fis);
             inputObjects = new ArrayList<Object>();
             while (fis.available() > 0) {
-                inputObjects.add((Object) ois.readObject());
+                inputObjects.add(ois.readObject());
             }
             ois.close();
         }
