@@ -31,7 +31,7 @@ public class LevelFactoryTest {
     private static final int LEVEL_WIDTH = 20;
     private static final int LEVEL_HEIGHT = 20;
     private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.png";
-    private static final String COLLISION_CHECKER_PATH = "src/games/platformerdemo/demoCollisionEvents.xml";
+    private static final String COLLISION_CHECKER_PATH = "src/vooga/platformer/collision/collisionEvents.xml";
     private static final String CAMERA_TYPE = "vooga.platformer.someCamera";
 
     private static final int X_POS = 1;
