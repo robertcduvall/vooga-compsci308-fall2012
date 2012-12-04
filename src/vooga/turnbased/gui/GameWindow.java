@@ -12,7 +12,7 @@ import javax.swing.JFrame;
  * The main game frame that switch between menu, game and editor canvases.
  * Also It is responsible to load general game settings from the resource file
  * 
- * @author David, Rex, Tony, volodymyr
+ * @author David, Rex, Tony, volodymyr, Jenni
  **/
 @SuppressWarnings("serial")
 public class GameWindow extends JFrame {
@@ -22,7 +22,7 @@ public class GameWindow extends JFrame {
     public static final String MENU = "0";
     public static final String EDITOR = "1";
     public static final String GAME = "2";
-
+    public static final String CONTROLS = "3";
 
     /**
      * Location for game configuration resource bundles
@@ -62,6 +62,7 @@ public class GameWindow extends JFrame {
         myContentPane.add(new MenuPane(this), MENU);
         myContentPane.add(new EditorPane(this), EDITOR);
         myContentPane.add(new GamePane(this), GAME);
+        myContentPane.add(new ControlPane(this), CONTROLS);
         changeActivePane(MENU);
     }
 
