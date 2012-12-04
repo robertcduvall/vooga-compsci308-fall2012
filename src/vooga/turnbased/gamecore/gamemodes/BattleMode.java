@@ -38,7 +38,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private int myLoserSpriteID;
     private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
-    private OptionSelect mySelection;
+    private int mySelection;
 
     private final int MESSAGE_NUM = 4;
     private final int HEIGHT_SCALAR = 3;
@@ -49,6 +49,12 @@ public class BattleMode extends GameMode implements InputAPI {
     private final double SHIFT_TOP_SCALAR = .45;
     private final double SHIFT_BOTTOM_SCALAR = .75;
     private final double ADJUST_ARROW_SCALAR = .80;
+    
+    private final int OPTION1 = 1;
+    private final int OPTION2 = 2;
+    private final int OPTION3 = 3;
+    private final int OPTION4 = 4;
+    
 
     private final String myMENU_FONT = "Sans_Serif";
 
@@ -72,7 +78,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     @Override
     public void initialize () {
-        mySelection = OptionSelect.OPTION1;
+        mySelection = OPTION1;
         myPlayerObject = myTeam.getActivePlayer();
         myEnemyObject = myEnemyTeam.getActivePlayer();
     }
@@ -99,15 +105,12 @@ public class BattleMode extends GameMode implements InputAPI {
     public void configureInputHandling () {
         // use input api for key handling. notice how you can only invoke
         // methods w/t parameters...
-        int attack = KeyEvent.VK_A;
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
         int up = KeyEvent.VK_UP;
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            GamePane.keyboardController.setControl(attack, KeyboardController.RELEASED, this,
-                    "triggerOption1Event");
             GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, this,
                     "triggerLeftEvent");
             GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, this,
@@ -326,43 +329,6 @@ public class BattleMode extends GameMode implements InputAPI {
         return teamDead;
     }
 
-    /**
-     * Triggers the event associated with the player's first option.
-     */
-    public void triggerOption1Event () {
-        myPlayerObject.doOption1(myEnemyObject);
-        addOptionMessage();
-    }
-
-    /**
-     * Triggers the event associated with the player's second option.
-     */
-    public void triggerOption2Event () {
-        myPlayerObject.doOption2(null);
-        addOptionMessage();
-    }
-
-    /**
-     * Triggers the event associated with the player's third option.
-     */
-    public void triggerOption3Event () {
-        myPlayerObject.doOption3(null);
-        addOptionMessage();
-    }
-
-    /**
-     * Triggers the event associated with the player's fourth option.
-     */
-    public void triggerOption4Event () {
-        myPlayerObject.doOption4(null);
-        addOptionMessage();
-    }
-
-    private void addOptionMessage () {
-        myMessages.add(myPlayerObject.getCurrentMessage());
-        continueBattle();
-    }
-
     private void continueBattle () {
         if (!isBattleOver()) {
             generateEnemyMove();
@@ -370,19 +336,19 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     private void generateEnemyMove () {
-        myEnemyObject.doRandomOption(myPlayerObject);
-        myMessages.add(myEnemyObject.getCurrentMessage());
+        String message = myEnemyObject.doRandomOption(myPlayerObject);
+        myMessages.add(message);
     }
 
     /**
      * select the option that is on the left of the current option
      */
     public void triggerLeftEvent () {
-        if (mySelection == OptionSelect.OPTION2) {
-            mySelection = OptionSelect.OPTION1;
+        if (mySelection == OPTION2) {
+            mySelection = OPTION1;
         }
-        else if (mySelection == OptionSelect.OPTION4) {
-            mySelection = OptionSelect.OPTION3;
+        else if (mySelection == OPTION4) {
+            mySelection = OPTION3;
         }
     }
 
@@ -390,11 +356,11 @@ public class BattleMode extends GameMode implements InputAPI {
      * select the option that is on the right of the current option
      */
     public void triggerRightEvent () {
-        if (mySelection == OptionSelect.OPTION1) {
-            mySelection = OptionSelect.OPTION2;
+        if (mySelection == OPTION1) {
+            mySelection = OPTION2;
         }
-        else if (mySelection == OptionSelect.OPTION3) {
-            mySelection = OptionSelect.OPTION4;
+        else if (mySelection == OPTION3) {
+            mySelection = OPTION4;
         }
     }
 
@@ -402,11 +368,11 @@ public class BattleMode extends GameMode implements InputAPI {
      * select the option that is above the current option
      */
     public void triggerUpEvent () {
-        if (mySelection == OptionSelect.OPTION3) {
-            mySelection = OptionSelect.OPTION1;
+        if (mySelection == OPTION3) {
+            mySelection = OPTION1;
         }
-        else if (mySelection == OptionSelect.OPTION4) {
-            mySelection = OptionSelect.OPTION2;
+        else if (mySelection == OPTION4) {
+            mySelection = OPTION2;
         }
     }
 
@@ -414,11 +380,11 @@ public class BattleMode extends GameMode implements InputAPI {
      * select the option that is below the current option
      */
     public void triggerDownEvent () {
-        if (mySelection == OptionSelect.OPTION1) {
-            mySelection = OptionSelect.OPTION3;
+        if (mySelection == OPTION1) {
+            mySelection = OPTION3;
         }
-        else if (mySelection == OptionSelect.OPTION2) {
-            mySelection = OptionSelect.OPTION4;
+        else if (mySelection == OPTION2) {
+            mySelection = OPTION4;
         }
     }
 
@@ -428,20 +394,28 @@ public class BattleMode extends GameMode implements InputAPI {
     public void triggerSelectEvent () {
         switch (mySelection) {
             case OPTION1:
-                triggerOption1Event();
+                triggerOption(1);
                 break;
             case OPTION2:
-                triggerOption2Event();
+                triggerOption(2);
                 break;
             case OPTION3:
-                triggerOption3Event();
+                triggerOption(3);
                 break;
             case OPTION4:
-                triggerOption4Event();
+                triggerOption(4);
                 break;
             default:
                 break;
         }
+    }
+
+    private void triggerOption (int MenuOptionSelected) {
+        String message = myPlayerObject.doOption(MenuOptionSelected, myEnemyObject);
+        
+        myMessages.add(message);
+        continueBattle();
+        
     }
 
     private class Team {
@@ -476,12 +450,6 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
 
-    /**
-     * Options to select
-     */
-    private enum OptionSelect {
-        OPTION1, OPTION2, OPTION3, OPTION4
-    }
 
     @Override
     public void processMouseInput (int mousePressed, Point mousePosition, int mouseButton) {
