@@ -44,7 +44,7 @@ public abstract class AbstractFrameCreator {
     public ArcadeFrame createFrame () {
 
         // layout the content panel
-        layoutContentPanel();
+        createContentPanel();
 
         // create the arcadeframe
         ArcadeFrame myFrame = new ArcadeFrame(myArcade, ARCADE_NAME, myPanels);
@@ -70,24 +70,35 @@ public abstract class AbstractFrameCreator {
     }
 
     /**
-     * Method allows programmer to define the placement
-     * and size of panels in the frame, using a layout manager
-     * 
-     * This method lays out the base panels in the frame.
-     * Remember to add each base panel to the content panel.
-     * 
-     * Each subclass MUST override this method, and
-     * call up: super.layoutContentPanel()
+     * Creates and populates the contentPanel
+     * The contentPanel is fit into the contentPane of the Frame
      */
-    protected void layoutContentPanel () {
+    protected void createContentPanel () {
         myContentPanel = new ArcadePanel(myArcade, "contentpanel");
         myContentPanel.removeAll();
         // myContentPanel.setPreferredSize(new Dimension(FRAME_WIDTH,
         // FRAME_HEIGHT));
 
         myContentPanel.setBackground(Color.BLACK);
+        
+        setLayoutManager();
+        addSubPanels();
+        
     }
 
+    /**
+     * Must be implemented with assignment of layout manager
+     */
+    abstract protected void setLayoutManager();
+    
+    /**
+     * Must be implemented with instructions to add each subpanel
+     */
+    abstract protected void addSubPanels();
+    
+    
+    
+    
     /**
      * Call this method on each base panel in the frame
      * to prepare it for use in the arcade
