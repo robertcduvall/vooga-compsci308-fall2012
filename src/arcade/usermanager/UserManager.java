@@ -82,7 +82,7 @@ public final class UserManager {
 
         readAdminFile();
         loadTwitterTokens();
-//        loadFacebookTokens();
+        loadFacebookTokens();
         loadUserData();
     }
 
