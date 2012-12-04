@@ -6,8 +6,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -43,14 +47,31 @@ public class EditorMenuBar extends JMenuBar{
                 myEditor.save();
             }
         });
-        JMenu attributeMenu = new JMenu("Add Level Attribute");
-        attributeMenu.add(new AbstractAction("Gravity") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                myEditor.addAttribute(e.getActionCommand());
-            }
-        });
+        levelMenu.addSeparator();
+        JMenu attributeMenu = new JMenu("Add Level Plugin");
+        List<String> plugins = getLevelItems("AvailableLevelPlugins.txt");
+        for(String plugin : plugins) {
+            attributeMenu.add(new AbstractAction(plugin) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    myEditor.addLevelPlugin(e.getActionCommand());
+                }
+            });
+        }
         levelMenu.add(attributeMenu);
+        JMenu conditionMenu = new JMenu("Add Level Condition");
+        List<String> conditions = getLevelItems("AvailableConditions.txt");
+        for(String cond : conditions) {
+            conditionMenu.add(new AbstractAction(cond) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    myEditor.addLevelCondtions(e.getActionCommand());
+                }
+            });
+        }
+        levelMenu.add(conditionMenu);
+        
+        
         JMenu spriteMenu = new JMenu("Sprite");
         spriteMenu.add(new AbstractAction("New") {
             @Override
@@ -60,6 +81,25 @@ public class EditorMenuBar extends JMenuBar{
         });
         add(levelMenu);
         add(spriteMenu);
+    }
+
+    private List<String> getLevelItems (String str) {
+        List<String> list = new ArrayList<String>();
+        Scanner s = null;
+        try {
+            s = new Scanner(new File(System.getProperty("user.dir") + "/src/vooga/platformer/data/"+str));
+        }
+        catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        while(s.hasNext()) {
+            String item = s.nextLine();
+            item = item.substring(item.lastIndexOf(".")+1, item.length());
+            list.add(item);
+        }
+        list.add("Other");
+        return list;
     }
 
 }

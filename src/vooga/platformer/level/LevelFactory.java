@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Dimension2D;
 import java.util.Collection;
+import util.camera.UpdatableCamera;
 import util.reflection.ReflectionException;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
@@ -12,7 +13,6 @@ import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.levelfileio.LevelFileReader;
 import vooga.platformer.util.camera.FollowingCamera;
-import vooga.platformer.util.camera.UpdatableCamera;
 
 
 /**

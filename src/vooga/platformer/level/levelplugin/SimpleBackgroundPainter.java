@@ -67,4 +67,9 @@ public class SimpleBackgroundPainter extends BackgroundPainter {
         return myBgImg.getImage();
     }
 
+    @Override
+    public ImageIcon getDefaultImage () {
+        return myBgImg;
+    }
+
 }

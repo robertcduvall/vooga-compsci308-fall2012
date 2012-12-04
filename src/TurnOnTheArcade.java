@@ -30,8 +30,8 @@ public class TurnOnTheArcade {
     private static final int BUTTON_HEIGHT = 190;
     private static final int BUTTON_WIDTH = 190;
 
-    private static JFrame startFrame;
-    private static JPanel startPanel;
+    private static JFrame myStartFrame;
+    private static JPanel myStartPanel;
 
     /**
      * This code starts it all!
@@ -60,24 +60,22 @@ public class TurnOnTheArcade {
     private static void startWithPowerButton () {
 
         // sets up the jframe and jpanel
-        startFrame = new JFrame("Ready?");
-        startFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        startFrame.setResizable(false);
-        startPanel = new JPanel();
-        // startPanel.setLayout(new BorderLayout());
-        startPanel.setBackground(Color.BLACK);
+        myStartFrame = new JFrame("Ready?");
+        myStartFrame.setSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        myStartFrame.setResizable(false);
+        myStartPanel = new JPanel();
+        myStartPanel.setBackground(Color.BLACK);
 
         addPowerButton();
 
-        // startFrame.getContentPane().add(startPanel, BorderLayout.CENTER);
-        startFrame.getContentPane().add(startPanel);
+        myStartFrame.getContentPane().add(myStartPanel);
 
         // starts the jframe
-        startFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        startFrame.setLocationRelativeTo(null);
+        myStartFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        myStartFrame.setLocationRelativeTo(null);
 
-        startFrame.pack();
-        startFrame.setVisible(true);
+        myStartFrame.pack();
+        myStartFrame.setVisible(true);
 
     }
 
@@ -92,10 +90,10 @@ public class TurnOnTheArcade {
             public void actionPerformed (ActionEvent e) {
                 @SuppressWarnings("unused")
                 Arcade theArcade = new Arcade();
-                startFrame.dispose();
+                myStartFrame.dispose();
             }
         });
 
-        startPanel.add(powerButton, BorderLayout.CENTER);
+        myStartPanel.add(powerButton, BorderLayout.CENTER);
     }
 }

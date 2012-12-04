@@ -36,7 +36,7 @@ public class TwitterMainPanel extends AMainPanel{
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         myPanel.setBackground(Color.BLUE);
-        MigLayout layout = new MigLayout("", "[c][c]", "[][][][]push[]");
+        MigLayout layout = new MigLayout("", "[50%, grow]", "[][][][]push[]");
         myPanel.setLayout(layout);
         
         JLabel welcomeLabel = new JLabel("Welcome to the twitter connect! \nTweet from the comfort of the arcade.");
@@ -61,7 +61,7 @@ public class TwitterMainPanel extends AMainPanel{
         
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/twitterbird.jpg");
         JButton tweetBut = new JButton("Tweet");
-        JButton tweetDisconnectBut = new JButton("Disconnect Twitter Account");
+        JButton tweetDisconnectBut = new JButton("Unlink Twitter Account");
         
         tweetBut.addActionListener(new ActionListener(){
             @Override
@@ -102,11 +102,11 @@ public class TwitterMainPanel extends AMainPanel{
         
         JLabel twitterPicture = new JLabel(icon);
         
-        myPanel.add(twitterPicture, "align right");
-        myPanel.add(welcomeLabel, "align left, wrap");
+        myPanel.add(twitterPicture, "align center, split 2");
+        myPanel.add(welcomeLabel, "align center, wrap");
         //myPanel.add(tweetPrompt, "align center, span, wrap");
         myPanel.add(textToTweet, "grow, split 2, align center, span");
-        myPanel.add(tweetBut, "wrap, grow,");
+        myPanel.add(tweetBut, "grow, wrap");
         myPanel.add(instructionTextScroller, "wrap, grow, align center, span");
         myPanel.add(tweetDisconnectBut, "align left");
         

@@ -1,7 +1,7 @@
 <level>
 <levelName>Level Name</levelName>
-<width>20</width>
-<height>20</height>
+<width>1000</width>
+<height>800</height>
 <collisionChecker>someCollisionCheckerPath</collisionChecker>
 <camera>vooga.platformer.someCamera</camera>
 <gameObjectData>src/vooga/platformer/test/testIOWithSerialziationGameObjects.bin</gameObjectData>

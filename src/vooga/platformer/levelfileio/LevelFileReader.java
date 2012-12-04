@@ -1,6 +1,5 @@
 package vooga.platformer.levelfileio;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,10 +16,10 @@ import vooga.platformer.level.levelplugin.LevelPlugin;
 
 
 /**
- * Instances of this class are created using the path to an XML level data file.
- * Once the instance is created, the getter methods can be used to get the
- * contents of this data file as java types (ints and Sprites, rather than
- * string values).
+ * Instances of this class are created using the path to an XML level data file
+ * written in the format established by LevelFileWriter. Once the instance is
+ * created, the getter methods can be used to get the contents of this data file
+ * as java types.
  * 
  * @author Grant Oakley
  * @author Zach Michaelov (modified)
@@ -29,12 +28,12 @@ public class LevelFileReader {
 
     private final Document myDocument;
     private Element myRoot;
-    private File myLevelFile;
 
     /**
      * Creates a new LevelFileReader using the level data file specified.
      * 
-     * @param levelFilePath path to the level data file (XML format)
+     * @param levelFilePath path to the level data file (must conform to package
+     *        XML format)
      */
     public LevelFileReader (String levelFilePath) {
         this(new File(levelFilePath));
@@ -44,30 +43,20 @@ public class LevelFileReader {
      * Creates a new LevelFileReader using the File specified.
      * 
      * @param levelFile File in XML format representing the level to be read
+     *        (must conform to package XML format)
      */
 
     public LevelFileReader (File levelFile) {
         myDocument = XmlUtilities.makeDocument(levelFile);
-        myLevelFile = levelFile;
         myRoot = myDocument.getDocumentElement();
     }
 
     /**
-     * Gets the level's type. This specifies what subclass of Level to use to
-     * build the Level in LevelFactory.
-     * 
-     * @return the level's type
-     */
-    public String getLevelType () {
-        return myRoot.getAttribute(XmlTags.CLASS_NAME);
-    }
-
-    /**
-     * Gets the name of the level.
+     * Gets the name of the level that is to be displayed to the user.
      * 
      * @return name of the level as a String
      */
-    public String getLevelID () {
+    public String getLevelName () {
         return XmlUtilities.getChildContent(myRoot, XmlTags.LEVEL_NAME);
     }
 
@@ -99,7 +88,8 @@ public class LevelFileReader {
     }
 
     /**
-     * Gets the class name of the Camera to use for this particular level.
+     * Gets the fully-qualified class name of the Camera to use for this
+     * particular level.
      * 
      * @return class name of this level's Camera subclass
      */

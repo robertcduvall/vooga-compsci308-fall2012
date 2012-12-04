@@ -28,16 +28,16 @@ public class LevelFactoryTest {
     private static final String XML_FILE_PATH =
             "src/vooga/platformer/test/testLevelFactory.xml";
     private static final String LEVEL_ID = "Level Name";
-    private static final int LEVEL_WIDTH = 20;
-    private static final int LEVEL_HEIGHT = 20;
+    private static final int LEVEL_WIDTH = 500;
+    private static final int LEVEL_HEIGHT = 500;
     private static final String TEST_IMAGE = "src/vooga/platformer/test/testImage.png";
-    private static final String COLLISION_CHECKER_PATH = "src/games/platformerdemo/demoCollisionEvents.xml";
+    private static final String COLLISION_CHECKER_PATH = "src/vooga/platformer/collision/collisionEvents.xml";
     private static final String CAMERA_TYPE = "vooga.platformer.someCamera";
 
     private static final int X_POS = 1;
     private static final int Y_POS = 1;
-    private static final int SPRITE_WIDTH = 1;
-    private static final int SPRITE_HEIGHT = 1;
+    private static final int SPRITE_WIDTH = 15;
+    private static final int SPRITE_HEIGHT = 15;
     private static final int SPRITE_ID = 0;
 
     private LevelFileReader lfr;
@@ -55,9 +55,8 @@ public class LevelFactoryTest {
         conditions.add(new DefeatAllEnemiesCondition());
         plugins.add(new SimpleBackgroundPainter(new File(TEST_IMAGE)));
         
-        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, TEST_IMAGE,
-                                   gameObjects, conditions, plugins, CAMERA_TYPE,
-                                   COLLISION_CHECKER_PATH);
+        LevelFileWriter.writeLevel(XML_FILE_PATH, LEVEL_ID, LEVEL_WIDTH, LEVEL_HEIGHT, gameObjects,
+                                   conditions, plugins, CAMERA_TYPE, COLLISION_CHECKER_PATH);
         lfr = new LevelFileReader(XML_FILE_PATH);
         Assert.assertNotNull(lfr);
     }
