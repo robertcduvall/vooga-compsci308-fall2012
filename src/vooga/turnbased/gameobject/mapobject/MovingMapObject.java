@@ -154,6 +154,7 @@ public class MovingMapObject extends MapObject {
      * 
      * @param b Boolean to set state of "can move".
      */
+    @Override
     public void setCanMove (boolean b) {
         myCanMove = b;
     }
@@ -212,8 +213,8 @@ public class MovingMapObject extends MapObject {
      * @param dest the destination on the map
      */
     private void moveTo (Point dest) {
-        getMapMode().removeMapObject(this);
-        getMapMode().addMapObject(dest, this);
+//        getMapMode().removeMapObject(this);
+//        getMapMode().addMapObject(dest, this);
         setLocation(dest);
         setMoving(true);
     }

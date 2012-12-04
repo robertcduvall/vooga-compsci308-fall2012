@@ -238,4 +238,9 @@ public class MapObject extends GameObject {
     public void flagCondition(String conditionName, List<Integer> involvedSpriteIDs) {
         myMapMode.flagCondition(conditionName, involvedSpriteIDs);
     }
+
+	public void setCanMove(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }

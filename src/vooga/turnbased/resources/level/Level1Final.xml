@@ -22,7 +22,7 @@
 		<mode>
 			<name>gameOver</name>
 			<class>vooga.turnbased.gamecore.gamemodes.GameOverMode</class>
-			<condition>endgame</condition>
+			<condition>endgame1, endgame2, endgame3, endgame4</condition>
 		</mode>
 		<mode>
 			<name>map1</name>
@@ -95,6 +95,72 @@
 				<image>src/vooga/turnbased/resources/image/mapobject/FatMan.png</image>
 			</object>
 		</sprite>
+		<sprite>
+		    <object>
+				<createOn>start</createOn>
+				<modes>map1</modes>
+	            <class>vooga.turnbased.gameobject.mapobject.TeleportMapObject</class>
+	            <condition>NO_ACTION</condition>
+	            <location>
+	                    <x>10</x>
+	                    <y>9</y>
+	            </location>
+	            <image>src/vooga/turnbased/resources/image/mapobject/sully.png</image>
+	            <destLocation>
+	            	<x>8</x>
+	            	<y>4</y>
+	            </destLocation>
+	            <destMode>map1</destMode>
+		    </object>
+		    <object>
+				<createOn>start</createOn>
+				<modes>map1</modes>
+	            <class>vooga.turnbased.gameobject.mapobject.TeleportMapObject</class>
+	            <condition>entermap2</condition>
+	            <location>
+	                    <x>10</x>
+	                    <y>4</y>
+	            </location>
+	            <image>src/vooga/turnbased/resources/image/mapobject/sully.png</image>
+	            <destLocation>
+	            	<x>8</x>
+	            	<y>9</y>
+	            </destLocation>
+	            <destMode>map2</destMode>
+		    </object>
+		    		    <object>
+				<createOn>start</createOn>
+				<modes>map2</modes>
+	            <class>vooga.turnbased.gameobject.mapobject.TeleportMapObject</class>
+	            <condition>NO_ACTION</condition>
+	            <location>
+	                    <x>10</x>
+	                    <y>9</y>
+	            </location>
+	            <image>src/vooga/turnbased/resources/image/mapobject/sully.png</image>
+	            <destLocation>
+	            	<x>8</x>
+	            	<y>4</y>
+	            </destLocation>
+	            <destMode>map2</destMode>
+		    </object>
+		    <object>
+				<createOn>start</createOn>
+				<modes>map2</modes>
+	            <class>vooga.turnbased.gameobject.mapobject.TeleportMapObject</class>
+	            <condition>entermap1</condition>
+	            <location>
+	                    <x>10</x>
+	                    <y>4</y>
+	            </location>
+	            <image>src/vooga/turnbased/resources/image/mapobject/sully.png</image>
+	            <destLocation>
+	            	<x>8</x>
+	            	<y>9</y>
+	            </destLocation>
+	            <destMode>map1</destMode>
+		    </object>
+		</sprite>
 	    <sprite>
 		    <object>
 				<createOn>start</createOn>
@@ -127,20 +193,9 @@
 				<createOn>start</createOn>
 				<modes>map1</modes>
 				<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
-				<condition>entermap2</condition>
+				<condition>NO_ACTION</condition>
 				<location>
 					<x>9</x>
-					<y>3</y>
-				</location>
-				<image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
-			</object>
-			<object>
-				<createOn>start</createOn>
-				<modes>map2</modes>
-				<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
-				<condition>entermap1</condition>
-				<location>
-					<x>10</x>
 					<y>3</y>
 				</location>
 				<image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
@@ -206,5 +261,121 @@
 			<condition>NO_ACTION</condition>
 			<image>src/vooga/turnbased/resources/image/grass.png</image>
 		</staticSprite>
+		<sprite>
+			  <object>
+			  	<modes>map1, map2</modes>
+				<class>vooga.turnbased.gameobject.mapobject.NpcMovingObject</class>
+				<condition>NO_ACTION</condition>
+				<location>
+					<x>8</x>
+					<y>9</y>
+				</location>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Down.png</source>
+					<direction>down</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Down1.png</source>
+					<direction>down1</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Down2.png</source>
+					<direction>down2</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Left.png</source>
+					<direction>left</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Left1.png</source>
+					<direction>left1</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Left2.png</source>
+					<direction>left2</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Right.png</source>
+					<direction>right</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Right1.png</source>
+					<direction>right1</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Right2.png</source>
+					<direction>right2</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Up.png</source>
+					<direction>up</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Up1.png</source>
+					<direction>up1</direction>
+				</image>
+				<image>
+					<source>src/vooga/turnbased/resources/image/player/Up2.png</source>
+					<direction>up2</direction>
+				</image>
+			  </object>
+			  <object>
+			  	<createOn>start</createOn>
+			  	<modes>battle</modes>
+				<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+				<condition>endgame</condition>
+				<stats>
+					<maxHealth>10</maxHealth>
+					<health>10</health>
+					<defense>3</defense>
+					<attack>5</attack>
+				</stats>
+				<name>Pikachu</name>
+				<image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
+				<image>src/vooga/turnbased/resources/image/battleobject/025sb.png</image>
+			  </object>
+			  <object>
+			  	<createOn>start</createOn>
+			  	<modes>battle</modes>
+				<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+				<condition>endgame</condition>
+				<stats>
+					<maxHealth>8</maxHealth>
+					<health>8</health>
+					<defense>5</defense>
+					<attack>3</attack>
+				</stats>
+				<name>Squirtle</name>
+				<image>src/vooga/turnbased/resources/image/battleobject/007b.png</image>
+			  </object>
+			  <object>
+			  	<createOn>start</createOn>
+			  	<modes>battle</modes>
+				<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+				<condition>endgame</condition>
+				<stats>
+					<maxHealth>15</maxHealth>
+					<health>15</health>
+					<defense>4</defense>
+					<attack>4</attack>
+				</stats>
+				<name>Bulbasaur</name>
+				<image>src/vooga/turnbased/resources/image/battleobject/001b.png</image>
+			  </object>
+			  <object>
+			  	<createOn>start</createOn>
+			  	<modes>battle</modes>
+				<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+				<condition>endgame</condition>
+				<stats>
+					<maxHealth>30</maxHealth>
+					<health>30</health>
+					<defense>5</defense>
+					<attack>10</attack>
+				</stats>
+				<name>Charizard</name>
+				<image>src/vooga/turnbased/resources/image/battleobject/006b.png</image>
+			  </object>
+		</sprite>
 	</spriteDeclarations>
 </rpggame>
