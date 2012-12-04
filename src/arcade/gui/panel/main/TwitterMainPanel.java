@@ -61,7 +61,7 @@ public class TwitterMainPanel extends AMainPanel{
         
         ImageIcon icon = new ImageIcon("src/arcade/gui/images/twitterbird.jpg");
         JButton tweetBut = new JButton("Tweet");
-        JButton tweetDisconnectBut = new JButton("Disconnect Twitter Account");
+        JButton tweetDisconnectBut = new JButton("Unlink Twitter Account");
         
         tweetBut.addActionListener(new ActionListener(){
             @Override
