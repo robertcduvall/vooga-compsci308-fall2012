@@ -37,16 +37,18 @@ import vooga.turnbased.gamecreation.PlayerEditor;
 public class EditorPane extends DisplayPane {
 
     private static final String MAKE_CLASS_OPTIONS = "MAKE_CLASS_OPTIONS";
+    private static final String MAKE_CONDITION_OPTIONS = "MAKE_CONDITION_OPTIONS";
     private static final String USER_DIR = "user.dir";
     private static final String[] GAME_SETUP = {"Dimension Width: ", "Dimension Height: ",
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
     private static final String[] GAME_SETUP_DEFAULTS = {"20", "20", "15", "11",
         "src/vooga/turnbased/resources/image/grass.png"};
     private static final String[] OBJECTS = {"Class: ", "Condition: ",
-        "Images: ", "Stats: ", "Name: ", "Strategy: "};
+        "Images: ", "Stats: ", "Name: "};
     private static final String[] OBJECTS_DEFAULTS = {
-        MAKE_CLASS_OPTIONS, "", "src/vooga/turnbased/resources/image/[specific image path]",
-        "maxHealth:30, health:30, attack:10, defense:10", "", ""};
+        MAKE_CLASS_OPTIONS, MAKE_CONDITION_OPTIONS,
+        "src/vooga/turnbased/resources/image/[specific image path]",
+        "maxHealth:30, health:30, attack:10, defense:10", ""};
     private static final Point DISPLAY_MAP_ORIGIN = new Point (35, 35);
     private static final int BOX_SIZE = 25;
     static File sprite = new File("src/vooga/turnbased/resources/image/enemy/trainer066.png");
@@ -375,6 +377,11 @@ public class EditorPane extends DisplayPane {
                         "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
                         "vooga.turnbased.gameobject.battleobject.BattleObject",
                         "vooga.turnbased.gameobject.battleobject.TestMonster"};
+                JComboBox box = new JComboBox(options);
+                P.add(box);
+            }
+            else if (defaultValues[i].equals(MAKE_CONDITION_OPTIONS)) {
+                String[] options = {"dobattle", "endgame", "entermap", "optionstuff", "NO_ACTION"};
                 JComboBox box = new JComboBox(options);
                 P.add(box);
             }

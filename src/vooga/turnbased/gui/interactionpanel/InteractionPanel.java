@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.imageio.ImageIO;
+import vooga.turnbased.gameobject.optionobject.OptionObject;
 
 
 /**
@@ -37,16 +38,17 @@ public class InteractionPanel {
     // to be passed down for drawing
     private Graphics myImageGraphics;
     private List<StrategyOption> myOptions;
+    private List<OptionObject> myOptionObjects;
     private List<Point> myOptionPositions;
 
     /**
      * 
      * @param options
      */
-    public InteractionPanel (List<String> options) {
+    /*public InteractionPanel (List<String> options) {
         this();
         myOptions = addOptions(options);
-    }
+    }*/
     /**
      * 
      * @param options
@@ -54,6 +56,10 @@ public class InteractionPanel {
     public InteractionPanel (Set<String> options) {
         this();
         myOptions = addOptions(options);
+    }
+    
+    public InteractionPanel (List<OptionObject> optionObjects) {
+        myOptionObjects = optionObjects;
     }
     
     protected InteractionPanel() {

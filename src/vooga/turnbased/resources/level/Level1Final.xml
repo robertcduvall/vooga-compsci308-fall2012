@@ -100,7 +100,7 @@
 				<createOn>start</createOn>
 				<modes>map1</modes>
 	            <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
-	            <condition>optionstuff</condition>
+	            <condition>dooption</condition>
 	            <location>
 	                    <x>10</x>
 	                    <y>10</y>
@@ -109,16 +109,16 @@
 		    </object>
 		    <object>
 		    	<createOn>start</createOn>
-		    	<mode>option</mode>
+		    	<modes>option</modes>
 		    	<class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
-		    	<value>Go to map 1!</value>
-		    	<condition>entermap1</condition>
+		    	<name>Go to map 2!</name>
+		    	<condition>entermap2</condition>
 		    </object>
 		    <object>
 		    	<createOn>start</createOn>
-		    	<mode>option</mode>
+		    	<modes>option</modes>
 		    	<class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
-		    	<value>Quit</value>
+		    	<name>Quit</name>
 		    	<condition>NO_ACTION</condition>
 		    </object>
 	    </sprite>

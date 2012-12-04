@@ -27,7 +27,7 @@ public class PanelDebugger extends JPanel {
         for (int i = 0; i < 5; i++) {
             options.add(((Integer) i).toString());
         }
-        myInteractionPanel = new InteractionPanel(options);
+        //myInteractionPanel = new InteractionPanel(options);
     }
 
     public void paintComponents (Graphics g) {
