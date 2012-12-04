@@ -264,35 +264,37 @@ public class LevelXmlParser {
                 CREATE_ON);
         boolean playerOwnsObject = objectElement.getParentNode().getNodeName()
                 .equals(PLAYER);
-        if (createCondition != null || playerOwnsObject) {// TODO: fix, was just
-            // a test
-            // this is nasty... given more time, reflection could have solved
-            // this
-            String objectClass = XmlUtilities.getChildContent(objectElement,
-                    CLASS);
-            if ("vooga.turnbased.gameobject.mapobject.MapPlayerObject"
-                    .equals(objectClass)) {
-                return (GameObject) parseMapPlayer(objectElement);
-            }
-            else if ("vooga.turnbased.gameobject.battleobject.TestMonster"
-                    .equals(objectClass)) {
-                return (GameObject) parseBattleObject(objectElement);
-            }
-            else if ("vooga.turnbased.gameobject.mapobject.MapEnemyObject"
-                    .equals(objectClass)) {
-                return (GameObject) parseMapObject(objectElement);
-            }
-            else if ("vooga.turnbased.gameobject.mapobject.MapObstacleObject"
-                    .equals(objectClass)) {
-                return (GameObject) parseMapObject(objectElement);
-            }
-            else if ("vooga.turnbased.gameobject.mapobject.MovingMapObject"
-                    .equals(objectClass)) {
-                return (GameObject) parseMapObject(objectElement);
-            }
-            else if ("vooga.turnbased.gameobject.optionobject.OptionObject"
-                    .equals(objectClass)) { return (GameObject) parseOptionObject(objectElement); }
+        // if (createCondition != null || playerOwnsObject) {// TODO: fix, was
+        // just
+        // a test
+        // this is nasty... given more time, reflection could have solved
+        // this
+        String objectClass = XmlUtilities.getChildContent(objectElement, CLASS);
+        if ("vooga.turnbased.gameobject.mapobject.MapPlayerObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapPlayer(objectElement);
         }
+        else if ("vooga.turnbased.gameobject.battleobject.TestMonster"
+                .equals(objectClass)) {
+            return (GameObject) parseBattleObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.mapobject.MapEnemyObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.mapobject.MapObstacleObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.mapobject.MovingMapObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.optionobject.OptionObject"
+                .equals(objectClass)) {
+            return (GameObject) parseOptionObject(objectElement);
+        }
+        // }
         return null;
     }
 
