@@ -81,6 +81,20 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myModeElement, map1);
     }
 
+    public void addStaticSprites (String background, int numMaps) {
+        Element sprite = XmlUtilities.appendElement(myXmlDocument, mySpriteElement, "staticSprite");
+        XmlUtilities.appendElement(myXmlDocument, sprite,
+                "class", "vooga.turnbased.gameobject.mapobject.MapObject");
+        XmlUtilities.appendElement(myXmlDocument, sprite, "condition", "NO_ACTION");
+        XmlUtilities.appendElement(myXmlDocument, sprite, "image", background);
+        String maps = "";
+        for (int i = 0; i < numMaps; i++) {
+            maps = maps + ", map" + ((Integer)(i+1)).toString();
+        }
+        maps = maps.substring(2);
+        XmlUtilities.appendElement(myXmlDocument, sprite, "modes", maps);
+    }
+
     /**
      * 
      * @param width Describes width of the Map dimension
@@ -105,7 +119,7 @@ public class LevelEditor extends Editor {
      * @param height Describes height of the Camera dimension
      */
     public void addCameraDimension (String width, String height) {
-        addDimension("camaraDimension", width, height);
+        addDimension("cameraDimension", width, height);
     }
 
     /**
