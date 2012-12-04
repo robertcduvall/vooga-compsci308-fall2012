@@ -22,6 +22,7 @@ public class GameWindow extends JFrame {
     public static final String MENU = "0";
     public static final String EDITOR = "1";
     public static final String GAME = "2";
+    
 
     /**
      * Location for game configuration resource bundles
@@ -35,7 +36,6 @@ public class GameWindow extends JFrame {
     /**
      * Constructor construct a game window given the size of the window
      * 
-     * @param settingsResource the location of the resources
      * @param title The title of the game
      * @param settingsResource name of game configuration file
      * @param width Width of the window

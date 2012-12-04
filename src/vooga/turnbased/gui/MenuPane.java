@@ -2,8 +2,11 @@ package vooga.turnbased.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JTextField;
 import util.sound.SoundPlayer;
 
 
@@ -18,6 +21,8 @@ import util.sound.SoundPlayer;
  */
 public class MenuPane extends DisplayPane {
 
+    private String myDefaultXML = "vooga.turnbased.resources.level";
+
     /**
      * Constructor
      * 
@@ -26,6 +31,7 @@ public class MenuPane extends DisplayPane {
     public MenuPane (GameWindow gameWindow) {
         super(gameWindow);
         createButtons();
+        createXMLEntryTextField();
     }
 
     /**
@@ -49,5 +55,24 @@ public class MenuPane extends DisplayPane {
             }
         });
         add(editorButton);
+
+        JButton loadXMLButton = new JButton("Load XML");
+        loadXMLButton.addActionListener(new ActionListener() {
+            public void actionPerformed (ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+                int returnVal = fc.showOpenDialog(MenuPane.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                } 
+            }
+        });
+        add(loadXMLButton);
+    }
+
+
+    public void createXMLEntryTextField () {
+        JTextField tf = new JTextField(30);
+        tf.setText(myDefaultXML + ".Level1Final");
+        add(tf);
     }
 }
