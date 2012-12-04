@@ -35,6 +35,7 @@ import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.StaticObject;
+import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 
 /**
  * Frame containing all the elements needed to build and save a level
@@ -84,8 +85,9 @@ public class LevelEditor extends JPanel {
      * @param plugin
      */
     public void addLevelPlugin(String plugin) {
+        final LevelBoard current = myBoard;
+
 //        if("Gravity".equals(plugin)) { 
-//            final LevelBoard current = myBoard;
 //            final JPopupMenu jpop = new JPopupMenu();
 //            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
 //            final JTextField gravityfield = new JTextField();
@@ -112,8 +114,23 @@ public class LevelEditor extends JPanel {
 //            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
 //        }
         if("SimpleBackgroundPainter".equals(plugin)) {
-            
-        }
+            JFileChooser chooser = new
+                    JFileChooser(System.getProperty("user.dir"));
+            FileNameExtensionFilter filter =
+                    new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(chooser);
+//            if (returnVal == JFileChooser.APPROVE_OPTION) {
+//                try {
+//                    SimpleBackgroundPainter myBackground = new SimpleBackgroundPainter(chooser.getSelectedFile());
+//                    myBackgroundPath = chooser.getSelectedFile().getPath();
+//                }
+//                catch (IOException io) {
+//                    System.out.println("File not found. Try again");
+//                    myBackground = null;
+//                }
+//            }
+            }
     }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();

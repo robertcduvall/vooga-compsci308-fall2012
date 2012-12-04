@@ -65,7 +65,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
 public class LevelBoard extends JPanel {
     private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
-    private static final String DEFAULT_COLLISION_CHECKER = "/src/vooga/platformer/";
+    private static final String DEFAULT_COLLISION_CHECKER = "/src/vooga/platformer/collision/collisionEvents.xml";
     private static final int DEFAULT_SIZE = 30;
 
     // Editor fields
@@ -131,22 +131,7 @@ public class LevelBoard extends JPanel {
 
     private void setupInput () {
         myPlacementManager = new PlacementMouseListener(this);
-        // JFileChooser chooser = new
-        // JFileChooser(System.getProperty("user.dir"));
-        // FileNameExtensionFilter filter =
-        // new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
-        // chooser.setFileFilter(filter);
-        // int returnVal = chooser.showOpenDialog(chooser);
-        // if (returnVal == JFileChooser.APPROVE_OPTION) {
-        // try {
-        // myBackground = ImageIO.read(chooser.getSelectedFile());
-        // myBackgroundPath = chooser.getSelectedFile().getPath();
-        // }
-        // catch (IOException io) {
-        // System.out.println("File not found. Try again");
-        // myBackground = null;
-        // }
-        // }
+
         myKeyListener = new ScrollingKeyListener(this);
 
         myButtonListener = new MouseAdapter() {
@@ -155,7 +140,7 @@ public class LevelBoard extends JPanel {
                 GameObject obj = null;
                 try {
                     String cmmd = e.getComponent().getName();
-                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT"+ cmmd + ".png");
+                    File f = new File(System.getProperty("user.dir") + DATA_PATH + cmmd + ".png");
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
@@ -237,11 +222,11 @@ public class LevelBoard extends JPanel {
         }
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
         myBufferGraphics.drawImage(myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
-                                   this);
+                this);
         for (GameObject obj : myGameObjects) {
             myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX() - myOffset,
-                                       (int) obj.getY(), (int) obj.getWidth(),
-                                       (int) obj.getHeight(), null);
+                    (int) obj.getY(), (int) obj.getWidth(),
+                    (int) obj.getHeight(), null);
         }
         String mousemsg = "";
         if (myCurrentObject != null) {
@@ -249,9 +234,9 @@ public class LevelBoard extends JPanel {
             myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
             myBufferGraphics.drawRect((int) myCurrentObject.getX() - myOffset,
-                                      (int) myCurrentObject.getY(),
-                                      (int) myCurrentObject.getWidth(),
-                                      (int) myCurrentObject.getHeight());
+                    (int) myCurrentObject.getY(),
+                    (int) myCurrentObject.getWidth(),
+                    (int) myCurrentObject.getHeight());
             mousemsg = "Current Sprite = (";
         }
         else {
@@ -299,7 +284,7 @@ public class LevelBoard extends JPanel {
             saveFile = new File(System.getProperty("user.dir") + DATA_PATH, "myLevel.xml");
             // log.append("Save command cancelled by user." + newline);
         }
-//        String relativePath = saveFile.getPath().substring(System.getProperty("user.dir").length(), saveFile.getPath().length());
+        //        String relativePath = saveFile.getPath().substring(System.getProperty("user.dir").length(), saveFile.getPath().length());
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
                 myGameObjects, myConditions,
                 myPlugins, myCamera,
@@ -335,7 +320,7 @@ public class LevelBoard extends JPanel {
         j3.addActionListener(sh);
         pop.add(j3);
         pop.show(this.getParent(), (int) (g.getX() + g.getWidth() / 2),
-                 (int) (g.getY() + g.getHeight()));
+                (int) (g.getY() + g.getHeight()));
     }
 
     /**
@@ -404,7 +389,7 @@ public class LevelBoard extends JPanel {
                 pop.add(j);
             }
             pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
-                     (int) (myObject.getY() + myObject.getHeight() / 2));
+                    (int) (myObject.getY() + myObject.getHeight() / 2));
 
             /*
              * create a list of attributes from the resource file
