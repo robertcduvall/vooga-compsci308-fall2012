@@ -68,7 +68,7 @@ public class GridMode extends PlacementMode {
 
     @Override
     public void paint (Graphics2D pen) {
-        super.paint(pen);
         myGrid.paint(pen);
+        super.paint(pen);
     }
 }
