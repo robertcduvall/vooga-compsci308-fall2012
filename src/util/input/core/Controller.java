@@ -17,9 +17,9 @@ import util.input.inputhelpers.UKeyCode;
 
 /**
  * This class represents an abstract controller to provide input.
- *
+ * 
  * @author Amay, Lance
- *
+ * 
  * @param <T>
  */
 public abstract class Controller<T> {
@@ -53,7 +53,7 @@ public abstract class Controller<T> {
     /**
      * Create a new Controller with an element that
      * subscribes to its raw data.
-     *
+     * 
      * @param element - The subscribing element
      */
     public Controller (T element) {
@@ -63,7 +63,7 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events.
-     *
+     * 
      * @param subscriber - The subscribing class
      */
     public void subscribe (T subscriber) {
@@ -72,7 +72,7 @@ public abstract class Controller<T> {
 
     /**
      * Unsubscribes a class to this controller's events.
-     *
+     * 
      * @param unsubscriber - The unsubscribing class
      */
     public void unSubscribe (T unsubscriber) {
@@ -81,7 +81,7 @@ public abstract class Controller<T> {
 
     /**
      * Object invokes a method every time action and type occur.
-     *
+     * 
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -94,7 +94,7 @@ public abstract class Controller<T> {
      *         set or get a field, or invoke a method, but the currently
      *         executing method does not have access to the definition of
      *         the specified class, field, method or constructor"
-     * @throws InstantiationException 
+     * @throws InstantiationException
      */
     public void setControl (int action, int type, Object o, String method)
                                                                           throws NoSuchMethodException,
@@ -104,7 +104,7 @@ public abstract class Controller<T> {
 
     /**
      * Class invokes a static method every time action and type occur.
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -134,7 +134,7 @@ public abstract class Controller<T> {
      * Object invokes a method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <object, method> tuple into DataTable
-     *
+     * 
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -153,16 +153,18 @@ public abstract class Controller<T> {
     @SuppressWarnings("rawtypes")
     public void setControl (int action, int type, Object o, String method, String describeButton,
                             String describeAction) throws NoSuchMethodException,
-                                                  IllegalAccessException{
+                                                  IllegalAccessException {
         Method m = retrieveMethod(o, method);
+
         addControlToTable(action, type, o, m, describeButton, describeAction);
+
     }
 
     /**
      * Class invokes a static method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <class, method> tuple into DataTable
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -192,7 +194,7 @@ public abstract class Controller<T> {
 
     /**
      * Set the desired action on or off.
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      */
@@ -204,7 +206,7 @@ public abstract class Controller<T> {
 
     /**
      * Set the desired action on or off.
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      */
@@ -213,8 +215,9 @@ public abstract class Controller<T> {
         FlagPair<Object, Method> rowElement = getObjectMethodPair(action, type);
         rowElement.deactivate();
     }
-    
-    //****************************** PROTECTED METHODS *************************************
+
+    // ****************************** PROTECTED METHODS
+    // *************************************
 
     /**
      * @param e
@@ -236,12 +239,13 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
 
-    //****************************************************************************************
-    
-    //********************************* PRIVATE METHODS **************************************
-    
-    private void addControlToTable(int action, int type, Object o, Method method, String describeButton,
-                            String describeAction) {
+    // ****************************************************************************************
+
+    // ********************************* PRIVATE METHODS
+    // **************************************
+
+    private void addControlToTable (int action, int type, Object o, Method method,
+                                    String describeButton, String describeAction) {
         Map<String, Object> dataIn = new HashMap<String, Object>();
         dataIn.put(TUPLE, new FlagPair<Object, Method>(o, method));
         insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
@@ -252,13 +256,11 @@ public abstract class Controller<T> {
     @SuppressWarnings("unchecked")
     private FlagPair<Object, Method> getObjectMethodPair (int action, int type) {
         UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        FlagPair<Object, Method> rowElement =
-                (FlagPair<Object, Method>) r.getEntry("Tuple");
+        FlagPair<Object, Method> rowElement = (FlagPair<Object, Method>) r.getEntry("Tuple");
         return rowElement;
     }
 
-
-    //broadcasts the method to all subscribed elements.
+    // broadcasts the method to all subscribed elements.
     @SuppressWarnings("rawtypes")
     private void broadcastToSubscribers (String methodName, Object inputEvent)
                                                                               throws IllegalAccessException,
@@ -273,12 +275,12 @@ public abstract class Controller<T> {
         }
         for (T subscribedElement : mySubscribedElements) {
             Method method = subscribedElement.getClass().getMethod(methodName, inputType);
-            //System.out.println(method);
+
             method.invoke(subscribedElement, inputEvent);
         }
     }
 
-    //Invokes a method using an object based on the actionID
+    // Invokes a method using an object based on the actionID
     @SuppressWarnings("unchecked")
     private void invokeMethod (int actionID) throws IllegalAccessException,
                                             IllegalArgumentException, InvocationTargetException {
@@ -286,8 +288,7 @@ public abstract class Controller<T> {
 
         if (r != null) {
 
-            FlagPair<Object, Method> retrieveTuple =
-                    (FlagPair<Object, Method>) r.getEntry("Tuple");
+            FlagPair<Object, Method> retrieveTuple = (FlagPair<Object, Method>) r.getEntry("Tuple");
 
             if (retrieveTuple != null && retrieveTuple.isActive()) {
                 retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
@@ -327,7 +328,7 @@ public abstract class Controller<T> {
             if (!m.isAccessible()) { throw new IllegalAccessException(); }
         }
     }
-    
+
     @SuppressWarnings("rawtypes")
     private void instantiationLegalityCheck (Class c, String method) throws InstantiationException {
         if (Modifier.ABSTRACT == c.getModifiers() || Modifier.ABSTRACT == Modifier.INTERFACE) { throw new InstantiationException(); }

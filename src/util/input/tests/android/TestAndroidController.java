@@ -8,6 +8,7 @@ import util.input.core.AndroidController;
 import util.input.core.Controller;
 import util.input.factories.ControllerFactory;
 import util.input.interfaces.listeners.AndroidListener;
+import util.input.tests.android.squareattack.AndroidDrawGame;
 
 
 /**
