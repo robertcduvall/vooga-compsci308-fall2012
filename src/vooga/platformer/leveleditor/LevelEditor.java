@@ -196,7 +196,7 @@ public class LevelEditor extends JPanel {
     }
 
     protected void load() {
-        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir") + DATA_PATH);
+        JFileChooser chooser = new JFileChooser(DATA_PATH);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "XML Level files", "xml");
         chooser.setFileFilter(filter);
