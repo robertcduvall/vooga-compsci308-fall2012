@@ -39,6 +39,11 @@
 			<class>vooga.turnbased.gamecore.gamemodes.OptionMode</class>
 			<condition>dooption</condition>
 		</mode>
+                <mode>
+                        <name>gameWon</name>
+                        <class>vooga.turnbased.gamecore.gamemodes.GameWonMode</class>
+                        <condition>wingame</condition>
+                </mode>
 	</modeDeclarations>
 	<spriteDeclarations>
 		<sprite>
@@ -217,7 +222,7 @@
 				<createOn>start</createOn>
 				<modes>battle</modes>
 				<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-				<condition>NO_ACTION</condition>
+				<condition>wingame</condition>
 				<stats>
 					<maxHealth>100</maxHealth>
 					<health>100</health>

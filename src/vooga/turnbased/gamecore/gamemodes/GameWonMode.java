@@ -5,25 +5,28 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
-
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gui.GameWindow;
 
 /**
- * Mode designed to manage what happens when the game is lost. 
+ * Mode designed to manage what happens when the game is won. 
  * @author volodymyr
  *
  */
-public class GameOverMode extends GameMode {
+public class GameWonMode extends GameMode {
 
     /**
-     * Constructor for GameOverMode.
+     * Constructor for GameWonMode.
      * @param gm GameManager to which this mode belongs.
      * @param modeName String name of mode.
      * @param involvedIDs List of IDs of involved sprites.
      */
-    public GameOverMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
+    public GameWonMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
+    }
+
+    @Override
+    public void initialize () {
     }
 
     @Override
@@ -32,16 +35,12 @@ public class GameOverMode extends GameMode {
 
     @Override
     public void resume () {
-        playModeEntranceSound("GameOverSound");
-    }
-
-    @Override
-    public void initialize () {
+         playModeEntranceSound("GameWonSound");
     }
 
     @Override
     public void paint (Graphics g) {
-        Image background = GameWindow.importImage("GameOverImage");
+        Image background = GameWindow.importImage("GameWonImage");
         Dimension paneDim = getGameManager().getPaneDimension();
         g.drawImage(background, 0, 0, paneDim.width, paneDim.width, null);
     }
@@ -51,7 +50,7 @@ public class GameOverMode extends GameMode {
     }
 
     @Override
-    public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
+    public void processMouseInput (int mousePressed, Point mousePosition, int mouseButton) {     
     }
 
 }
