@@ -14,6 +14,15 @@ public class Pair<A, B> {
     private B myElem2;
 
     /**
+     * Create a new empty Pair.
+     *
+     */
+    public Pair () {
+        this.myElem1 = null;
+        this.myElem2 = null;
+    }
+    
+    /**
      * Create a new Pair.
      *
      * @param elem1 - Any object

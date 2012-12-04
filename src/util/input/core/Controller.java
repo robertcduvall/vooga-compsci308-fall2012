@@ -94,6 +94,7 @@ public abstract class Controller<T> {
      *         set or get a field, or invoke a method, but the currently
      *         executing method does not have access to the definition of
      *         the specified class, field, method or constructor"
+     * @throws InstantiationException 
      */
     public void setControl (int action, int type, Object o, String method)
                                                                           throws NoSuchMethodException,
@@ -149,18 +150,12 @@ public abstract class Controller<T> {
      *         executing method does not have access to the definition of
      *         the specified class, field, method or constructor"
      */
+    @SuppressWarnings("rawtypes")
     public void setControl (int action, int type, Object o, String method, String describeButton,
                             String describeAction) throws NoSuchMethodException,
-                                                  IllegalAccessException {
+                                                  IllegalAccessException{
         Method m = retrieveMethod(o, method);
-
-        Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, m));
-        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-
-        myDataTable.addNewRow(dataIn);
-
-        // myDataTable.viewContents();
+        addControlToTable(action, type, o, m, describeButton, describeAction);
     }
 
     /**
@@ -192,12 +187,7 @@ public abstract class Controller<T> {
                             String describeAction) throws NoSuchMethodException,
                                                   IllegalAccessException, InstantiationException {
         Method m = retrieveMethod(c, method);
-
-        Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new FlagPair<Class, Method>(c, m));
-        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-
-        myDataTable.addNewRow(dataIn);
+        addControlToTable(action, type, c, m, describeButton, describeAction);
     }
 
     /**
@@ -223,6 +213,8 @@ public abstract class Controller<T> {
         FlagPair<Object, Method> rowElement = getObjectMethodPair(action, type);
         rowElement.deactivate();
     }
+    
+    //****************************** PROTECTED METHODS *************************************
 
     /**
      * @param e
@@ -244,7 +236,18 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
 
-    // PRIVATE METHODS
+    //****************************************************************************************
+    
+    //********************************* PRIVATE METHODS **************************************
+    
+    private void addControlToTable(int action, int type, Object o, Method method, String describeButton,
+                            String describeAction) {
+        Map<String, Object> dataIn = new HashMap<String, Object>();
+        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, method));
+        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
+
+        myDataTable.addNewRow(dataIn);
+    }
 
     @SuppressWarnings("unchecked")
     private FlagPair<Object, Method> getObjectMethodPair (int action, int type) {
@@ -255,17 +258,7 @@ public abstract class Controller<T> {
     }
 
 
-    /**
-     * broadcasts the method to all subscribed elements.
-     *
-     * @param methodName
-     * @param inputEvent
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
-     */
+    //broadcasts the method to all subscribed elements.
     @SuppressWarnings("rawtypes")
     private void broadcastToSubscribers (String methodName, Object inputEvent)
                                                                               throws IllegalAccessException,
@@ -280,17 +273,12 @@ public abstract class Controller<T> {
         }
         for (T subscribedElement : mySubscribedElements) {
             Method method = subscribedElement.getClass().getMethod(methodName, inputType);
-            System.out.println(method);
+            //System.out.println(method);
             method.invoke(subscribedElement, inputEvent);
         }
     }
 
-    /**
-     * @param actionID
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     */
+    //Invokes a method using an object based on the actionID
     @SuppressWarnings("unchecked")
     private void invokeMethod (int actionID) throws IllegalAccessException,
                                             IllegalArgumentException, InvocationTargetException {
@@ -339,7 +327,7 @@ public abstract class Controller<T> {
             if (!m.isAccessible()) { throw new IllegalAccessException(); }
         }
     }
-
+    
     @SuppressWarnings("rawtypes")
     private void instantiationLegalityCheck (Class c, String method) throws InstantiationException {
         if (Modifier.ABSTRACT == c.getModifiers() || Modifier.ABSTRACT == Modifier.INTERFACE) { throw new InstantiationException(); }

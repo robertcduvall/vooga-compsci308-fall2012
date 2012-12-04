@@ -41,15 +41,12 @@ public class MouseController extends Controller<MouseInputListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         } 
     }
 
@@ -58,20 +55,16 @@ public class MouseController extends Controller<MouseInputListener> implements
         try {
             performReflections(e, "mousePressed",
                     UKeyCode.codify(MouseEvent.MOUSE_PRESSED, e.getButton()));
-            System.out.println(e.getButton());
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
@@ -82,16 +75,13 @@ public class MouseController extends Controller<MouseInputListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
@@ -102,16 +92,13 @@ public class MouseController extends Controller<MouseInputListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
@@ -122,16 +109,13 @@ public class MouseController extends Controller<MouseInputListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
@@ -142,16 +126,13 @@ public class MouseController extends Controller<MouseInputListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
     @Override
@@ -162,16 +143,13 @@ public class MouseController extends Controller<MouseInputListener> implements
         }
         catch (IllegalAccessException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (InvocationTargetException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
         }
         catch (NoSuchMethodException e1) {
             //this will never be thrown because it was checked for previously
-            e1.printStackTrace();
-        } 
+        }
     }
 
 }
