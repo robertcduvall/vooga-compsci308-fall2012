@@ -36,6 +36,8 @@ import util.ingamemenu.GameButton;
 import util.reflection.Reflection;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.StaticObject;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 
 /**
@@ -47,7 +49,7 @@ import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
-    private static final String DATA_PATH = "/src/vooga/platformer/data/";
+    private static final String DATA_PATH = System.getProperty("user.dir")+"/src/vooga/platformer/data/";
     private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -88,7 +90,7 @@ public class LevelEditor extends JPanel {
     public void addLevelPlugin(String plugin) {
         if("SimpleBackgroundPainter".equals(plugin)) {
             JFileChooser chooser = new
-                    JFileChooser(System.getProperty("user.dir"));
+                    JFileChooser(DATA_PATH);
             FileNameExtensionFilter filter =
                     new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
             chooser.setFileFilter(filter);
@@ -129,6 +131,21 @@ public class LevelEditor extends JPanel {
         //            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
         //        }
     }
+    public void addLevelCondtions (String con) {
+        JFileChooser chooser = new JFileChooser(DATA_PATH);
+        FileNameExtensionFilter filter =
+                new FileNameExtensionFilter("Level XML Files", "xml");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(chooser);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            if("DefeatAllEnemiesCondition".equals(con)) {
+                myBoard.addCondition(new DefeatAllEnemiesCondition(chooser.getSelectedFile().getPath()));
+            }
+            else if("DestroySpecificObjectCondition".equals(con)) {
+                System.out.println("haha funny");
+            }
+        }
+    }
     private void createListeners() {
         myKeyListener = myBoard.getKeyListener();
     }
@@ -154,34 +171,6 @@ public class LevelEditor extends JPanel {
         panel.setOpaque(false);
         return panel;
     }
-    //    private void createSpriteTypePopupMenu(final Component comp, final int x,
-    //            final int y) {
-    //        JPopupMenu pop = new JPopupMenu();
-    //        for (String subsprite : myObjectTypes.get(comp.getName())) {
-    //            JMenuItem j = new JMenuItem(subsprite);
-    //            j.addActionListener(new ActionListener() {
-    //                @Override
-    //                public void actionPerformed(ActionEvent event) {
-    //                    GameObject obj;
-    //                    File f = new File(System.getProperty("user.dir")+DATA_FOLDER+"Default.png");
-    //                    if("StaticObject".equals(event.getActionCommand())) {
-    //                        try {
-    //                            obj = new StaticObject((double)comp.getX(), (double)comp.getY(),
-    //                                    (double)OBJECT_BUTTON_SIZE, (double)OBJECT_BUTTON_SIZE,
-    //                                    myBoard.nextID(), f);
-    //                            myBoard.addObject(obj);
-    //                        }
-    //                        catch (IOException e) {
-    //                            // TODO Auto-generated catch block
-    //                            e.printStackTrace();
-    //                        }
-    //                    }
-    //                }
-    //            });
-    //            pop.add(j);
-    //        }
-    //        pop.show(comp, x, y);
-    //    }
 
     protected void save() {
         myBoard.save();
@@ -207,7 +196,7 @@ public class LevelEditor extends JPanel {
     }
 
     protected void load() {
-        JFileChooser chooser = new JFileChooser(System.getProperty("user.dir") + DATA_PATH);
+        JFileChooser chooser = new JFileChooser(DATA_PATH);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "XML Level files", "xml");
         chooser.setFileFilter(filter);
@@ -222,6 +211,5 @@ public class LevelEditor extends JPanel {
         myObjectTypes.add("StaticObject");
         myObjectTypes.add("Enemy");
         myObjectTypes.add("Player");
-        myObjectTypes.add("Plugin");
     }
 }
