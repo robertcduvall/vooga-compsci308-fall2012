@@ -82,7 +82,7 @@ public class OptionObject extends GameObject {
         }
     }
 
-    protected void dehighlight () {
+    public void dehighlight () {
         if (isHighlighted) {
             myColor = DEFAULT_COLOR;
             isHighlighted = false;

@@ -119,9 +119,11 @@ public abstract class PathFinder {
 
     /**
      * de-activate multi-Destination functionality
+     * clear the task cache
      */
     public void deactivateMultiDestination () {
         myIsMultiDestination = false;
+        myTaskCache.clear();
     }
 
     /**
@@ -184,8 +186,14 @@ public abstract class PathFinder {
      */
     public boolean updatePath () {
         if ((!myHasTask) || myCancelMovement) { return false; }
+        if (myPathIndex >= getImmutablePath().size()) {
+            if (myIsMultiDestination) {
 
-        if (myPathIndex >= getImmutablePath().size()) { return false; }
+            }
+            else {
+                return false;
+            }
+        }
         if (!myIsHighlighted) {
             highlightPath();
         }
@@ -194,12 +202,14 @@ public abstract class PathFinder {
 
     /**
      * stop the update path process
-     * sub-classes could also override to dehighlight path etc.
+     * sub-classes could also override to de-highlight path etc.
      */
     public void stop () {
-        myCancelMovement = true;
-        myPath.clear();
-        myTaskCache.clear();
+        if (!myIsMultiDestination) {
+            myCancelMovement = true;
+            myPath.clear();
+            myTaskCache.clear();
+        }
     }
 
     /**
