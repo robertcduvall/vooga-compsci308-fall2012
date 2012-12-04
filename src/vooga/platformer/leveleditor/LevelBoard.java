@@ -4,11 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,13 +14,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -33,9 +26,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.gameobject.Enemy;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
-import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.BackgroundPainter;
 import vooga.platformer.level.levelplugin.LevelPlugin;
@@ -66,7 +59,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
 public class LevelBoard extends JPanel {
     private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
-    private static final String DEFAULT_COLLISION_CHECKER = "/src/vooga/platformer/collision/collisionEvents.xml";
+    private static final String DEFAULT_COLLISION_CHECKER = "src/vooga/platformer/collision/collisionEvents.xml";
     private static final int DEFAULT_SIZE = 30;
 
     // Editor fields
@@ -90,7 +83,7 @@ public class LevelBoard extends JPanel {
     private Collection<LevelPlugin> myPlugins;
     private GameObject myCurrentObject;
     private Player myPlayer;
-    private Image myBackground;
+    private ImageIcon myBackground;
     private String myBackgroundPath;
     private String myLevelName;
     private String myCamera;
@@ -106,7 +99,7 @@ public class LevelBoard extends JPanel {
     public LevelBoard (Dimension d) {
         setSize(d);
         initLevelDefaults();
-        myBackground = null;
+        myBackground = new ImageIcon();
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
         myAttributes = getAttributes();
@@ -169,7 +162,6 @@ public class LevelBoard extends JPanel {
                 catch (IOException ex) {
                     ex.printStackTrace();
                 }
-
             }
 
         };
@@ -213,15 +205,6 @@ public class LevelBoard extends JPanel {
         mouseY = yloc;
     }
 
-    public void setBackground (File back) {
-        try {
-            myBackground = ImageIO.read(back);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Updates the buffer preparing for the next paint call.
      */
@@ -231,7 +214,7 @@ public class LevelBoard extends JPanel {
             myWidth = getWidth() + myOffset;
         }
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-        myBufferGraphics.drawImage(myBackground, 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
+        myBufferGraphics.drawImage(myBackground.getImage(), 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
                 this);
         for (GameObject obj : myGameObjects) {
             myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX() - myOffset,
@@ -286,28 +269,23 @@ public class LevelBoard extends JPanel {
         File saveFile = null;
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             saveFile = fc.getSelectedFile();
-            // This is where a real application would save the file.
-
-            // log.append("Saving: " + file.getName() + "." + newline);
         }
         else {
             saveFile = new File(System.getProperty("user.dir") + DATA_PATH, "myLevel.xml");
-            // log.append("Save command cancelled by user." + newline);
         }
-        //        String relativePath = saveFile.getPath().substring(System.getProperty("user.dir").length(), saveFile.getPath().length());
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
                 myGameObjects, myConditions,
                 myPlugins, myCamera,
                 DEFAULT_COLLISION_CHECKER);
-        // "LevelTitle", getWidth(), getHeight(),
-        // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }
 
     public void load (String path) {
         LevelFileReader loader = new LevelFileReader(path);
         myGameObjects = loader.getGameObjects();
         myConditions = loader.getConditions();
-        myPlugins = loader.getLevelPlugins();
+        for (LevelPlugin lp : loader.getLevelPlugins()) {
+            addPlugin(lp);
+        }
         myLevelName = loader.getLevelName();
         myWidth = loader.getWidth();
         myHeight = loader.getHeight();
@@ -355,6 +333,11 @@ public class LevelBoard extends JPanel {
 
     protected void addPlugin (LevelPlugin plug)  {
         myPlugins.add(plug);
+        if (plug instanceof BackgroundPainter) {
+            if(null != ((BackgroundPainter)plug).getDefaultImage()) {
+                myBackground = ((BackgroundPainter)plug).getDefaultImage();
+            }
+        }
     }
 
     /**

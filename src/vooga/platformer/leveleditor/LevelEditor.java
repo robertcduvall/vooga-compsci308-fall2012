@@ -96,7 +96,6 @@ public class LevelEditor extends JPanel {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 SimpleBackgroundPainter myBackground = new SimpleBackgroundPainter(chooser.getSelectedFile());
                 myBoard.addPlugin(myBackground);
-                myBoard.setBackground(chooser.getSelectedFile());
             }
         }
 //        else if ("") {
