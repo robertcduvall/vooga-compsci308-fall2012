@@ -47,8 +47,8 @@ public class GameManager implements InputAPI {
     /**
      * Constructor of GameManager
      * 
-     * @param gameCanvas
-     *        The GameCanvas it paints to
+     * @param gameCanvas The GameCanvas it paints to.
+     * @param xmlPath String path of xml file to load.
      */
     public GameManager (GamePane gameCanvas, String xmlPath) {
         myGamePane = gameCanvas;
@@ -60,13 +60,8 @@ public class GameManager implements InputAPI {
 
         myModeEvents = new LinkedList<ModeEvent>();
         myMouseActions = new LinkedList<MouseAction>();
-        // myLevelManager = new GameLevelManager(this);
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        // initializeGameLevel(GameWindow.importString("GameXML"),
-        // GameWindow.importString("PlayerXML"));
-        System.out.println(GameWindow.importString("GameXML") + "\n"
-                + GameWindow.importString("PlayerXML"));
         initializeGameLevel(xmlPath, GameWindow.importString("PlayerXML"));
         configureInputHandling();
     }
@@ -142,7 +137,7 @@ public class GameManager implements InputAPI {
      * Get a list of all the GameObjects that belong to the given certain
      * GameMode
      * 
-     * @param modeName
+     * @param modeName Name of mode being checked.
      * @return
      */
     public List<GameObject> getGameObjects (String modeName) {
@@ -180,9 +175,6 @@ public class GameManager implements InputAPI {
     public void update () {
         handleEvents();
         updateGameModes();
-        // myGameModes.get(myGameModes.size()-1).update(); //assume latest is
-        // active for now
-        // handleMouseActions(myGameModes.get(myGameModes.size()-1));
     }
 
     private void updateGameModes () {
@@ -191,14 +183,6 @@ public class GameManager implements InputAPI {
             if (mode.isOver()) {
                 finishedModes.add(mode);
             }
-            // else {
-            // if (mode.isActive()) {
-            // mode.update();
-            // }
-            // if (mode.hasFocus()) { // TODO this is wrong
-            // handleMouseActions(mode);
-            // }
-            // }
         }
         myGameModes.get(myGameModes.size() - 1).update();
         handleMouseActions(myGameModes.get(myGameModes.size() - 1));
@@ -280,8 +264,8 @@ public class GameManager implements InputAPI {
     /**
      * Flag an event using the GameLogic
      * 
-     * @param eventName
-     * @param involvedSpriteIDs
+     * @param eventName String name of event to be flagged.
+     * @param involvedSpriteIDs List of IDs of sprites involved in the event.
      */
     public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
         myGameLogic.flagCondition(eventName, involvedSpriteIDs);
@@ -345,8 +329,8 @@ public class GameManager implements InputAPI {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println("Unable to create mode " + modeName + " of class "
-                            + c.toString());
+                    System.out.println("Unable to create mode " + modeName + " of class " +
+                            c.toString());
                 }
             }
         }
