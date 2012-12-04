@@ -114,11 +114,13 @@ public class ChatApp {
             else if (password.length < 5)
                 return login("<html>Error: Password must be at least 5 characters<br><br></html>",c);
             if(login.isSelected()){
-                boolean status = c.loginWithTimeout(userName, Encrypter.hashCode(new String(password)), 1500);
+                boolean status = c.loginWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
+                System.out.println("login: " + status);
                 if(!status) return login("<html>Error: Could not login. Please check your server connection.<br><br>", c);
             }
             else{
-                boolean status = c.registerWithTimeout(userName, Encrypter.hashCode(new String(password)), 1500);
+                boolean status = c.registerWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
+                System.out.println("register: " + status);
                 if(!status) return login("<html>Error: Could not Properly Register. Please Try Again.<br><br>",c);
             }
             return userName;
