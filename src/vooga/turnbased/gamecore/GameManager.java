@@ -340,7 +340,6 @@ public class GameManager implements InputAPI {
                     myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
                     System.out.println("Unable to create mode " + modeName + " of class " +
                                        c.toString());
                 }
