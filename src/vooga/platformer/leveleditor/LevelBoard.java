@@ -30,6 +30,7 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.levelplugin.BackgroundPainter;
 import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
@@ -338,6 +339,10 @@ public class LevelBoard extends JPanel {
                 myBackground = ((BackgroundPainter)plug).getDefaultImage();
             }
         }
+    }
+
+    protected void addCondition (Condition newCondition) {
+        myConditions.add(newCondition);
     }
 
     /**
