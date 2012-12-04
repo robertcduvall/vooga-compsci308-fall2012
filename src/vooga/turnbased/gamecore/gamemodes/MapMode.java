@@ -334,25 +334,6 @@ public class MapMode extends GameMode implements InputAPI {
     }
 
     /**
-     * Decides what to do when mouse is clicked.
-     * 
-     * @param e
-     *        MouseEvent representing current mouse action.
-     */
-    public void handleMouseClicked (MouseEvent e) {
-        // right click
-        if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-            if (myPathFinder != null) {
-                myPathFinder.stop();
-            }
-            Point target =
-                    new Point(e.getX() / myCurrentTileWidth + myTopLeftCoord.x,
-                              e.getY() / myCurrentTileHeight + myTopLeftCoord.y);
-            myPathFinder = new MapModePathFinder(this, myPlayer, target, myMapSize);
-        }
-    }
-
-    /**
      * Returns the camera currently in use.
      * 
      * @return Camera
