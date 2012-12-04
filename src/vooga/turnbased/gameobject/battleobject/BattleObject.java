@@ -50,6 +50,18 @@ public abstract class BattleObject extends GameObject {
         initializeStats();
         myName = name;
     }
+    
+
+    /**
+     * Initializes the stats of the BattleObjects to their default values (i.e. before each 
+     * battle)
+     */
+    public void initializeStats(){
+        myChangingStats = new HashMap<String, Number>();
+        for (String key: myDefaultStats.keySet()){
+            myChangingStats.put(key, myDefaultStats.get(key));
+        }
+    }
 
     /**
      * Set the stats of the battle object
@@ -155,8 +167,8 @@ public abstract class BattleObject extends GameObject {
      * @return True if health > 0.
      */
     public boolean isAlive() {
-        if (myDefaultStats.containsKey(myHEALTH)) {
-            Number health = myDefaultStats.get(myHEALTH);
+        if (myChangingStats.containsKey(myHEALTH)) {
+            Number health = myChangingStats.get(myHEALTH);
             return health.intValue() > 0;
         }
         else {
@@ -177,14 +189,6 @@ public abstract class BattleObject extends GameObject {
      * @return The String the will be displayed when this monster starts fighting
      */
     public abstract String getStartFightingMessage(boolean isPlayerControlled);
-
-    /**
-     * Initializes the stats of the BattleObjects to their default values (i.e. before each 
-     * battle)
-     */
-    public void initializeStats(){
-        myChangingStats = myDefaultStats;
-    }
     
     /**
      * Gets the options that this BattleObject can perform, to be displayed in the GUI

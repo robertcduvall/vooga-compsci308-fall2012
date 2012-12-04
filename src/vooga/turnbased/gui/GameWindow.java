@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Image;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 
@@ -21,8 +22,8 @@ public class GameWindow extends JFrame {
      */
     public static final String MENU = "0";
     public static final String EDITOR = "1";
-    public static final String GAME = "2";
-    public static final String CONTROLS = "3";
+    public static final String CONTROLS = "2";
+    public static final String GAME = "3";
 
     /**
      * Location for game configuration resource bundles
@@ -61,8 +62,8 @@ public class GameWindow extends JFrame {
         myContentPane.setLayout(myLayout);
         myContentPane.add(new MenuPane(this), MENU);
         myContentPane.add(new EditorPane(this), EDITOR);
-        myContentPane.add(new GamePane(this), GAME);
         myContentPane.add(new ControlPane(this), CONTROLS);
+        myContentPane.add(new GamePane(this), GAME);
         changeActivePane(MENU);
     }
 
