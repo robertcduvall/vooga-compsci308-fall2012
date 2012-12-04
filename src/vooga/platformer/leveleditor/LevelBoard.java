@@ -282,7 +282,12 @@ public class LevelBoard extends JPanel {
 
     public void load (String path) {
         LevelFileReader loader = new LevelFileReader(path);
-        myGameObjects = loader.getGameObjects();
+        for(GameObject obj : loader.getGameObjects()) {
+            myGameObjects.add(obj);
+            if(obj instanceof Player) {
+                myPlayer = (Player)obj;
+            }
+        }
         myConditions = loader.getConditions();
         for (LevelPlugin lp : loader.getLevelPlugins()) {
             addPlugin(lp);
