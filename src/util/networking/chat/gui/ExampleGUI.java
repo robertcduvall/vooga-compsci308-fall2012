@@ -3,7 +3,6 @@ package util.networking.chat.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
@@ -14,18 +13,19 @@ import java.util.TreeMap;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
+
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import util.networking.chat.ChatClient;
 import util.networking.chat.ChatListener;
 import util.networking.chat.ErrorEvent;
-import util.networking.chat.ChatAdapter;
 import util.networking.chat.MessageReceivedEvent;
 import util.networking.chat.UsersUpdateEvent;
 
@@ -48,19 +48,22 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 if(usersToDialogs.keySet().contains(e.getSender())){
-                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">" + e.getMessageBody() + "\n");
+                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
+                    if(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()) != e.getSender()){
+                        tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
+                    }
                 }else{
                     ChatDialog cd = new ChatDialog(e.getMessageBody());
                     usersToDialogs.put(e.getSender(), cd);
                     tabbedPane.add(e.getSender(), cd);
+                    tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
                 }
                     
             }
 
             @Override
             public void handleErrorEvent (ErrorEvent e) {
-                System.out.println(e.getErrorMessage());
-                
+                JOptionPane.showMessageDialog(null, e.getErrorMessage());
             }
 
             @Override
@@ -82,6 +85,20 @@ public class ExampleGUI extends JPanel implements KeyListener {
         add(tabbedPane, BorderLayout.CENTER);
         add(initBuddyList(), BorderLayout.AFTER_LINE_ENDS);
         add(initChatInput(), BorderLayout.AFTER_LAST_LINE);
+        tabbedPane.addChangeListener(new ChangeListener() {
+
+            public void stateChanged (ChangeEvent arg0) {
+                int currentIndex = tabbedPane.getSelectedIndex();
+                if(currentIndex != 0){
+                    userInput.setEditable(true);
+                    userInput.setText("");
+                    tabbedPane.setIconAt(currentIndex, createImageIcon("images/chat-icon.png"));
+                }
+                else{
+                    userInput.setText("");
+                    userInput.setEditable(false);
+                }
+            }});
     }
 
      private JTextArea initBuddyList () {
@@ -120,12 +137,14 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
     
     private JScrollPane initChatInput(){
-        userInput = new JTextArea(3, 40);
+        userInput = new JTextArea("Type message here", 3, 42);
         userInput.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         userInput.setLineWrap(true);
         userInput.setWrapStyleWord(true);
         userInput.addKeyListener(this);
         userInput.setCaretPosition(0);
+        userInput.setEditable(false);
+        userInput.append("\n");
         JScrollPane chatInput = new JScrollPane(userInput);
         chatInput.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chatInput.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -151,6 +170,8 @@ public class ExampleGUI extends JPanel implements KeyListener {
             textArea = new JTextArea(17, 40);
             textArea.setText(text);
             textArea.setEditable(false);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
             textArea.setBackground(new Color(220, 226, 255));
             JScrollPane scrollPane = new JScrollPane(textArea);
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -181,19 +202,23 @@ public class ExampleGUI extends JPanel implements KeyListener {
         myChatClient.sendMessage(to, body);
         userInput.setText("");
         ChatDialog cd = (ChatDialog)(tabbedPane.getSelectedComponent());
-        cd.getTextArea().append("<" + myChatClient.getUserName() + ">:" + body +"\n");
+        String content = "<" + myChatClient.getUserName() + ">:     " + body;
+        content = content.replace("\r\n", "").replace("\n","");
+        cd.getTextArea().append(content+"\n");
     }
 
     @Override
     public void keyPressed (KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            sendMessage();
     }
 
     @Override
-    public void keyReleased (KeyEvent e) {}
+    public void keyReleased (KeyEvent e) {
+    }
 
     @Override
-    public void keyTyped (KeyEvent e) {}
+    public void keyTyped (KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            sendMessage();
+    }
 }
     
