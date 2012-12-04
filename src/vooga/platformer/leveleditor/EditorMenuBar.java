@@ -69,10 +69,15 @@ public class EditorMenuBar extends JMenuBar{
 
     private List<String> getLevelPlugins () {
         List<String> list = new ArrayList<String>();
+        Scanner s = new Scanner(System.getProperty("user.dir")+"/src/vooga/platformer/data/AvailableLevelPlugins.txt");
+        while(s.hasNext()) {
+            String plug = s.nextLine();
+            plug.substring(plug.lastIndexOf("."), plug.length());
+            list.add(plug);
+        }
         list.add("Background Painter");
         list.add("Message Painter");
-//        Scanner s = new Scanner(System.getProperty("user.dir")+"/src/vooga/platformer/data/");
-//        String s.nextLine();
+        list.add("Other");
         return list;
     }
 

@@ -141,12 +141,12 @@ public class LevelBoard extends JPanel {
                 GameObject obj = null;
                 try {
                     String cmmd = e.getComponent().getName();
-                    File f = new File(System.getProperty("user.dir") + DATA_PATH + "DEFAULT" + cmmd + ".png");
+                    File f = new File(System.getProperty("user.dir") + DATA_PATH + cmmd + ".png");
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
-                    double w = ii.getIconWidth() / ii.getIconHeight() * DEFAULT_SIZE;
-                    double h = ii.getIconHeight() / ii.getIconWidth() * DEFAULT_SIZE;
+                    double w = (double)ii.getIconWidth() / (double)ii.getIconHeight() * DEFAULT_SIZE;
+                    double h = (double)ii.getIconHeight() / (double)ii.getIconWidth() * DEFAULT_SIZE;
                     if ("StaticObject".equals(cmmd)) {
                         obj = new StaticObject(x, y, w, h, myObjID++, f);
                     }
@@ -272,7 +272,7 @@ public class LevelBoard extends JPanel {
         if(myPlayer == null) {
             try {
                 myPlayer = new Player (30.0, (double)myHeight/2, (double)DEFAULT_SIZE, (double)DEFAULT_SIZE, myObjID++,
-                        new File(System.getProperty("user.dir")+DATA_PATH+"DEFAULTPlayer.png"));
+                        new File(System.getProperty("user.dir")+DATA_PATH+"Player.png"));
                 myGameObjects.add(myPlayer);
             }
             catch (IOException e) {
@@ -298,7 +298,7 @@ public class LevelBoard extends JPanel {
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
                 myGameObjects, myConditions,
                 myPlugins, myCamera,
-                "Default_Collision_Checker");
+                DEFAULT_COLLISION_CHECKER);
         // "LevelTitle", getWidth(), getHeight(),
         // myBackgroundPath, myGameObjects, "myCollision", "myCamera");
     }

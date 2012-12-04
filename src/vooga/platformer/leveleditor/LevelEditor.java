@@ -33,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
+import util.reflection.Reflection;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
@@ -98,6 +99,9 @@ public class LevelEditor extends JPanel {
                 myBoard.setBackground(chooser.getSelectedFile());
             }
         }
+//        else if ("") {
+//            
+//        }
 
         //        if("Gravity".equals(plugin)) { 
         //            final JPopupMenu jpop = new JPopupMenu();
