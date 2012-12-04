@@ -3,6 +3,7 @@ package games.platformerdemo.collisionevent;
 import games.platformerdemo.Bullet;
 import vooga.platformer.collision.CollisionEvent;
 import vooga.platformer.gameobject.Enemy;
+import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.Level;
@@ -22,7 +23,7 @@ public class BulletMovingObj extends CollisionEvent {
     }
 
     @Override
-    public void applyCollision (Level level) {
+    public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {
         // TODO: to make this more generalized, need to create a type for all
         // creatures.
         if (b().getClass().equals(Player.class)

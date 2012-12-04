@@ -1,5 +1,6 @@
 package vooga.platformer.level.condition;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import vooga.platformer.gameobject.GameObject;
@@ -10,7 +11,7 @@ import vooga.platformer.util.enums.PlayState;
  * @author Niel Lebeck
  *
  */
-public interface Condition {
+public interface Condition extends Serializable {
     
     /**
      * @param objectList The list of GameObjects in the level

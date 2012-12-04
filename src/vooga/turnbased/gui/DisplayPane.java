@@ -2,20 +2,35 @@ package vooga.turnbased.gui;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.factories.ControllerFactory;
 
-
 @SuppressWarnings("serial")
-public abstract class DisplayPane extends JPanel implements KeyListener {
-    private GameWindow myGameWindow;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
+/**
+ * The abstract class that describe the feature of a displayable pane in this game
+ * including editor, game, menu 
+ * @author rex, volodymyr
+ *
+ */
+public abstract class DisplayPane extends JPanel {
 
+    /**
+     * The keyboard controller that takes input for our game
+     */
+    public static KeyboardController keyboardController;
+    /**
+     * The mouse input controller that takes input for our game
+     */
+    public static MouseController mouseController;
+    private GameWindow myGameWindow;
+
+    /**
+     * Constructor
+     * @param gameWindow The gameWindow where this will exist
+     */
     public DisplayPane (GameWindow gameWindow) {
         myGameWindow = gameWindow;
         setSize(myGameWindow.getSize());
@@ -24,23 +39,22 @@ public abstract class DisplayPane extends JPanel implements KeyListener {
     }
 
     private void setControllers () {
-        myKeyboardController =
+        keyboardController =
                 (KeyboardController) ControllerFactory.createKeyboardController(this);
-        myMouseController = (MouseController) ControllerFactory.createMouseController(this);
+        mouseController = (MouseController) ControllerFactory.createMouseController(this);
     }
 
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
-    }
-
-    public MouseController getMouseController () {
-        return myMouseController;
-    }
-
+    /**
+     * Gets the game window.
+     * @return This is the game window
+     */
     public GameWindow getGameWindow () {
         return myGameWindow;
     }
 
+    /**
+     * Allows the display to have a focus
+     */
     public void enableFocus () {
         setFocusable(true);
         addComponentListener(new ComponentAdapter() {
@@ -51,6 +65,9 @@ public abstract class DisplayPane extends JPanel implements KeyListener {
         });
     }
 
+    /**
+     * Initializes the pane, however, is currently empty
+     */
     public void initialize () {
     }
 }

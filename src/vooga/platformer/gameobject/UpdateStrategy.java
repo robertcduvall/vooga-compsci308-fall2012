@@ -1,5 +1,7 @@
 package vooga.platformer.gameobject;
 
-public interface UpdateStrategy {
+import java.io.Serializable;
+
+public interface UpdateStrategy extends Serializable{
     public void applyAction();
 }

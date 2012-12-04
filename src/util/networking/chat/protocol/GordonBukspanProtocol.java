@@ -73,10 +73,21 @@ public class GordonBukspanProtocol implements ChatProtocol {
     }
 
     @Override
-    public String getMessage (String input) {
+    public String getErrorMessage (String input) {
         return getValue(input, "message");
     }
 
+    @Override
+    public String getBody (String input) {
+        return getValue(input, "body");
+    }
+    
+    @Override
+    public boolean getStatus(String input) {
+        String s = getValue(input, "status");
+        return Boolean.parseBoolean(s);
+    }
+    
     @Override
     public List<String> getListUsers (String input) {
        return getListValues(input, "user");
@@ -86,8 +97,9 @@ public class GordonBukspanProtocol implements ChatProtocol {
     //Generate XML from input
     
     @Override
-    public String createLoggedIn (boolean b) {
+    public String createLoggedIn (String user, boolean b) {
         Map<String, String> xmlTagMap = new HashMap<String, String>();
+        xmlTagMap.put("user", user);
         xmlTagMap.put("status", new Boolean(b).toString());
         return xmlFromMap("loggedIn", xmlTagMap);
     }
@@ -220,13 +232,13 @@ public class GordonBukspanProtocol implements ChatProtocol {
         String xmlString = null;
         Document doc = XmlUtilities.makeDocument();
         Element root = XmlUtilities.makeElement(doc, parent);
-        for (String tag : xmlMap.values()) {
+        for (String tag : xmlMap.keySet()) {
             Element current = XmlUtilities.makeElement(doc, tag, xmlMap.get(tag));
             root.appendChild(current);
         }
         doc.appendChild(root);
         try {
-            xmlString = XmlUtilities.getXmlAsString(doc);
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
         }
         catch (TransformerException e) {
         }

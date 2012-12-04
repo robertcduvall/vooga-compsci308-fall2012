@@ -44,13 +44,13 @@ public class ControllerFactory {
 
     /**
      * Use the Wii as a controller.
-     * 
+     *
      * @return - The Controller object
      */
     @SuppressWarnings("rawtypes")
-    public static Controller createWiiController () {
+    public static Controller createWiiController (int controllerNum) {
         // Create wii controller
-        return new WiiController();
+        return new WiiController(controllerNum);
     }
 
     /**

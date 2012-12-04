@@ -2,7 +2,11 @@ package vooga.platformer.gameobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -10,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import util.camera.Camera;
 import util.configstring.ConfigStringParser;
 import vooga.platformer.level.Level;
@@ -20,35 +26,26 @@ import vooga.platformer.level.Level;
  * @author Niel Lebeck
  * @author Yaqi Zhang (revised)
  * @author Grant Oakley (modified)
+ * @author Sam Rang (added sprite methods)
  * 
  */
-public abstract class GameObject implements Comparable<GameObject>, Serializable {
+public abstract class GameObject implements Comparable<GameObject>,
+        Serializable {
     private static final long serialVersionUID = 1L;
-    protected static final String X_TAG = "x";
-    protected static final String Y_TAG = "y";
-    protected static final String WIDTH_TAG = "width";
-    protected static final String HEIGHT_TAG = "height";
-    protected static final String DEFAULT_IMAGE_TAG = "imagePath";
-    private static final String ID_TAG = "id";
 
     private boolean removeFlag;
     private Map<String, UpdateStrategy> strategyMap;
+    private Map<String, String> attributeMap;
     private double x;
     private double y;
     private double width;
     private double height;
     private ImageIcon defaultImage;
     private int id;
+    private int hp;
     private Level myLevel;
 
-    // Change this to public because no config str provided when creating
-    // GameObject during runtime
-    /**
-     * Create GameObject during runtime of the
-     */
-    public GameObject () {
-        strategyMap = new HashMap<String, UpdateStrategy>();
-    }
+
 
     /**
      * @param configString containing key-value pairs for the GameObject's
@@ -58,48 +55,16 @@ public abstract class GameObject implements Comparable<GameObject>, Serializable
      *        each pair, the key should be separated from the value by an '='
      *        character.
      */
-    public GameObject (String configString) {
-        this();
-        Map<String, String> configMap = ConfigStringParser.parseConfigString(configString);
-        x = Double.parseDouble(configMap.get(X_TAG));
-        y = Double.parseDouble(configMap.get(Y_TAG));
-        width = Double.parseDouble(configMap.get(WIDTH_TAG));
-        height = Double.parseDouble(configMap.get(HEIGHT_TAG));
-        String defaultImageName = configMap.get(DEFAULT_IMAGE_TAG);
-        id = Integer.parseInt(configMap.get(ID_TAG));
-        try {
-            defaultImage = new ImageIcon(ImageIO.read(new File(defaultImageName)));
-        }
-        catch (IOException e) {
-            // TODO Handle this exception in a more acceptable manner, or do not
-            // use config string instantiation.
-            System.out.println("could not load image " + defaultImageName);
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Gets a map in which the keys are parameter tag names, and the strings
-     * that they map to are the descriptions of the values that should be passed
-     * for that tag.
-     * 
-     * A null return value means that this GameObject subclass requires no
-     * additional parameters be passed in its config string in order to be
-     * instantiated.
-     * 
-     * @return a map of config string parameter tags and descriptions of the
-     *         values that should be passed with these tags
-     * @author Grant Oakley
-     */
-    public Map<String, String> getConfigStringParams () {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(X_TAG, "x position of the object");
-        params.put(Y_TAG, "y position of the object");
-        params.put(WIDTH_TAG, "width of the object");
-        params.put(HEIGHT_TAG, "height of the object");
-        params.put(ID_TAG, "ID for sprite. Should be unique.");
-        params.put(DEFAULT_IMAGE_TAG, "file name of the image to the be the default image.");
-        return params;
+    public GameObject (double inX, double inY, double inWidth, double inHeight, int inId,
+            File defaultImageFile)
+        throws IOException {
+        strategyMap = new HashMap<String, UpdateStrategy>();
+        x = inX;
+        y = inY;
+        width = inWidth;
+        height = inHeight;
+        id = inId;
+        defaultImage = new ImageIcon(ImageIO.read(defaultImageFile));
     }
 
     public double getX () {
@@ -157,21 +122,44 @@ public abstract class GameObject implements Comparable<GameObject>, Serializable
     /**
      * Add a strategy to this GameObject's strategy list.
      * 
-     * @param StrategyName the Class Name of the Strategy, not includes package
+     * @param stratName the Class Name of the Strategy, not includes package
      *        name
      * @param strat strategy
      */
-    public void addStrategy (String StrategyName, UpdateStrategy strat) {
-        strategyMap.put(StrategyName, strat);
+    public void addStrategy (String stratName, UpdateStrategy strat) {
+        strategyMap.put(stratName, strat);
+    }
+
+    /**
+     * @param strat Strategy
+     */
+    public void addStrategy (UpdateStrategy strat) {
+        String classString = strat.getClass().toString();
+        String split[] = classString.split(" ");
+        String name = split[split.length-1];
+        String stratName = "";
+        if(name.contains(".")){
+            String names[] = name.split("\\.");
+            stratName =  names[names.length-1];
+        }else{
+            stratName = name;
+        }
+        strategyMap.put(stratName, strat);
+    }
+
+    private void removeStrategy (UpdateStrategy strat) {
+        strategyMap.remove(strat);
     }
 
     /**
      * Remove a strategy from the list.
      * 
-     * @param strat strategy
+     * @param strategyName Class name of the strategy without package name, eg.
+     *        PlayerMovingStrategy.
      */
-    public void removeStrategy (UpdateStrategy strat) {
-        strategyMap.remove(strat);
+    public void removeStrategy (String strategyName) {
+        UpdateStrategy strat = strategyMap.get(strategyName);
+        removeStrategy(strat);
     }
 
     /**
@@ -216,9 +204,10 @@ public abstract class GameObject implements Comparable<GameObject>, Serializable
         double yOffset = rect.getY();
 
         if (getShape().intersects(rect)) {
-            pen.drawImage(getCurrentImage().getScaledInstance((int) width, (int) height,
-                                                              Image.SCALE_DEFAULT),
-                          (int) (x - xOffset), (int) (y - yOffset), null);
+            pen.drawImage(
+                    getCurrentImage().getScaledInstance((int) width,
+                            (int) height, Image.SCALE_DEFAULT),
+                    (int) (x - xOffset), (int) (y - yOffset), null);
         }
     }
 
@@ -254,12 +243,44 @@ public abstract class GameObject implements Comparable<GameObject>, Serializable
     }
 
     /**
+     * Damage the GameObject by given amount of HP.
+     * 
+     * @param amount
+     */
+    public void damage (int amount) {
+        hp -= amount;
+    }
+
+    /**
      * Gives the GameObject's bounds.
      * 
      * @return GameObject's bounds.
      */
     public Rectangle2D getShape () {
         return new Rectangle2D.Double(x, y, width, height);
+    }
+
+    /**
+     * Returns a boolean of whether or not a point is contained by the object.
+     * 
+     * @param p Point of interest
+     * @return boolean of whether the point is inside the bounds of the object
+     */
+    public boolean containsPoint (Point p) {
+        return p.x >= getX() && p.x <= getX() + getWidth() && p.y >= getY()
+                && p.y <= getY() + getHeight();
+    }
+
+    /**
+     * Flips the sprites image across it's vertical axis.
+     * 
+     */
+    public void flipImage () {
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-getCurrentImage().getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx,
+                AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        setImage(op.filter((BufferedImage) getCurrentImage(), null));
     }
 
 }

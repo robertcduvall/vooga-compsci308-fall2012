@@ -46,8 +46,8 @@ public class Square {
         myX = startPosition.x;
         myY = startPosition.y;
         myColor = color;
-        myHitPoints array = new boolean[size][size];
-        Arrays.fill(array, Boolean.FALSE);
+        //myHitPoints array = new boolean[size][size];
+        //Arrays.fill(array, Boolean.FALSE);
 
     }
 

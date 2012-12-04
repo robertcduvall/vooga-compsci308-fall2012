@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -25,27 +26,35 @@ public class Test {
     public static void main (String[] args) throws Exception {
 
         mySocialCenter = new SocialCenter();
-        // testLogOn();
-        // testRegister();
-
+         
+         //testRegister();
+      //  testDeleteUser();
        // testSendMessage();
-        myUserManager=UserManager.getInstance();
-        testUserProfile();
+       myUserManager=UserManager.getInstance();
+        //testGetGame();
+     //   testReadGameList();
+      //  testModifyXml();
+       testLogOn();
+       testGetMessage();
+       
        
 
     }
 
     private static void testSendMessage () {
-        mySocialCenter.sendMessage("mdeng1990", "Hi");
+        mySocialCenter.sendMessage("Howard","test", "xin ru zhi shui");
     }
 
     private static void testRegister () throws Exception {
         boolean status2 =
-                mySocialCenter.registerUser("testuser2", "password", "firstname", "lastname");
+                mySocialCenter.registerUser("testuser3", "password", "firstname", "lastname");
+    }
+    private static void testDeleteUser(){
+        mySocialCenter.deleteUser("testuser3", "password");
     }
 
     private static void testLogOn () throws Exception {
-        boolean status = mySocialCenter.logOnUser("Howard", "password");
+        boolean status = mySocialCenter.logOnUser("test", "364492");
         System.out.println(status);
 
     }
@@ -70,5 +79,32 @@ public class Test {
         myUserManager.getAllUserProfile();
         
     }
+    
+    private static void testModifyXml(){
+        
+        EditableUserProfile test=myUserManager.getEditableCurrentUser();
+        test.setPicture("haha");
+    }
+    private static void testGetMessage(){
+//        User test=myUserManager.getUser("test");
+//        test.getMyMessage();
+        List<Message> messageList=myUserManager.getMessage();
+        String str="wula";
+        
+    }
+    private static void testGetGame(){
+        User Howard=myUserManager.getUser("Howard");
+        GameData dg=Howard.getGameData("Platformer");
+        dg.setGameInfo("Howard","timesplayed", "5");
+        
+        
+    }
+    
+    private static void testReadGameList(){
+        UserXMLReader reader=new UserXMLReader();
+        
+    }
+    
+   
 
 }

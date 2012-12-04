@@ -1,17 +1,20 @@
 package vooga.platformer.gameobject;
 
 
-import vooga.platformer.gameobject.strategy.EnemyMoveStrategy;
-import vooga.platformer.gameobject.strategy.GravityStrategy;
+import vooga.platformer.gameobject.strategy.update.EnemyMoveStrategy;
+import vooga.platformer.gameobject.strategy.update.GravityStrategy;
 
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * @author Zach Michaelov
+ */
 public class Enemy extends MovingObject {
-    
-    /**
-     * @param configString
-     */
-    public Enemy(String configString) {
-        super(configString);
-        addStrategy("EnemyMoveStrategy",new EnemyMoveStrategy(this));
-        addStrategy("GravityStrategy",new GravityStrategy(this));
+    public Enemy(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
+        super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
+        this.addStrategy("EnemyMoveStrategy", new EnemyMoveStrategy(this));
+        this.addStrategy("GravityStrategy", new GravityStrategy(this));
     }
+
 }

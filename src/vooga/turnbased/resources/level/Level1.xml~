@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<level>
+	<levelid>1</levelid>
+	<dimension>
+		<width>20</width>
+		<height>30</height>
+	</dimension>
+	<cameraDimension>
+		<width>15</width>
+		<height>11</height>
+	</cameraDimension>
+	<backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+	<player_entry_point>
+		<x>8</x>
+		<y>8</y>
+	</player_entry_point>	
+	<sprite>
+		<map>
+			<class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+			<event>BATTLE_START</event>
+			<location>
+				<x>8</x>
+				<y>7</y>
+			</location>
+			<image>src/vooga/turnbased/resources/image/something.png</image>
+		</map>
+		<battle>
+			<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+			<event>NO_ACTION</event>
+			<stats>
+				<maxHealth>13</maxHealth>
+				<health>13</health>
+				<defense>2</defense>
+				<attack>5</attack>
+			</stats>
+			<name>Evil Monster</name>
+			<image>src/vooga/turnbased/resources/image/battleobject/005.png</image>
+		</battle>
+	</sprite>
+	<sprite>
+		<map>
+			<class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+			<event>NO_ACTION</event>
+			<location>
+				<x>6</x>
+				<y>5</y>
+			</location>
+			<image>src/vooga/turnbased/resources/image/mapobject/heart-rock.jpg</image>
+		</map>
+		<battle/>
+	</sprite>
+	
+    <sprite>
+		<map>
+			<class>vooga.turnbased.gameobject.mapobject.MovingMapObject</class>
+			<event>NO_ACTION</event>
+			<location>
+				<x>9</x>
+				<y>3</y>
+			</location>
+			<image>src/vooga/turnbased/resources/image/mapobject/NPC1.jpg</image>
+		</map>
+		<battle />
+	</sprite><!-- THIS IS HARDCODED AND WOULD NOT BE NECESSARY IN FUTURE. IGNORE IT FOR LEVELEDITOR -->
+	<staticSprite>
+		<class>vooga.turnbased.gameobject.mapobject.MapTileObject</class>
+		<event>NO_ACTION</event>
+		<image>src/vooga/turnbased/resources/image/grass.png</image>
+	</staticSprite>
+</level>

@@ -22,7 +22,7 @@ public class EnemyPlayer extends CollisionEvent{
     }
 
     @Override
-    public void applyCollision (Level level) {
+    public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {
         if (this.direction() == Direction.DOWN) {
             myEnemy.markForRemoval();
         }

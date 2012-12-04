@@ -29,7 +29,7 @@ public class AndroidBluetoothServer {
     private Thread myWaitThread;
     private List<AndroidListener> myListeners;
     private int myControllerNumber;
-    //create channels to listen to different controllers
+    // create channels to listen to different controllers
     private UUID myServerID1 = new UUID("04c6093b00001000800000805f9b34fb", false);
     private UUID myServerID2 = new UUID("14c6093b00001000800000805f9b34fb", false);
     private UUID myServerID3 = new UUID("24c6093b00001000800000805f9b34fb", false);
@@ -154,9 +154,9 @@ public class AndroidBluetoothServer {
      * @param m the message to send to the controller
      * @return true if the message was immediately sent. False if it was added
      *         to the message queue.
-     * @throws IOException 
+     * @throws IOException
      */
-    public boolean notifyController (AndroidServerMessage m)  {
+    public boolean notifyController (AndroidServerMessage m) {
         if (myMessenger != null) {
             myMessenger.write(m);
             return true;

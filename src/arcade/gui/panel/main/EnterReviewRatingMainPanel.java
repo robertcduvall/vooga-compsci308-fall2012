@@ -17,12 +17,14 @@ import arcade.gui.panel.ArcadePanel;
 
 /**
  * This class allows the user to set a rating for a game as well
- * as write up a review. 
+ * as write up a comment or review for others to see. 
  * @author Kannan
  *
  */
 public class EnterReviewRatingMainPanel extends AMainPanel implements ActionListener {
 
+    
+    //TODO:REFACTORING
     private String gameName;
     private String ratingToBeSubmitted;
     private JTextArea reviewArea;
@@ -35,16 +37,15 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        myPanel.setBackground(Color.GREEN);
-
         gameName = (String) getArcade().getVariable("GameName");
 
-        MigLayout layout = new MigLayout("flowy", "[]push[]");
+        MigLayout layout = new MigLayout("flowy", "[50%, grow]push[50%, grow]", "[]10[][][]push[]");
         myPanel.setLayout(layout);
 
         JLabel titleLabel = new JLabel("Leave your feedback for " + gameName + " below!");
-
+        titleLabel.setForeground(Color.WHITE);
         JLabel ratingLabel = new JLabel("Select a Rating:");
+        ratingLabel.setForeground(Color.WHITE);
 
         JRadioButton oneButton = new JRadioButton("1");
         oneButton.setMnemonic(KeyEvent.VK_B);
@@ -65,7 +66,6 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         JRadioButton fiveButton = new JRadioButton("5");
         fiveButton.setMnemonic(KeyEvent.VK_B);
         fiveButton.setActionCommand("5");
-        fiveButton.setSelected(true);
 
         JRadioButton sixButton = new JRadioButton("6");
         sixButton.setMnemonic(KeyEvent.VK_B);
@@ -113,11 +113,20 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         tenButton.addActionListener(this);
         
         JLabel reviewPrompt = new JLabel("Write a review/comment:");
-        reviewArea = new JTextArea("", 20, 60);
+        reviewPrompt.setForeground(Color.WHITE);
+        reviewArea = new JTextArea("", 20, 40);
         reviewArea.setLineWrap(true);
         reviewArea.setWrapStyleWord(true);
-        reviewArea.setMaximumSize(maxReviewBoxSize);
+        //reviewArea.setMaximumSize(maxReviewBoxSize);
         JScrollPane scrollingReview = new JScrollPane(reviewArea);
+        
+        JButton returnToProfileBut = new JButton("Return to Profile Page");
+        returnToProfileBut.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                getArcade().replacePanel("GameProfile");
+            }             
+          });
         
         JButton submitBut = new JButton("Submit");
         submitBut.addActionListener(new ActionListener(){
@@ -130,30 +139,31 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
                             .setRating(Integer.parseInt(ratingToBeSubmitted));
                 }
                 if (reviewArea.getText() != null && reviewArea.getText() != "") {
-                    getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText() + "- " + getArcade().getUsername());
+                    getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText() 
+                                                                                + "- " + getArcade().getUsername());
                 }
-                System.out.println(ratingToBeSubmitted);
-                System.out.println(reviewArea.getText());
                 getArcade().replacePanel("GameProfile");
             }
               
           });
 
-        myPanel.add(titleLabel, "span, grow, align center");
-        myPanel.add(ratingLabel);
-        myPanel.add(oneButton, "split 10");
-        myPanel.add(twoButton);
-        myPanel.add(threeButton);
-        myPanel.add(fourButton);
-        myPanel.add(fiveButton);
-        myPanel.add(sixButton);
-        myPanel.add(sevenButton);
-        myPanel.add(eightButton);
-        myPanel.add(nineButton);
-        myPanel.add(tenButton);
-        myPanel.add(submitBut, "dock south, span, grow, align center");
-        myPanel.add(reviewPrompt, "cell 2 1");
-        myPanel.add(scrollingReview, "cell 2 2");
+        myPanel.add(titleLabel, "span, align center");
+        myPanel.add(ratingLabel, "align center");
+        myPanel.add(oneButton, "split 10, align center");
+        myPanel.add(twoButton, "align center");
+        myPanel.add(threeButton, "align center");
+        myPanel.add(fourButton, "align center");
+        myPanel.add(fiveButton, "align center");
+        myPanel.add(sixButton, "align center");
+        myPanel.add(sevenButton, "align center");
+        myPanel.add(eightButton, "align center");
+        myPanel.add(nineButton, "align center");
+        myPanel.add(tenButton, "wrap, align center");
+        myPanel.add(reviewPrompt, "align center");
+        myPanel.add(scrollingReview, "align center, grow");
+        myPanel.add(returnToProfileBut, "wrap");
+        myPanel.add(submitBut, "dock south, growy, span, align center");
+
         return myPanel;
     }
 

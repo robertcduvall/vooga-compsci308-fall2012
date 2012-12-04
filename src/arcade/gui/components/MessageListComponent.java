@@ -78,13 +78,13 @@ import arcade.utility.ImageReader;
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.setColor(Color.red);
+            g.setColor(Color.blue);
             g.fillRect(25, 5, this.getWidth()-75, this.getHeight()-5);
             g.setColor(Color.black);
             g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
             g.drawImage(sendersPic, 35, 12, 81, 81, Color.black, this);
             g.setColor(Color.white);
-            g.setFont(new Font("sansserif", Font.BOLD, 40));
+            g.setFont(new Font("sansserif", Font.BOLD, 32));
             g.drawString(mySender, 125, 60);
             g.setFont(new Font("sansserif", Font.ITALIC, 18));
             String displayMessage = myMessage;

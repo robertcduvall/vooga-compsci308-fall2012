@@ -15,6 +15,7 @@ import arcade.gui.panel.ArcadePanel;
 
 public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionListener{
 
+    //TODO:REFACTORING
     private String[] retrievedListOfTaggedGames;
     private String gameSelected;
     private String GO = "Go";
@@ -31,10 +32,9 @@ public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionLi
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         myPanel.setBackground(Color.LIGHT_GRAY);
-        MigLayout layout = new MigLayout("", "", "[][][]push[][][]");
+        MigLayout layout = new MigLayout("flowy", "[50%, grow]", "[][][]push[][][]");
         myPanel.setLayout(layout);
         retrievedListOfTaggedGames = (String[]) getArcade().getVariable("taggedGames");
-        
         JLabel gamesFoundLabel = new JLabel("The following games matched your tag '"
                 + getArcade().getVariable("tag") + "" +"' :");
         
@@ -66,13 +66,13 @@ public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionLi
         jListOfGames.setVisibleRowCount(6);
         JScrollPane searchedListScroller = new JScrollPane(jListOfGames);
         
-        myPanel.add(gamesFoundLabel, "wrap, grow, span, align center");
-        myPanel.add(searchedListScroller, "wrap, grow, span");
-        myPanel.add(goButton, "wrap, grow, span");   
-        myPanel.add(consolationTextArea, "wrap, grow, span");
-        myPanel.add(goToUserSearchButton, "dock south, grow, span");
-        myPanel.add(goToGameNameSearchButton, "dock south, grow, span");
-        myPanel.add(goToTagSearchButton, "dock south, grow, span");
+        myPanel.add(gamesFoundLabel, "align center");
+        myPanel.add(searchedListScroller, "align center, grow");
+        myPanel.add(goButton, "align center, grow");   
+        myPanel.add(consolationTextArea, "align center, grow");
+        myPanel.add(goToUserSearchButton, "dock south, grow, align center");
+        myPanel.add(goToGameNameSearchButton, "dock south, grow, align center");
+        myPanel.add(goToTagSearchButton, "dock south, grow, align center");
         
         
         return myPanel;

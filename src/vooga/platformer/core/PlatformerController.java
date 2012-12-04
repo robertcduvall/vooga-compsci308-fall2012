@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,11 +15,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.ingamemenu.GameButton;
 import util.ingamemenu.Menu;
+import util.input.core.Controller;
 import util.input.core.KeyboardController;
+import vooga.platformer.core.inputinitializer.InputInitializer;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.strategy.ShootingStrategy;
 import vooga.platformer.level.Level;
@@ -30,33 +37,36 @@ public class PlatformerController extends JPanel implements Runnable {
 
     private Level myCurrentLevel;
 
-    //TODO: Make this variable hold a LevelFactory
+    // TODO: Make this variable hold a LevelFactory
     private DemoLevelFactory myLevelFactory;
     private GameInitializer myGameInitializer;
-    private KeyboardController myInputController;
     private Player myPlayer;
-    
+    private Image myBackground;
+    private Map<String, Point> myStringMap = new HashMap<String, Point>();
+    private Dimension mySize;
+
     private Thread animator;
 
-    public PlatformerController(DemoLevelFactory lf, GameInitializer gi) {
+    public PlatformerController (DemoLevelFactory lf, String firstLevelName, InputInitializer ii) {
         myLevelFactory = lf;
-        myGameInitializer = gi;
-        myInputController = null;
-       
-       //this.setFocusable(true);
         
-        setupLevel(myGameInitializer.getFirstLevelName());
-        myPlayer = myCurrentLevel.getPlayer();
+        this.setFocusable(true);
+
+        setupLevel(firstLevelName);
+        
+        ii.setUpInput(myCurrentLevel.getObjectList(), this);
+
         animator = new Thread(this);
-        animator.start();        
+        animator.start();
     }
+    
 
     /**
      * The main update cycle method.
      * 
      * @param elapsedTime
      */
-    public void update(long elapsedTime) {
+    public void update (long elapsedTime) {
         myCurrentLevel.update(elapsedTime);
         PlayState currentState = myCurrentLevel.getLevelStatus();
 
@@ -65,41 +75,70 @@ public class PlatformerController extends JPanel implements Runnable {
             setupLevel(nextLevelName);
         }
     }
-    
-    //TODO: Figure out how to use input team's API
-    /*public void setInputController(KeyboardController ic) {
-        myInputController = ic;
-        myCurrentLevel.setInputController(myInputController);
-    }*/
-    
-    private void setupLevel(String lvlName) {
+
+    private void setupLevel (String lvlName) {
         myCurrentLevel = myLevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
-        setPreferredSize(new Dimension((int)cameraBounds.getWidth(), (int)cameraBounds.getHeight()));
-        /*if (myInputController != null) {
-            myCurrentLevel.setInputController(myInputController);
-        }*/
+        mySize = new Dimension((int) cameraBounds.getWidth(),
+                (int) cameraBounds.getHeight());
+        setPreferredSize(mySize);
     }
 
     @Override
-    public void paint(Graphics pen) {
+    public Dimension getSize () {
+        return mySize;
+    }
+
+    @Override
+    public void paint (Graphics pen) {
+        paintBlankScreen(pen);
         myCurrentLevel.paint(pen);
         pen.setColor(Color.BLACK);
-        pen.drawString("M - Menu", getSize().width*3/5,getSize().height/4);
-        pen.drawString("¡û ¡ú - Move left and right", getSize().width*3/5,getSize().height/4+15);
-        pen.drawString("¡ü - Jump", getSize().width*3/5,getSize().height/4+30);
-        pen.drawString("Space - Shoot", getSize().width*3/5,getSize().height/4+45);
-        
-        for(Component c: getComponents()){
+        paintString(pen);
+        for (Component c : getComponents()) {
             c.paint(pen);
         }
+    }
+
+    /**
+     * Paint the background of game canvas
+     * 
+     * @param pen
+     */
+    public void paintBlankScreen (Graphics pen) {
+        pen.setColor(Color.WHITE);
+        pen.fillRect(0, 0, getWidth(), getHeight());
+        
+        /*if (myBackground != null) {
+            pen.drawImage(myBackground.getScaledInstance((int) getWidth(),
+                    (int) getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
+        }*/
+    }
+
+    private void paintString (Graphics pen) {
+        for (String s : myStringMap.keySet()) {
+            Point p = myStringMap.get(s);
+            pen.drawString(s, p.x, p.y);
+        }
+    }
+
+    /**
+     * Paint string at (x,y)
+     * 
+     * @param str
+     * @param x coordinate on canvas
+     * @param y coordinate on canvas
+     */
+    public void paintString (String str, int x, int y) {
+        Point location = new Point(x, y);
+        myStringMap.put(str, location);
     }
 
     /**
      * The main game loop
      */
     @Override
-    public void run() {
+    public void run () {
         long beforeTime, timeDiff, sleepTime;
 
         beforeTime = System.currentTimeMillis();
@@ -119,73 +158,43 @@ public class PlatformerController extends JPanel implements Runnable {
 
             try {
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 System.out.println("interrupted!");
             }
             beforeTime = System.currentTimeMillis();
         }
     }
-    
+
+
     /**
-     * This is used to test sample implemented game before registered with input team.
-     * should be //TODO: removed
+     * TODO: should be removed
      */
-    public KeyListener setTemporaryInputListener(){
+    private PlatformerController myCanvas = this;
+
+    /**
+     * should be moved out of API
+     * @return
+     */
+    public KeyListener setMenuKeyListener () {
         KeyListener kl = new KeyAdapter() {
             @Override
             public void keyPressed (KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    myPlayer.getMovingStrategy().goLeft();
-                    
-                }
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    myPlayer.getMovingStrategy().goRight();
-                }
-                if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.getMovingStrategy().jump();
-                }
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    ShootingStrategy ss = myPlayer.getShootingStrategy();
-                    if(ss !=null){
-                        ss.shoot();
-                    }
-                }
-            }
-
-            public void keyReleased (KeyEvent e) {
-                myPlayer.getMovingStrategy().stop();
-            }
-        };
-        MouseMotionListener mml = new MouseAdapter() {
-            @Override
-            public void mouseClicked (MouseEvent e) {
-                //not used so far
-            }
-        };
-        return kl;
-    }
-    
-    private PlatformerController myCanvas = this;
-    
-    public KeyListener setMenuKeyListener(){
-        KeyListener kl = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_M) {
                     final Menu menu = new Menu(myCanvas);
                     GameButton gb1 = new GameButton("greenbutton", "Back");
                     MouseListener gl = new MouseAdapter() {
                         @Override
-                        public void mouseClicked(MouseEvent arg0) {
+                        public void mouseClicked (MouseEvent arg0) {
                             myCanvas.remove(menu);
                             myCanvas.repaint();
                         }
                     };
                     gb1.addMouseListener(gl);
                     GameButton gb2 = new GameButton("button", "Exit");
-                    gb2.addMouseListener(new MouseAdapter(){
+                    gb2.addMouseListener(new MouseAdapter() {
                         @Override
-                        public void mouseClicked(MouseEvent arg0) {
+                        public void mouseClicked (MouseEvent arg0) {
                             System.exit(0);
                         }
                     });

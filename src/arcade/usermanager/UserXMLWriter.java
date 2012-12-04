@@ -4,33 +4,31 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import arcade.utility.FileOperation;
-import util.encrypt.Encrypter;
-import util.xml.XmlBuilder;
+import org.w3c.dom.NodeList;
 import util.xml.XmlUtilities;
-import util.xml.XmlWriter;
 
 
 /**
  * Writes user data to an XML file.
  * 
  * @author Howard, Difan
- *         TODO: message XML should contain sender, not receiver tag
- * 
  */
 public class UserXMLWriter {
     private String myUserBasicFilePath;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
-    private ResourceBundle resource;
+    private ResourceBundle myResource;
     private String myUserImageFilePath;
 
+    /**
+     * Constructs a writer.
+     */
     public UserXMLWriter () {
-        resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
-        myUserBasicFilePath = resource.getString("BasicFilePath");
-        myUserMessageFilePath = resource.getString("MessageFilePath");
-        myUserGameFilePath = resource.getString("GameFilePath");
-        myUserImageFilePath = resource.getString("ImageFilePath");
+        myResource = ResourceBundle.getBundle("arcade.usermanager.filePath");
+        myUserBasicFilePath = myResource.getString("BasicFilePath");
+        myUserMessageFilePath = myResource.getString("MessageFilePath");
+        myUserGameFilePath = myResource.getString("GameFilePath");
+        myUserImageFilePath = myResource.getString("ImageFilePath");
     }
 
     /**
@@ -94,4 +92,45 @@ public class UserXMLWriter {
 
     }
 
+    protected void appendMessage (String sender, String receiver, String content) {
+        String filePath = myUserMessageFilePath + receiver + ".xml";
+
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "sender", sender);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.write(doc, filePath);
+
+    }
+
+    protected void updateUserInfo (String userName, String tagName, String newContent) {
+        String filePath = myUserBasicFilePath + userName + ".xml";
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        XmlUtilities.replaceAllTagNames(root, tagName, newContent);
+        XmlUtilities.write(doc, filePath);
+
+    }
+
+    protected void updateGameInfo (String userName, String gameName, String tagName, String content) {
+        String filePath = myUserGameFilePath + userName + ".xml";
+
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        NodeList gameList = root.getElementsByTagName("game");
+
+        if (gameList != null) {
+            for (int i = 0; i < gameList.getLength(); i++) {
+                Element game = (Element) gameList.item(i);
+                String name = XmlUtilities.getChildContent(game, "name");
+                if (name.equals(gameName)) {
+                    XmlUtilities.replaceAllTagNames(game, tagName, content);
+                    XmlUtilities.write(doc, filePath);
+                }
+            }
+
+        }
+
+    }
 }

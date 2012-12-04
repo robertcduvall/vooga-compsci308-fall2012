@@ -2,6 +2,7 @@ package arcade.gamemanager;
 
 import arcade.IArcadeGame;
 import arcade.usermanager.User;
+import arcade.usermanager.UserManager;
 
 
 /**
@@ -15,6 +16,7 @@ public class GameSaver {
 
     private User myUser;
     private IArcadeGame myGame;
+    private UserManager myUserManager;
 
     /**
      * Constructor for GameSaver.
@@ -25,6 +27,7 @@ public class GameSaver {
     public GameSaver (User user, IArcadeGame game) {
         setMyUser(user);
         myGame = game;
+        myUserManager.getInstance();
     }
 
     protected void setMyUser (User user) {
@@ -38,7 +41,8 @@ public class GameSaver {
      * @param value string describing the value of that property
      */
     public void saveUserProperty (String property, String value) {
-        myUser.getGameData(myGame.getName()).setGameInfo(property, value);
+      //  myUserManager.getGame(userName, gameName)
+        myUser.getGameData(myGame.getName()).setGameInfo(myUser.getName(),property, value);
     }
 
     /**

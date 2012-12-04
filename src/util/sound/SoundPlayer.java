@@ -2,16 +2,19 @@ package util.sound;
 
 import java.io.File;
 import java.io.IOException;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import java.net.URL;
+import javax.media.Format;
+import javax.media.Manager;
+import javax.media.MediaLocator;
+import javax.media.NoPlayerException;
+import javax.media.Player;
+import javax.media.PlugInManager;
+import javax.media.Time;
+import javax.media.format.AudioFormat;
 
 
 /**
- * Provides lightweight player for *uncompressed* audio files.
- * Does not require external dependencies. Works on Java 6.
+ * Plays audio files. Now supports compressed formats (e.g. mp3).
  * Clears up used memory and threads after playback is finished.
  * Comes with a library of various sounds (util/sound/sounds/).
  * 
@@ -22,8 +25,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  * 
  */
 public class SoundPlayer {
-    private Clip loop;
-    private File soundFile;
+    private LoopPlayback myLoop;
+    private URL mySoundURL;
+    private boolean myLoopIsPlaying;
+
+    private final int TIME_DELAY = 100;
 
     /**
      * Player constructor
@@ -31,33 +37,24 @@ public class SoundPlayer {
      * @param soundFilePath path to uncompressed sound file
      */
     public SoundPlayer (String soundFilePath) {
-        soundFile = new File(soundFilePath);
-        initializeLoop();
-    }
-
-    private void initializeLoop () {
         try {
-            AudioInputStream stream = AudioSystem.getAudioInputStream(soundFile);
-            loop = AudioSystem.getClip();
-            loop.open(stream);
+            mySoundURL = new File(soundFilePath).toURI().toURL();
+            Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
+            Format input2 = new AudioFormat(AudioFormat.MPEG);
+            Format output = new AudioFormat(AudioFormat.LINEAR);
+            PlugInManager.addPlugIn("com.sun.media.codec.audio.mp3.JavaDecoder", new Format[] {
+                    input1, input2 }, new Format[] { output }, PlugInManager.CODEC);
         }
-        catch (UnsupportedAudioFileException e) {
-            System.err.println("Unsupported File Format");
-        }
-        catch (IOException e) {
-            System.err.println("Error Reading Sound File");
-        }
-        catch (LineUnavailableException e) {
-            System.err.println("File Is Too Large");
-        }
+        catch (Exception e) {
 
+        }
     }
 
     /**
      * Play once on demand
      */
     public void playOnce () {
-        Thread singlePlayback = new Thread(new SinglePlayback());
+        Thread singlePlayback = new SinglePlayback();
         singlePlayback.start();
     }
 
@@ -65,48 +62,99 @@ public class SoundPlayer {
      * Start playing in a loop
      */
     public void startLoop () {
-        initializeLoop();
-        loop.loop(Clip.LOOP_CONTINUOUSLY);
+        if (!myLoopIsPlaying) {
+            myLoop = new LoopPlayback();
+            myLoop.start();
+            myLoopIsPlaying = true;
+        }
     }
 
     /**
      * Loop needs to be stopped at some point.
      */
     public void stopLoop () {
-        loop.stop();
-        loop.close();
+        if (myLoopIsPlaying) {
+            myLoop.stopLoop();
+            myLoopIsPlaying = false;
+            myLoop = null;
+        }
     }
-    
+
     /**
      * See if loop is currently playing
      */
     public boolean loopIsRunning () {
-        return loop.isRunning();
+        return myLoopIsPlaying;
     }
 
-    class SinglePlayback implements Runnable {
+    class SinglePlayback extends Thread {
+
+        public SinglePlayback () {
+            setDaemon(true);
+        }
 
         @Override
         public void run () {
             try {
-                AudioInputStream stream = AudioSystem.getAudioInputStream(soundFile);
-                Clip singlePlayback = AudioSystem.getClip();
-                singlePlayback.open(stream);
+                Player singlePlayback = Manager.createPlayer(new MediaLocator(mySoundURL));
                 singlePlayback.start();
-                singlePlayback.drain();
-                singlePlayback.stop();
+                while (singlePlayback.getState() != Player.Prefetched) {
+                    Thread.sleep(TIME_DELAY);
+                }
                 singlePlayback.close();
-            }
-            catch (UnsupportedAudioFileException e) {
-                System.err.println("Unsupported File Format");
+                singlePlayback.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
             }
-            catch (LineUnavailableException e) {
-                System.err.println("File Is Too Large");
-            }  
+            catch (NoPlayerException e) {
+                System.err.println("Wrong Sound File");
+            }
+            catch (InterruptedException e) {
+                System.err.println("Process interrupted");
+            }
         }
 
+    }
+
+    class LoopPlayback extends Thread {
+        private boolean myIsRunning;
+        private Player myLoop;
+
+        public LoopPlayback () {
+            setDaemon(true);
+        }
+
+        @SuppressWarnings("static-access")
+        @Override
+        public void run () {
+            myIsRunning = true;
+            try {
+                myLoop = Manager.createPlayer(new MediaLocator(mySoundURL));
+                myLoop.start();
+                while (myIsRunning) {
+                    Thread.sleep(TIME_DELAY);
+                    if (myLoop.getState() == Player.Prefetched) {
+                        myLoop.setMediaTime(new Time(0));
+                        myLoop.start();
+                    }
+                }
+                myLoop.close();
+                myLoop.deallocate();
+            }
+            catch (IOException e) {
+                System.err.println("Error Reading Sound File");
+            }
+            catch (NoPlayerException e) {
+                System.err.println("Wrong Sound File");
+            }
+            catch (InterruptedException e) {
+                System.err.println("Process interrupted");
+            }
+        }
+
+        public void stopLoop () {
+            myIsRunning = false;
+        }
     }
 }

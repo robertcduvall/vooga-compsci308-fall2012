@@ -40,7 +40,6 @@ public class Messenger {
     public void write (AndroidServerMessage m) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutput out = null;
-        System.out.println("writing android server message");
         byte[] outBytes;
         try {
             out = new ObjectOutputStream(bos);
@@ -50,7 +49,7 @@ public class Messenger {
             myOutput.write(outBytes);
         }
         catch (IOException e) {
-            //should never happen
+            // should never happen
         }
 
         finally {
@@ -58,9 +57,9 @@ public class Messenger {
                 out.close();
                 bos.close();
             }
-            
+
             catch (IOException e) {
-             //should never happen
+                // should never happen
             }
         }
     }

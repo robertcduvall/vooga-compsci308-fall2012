@@ -421,15 +421,18 @@ public class XmlUtilities {
      */
 
     public static Collection<Element> replaceAllTagNames (Element parent, String oldTag,
-                                                          String newTag) {
-        NodeList nodeList = parent.getElementsByTagName(oldTag);
+                                                          String content) {
+        NodeList nodeList =  parent.getElementsByTagName(oldTag);
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            node.setNodeValue(newTag);
+            node.setTextContent(content);
+           
         }
         return convertNodeListToCollection(nodeList);
     }
-
+    
+    
+    
     /**
      * Sets an existing attribute of an element. If the attribute did not
      * previously exist, throws a warning and creates it.
@@ -645,6 +648,57 @@ public class XmlUtilities {
      */
     public static Image getChildContentAsImage (Element parent, String tag) {
         return fileNameToImage(getChildContent(parent, tag));
+    }
+    
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name. Note: this can also be done directly via
+     * element.getAttribute()
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute
+     */
+    public static String getAttribute (Element element, String name) {
+        return element.getAttribute(name);
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and converts it to an int.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute (converted to int)
+     */
+
+    public static int getAttributeAsInt (Element element, String name) {
+        return Integer.parseInt(getAttribute(element, name));
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and converts it to a double.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute (converted to double)
+     */
+    public static double getAttributeAsDouble (Element element, String name) {
+        return Double.parseDouble(getAttribute(element, name));
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and creates an Image object. We assume that the attribute
+     * is the full pathname to a valid image file.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return an image created from the attribute value
+     */
+    public static Image getAttributeAsImage (Element element, String name) {
+        return fileNameToImage(getAttribute(element, name));
     }
 
     /**

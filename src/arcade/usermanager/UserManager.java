@@ -3,17 +3,23 @@ package arcade.usermanager;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import twitter4j.auth.AccessToken;
 import util.encrypt.Encrypter;
 import arcade.usermanager.exception.PasswordNotMatchException;
 import arcade.usermanager.exception.UserNotExistException;
@@ -27,28 +33,36 @@ import arcade.utility.FileOperation;
  * 
  */
 
-public class UserManager {
-    private Map<String, User> myAllUser;
+public final class UserManager {
     private static UserManager myUserManager;
     private static String myUserBasicFilePath;
     private static String myUserMessageFilePath;
     private static String myUserGameFilePath;
     private static String myDatabaseFilePath;
+    private static String myTwitterFilePath;
     private static ResourceBundle resource;
+    private Map<String, User> myAllUser;
     private UserXMLReader myXMLReader;
     private UserXMLWriter myXMLWriter;
-    private final String successString = "Successful";
     private User myCurrentUser;
     private Set<String> myAdminHashes;
+    private Map<String, AccessToken> myTwitterTokens;
 
+    /**
+     * Gets an instance of UserManager.
+     * 
+     * @return
+     */
     public static UserManager getInstance () {
         if (myUserManager == null) {
             myUserManager = new UserManager();
         }
-
         return myUserManager;
     }
 
+    /**
+     * Constructs a user manager.
+     */
     private UserManager () {
 
         resource = ResourceBundle.getBundle("arcade.usermanager.filePath");
@@ -56,15 +70,19 @@ public class UserManager {
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
         myDatabaseFilePath = resource.getString("DatabaseFilePath");
+        myTwitterFilePath = resource.getString("TwitterFilePath");
 
         myXMLReader = new UserXMLReader();
         myXMLWriter = new UserXMLWriter();
 
         myAllUser = new HashMap<String, User>();
 
-        myAdminHashes = new HashSet<String>();
         readAdminFile();
+        loadTwitterTokens();
+        loadUserData();
+    }
 
+    private void loadUserData () {
         File folder = new File(myUserBasicFilePath);
         File[] listOfFiles = folder.listFiles();
 
@@ -74,13 +92,47 @@ public class UserManager {
                 User newUser = myXMLReader.getUser(name);
                 newUser.setMyAdminStatus(checkAdminStatus(name));
                 myAllUser.put(name, newUser);
-
             }
 
         }
     }
 
+    private void loadTwitterTokens () {
+        myTwitterTokens = new HashMap<String, AccessToken>();
+        File folder = new File(myTwitterFilePath);
+        File[] listOfFiles = folder.listFiles();
+        for (File fi : listOfFiles) {
+            if (fi.isFile()) {
+                FileInputStream fileIn;
+                try {
+                    fileIn = new FileInputStream(fi);
+                    ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+                    Object obj = objectIn.readObject();
+                    myTwitterTokens.put(FileOperation.stripExtension(fi.getName()),
+                                        (AccessToken) obj);
+                }
+                catch (FileNotFoundException e) {
+                    
+                    e.printStackTrace();
+                }
+                catch (IOException e) {
+                    
+                    e.printStackTrace();
+                }
+                catch (ClassNotFoundException e) {
+                    
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Reads the admins.txt file.
+     */
     private void readAdminFile () {
+        myAdminHashes = new HashSet<String>();
         try {
             BufferedReader br =
                     new BufferedReader(new FileReader(myDatabaseFilePath + "admins.txt"));
@@ -109,7 +161,7 @@ public class UserManager {
 
     /**
      * Changes a given user's administrator status and writes the administrator
-     * file.
+     * file, then reloads it.
      * 
      * @param name
      * @param adminStatus
@@ -123,6 +175,7 @@ public class UserManager {
             myAdminHashes.remove(Encrypter.hashCode(name));
         }
         writeAdminFile(name);
+        readAdminFile();
 
     }
 
@@ -147,10 +200,12 @@ public class UserManager {
     }
 
     protected User getUser (String userName) {
-        if (myAllUser.containsKey(userName)) return myAllUser.get(userName);
+        if (myAllUser.containsKey(userName)) { return myAllUser.get(userName); }
         return null;
 
     }
+    
+    
 
     protected boolean validateUser (String userName, String password) {
         if (!myAllUser.containsKey(userName)) throw new UserNotExistException();
@@ -176,10 +231,25 @@ public class UserManager {
 
     }
 
-    public User getCurrentUser () {
-        return myCurrentUser;
+    /**
+     * 
+     * @return modifable user class
+     */
+    public EditableUserProfile getEditableCurrentUser () {
+        User user = getUser(getCurrentUserName());
+        String name = user.getName();
+        String picture = user.getPicture();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+       
+        return  new EditableUserProfile(name, picture, firstName, lastName);
     }
-    public String getCurrentUserName(){
+
+    /**
+     * 
+     * @return modifable user class
+     */
+    public String getCurrentUserName () {
         return myCurrentUser.getName();
     }
 
@@ -187,6 +257,12 @@ public class UserManager {
         myCurrentUser = getUser(userName);
 
     }
+
+    /**
+     * 
+     * @param userName
+     * @return un modifable user profile
+     */
 
     public UserProfile getUserProfile (String userName) {
         User user = getUser(userName);
@@ -196,6 +272,11 @@ public class UserManager {
         String lastName = user.getLastName();
         return new UserProfile(name, picture, firstName, lastName);
     }
+
+    /**
+     * 
+     * @return a list of unmodifable user profile
+     */
 
     public List<UserProfile> getAllUserProfile () {
         List<UserProfile> userProfileList = new ArrayList<UserProfile>();
@@ -210,14 +291,62 @@ public class UserManager {
     protected void updateMessage (String sender, String receiver, String content) {
         getUser(receiver).updateMyMessage(sender, content);
     }
-    
-    public GameData getGame(String userName, String gameName){
-     return   getUser(userName).getGameData(gameName);
-        
+
+    public GameData getGame (String userName, String gameName) {
+        return getUser(userName).getGameData(gameName);
+
     }
     
-    public List<Message> getMessage(){
+    public List<GameData> getGameList (String userName) {
+        return getUser(userName).getAllGameData();
+
+    }
+
+    /**
+     * 
+     * @return current user's message
+     */
+    public List<Message> getMessage () {
         return myCurrentUser.getMyMessage();
     }
 
+    public Map<String, AccessToken> getTwitterTokens () {
+        return myTwitterTokens;
+    }
+
+    /**
+     * Writes a serialized twitter token to file and reloads tokens.
+     * 
+     * @param name Arcade username of the user
+     * @param at AccessToken to save
+     */
+    public void addTwitterToken (String name, AccessToken at) {
+        FileOutputStream f_out;
+        try {
+            f_out = new FileOutputStream(myTwitterFilePath + name + ".at");
+            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+            obj_out.writeObject(at);
+        }
+        catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        loadTwitterTokens();
+
+    }
+
+    /**
+     * Deletes a user's access token.
+     * 
+     * @param name
+     */
+    public boolean deleteAccessToken (String name) {
+        FileOperation.deleteFile(myTwitterFilePath + name + ".at");
+        myTwitterTokens.remove(name);
+        return true;
+    }
 }

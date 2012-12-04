@@ -28,14 +28,18 @@ public interface ChatProtocol {
     
     String getFrom(String input);
     
-    String getMessage(String input);
+    String getErrorMessage(String input);
+    
+    String getBody(String input);
+    
+    boolean getStatus(String input);
     
     List<String> getListUsers(String input);
     
     
     //Methods to create Protocol Strings
 
-    String createLoggedIn (boolean b);
+    String createLoggedIn (String user, boolean b);
 
     String createAddUser (String user);
     

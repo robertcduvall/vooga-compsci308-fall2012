@@ -2,6 +2,8 @@ package vooga.platformer.leveleditor.leveldrawer;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import vooga.platformer.leveleditor.IEditorMode;
@@ -167,6 +169,20 @@ public class DrawingMode implements IEditorMode {
         paintCurrent(pen, mySides);
         paintCurrent(pen, myCorners);
         paintCurrent(pen, myDrawn);
+    }
+
+    @Override
+    public void add (IEditorObject editorObject) {
+        myDrawn.add(editorObject);
+    }
+
+    /**
+     * Returns an unmodifiable collection, consisting only of objects
+     * that have already been drawn.
+     */
+    @Override
+    public Collection<IEditorObject> getEditorObjects () {
+        return Collections.unmodifiableCollection(myDrawn);
     }
 
 }

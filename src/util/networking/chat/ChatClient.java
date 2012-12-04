@@ -1,11 +1,11 @@
 package util.networking.chat;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.net.Socket;
-import util.networking.GenericClient;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import util.networking.Client;
 
 /**
  * 
@@ -13,30 +13,170 @@ import util.networking.GenericClient;
  * @author Oren Bukspan
  */
 
-public class ChatClient extends GenericClient {
-
+public class ChatClient extends Client {
+    
+    private static final int TIMEOUT = 10000;
+    
     private ChatProtocol myProtocol;
-    private String myUser, myPass;
+    private String myUser;
+    private boolean myLoggedIn;
+    private List<String> myListUsers;
+    private List<ChatListener> myChatListeners;
 
-    public ChatClient(String host, int port, ChatProtocol c, OutputStream os) throws IOException{
-        super(host,port,os);
+    public ChatClient(String host, ChatProtocol c) throws IOException{
+        super(host, c.getPort());
         myProtocol = c;
+        myChatListeners = new ArrayList<ChatListener>();
+        myListUsers = new ArrayList<String>();
+        myLoggedIn = false;
     }
 
-    private Socket connect(String host, int port) throws IOException{
-        return new Socket(host, port);
+    public void login(String user, String password) {
+        send(myProtocol.createLogin(user, password));
     }
 
-    private void openStream(String user){}
+    public void logout() {
+        send(myProtocol.createLogout(myUser));
+    }
 
-    public void login(String user, String password){}
-    public void logout(){}
+    public void register(String user, String password){
+        send(myProtocol.createRegister(user, password));
+    }
 
-    public void switchUser(String user, String password){
+    public boolean registerWithTimeout(String user, String password, int timeout) {
+        register(user, password);
+        try {
+            Thread.sleep(timeout);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (myLoggedIn) {
+            myUser = user;
+        }
+        return myLoggedIn;
+    }
+    
+    public boolean loginWithTimeout(String user, String password, int timeout) {
+        login(user, password);
+        try {
+            Thread.sleep(timeout);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (myLoggedIn) {
+            myUser = user;
+        }
+        return myLoggedIn;
+    }
+    
+    public void switchUser(String user, String password) {
         logout();
         login(user, password);
     }
 
-    public void sendMessage(String userDest, String body){}
-    private void sendMessage(/*Message m*/){}
+    public void sendMessage(String userDest, String body){
+        send(myProtocol.createMessage(myUser, userDest, body));
+    }
+
+    public List<String> getListUsers() {
+        return myListUsers;
+    }
+
+    public boolean getLoggedInStatus() {
+        return myLoggedIn;
+    }
+    
+    public String getUserName(){
+        return myUser;
+    }
+
+    @Override
+    public void processInputFromServer(String input) {
+        if (input == null || "".equals(input.trim()) )
+            return;
+        System.out.println("client received: " + input);
+        ChatCommand type = myProtocol.getType(input);
+        Method m;
+        try {
+            m = this.getClass().getDeclaredMethod(type.getMethodName(), String.class);
+            m.setAccessible(true);
+            m.invoke(this, input);
+        }
+        catch (SecurityException e) {
+        }
+        catch (NoSuchMethodException e) {
+        }
+        catch (IllegalArgumentException e) {
+        }
+        catch (IllegalAccessException e) {
+        }
+        catch (InvocationTargetException e) {
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private void processMessage(String input) {
+        String from = myProtocol.getFrom(input);
+        String to = myProtocol.getTo(input);
+        String body = myProtocol.getBody(input);
+        fireMessageReceivedEvent(to, from, body);
+    }
+
+    @SuppressWarnings("unused")
+    private void processError(String input) {
+        fireErrorEvent(myProtocol.getErrorMessage(input));
+    }
+
+    @SuppressWarnings("unused")
+    private void processLoggedIn(String input) {
+        myLoggedIn = myProtocol.getStatus(input);
+    }
+
+    @SuppressWarnings("unused")
+    private void processListUsers(String input) {
+        myListUsers = myProtocol.getListUsers(input);
+    }
+
+    @SuppressWarnings("unused")
+    private void processAddUser(String input) {
+        myListUsers.add(myProtocol.getUser(input));
+        fireUsersUpdateEvent();
+    }
+
+    @SuppressWarnings("unused")
+    private void processRemoveUser(String input) {
+        myListUsers.remove(myProtocol.getUser(input));
+        fireUsersUpdateEvent();
+    }
+
+    private synchronized void fireMessageReceivedEvent(String to, String from, String body) {
+        MessageReceivedEvent e = new MessageReceivedEvent(this, to, from, body);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleMessageReceivedEvent(e);
+        }
+    }
+
+    private synchronized void fireErrorEvent(String message) {
+        ErrorEvent e = new ErrorEvent(this, message);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleErrorEvent(e);
+        }
+    }
+
+    private synchronized void fireUsersUpdateEvent() {
+        UsersUpdateEvent e = new UsersUpdateEvent(this, myListUsers);
+        for (ChatListener cl : myChatListeners) {
+            cl.handleUsersUpdateEvent(e);
+        }
+    }
+    
+    public synchronized void addListener(ChatListener cl){
+        myChatListeners.add(cl);
+    }
+
+    public synchronized void removeListener(ChatListener cl){
+        myChatListeners.remove(cl);
+    }
 }
