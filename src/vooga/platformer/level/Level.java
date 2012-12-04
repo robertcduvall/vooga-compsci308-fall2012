@@ -129,10 +129,11 @@ public class Level {
                 }
             }
 
-            for (GameObject removeObj : removalList) {
-                objectList.remove(removeObj);
+            for (int i = removalList.size() - 1; i >= 0; i--) {
+                System.out.println("removing!");
+                objectList.remove(removalList.get(i));
             }
-
+            
             // modified here
             myCollisionChecker.checkCollisions(this);
             cam.update(elapsedTime);

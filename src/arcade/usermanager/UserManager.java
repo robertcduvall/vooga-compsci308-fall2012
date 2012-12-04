@@ -296,6 +296,11 @@ public final class UserManager {
         return getUser(userName).getGameData(gameName);
 
     }
+    
+    public List<GameData> getGameList (String userName) {
+        return getUser(userName).getAllGameData();
+
+    }
 
     /**
      * 

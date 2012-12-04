@@ -19,7 +19,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  */
 public class Enemy extends Sprite {
     
-    private String imagePath;
+    private String myImagePath;
 
     /**
      * @deprecated Please pass in the imagePath instead of an image.
@@ -44,7 +44,7 @@ public class Enemy extends Sprite {
     public Enemy (Point position, Dimension size, Dimension bounds,
         String imagePath, Point velocity, int health) {
         super(position, size, bounds, (new ImageIcon(imagePath)).getImage(), velocity, health);
-        this.imagePath = imagePath;
+        this.myImagePath = imagePath;
     }
 
     /**
@@ -110,5 +110,16 @@ public class Enemy extends Sprite {
 
         //do nothing if an enemy intersects an enemy
         getMapper().addPair(HIT_BY_ENEMY, this);
+    }
+    
+    /**
+     * Get a string representing the full path to the image
+     * file for the Enemy. This is needed for converting to
+     * xml.
+     * 
+     * @return the full path to an image file
+     */
+    public String getImagePath() {
+        return myImagePath;
     }
 }

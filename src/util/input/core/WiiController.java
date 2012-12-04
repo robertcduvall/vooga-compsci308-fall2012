@@ -45,7 +45,7 @@ public class WiiController extends Controller<WiimoteListener> implements Wiimot
 
     /**
      * Create a new Wii controller.
-     *
+     * 
      */
     public WiiController (int controllerNum) {
         super();
