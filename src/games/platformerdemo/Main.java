@@ -1,15 +1,8 @@
 package games.platformerdemo;
 
 import java.awt.Dimension;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import javax.swing.JFrame;
-import vooga.platformer.core.GameInitializer;
-import util.ingamemenu.GameButton;
-import util.ingamemenu.Menu;
 import vooga.platformer.core.PlatformerController;
 import vooga.platformer.core.inputinitializer.SimpleOnePlayerInputInitializer;
 
@@ -25,13 +18,10 @@ public class Main {
     public static void main (String[] args) {
         JFrame frame = new JFrame("Demo Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController(new DemoLevelFactory(), "demoLevel",
+        PlatformerController controller = new PlatformerController("src/vooga/platformer/data/testLevel.xml",
                 new SimpleOnePlayerInputInitializer());
-        //TODO:Should use follow eventually
-        //KeyboardController testController = new KeyboardController(pc);
-        //pc.setInputController(testController);
+
         frame.getContentPane().add(controller);
-        frame.addKeyListener(controller.setMenuKeyListener());
         frame.pack();
         paintString(controller);
         frame.setVisible(true);
@@ -47,5 +37,4 @@ public class Main {
         controller.paintString("Space - Shoot", canvasSize.width * 3 / 5,
                 canvasSize.height / 4 + 45);
     }
-
 }

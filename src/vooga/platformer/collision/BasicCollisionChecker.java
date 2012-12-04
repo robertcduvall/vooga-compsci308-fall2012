@@ -22,7 +22,7 @@ public class BasicCollisionChecker extends CollisionChecker {
     public void checkCollisions (Level level) {
         for (int i = 0; i < level.getObjectList().size(); i++) {
             GameObject a = level.getObjectList().get(i);
-            for (int j = i; j < level.getObjectList().size(); j++) {
+            for (int j = i + 1; j < level.getObjectList().size(); j++) {
                 GameObject b = level.getObjectList().get(j);
                 if (a.getShape().intersects(b.getShape())) {
                     CollisionEvent ce = getCollisionEvent(a, b);

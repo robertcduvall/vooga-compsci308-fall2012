@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
-import util.input.core.KeyboardController;
+import util.camera.UpdatableCamera;
 import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.level.condition.Condition;
 import vooga.platformer.level.levelplugin.LevelPlugin;
-import vooga.platformer.util.camera.UpdatableCamera;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -34,11 +33,12 @@ public class Level {
     private Player myPlayer;
     private boolean myPaused;
 
-    public Level (Dimension dim, UpdatableCamera inCam, String fileName) {
+    public Level (Dimension levelDim, UpdatableCamera inCam, String collisionFileName) {
         objectList = new ArrayList<GameObject>();
+        conditionList = new ArrayList<Condition>();
         pluginList = new ArrayList<LevelPlugin>();
-        myDimension = dim;
-        myCollisionChecker = new BasicCollisionChecker(fileName);
+        myDimension = levelDim;
+        myCollisionChecker = new BasicCollisionChecker(collisionFileName);
         cam = inCam;
         myPaused = false;
     }
@@ -129,10 +129,11 @@ public class Level {
                 }
             }
 
-            for (GameObject removeObj : removalList) {
-                objectList.remove(removeObj);
+            for (int i = removalList.size() - 1; i >= 0; i--) {
+                System.out.println("removing!");
+                objectList.remove(removalList.get(i));
             }
-
+            
             // modified here
             myCollisionChecker.checkCollisions(this);
             cam.update(elapsedTime);

@@ -1,6 +1,5 @@
-package games.platformerdemo;
+package vooga.platformer.gameobject;
 
-import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.util.enums.Direction;
 
 import javax.imageio.ImageIO;
@@ -17,14 +16,14 @@ import java.io.IOException;
  * 
  */
 public class Bullet extends MovingObject {
-    private static final int VELOCITY = 3;
 
     /**
      * 
      */
-    public Bullet(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
+    public Bullet(double inX, double inY, double inWidth, double inHeight, int inId,
+            File defaultImageFile, int xVelocity, int yVelocity) throws IOException {
         super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
-        setVelocity(VELOCITY, 0);
+        setVelocity(xVelocity, yVelocity);
         setSize(inWidth, inHeight);
         String defaultImageName = "src/games/platformerdemo/bullet.png";
         try {
@@ -42,10 +41,10 @@ public class Bullet extends MovingObject {
      */
     public void setDirection (Direction direction) {
         if (direction.equals(Direction.LEFT)) {
-            setVelocity(-VELOCITY, 0);
+            setVelocity(-getVelocity().getX(), 0);
         }
-        else {
-            setVelocity(VELOCITY, 0);
+        else if (direction.equals(Direction.RIGHT)) {
+            setVelocity(getVelocity().getX(), 0);
         }
     }
 }
