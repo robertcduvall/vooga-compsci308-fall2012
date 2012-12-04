@@ -1,4 +1,4 @@
-package util.input.tests.android;
+package util.input.tests.android.squareattack;
 
 /**
  * 

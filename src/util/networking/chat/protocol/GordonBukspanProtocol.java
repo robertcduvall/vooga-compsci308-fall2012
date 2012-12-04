@@ -29,7 +29,7 @@ import util.xml.XmlUtilities;
 public class GordonBukspanProtocol implements ChatProtocol {
 
     private static final int PORT = 5678;
-    
+
     @Override
     public ChatCommand getType (String input) {
         String commandName;
@@ -38,8 +38,7 @@ public class GordonBukspanProtocol implements ChatProtocol {
             Element el = doc.getDocumentElement();
             commandName = el.getTagName();
             ChatCommand c = ChatCommand.getChatCommandFromString(commandName);
-            if (c != null)
-                return c;
+            if (c != null) { return c; }
         }
         catch (SAXException e) {
             return ChatCommand.UNKNOWN;
@@ -49,9 +48,8 @@ public class GordonBukspanProtocol implements ChatProtocol {
         return ChatCommand.UNKNOWN;
     }
 
-    
-    //Read specific data from XML String.
-    
+    // Read specific data from XML String.
+
     @Override
     public String getUser (String input) {
         return getValue(input, "user");
@@ -59,17 +57,17 @@ public class GordonBukspanProtocol implements ChatProtocol {
 
     @Override
     public String getPassword (String input) {
-       return getValue(input, "password");
+        return getValue(input, "password");
     }
 
     @Override
     public String getTo (String input) {
-       return getValue(input, "to");
+        return getValue(input, "to");
     }
 
     @Override
     public String getFrom (String input) {
-       return getValue(input, "from");
+        return getValue(input, "from");
     }
 
     @Override
@@ -81,21 +79,20 @@ public class GordonBukspanProtocol implements ChatProtocol {
     public String getBody (String input) {
         return getValue(input, "body");
     }
-    
+
     @Override
-    public boolean getStatus(String input) {
+    public boolean getStatus (String input) {
         String s = getValue(input, "status");
         return Boolean.parseBoolean(s);
     }
-    
+
     @Override
     public List<String> getListUsers (String input) {
-       return getListValues(input, "user");
+        return getListValues(input, "user");
     }
-    
-    
-    //Generate XML from input
-    
+
+    // Generate XML from input
+
     @Override
     public String createLoggedIn (String user, boolean b) {
         Map<String, String> xmlTagMap = new HashMap<String, String>();
@@ -123,7 +120,7 @@ public class GordonBukspanProtocol implements ChatProtocol {
         Map<String, String> xmlTagMap = new HashMap<String, String>();
         xmlTagMap.put("message", message);
         return xmlFromMap("error", xmlTagMap);
-        
+
     }
 
     @Override
@@ -134,7 +131,6 @@ public class GordonBukspanProtocol implements ChatProtocol {
         xmlTagMap.put("body", body);
         return xmlFromMap("message", xmlTagMap);
     }
-
 
     @Override
     public String createLogin (String user, String password) {
@@ -167,17 +163,14 @@ public class GordonBukspanProtocol implements ChatProtocol {
         }
         return xmlFromMap("listUsers", xmlTagMap);
     }
-    
-    
+
     @Override
     public int getPort () {
         return PORT;
     }
 
-    
-    
     // Protocol helper functions below.
-    
+
     private static Document loadXMLFrom (String xml) throws SAXException, IOException {
         return loadXMLFrom(new ByteArrayInputStream(xml.getBytes()));
     }
@@ -195,14 +188,14 @@ public class GordonBukspanProtocol implements ChatProtocol {
         is.close();
         return doc;
     }
-    
-    private static String getValue(String input, String tagName) {
+
+    private static String getValue (String input, String tagName) {
         String result = null;
         try {
             Document doc = loadXMLFrom(input);
             Element root = doc.getDocumentElement();
-            Element el = XmlUtilities.getElement(root, tagName) ;
-            result = XmlUtilities.getContent(el);     
+            Element el = XmlUtilities.getElement(root, tagName);
+            result = XmlUtilities.getContent(el);
         }
         catch (SAXException e) {
         }
@@ -210,16 +203,16 @@ public class GordonBukspanProtocol implements ChatProtocol {
         }
         return result;
     }
-    
-    private static List<String> getListValues(String input, String tagName) {
+
+    private static List<String> getListValues (String input, String tagName) {
         List<String> result = new ArrayList<String>();
         try {
             Document doc = loadXMLFrom(input);
             Element root = doc.getDocumentElement();
-            Collection<Element> elements = XmlUtilities.getElements(root, tagName) ;
+            Collection<Element> elements = XmlUtilities.getElements(root, tagName);
             for (Element e : elements) {
                 result.add(e.getTextContent());
-            }    
+            }
         }
         catch (SAXException e) {
         }
@@ -227,8 +220,8 @@ public class GordonBukspanProtocol implements ChatProtocol {
         }
         return result;
     }
-    
-    private static String xmlFromMap(String parent, Map<String,String> xmlMap) {
+
+    private static String xmlFromMap (String parent, Map<String, String> xmlMap) {
         String xmlString = null;
         Document doc = XmlUtilities.makeDocument();
         Element root = XmlUtilities.makeElement(doc, parent);

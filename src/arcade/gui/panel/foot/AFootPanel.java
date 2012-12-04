@@ -14,8 +14,8 @@ import arcade.gui.panel.ArcadePanel;
 abstract public class AFootPanel extends AbstractPanelCreator {
 
     private static final String PANEL_TYPE = "foot";
-    private static final int PANEL_WIDTH = 1100;
-    private static final int PANEL_HEIGHT = 50;
+//    private static final int PANEL_WIDTH = 1100;
+//    private static final int PANEL_HEIGHT = 50;
 
     public AFootPanel (Arcade a) {
         super(a);
@@ -24,7 +24,7 @@ abstract public class AFootPanel extends AbstractPanelCreator {
 
     
     protected ArcadePanel preparePanel (ArcadePanel newPanel){
-        newPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+//        newPanel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         return newPanel;
     }
     
