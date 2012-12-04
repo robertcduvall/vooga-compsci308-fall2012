@@ -46,6 +46,7 @@ public class Level1 extends Level {
         }
 
     }
+
     @Override
     public boolean winningConditionsMet () {
         return myGame.getEnemies().isEmpty();
