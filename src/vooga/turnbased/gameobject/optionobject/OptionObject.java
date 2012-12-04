@@ -93,6 +93,10 @@ public class OptionObject extends GameObject {
     public boolean optionIsHighlighted () {
         return isHighlighted;
     }
+    
+    public boolean isTriggered(Point focusPosition) {
+        return myRespondRegion.contains(focusPosition);
+    }
 
     @Override
     public void update () {
