@@ -88,8 +88,7 @@ public class InputTester extends Applet implements MouseInputListener {
                                        "jump");
         }
         catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            //Do nothing
         }
 
     }

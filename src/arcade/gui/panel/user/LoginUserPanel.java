@@ -58,7 +58,7 @@ public class LoginUserPanel extends AUserPanel {
         myPanel.add(newuserBut, "align left, wrap");
         myPanel.add(welcomeLabel, "align center, span");
 
-        myPanel.setPreferredSize(new Dimension(300, 100));
+//        myPanel.setPreferredSize(new Dimension(300, 100));
 
         return myPanel;
     }

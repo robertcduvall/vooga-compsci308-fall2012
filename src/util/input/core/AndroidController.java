@@ -1,9 +1,9 @@
 package util.input.core;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import util.input.android.bluetoothserver.AndroidBluetoothServer;
 import util.input.android.events.AndroidButtonEvent;
-import util.input.android.events.AndroidControllerConfigMessage;
 import util.input.android.events.AndroidSensorEvent;
 import util.input.android.events.AndroidServerMessage;
 import util.input.android.events.JoyStickEvent;
@@ -13,13 +13,18 @@ import util.input.interfaces.listeners.AndroidListener;
 
 
 /**
- * This class allows users to enter input through an Android app.
- *
+
+ * This class allows users to enter input through an Android app. The Android
+ * controller using bluetooth communication. If there is an error during
+ * communication
+ * the communication thread always dies causing the controller to lose
+ * connection. Thus, "exceptions" are notified via onControllerDisconnect
+ * method.
+ * 
  * @author Ben, Lance
  * 
  */
 public class AndroidController extends Controller<AndroidListener> implements AndroidListener {
-
 
     /**
      * Create a new android controller.
@@ -32,7 +37,7 @@ public class AndroidController extends Controller<AndroidListener> implements An
 
     /**
      * Create a new Android controller.
-     *
+     * 
      * @param controllerNum - The controller number
      */
     public AndroidController (int controllerNum) {
@@ -120,28 +125,27 @@ public class AndroidController extends Controller<AndroidListener> implements An
 
     /**
      * Send a message from your game to an android controller.
+     * 
      * @param message the message to send.
+     * @throws IOException
      */
     public void messageServer (AndroidServerMessage message) {
         myServer.notifyController(message);
     }
+
     /**
      * Set what controllers are shown to a user.
+     * 
      * @param isGameBoyActive show the gameboy?
      * @param isPlaystationActive show the playstation controller?
      * @param isTouchControlActive show the touch controller?
      * @param isAccelerometerActive enable the accelerometer?
+     * @throws IOException
      */
-    public void setControlOptions (boolean isGameBoyActive,
-            boolean isPlaystationActive, boolean isTouchControlActive,
-            boolean isAccelerometerActive) {
-        AndroidControllerConfigMessage settings =
-                new AndroidControllerConfigMessage(
-                isGameBoyActive, isPlaystationActive, isTouchControlActive,
-                isAccelerometerActive);
-        myServer.notifyController(settings);
+    public void setControlOptions (boolean isGameBoyActive, boolean isPlaystationActive,
+                                   boolean isTouchControlActive, boolean isAccelerometerActive) {
+        
     }
-
 
     @Override
     public void onAccelerometerEvent (AndroidSensorEvent e) {

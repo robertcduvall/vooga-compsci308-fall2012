@@ -1,9 +1,8 @@
-package util.input.tests.android;
+package util.input.tests.android.squareattack;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
 import javax.swing.JFrame;
-import util.input.tests.twocontroller.TwoController;
 
 
 /**

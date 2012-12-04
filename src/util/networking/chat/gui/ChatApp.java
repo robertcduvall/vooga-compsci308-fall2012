@@ -37,7 +37,7 @@ public class ChatApp {
     
     public static void main (String[] args) {
         try {
-            ChatClient c = new ChatClient("wl-10-190-79-174.wireless.duke.local", new GordonBukspanProtocol());
+            ChatClient c = new ChatClient("10-182-22-109.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,8 +49,10 @@ public class ChatApp {
             menuBar.add(menu);
             JMenuItem newConvoItem = new JMenuItem(new NewConversationAction(eg));
             JMenuItem closeConvoItem = new JMenuItem(new CloseConversation(eg));
+            JMenuItem logoutItem = new JMenuItem(new LogoutAction(eg));
             menu.add(newConvoItem);
             menu.add(closeConvoItem);
+            menu.add(logoutItem);
 
             frame.setJMenuBar(menuBar);
             frame.pack();
@@ -160,6 +162,20 @@ public class ChatApp {
         @Override
         public void actionPerformed (ActionEvent e) {
             eg.closeConversation();
+        }
+    }
+    
+    static class LogoutAction extends AbstractAction {
+        private ExampleGUI eg;
+
+        public LogoutAction(ExampleGUI exampleGUI) {
+            super("Log Out");
+            this.eg = exampleGUI;
+        }
+
+        @Override
+        public void actionPerformed (ActionEvent e) {
+            eg.logout();
         }
     }
 
