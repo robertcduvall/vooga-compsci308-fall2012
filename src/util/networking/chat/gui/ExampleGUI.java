@@ -53,7 +53,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
                         tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
                     }
                 }else{
-                    ChatDialog cd = new ChatDialog(e.getMessageBody());
+                    ChatDialog cd = new ChatDialog("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
                     usersToDialogs.put(e.getSender(), cd);
                     tabbedPane.add(e.getSender(), cd);
                     tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
