@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JTextField;
-import util.sound.SoundPlayer;
 
 
 @SuppressWarnings("serial")
@@ -23,7 +22,7 @@ public class MenuPane extends DisplayPane {
 
     private String myDefaultFilepath = "src/vooga/turnbased/resources/level/Level1Final.xml";
     private JTextField myTextField;
-    private GameWindow myGameWindow;
+    private int myTextFieldLength = 75;
 
     /**
      * Constructor
@@ -32,7 +31,6 @@ public class MenuPane extends DisplayPane {
      */
     public MenuPane (GameWindow gameWindow) {
         super(gameWindow);
-        myGameWindow = gameWindow;
         createButtons();
         createXMLEntryTextField();
     }
@@ -45,8 +43,7 @@ public class MenuPane extends DisplayPane {
         JButton startButton = new JButton(gameIcon);
         startButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                myGameWindow.setXmlPath(myTextField.getText());
-                // System.out.println(myTextField.getText());
+                getGameWindow().setXmlPath(myTextField.getText());
                 getGameWindow().changeActivePane(GameWindow.GAME);
             }
         });
@@ -75,11 +72,13 @@ public class MenuPane extends DisplayPane {
         add(loadXMLButton);
     }
 
-
+    /**
+     * Creates a text field on the menu and populates it with default xml level filepath.
+     */
     public void createXMLEntryTextField () {
-        myTextField = new JTextField(60);
+        myTextField = new JTextField(myTextFieldLength);
         myTextField.setText(myDefaultFilepath);
-        myGameWindow.setXmlPath(myDefaultFilepath);
+        getGameWindow().setXmlPath(myDefaultFilepath);
         add(myTextField);
     }
 }
