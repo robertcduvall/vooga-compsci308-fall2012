@@ -102,7 +102,6 @@ public class SoundPlayer {
                     Thread.sleep(TIME_DELAY);
                 }
                 singlePlayback.close();
-                singlePlayback.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
@@ -140,7 +139,6 @@ public class SoundPlayer {
                     }
                 }
                 myLoop.close();
-                myLoop.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
