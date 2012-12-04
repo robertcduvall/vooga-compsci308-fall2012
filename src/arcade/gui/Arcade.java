@@ -1,6 +1,7 @@
 package arcade.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -139,6 +140,20 @@ public class Arcade {
      */
     public UserProfile getCurrentUser () {
         return myModelInterface.getUser(myUsername);
+        
+    }
+    
+    
+    public Dimension getPanelSize(ArcadePanel panel){
+        
+//        int buffer = 20;
+//        
+//        // retrieves the current size of the holder panel
+//        Dimension panelSize = myFrame.getPanel(panel.getPanelType()).getSize();
+//        
+//        // returns size of holder panel adjusted by panel edge buffer
+//        return new Dimension(panelSize.width - buffer, panelSize.height - buffer);
+        return myFrame.getPanel(panel.getPanelType()).getSize();
     }
 
 }

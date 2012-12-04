@@ -1,6 +1,7 @@
 package arcade.gui.panel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -34,6 +35,12 @@ public abstract class AbstractPanelCreator {
     protected ArcadePanel initializeNewPanel () {
         ArcadePanel newPanel = new ArcadePanel(myArcade, myPanelType);
         newPanel.setBackground(Color.BLACK);
+
+        // set the preferred size of the panel based on space available
+        // this can be overriden later
+//        newPanel.setPreferredSize(getArcade().getPanelSize(newPanel));
+        newPanel.setPreferredSize(new Dimension(0,0));
+
         return preparePanel(newPanel);
     }
 

@@ -32,7 +32,7 @@ public class MainFrameCreator extends MigFrameCreator {
 
         addPanelWithoutBorder(300, 100, "logo", "align center");
         addPanelWithoutBorder(500, 100, "blank", "growx, align center");
-        addPanelWithoutBorder(300, 100, "user", "align center, wrap");
+        addPanelWithBorder(300, 100, "user", "align center, wrap");
         addPanelWithoutBorder(1100, 50, "nav", "span, growx, wrap");
         addPanelWithBorder(800, 450, "main", "span 2, grow");
         addPanelWithBorder(300, 450, "search", "growy, wrap");
