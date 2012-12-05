@@ -212,8 +212,8 @@ public class ModelInterface {
      * @return
      */
     public int getMostRecentHighScore (String userName, String gameName) {
-       return  Integer.parseInt(myUserManager.getGame(userName, gameName).getGameInfo("highscore"));
-       
+        return Integer.parseInt(myUserManager.getGame(userName, gameName).getGameInfo("highscore"));
+
     }
 
     /**
@@ -236,15 +236,15 @@ public class ModelInterface {
      * @return
      */
     public List<String> getListOfHighScoresForUser (String userName) {
-        List<String> list=new ArrayList<String>();
-      List<GameData> gameList=  myUserManager.getGameList(userName);
-      for(GameData gd :gameList){
-          String str=gd.getGameInfo("name")+" - "+gd.getGameInfo("highscore");
-          list.add(str);
-           
-      }
-      
-      return list;
+        List<String> list = new ArrayList<String>();
+        List<GameData> gameList = myUserManager.getGameList(userName);
+        for (GameData gd : gameList) {
+            String str = gd.getGameInfo("name") + " - " + gd.getGameInfo("highscore");
+            list.add(str);
+
+        }
+
+        return list;
     }
 
     /**
@@ -284,6 +284,27 @@ public class ModelInterface {
      * @param name
      */
     public boolean disconnectTwitter (String name) {
-        return myUserManager.deleteAccessToken(name);
+        return myUserManager.deleteTwitterAccessToken(name);
+    }
+
+    /**
+     * Makes a post to Facebook.
+     * 
+     * @param name
+     * @param post
+     * @return
+     */
+    public boolean sendPost (String name, String message) {
+        return mySocialCenter.sendPost(name, message);
+    }
+
+    /**
+     * Disconnects a user's connection to a Facebook account.
+     * 
+     * @param name
+     * @return
+     */
+    public boolean disconnectFacebook (String name) {
+        return myUserManager.deleteFacebookAccessToken(name);
     }
 }

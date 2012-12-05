@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.ResourceBundle;
 import twitter4j.auth.AccessToken;
+import util.facebook.FacebookTools;
 import util.twitter.TwitterTools;
 import arcade.usermanager.exception.UserNotExistException;
 import arcade.usermanager.exception.ValidationException;
@@ -35,6 +36,7 @@ public class SocialCenter {
     private static ResourceBundle resource;
     private UserManager myUserManager;
     private TwitterTools myTwitterTools;
+    private FacebookTools myFacebookTools;
 
     /**
      * constructor
@@ -49,6 +51,7 @@ public class SocialCenter {
         myUserMessageFilePath = resource.getString("MessageFilePath");
         myUserGameFilePath = resource.getString("GameFilePath");
         myTwitterTools = new TwitterTools();
+        myFacebookTools = new FacebookTools();
 
     }
 
@@ -171,6 +174,34 @@ public class SocialCenter {
                 at = myTokens.get(name);
             }
             myTwitterTools.updateStatus(tweetText, at);
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Sends a post to Facebook.
+     * 
+     * @param name
+     * @param post
+     * @return
+     */
+    public boolean sendPost (String name, String message) {
+        try {
+            Map<String, com.restfb.FacebookClient.AccessToken> myTokens = myUserManager.getFacebookTokens();
+            com.restfb.FacebookClient.AccessToken at;
+            if (!myTokens.keySet().contains(name)) {
+                at = myFacebookTools.requestAccessToken();
+                if (at == null) { return false; }
+                myUserManager.addFacebookToken(name, at);
+            }
+            else {
+                at = myTokens.get(name);
+            }
+            myFacebookTools.publishPost(message, at);
             return true;
         }
         catch (Exception e) {

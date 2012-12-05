@@ -9,8 +9,6 @@ import java.util.ResourceBundle;
 import arcade.datatransfer.ModelInterface;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
-import arcade.usermanager.SocialCenter;
-import arcade.usermanager.User;
 import arcade.usermanager.UserProfile;
 
 
@@ -39,7 +37,6 @@ public class Arcade {
     private ResourceBundle myResources;
 
     public Arcade () {
-        System.out.println("got it!");
 
         // initialize things
         myFactory = new CreatorFactory(this);
@@ -89,7 +86,7 @@ public class Arcade {
         String panelRealName = myResources.getString(panelCreatorName);
         ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
-        // myFrame.pack();
+
         myFrame.validate();
     }
 
@@ -143,16 +140,12 @@ public class Arcade {
         
     }
     
-    
+    /**
+     * @deprecated
+     * @param panel
+     * @return
+     */
     public Dimension getPanelSize(ArcadePanel panel){
-        
-//        int buffer = 20;
-//        
-//        // retrieves the current size of the holder panel
-//        Dimension panelSize = myFrame.getPanel(panel.getPanelType()).getSize();
-//        
-//        // returns size of holder panel adjusted by panel edge buffer
-//        return new Dimension(panelSize.width - buffer, panelSize.height - buffer);
         return myFrame.getPanel(panel.getPanelType()).getSize();
     }
 

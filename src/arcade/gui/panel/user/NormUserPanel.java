@@ -1,6 +1,7 @@
 package arcade.gui.panel.user;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -20,6 +21,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class NormUserPanel extends AUserPanel {
 
+    private static final int BTN_WIDTH = 100;
+    private static final int BTN_HEIGHT = 30;
+
     public NormUserPanel (Arcade a) {
         super(a);
     }
@@ -28,11 +32,10 @@ public class NormUserPanel extends AUserPanel {
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
 
-        // use the username to pull the user's first name
-        // TODO
         String user = getArcade().getUsername();
 
         JButton logoutBut = new JButton("Logout");
+        logoutBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 
         JLabel welcomeLabel = new JLabel("You are current logged in as: " + user, JLabel.CENTER);
         welcomeLabel.setForeground(Color.WHITE);
