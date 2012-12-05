@@ -84,11 +84,19 @@ public abstract class ParticleSystem {
      * @param moveBy the amount to move the creation point by
      */
     public void move (Point moveBy) {
-        for (ParticleEngine p : myParticleEngines) {
-            double xNewPos = p.getStartingPosition().getComponent(MathVector2D.X) + moveBy.x;
-            double yNewPos = p.getStartingPosition().getComponent(MathVector2D.Y) + moveBy.y;
-            p.setStartingPosition(new MathVector2D(xNewPos,yNewPos));
-        }
+    	MathVector2D movementVector = new MathVector2D(moveBy);
+        move(movementVector);
+    }
+    
+    /**
+     * Moves the creation point (where new particles begin life) by a vector
+     * (implemented as a MathVector2D here)
+     * @param moveBy
+     */
+    public void move (MathVector2D moveBy) {
+    	for (ParticleEngine p : myParticleEngines) {
+    		p.moveStartingPositionByVector(moveBy);
+    	}
     }
 
     public Boolean stillExists() {
@@ -122,7 +130,7 @@ public abstract class ParticleSystem {
     public int spriteCount() {
         int count = 0;
         for(ParticleEngine p: myParticleEngines) {
-            count+=p.getSpriteCount();
+            count += p.getSpriteCount();
         }
         return count;
     }

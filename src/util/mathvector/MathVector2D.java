@@ -36,6 +36,10 @@ public class MathVector2D extends MathVector{
 	public MathVector2D(Point a) {
 	    super(new double[]{a.x,a.y});
 	}
+	
+	public MathVector2D(MathVector2D v){
+		super(v);
+	}
 
 	/**
 	 * Instantiates this MathVector2D object as the two-dimensional 
