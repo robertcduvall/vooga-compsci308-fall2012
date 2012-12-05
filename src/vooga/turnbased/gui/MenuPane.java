@@ -90,7 +90,7 @@ public class MenuPane extends DisplayPane {
 		});
 		add(loadXmlButton);
 
-		JButton playerXmlButton = new JButton("Load XML");
+		JButton playerXmlButton = new JButton("Load Player's XML");
 		playerXmlButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser(myDefaultFilePath);
