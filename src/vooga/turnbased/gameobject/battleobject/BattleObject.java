@@ -94,6 +94,9 @@ public abstract class BattleObject extends GameObject {
         if (myChangingStats.containsKey(statName)) {
             myChangingStats.put(statName, value);
         }
+        if(myHEALTH.equals(statName)){
+        	myDefaultStats.put(statName, value);
+        }
     }
 
     /**
