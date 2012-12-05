@@ -118,6 +118,7 @@ public class UserProfileMainPanel extends AMainPanel {
             }
 
         });
+        //getArcade().getModelInterface().getListOfHighScoresForUser(userToLoad);
         gameStats = "No game stats... Yet...";
         statsArea = new JTextArea(gameStats, 10, 20);
         statsArea.setLineWrap(true);
