@@ -23,7 +23,8 @@ public class ScrollingKeyListener extends KeyAdapter{
         }
         switch (ke.getKeyCode()) {
             case KeyEvent.VK_LEFT:
-                if (myOffset == 0) {
+                if (myOffset <= 0) {
+                    myOffset = 1;
                     bumpLeft();
                 }
                 else {
