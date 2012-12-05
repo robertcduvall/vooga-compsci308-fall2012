@@ -9,23 +9,29 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 
 
+/**
+ * A game of patience and endurance.
+ * 
+ * @author Howard
+ * 
+ */
+
 public class ButtonGame implements IArcadeGame {
     private JFrame myFrame;
     private JLabel scoreLabel;
     private int score;
-    private boolean gameRunning;
     private GameSaver myGameSaver;
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        myFrame = new JFrame();
+        myFrame = new JFrame("The Button Game");
         score = 0;
-        gameRunning = true;
         myGameSaver = s;
 
         JPanel myPanel = new JPanel();
@@ -42,7 +48,7 @@ public class ButtonGame implements IArcadeGame {
         });
         myPanel.add(button);
 
-        JButton surrender = new JButton("I surrender, this game has beaten me");
+        JButton surrender = new JButton("I give up, this game is too hard");
         surrender.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
                 endGame();
@@ -50,6 +56,7 @@ public class ButtonGame implements IArcadeGame {
         });
         myPanel.add(surrender);
 
+        myFrame.setLocationRelativeTo(null);
         myFrame.add(myPanel);
         myFrame.pack();
         myFrame.setVisible(true);
@@ -62,7 +69,7 @@ public class ButtonGame implements IArcadeGame {
     }
 
     private void endGame () {
-        gameRunning = false;
+        JOptionPane.showMessageDialog(null, "Your score was " + score);
         myGameSaver.saveHighScore(score);
         myFrame.dispose();
     }
