@@ -48,7 +48,8 @@ public interface IEditorMode extends IPaintable {
      * method will be called by the level editor once per frame.
      * This means that every frame, the implementing class will
      * receive the location of the user's cursor. It is up to
-     * this implementing class to decide what to do with this.
+     * this implementing class to decide what to do with this (if
+     * anything).
      * 
      * @param x The x coordinates of the current cursor position.
      * @param y The y coordinates of the current cursor position.
