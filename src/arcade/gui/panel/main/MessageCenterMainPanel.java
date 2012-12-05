@@ -23,7 +23,7 @@ import arcade.usermanager.exception.ValidationException;
 
 /**
  * 
- * @author Michael Deng
+ * @author Robert Bruce
  * 
  */
 public class MessageCenterMainPanel extends AMainPanel {
@@ -60,7 +60,7 @@ public class MessageCenterMainPanel extends AMainPanel {
                 System.out.println("Trouble loading a message...");
             }
         }
-        myPanel.setPreferredSize(new Dimension(750, 110*numLoaded));
+        myPanel.setPreferredSize(new Dimension(750, (110*numLoaded)+50));
 
         return myPanel;
     }

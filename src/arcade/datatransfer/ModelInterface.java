@@ -163,7 +163,16 @@ public class ModelInterface {
 
     public EditableUserProfile getEditableCurrentUser () {
         return myUserManager.getEditableCurrentUser();
-
+    }
+    /**
+     * We actually need to be able to get the User.
+     * Stop changing it so we can't.
+     * It's messing things up.
+     * <3 Rob
+     * @return The User that is currently logged in.
+     */
+    public User getCurrentUserDontDeleteThisMethod() {
+        return myUserManager.getCurrentUserDontDeleteThisMethod();
     }
 
     /**
@@ -176,13 +185,6 @@ public class ModelInterface {
     }
 
     /**
-     * delete user profile
-     * 
-     * @param userName
-     * @param password
-     * @return
-     */
-    /**
      * Deletes a user.
      * 
      * @param userName
@@ -190,7 +192,7 @@ public class ModelInterface {
      * @return
      */
     public boolean deleteUser (String userName, String password) {
-        return mySocialCenter.deleteUser(userName, password);
+        return mySocialCenter.deleteUser(userName, Encrypter.hashCode(password));
 
     }
 
