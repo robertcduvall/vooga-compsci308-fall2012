@@ -105,14 +105,9 @@ public class LevelFileReader {
      * @return a collection of the saved GameObjects
      */
     public Collection<GameObject> getGameObjects () {
-        String gameObjectDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.GAMEOBJECT_DATA);
-        Collection<GameObject> castGameObjects = new ArrayList<GameObject>();
-
-        for (Object g : readSerializedObjects(gameObjectDataFile)) {
-            castGameObjects.add((GameObject) g);
-        }
-
-        return castGameObjects;
+        return readAndCastSerializedObjects(GameObject.class,
+                                            XmlUtilities.getChildContent(myRoot,
+                                                                         XmlTags.GAMEOBJECT_DATA));
     }
 
     /**
@@ -123,14 +118,9 @@ public class LevelFileReader {
      * @return a collection of the saved Conditions
      */
     public Collection<Condition> getConditions () {
-        String conditionDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.CONDITION_DATA);
-        Collection<Condition> castConditions = new ArrayList<Condition>();
-
-        for (Object c : readSerializedObjects(conditionDataFile)) {
-            castConditions.add((Condition) c);
-        }
-
-        return castConditions;
+        return readAndCastSerializedObjects(Condition.class,
+                                            XmlUtilities.getChildContent(myRoot,
+                                                                         XmlTags.CONDITION_DATA));
     }
 
     /**
@@ -141,14 +131,29 @@ public class LevelFileReader {
      * @return a collection of the saved LevelPlugins
      */
     public Collection<LevelPlugin> getLevelPlugins () {
-        String pluginDataFile = XmlUtilities.getChildContent(myRoot, XmlTags.PLUGIN_DATA);
-        Collection<LevelPlugin> castPlugins = new ArrayList<LevelPlugin>();
+        return readAndCastSerializedObjects(LevelPlugin.class,
+                                            XmlUtilities.getChildContent(myRoot,
+                                                                         XmlTags.PLUGIN_DATA));
+    }
 
-        for (Object lp : readSerializedObjects(pluginDataFile)) {
-            castPlugins.add((LevelPlugin) lp);
+    /**
+     * Reads serialized objects from the specified binary file, then casts all
+     * objects from that file to the specified class. These are returned as a
+     * Collection.
+     * 
+     * @param clazz class that the serialized objects should be cast to
+     * @param dataFile path to the binary data file containing the serialized
+     *        Objects
+     * @return a collection of type T, which is specified by the clazz parameter
+     */
+    private static <T> Collection<T> readAndCastSerializedObjects (Class<T> clazz, String dataFile) {
+        Collection<T> castObjs = new ArrayList<T>();
+        Class<? extends T> castClazz = clazz.asSubclass(clazz);
+
+        for (Object o : readSerializedObjects(dataFile)) {
+            castObjs.add(castClazz.cast(o));
         }
-
-        return castPlugins;
+        return castObjs;
     }
 
     /**
@@ -157,7 +162,7 @@ public class LevelFileReader {
      * @param gameObjectDataFile file location of the binary file to be read
      * @return a Collection of Objects that were stored in this binary file
      */
-    private Collection<Object> readSerializedObjects (String gameObjectDataFile) {
+    private static Collection<Object> readSerializedObjects (String gameObjectDataFile) {
 
         FileInputStream fis;
         Collection<Object> inputObjects;
