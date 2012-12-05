@@ -16,7 +16,8 @@ import vooga.platformer.gameobject.Player;
 public class KeyControllerOnePlayerInputInitializer implements InputInitializer {
 
     Player myPlayer;
-
+    InputTeamPlayerAdapter adapter;
+    
     
     /**
      * Assumes there is exactly one Player instance in the list of GameObjects.
@@ -31,19 +32,18 @@ public class KeyControllerOnePlayerInputInitializer implements InputInitializer 
                 myPlayer = (Player)go;
             }
         }
+        adapter = new InputTeamPlayerAdapter(myPlayer);
         
         KeyboardController keyControl = new KeyboardController(platformControl);
         try {
-            keyControl.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myPlayer, "goUp");
-            keyControl.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myPlayer, "goLeft");
-            keyControl.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myPlayer, "goRight");
-            keyControl.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myPlayer, "goDown");
-            keyControl.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, myPlayer, "shoot");
-            keyControl.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, myPlayer, "stop");
-            keyControl.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, myPlayer, "stop");
-            keyControl.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, myPlayer, "stop");
-            keyControl.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, myPlayer, "stop");
-            keyControl.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, myPlayer, "stop");
+            keyControl.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, adapter, "goUp");
+            keyControl.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, adapter, "goLeft");
+            keyControl.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, adapter, "goRight");
+            keyControl.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, adapter, "shoot");
+            keyControl.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, adapter, "stop");
+            keyControl.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, adapter, "stop");
+            keyControl.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, adapter, "stop");
+            keyControl.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, adapter, "stop");
         }
         catch (NoSuchMethodException e) {
             System.out.println("Error initializing KeyboardController: no such method");
