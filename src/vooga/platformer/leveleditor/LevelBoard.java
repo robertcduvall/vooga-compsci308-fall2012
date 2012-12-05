@@ -151,11 +151,9 @@ public class LevelBoard extends JPanel {
                         if(myPlayer != null) {
                             myGameObjects.remove(myPlayer);
                         }
-                        obj = new Player(x, y, w, h, myObjID++, f);
-                        myPlayer = (Player) obj;
-                    }
-                    else if ("Plugin".equals(cmmd)) {
-                        System.out.println("plugin");
+                        myPlayer = new Player(x, y, w, h, myObjID++, f);
+                        obj = myPlayer;
+                        
                     }
                     ((PlacementMouseListener) myPlacementManager).setCurrent(obj);
                     myGameObjects.add(obj);
@@ -281,6 +279,7 @@ public class LevelBoard extends JPanel {
     }
 
     public void load (String path) {
+        clear ();
         LevelFileReader loader = new LevelFileReader(path);
         for(GameObject obj : loader.getGameObjects()) {
             myGameObjects.add(obj);
@@ -299,6 +298,10 @@ public class LevelBoard extends JPanel {
 
     public void clear () {
         myGameObjects.clear();
+        myPlugins.clear();
+        myConditions.clear();
+        myWidth = getWidth();
+        myPlayer = null;
     }
 
     protected void objectPopupMenu (GameObject g, MouseEvent e) {
