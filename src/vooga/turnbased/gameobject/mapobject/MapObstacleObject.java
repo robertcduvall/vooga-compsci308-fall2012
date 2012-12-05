@@ -17,16 +17,17 @@ public class MapObstacleObject extends MapObject {
     /**
      * Constructor
      * 
-     * @param allowableModes
-     * @param condition
-     * @param location
-     * @param mapImage
+     * @param allowableModes modes that the obstacle could be in
+     * @param condition Event condition
+     * @param location Location of the obstacle
+     * @param mapImage image of the obstacle on the map
      */
     public MapObstacleObject (Set<String> allowableModes, String condition, Point location,
                               Image mapImage) {
         super(allowableModes, condition, location, mapImage);
     }
 
+    @Override
     public void interact (MapObject target) {
         super.interact(target);
         if (target instanceof MovingMapObject) {

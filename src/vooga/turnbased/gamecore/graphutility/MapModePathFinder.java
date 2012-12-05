@@ -36,10 +36,10 @@ public class MapModePathFinder extends PathFinder {
      * @param map MapMode on which the path finding is applied
      * @param object MapObject to be moved
      * @param target target position
-     * @param mapSize bottom right corner of the entire map
+     * @param size bottom right corner of the entire map
      */
-    public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
-        super(object.getLocation(), target, new Dimension(mapSize));
+    public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension size) {
+        super(object.getLocation(), target, new Dimension(size));
         initialize(map, object);
         setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
     }

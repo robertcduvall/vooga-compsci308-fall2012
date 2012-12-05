@@ -33,7 +33,7 @@ public class MovingMapObject extends MapObject {
     /**
      * Creates the MovingMapObject that will be used in MapMode.
      * 
-     * @param allowableModes
+     * @param allowableModes Modes the MovingMapObject could potentially be in
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
@@ -177,6 +177,7 @@ public class MovingMapObject extends MapObject {
     }
 
     /**
+     * Try to move the map object in the specified direction by 1 unit
      * 
      * @param dir the direction of movement
      * @return if the move was successful
@@ -206,6 +207,12 @@ public class MovingMapObject extends MapObject {
         }
     }
 
+    /**
+     * Attempt to move to the destination specified
+     * 
+     * @param dest destination
+     * @return if the movement was successful
+     */
     public boolean tryMoveTo (Point dest) {
         Point direction = new Point(dest.x - getLocation().x, dest.y - getLocation().y);
         return tryMove(direction);
@@ -217,8 +224,6 @@ public class MovingMapObject extends MapObject {
      * @param dest the destination on the map
      */
     private void moveTo (Point dest) {
-        // getMapMode().removeMapObject(this);
-        // getMapMode().addMapObject(dest, this);
         setLocation(dest);
         setMoving(true);
     }
