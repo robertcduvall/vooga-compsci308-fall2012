@@ -65,11 +65,21 @@ public class Particle {
     protected Particle (MathVector2D position, Dimension size, Image image,
             double velocityMagnitude, double velocityAngle, int variance,
             int duration, float[] RGBAscales, float[] RGBAtolerances) {
-        myRGBAscales = RGBAscales.clone();
+    	myRGBAscales = RGBAscales.clone();
         myRGBAtolerances = RGBAtolerances;
         declareVariables(position, size, image, variance, duration);
         myAngle = velocityAngle;
         maxDistanceTraveledPerUpdate = velocityMagnitude;
+        myVelocity = new MathVector2D(myAngle);
+        myVelocity.scale(velocityMagnitude);
+    }
+    
+    protected Particle (MathVector2D position, Dimension size, Image image,
+           MathVector2D velocity, int variance, int duration, float[] RGBAscales, 
+           float[] RGBAtolerances) {
+    	this (position, size, image, velocity.calculateMagnitude(), 
+    			velocity.calculateAngleInRadians(),
+    			variance, duration, RGBAscales, RGBAtolerances);
     }
 
     /**
@@ -179,7 +189,7 @@ public class Particle {
      * Returns this particle's velocity MathVector.
      * @return
      */
-    protected MathVector getMyVelocity (){
+    protected MathVector2D getMyVelocity (){
     	return myVelocity;
     }
     

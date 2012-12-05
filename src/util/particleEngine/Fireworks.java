@@ -1,18 +1,41 @@
 package util.particleEngine;
 
 import java.awt.Image;
+import java.awt.Point;
+
+import javax.swing.ImageIcon;
 
 import util.mathvector.MathVector2D;
 
 public class Fireworks extends ParticleSystem{
 
+    private static int myTolerance = 0;
+    private static int myLength = 50;
+    private static int myDensity = 70;
+    private static int numDirections = 11;
+    private static boolean loop = false;
+    private static double angleSpan = 90;
+    
+    //RGBA magic numbers borrowed from Explosion class
+    private static float[] RGBAscales = { 3.0f, 1.2f, 1.2f, 0.4f };
+    private static float[] RGBAtolerances = { 0.2f, 0.4f, 0.4f, 0.1f };
+    
 	public Fireworks(MathVector2D startingPosition) {
-		super(startingPosition);
+		super(startingPosition, new MathVector2D(0,10));
+	}
+	
+	public Fireworks(Point startingPosition){
+		this(new MathVector2D(startingPosition));
 	}
 
 	@Override
 	protected void setUpParticleEngines() {
-		
+		//image borrowed from Explosion class
+		ImageIcon temp = new ImageIcon(
+                Explosion.class.getResource("orangeParticle.png"));
+		Image myImage = temp.getImage();
+		addParticleEngine(myDensity, myImage, position, getVelocity(), 
+				myTolerance, myLength, angleSpan, numDirections, RGBAscales, RGBAtolerances, loop);
 	}
 
     /**
