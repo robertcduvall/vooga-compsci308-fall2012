@@ -1,5 +1,6 @@
 package arcade.gui.panel.logo;
 
+import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
@@ -40,6 +41,8 @@ abstract public class ALogoPanel extends AbstractPanelCreator {
         JLabel picLabel = new JLabel(icon);
         myPanel.setLayout(new MigLayout("", "[c]", "[c]"));
         myPanel.add(picLabel, "align center");
+        
+        myPanel.setPreferredSize(new Dimension(0,0));
         return myPanel;
     }
 
