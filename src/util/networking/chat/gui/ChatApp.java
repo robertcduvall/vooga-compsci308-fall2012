@@ -36,7 +36,7 @@ public class ChatApp {
     private static int MAX_USER_CHAR = 12;
     private static JFrame frame; 
     
-    public static void main (String[] args) {
+    public void run () {
         try {
             ChatClient c = new ChatClient("wl-10-190-55-243.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
