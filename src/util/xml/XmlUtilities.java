@@ -607,7 +607,10 @@ public class XmlUtilities {
      */
     public static String getChildContent (Element parent, String tag) {
         Node child = getElement(parent, tag);
-        return child.getTextContent();
+        if (child != null) {
+            return child.getTextContent();
+        }
+        return null;
     }
 
     /**

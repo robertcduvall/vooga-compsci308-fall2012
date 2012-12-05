@@ -31,7 +31,7 @@ public abstract class AbstractPanelCreator {
         newPanel.setBackground(Color.BLACK);
 
         // set panel to smallest size possible
-        newPanel.setPreferredSize(new Dimension(0, 0));
+        newPanel.setPreferredSize(null);
 
         return preparePanel(newPanel);
     }

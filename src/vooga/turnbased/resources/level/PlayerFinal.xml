@@ -1,6 +1,5 @@
 <player>
 	  <object>
-	  	<createOn>start</createOn>
 	  	<modes>map1, map2</modes>
 		<class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
 		<condition>NO_ACTION</condition>
@@ -61,7 +60,7 @@
 	  	<createOn>start</createOn>
 	  	<modes>battle</modes>
 		<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-		<condition>endgame</condition>
+		<condition>NO_ACTION</condition>
 		<stats>
 			<maxHealth>10</maxHealth>
 			<health>10</health>
@@ -76,7 +75,7 @@
 	  	<createOn>start</createOn>
 	  	<modes>battle</modes>
 		<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-		<condition>endgame</condition>
+		<condition>NO_ACTION</condition>
 		<stats>
 			<maxHealth>8</maxHealth>
 			<health>8</health>
@@ -90,7 +89,7 @@
 	  	<createOn>start</createOn>
 	  	<modes>battle</modes>
 		<class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-		<condition>endgame</condition>
+		<condition>NO_ACTION</condition>
 		<stats>
 			<maxHealth>15</maxHealth>
 			<health>15</health>

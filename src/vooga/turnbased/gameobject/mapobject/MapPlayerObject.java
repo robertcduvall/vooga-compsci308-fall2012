@@ -26,20 +26,6 @@ public class MapPlayerObject extends MovingMapObject {
     private int myFrameCount;
 
     /**
-     * Creates the MovingMapObject that will be used in MapMode.
-     * 
-     * @param allowableModes 
-     * @param condition GameEvent that can be passed to GameManager.
-     * @param coord Point at which object is located.
-     * @param mapImage Image of the object.
-     */
-    public MapPlayerObject (Set<String> allowableModes, String condition, 
-            Point coord, Image mapImage) {
-        super(allowableModes, condition, coord, mapImage);
-        myFrameCount = 0;
-    }
-
-    /**
      * Creates a MapPlayerObject with a series of images instead of a single
      * image.
      * 

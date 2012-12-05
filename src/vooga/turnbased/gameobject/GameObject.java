@@ -100,6 +100,15 @@ public abstract class GameObject {
         ImageIcon ii = new ImageIcon(this.getClass().getResource(imageLocation));
         myImage = ii.getImage();
     }
+    
+    public void setAllowableModes(String newMode) {
+    	myAllowableModes.clear();
+    	myAllowableModes.add(newMode);
+    }
+    
+    public Set<String> getAllowableModes(){
+    	return myAllowableModes;
+    }
 
     /**
      * Returns image associated with the GameObject.

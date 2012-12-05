@@ -19,8 +19,8 @@ import twitter4j.conf.ConfigurationBuilder;
  * 
  */
 public class TwitterTools {
-    private static String myConsumerKey;
-    private static String myConsumerSecret;
+    private String ourConsumerKey;
+    private String ourConsumerSecret;
     private Twitter myTwitter;
     private RequestToken myRequestToken;
 
@@ -28,10 +28,10 @@ public class TwitterTools {
      * Constructs an instance.
      */
     public TwitterTools () {
-        myConsumerKey = "z5zRan2VqwBMLdq5VMRzXA";
-        myConsumerSecret = "T7whmI8IBtcHUEBNsWoQhu39f68loybHOmSYl8DMDg";
+        ourConsumerKey = "z5zRan2VqwBMLdq5VMRzXA";
+        ourConsumerSecret = "T7whmI8IBtcHUEBNsWoQhu39f68loybHOmSYl8DMDg";
         myTwitter = TwitterFactory.getSingleton();
-        myTwitter.setOAuthConsumer(myConsumerKey, myConsumerSecret);
+        myTwitter.setOAuthConsumer(ourConsumerKey, ourConsumerSecret);
         try {
             myRequestToken = myTwitter.getOAuthRequestToken();
         }
@@ -78,8 +78,8 @@ public class TwitterTools {
 
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true);
-        cb.setOAuthConsumerKey(myConsumerKey);
-        cb.setOAuthConsumerSecret(myConsumerSecret);
+        cb.setOAuthConsumerKey(ourConsumerKey);
+        cb.setOAuthConsumerSecret(ourConsumerSecret);
         cb.setOAuthAccessToken(at.getToken());
         cb.setOAuthAccessTokenSecret(at.getTokenSecret());
 

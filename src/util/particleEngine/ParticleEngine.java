@@ -70,7 +70,7 @@ public class ParticleEngine {
         createParticles(angleSpan, numberOfDirections);
     }
 
-    private void createParticles (double inputAngleSpan, int numberOfDirections) {
+    protected void createParticles (double inputAngleSpan, int numberOfDirections) {
         int numberOfOriginLines = Math.max(1, numberOfDirections - 1);
         int approxNumberOfSpritesPerOriginLine = spriteCount
                 / numberOfOriginLines + numberOfOriginLines;
@@ -87,7 +87,7 @@ public class ParticleEngine {
      * @param numberOfOriginLines
      * @param i
      */
-    private void createParticle (double inputAngleSpan,
+    protected void createParticle (double inputAngleSpan,
             int numberOfOriginLines, int i) {
         Dimension particleSize = new Dimension(spriteImage.getWidth(null),
                 spriteImage.getHeight(null));
@@ -96,12 +96,7 @@ public class ParticleEngine {
         double velocityMagnitude = mainVelocity.calculateMagnitude();
         double velocityAngle = mainVelocity.calculateAngleInRadians();
 
-        MathVector2D startingPosition = new MathVector2D();
-        startingPosition.setComponent(MathVector2D.X,
-                initialPosition.getComponent(MathVector2D.X));
-        startingPosition.setComponent(MathVector2D.Y,
-                initialPosition.getComponent(MathVector2D.Y));
-
+        MathVector2D startingPosition = new MathVector2D(initialPosition);
         particles.add(new Particle(startingPosition, particleSize, spriteImage,
                 velocityMagnitude, velocityAngle + angleInterval * i, variance,
                 duration, myRGBAscales, myRGBAtolerances));
@@ -129,6 +124,10 @@ public class ParticleEngine {
         }
     }
 
+    protected void addParticle (Particle p){
+    	particles.add(p);
+    }
+    
     protected void setDuration (int length) {
         duration = length;
     }
@@ -153,12 +152,39 @@ public class ParticleEngine {
         initialPosition = position;
     }
 
-    protected MathVector2D getStartingPosition () {
+    protected void moveStartingPositionByVector (MathVector2D movementVector){
+    	initialPosition.addVector(movementVector);
+    }
+    
+    protected MathVector2D getMainVelocity(){
+    	return mainVelocity;
+    }
+    
+    protected Image getImage(){
+    	return spriteImage;
+    }
+    
+    protected MathVector2D getInitialPosition () {
         return initialPosition;
     }
 
     protected int getSpriteCount () {
         return particles.size();
     }
+    
+    protected int getVariance () {
+    	return variance;
+    }
+    
+    protected int getDuration () {
+    	return duration;
+    }
 
+    protected float[] getRGBAscales(){
+    	return myRGBAscales;
+    }
+    
+    protected float[] getRGBAtolerances(){
+    	return myRGBAtolerances;
+    }
 }

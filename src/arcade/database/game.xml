@@ -13,7 +13,7 @@
 </game>
 	<game id="2">
 		<name>Space Invaders</name>
-		<rating>4 2 2 3 1 9 10 7 7 3</rating>
+		<rating>4 2 2 3 1 9 10 7 7 3 4</rating>
 		<filepath>vooga.shooter.gameplay.Game</filepath>
 		<review>shooter game. haha.</review>
 	<review>game is 2hard- Kannan</review>
@@ -22,5 +22,12 @@
 <tags>fun shooter</tags>
 <review>This game is pretty cool - not gonna lie- Howard</review>
 <review>WHY DOES EVERYTHING GO AWAY WHEN I MISS AN ALIEN?!- Howard</review>
+<review>Deletion test. Also, can't read the text next to bubbles anymore... They must be black.- deleteme</review>
+</game>
+	<game id="3">
+		<name>The Button Game</name>
+		<rating></rating>
+		<filepath>vooga.ButtonGame</filepath>
+		<tags>fun</tags>
 </game>
 </gamelist>

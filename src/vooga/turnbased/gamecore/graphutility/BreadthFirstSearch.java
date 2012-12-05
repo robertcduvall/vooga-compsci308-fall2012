@@ -7,20 +7,22 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-
 import vooga.turnbased.gamecore.gamemodes.MapMode;
+
 
 /**
  * No heuristic methods unfortunately ...
- * But given the size of the map, most often path finding can be done within 0.1 seconds
+ * But given the size of the map, most often path finding can be done within 0.1
+ * seconds
  * 
  * @author Rex
- *
+ * 
  */
 public class BreadthFirstSearch extends PathSearch {
 
     /**
      * constructor of the BFS
+     * 
      * @param start Starting point
      * @param end Ending point
      * @param size Size of the table
@@ -41,11 +43,11 @@ public class BreadthFirstSearch extends PathSearch {
         while (bfsQueue.size() != 0) {
             Node currentNode = bfsQueue.poll();
             if (checkVisited(currentNode.getLocation().x, currentNode.getLocation().y)) {
-                //already visited
+                // already visited
                 continue;
             }
-            //path found
-            if (currentNode.getLocation().equals(getEnd())) { 
+            // path found
+            if (currentNode.getLocation().equals(getEnd())) {
                 determinePath(currentNode);
                 return true;
             }
@@ -56,13 +58,15 @@ public class BreadthFirstSearch extends PathSearch {
 
     /**
      * determine and set the path so that getPath() could be called
+     * 
      * @param node Node representing the end point
      */
-    private void determinePath(Node node) {
+    private void determinePath (Node node) {
         List<Point> path = new ArrayList<Point>();
-        while (node.getPreviousNodeInPath() != null) {
-            path.add(node.getLocation());
-            node = node.getPreviousNodeInPath();
+        Node myNode = node;
+        while (myNode.getPreviousNodeInPath() != null) {
+            path.add(myNode.getLocation());
+            myNode = myNode.getPreviousNodeInPath();
         }
         Collections.reverse(path);
         setPath(path);
@@ -70,9 +74,10 @@ public class BreadthFirstSearch extends PathSearch {
 
     /**
      * Inner class that represents a bfs search state
-     * It contains the location, as well as the previous node 
+     * It contains the location, as well as the previous node
+     * 
      * @author Rex, Vo
-     *
+     * 
      */
     final class Node {
         private Point myLocation;
@@ -80,31 +85,39 @@ public class BreadthFirstSearch extends PathSearch {
 
         /**
          * constructor
+         * 
          * @param p location of the node
          */
-        public Node(Point p) {
+        public Node (Point p) {
             myLocation = p;
             myPreviousNodeInPath = null;
         }
 
         /**
          * get the previous node in the path
+         * 
          * @return previous node
          */
-        public Node getPreviousNodeInPath() { return myPreviousNodeInPath; }
+        public Node getPreviousNodeInPath () {
+            return myPreviousNodeInPath;
+        }
 
         /**
          * set the previous node
+         * 
          * @param n The previous node
          */
-        public void setPreviousNodeInPath(Node n) { myPreviousNodeInPath = n; }
+        public void setPreviousNodeInPath (Node n) {
+            myPreviousNodeInPath = n;
+        }
 
         /**
          * obtain a list of nodes that the current nodes can reach
          * The list of nodes all have this node as the previous node in path
+         * 
          * @return list of nodes that the current nodes can reach
          */
-        public List<Node> obtainAdjacentNodes() {
+        public List<Node> obtainAdjacentNodes () {
             List<Node> adj = new ArrayList<Node>();
             if (validateMove(myLocation, MapMode.DOWN)) {
                 adj.add(new Node(translatePoint(myLocation, MapMode.DOWN)));
@@ -118,7 +131,7 @@ public class BreadthFirstSearch extends PathSearch {
             if (validateMove(myLocation, MapMode.RIGHT)) {
                 adj.add(new Node(translatePoint(myLocation, MapMode.RIGHT)));
             }
-            for (Node node: adj) {
+            for (Node node : adj) {
                 node.setPreviousNodeInPath(this);
             }
             return adj;
@@ -126,6 +139,7 @@ public class BreadthFirstSearch extends PathSearch {
 
         /**
          * get location of the node
+         * 
          * @return location
          */
         public Point getLocation () {

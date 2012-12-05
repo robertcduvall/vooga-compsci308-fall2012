@@ -63,13 +63,23 @@ public class Particle {
      * @param myRGBAscales
      */
     protected Particle (MathVector2D position, Dimension size, Image image,
-            Double velocityMagnitude, Double velocityAngle, int variance,
+            double velocityMagnitude, double velocityAngle, int variance,
             int duration, float[] RGBAscales, float[] RGBAtolerances) {
-        myRGBAscales = RGBAscales.clone();
+    	myRGBAscales = RGBAscales.clone();
         myRGBAtolerances = RGBAtolerances;
         declareVariables(position, size, image, variance, duration);
         myAngle = velocityAngle;
         maxDistanceTraveledPerUpdate = velocityMagnitude;
+        myVelocity = new MathVector2D(myAngle);
+        myVelocity.scale(velocityMagnitude);
+    }
+    
+    protected Particle (MathVector2D position, Dimension size, Image image,
+           MathVector2D velocity, int variance, int duration, float[] RGBAscales, 
+           float[] RGBAtolerances) {
+    	this (position, size, image, velocity.calculateMagnitude(), 
+    			velocity.calculateAngleInRadians(),
+    			variance, duration, RGBAscales, RGBAtolerances);
     }
 
     /**
@@ -120,43 +130,41 @@ public class Particle {
         RescaleOp rop = new RescaleOp(myRGBAscales, offsets, null);
         g2d.rotate(
                 myRotation,
-                myPosition.getComponent(MathVector2D.X)
-                        + myBufferedImage.getWidth() / 2,
-                myPosition.getComponent(MathVector2D.Y)
-                        + myBufferedImage.getHeight() / 2);
+                myPosition.getX() + myBufferedImage.getWidth() / 2,
+                myPosition.getY() + myBufferedImage.getHeight() / 2);
         g2d.drawImage(myBufferedImage, rop,
-                (int) myPosition.getComponent(MathVector2D.X),
-                (int) myPosition.getComponent(MathVector2D.Y));
+                (int) myPosition.getX(), (int) myPosition.getY());
         g2d.rotate(
                 -myRotation,
-                myPosition.getComponent(MathVector2D.X)
-                        + myBufferedImage.getWidth() / 2,
-                myPosition.getComponent(MathVector2D.Y)
-                        + myBufferedImage.getHeight() / 2);
+                myPosition.getX() + myBufferedImage.getWidth() / 2,
+                myPosition.getY() + myBufferedImage.getHeight() / 2);
     }
 
     /**
-     * update the particle's position, rotation, velocity, and transparency
+     * Update the particle's position, rotation, velocity, and transparency.
      */
     protected void update () {
-        double r = myRandomGenerator.nextInt(2 * myVariance + 1);
-        double angleVariation = (r - myVariance) / oneHundred;
-
-        double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
-        int newX = (int) (Math.cos(tempNewAngle) * maxDistanceTraveledPerUpdate);
-        int newY = (int) (Math.sin(tempNewAngle) * maxDistanceTraveledPerUpdate);
-        myPosition.setComponent(MathVector2D.X,
-                myPosition.getComponent(MathVector2D.X) + newX);
-        myPosition.setComponent(MathVector2D.Y,
-                myPosition.getComponent(MathVector2D.Y) + newY);
-        durationExisted++;
-
-        myRotation += myRotationalVelocity;
-
-        calculateAlphachanges();
+        positionUpdate();
+        parameterUpdate();
     }
 
-    private void calculateAlphachanges () {
+	private void parameterUpdate() {
+		durationExisted++;
+        myRotation += myRotationalVelocity;
+        calculateAlphachanges();
+	}
+
+	protected void positionUpdate() {
+		double r = myRandomGenerator.nextInt(2 * myVariance + 1);
+        double angleVariation = (r - myVariance) / oneHundred;
+        double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
+        MathVector2D changeInPosition = new MathVector2D(Math.cos(tempNewAngle), 
+        		Math.sin(tempNewAngle));
+        changeInPosition.scale(maxDistanceTraveledPerUpdate);
+        movePosition(changeInPosition);
+	}
+
+    protected void calculateAlphachanges () {
         // this is the alpha scale
         myRGBAscales[3] = (float) (durationLimit - durationExisted)
                 / (float) durationLimit;
@@ -167,5 +175,30 @@ public class Particle {
      */
     protected boolean stillExists () {
         return (durationExisted < durationLimit * 0.8f);
+    }
+    
+    /**
+     * Sets the velocity of this particle to the vector v.
+     * @param v
+     */
+    protected void setMyVelocity (MathVector2D v){
+    	myVelocity = v;
+    }
+    
+    /**
+     * Returns this particle's velocity MathVector.
+     * @return
+     */
+    protected MathVector2D getMyVelocity (){
+    	return myVelocity;
+    }
+    
+    /**
+     * Moves the position by the vector v.
+     * @param v vector describing the change in x-
+     * and y-positions of the Particle's position
+     */
+    protected void movePosition(MathVector2D v){
+    	myPosition.addVector(v);
     }
 }

@@ -10,7 +10,7 @@ import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gui.GameWindow;
 
 /**
- * Mode designed to manage what happens when the game ends. 
+ * Mode designed to manage what happens when the game is lost. 
  * @author volodymyr
  *
  */
