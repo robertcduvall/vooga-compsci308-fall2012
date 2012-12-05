@@ -4,9 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 
 /**
@@ -20,12 +18,11 @@ import java.util.Queue;
  */
 public abstract class PathFinder {
     private List<Point> myPath;
-    private int myPathIndex;
+    protected int myPathIndex;
     private boolean myIsMultiDestination;
     private boolean myHasTask;
     private boolean myIsHighlighted;
     private boolean myCancelMovement;
-    private Queue<GraphTask> myTaskCache;
     private PathSearch myPathSearch;
     private Point myStart;
     private Point myEnd;
@@ -56,7 +53,6 @@ public abstract class PathFinder {
         myIsMultiDestination = false;
         myHasTask = false;
         myIsHighlighted = false;
-        myTaskCache = new LinkedList<GraphTask>();
         myCancelMovement = false;
         myPathIndex = 0;
     }
@@ -65,10 +61,17 @@ public abstract class PathFinder {
      * this method executes the path search
      */
     public void executeSearch () {
-        myPath = searchPath();
-        if (!pathIsEmpty()) {
+        if (mySize == null) { return; }
+        List<Point> path = searchPath();
+        if (!path.isEmpty()) {
+            if (myIsMultiDestination) {
+                myPath.addAll(path);
+            }
+            else {
+                myPath = path;
+                myPathIndex = 0;
+            }
             myIsHighlighted = false;
-            myPathIndex = 0;
             myHasTask = true;
             myCancelMovement = false;
         }
@@ -83,14 +86,14 @@ public abstract class PathFinder {
      * @param size size of the grid
      */
     public void addTask (Point start, Point end, Dimension size) {
-        if (myIsMultiDestination) {
-            myTaskCache.add(new GraphTask(myStart, myEnd, mySize));
+        if (myIsMultiDestination && (myEnd != null)) {
+            myStart = myEnd;
         }
         else {
             myStart = start;
-            myEnd = end;
-            mySize = size;
         }
+        myEnd = end;
+        mySize = size;
     }
 
     /**
@@ -124,7 +127,6 @@ public abstract class PathFinder {
      */
     public void deactivateMultiDestination () {
         myIsMultiDestination = false;
-        myTaskCache.clear();
     }
 
     /**
@@ -187,14 +189,7 @@ public abstract class PathFinder {
      */
     public boolean updatePath () {
         if ((!myHasTask) || myCancelMovement) { return false; }
-        if (myPathIndex >= getImmutablePath().size()) {
-            if (myIsMultiDestination) {
-
-            }
-            else {
-                return false;
-            }
-        }
+        if (myPathIndex >= getImmutablePath().size()) { return false; }
         if (!myIsHighlighted) {
             highlightPath();
         }
@@ -209,7 +204,6 @@ public abstract class PathFinder {
         if (!myIsMultiDestination) {
             myCancelMovement = true;
             myPath.clear();
-            myTaskCache.clear();
             dehighlightPath();
         }
     }
@@ -217,7 +211,7 @@ public abstract class PathFinder {
     /**
      * de-highlight the path when it is no longer needed (canceled movement)
      */
-    protected abstract void dehighlightPath();
+    protected abstract void dehighlightPath ();
 
     /**
      * get the path search instance which determines what kind of algorithm is
@@ -268,37 +262,5 @@ public abstract class PathFinder {
      */
     protected Dimension getSize () {
         return mySize;
-    }
-
-    /**
-     * private inner class that describe a path finding task waiting to be
-     * executed.
-     * Used when multi-destination is on
-     * 
-     * @author rex
-     * 
-     */
-    private class GraphTask {
-        private Point myStart;
-        private Point myEnd;
-        private Dimension mySize;
-
-        protected GraphTask (Point start, Point end, Dimension size) {
-            myStart = start;
-            myEnd = end;
-            mySize = size;
-        }
-
-        protected Point getStart () {
-            return myStart;
-        }
-
-        protected Point getEnd () {
-            return myEnd;
-        }
-
-        protected Dimension getSize () {
-            return mySize;
-        }
     }
 }

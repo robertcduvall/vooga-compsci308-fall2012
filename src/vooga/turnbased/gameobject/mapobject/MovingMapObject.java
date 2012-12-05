@@ -206,14 +206,19 @@ public class MovingMapObject extends MapObject {
         }
     }
 
+    public boolean tryMoveTo (Point dest) {
+        Point direction = new Point(dest.x - getLocation().x, dest.y - getLocation().y);
+        return tryMove(direction);
+    }
+
     /**
      * carry out the movement of this MovingMapObject to destination
      * 
      * @param dest the destination on the map
      */
     private void moveTo (Point dest) {
-//        getMapMode().removeMapObject(this);
-//        getMapMode().addMapObject(dest, this);
+        // getMapMode().removeMapObject(this);
+        // getMapMode().addMapObject(dest, this);
         setLocation(dest);
         setMoving(true);
     }

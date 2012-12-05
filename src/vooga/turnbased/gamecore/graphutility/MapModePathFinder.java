@@ -136,8 +136,10 @@ public class MapModePathFinder extends PathFinder {
         Point direction =
                 new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
                                                                       myPreviousLocation.y);
-        if (myMovingObject.tryMove(direction)) {
+        //if (myMovingObject.tryMove(direction)) {
+        if (myMovingObject.tryMoveTo(myCurrentLocation)) {
             incrementPathIndex();
+            System.out.println(myPathIndex);
             myPreviousLocation = myCurrentLocation;
         }
         return true;
