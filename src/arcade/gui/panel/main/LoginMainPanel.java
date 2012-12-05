@@ -16,9 +16,7 @@ import arcade.gui.panel.ArcadePanel;
 /**
  * 
  * @author Robert Bruce
- *         This is pretty much 100% implemented.
- *         The pane it loads could be a bit prettier though.
- *         Saving that for when everything works well.
+ *
  */
 public class LoginMainPanel extends AMainPanel implements ActionListener {
 
@@ -48,7 +46,7 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         myPanel = addUserNameField(myPanel);
         myPanel = addPasswordField(myPanel);
         myPanel = addWrongPasswordLabel(myPanel);
-        myPanel = addBypassButton(myPanel);
+        //myPanel = addBypassButton(myPanel);
 
 
         return myPanel;
@@ -151,8 +149,6 @@ public class LoginMainPanel extends AMainPanel implements ActionListener {
         char[] password = passwordField.getPassword();
         String passwordStr = new String(password);
         if (getArcade().getModelInterface().executeLogin(username, passwordStr)) {
-            // this.getArcade().replacePanel("MainHome");
-            // this.getArcade().replacePanel("NormNav");
 
             getArcade().setUsername(username);
 
