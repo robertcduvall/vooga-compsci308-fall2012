@@ -71,4 +71,12 @@ public class MathVector2D extends MathVector{
     	}
     	return myAngle;
 	}
+	
+	public double getX(){
+		return getComponent(X);
+	}
+	
+	public double getY(){
+		return getComponent(Y);
+	}
 }
