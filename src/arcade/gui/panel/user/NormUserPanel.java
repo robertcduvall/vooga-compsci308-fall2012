@@ -37,7 +37,7 @@ public class NormUserPanel extends AUserPanel {
         JButton logoutBut = new JButton("Logout");
         logoutBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 
-        JLabel welcomeLabel = new JLabel("You are current logged in as: " + user, JLabel.CENTER);
+        JLabel welcomeLabel = new JLabel("Current User: " + user, JLabel.CENTER);
         welcomeLabel.setForeground(Color.WHITE);
 
         logoutBut.addActionListener(new ActionListener() {
