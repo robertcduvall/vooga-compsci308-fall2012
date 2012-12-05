@@ -2,6 +2,7 @@ package arcade.datatransfer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import util.encrypt.Encrypter;
 import arcade.gamemanager.Game;
@@ -308,5 +309,10 @@ public class ModelInterface {
      */
     public boolean disconnectFacebook (String name) {
         return myUserManager.deleteFacebookAccessToken(name);
+    }
+
+    public boolean sendMessage (String sender, String recipient, String messageContent,
+            Date date) {
+        return mySocialCenter.sendMessage(sender, recipient, messageContent, date);
     }
 }

@@ -117,6 +117,19 @@ public class UserXMLWriter {
         XmlUtilities.write(doc, filePath);
 
     }
+    
+    protected void appendMessage (String sender, String receiver, String content, String date) {
+        String filePath = myUserMessageFilePath + receiver + ".xml";
+
+        Document doc = XmlUtilities.makeDocument(filePath);
+        Element root = doc.getDocumentElement();
+        Element message = XmlUtilities.appendElement(doc, root, "message", "");
+        XmlUtilities.appendElement(doc, message, "sender", sender);
+        XmlUtilities.appendElement(doc, message, "content", content);
+        XmlUtilities.appendElement(doc, message, "date", date);
+        XmlUtilities.write(doc, filePath);
+
+    }
 
     protected void updateUserInfo (String userName, String tagName, String newContent) {
         String filePath = myUserBasicFilePath + userName + ".xml";

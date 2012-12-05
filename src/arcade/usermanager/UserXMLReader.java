@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
@@ -97,7 +98,8 @@ public class UserXMLReader {
                 Element ele = (Element) nl.item(i);
                 String sender = XmlUtilities.getChildContent(ele, "sender");
                 String message = XmlUtilities.getChildContent(ele, "content");
-                messageList.add(new Message(sender, message));
+                Date date = new Date(XmlUtilities.getChildContent(ele, "content"));
+                messageList.add(new Message(sender, message, date));
             }
         }
         return messageList;

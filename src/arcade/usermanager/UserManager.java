@@ -330,6 +330,10 @@ public final class UserManager {
     protected void updateMessage (String sender, String receiver, String content) {
         getUser(receiver).updateMyMessage(sender, content);
     }
+    
+    protected void updateMessage (String sender, String receiver, String content, String date) {
+        getUser(receiver).updateMyMessage(sender, content, date);
+    }
 
     public GameData getGame (String userName, String gameName) {
         return getUser(userName).getGameData(gameName);

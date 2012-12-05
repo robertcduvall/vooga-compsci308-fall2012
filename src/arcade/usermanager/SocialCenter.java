@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
 import twitter4j.auth.AccessToken;
@@ -217,6 +218,23 @@ public class SocialCenter {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * Robert Bruce.
+     * Ugly implementation. Hope it works.
+     * @param sender
+     * @param receiver
+     * @param content
+     * @param date
+     * @return
+     */
+    public boolean sendMessage (String sender, String receiver, String content, Date date) {
+        myXMLWriter.appendMessage(sender, receiver, content, date.toString());
+        // myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        myUserManager.updateMessage(sender, receiver, content, date.toString());
+
+        return true;
     }
 
 }

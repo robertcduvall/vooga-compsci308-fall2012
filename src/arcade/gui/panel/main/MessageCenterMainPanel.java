@@ -52,8 +52,7 @@ public class MessageCenterMainPanel extends AMainPanel {
         int numLoaded = 0;
         for (Message aMessage : myMessages){
             try {
-                myPanel.add(new MessageListComponent(aMessage.getSender(), 
-                        aMessage.getMessage(), myPanel), BorderLayout.SOUTH);
+                myPanel.add(new MessageListComponent(aMessage, myPanel), BorderLayout.SOUTH);
                 numLoaded++;
             }
             catch (NullPointerException e) {
