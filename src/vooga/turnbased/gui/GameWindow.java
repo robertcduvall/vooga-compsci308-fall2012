@@ -34,6 +34,7 @@ public class GameWindow extends JFrame {
     private Container myContentPane;
     private CardLayout myLayout;
     private String myXmlPath;
+    private String myPlayerXml;
 
     /**
      * Constructor construct a game window given the size of the window
@@ -118,6 +119,10 @@ public class GameWindow extends JFrame {
     public void setXmlPath (String path) {
         myXmlPath = path;
     }
+    
+    public void setPlayerXml (String path) {
+    	myPlayerXml = path;
+    }
 
     /**
      * Returns the string path of the xml file to be loaded.
@@ -126,5 +131,9 @@ public class GameWindow extends JFrame {
      */
     public String getXmlPath () {
         return myXmlPath;
+    }
+    
+    public String getPlayerXml () {
+        return myPlayerXml;
     }
 }

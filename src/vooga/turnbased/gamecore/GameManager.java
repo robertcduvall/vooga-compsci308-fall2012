@@ -50,7 +50,7 @@ public class GameManager implements InputAPI {
      * @param gameCanvas The GameCanvas it paints to.
      * @param xmlPath String path of xml file to load.
      */
-    public GameManager (GamePane gameCanvas, String xmlPath) {
+    public GameManager (GamePane gameCanvas, String xmlPath, String playerXml) {
         myGamePane = gameCanvas;
         myGameIsOver = false;
 
@@ -62,7 +62,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        initializeGameLevel(xmlPath, GameWindow.importString("PlayerXML"));
+        initializeGameLevel(xmlPath, playerXml);
         configureInputHandling();
     }
 
