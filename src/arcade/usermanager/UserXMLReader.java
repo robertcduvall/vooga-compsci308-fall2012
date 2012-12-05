@@ -98,7 +98,7 @@ public class UserXMLReader {
                 Element ele = (Element) nl.item(i);
                 String sender = XmlUtilities.getChildContent(ele, "sender");
                 String message = XmlUtilities.getChildContent(ele, "content");
-                Date date = new Date(XmlUtilities.getChildContent(ele, "content"));
+                Date date = new Date(XmlUtilities.getChildContent(ele, "date"));
                 messageList.add(new Message(sender, message, date));
             }
         }
