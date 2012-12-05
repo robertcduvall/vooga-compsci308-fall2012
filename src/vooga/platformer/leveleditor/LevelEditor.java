@@ -157,7 +157,6 @@ public class LevelEditor extends JPanel {
             @Override
             public void actionPerformed (ActionEvent e) {
                 myBoard.setName(myTextField.getText());
-                LevelEditor.this.requestFocus();
             }
             
         });

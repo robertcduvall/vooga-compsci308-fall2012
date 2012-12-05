@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -103,13 +104,8 @@ public class LevelBoard extends JPanel {
         myBackground = new ImageIcon();
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
-        myAttributes = getAttributes();
+        myAttributes = null;
         setupInput();
-    }
-
-    private Collection<String> getAttributes () {
-
-        return null;
     }
 
     public void initLevelDefaults () {
@@ -310,7 +306,7 @@ public class LevelBoard extends JPanel {
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(sh);
         pop.add(j);
-        JMenuItem j2 = new JMenuItem("Edit");
+        JMenuItem j2 = new JMenuItem("Add attribute");
         j2.addActionListener(sh);
         pop.add(j2);
         JMenuItem j3 = new JMenuItem("Delete");
@@ -376,7 +372,10 @@ public class LevelBoard extends JPanel {
                 myObject.flipImage();
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
-                createAttributeWindow();
+                JPopupMenu pop = new GameObjectEditor(myObject);
+                pop.requestFocus();
+                pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
+                        (int) (myObject.getY() + myObject.getHeight() / 2));
             }
             else if ("Delete".equals(event.getActionCommand())) {
                 myGameObjects.remove(myObject);
@@ -384,22 +383,6 @@ public class LevelBoard extends JPanel {
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-        }
-
-        private void createAttributeWindow () {
-            JPopupMenu pop = new JPopupMenu();
-            for (String att : myAttributes) {
-                JMenuItem j = new JMenuItem(att);
-                j.addActionListener(this);
-                pop.add(j);
-            }
-            pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
-                    (int) (myObject.getY() + myObject.getHeight() / 2));
-
-            /*
-             * create a list of attributes from the resource file
-             * and get appropriate values for certain attributes.
-             */
         }
     }
 
