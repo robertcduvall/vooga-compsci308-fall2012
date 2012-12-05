@@ -2,6 +2,12 @@ package vooga.platformer.core.inputinitializer;
 
 import vooga.platformer.gameobject.Player;
 
+/**
+ * An adapter class necessary for allowing our Player design to work with the input team's
+ * zero-parameter method.
+ * @author Niel Lebeck
+ *
+ */
 public class InputTeamPlayerAdapter {
 
     Player myPlayer;

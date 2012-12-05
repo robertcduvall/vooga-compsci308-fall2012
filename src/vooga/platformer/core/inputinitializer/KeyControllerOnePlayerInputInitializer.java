@@ -8,8 +8,9 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 
 /**
- * Uses Input Team's API to set up user input. This code will not work unless the Player class
- * has zero-parameter methods with the names given in the keyControl.setControl() calls below.
+ * Uses Input Team's API to set up user input. Uses an InputTeamPlayerAdapter class to bridge the
+ * gap between the Player class's design and the input team's requirement that all methods be
+ * zero-parameter.
  * @author Niel Lebeck
  *
  */
