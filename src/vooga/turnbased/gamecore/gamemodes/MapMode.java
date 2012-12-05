@@ -428,7 +428,6 @@ public class MapMode extends GameMode implements InputAPI {
     @Override
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
         if (mousePressed == GamePane.MOUSE_CLICKED && myMouseButton == MouseEvent.BUTTON3) {
-            myPathFinder.stop();
             Point target =
                     new Point((int) myMousePosition.getX() / myCurrentTileWidth + myTopLeftCoord.x,
                               (int) myMousePosition.getY() / myCurrentTileHeight + myTopLeftCoord.y);

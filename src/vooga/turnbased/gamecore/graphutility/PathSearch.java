@@ -37,10 +37,11 @@ public abstract class PathSearch {
 
     /**
      * translate a point by adding the coordinates of the second point
+     * 
      * @param a First point
      * @param b Second point
-     * @return the point whose x, y coordinates are the sum of the 
-     * x, y coordinates of the two points
+     * @return the point whose x, y coordinates are the sum of the
+     *         x, y coordinates of the two points
      */
     protected Point translatePoint (Point a, Point b) {
         return new Point(a.x + b.x, a.y + b.y);
@@ -55,8 +56,8 @@ public abstract class PathSearch {
      */
     public boolean checkVisited (int x, int y) {
         if (myVisited[x][y]) { return true; }
-     // mark visited if the node has not yet been visited
-        markVisited(x, y); 
+        // mark visited if the node has not yet been visited
+        markVisited(x, y);
         return false;
     }
 
@@ -86,12 +87,10 @@ public abstract class PathSearch {
      * @return if a movement is possible
      */
     public boolean validateMove (Point position, Point direction) {
-        if ((position.x + direction.x >= mySize.width) || (position.x + direction.x < 0)) {
-            return false;
-        }
-        if ((position.y + direction.y >= mySize.height) || (position.y + direction.y < 0)) {
-            return false;
-        }
+        if ((position.x + direction.x >= mySize.width) ||
+                (position.x + direction.x < 0)) { return false; }
+        if ((position.y + direction.y >= mySize.height) ||
+                (position.y + direction.y < 0)) { return false; }
         return true;
     }
 
@@ -122,7 +121,7 @@ public abstract class PathSearch {
         return myPath;
     }
 
-    protected void setPath(List<Point> path) {
+    protected void setPath (List<Point> path) {
         myPath = path;
     }
 
@@ -133,5 +132,4 @@ public abstract class PathSearch {
     protected void removeLastPointInPath () {
         myPath.remove(myPath.size() - 1);
     }
-
 }

@@ -9,16 +9,19 @@ import java.util.List;
 
 /**
  * abstract path finder which provides basic functionality of finding path
- * multiple path supported (as the effect of shift+right click in WarCraft)
+ * multiple path supported (as the effect of shift+right click in WarCraft).
  * See vooga.turnbased.gamecore.graphutility.MapModePathFinder for an example to
  * extend the class and apply to games etc.
+ * 
+ * Use template methods in update, so that sub-classes simply need to override
+ * methods that deals with specific display of the path
  * 
  * @author Rex Ying
  * 
  */
 public abstract class PathFinder {
     private List<Point> myPath;
-    protected int myPathIndex;
+    private int myPathIndex;
     private boolean myIsMultiDestination;
     private boolean myHasTask;
     private boolean myIsHighlighted;
@@ -86,6 +89,7 @@ public abstract class PathFinder {
      * @param size size of the grid
      */
     public void addTask (Point start, Point end, Dimension size) {
+        stop();
         if (myIsMultiDestination && (myEnd != null)) {
             myStart = myEnd;
         }
@@ -171,13 +175,25 @@ public abstract class PathFinder {
     protected abstract void checkObstacles ();
 
     /**
-     * The abstract class does nothing to highlight.
-     * sub-classes will determine how to indicate the path.
-     * It should be called called in the updatePath cycle.
+     * highlight the path by generating a series of path indicators.
+     * called in the updatePath cycle.
      */
-    protected void highlightPath () {
+    private void highlight () {
         myIsHighlighted = true;
+        int highlightIndex = myPathIndex;
+        while (highlightIndex < myPath.size()) {
+            highlightPath(myPath.get(highlightIndex));
+            highlightIndex++;
+        }
     }
+
+    /**
+     * The abstract class of highlighting a particular position
+     * sub-classes will determine how to indicate the path.
+     * 
+     * @param position Highlight the particular position
+     */
+    protected abstract void highlightPath (Point position);
 
     /**
      * used for display of the path.
@@ -191,7 +207,7 @@ public abstract class PathFinder {
         if ((!myHasTask) || myCancelMovement) { return false; }
         if (myPathIndex >= getImmutablePath().size()) { return false; }
         if (!myIsHighlighted) {
-            highlightPath();
+            highlight();
         }
         return true;
     }
