@@ -2,6 +2,8 @@ package arcade.datatransfer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import util.encrypt.Encrypter;
@@ -210,12 +212,13 @@ public class ModelInterface {
     }
 
     /**
-     * Returns a list of String[] that contain game names and high scores
+     * Returns a list of String[] that contain game names and high scores for a
+     * user.
      * 
      * @param userName The name of the user in question
      * @return
      */
-    public List<String[]> getListOfHighScoresForUser (String userName) {
+    public List<String[]> getUserHighScores (String userName) {
         List<String[]> list = new ArrayList<String[]>();
         List<GameData> gameList = myUserManager.getGameList(userName);
         for (GameData gd : gameList) {
@@ -226,14 +229,35 @@ public class ModelInterface {
     }
 
     /**
-     * Should return a list with elements in the format:
+     * Returns a sorted list of String[] that contain user names and high scores
+     * for a
+     * game.
      * "username - highscore"
      * 
      * @param gameName The name of the game in question
      * @return
      */
-    public List<String> getListOfHighScoresForGame (String gameName) {
-        return null;
+    public List<String[]> getGameHighScores (String gameName) {
+        List<String[]> list = new ArrayList<String[]>();
+        List<UserProfile> profileList = myUserManager.getAllUserProfile();
+        for (UserProfile prof : profileList) {
+            String userName = prof.getUserName();
+            List<String[]> userHighScores = getUserHighScores(userName);
+            for (String[] arr : userHighScores) {
+                if (arr[0] == gameName) {
+                    String[] newarr = { userName, arr[1] };
+
+                    list.add(newarr);
+                }
+            }
+            Collections.sort(list, new Comparator<String[]>() {
+                public int compare (String[] x1, String[] x2) {
+                    return x1[1].compareTo(x2[1]);
+                }
+            });
+        }
+
+        return list;
     }
 
     /**
