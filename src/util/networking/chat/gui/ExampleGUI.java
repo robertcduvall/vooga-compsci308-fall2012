@@ -228,7 +228,11 @@ public class ExampleGUI extends JPanel implements KeyListener {
     protected void logout(){
         myChatClient.logout();
         this.setVisible(false);
-        ChatApp.main(null);
+        try{
+            ChatApp.class.newInstance().run();
+        }
+        catch(IllegalAccessException w){}
+        catch(InstantiationException ie){}
     }
 }
     

@@ -42,8 +42,6 @@ public class GameSaver {
      */
     public void saveUserProperty (String property, String value) {
         // myUserManager.getGame(userName, gameName)
-        //TODO NOTE FROM HOWARD add handling the possiblity that the gamedata doesn't exist in the user file (first play)
-        //and append that data  Alternatively just make sure the data is there (Check at launch or something)
         
         myUser.getGameData(myGame.getName()).setGameInfo(myUser.getName(), property, value);
     }
@@ -77,7 +75,8 @@ public class GameSaver {
      */
     public void saveHighScore (int score) {
         //TODO NOTE FROM HOWARD just testing with forcibly setting the user here, probably not a good solution
-        //implement your own fix and get rid of this
+        //implement your own fix and get rid of that user set
+        //also, check to make sure the score you're writing is higher than the current high score
         setMyUser(myUserManager.getCurrentUserDontDeleteThisMethod());
         
         saveUserProperty(myUser.getGameData(myGame.getName()).getHighScoreKeyString(), score);
