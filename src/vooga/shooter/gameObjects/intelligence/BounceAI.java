@@ -3,7 +3,6 @@ package vooga.shooter.gameObjects.intelligence;
 import java.awt.Point;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
-import vooga.shooter.gameplay.Game;
 import util.mathvector.VectorCalculator;
 
 /**
@@ -14,8 +13,8 @@ public class BounceAI extends AI{
     
     private boolean myGoingRight; // true for right, false for left
 
-    public BounceAI (Sprite owner, Game theGame, Player thePlayer) {
-        super(owner, theGame, thePlayer);
+    public BounceAI (Sprite owner, Player thePlayer) {
+        super(owner, thePlayer);
         myGoingRight = false;
     }
 
@@ -24,7 +23,7 @@ public class BounceAI extends AI{
      * until it hits a wall, etc. while changing the speed as little as possible.
      */
     @Override
-    public void subCalculate (Sprite mySprite, Player myPlayer, Game myGame) {
+    public void subCalculate (Sprite mySprite, Player myPlayer) {
         int currentMagnitude = 
             (int)Math.round(VectorCalculator.calculateMagnitude(mySprite.getVelocity()));
         Point moveVector = new Point(0,0);

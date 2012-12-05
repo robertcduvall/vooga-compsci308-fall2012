@@ -30,6 +30,7 @@ public class BrickMovingObject extends CollisionEvent {
             moveObj.setY(moveObj.getY() - dy);
             // changed here
             moveObj.setVelocity(moveObj.getVelocity().getX(), 0);
+            moveObj.setOnGround();
         }
         else if (direction() == Direction.UP) {
             moveObj.setY(moveObj.getY() + dy);
@@ -40,7 +41,6 @@ public class BrickMovingObject extends CollisionEvent {
         else if (direction() == Direction.LEFT) {
             resetCenterLeft(moveObj, dx);
         }
-        moveObj.setOnGround();
     }
 
     protected void resetCenterLeft (MovingObject gameObj, double dx) {

@@ -19,9 +19,8 @@ public class Main {
     public static void main (String[] args) {
         JFrame frame = new JFrame("Demo Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller =
-                new PlatformerController("src/vooga/platformer/data/NewLevel.xml",
-                                         new SimpleOnePlayerInputInitializer());
+        PlatformerController controller = new PlatformerController("src/vooga/platformer/data/NewLevel.xml",
+                new SimpleOnePlayerInputInitializer());
 
         frame.getContentPane().add(controller);
         frame.pack();
@@ -31,10 +30,11 @@ public class Main {
 
     public static void paintString (PlatformerController controller) {
         Dimension canvasSize = controller.getSize();
-        controller.paintString("M - Menu", canvasSize.width * 3 / 5, canvasSize.height / 4);
+        controller.paintString("M - Menu", canvasSize.width * 3 / 5,canvasSize.height / 4);
         controller.paintString("<- -> - Move left and right", canvasSize.width * 3 / 5,
-                               canvasSize.height / 4 + 15);
-        controller.paintString("UP - Jump", canvasSize.width * 3 / 5, canvasSize.height / 4 + 30);
+                canvasSize.height / 4 + 15);
+        controller.paintString("UP - Jump", canvasSize.width * 3 / 5,
+                canvasSize.height / 4 + 30);
         controller.paintString("Space - Shoot", canvasSize.width * 3 / 5,
                                canvasSize.height / 4 + 45);
     }

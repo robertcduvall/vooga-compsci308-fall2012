@@ -12,50 +12,80 @@ public interface XmlTags {
 
     // Tags for level file
 
-    public static final String DOCUMENT = "level";
+    /**
+     * Document tag for all level files.
+     */
+    String DOCUMENT = "level";
 
-    public static final String GAMEOBJECT = "gameObject";
+    /**
+     * Tag deliminating the level's name.
+     */
+    String LEVEL_NAME = "levelName";
 
-    public static final String LEVEL_NAME = "levelName";
+    /**
+     * Tag deliminating the type of camera to use for this level.
+     */
+    String CAMERA = "camera";
 
-    public static final String CAMERA = "camera";
+    /**
+     * Tag deliminating the path to the collision checker to use for this level.
+     */
+    String COLLISION_CHECKER = "collisionChecker";
 
-    public static final String COLLISION_CHECKER = "collisionChecker";
+    /**
+     * Tag deliminating the width of the level.
+     */
+    String WIDTH = "width";
 
-    public static final String BACKGROUND_IMAGE = "backgroundImage";
+    /**
+     * Tag deliminating the height of the level.
+     */
+    String HEIGHT = "height";
 
-    public static final String X = "x";
+    /**
+     * Attribute name for a fully-qualified class name.
+     */
+    String CLASS_NAME = "class";
 
-    public static final String Y = "y";
+    /**
+     * Tag deliminating the path to the binary file containing the level's
+     * GameObjects.
+     */
+    String GAMEOBJECT_DATA = "gameObjectData";
 
-    public static final String WIDTH = "width";
+    /**
+     * Tag deliminating the path to the binary file containing the level's
+     * Conditions.
+     */
+    String CONDITION_DATA = "conditionData";
 
-    public static final String HEIGHT = "height";
-
-    public static final String IMAGE_PATH = "imagePath";
-
-    public static final String STRATEGY = "strategy";
-
-    public static final String CLASS_NAME = "class";
-
-    public static final String CONFIG = "config";
-
-    public static final String ID = "id";
-
-    public static final String CONDITION = "conditionData";
-
-    public static final String PLUGIN = "pluginData";
+    /**
+     * Tag deliminating the path to the binary file containing the level's
+     * Plugins.
+     */
+    String PLUGIN_DATA = "pluginData";
 
     // Tags for collision checker xml file
 
-    public static final String GAMEOBJECT_DATA = "gameObjectData";
+    /**
+     * Tag deliminating an individual collisionEvent.
+     */
+    String COLLISIONEVENT = "collisionEvent";
 
-    public static final String COLLISIONEVENT = "collisionEvent";
+    /**
+     * Tag deliminating the fully-qualified class name for a concrete
+     * CollisionEvent.
+     */
+    String COLLISIONEVENTCLASS = "collisionEventClass";
 
-    public static final String COLLISIONEVENTCLASS = "collisionEventClass";
+    /**
+     * Tag deliminating the first colliding object.
+     */
+    String GAMEOBJECTA = "gameObjectA";
 
-    public static final String GAMEOBJECTA = "gameObjectA";
-
-    public static final String GAMEOBJECTB = "gameObjectB";
+    /**
+     * Tag deliminating the second colliding object.
+     */
+    String GAMEOBJECTB = "gameObjectB";
 
 }
