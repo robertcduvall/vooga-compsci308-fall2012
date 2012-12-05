@@ -11,13 +11,14 @@ public class GravitationalParticleEngine extends ParticleEngine {
             MathVector2D position, MathVector2D velocity, int tolerance,
             int length, double inputAngleSpan, int numberOfDirections,
             float[] RGBAscales, float[] RGBAtolerances, Boolean loopValue){
+		
 		super (density, particleImage, position, velocity, tolerance,
             length, inputAngleSpan, numberOfDirections,
             RGBAscales, RGBAtolerances, loopValue);
 	}
 	
-    private void createParticle (double inputAngleSpan,
-            int numberOfOriginLines, int i) {
+    protected void createParticle (double inputAngleSpan,
+    		int numberOfOriginLines, int i) {
     	Image myImage = getImage();
         Dimension particleSize = new Dimension(myImage.getWidth(null),
                 myImage.getHeight(null));

@@ -42,6 +42,16 @@ public class MathVector2D extends MathVector{
 	}
 
 	/**
+	 * Constructs a unit vector MathVector2D with specified direction.
+	 * @param angle direction (in degrees) of vector, measured 
+	 * 				counterclockwise from positive x-axis
+	 * @param magnitude magnitude of vector
+	 */
+	public MathVector2D(double angle){
+		this(Math.cos(angle*Math.PI/180), Math.sin(angle*Math.PI/180));
+	}
+	
+	/**
 	 * Instantiates this MathVector2D object as the two-dimensional 
 	 * zero vector (0,0).
 	 */
