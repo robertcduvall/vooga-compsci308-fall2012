@@ -159,16 +159,16 @@ public class LevelFileReader {
     /**
      * A general method for reading Objects from an Object input stream.
      * 
-     * @param gameObjectDataFile file location of the binary file to be read
+     * @param dataFile file location of the binary file to be read
      * @return a Collection of Objects that were stored in this binary file
      */
-    private static Collection<Object> readSerializedObjects (String gameObjectDataFile) {
+    private static Collection<Object> readSerializedObjects (String dataFile) {
 
         FileInputStream fis;
         Collection<Object> inputObjects;
 
         try {
-            fis = new FileInputStream(gameObjectDataFile);
+            fis = new FileInputStream(dataFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             inputObjects = new ArrayList<Object>();
             while (fis.available() > 0) {
