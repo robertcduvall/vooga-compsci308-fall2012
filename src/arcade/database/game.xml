@@ -24,4 +24,10 @@
 <review>WHY DOES EVERYTHING GO AWAY WHEN I MISS AN ALIEN?!- Howard</review>
 <review>Deletion test. Also, can't read the text next to bubbles anymore... They must be black.- deleteme</review>
 </game>
+	<game id="3">
+		<name>The Button Game</name>
+		<rating></rating>
+		<filepath>vooga.ButtonGame</filepath>
+		<tags>fun</tags>
+</game>
 </gamelist>
