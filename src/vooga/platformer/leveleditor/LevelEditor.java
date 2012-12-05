@@ -55,6 +55,7 @@ public class LevelEditor extends JPanel {
     private KeyListener myKeyListener;
     private JPanel myButtonPanel;
     private JMenuBar myMenuBar;
+    private JTextField myTextField;
 
     /**
      * Frame containing all the elements needed to save, load, and create
@@ -103,33 +104,6 @@ public class LevelEditor extends JPanel {
 //        else if ("") {
 //            
 //        }
-
-        //        if("Gravity".equals(plugin)) { 
-        //            final JPopupMenu jpop = new JPopupMenu();
-        //            JLabel gravitylabel = new JLabel("Enter Gravity Value:");
-        //            final JTextField gravityfield = new JTextField();
-        //            JButton accept = new JButton("OK");
-        //            accept.addActionListener(new ActionListener(){
-        //                @Override
-        //                public void actionPerformed (ActionEvent arg0) {
-        //                    String val = gravityfield.getText();
-        //                    try {
-        //                        int temp = Integer.parseInt(val);
-        //                        current.setGrav(temp);
-        //                    }
-        //                    catch (NumberFormatException e) {
-        //                        JLabel errormsg = new JLabel("Entry invalid.\n Enter an integer.");
-        //                        jpop.add(errormsg);
-        //                        jpop.pack();
-        //                        jpop.repaint();
-        //                    }
-        //                }
-        //            });
-        //            jpop.add(gravitylabel);
-        //            jpop.add(gravityfield);
-        //            jpop.add(accept);
-        //            jpop.show(this, getWidth()/2-50, getHeight()/2-40);
-        //        }
     }
     public void addLevelCondtions (String con) {
         JFileChooser chooser = new JFileChooser(DATA_PATH);
@@ -177,18 +151,16 @@ public class LevelEditor extends JPanel {
     }
 
     protected void newLevel() {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
-        } 
-        catch (ParserConfigurationException e) {
-            System.out.println("Directory does not exist, try again");
-            newLevel();
-        }
-        // root elements
-        myBoard = new LevelBoard(getSize());
+        myBoard.clear();
+        final JPopupMenu pop = valueEntry("Level Name", new ActionListener() {
+
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                myBoard.setName(myTextField.getText());
+            }
+            
+        });
+        pop.show(this, getWidth()/2-50, getHeight()/2-40);
     }
 
     protected void clear() {
@@ -205,7 +177,19 @@ public class LevelEditor extends JPanel {
             myBoard.load(chooser.getSelectedFile().getPath());
         }
     }
-
+    
+    private JPopupMenu valueEntry (String askFor, ActionListener onOK) {
+        JPopupMenu jpop = new JPopupMenu();
+        JLabel askUserFor = new JLabel(askFor + " :");
+        myTextField = new JTextField();
+        JButton accept = new JButton("OK");
+        accept.addActionListener(onOK);
+        jpop.add(askUserFor);
+        jpop.add(myTextField);
+        jpop.add(accept);
+        return jpop;
+    }
+    
     private void fillMap() {
         myObjectTypes = new ArrayList<String>();
         myObjectTypes.add("StaticObject");

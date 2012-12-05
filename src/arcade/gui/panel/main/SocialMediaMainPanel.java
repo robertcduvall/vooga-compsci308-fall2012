@@ -36,7 +36,7 @@ public class SocialMediaMainPanel extends AMainPanel{
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
         myPanel.setBackground(Color.BLUE);
-        MigLayout layout = new MigLayout("", "100[c]", "[][][]30[][]");
+        MigLayout layout = new MigLayout("", "30[c]", "[][][]30[][]");
         myPanel.setLayout(layout);
         
         JLabel welcomeLabel = new JLabel("Welcome to the Social Media Connection Center!");
@@ -49,8 +49,8 @@ public class SocialMediaMainPanel extends AMainPanel{
         textToPost.setWrapStyleWord(true);
         
         instructionText = new JTextArea("In order to use this feature, you must have a Twitter and/or a Facebook " +
-        		"account already created.\n\nStart by typing in your text in the social media " +
-        		"update field of your choice. Upon Tweeting or clicking 'Update Status', a tab will open in" +
+        		"account already created.\n\nStart by typing in your message in the text field." +
+        		" Upon Tweeting or clicking 'Update Status', a tab will open in" +
         		" your browser prompting you for permission for the Arcade to integrate with your " +
         		"Twitter and/or Facebook account.\nBoth websites will provide you with an acknowledgement of authentication," +
         		" Twitter with a PIN number and Facebook with a success page with a long URL. Take the PIN and " +

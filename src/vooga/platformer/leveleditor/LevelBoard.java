@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -53,7 +54,6 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * Represents the main window for the level editor. Will display a collection
  * of Sprites and will oversee the results of all user actions.
  * 
- * @author Paul Dannenberg
  * @author Sam Rang
  * 
  */
@@ -103,13 +103,8 @@ public class LevelBoard extends JPanel {
         myBackground = new ImageIcon();
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
-        myAttributes = getAttributes();
+        myAttributes = null;
         setupInput();
-    }
-
-    private Collection<String> getAttributes () {
-
-        return null;
     }
 
     public void initLevelDefaults () {
@@ -151,11 +146,9 @@ public class LevelBoard extends JPanel {
                         if(myPlayer != null) {
                             myGameObjects.remove(myPlayer);
                         }
-                        obj = new Player(x, y, w, h, myObjID++, f);
-                        myPlayer = (Player) obj;
-                    }
-                    else if ("Plugin".equals(cmmd)) {
-                        System.out.println("plugin");
+                        myPlayer = new Player(x, y, w, h, myObjID++, f);
+                        obj = myPlayer;
+                        
                     }
                     ((PlacementMouseListener) myPlacementManager).setCurrent(obj);
                     myGameObjects.add(obj);
@@ -281,8 +274,14 @@ public class LevelBoard extends JPanel {
     }
 
     public void load (String path) {
+        clear ();
         LevelFileReader loader = new LevelFileReader(path);
-        myGameObjects = loader.getGameObjects();
+        for(GameObject obj : loader.getGameObjects()) {
+            myGameObjects.add(obj);
+            if(obj instanceof Player) {
+                myPlayer = (Player)obj;
+            }
+        }
         myConditions = loader.getConditions();
         for (LevelPlugin lp : loader.getLevelPlugins()) {
             addPlugin(lp);
@@ -294,6 +293,10 @@ public class LevelBoard extends JPanel {
 
     public void clear () {
         myGameObjects.clear();
+        myPlugins.clear();
+        myConditions.clear();
+        myWidth = getWidth();
+        myPlayer = null;
     }
 
     protected void objectPopupMenu (GameObject g, MouseEvent e) {
@@ -302,7 +305,7 @@ public class LevelBoard extends JPanel {
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(sh);
         pop.add(j);
-        JMenuItem j2 = new JMenuItem("Edit");
+        JMenuItem j2 = new JMenuItem("Add attribute");
         j2.addActionListener(sh);
         pop.add(j2);
         JMenuItem j3 = new JMenuItem("Delete");
@@ -320,17 +323,6 @@ public class LevelBoard extends JPanel {
         return Collections.unmodifiableCollection(myGameObjects);
     }
 
-    /**
-     * Adds a sprite to the board. This method does not
-     * check for any conditions (such as sprites being)
-     * added on top of each other.
-     * 
-     * @param obj GameObject being added
-     */
-    protected void addObject (GameObject obj) {
-        myCurrentObject = obj;
-        myGameObjects.add(obj);
-    }
 
     protected void addPlugin (LevelPlugin plug)  {
         myPlugins.add(plug);
@@ -368,7 +360,10 @@ public class LevelBoard extends JPanel {
                 myObject.flipImage();
             }
             else if ("Add attribute".equals(event.getActionCommand())) {
-                createAttributeWindow();
+                JPopupMenu pop = new GameObjectEditor(myObject);
+                pop.requestFocus();
+                pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
+                        (int) (myObject.getY() + myObject.getHeight() / 2));
             }
             else if ("Delete".equals(event.getActionCommand())) {
                 myGameObjects.remove(myObject);
@@ -376,22 +371,6 @@ public class LevelBoard extends JPanel {
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-        }
-
-        private void createAttributeWindow () {
-            JPopupMenu pop = new JPopupMenu();
-            for (String att : myAttributes) {
-                JMenuItem j = new JMenuItem(att);
-                j.addActionListener(this);
-                pop.add(j);
-            }
-            pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
-                    (int) (myObject.getY() + myObject.getHeight() / 2));
-
-            /*
-             * create a list of attributes from the resource file
-             * and get appropriate values for certain attributes.
-             */
         }
     }
 
@@ -430,7 +409,7 @@ public class LevelBoard extends JPanel {
      * @param nextMode The next mode the editor is about to transition to.
      */
     private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
-        if (currentMode != null) {
+        if (currentMode != null && currentMode.getEditorObjects() != null) {
             Collection<IEditorObject> editorObjectsToKeep = currentMode.getEditorObjects();
             for (IEditorObject objectFromPreviousMode : editorObjectsToKeep) {
                 nextMode.add(objectFromPreviousMode);

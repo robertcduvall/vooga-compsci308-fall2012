@@ -50,42 +50,52 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         JRadioButton oneButton = new JRadioButton("1");
         oneButton.setMnemonic(KeyEvent.VK_B);
         oneButton.setActionCommand("1");
+        oneButton.setForeground(Color.RED);
 
         JRadioButton twoButton = new JRadioButton("2");
         twoButton.setMnemonic(KeyEvent.VK_B);
         twoButton.setActionCommand("2");
+        twoButton.setForeground(Color.RED);
 
         JRadioButton threeButton = new JRadioButton("3");
         threeButton.setMnemonic(KeyEvent.VK_B);
         threeButton.setActionCommand("3");
+        threeButton.setForeground(Color.RED);
 
         JRadioButton fourButton = new JRadioButton("4");
         fourButton.setMnemonic(KeyEvent.VK_B);
         fourButton.setActionCommand("4");
+        fourButton.setForeground(Color.RED);
 
         JRadioButton fiveButton = new JRadioButton("5");
         fiveButton.setMnemonic(KeyEvent.VK_B);
         fiveButton.setActionCommand("5");
+        fiveButton.setForeground(Color.RED);
 
         JRadioButton sixButton = new JRadioButton("6");
         sixButton.setMnemonic(KeyEvent.VK_B);
         sixButton.setActionCommand("6");
+        sixButton.setForeground(Color.RED);
 
         JRadioButton sevenButton = new JRadioButton("7");
         sevenButton.setMnemonic(KeyEvent.VK_B);
         sevenButton.setActionCommand("7");
+        sevenButton.setForeground(Color.RED);
 
         JRadioButton eightButton = new JRadioButton("8");
         eightButton.setMnemonic(KeyEvent.VK_B);
         eightButton.setActionCommand("8");
+        eightButton.setForeground(Color.RED);
 
         JRadioButton nineButton = new JRadioButton("9");
         nineButton.setMnemonic(KeyEvent.VK_B);
         nineButton.setActionCommand("9");
+        nineButton.setForeground(Color.RED);
 
         JRadioButton tenButton = new JRadioButton("10");
         tenButton.setMnemonic(KeyEvent.VK_B);
         tenButton.setActionCommand("10");
+        tenButton.setForeground(Color.RED);
 
         // Group the radio buttons.
         ButtonGroup group = new ButtonGroup();

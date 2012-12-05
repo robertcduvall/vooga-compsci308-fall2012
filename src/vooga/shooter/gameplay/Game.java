@@ -16,6 +16,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -160,9 +161,14 @@ public class Game implements DrawableComponent, IArcadeGame {
                 }
             }
         }
+        Stack<ParticleSystem> remove = new Stack<ParticleSystem>();
         for(ParticleSystem p: myParticleSystems) {
             p.update();
+            if(!p.stillExists()) remove.add(p);
         }
+        for(ParticleSystem p: remove) myParticleSystems.remove(p);
+        
+        System.out.println(myParticleSystems.size());
     }
 
     /**

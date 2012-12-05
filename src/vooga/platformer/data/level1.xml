@@ -4,7 +4,7 @@
 <height>480</height>
 <collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
 <camera>FollowingCamera</camera>
-<gameObjectData>/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/level1GameObjects.bin</gameObjectData>
-<conditionData>/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/level1Conditions.bin</conditionData>
-<pluginData>/Users/samuelrang/Desktop/Duke/Fall 2012/CS 308/vooga-compsci308-fall2012/src/vooga/platformer/data/level1Plugins.bin</pluginData>
+<gameObjectData>src/vooga/platformer/data/level1GameObjects.bin</gameObjectData>
+<conditionData>src/vooga/platformer/data/level1Conditions.bin</conditionData>
+<pluginData>src/vooga/platformer/data/level1Plugins.bin</pluginData>
 </level>
