@@ -1,1 +1,21 @@
-<gamelist/>
+<gamelist>
+	<game>
+		<name>Shooter</name>
+		<highscore>50</highscore>
+		<timesplayed>10</timesplayed>
+		<gameinfo>level 6, health 200</gameinfo>
+	</game>
+	<game>
+		<name>Platformer</name>
+		<highscore>500</highscore>
+		<timesplayed>5</timesplayed>
+		<gameinfo>level 1, health 900</gameinfo>
+	</game>
+		<game>
+		<name>The Button Game</name>
+		<highscore>1</highscore>
+		<timesplayed>0</timesplayed>
+		<gameinfo/>
+	</game>
+
+</gamelist>

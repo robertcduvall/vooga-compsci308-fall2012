@@ -11,4 +11,11 @@
 		<timesplayed>5</timesplayed>
 		<gameinfo>level 1, health 900</gameinfo>
 	</game>
+		<game>
+		<name>The Button Game</name>
+		<highscore>40</highscore>
+		<timesplayed>0</timesplayed>
+		<gameinfo/>
+	</game>
+
 </gamelist>

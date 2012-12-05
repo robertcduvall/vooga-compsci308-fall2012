@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gameobject.mapstrategy.MapStrategy;
 
 /**
  * Map Object class that is extended to create objects to exist in the MapMode.
@@ -25,7 +24,6 @@ public class MapObject extends GameObject {
     private Point myLocation;
     private boolean myIsVisible;
     private MapMode myMapMode;
-    private List<MapStrategy> myMapStrategies;
 
     /**
      * Creates the MapObject that will be used in MapMode.
@@ -40,9 +38,6 @@ public class MapObject extends GameObject {
         super(allowableModes, condition, mapImage);
         setLocation(location);
         setVisible(true);
-        // setMapMode(mapMode);
-        myMapStrategies = new ArrayList<MapStrategy>();
-        // myMapStrategies.add(new NullStrategy(mapMode));
     }
 
     /**
@@ -140,34 +135,13 @@ public class MapObject extends GameObject {
      */
     public void interact (MapObject target) {
         if (target instanceof MapPlayerObject) {
-            interactWithPlayer((MapPlayerObject) target);
-        }
-        else {
-            for (MapStrategy strategy : myMapStrategies) {
-                strategy.performStrategy(target);
-            }
-        }
-    }
-
-    private void interactWithPlayer (MapPlayerObject player) {
-        boolean conversationStarted = false;
-        for (MapStrategy strategy : myMapStrategies) {
-            if (strategy.isDisplayable()) {
-                if (conversationStarted) {
-                    continue;
-                }
-                startConversation(player);
-                conversationStarted = true;
-            }
-            else {
-                strategy.performStrategy(player);
-            }
+            startConversation(target);
         }
     }
 
     /**
-     * start conversation if there are strategies to be displayed in the
-     * Conversation Mode
+     * start conversation if there are options to be displayed in the
+     * Option Mode
      * 
      * @param involvedObject the object involved in the conversation with this
      *        MapObject
@@ -177,30 +151,6 @@ public class MapObject extends GameObject {
         involvedSpriteIDs.add(this.getID());
         involvedSpriteIDs.add(involvedObject.getID());
         getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
-    }
-
-    /**
-     * Adds a strategy to the object's list of strategies.
-     * 
-     * @param mapStrategy Strategy to add.
-     */
-    public void addStrategy (MapStrategy mapStrategy) {
-        myMapStrategies.add(mapStrategy);
-    }
-
-    /**
-     * Returns list of strategies that can be displayed.
-     * 
-     * @return List of strategies that can be displayed.
-     */
-    public List<MapStrategy> getDisplayableStrategies () {
-        List<MapStrategy> displayableStrategies = new ArrayList<MapStrategy>();
-        for (MapStrategy strategy : myMapStrategies) {
-            if (strategy.isDisplayable()) {
-                displayableStrategies.add(strategy);
-            }
-        }
-        return displayableStrategies;
     }
 
     /**

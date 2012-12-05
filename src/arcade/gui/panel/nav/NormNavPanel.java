@@ -38,7 +38,7 @@ public class NormNavPanel extends ANavPanel {
         myprofileBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JButton messagecenterBut = new JButton("Message Center");
         messagecenterBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
-        JButton twitterBut = new JButton("Twitter Connect");
+        JButton twitterBut = new JButton("Social Media Connect");
         twitterBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
 
         allgamesBut.addActionListener(new ActionListener() {
@@ -75,7 +75,7 @@ public class NormNavPanel extends ANavPanel {
             @Override
             public void actionPerformed (ActionEvent arg0) {
 
-                getArcade().replacePanel("Twitter");
+                getArcade().replacePanel("SocialMedia");
             }
         });
 

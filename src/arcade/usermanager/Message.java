@@ -1,5 +1,7 @@
 package arcade.usermanager;
 
+import java.util.Date;
+
 /**
  * Stores message information.
  * 
@@ -11,6 +13,7 @@ package arcade.usermanager;
 public class Message {
     private String mySender;
     private String myContent;
+    private Date myDate;
 
     /**
      * Constructs a message.
@@ -21,6 +24,12 @@ public class Message {
     public Message (String sender, String content) {
         mySender = sender;
         myContent = content;
+    }
+    
+    public Message (String sender, String content, Date timeStamp) {
+        mySender = sender;
+        myContent = content;
+        myDate = timeStamp;
     }
 
     /**
@@ -39,5 +48,13 @@ public class Message {
      */
     public String getMessage () {
         return myContent;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String getDateString () {
+        return myDate.toString();
     }
 }
