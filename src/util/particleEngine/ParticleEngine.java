@@ -70,7 +70,7 @@ public class ParticleEngine {
         createParticles(angleSpan, numberOfDirections);
     }
 
-    private void createParticles (double inputAngleSpan, int numberOfDirections) {
+    protected void createParticles (double inputAngleSpan, int numberOfDirections) {
         int numberOfOriginLines = Math.max(1, numberOfDirections - 1);
         int approxNumberOfSpritesPerOriginLine = spriteCount
                 / numberOfOriginLines + numberOfOriginLines;
@@ -87,7 +87,7 @@ public class ParticleEngine {
      * @param numberOfOriginLines
      * @param i
      */
-    private void createParticle (double inputAngleSpan,
+    protected void createParticle (double inputAngleSpan,
             int numberOfOriginLines, int i) {
         Dimension particleSize = new Dimension(spriteImage.getWidth(null),
                 spriteImage.getHeight(null));
@@ -124,6 +124,10 @@ public class ParticleEngine {
         }
     }
 
+    protected void addParticle (Particle p){
+    	particles.add(p);
+    }
+    
     protected void setDuration (int length) {
         duration = length;
     }
@@ -152,12 +156,35 @@ public class ParticleEngine {
     	initialPosition.addVector(movementVector);
     }
     
-    protected MathVector2D getStartingPosition () {
+    protected MathVector2D getMainVelocity(){
+    	return mainVelocity;
+    }
+    
+    protected Image getImage(){
+    	return spriteImage;
+    }
+    
+    protected MathVector2D getInitialPosition () {
         return initialPosition;
     }
 
     protected int getSpriteCount () {
         return particles.size();
     }
+    
+    protected int getVariance () {
+    	return variance;
+    }
+    
+    protected int getDuration () {
+    	return duration;
+    }
 
+    protected float[] getRGBAscales(){
+    	return myRGBAscales;
+    }
+    
+    protected float[] getRGBAtolerances(){
+    	return myRGBAtolerances;
+    }
 }
