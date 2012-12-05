@@ -38,9 +38,7 @@ public class GamePane extends DisplayPane implements Runnable {
     public GamePane (GameWindow gameWindow) {
         super(gameWindow);
         delayBetweenGameLoopCycles = Integer.parseInt(GameWindow.importString("Delay"));
-        //addMouseListener(new GameMouseListener());
         initMouseListener();
-        myGameManager = new GameManager(this);
         enableFocus();
     }
 
@@ -48,7 +46,7 @@ public class GamePane extends DisplayPane implements Runnable {
      * initialize properties when user switch to game
      */
     public void initialize () {
-        //myGameManager = new GameManager(this);
+        myGameManager = new GameManager(this, getGameWindow().getXmlPath(), getGameWindow().getPlayerXml());
         myGameThread = new Thread(this);
         myGameThread.setDaemon(true);
         myGameThread.start();
@@ -79,7 +77,9 @@ public class GamePane extends DisplayPane implements Runnable {
      */
     @Override
     public void run () {
-        long beforeTime, timeDiff, sleep;
+        long beforeTime;
+        long timeDiff;
+        long sleep;
         while (!myGameManager.isOver()) {
             beforeTime = System.currentTimeMillis();
             update();
@@ -106,8 +106,8 @@ public class GamePane extends DisplayPane implements Runnable {
         return delayBetweenGameLoopCycles;
     }
 
-    private void initMouseListener() { //TODO: subscribe to input team
-        addMouseListener(new MouseAdapter(){
+    private void initMouseListener() { 
+        addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed (MouseEvent e) {
                 myGameManager.addMouseAction(MOUSE_PRESSED, e.getPoint(), e.getButton());

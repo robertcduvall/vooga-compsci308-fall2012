@@ -33,5 +33,4 @@ public class MapEnemyObject extends MapObject {
             getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
         }
     }
-
 }
