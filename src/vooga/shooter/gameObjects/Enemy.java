@@ -41,6 +41,15 @@ public class Enemy extends Sprite {
         super(position, size, bounds, image, velocity, health);
     }
     
+    /**
+     * Constructs an enemy character for the game.
+     * @param position the center of the image
+     * @param size the size of the image
+     * @param bounds the size of the canvas
+     * @param imagePath the full path to the image file to use
+     * @param velocity the starting velocity for the enemy
+     * @param health the starting health of the enemy
+     */
     public Enemy (Point position, Dimension size, Dimension bounds,
         String imagePath, Point velocity, int health) {
         super(position, size, bounds, (new ImageIcon(imagePath)).getImage(), velocity, health);
