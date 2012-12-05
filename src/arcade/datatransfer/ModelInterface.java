@@ -165,14 +165,16 @@ public class ModelInterface {
     public EditableUserProfile getEditableCurrentUser () {
         return myUserManager.getEditableCurrentUser();
     }
+
     /**
      * We actually need to be able to get the User.
      * Stop changing it so we can't.
      * It's messing things up.
      * <3 Rob
+     * 
      * @return The User that is currently logged in.
      */
-    public User getCurrentUserDontDeleteThisMethod() {
+    public User getCurrentUserDontDeleteThisMethod () {
         return myUserManager.getCurrentUserDontDeleteThisMethod();
     }
 
@@ -208,45 +210,18 @@ public class ModelInterface {
     }
 
     /**
-     * Should return the highscore of the game that was just played and ended.
-     * 
-     * @param userName The name of the user in question
-     * @param gameName The nameof the game in question
-     * @return
-     */
-    public int getMostRecentHighScore (String userName, String gameName) {
-        return Integer.parseInt(myUserManager.getGame(userName, gameName).getGameInfo("highscore"));
-
-    }
-
-    /**
-     * Should return the highest score a user has gotten for a specific game.
-     * 
-     * @param userName The name of the user in question
-     * @param gameName The name of the game in question
-     * @return
-     */
-    public int getHighestScoreforGame (String userName, String gameName) {
-        return 0;
-        // TODO: implement dis
-    }
-
-    /**
-     * Should return a list with elements in the format:
-     * "NameofGame - highscore"
+     * Returns a list of String[] that contain game names and high scores
      * 
      * @param userName The name of the user in question
      * @return
      */
-    public List<String> getListOfHighScoresForUser (String userName) {
-        List<String> list = new ArrayList<String>();
+    public List<String[]> getListOfHighScoresForUser (String userName) {
+        List<String[]> list = new ArrayList<String[]>();
         List<GameData> gameList = myUserManager.getGameList(userName);
         for (GameData gd : gameList) {
-            String str = gd.getGameInfo("name") + " - " + gd.getGameInfo("highscore");
-            list.add(str);
-
+            String[] arr = { gd.getGameInfo("name"), gd.getGameInfo("highscore") };
+            list.add(arr);
         }
-
         return list;
     }
 
@@ -259,7 +234,6 @@ public class ModelInterface {
      */
     public List<String> getListOfHighScoresForGame (String gameName) {
         return null;
-        // TODO: todo
     }
 
     /**
@@ -311,8 +285,7 @@ public class ModelInterface {
         return myUserManager.deleteFacebookAccessToken(name);
     }
 
-    public boolean sendMessage (String sender, String recipient, String messageContent,
-            Date date) {
+    public boolean sendMessage (String sender, String recipient, String messageContent, Date date) {
         return mySocialCenter.sendMessage(sender, recipient, messageContent, date);
     }
 }
