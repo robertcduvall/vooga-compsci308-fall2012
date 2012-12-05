@@ -11,6 +11,11 @@ import javax.swing.JPasswordField;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
 
+/**
+ * 
+ * @author Robert Bruce
+ *
+ */
 public class DeleteUserMainPanel extends AMainPanel implements ActionListener {
 
     private static String CONFIRM = "Confirm Deletion :(";

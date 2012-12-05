@@ -23,7 +23,7 @@ import arcade.usermanager.exception.ValidationException;
 
 /**
  * 
- * @author Michael Deng
+ * @author Robert Bruce
  * 
  */
 public class MessageCenterMainPanel extends AMainPanel {
