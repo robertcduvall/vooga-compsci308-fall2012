@@ -136,19 +136,16 @@ public class Particle {
     }
 
     /**
-     * update the particle's position, rotation, velocity, and transparency
+     * Update the particle's position, rotation, velocity, and transparency.
      */
     protected void update () {
         double r = myRandomGenerator.nextInt(2 * myVariance + 1);
         double angleVariation = (r - myVariance) / oneHundred;
-
         double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
-        int newX = (int) (Math.cos(tempNewAngle) * maxDistanceTraveledPerUpdate);
-        int newY = (int) (Math.sin(tempNewAngle) * maxDistanceTraveledPerUpdate);
-        myPosition.setComponent(MathVector2D.X,
-                myPosition.getComponent(MathVector2D.X) + newX);
-        myPosition.setComponent(MathVector2D.Y,
-                myPosition.getComponent(MathVector2D.Y) + newY);
+        MathVector2D changeInPosition = new MathVector2D(Math.cos(tempNewAngle), 
+        		Math.sin(tempNewAngle));
+        changeInPosition.scale(maxDistanceTraveledPerUpdate);
+        myPosition.addVector(changeInPosition);
         durationExisted++;
 
         myRotation += myRotationalVelocity;

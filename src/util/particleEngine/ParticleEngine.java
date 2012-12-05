@@ -96,12 +96,7 @@ public class ParticleEngine {
         double velocityMagnitude = mainVelocity.calculateMagnitude();
         double velocityAngle = mainVelocity.calculateAngleInRadians();
 
-        MathVector2D startingPosition = new MathVector2D();
-        startingPosition.setComponent(MathVector2D.X,
-                initialPosition.getComponent(MathVector2D.X));
-        startingPosition.setComponent(MathVector2D.Y,
-                initialPosition.getComponent(MathVector2D.Y));
-
+        MathVector2D startingPosition = new MathVector2D(initialPosition);
         particles.add(new Particle(startingPosition, particleSize, spriteImage,
                 velocityMagnitude, velocityAngle + angleInterval * i, variance,
                 duration, myRGBAscales, myRGBAtolerances));
@@ -153,6 +148,10 @@ public class ParticleEngine {
         initialPosition = position;
     }
 
+    protected void moveStartingPositionByVector (MathVector2D movementVector){
+    	initialPosition.addVector(movementVector);
+    }
+    
     protected MathVector2D getStartingPosition () {
         return initialPosition;
     }

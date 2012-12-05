@@ -28,7 +28,7 @@ public class MathVector {
 		}
 		else{
 			myVector = setupZeroVector(v.length);
-			copyVector(v);
+			setVector(v);
 		}
 	}
 	
@@ -86,10 +86,23 @@ public class MathVector {
 	 * of the vector represented by v.
 	 * @param v vector 
 	 */
-	public void copyVector(double[] v){
+	public void setVector(double[] v){
 		if (vectorDimensionsEqual(v)){
 			for (int k = 0; k < v.length; k++){
 				myVector[k] = v[k];
+			}
+		}
+	}
+	
+	/**
+	 * Sets the component-values of this vector to the component-values 
+	 * of the vector represented by v.
+	 * @param v
+	 */
+	public void setVector(MathVector v){
+		if (vectorDimensionsEqual(v)){
+			for (int k = 0; k < dimension; k++){
+				myVector[k] = v.getComponent(k);
 			}
 		}
 	}
