@@ -1,5 +1,6 @@
 package arcade.usermanager;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -90,6 +91,12 @@ public class User {
 
     protected void updateMyMessage (String sender, String content) {
         myMessages.add(new Message(sender, content));
+
+    }
+    
+    @SuppressWarnings("deprecation")
+    protected void updateMyMessage (String sender, String content, String myDate) {
+        myMessages.add(new Message(sender, content, new Date(myDate)));
 
     }
 

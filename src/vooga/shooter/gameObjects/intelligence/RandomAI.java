@@ -3,7 +3,6 @@ package vooga.shooter.gameObjects.intelligence;
 import java.awt.Point;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
-import vooga.shooter.gameplay.Game;
 import util.mathvector.VectorCalculator;
 
 /**
@@ -14,8 +13,8 @@ public class RandomAI extends AI{
 
     private int myTimer;
     
-    public RandomAI (Sprite owner, Game theGame, Player thePlayer) {
-        super(owner, theGame, thePlayer);
+    public RandomAI (Sprite owner, Player thePlayer) {
+        super(owner, thePlayer);
         myTimer = 0;
     }
 
@@ -24,7 +23,7 @@ public class RandomAI extends AI{
      * changing the speed as little as possible.
      */
     @Override
-    public void subCalculate (Sprite mySprite, Player myPlayer, Game myGame) {
+    public void subCalculate (Sprite mySprite, Player myPlayer) {
         if (myTimer <= 0){
             double currentMagnitude = 
                 VectorCalculator.calculateMagnitude(mySprite.getVelocity());

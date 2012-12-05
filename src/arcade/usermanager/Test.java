@@ -32,11 +32,11 @@ public class Test {
        // testSendMessage();
        myUserManager=UserManager.getInstance();
         //testGetGame();
-     //   testReadGameList();
+       testReadGameList();
       //  testModifyXml();
-       testLogOn();
-       testGetMessage();
-       testSendFacebook();
+//       testLogOn();
+//       testGetMessage();
+//       testSendFacebook();
        
        
 
@@ -107,6 +107,13 @@ public class Test {
     
     private static void testReadGameList(){
         UserXMLReader reader=new UserXMLReader();
+       
+        
+    }
+    
+    private static void testWriteGame(){
+        UserXMLWriter writer=new UserXMLWriter();
+        writer.appendGame("Howard", "name", "score", "times", "info");
         
     }
     

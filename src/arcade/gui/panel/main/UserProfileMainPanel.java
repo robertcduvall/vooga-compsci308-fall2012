@@ -75,6 +75,16 @@ public class UserProfileMainPanel extends AMainPanel {
             }
 
         });
+        JButton deleteAccountButton = new JButton("Delete Account."); 
+        deleteAccountButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                System.out.println("Attempting to delete " + userToLoad);
+                getArcade().saveVariable("UserName", userToLoad);
+                getArcade().replacePanel("DeleteUser");
+            }
+
+        });
         JButton editButton = new JButton("Edit Profile Picture"); 
         editButton.addActionListener(new ActionListener(){
             @Override
@@ -99,6 +109,8 @@ public class UserProfileMainPanel extends AMainPanel {
                     newImageName = ourChooser.getSelectedFile().getName();
                     getArcade().getModelInterface().getEditableCurrentUser()
                     .setPicture("src/arcade/database/images/" + newImageName);
+                    getArcade().getModelInterface()
+                    .getCurrentUserDontDeleteThisMethod().setPicture("src/arcade/database/images/" + newImageName);
                     getArcade().replacePanel("UserProfile");
                 }
 
@@ -121,6 +133,7 @@ public class UserProfileMainPanel extends AMainPanel {
         myPanel.add(sendMessageButton, "grow, span, wrap");
         if (loggedInUsersPage) {
             myPanel.add(editButton, "grow, span, wrap");
+            myPanel.add(deleteAccountButton, "grow, span, wrap");
         }
         myPanel.add(blankLabel, "wrap");
         myPanel.add(statsScrollPane, "grow, span");

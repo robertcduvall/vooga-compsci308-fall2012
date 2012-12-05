@@ -15,6 +15,11 @@ import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.UserProfile;
 import arcade.utility.ImageReader;
 
+/**
+ * 
+ * @author Robert Bruce
+ *
+ */
 public class ViewMessageMainPanel extends AMainPanel {
 
     private UserProfile myUser;

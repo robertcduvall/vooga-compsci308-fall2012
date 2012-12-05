@@ -88,48 +88,51 @@ public class TestMonster extends BattleObject {
     }
 
     @Override
-    public void doOption1 (BattleObject target) {
-        setCurrentMessage(getName() + USED + getOptions()[0]);
+    public String doOption1 (BattleObject target) {
         attackEnemy(target);
+        return (getName() + USED + getOptions()[0]);
     }
 
     @Override
-    public void doOption2 (BattleObject target) {
-        setCurrentMessage(getName() + USED + getOptions()[1]);
+    public String doOption2 (BattleObject target) {
         changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() + 1);
+        return (getName() + USED + getOptions()[1]);
     }
 
     @Override
-    public void doOption3 (BattleObject target) {
-        setCurrentMessage(getName() + USED + getOptions()[2]);
+    public String doOption3 (BattleObject target) {
         changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() + 1);
+        return (getName() + USED + getOptions()[2]);
     }
 
     @Override
-    public void doOption4 (BattleObject target) {
+    public String doOption4 (BattleObject target) {
         setCurrentMessage(getName() + USED + getOptions()[3]);
         changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() + 3);
         if (getStat(HEALTH_STAT).intValue() > getStat(MAX_HEALTH_STAT).intValue()) {
             changeStat(HEALTH_STAT, getStat(MAX_HEALTH_STAT).intValue());
         }
+        return (getName() + USED + getOptions()[3]);
     }
 
     @Override
-    public void doRandomOption (BattleObject target) {
+    public String doRandomOption (BattleObject target) {
         Random randomGenerator = new Random();
         double random = randomGenerator.nextDouble();
+        String message = null;
         if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
-            doOption1(target);
+            message = doOption1(target);
         }
         if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
-            doOption2(target);
+            message = doOption2(target);
         }
         if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
-            doOption3(target);
+            message = doOption3(target);
         }
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
-            doOption4(target);
+            message = doOption4(target);
         }
+        return message;
     }
 
     @Override
@@ -147,4 +150,23 @@ public class TestMonster extends BattleObject {
         return ret;
 
     }
+
+    @Override
+    public String doOption (int MenuOptionSelected, BattleObject target) {
+        String message = getName() + " didn't do anything";
+        switch (MenuOptionSelected){
+            case 1: message = doOption1(target);
+            break;
+            case 2: message = doOption2(target);
+            break;
+            case 3: message = doOption3(target);
+            break;
+            case 4: message = doOption4(target);
+            break;
+            default: break;
+        }
+        return message;
+    }
+
+
 }
