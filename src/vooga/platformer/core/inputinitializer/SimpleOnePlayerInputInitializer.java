@@ -12,9 +12,11 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 
 /**
- * Use KeyListeners to implement user input
+ * Use KeyListeners to implement user input. Deprecated, but useful as an example if you
+ * want to set up event listeners yourself.
  * @author original code probably by Yaqi
  * @author refactored into an InputInitializer class by Niel Lebeck
+ * @deprecated
  *
  */
 public class SimpleOnePlayerInputInitializer implements InputInitializer {
