@@ -3,6 +3,7 @@ package arcade.gui.panel.main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -32,6 +33,7 @@ public class UserListMainPanel extends AMainPanel {
     /**
      * 
      */
+    @SuppressWarnings("unchecked")
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
@@ -46,6 +48,8 @@ public class UserListMainPanel extends AMainPanel {
 
         myPanel.add(label);
         ArrayList<UserProfile> allUsers = (ArrayList<UserProfile>) getArcade().getModelInterface().getAllUsers();
+        Collections.sort(allUsers);
+        // This ^ sort takes a while... But I don't really wanna mess with alphabetizing everything...
         for (UserProfile user : allUsers){
             myPanel.add(new UserListComponent(user, myPanel));
         }
