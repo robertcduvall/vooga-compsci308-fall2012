@@ -10,9 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,62 +21,74 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 
+
+/**
+ * A pop up menu that allows users to edit the characteristics of GameObjects.
+ * 
+ * @author Sam Rang
+ * 
+ */
+@SuppressWarnings("serial")
 public class GameObjectEditor extends JPopupMenu {
+
+    /**
+     * Opens a new pop up editor for the specified GameObject.
+     * 
+     * @param obj GameObject to be modified
+     */
     public GameObjectEditor (final GameObject obj) {
-        //Top panel gets image (eventually animation?)
+        // Top panel gets image (eventually animation?)
         JPanel myTop = new JPanel();
         myTop.setLayout(new BorderLayout());
         JLabel myImage = new JLabel();
         myImage.setIcon(new ImageIcon(obj.getCurrentImage()));
-        myTop.add(myImage,BorderLayout.CENTER);
+        myTop.add(myImage, BorderLayout.CENTER);
         JLabel prompt = new JLabel("Please enter Doubles:");
         myTop.add(prompt, BorderLayout.SOUTH);
         add(myTop);
-        
-        //Bottom panel has fields and buttons
+
+        // Bottom panel has fields and buttons
         JPanel myBottom = new JPanel();
-        myBottom.setLayout(new GridLayout(6,2));
+        myBottom.setLayout(new GridLayout(6, 2));
         JLabel label;
         JTextField textField;
         final List<JTextField> fields = new ArrayList<JTextField>();
-        //X 
+        // X
         label = new JLabel("X position");
-        textField = new HintTextField(((Double)obj.getX()).toString());
+        textField = new HintTextField(((Double) obj.getX()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
 
-        //Y
+        // Y
         label = new JLabel("Y position");
-        textField = new HintTextField(((Double)obj.getY()).toString());
+        textField = new HintTextField(((Double) obj.getY()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
-        
-        //Width
+
+        // Width
         label = new JLabel("Width");
-        textField = new HintTextField(((Double)obj.getWidth()).toString());
+        textField = new HintTextField(((Double) obj.getWidth()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
-        
-        //Height
+
+        // Height
         label = new JLabel("Height");
-        textField = new HintTextField(((Double)obj.getHeight()).toString());
+        textField = new HintTextField(((Double) obj.getHeight()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
-        
-        //Image
+
+        // Image
         label = new JLabel("Image");
         JButton choose = new JButton("Choose Image");
         choose.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new
-                        JFileChooser(System.getProperty("user.dir"));
+            public void actionPerformed (ActionEvent e) {
+                JFileChooser chooser = new JFileChooser(System.getProperty("user.dir"));
                 FileNameExtensionFilter filter =
                         new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
                 chooser.setFileFilter(filter);
@@ -100,7 +110,7 @@ public class GameObjectEditor extends JPopupMenu {
         JButton accept = new JButton("Accept");
         accept.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed (ActionEvent e) {
                 try {
                     double x = Double.parseDouble(fields.get(0).getText());
                     double y = Double.parseDouble(fields.get(1).getText());
@@ -114,8 +124,7 @@ public class GameObjectEditor extends JPopupMenu {
                 catch (NumberFormatException nf) {
                     showError("Could not parse values");
                 }
-                
-                
+
             }
         });
         JButton addStrategy = new JButton("Add Strategy");
@@ -124,9 +133,9 @@ public class GameObjectEditor extends JPopupMenu {
             @Override
             public void actionPerformed (ActionEvent e) {
                 System.out.println("add strategy");
-                //TODO
+                // TODO
             }
-            
+
         });
         myBottom.add(addStrategy);
         myBottom.add(accept);
@@ -143,32 +152,33 @@ public class GameObjectEditor extends JPopupMenu {
 
     class HintTextField extends JTextField implements FocusListener {
 
-        private final String hint;
+        private final String myHint;
 
-        public HintTextField(final String hint) {
+        public HintTextField (final String hint) {
             super(hint);
-            this.hint = hint;
+            myHint = hint;
             super.addFocusListener(this);
         }
 
         @Override
-        public void focusGained(FocusEvent e) {
-            if(this.getText().isEmpty()) {
+        public void focusGained (FocusEvent e) {
+            if (this.getText().isEmpty()) {
                 super.setText("");
-            }
-        }
-        @Override
-        public void focusLost(FocusEvent e) {
-            if(this.getText().isEmpty()) {
-                super.setText(hint);
             }
         }
 
         @Override
-        public String getText() {
+        public void focusLost (FocusEvent e) {
+            if (this.getText().isEmpty()) {
+                super.setText(myHint);
+            }
+        }
+
+        @Override
+        public String getText () {
             String typed = super.getText();
-            System.out.println(typed.equals(hint) ? "" : typed);
-            return typed.equals(hint) ? hint : typed;
+            System.out.println(typed.equals(myHint) ? "" : typed);
+            return typed.equals(myHint) ? myHint : typed;
         }
     }
 }

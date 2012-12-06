@@ -22,16 +22,18 @@ import util.ingamemenu.GameButton;
 import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 
+
 /**
  * Frame containing all the elements needed to build and save a level
- *
+ * 
  * @author Sam Rang
  */
 @SuppressWarnings("serial")
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
-    private static final String DATA_PATH = System.getProperty("user.dir")+"/src/vooga/platformer/data/";
+    private static final String DATA_PATH = System.getProperty("user.dir") +
+                                            "/src/vooga/platformer/data/";
     private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -44,9 +46,9 @@ public class LevelEditor extends JPanel {
      * levels. Allows users to drag and drop sprites onto a level as well
      * as set the background image.
      * 
-     * @param parent JPanel containing LevelEditor
+     * @param dim size of the LevelEditor JPanel
      */
-    public LevelEditor(Dimension dim) {
+    public LevelEditor (Dimension dim) {
         setLayout(new BorderLayout());
         setSize(new Dimension(dim));
         myBoard = new LevelBoard(getSize());
@@ -62,70 +64,72 @@ public class LevelEditor extends JPanel {
 
     }
 
-    public KeyListener getKeyListener() {
+    public KeyListener getKeyListener () {
         return myKeyListener;
     }
 
     /**
+     * Adds a LevelPlugin to be applied during level load. These can be things
+     * such as a a background image painter or a non-standard gravity.
      * 
-     * @param plugin
+     * @param plugin LevelPlugin to be applied
      */
-    public void addLevelPlugin(String plugin) {
-        if("SimpleBackgroundPainter".equals(plugin)) {
-            JFileChooser chooser = new
-                    JFileChooser(DATA_PATH);
+    public void addLevelPlugin (String plugin) {
+        if ("SimpleBackgroundPainter".equals(plugin)) {
+            JFileChooser chooser = new JFileChooser(DATA_PATH);
             FileNameExtensionFilter filter =
                     new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(chooser);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                SimpleBackgroundPainter myBackground = new SimpleBackgroundPainter(chooser.getSelectedFile());
+                SimpleBackgroundPainter myBackground =
+                        new SimpleBackgroundPainter(chooser.getSelectedFile());
                 myBoard.addPlugin(myBackground);
             }
         }
-//        else if ("") {
-//            
-//        }
+        // else if ("") {
+        //
+        // }
     }
+
     public void addLevelConditions (String con) {
-        if("Clear Conditions".equals(con)) {
+        if ("Clear Conditions".equals(con)) {
             myBoard.clearConditions();
             return;
         }
         JFileChooser chooser = new JFileChooser(DATA_PATH);
-        FileNameExtensionFilter filter =
-                new FileNameExtensionFilter("Level XML Files", "xml");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Level XML Files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
         String abspath = chooser.getSelectedFile().getPath();
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            String path = abspath.substring(abspath.indexOf("/src/") + 1,abspath.length());
+            String path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());
             System.out.println(path);
-            if("DefeatAllEnemiesCondition".equals(con)) {
+            if ("DefeatAllEnemiesCondition".equals(con)) {
                 myBoard.addCondition(new DefeatAllEnemiesCondition(path));
             }
-            else if("DestroySpecificObjectCondition".equals(con)) {
+            else if ("DestroySpecificObjectCondition".equals(con)) {
                 System.out.println("haha funny");
             }
         }
     }
-    private void createListeners() {
+
+    private void createListeners () {
         myKeyListener = myBoard.getKeyListener();
     }
 
-    private GameButton createButton(String objectname) {
+    private GameButton createButton (String objectname) {
         GameButton gb = new GameButton(objectname);
         gb.addMouseListener(myBoard.getButtonListener());
         gb.setButtonSize(OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
         return gb;
     }
 
-    private JPanel createButtonPanel() {
+    private JPanel createButtonPanel () {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
         subpanel.setLayout(new GridLayout(1, myObjectTypes.size()));
-        subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, 
-                BUTTON_BAR_WIDTH * myObjectTypes.size()));
+        subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, BUTTON_BAR_WIDTH * myObjectTypes.size()));
         for (String type : myObjectTypes) {
             subpanel.add(createButton(type));
         }
@@ -135,36 +139,35 @@ public class LevelEditor extends JPanel {
         return panel;
     }
 
-    protected void save() {
+    protected void save () {
         myBoard.save();
     }
 
-    protected void newLevel() {
+    protected void newLevel () {
         myBoard.clear();
         final JPopupMenu pop = valueEntry("Level Name", new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent e) {
                 myBoard.setName(myTextField.getText());
-            }            
+            }
         });
-        pop.show(this, getWidth()/2-50, getHeight()/2-40);
+        pop.show(this, getWidth() / 2 - 50, getHeight() / 2 - 40);
     }
 
-    protected void clear() {
+    protected void clear () {
         myBoard.clear();
     }
 
-    protected void load() {
+    protected void load () {
         JFileChooser chooser = new JFileChooser(DATA_PATH);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "XML Level files", "xml");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Level files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             myBoard.load(chooser.getSelectedFile().getPath());
         }
     }
-    
+
     private JPopupMenu valueEntry (String askFor, ActionListener onOK) {
         JPopupMenu jpop = new JPopupMenu();
         JLabel askUserFor = new JLabel(askFor + " :");
@@ -176,8 +179,8 @@ public class LevelEditor extends JPanel {
         jpop.add(accept);
         return jpop;
     }
-    
-    private void fillMap() {
+
+    private void fillMap () {
         myObjectTypes = new ArrayList<String>();
         myObjectTypes.add("StaticObject");
         myObjectTypes.add("Enemy");
