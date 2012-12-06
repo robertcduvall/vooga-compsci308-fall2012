@@ -167,7 +167,6 @@ public class GameObjectEditor extends JPopupMenu {
         @Override
         public String getText() {
             String typed = super.getText();
-            System.out.println(typed.equals(hint) ? "" : typed);
             return typed.equals(hint) ? hint : typed;
         }
     }

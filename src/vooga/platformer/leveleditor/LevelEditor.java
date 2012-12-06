@@ -107,6 +107,9 @@ public class LevelEditor extends JPanel {
             else if("DestroySpecificObjectCondition".equals(con)) {
                 System.out.println("haha funny");
             }
+            else if("PlayerInZoneCondition".equals(con)) {
+                
+            }
         }
     }
     private void createListeners() {
