@@ -1,6 +1,7 @@
 package vooga.turnbased.gameobject.optionobject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
 
@@ -16,6 +17,11 @@ public class TransportOption extends OptionObject {
     }
     
     public void executeOption(OptionMode optionMode) {
-        optionMode.flagCondition("entermap2", new ArrayList<Integer>());
+        List<Integer> involvedIDs = new ArrayList<Integer>();
+        involvedIDs.add(getID());
+        // each teleporter along with the flagged condition needs to supply id of 
+        // teleported sprite (to transfer it), and its id (containing info about destination)
+        // involvedIDs.add(someHowGetPlayersId); 
+        optionMode.flagCondition(getConditionFlag(), involvedIDs);
     }
 }
