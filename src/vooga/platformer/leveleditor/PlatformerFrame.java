@@ -1,34 +1,23 @@
 package vooga.platformer.leveleditor;
 
+import arcade.IArcadeGame;
+import arcade.gamemanager.GameSaver;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import arcade.IArcadeGame;
-import arcade.gamemanager.GameSaver;
 
 
+@SuppressWarnings("serial")
 public class PlatformerFrame extends JFrame implements IArcadeGame {
     private static final String DESCRIPTION =
             "This level editor allows you to edit your levels with supreme ease. It may also let you save your changes at the end!";
@@ -40,10 +29,10 @@ public class PlatformerFrame extends JFrame implements IArcadeGame {
     private ActionListener myActionListener;
     private JPanel myContent;
 
-    public static void main (String[] args) {
-        new PlatformerFrame();
-    }
-
+    /**
+     * Creates a new instance of the PlatformerFrame, a frame which holds the
+     * level editor and all of its components.
+     */
     public PlatformerFrame () {
         frameBuild();
         setContentPane(myContent);
@@ -57,6 +46,15 @@ public class PlatformerFrame extends JFrame implements IArcadeGame {
             }
         });
         myTimer.start();
+    }
+
+    /**
+     * Opens a new instance of the LevelEditor.
+     * 
+     * @param args ignored in this method
+     */
+    public static void main (String[] args) {
+        new PlatformerFrame();
     }
 
     private void frameBuild () {
@@ -98,14 +96,19 @@ public class PlatformerFrame extends JFrame implements IArcadeGame {
         repaint();
     }
 
+    /**
+     * An uncompleted method that would bring up a new, blank level in the
+     * editor.
+     */
     public void newGame () {
         System.out.println("make a new game or something");
     }
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        newGame(); // Something tells me this won't actually start the game
-                   // properly yet.
+        // Something tells me this won't actually start the game
+        // properly yet.
+        newGame();
     }
 
     @Override
@@ -114,7 +117,7 @@ public class PlatformerFrame extends JFrame implements IArcadeGame {
         screenShots.add(getMainImage());
         return screenShots;
     }
-    
+
     @Override
     public Image getMainImage () {
         ImageIcon mainImage = new ImageIcon(getClass().getResource(MAIN_IMAGE));
