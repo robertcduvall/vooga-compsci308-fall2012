@@ -17,6 +17,7 @@ import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.InputAPI;
 
 
@@ -70,7 +71,7 @@ public class BattleMode extends GameMode implements InputAPI {
         super(gameManager, modeName, involvedIDs);
         myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
-        resume();
+        // resume(); no need - gm resumes modes when necessary
     }
 
     /**
@@ -204,10 +205,7 @@ public class BattleMode extends GameMode implements InputAPI {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-
-        // move this to XML
-        File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Message_Sign.png");
-        Image box = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        Image box = GameWindow.importImage("BattleControlPanel");
         g.drawImage(box, 0, 0, width, height, null);
 
         // draw the messages
@@ -283,8 +281,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void drawArrow (Graphics g, int x, int y, int leftShift, int rightShift, int topShift,
             int bottomShift) {
-        File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
-        Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        Image arrow = GameWindow.importImage("BattleControlArrow");
         switch (mySelection) {
             case OPTION1:
                 g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
