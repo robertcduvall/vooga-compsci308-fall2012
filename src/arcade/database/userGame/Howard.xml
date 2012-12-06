@@ -1,21 +1,20 @@
 <gamelist>
 	<game>
-		<name>Shooter</name>
-		<highscore>50</highscore>
-		<timesplayed>10</timesplayed>
-		<gameinfo>level 6, health 200</gameinfo>
+		<name>Turnbased RPG</name>
+		<highscore>500</highscore>
+		<timesplayed>0</timesplayed>
+		<gameinfo></gameinfo>
 	</game>
 	<game>
-		<name>Platformer</name>
-		<highscore>500</highscore>
-		<timesplayed>5</timesplayed>
-		<gameinfo>level 1, health 900</gameinfo>
+		<name>Space Invaders</name>
+		<highscore>512</highscore>
+		<timesplayed>0</timesplayed>
+		<gameinfo></gameinfo>
 	</game>
-		<game>
+	<game>
 		<name>The Button Game</name>
-		<highscore>35</highscore>
+		<highscore>214</highscore>
 		<timesplayed>0</timesplayed>
 		<gameinfo/>
 	</game>
-
 </gamelist>
