@@ -21,7 +21,6 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController("src/vooga/platformer/data/level1.xml",
                 new SimpleOnePlayerInputInitializer());
-
         frame.getContentPane().add(controller);
         frame.pack();
         paintString(controller);

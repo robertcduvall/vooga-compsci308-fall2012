@@ -105,15 +105,22 @@ public class LevelEditor extends JPanel {
 //            
 //        }
     }
-    public void addLevelCondtions (String con) {
+    public void addLevelConditions (String con) {
+        if("Clear Conditions".equals(con)) {
+            myBoard.clearConditions();
+            return;
+        }
         JFileChooser chooser = new JFileChooser(DATA_PATH);
         FileNameExtensionFilter filter =
                 new FileNameExtensionFilter("Level XML Files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
+        String abspath = chooser.getSelectedFile().getPath();
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            String path = abspath.substring(abspath.indexOf("/src/") + 1,abspath.length());
+            System.out.println(path);
             if("DefeatAllEnemiesCondition".equals(con)) {
-                myBoard.addCondition(new DefeatAllEnemiesCondition(chooser.getSelectedFile().getPath()));
+                myBoard.addCondition(new DefeatAllEnemiesCondition(path));
             }
             else if("DestroySpecificObjectCondition".equals(con)) {
                 System.out.println("haha funny");
@@ -153,12 +160,10 @@ public class LevelEditor extends JPanel {
     protected void newLevel() {
         myBoard.clear();
         final JPopupMenu pop = valueEntry("Level Name", new ActionListener() {
-
             @Override
             public void actionPerformed (ActionEvent e) {
                 myBoard.setName(myTextField.getText());
-            }
-            
+            }            
         });
         pop.show(this, getWidth()/2-50, getHeight()/2-40);
     }

@@ -22,32 +22,34 @@ public class EditorMenuBar extends JMenuBar{
     private static final long serialVersionUID = 1L;
 
     public EditorMenuBar(final LevelEditor myEditor) {
-        JMenu levelMenu = new JMenu("Level");
-        levelMenu.add(new AbstractAction("Load") {
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.add(new AbstractAction("Load") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myEditor.load();
             }
         });
-        levelMenu.add(new AbstractAction("Clear") {
+        fileMenu.add(new AbstractAction("Clear") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myEditor.clear();
             }
         });
-        levelMenu.add(new AbstractAction("New") {
+        fileMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myEditor.newLevel();
             }
         });
-        levelMenu.add(new AbstractAction("Save") {
+        fileMenu.add(new AbstractAction("Save") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 myEditor.save();
             }
         });
-        levelMenu.addSeparator();
+        
+        //Level Menu
+        JMenu levelMenu = new JMenu("Level");
         JMenu attributeMenu = new JMenu("Add Level Plugin");
         List<String> plugins = getLevelItems("AvailableLevelPlugins.txt");
         for(String plugin : plugins) {
@@ -61,26 +63,18 @@ public class EditorMenuBar extends JMenuBar{
         levelMenu.add(attributeMenu);
         JMenu conditionMenu = new JMenu("Add Level Condition");
         List<String> conditions = getLevelItems("AvailableConditions.txt");
+        conditions.add("Clear Conditions");
         for(String cond : conditions) {
             conditionMenu.add(new AbstractAction(cond) {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    myEditor.addLevelCondtions(e.getActionCommand());
+                    myEditor.addLevelConditions(e.getActionCommand());
                 }
             });
         }
-        levelMenu.add(conditionMenu);
-        
-        
-        JMenu spriteMenu = new JMenu("Sprite");
-        spriteMenu.add(new AbstractAction("New") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //newLevel();
-            }
-        });
+        levelMenu.add(conditionMenu);        
+        add(fileMenu);
         add(levelMenu);
-        add(spriteMenu);
     }
 
     private List<String> getLevelItems (String str) {

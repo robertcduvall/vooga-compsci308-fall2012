@@ -298,6 +298,7 @@ public class LevelBoard extends JPanel {
         myConditions.clear();
         myWidth = getWidth();
         myPlayer = null;
+        myBackground = null;
     }
 
     protected void objectPopupMenu (GameObject g, MouseEvent e) {
@@ -349,6 +350,10 @@ public class LevelBoard extends JPanel {
         myConditions.add(newCondition);
     }
 
+    protected void clearConditions () {
+        myConditions.clear();
+    }
+
     /**
      * Will remove a sprite from the board.
      * 
@@ -386,16 +391,17 @@ public class LevelBoard extends JPanel {
         }
     }
 
+    
     /**
      * A TEMPORARY mouse listener for the current modes this level editor
      * supports.
      * And yes, I realize we have 3 different mouse listeners for this class.
      * 
      * @author Paul Dannenberg
+     * @deprecated for not using input team api
      * 
      */
     private class LevelEditorMouseListener extends MouseAdapter {
-
         @Override
         public void mouseMoved (MouseEvent e) {
             myCurrentMode.sendCursorPosition(e.getX(), e.getY());
@@ -419,6 +425,7 @@ public class LevelBoard extends JPanel {
      * 
      * @param currentMode The current mode the editor is in.
      * @param nextMode The next mode the editor is about to transition to.
+     * @deprecated for not using input team api
      */
     private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
         if (currentMode != null) {
@@ -434,7 +441,10 @@ public class LevelBoard extends JPanel {
      * placement mode) to another mode specified by the parameter
      * <code>nextmode</code>.
      * 
+     * deprecated for not using input team api
+     * 
      * @param nextMode The mode which the editor should switch to.
+     * @deprecated
      */
     public void setMode (IEditorMode nextMode) {
         if (nextMode == null) { throw new IllegalArgumentException(); }
