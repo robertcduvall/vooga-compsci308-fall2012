@@ -138,15 +138,20 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @SuppressWarnings("unchecked")
     private void makeTeams () {
-        // adding player
-        List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
-        myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(1)));
-        myTeam = new Team(myBattleObjects);
-
-        // adding enemy
-        List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
-        enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(0)));
-        myEnemyTeam = new Team(enemyBattleObjects);
+        for (Integer spriteID : myInvolvedIDs) {
+            if (spriteID == getGameManager().getPlayerSpriteID()) {
+                // adding player
+                List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
+                myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
+                myTeam = new Team(myBattleObjects);
+            }
+            else {
+                // adding enemy
+                List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
+                enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
+                myEnemyTeam = new Team(enemyBattleObjects);
+            }
+        }
     }
 
     @Override
@@ -155,12 +160,14 @@ public class BattleMode extends GameMode implements InputAPI {
             endBattle();
         }
         else {
-            myPlayerObject = getNextObjectIfDead(myPlayerObject, myTeam, true);
-            myEnemyObject = getNextObjectIfDead(myEnemyObject, myEnemyTeam, false);
+            myPlayerObject = getNextObjectIfDead(myPlayerObject, myTeam);
+            myPlayerObject.update();
+            myEnemyObject = getNextObjectIfDead(myEnemyObject, myEnemyTeam);
+            myEnemyObject.update();
         }
     }
     
-    private BattleObject getNextObjectIfDead (BattleObject teamMember, Team team, boolean isPlayerControlled) {
+    private BattleObject getNextObjectIfDead (BattleObject teamMember, Team team) {
         if (!teamMember.isAlive()) {
             myMessages.add(teamMember.getDeathMessage());
             List<Integer> list = new ArrayList<Integer>();
@@ -168,6 +175,7 @@ public class BattleMode extends GameMode implements InputAPI {
             flagCondition(teamMember.getConditionFlag(), list);
             team.switchPlayer(team.nextPlayer());
             BattleObject next = team.getActivePlayer();
+            boolean isPlayerControlled = teamMember.getID() == getGameManager().getPlayerSpriteID();
             myMessages.add(next.getStartFightingMessage(isPlayerControlled));
             next.initializeStats();
             return next;
