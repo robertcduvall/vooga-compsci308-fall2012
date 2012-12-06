@@ -4,13 +4,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import vooga.platformer.gameobject.GameObject;
 
-public class PlacementMouseListener extends MouseAdapter{
+/**
+ * A custom MouseAdapter used by the LevelEditor for placing GameObjects.
+ * 
+ * @author Sam Rang
+ *
+ */
+public class PlacementMouseListener extends MouseAdapter {
     private LevelBoard myLevel;
     private GameObject myCurrent;
-    public PlacementMouseListener(LevelBoard board) {
+
+    public PlacementMouseListener (LevelBoard board) {
         myCurrent = null;
         myLevel = board;
     }
+
     @Override
     public void mousePressed (MouseEvent e) {
         if (myCurrent != null) {
@@ -44,12 +52,12 @@ public class PlacementMouseListener extends MouseAdapter{
     public void mouseDragged (MouseEvent e) {
         mouseMoved(e);
     }
-    
-    public GameObject getCurrent() {
+
+    public GameObject getCurrent () {
         return myCurrent;
     }
-    
-    public void setCurrent(GameObject obj) {
+
+    public void setCurrent (GameObject obj) {
         myCurrent = obj;
     }
 }

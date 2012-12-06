@@ -70,7 +70,7 @@ public class ButtonGame implements IArcadeGame {
 
     private void endGame () {
         JOptionPane.showMessageDialog(null, "Your score was " + score);
-        myGameSaver.saveHighScore(score);
+        myGameSaver.saveGameInfo("score", String.valueOf(score));
         myFrame.dispose();
     }
 

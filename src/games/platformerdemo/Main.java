@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import vooga.platformer.core.PlatformerController;
 import vooga.platformer.core.inputinitializer.SimpleOnePlayerInputInitializer;
+import vooga.platformer.core.inputinitializer.KeyControllerOnePlayerInputInitializer;
 
 
 /**
@@ -19,8 +20,8 @@ public class Main {
     public static void main (String[] args) {
         JFrame frame = new JFrame("Demo Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController("src/vooga/platformer/data/level1.xml",
-                new SimpleOnePlayerInputInitializer());
+        PlatformerController controller = new PlatformerController("src/vooga/platformer/data/test.xml",
+                new KeyControllerOnePlayerInputInitializer());
 
         frame.getContentPane().add(controller);
         frame.pack();
