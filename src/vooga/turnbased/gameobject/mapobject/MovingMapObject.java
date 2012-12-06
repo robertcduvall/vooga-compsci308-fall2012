@@ -10,6 +10,7 @@ import vooga.turnbased.gui.GamePane;
 
 /**
  * Map objects that can move smoothly, but are nevertheless restricted to tiles.
+ * This class enables smooth movement in a grid system
  * 
  * @author rex
  * 
@@ -102,7 +103,7 @@ public class MovingMapObject extends MapObject {
      * paint differently when the object is moving
      * @param g Graphics object onto which the MapObject is painted
      */
-    public void paint (Graphics g) {
+    public void paintOption (Graphics g) {
         Point offset = new Point(getOffset());
         if (isMoving()) {
             offset.x = getOffset().x - myDirection.x * getTileDimension().width + myXOriginInTile;

@@ -172,7 +172,7 @@ public class MapObject extends GameObject {
      * 
      * @param g Graphics object.
      */
-    public void paint (Graphics g) {
+    public void paintOption (Graphics g) {
         paintInProportion(g, myOffset, myTileDimension, 1);
     }
 

@@ -41,7 +41,7 @@ public class MapItemObject extends MapObject {
     }
 
     @Override
-    public void paint (Graphics g) {
+    public void paintOption (Graphics g) {
         paintInProportion(g, getOffset(), getTileDimension(),
                 SIZE_RELATIVE_TO_TILE);
     }

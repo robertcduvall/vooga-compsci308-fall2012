@@ -15,6 +15,8 @@ import vooga.turnbased.gui.GameWindow;
 
 
 /**
+ * Example of how to use PathFinder
+ *
  * path finding for a MovingMapObject to go to a target position
  * An example of how PathFinder could be extended to apply to different games.
  * All of the methods in this class deal with the specific ways to show the
