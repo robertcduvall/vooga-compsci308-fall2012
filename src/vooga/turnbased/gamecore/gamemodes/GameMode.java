@@ -21,6 +21,7 @@ import vooga.turnbased.gui.GameWindow;
 public abstract class GameMode {
     private List<GameObject> myGameObjects;
     private final GameManager myGameManager;
+    private List<Integer> myInvolvedIDs;
     private String myModeName;
     private boolean myHasFocus;
     private boolean isActive;
@@ -38,6 +39,7 @@ public abstract class GameMode {
         myGameManager = gm;
         myModeName = modeName;
         myHasFocus = true;
+        myInvolvedIDs = involvedIDs;
         isActive = true;
         isOver = false;
         acquireGameObjects();
@@ -71,6 +73,15 @@ public abstract class GameMode {
         return myModeName;
     }
 
+    /**
+     * Returns IDs of sprites involved in mode's initiation.
+     * 
+     * @return IDs of involved sprites.
+     */
+    public List<Integer> getInvolvedIDs() {
+        return myInvolvedIDs;
+    }
+    
     /**
      * Returns the GameManager currently associated with the mode.
      * 
