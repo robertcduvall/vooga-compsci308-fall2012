@@ -29,12 +29,6 @@ public class EditorMenuBar extends JMenuBar{
                 myEditor.load();
             }
         });
-        fileMenu.add(new AbstractAction("Clear") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                myEditor.clear();
-            }
-        });
         fileMenu.add(new AbstractAction("New") {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,7 +66,14 @@ public class EditorMenuBar extends JMenuBar{
                 }
             });
         }
-        levelMenu.add(conditionMenu);        
+        levelMenu.add(conditionMenu);    
+        levelMenu.add(new AbstractAction("Clear") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                myEditor.clear();
+            }
+        });
+
         add(fileMenu);
         add(levelMenu);
     }

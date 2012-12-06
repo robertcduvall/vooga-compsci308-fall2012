@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -31,7 +30,6 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.level.condition.Condition;
-import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.levelplugin.BackgroundPainter;
 import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
@@ -297,7 +295,7 @@ public class LevelBoard extends JPanel {
         myConditions.clear();
         myWidth = getWidth();
         myPlayer = null;
-        myBackground = null;
+        myBackground = new ImageIcon();
     }
 
     protected void objectPopupMenu (GameObject g, MouseEvent e) {
@@ -306,7 +304,7 @@ public class LevelBoard extends JPanel {
         JMenuItem j = new JMenuItem("Flip");
         j.addActionListener(sh);
         pop.add(j);
-        JMenuItem j2 = new JMenuItem("Add attribute");
+        JMenuItem j2 = new JMenuItem("Edit");
         j2.addActionListener(sh);
         pop.add(j2);
         JMenuItem j3 = new JMenuItem("Delete");
@@ -364,7 +362,7 @@ public class LevelBoard extends JPanel {
             if ("Flip".equals(event.getActionCommand())) {
                 myObject.flipImage();
             }
-            else if ("Add attribute".equals(event.getActionCommand())) {
+            else if ("Edit".equals(event.getActionCommand())) {
                 JPopupMenu pop = new GameObjectEditor(myObject);
                 pop.requestFocus();
                 pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
