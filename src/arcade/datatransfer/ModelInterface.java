@@ -245,7 +245,7 @@ public class ModelInterface {
             String userName = prof.getUserName();
             List<String[]> userHighScores = getUserHighScores(userName);
             for (String[] arr : userHighScores) {
-                //System.out.println(Arrays.toString(arr));
+                // System.out.println(Arrays.toString(arr));
                 if (arr[0].equals(gameName)) {
                     String[] newarr = { userName, arr[1] };
                     list.add(newarr);
@@ -253,7 +253,7 @@ public class ModelInterface {
             }
             Collections.sort(list, new Comparator<String[]>() {
                 public int compare (String[] x1, String[] x2) {
-                    return x2[1].compareTo(x1[1]);
+                    return Integer.parseInt(x2[1])-Integer.parseInt(x1[1]);
                 }
             });
         }
