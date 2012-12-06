@@ -2,6 +2,7 @@ package arcade.datatransfer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -244,15 +245,15 @@ public class ModelInterface {
             String userName = prof.getUserName();
             List<String[]> userHighScores = getUserHighScores(userName);
             for (String[] arr : userHighScores) {
-                if (arr[0] == gameName) {
+                // System.out.println(Arrays.toString(arr));
+                if (arr[0].equals(gameName)) {
                     String[] newarr = { userName, arr[1] };
-
                     list.add(newarr);
                 }
             }
             Collections.sort(list, new Comparator<String[]>() {
                 public int compare (String[] x1, String[] x2) {
-                    return x1[1].compareTo(x2[1]);
+                    return Integer.parseInt(x2[1])-Integer.parseInt(x1[1]);
                 }
             });
         }
