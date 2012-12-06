@@ -21,7 +21,7 @@ public class TurnOnTheArcade {
     /**
      * Select whether or not to load arcade with a power button
      */
-    private static final boolean START_WITH_POWER_BUTTON = true;
+    private static final boolean START_WITH_POWER_BUTTON = false;
 
     private static final int FRAME_HEIGHT = 500;
     private static final int FRAME_WIDTH = 500;
