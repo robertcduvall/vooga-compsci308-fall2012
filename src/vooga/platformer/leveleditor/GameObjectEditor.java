@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.gameobject.GameObject;
 
@@ -31,24 +34,63 @@ import vooga.platformer.gameobject.GameObject;
  */
 @SuppressWarnings("serial")
 public class GameObjectEditor extends JPopupMenu {
+    private static final int DEFAULT_ICON_WIDTH = 40;
+    private GameObject myObject;
 
     /**
-     * Opens a new pop up editor for the specified GameObject.
+     * Opens a new pop up, adds an empty border and adds the
+     * info and editable fields
      * 
      * @param obj GameObject to be modified
      */
     public GameObjectEditor (final GameObject obj) {
-        // Top panel gets image (eventually animation?)
+        myObject = obj;
+        JPanel myTop = getInfoPanel();
+        add(myTop);
+        JPanel valuePanel = getValuePanel();
+        add(valuePanel);
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
+    }
+
+    /**
+     * Gets info about the object that the user can't change 
+     * and shows the default Image of the object
+     * 
+     * @return JPanel with info and image displayed
+     */
+    private JPanel getInfoPanel () {
         JPanel myTop = new JPanel();
         myTop.setLayout(new BorderLayout());
+        JPanel topCenter = new JPanel();
+        topCenter.setLayout(new FlowLayout());
         JLabel myImage = new JLabel();
-        myImage.setIcon(new ImageIcon(obj.getCurrentImage()));
-        myTop.add(myImage, BorderLayout.CENTER);
+        Image i = myObject.getCurrentImage();
+        myImage.setIcon(new ImageIcon(i.getScaledInstance(DEFAULT_ICON_WIDTH,
+                i.getHeight(null) * DEFAULT_ICON_WIDTH / i.getWidth(null), Image.SCALE_DEFAULT)));
+        myImage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        topCenter.add(myImage);
+        
+        JPanel info = new JPanel();
+        info.setLayout(new GridLayout(2, 1, 5, 5));
+        JLabel myID = new JLabel("ID:   " + ((Integer)myObject.getId()).toString());
+        info.add(myID);
+        JLabel type = new JLabel("GameObject Type: " + myObject.getClass().getSimpleName());
+        info.add(type);
+        topCenter.add(info);
+        
         JLabel prompt = new JLabel("Please enter Doubles:");
+        myTop.add(topCenter, BorderLayout.CENTER);
         myTop.add(prompt, BorderLayout.SOUTH);
-        add(myTop);
+        return myTop;
+    }
 
-        // Bottom panel has fields and buttons
+    /**
+     * Creates a JPanel with editable fields that display the current
+     * value and can be overwritten 
+     * 
+     * @return JPanel with labels and text fields
+     */
+    private JPanel getValuePanel () {
         JPanel myBottom = new JPanel();
         myBottom.setLayout(new GridLayout(6, 2));
         JLabel label;
@@ -56,28 +98,28 @@ public class GameObjectEditor extends JPopupMenu {
         final List<JTextField> fields = new ArrayList<JTextField>();
         // X
         label = new JLabel("X position");
-        textField = new HintTextField(((Double) obj.getX()).toString());
+        textField = new HintTextField(((Double) myObject.getX()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
 
         // Y
         label = new JLabel("Y position");
-        textField = new HintTextField(((Double) obj.getY()).toString());
+        textField = new HintTextField(((Double) myObject.getY()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
 
         // Width
         label = new JLabel("Width");
-        textField = new HintTextField(((Double) obj.getWidth()).toString());
+        textField = new HintTextField(((Double) myObject.getWidth()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
 
         // Height
         label = new JLabel("Height");
-        textField = new HintTextField(((Double) obj.getHeight()).toString());
+        textField = new HintTextField(((Double) myObject.getHeight()).toString());
         fields.add(textField);
         myBottom.add(label);
         myBottom.add(textField);
@@ -95,7 +137,7 @@ public class GameObjectEditor extends JPopupMenu {
                 int returnVal = chooser.showOpenDialog(chooser);
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     try {
-                        obj.setImage(ImageIO.read(chooser.getSelectedFile()));
+                        myObject.setImage(ImageIO.read(chooser.getSelectedFile()));
                     }
                     catch (IOException e1) {
                         showError("file does not exist");
@@ -116,9 +158,9 @@ public class GameObjectEditor extends JPopupMenu {
                     double y = Double.parseDouble(fields.get(1).getText());
                     double w = Double.parseDouble(fields.get(2).getText());
                     double h = Double.parseDouble(fields.get(3).getText());
-                    obj.setX(x);
-                    obj.setY(y);
-                    obj.setSize(w, h);
+                    myObject.setX(x);
+                    myObject.setY(y);
+                    myObject.setSize(w, h);
                     GameObjectEditor.this.setVisible(false);
                 }
                 catch (NumberFormatException nf) {
@@ -139,10 +181,14 @@ public class GameObjectEditor extends JPopupMenu {
         });
         myBottom.add(addStrategy);
         myBottom.add(accept);
-        add(myBottom);
+        return myBottom;
     }
 
-    protected void showError (String msg) {
+    /**
+     * shows an error on the popup, doesn't print stack
+     * @param msg
+     */
+    private void showError (String msg) {
         JLabel errormsg = new JLabel(msg);
         errormsg.setForeground(Color.RED);
         add(errormsg, FlowLayout.CENTER);
@@ -177,7 +223,7 @@ public class GameObjectEditor extends JPopupMenu {
         @Override
         public String getText () {
             String typed = super.getText();
-            return typed.equals(hint) ? hint : typed;
+            return typed.equals(myHint) ? myHint : typed;
         }
     }
 }

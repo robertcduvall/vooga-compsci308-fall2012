@@ -1,6 +1,7 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -20,6 +21,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.ingamemenu.GameButton;
 import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
+import vooga.platformer.level.condition.DestroySpecificObjectCondition;
+import vooga.platformer.level.condition.NoPlayersRemainLosingCondition;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 
 
@@ -103,13 +106,28 @@ public class LevelEditor extends JPanel {
         int returnVal = chooser.showOpenDialog(chooser);
         String abspath = chooser.getSelectedFile().getPath();
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            String path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());
-            System.out.println(path);
+            final String path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());
             if ("DefeatAllEnemiesCondition".equals(con)) {
                 myBoard.addCondition(new DefeatAllEnemiesCondition(path));
             }
+            else if ("NoPlayersRemainLosingCondition".equals(con)) {
+                myBoard.addCondition(new NoPlayersRemainLosingCondition(path));
+            }
             else if ("DestroySpecificObjectCondition".equals(con)) {
-                System.out.println("haha funny");
+                JPopupMenu idnumber = valueEntry("Object ID", new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        try {
+                            int id = Integer.parseInt(myTextField.getText());
+                            myBoard.addCondition(new DestroySpecificObjectCondition(path, id));
+                        }
+                        catch (NumberFormatException nfe) {
+                            myTextField.setForeground(Color.RED);
+                            myTextField.setText("Could not parse ID.\nTry again");
+                        }
+                    }
+                });
+                idnumber.show(this, getWidth()/2, getHeight()/2);
             }
             else if("PlayerInZoneCondition".equals(con)) {
                 
