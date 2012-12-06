@@ -104,8 +104,8 @@ public class LevelEditor extends JPanel {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Level XML Files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
-        String abspath = chooser.getSelectedFile().getPath();
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            String abspath = chooser.getSelectedFile().getPath();
             final String path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());
             if ("DefeatAllEnemiesCondition".equals(con)) {
                 myBoard.addCondition(new DefeatAllEnemiesCondition(path));
