@@ -12,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.panel.ArcadePanel;
+import arcade.usermanager.Message;
 import arcade.usermanager.UserProfile;
 import arcade.utility.ImageReader;
 
@@ -21,13 +22,23 @@ import arcade.utility.ImageReader;
         private UserProfile myUser;
         private String mySender;
         private String myMessage;
+        private String myTimeStamp;
         private ArcadePanel myContainer;
         private Image sendersPic;
         private JButton viewProfileButton;
         private JButton sendMessageButton;
 
-        public MessageListComponent(UserProfile user, ArcadePanel theContainer){
-            
+        public MessageListComponent(Message aMessage, ArcadePanel theContainer){
+            this.setLayout(new MigLayout("", "[450][]5[]", "[30][][30]"));
+            mySender = aMessage.getSender();
+            myMessage = aMessage.getMessage();
+            myTimeStamp = aMessage.getDateString();
+            System.out.println(myTimeStamp);
+            myContainer = theContainer;
+            myUser = theContainer.getArcade().getCurrentUser();
+            sendersPic = getSendersPicture();
+            this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
+            initComponents();
         }
 
         public MessageListComponent (String sender, String message,
@@ -38,7 +49,6 @@ import arcade.utility.ImageReader;
             myContainer = theContainer;
             myUser = theContainer.getArcade().getCurrentUser();
             sendersPic = getSendersPicture();
-            //ImageIcon anImage = new ImageIcon(ImageReader.loadImage("src/arcade/database/images", "default.jpg"));
             this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
             initComponents();
         }
@@ -88,10 +98,10 @@ import arcade.utility.ImageReader;
             g.drawString(mySender, 125, 60);
             g.setFont(new Font("sansserif", Font.ITALIC, 18));
             String displayMessage = myMessage;
-            if (displayMessage.length() > 50) {
-                displayMessage = displayMessage.substring(0,50) + "...";
+            if (displayMessage.length() > 30) {
+                displayMessage = displayMessage.substring(0,30) + "...";
             }
-            g.drawString(displayMessage, 145, 85);
+            g.drawString(displayMessage + " " + myTimeStamp, 145, 85);
         }
 
         @Override

@@ -25,9 +25,9 @@ public class GameSaver {
      * @param game the game that will provide the data
      */
     public GameSaver (User user, IArcadeGame game) {
-        setMyUser(user);
         myGame = game;
-        myUserManager.getInstance();
+        myUserManager = UserManager.getInstance();
+        setMyUser(user);
     }
 
     protected void setMyUser (User user) {
@@ -41,8 +41,9 @@ public class GameSaver {
      * @param value string describing the value of that property
      */
     public void saveUserProperty (String property, String value) {
-      //  myUserManager.getGame(userName, gameName)
-        myUser.getGameData(myGame.getName()).setGameInfo(myUser.getName(),property, value);
+        // myUserManager.getGame(userName, gameName)
+        
+        myUser.getGameData(myGame.getName()).setGameInfo(myUser.getName(), property, value);
     }
 
     /**
@@ -62,8 +63,7 @@ public class GameSaver {
      * @param userGameInfo preferences
      */
     public void saveGameInfo (String userGameInfo) {
-        saveUserProperty(myUser.getGameData(
-                myGame.getName()).getGameInfoKeyString(), userGameInfo);
+        saveUserProperty(myUser.getGameData(myGame.getName()).getGameInfoKeyString(), userGameInfo);
     }
 
     /**
@@ -74,7 +74,11 @@ public class GameSaver {
      * @param score score to be saved
      */
     public void saveHighScore (int score) {
-        saveUserProperty(myUser.getGameData(
-                myGame.getName()).getHighScoreKeyString(), score);
+        //TODO NOTE FROM HOWARD just testing with forcibly setting the user here, probably not a good solution
+        //implement your own fix and get rid of that user set
+        //also, check to make sure the score you're writing is higher than the current high score
+        setMyUser(myUserManager.getCurrentUserDontDeleteThisMethod());
+        
+        saveUserProperty(myUser.getGameData(myGame.getName()).getHighScoreKeyString(), score);
     }
 }

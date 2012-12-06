@@ -1,11 +1,13 @@
 package arcade.usermanager;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
 import twitter4j.auth.AccessToken;
 import util.facebook.FacebookTools;
 import util.twitter.TwitterTools;
+import arcade.usermanager.exception.PasswordNotMatchException;
 import arcade.usermanager.exception.UserNotExistException;
 import arcade.usermanager.exception.ValidationException;
 import arcade.utility.FileOperation;
@@ -111,7 +113,7 @@ public class SocialCenter {
 
     /**
      * delete user profile when user decide to cancel the account
-     * 
+     * Edited & debugged by Rob. Kinda not a pretty solution.
      * @param userName
      * @param password
      * @return operation status
@@ -120,8 +122,16 @@ public class SocialCenter {
 
     public boolean deleteUser (String userName, String password) throws ValidationException {
         // check validity
-        myUserManager.validateUser(userName, password);
+        try {
+            myUserManager.validateUser(userName, password);
+        }
 
+        catch (UserNotExistException e) {
+            return false;
+        }
+        catch (PasswordNotMatchException e){
+            return false;
+        }
         // valid file
         FileOperation.deleteFile(myUserBasicFilePath + userName + ".xml");
         FileOperation.deleteFile(myUserMessageFilePath + userName + ".xml");
@@ -208,6 +218,23 @@ public class SocialCenter {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * Robert Bruce.
+     * Ugly implementation. Hope it works.
+     * @param sender
+     * @param receiver
+     * @param content
+     * @param date
+     * @return
+     */
+    public boolean sendMessage (String sender, String receiver, String content, Date date) {
+        myXMLWriter.appendMessage(sender, receiver, content, date.toString());
+        // myUserManager.getUser(receiver).updateMyMessage(sender, content);
+        myUserManager.updateMessage(sender, receiver, content, date.toString());
+
+        return true;
     }
 
 }

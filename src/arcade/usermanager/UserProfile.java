@@ -2,7 +2,7 @@ package arcade.usermanager;
 
 import java.util.List;
 
-public class UserProfile {
+public class UserProfile implements Comparable {
     private String myName;
     private String myPicture;
     
@@ -30,6 +30,11 @@ public class UserProfile {
     
     public String getUserLastName(){
         return myLastName;
+    }
+
+    @Override
+    public int compareTo (Object arg0) {
+        return getUserName().compareTo(((UserProfile) arg0).getUserName());
     }
 
 }

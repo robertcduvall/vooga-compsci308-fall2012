@@ -1,6 +1,7 @@
 package arcade.gamemanager;
 
 import arcade.IArcadeGame;
+import arcade.usermanager.UserManager;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,6 +117,7 @@ public class Game {
 
     /**
      * adds additional game information
+     * 
      * @param tag tag name of new information
      * @param content new information content
      */
@@ -158,9 +160,7 @@ public class Game {
     public double getAverageRating () {
         double total = 0;
         List<Integer> ratings = getRatings();
-        if (ratings.size() == 0) {
-            return 0;
-        }
+        if (ratings.size() == 0) { return 0; }
         for (Integer rating : ratings) {
             total += rating;
         }

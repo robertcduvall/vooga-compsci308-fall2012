@@ -54,7 +54,6 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * Represents the main window for the level editor. Will display a collection
  * of Sprites and will oversee the results of all user actions.
  * 
- * @author Paul Dannenberg
  * @author Sam Rang
  * 
  */
@@ -325,17 +324,6 @@ public class LevelBoard extends JPanel {
         return Collections.unmodifiableCollection(myGameObjects);
     }
 
-    /**
-     * Adds a sprite to the board. This method does not
-     * check for any conditions (such as sprites being)
-     * added on top of each other.
-     * 
-     * @param obj GameObject being added
-     */
-    protected void addObject (GameObject obj) {
-        myCurrentObject = obj;
-        myGameObjects.add(obj);
-    }
 
     protected void addPlugin (LevelPlugin plug)  {
         myPlugins.add(plug);
@@ -428,7 +416,7 @@ public class LevelBoard extends JPanel {
      * @deprecated for not using input team api
      */
     private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
-        if (currentMode != null) {
+        if (currentMode != null && currentMode.getEditorObjects() != null) {
             Collection<IEditorObject> editorObjectsToKeep = currentMode.getEditorObjects();
             for (IEditorObject objectFromPreviousMode : editorObjectsToKeep) {
                 nextMode.add(objectFromPreviousMode);

@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
  *
  */
 public class GravityStrategy implements UpdateStrategy{
-    private static final double GRAVITY = 0.05;
+    private static final double GRAVITY = 0.3;
     private MovingObject myMoveObj;
     /**
      * @param moveObj

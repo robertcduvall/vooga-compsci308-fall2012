@@ -2,6 +2,9 @@ package arcade.datatransfer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import util.encrypt.Encrypter;
 import arcade.gamemanager.Game;
@@ -163,7 +166,18 @@ public class ModelInterface {
 
     public EditableUserProfile getEditableCurrentUser () {
         return myUserManager.getEditableCurrentUser();
+    }
 
+    /**
+     * We actually need to be able to get the User.
+     * Stop changing it so we can't.
+     * It's messing things up.
+     * <3 Rob
+     * 
+     * @return The User that is currently logged in.
+     */
+    public User getCurrentUserDontDeleteThisMethod () {
+        return myUserManager.getCurrentUserDontDeleteThisMethod();
     }
 
     /**
@@ -176,13 +190,6 @@ public class ModelInterface {
     }
 
     /**
-     * delete user profile
-     * 
-     * @param userName
-     * @param password
-     * @return
-     */
-    /**
      * Deletes a user.
      * 
      * @param userName
@@ -190,7 +197,7 @@ public class ModelInterface {
      * @return
      */
     public boolean deleteUser (String userName, String password) {
-        return mySocialCenter.deleteUser(userName, password);
+        return mySocialCenter.deleteUser(userName, Encrypter.hashCode(password));
 
     }
 
@@ -205,58 +212,52 @@ public class ModelInterface {
     }
 
     /**
-     * Should return the highscore of the game that was just played and ended.
-     * 
-     * @param userName The name of the user in question
-     * @param gameName The nameof the game in question
-     * @return
-     */
-    public int getMostRecentHighScore (String userName, String gameName) {
-        return Integer.parseInt(myUserManager.getGame(userName, gameName).getGameInfo("highscore"));
-
-    }
-
-    /**
-     * Should return the highest score a user has gotten for a specific game.
-     * 
-     * @param userName The name of the user in question
-     * @param gameName The name of the game in question
-     * @return
-     */
-    public int getHighestScoreforGame (String userName, String gameName) {
-        return 0;
-        // TODO: implement dis
-    }
-
-    /**
-     * Should return a list with elements in the format:
-     * "NameofGame - highscore"
+     * Returns a list of String[] that contain game names and high scores for a
+     * user.
      * 
      * @param userName The name of the user in question
      * @return
      */
-    public List<String> getListOfHighScoresForUser (String userName) {
-        List<String> list = new ArrayList<String>();
+    public List<String[]> getUserHighScores (String userName) {
+        List<String[]> list = new ArrayList<String[]>();
         List<GameData> gameList = myUserManager.getGameList(userName);
         for (GameData gd : gameList) {
-            String str = gd.getGameInfo("name") + " - " + gd.getGameInfo("highscore");
-            list.add(str);
-
+            String[] arr = { gd.getGameInfo("name"), gd.getGameInfo("highscore") };
+            list.add(arr);
         }
-
         return list;
     }
 
     /**
-     * Should return a list with elements in the format:
+     * Returns a sorted list of String[] that contain user names and high scores
+     * for a
+     * game.
      * "username - highscore"
      * 
      * @param gameName The name of the game in question
      * @return
      */
-    public List<String> getListOfHighScoresForGame (String gameName) {
-        return null;
-        // TODO: todo
+    public List<String[]> getGameHighScores (String gameName) {
+        List<String[]> list = new ArrayList<String[]>();
+        List<UserProfile> profileList = myUserManager.getAllUserProfile();
+        for (UserProfile prof : profileList) {
+            String userName = prof.getUserName();
+            List<String[]> userHighScores = getUserHighScores(userName);
+            for (String[] arr : userHighScores) {
+                if (arr[0] == gameName) {
+                    String[] newarr = { userName, arr[1] };
+
+                    list.add(newarr);
+                }
+            }
+            Collections.sort(list, new Comparator<String[]>() {
+                public int compare (String[] x1, String[] x2) {
+                    return x1[1].compareTo(x2[1]);
+                }
+            });
+        }
+
+        return list;
     }
 
     /**
@@ -306,5 +307,9 @@ public class ModelInterface {
      */
     public boolean disconnectFacebook (String name) {
         return myUserManager.deleteFacebookAccessToken(name);
+    }
+
+    public boolean sendMessage (String sender, String recipient, String messageContent, Date date) {
+        return mySocialCenter.sendMessage(sender, recipient, messageContent, date);
     }
 }

@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -35,6 +36,7 @@ public class UserProfileMainPanel extends AMainPanel {
     private JTextArea statsArea;
     private JLabel profileNameLabel;
     private Boolean loggedInUsersPage;
+    private List<String[]> gamesAndScores;
     public UserProfileMainPanel (Arcade a) {
         super(a);
     }
@@ -75,6 +77,21 @@ public class UserProfileMainPanel extends AMainPanel {
             }
 
         });
+        JButton deleteAccountButton = new JButton("Delete Account."); 
+        deleteAccountButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed (ActionEvent arg0) {
+                int n = JOptionPane.showConfirmDialog(null,"Are you sure you would like to delete this profile?",
+                                                      "Comfirm Account Deletion", JOptionPane.YES_NO_OPTION);
+                if (n == JOptionPane.NO_OPTION || n == JOptionPane.CLOSED_OPTION) {
+                    return;
+                }
+                System.out.println("Attempting to delete " + userToLoad);
+                getArcade().saveVariable("UserName", userToLoad);
+                getArcade().replacePanel("DeleteUser");
+            }
+
+        });
         JButton editButton = new JButton("Edit Profile Picture"); 
         editButton.addActionListener(new ActionListener(){
             @Override
@@ -99,6 +116,8 @@ public class UserProfileMainPanel extends AMainPanel {
                     newImageName = ourChooser.getSelectedFile().getName();
                     getArcade().getModelInterface().getEditableCurrentUser()
                     .setPicture("src/arcade/database/images/" + newImageName);
+                    getArcade().getModelInterface()
+                    .getCurrentUserDontDeleteThisMethod().setPicture("src/arcade/database/images/" + newImageName);
                     getArcade().replacePanel("UserProfile");
                 }
 
@@ -106,7 +125,11 @@ public class UserProfileMainPanel extends AMainPanel {
             }
 
         });
-        gameStats = "No game stats... Yet...";
+        gamesAndScores = getArcade().getModelInterface().getUserHighScores(userToLoad);
+        gameStats = "HighScores:\n\n";
+        for (int i = 0; i < gamesAndScores.size(); i++) {
+            gameStats += gamesAndScores.get(i)[0] + "- " + gamesAndScores.get(i)[1] + "\n";
+        }
         statsArea = new JTextArea(gameStats, 10, 20);
         statsArea.setLineWrap(true);
         statsArea.setWrapStyleWord(true);
@@ -121,6 +144,7 @@ public class UserProfileMainPanel extends AMainPanel {
         myPanel.add(sendMessageButton, "grow, span, wrap");
         if (loggedInUsersPage) {
             myPanel.add(editButton, "grow, span, wrap");
+            myPanel.add(deleteAccountButton, "grow, span, wrap");
         }
         myPanel.add(blankLabel, "wrap");
         myPanel.add(statsScrollPane, "grow, span");

@@ -23,7 +23,7 @@ import arcade.usermanager.exception.ValidationException;
 
 /**
  * 
- * @author Michael Deng
+ * @author Robert Bruce
  * 
  */
 public class MessageCenterMainPanel extends AMainPanel {
@@ -52,15 +52,14 @@ public class MessageCenterMainPanel extends AMainPanel {
         int numLoaded = 0;
         for (Message aMessage : myMessages){
             try {
-                myPanel.add(new MessageListComponent(aMessage.getSender(), 
-                        aMessage.getMessage(), myPanel), BorderLayout.SOUTH);
+                myPanel.add(new MessageListComponent(aMessage, myPanel), BorderLayout.SOUTH);
                 numLoaded++;
             }
             catch (NullPointerException e) {
                 System.out.println("Trouble loading a message...");
             }
         }
-        myPanel.setPreferredSize(new Dimension(750, 110*numLoaded));
+        myPanel.setPreferredSize(new Dimension(750, (110*numLoaded)+50));
 
         return myPanel;
     }
