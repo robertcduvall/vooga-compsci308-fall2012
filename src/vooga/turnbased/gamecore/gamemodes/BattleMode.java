@@ -154,28 +154,26 @@ public class BattleMode extends GameMode implements InputAPI {
         if (isBattleOver()) {
             endBattle();
         }
-        if (!myPlayerObject.isAlive()) {
-            myMessages.add(myPlayerObject.getDeathMessage());
+        else {
+            myPlayerObject = getNextObjectIfDead(myPlayerObject, myTeam, true);
+            myEnemyObject = getNextObjectIfDead(myEnemyObject, myEnemyTeam, false);
+        }
+    }
+    
+    private BattleObject getNextObjectIfDead (BattleObject teamMember, Team team, boolean isPlayerControlled) {
+        if (!teamMember.isAlive()) {
+            myMessages.add(teamMember.getDeathMessage());
             List<Integer> list = new ArrayList<Integer>();
-            list.add(new Integer(myPlayerObject.getID()));
-            flagCondition(myPlayerObject.getConditionFlag(), list);
-            myTeam.switchPlayer(myTeam.nextPlayer());
-            myPlayerObject = myTeam.getActivePlayer();
-            myMessages.add(myPlayerObject.getStartFightingMessage(true));
-            myPlayerObject.initializeStats();
+            list.add(new Integer(teamMember.getID()));
+            flagCondition(teamMember.getConditionFlag(), list);
+            team.switchPlayer(team.nextPlayer());
+            BattleObject next = team.getActivePlayer();
+            myMessages.add(next.getStartFightingMessage(isPlayerControlled));
+            next.initializeStats();
+            return next;
         }
         else {
-            myPlayerObject.update();
-        }
-        if (!myEnemyObject.isAlive()) {
-            myMessages.add(myEnemyObject.getDeathMessage());
-            List<Integer> list = new ArrayList<Integer>();
-            list.add(new Integer(myEnemyObject.getID()));
-            flagCondition(myEnemyObject.getConditionFlag(), list);
-            myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
-            myEnemyObject = myEnemyTeam.getActivePlayer();
-            myMessages.add(myEnemyObject.getStartFightingMessage(false));
-            myEnemyObject.initializeStats();
+            return teamMember;
         }
     }
 
