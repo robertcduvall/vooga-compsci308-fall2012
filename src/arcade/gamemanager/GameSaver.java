@@ -53,6 +53,11 @@ public class GameSaver {
         myGameData.setGameInfo(myUserName, property, value);
     }
     
+    /**
+     * 
+     * @param property Name of what you want to load
+     * @return This is the value of the property that you're loading
+     */
     public String loadGameInfo (String property) {
     	return myGameData.getGameInfo(property);
     }
