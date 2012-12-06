@@ -166,9 +166,9 @@ public class MapMode extends GameMode implements InputAPI {
         paintMapBackgroung(g);
         List<MapObject> visibleSprites = getSpritesWithinCamera();
         for (MapObject s : visibleSprites) {
-            s.paint(g);
+            s.paintOption(g);
         }
-        myPlayer.paint(g);
+        myPlayer.paintOption(g);
     }
 
     private void paintMapBackgroung (Graphics g) {

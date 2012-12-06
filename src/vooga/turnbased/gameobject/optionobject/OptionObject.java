@@ -31,29 +31,56 @@ public class OptionObject extends GameObject {
     private FontMetrics myFontMetrics;
     private Rectangle myRespondRegion;
     private Color myColor;
-    private boolean isHighlighted;
+    private boolean myIsHighlighted;
     private String myMessage;
 
+    /**
+     * constructor of OptionObject
+     * 
+     * @param allowableModes the modes it could be in (OptionMode)
+     * @param condition event it triggers
+     * @param message The option to be displayed on screen
+     */
     public OptionObject (Set<String> allowableModes, String condition, String message) {
         super(allowableModes, condition, null);
         myMessage = message;
         myColor = DEFAULT_COLOR;
-        isHighlighted = false;
+        myIsHighlighted = false;
     }
 
+    /**
+     * set position of where the option is painted
+     * 
+     * @param paintPosition the position where the option is painted
+     */
     public void setPosition (Point paintPosition) {
         myPosition = paintPosition;
     }
 
+    /**
+     * set message of the option
+     * 
+     * @param message the message for this option
+     */
     public void setMessage (String message) {
         myMessage = message;
     }
 
+    /**
+     * get the option message
+     * 
+     * @return option message
+     */
     public String getMessage () {
         return myMessage;
     }
 
-    public void paint (Graphics g) {
+    /**
+     * paint the option
+     * 
+     * @param g graphics object it paints to
+     */
+    public void paintOption (Graphics g) {
         Font optionFont = new Font("Helvetica", Font.BOLD, FONT_SIZE);
         g.setFont(optionFont);
         g.setColor(myColor);
@@ -62,10 +89,22 @@ public class OptionObject extends GameObject {
         if (myRespondRegion == null) {
             calculateRespondRegion();
         }
-        Color topColor = new Color(0, 10, 115);
-        Color sideColor = new Color(60, 0, 115);
-        int layer = 4;
-        myGameFont.threeDimensionEffect(myMessage, myColor, topColor, sideColor, layer, myPosition);
+        paintMessage(myGameFont);
+    }
+
+    /**
+     * Different games can override this method for other font effects
+     * The reason the colors and layers are defined as final variable is that
+     * throughout a game, the font for one kind of options should be consistent.
+     * 
+     * @param fontEffect
+     */
+    protected void paintMessage (FontEffect fontEffect) {
+        final Color TOP_COLOR = new Color(0, 10, 115);
+        final Color SIDE_COLOR = new Color(60, 0, 115);
+        final int LAYER = 4;
+        fontEffect.threeDimensionEffect(myMessage, myColor, TOP_COLOR, SIDE_COLOR, LAYER,
+                                        myPosition);
     }
 
     private void calculateRespondRegion () {
@@ -76,10 +115,17 @@ public class OptionObject extends GameObject {
         myRespondRegion = new Rectangle(x, y, width, height);
     }
 
-    public boolean highlight (Point mousePosition) {
-        if (myRespondRegion.contains(mousePosition)) {
+    /**
+     * highlight the option (if the current focus is on this option)
+     * 
+     * @param focusPosition the position of the focus on screen (either using a
+     *        mouse or other input devices)
+     * @return if the option is highlighted
+     */
+    public boolean highlight (Point focusPosition) {
+        if (myRespondRegion.contains(focusPosition)) {
             myColor = HIGHLIGHT_COLOR;
-            isHighlighted = true;
+            myIsHighlighted = true;
             myPosition.translate(DISPLACEMENT.x, DISPLACEMENT.y);
             return true;
         }
@@ -88,31 +134,56 @@ public class OptionObject extends GameObject {
         }
     }
 
+    /**
+     * dehighlight the option
+     */
     public void dehighlight () {
-        if (isHighlighted) {
+        if (myIsHighlighted) {
             myColor = DEFAULT_COLOR;
-            isHighlighted = false;
+            myIsHighlighted = false;
             myPosition.translate(-DISPLACEMENT.x, -DISPLACEMENT.y);
         }
     }
 
+    /**
+     * check option's highlight status
+     * 
+     * @return if the option is highlighted
+     */
     public boolean optionIsHighlighted () {
-        return isHighlighted;
+        return myIsHighlighted;
     }
 
+    /**
+     * check whether the option should be triggered
+     * 
+     * @param focusPosition the position of the focus on screen (either using a
+     *        mouse or other input devices)
+     * @return if the option should be triggered
+     */
     public boolean isTriggered (Point focusPosition) {
         return myRespondRegion.contains(focusPosition);
     }
 
+    /**
+     * execute this option
+     * 
+     * @param myOptionMode the option mode it is in
+     */
     public void executeOption (OptionMode myOptionMode) {
         myOptionMode.setModeIsOver();
     }
 
     @Override
     public void update () {
+        // no animation
+        // sub-classes can override to add animation
     }
 
     @Override
     public void clear () {
+        // never clear options
+        // sub-classes can change this behavior for the purpose of showing
+        // options dynamically
     }
 }

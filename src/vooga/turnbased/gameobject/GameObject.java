@@ -127,7 +127,7 @@ public abstract class GameObject {
      * Paints the object
      * @param g The graphics which is used to paint the object.
      */
-    public abstract void paint (Graphics g);
+    public abstract void paintOption (Graphics g);
 
     /**
      * Remove all occurences of this object in the program.
