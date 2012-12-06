@@ -29,7 +29,6 @@ import javax.swing.text.JTextComponent;
 import org.w3c.dom.Element;
 import util.projectsearcher.SubClassFinder;
 import vooga.turnbased.gamecreation.LevelEditor;
-import vooga.turnbased.gamecreation.PlayerEditor;
 import vooga.turnbased.gameobject.GameObject;
 
 /**
@@ -79,7 +78,6 @@ public class EditorPane extends DisplayPane {
     private List<Point> myPaintedSprites = new ArrayList<Point>();
     private Point myPlayerPoint;
     private boolean myDisplayPlayer;
-    private PlayerEditor myPlayerEditor;
     private String myBackgroundPath;
 
     /**
@@ -158,7 +156,7 @@ public class EditorPane extends DisplayPane {
         add(spriteButton);
         JButton nextMap = addNewMapButton(l);
         add(nextMap);
-        JButton playerButton = addPlayerButton();
+        JButton playerButton = addPlayerButton(l);
         add(playerButton);
         JButton finishedButton = addDoneButton(l);
         add(finishedButton);
@@ -166,41 +164,36 @@ public class EditorPane extends DisplayPane {
         validate();
     }
 
-    private JButton addPlayerButton () {
+    private JButton addPlayerButton (final LevelEditor l) {
         JButton b = new JButton("Make Player");
         b.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
-                JFileChooser fc = new JFileChooser(System.getProperty(USER_DIR));
-                fc.addChoosableFileFilter(new XmlFileFilter());
-                int returnVal = fc.showSaveDialog(null);
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    myPlayerEditor = new PlayerEditor(fc.getSelectedFile().toString());
-                    Point player = myGrid[myCurrentTile.x][myCurrentTile.y];
-                    myPlayerPoint = new Point(player.x, player.y);
-                    myDisplayPlayer = true;
-                    repaint();
-                    editPlayer(myPlayerEditor);
-                }
+                Point player = myGrid[myCurrentTile.x][myCurrentTile.y];
+                myPlayerPoint = new Point(player.x, player.y);
+                myDisplayPlayer = true;
+                repaint();
+                editPlayer(l);
                 repaint();
             }
         });
         return b;
     }
 
-    private void editPlayer (PlayerEditor p) {
+    private void editPlayer (LevelEditor l) {
         Map<String, String> imagePaths = getHardcodedImagePaths();
-        p.addMapObject("", MAP, "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
+        l.addMapPlayerObject("", MAP, "vooga.turnbased.gameobject.mapobject.MapPlayerObject",
                 NO_ACTION, myCurrentTile.x, myCurrentTile.y, imagePaths);
         final int NUM_PAIRS = OBJECTS.length;
         final JPanel PANEL = setUpJPanel(OBJECTS, OBJECTS_DEFAULTS, NUM_PAIRS);
         InputDisplayUtil.makeCompactGrid(PANEL, NUM_PAIRS, 2, SIX, THIRTY_FIVE, SIX, SIX);
         final JFrame FRAME = new JFrame(
                 "Player Information (Select Add Object when all fields are ready)");
-        JButton nextButton = makeNextButtonAndAddXml(NUM_PAIRS, PANEL);
+        JButton nextButton = makeNextButtonAndAddXml(NUM_PAIRS, PANEL, l);
         setUpFrameAndPanel(PANEL, FRAME, nextButton);
     }
 
-    private JButton makeNextButtonAndAddXml (final int NUM_PAIRS, final JPanel P) {
+    private JButton makeNextButtonAndAddXml (final int NUM_PAIRS, final JPanel P,
+            final LevelEditor l) {
         JButton nextButton = new JButton("Add Battle Object");
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed (ActionEvent e) {
@@ -217,7 +210,7 @@ public class EditorPane extends DisplayPane {
                         index++;
                     }
                 }
-                addObjectXmlInformation(returnedValues, myPlayerEditor);
+                addObjectXmlInformation(returnedValues, l);
                 newPopUpMessage(
                         "Successfully Added Battle Object!", "To add another object, change the " +
                         "fields to desired values.  When done, close the window to continue " +
@@ -228,8 +221,8 @@ public class EditorPane extends DisplayPane {
     }
 
     protected void addObjectXmlInformation (String[] returnedValues,
-            PlayerEditor p) {
-        p.addBattleObject("", "battle", returnedValues[0], returnedValues[1],
+            LevelEditor l) {
+        l.addObject(l.getPlayerElement(), "", "battle", returnedValues[0], returnedValues[1], "1", "1",
                 returnedValues[3], returnedValues[4], returnedValues[2]);
     }
 
@@ -452,8 +445,7 @@ public class EditorPane extends DisplayPane {
             public void actionPerformed (ActionEvent e) {
                 l.addStaticSprites(myBackgroundPath, myMapCounter);
                 l.saveXmlDocument();
-                myPlayerEditor.modifyModes(myMapCounter);
-                myPlayerEditor.saveXmlDocument();
+                l.modifyModes(myMapCounter);
                 clear();
                 getGameWindow().changeActivePane(GameWindow.MENU);
             }

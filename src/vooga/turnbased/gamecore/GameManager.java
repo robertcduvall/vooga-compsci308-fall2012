@@ -50,7 +50,7 @@ public class GameManager implements InputAPI {
      * @param gameCanvas The GameCanvas it paints to.
      * @param xmlPath String path of xml file to load.
      */
-    public GameManager (GamePane gameCanvas, String xmlPath, String playerXml) {
+    public GameManager (GamePane gameCanvas, String xmlPath) {
         myGamePane = gameCanvas;
         myGameIsOver = false;
 
@@ -62,7 +62,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        initializeGameLevel(xmlPath, playerXml);
+        initializeGameLevel(xmlPath);
         configureInputHandling();
     }
 
@@ -74,8 +74,8 @@ public class GameManager implements InputAPI {
      * @param enteringObject
      *        The MapObject which will used for the MapMode of this level.
      */
-    private void initializeGameLevel (String gameFileName, String playerFileName) {
-        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, playerFileName, this);
+    private void initializeGameLevel (String gameFileName) {
+        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, this);
         myMapSize = levelLoader.getMapSize();
         myCameraSize = levelLoader.getCameraSize();
 

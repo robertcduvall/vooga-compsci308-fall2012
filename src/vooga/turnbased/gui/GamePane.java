@@ -46,7 +46,7 @@ public class GamePane extends DisplayPane implements Runnable {
      * initialize properties when user switch to game
      */
     public void initialize () {
-        myGameManager = new GameManager(this, getGameWindow().getXmlPath(), getGameWindow().getPlayerXml());
+        myGameManager = new GameManager(this, getGameWindow().getXmlPath());
         myGameThread = new Thread(this);
         myGameThread.setDaemon(true);
         myGameThread.start();
