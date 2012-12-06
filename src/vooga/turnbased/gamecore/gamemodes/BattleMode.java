@@ -37,7 +37,6 @@ public class BattleMode extends GameMode implements InputAPI {
     private BattleObject myPlayerObject;
     private BattleObject myEnemyObject;
     private int myLoserSpriteID;
-    private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
     private int mySelection;
 
@@ -69,7 +68,6 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     public BattleMode (GameManager gameManager, String modeName, List<Integer> involvedIDs) {
         super(gameManager, modeName, involvedIDs);
-        myInvolvedIDs = involvedIDs;
         myMessages = new ArrayList<String>();
         // resume(); no need - gm resumes modes when necessary
     }
@@ -138,7 +136,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @SuppressWarnings("unchecked")
     private void makeTeams () {
-        for (Integer spriteID : myInvolvedIDs) {
+        for (Integer spriteID : getInvolvedIDs()) {
             if (spriteID == getGameManager().getPlayerSpriteID()) {
                 // adding player
                 List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
@@ -156,14 +154,12 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void update () {
+        myPlayerObject = getNextObjectIfDead(myPlayerObject, myTeam);
+        myPlayerObject.update();
+        myEnemyObject = getNextObjectIfDead(myEnemyObject, myEnemyTeam);
+        myEnemyObject.update();
         if (isBattleOver()) {
             endBattle();
-        }
-        else {
-            myPlayerObject = getNextObjectIfDead(myPlayerObject, myTeam);
-            myPlayerObject.update();
-            myEnemyObject = getNextObjectIfDead(myEnemyObject, myEnemyTeam);
-            myEnemyObject.update();
         }
     }
     
@@ -325,9 +321,6 @@ public class BattleMode extends GameMode implements InputAPI {
     private void endBattle () {
         setModeIsOver();
         System.out.println("End battle!");
-        if (!myPlayerObject.isAlive()) {
-            flagCondition(myPlayerObject.getConditionFlag(), new ArrayList<Integer>());
-        }
         getGameManager().clearSprite(myLoserSpriteID);
     }
 
