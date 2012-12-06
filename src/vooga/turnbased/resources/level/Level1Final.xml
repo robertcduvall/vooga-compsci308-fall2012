@@ -23,7 +23,7 @@
     <mode>
       <name>gameOver</name>
       <class>vooga.turnbased.gamecore.gamemodes.GameOverMode</class>
-      <condition>endgame</condition>
+      <condition>endgame1,endgame2,endgame3,endgame4</condition>
     </mode>
     <mode>
       <name>map1</name>
@@ -279,7 +279,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-        <condition>NO_ACTION</condition>
+        <condition>endgame1</condition>
         <stats>
           <maxHealth>10</maxHealth>
           <health>10</health>
@@ -294,7 +294,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-        <condition>NO_ACTION</condition>
+        <condition>endgame2</condition>
         <stats>
           <maxHealth>8</maxHealth>
           <health>8</health>
@@ -308,7 +308,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-        <condition>NO_ACTION</condition>
+        <condition>endgame3</condition>
         <stats>
           <maxHealth>15</maxHealth>
           <health>15</health>
@@ -322,7 +322,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
-        <condition>endgame</condition>
+        <condition>endgame4</condition>
         <stats>
           <maxHealth>30</maxHealth>
           <health>30</health>
