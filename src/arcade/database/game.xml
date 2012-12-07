@@ -27,9 +27,15 @@
 	<game id="3">
 		<name>The Button Game</name>
 		<rating>10 7</rating>
-		<filepath>vooga.ButtonGame</filepath>
+		<filepath>games.ButtonGame</filepath>
 		<tags>fun</tags>
 <review>Easy to learn, hard to master :)- Howard</review>
 <review>Howard hax OP- Kannan</review>
+</game>
+<game id="3">
+		<name>Niel's Mario Style Game</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.nielgame.MarioStyleGame</filepath>
 </game>
 </gamelist>
