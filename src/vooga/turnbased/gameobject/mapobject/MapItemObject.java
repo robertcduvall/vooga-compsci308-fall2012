@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Set;
+import vooga.turnbased.gui.GameWindow;
 
 
 /**
@@ -35,7 +36,9 @@ public class MapItemObject extends MapObject {
      * @param target MapObject that interacts with item object.
      */
     public void interact (MapObject target) {
+        super.interact(target);
         if (target instanceof MapPlayerObject) {
+            GameWindow.playSound("ItemPickupSound");
             setVisible(false);
         }
     }

@@ -276,6 +276,14 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
         }
+        else if ("vooga.turnbased.gameobject.mapobject.MapTeleportObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.mapobject.MapItemObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
         else if ("vooga.turnbased.gameobject.optionobject.OptionObject"
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);

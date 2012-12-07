@@ -105,13 +105,26 @@
       <object>
         <createOn>start</createOn>
         <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapItemObject</class>
+        <condition>NO_ACTION</condition>
+        <location>
+          <x>6</x>
+          <y>6</y>
+        </location>
+        <image>src/vooga/turnbased/resources/image/mapobject/coin.png</image>
+      </object>
+    </sprite>
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>dooption</condition>
         <location>
           <x>10</x>
           <y>10</y>
         </location>
-        <image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
+        <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -132,24 +145,24 @@
       <object>
         <createOn>start</createOn>
         <modes>map1</modes>
-        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <class>vooga.turnbased.gameobject.mapobject.MapTeleportObject</class>
         <condition>entermap2</condition>
         <location>
           <x>9</x>
           <y>3</y>
         </location>
-        <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
+        <image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
       </object>
       <object>
         <createOn>start</createOn>
         <modes>map2</modes>
-        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <class>vooga.turnbased.gameobject.mapobject.MapTeleportObject</class>
         <condition>entermap1</condition>
         <location>
           <x>10</x>
           <y>3</y>
         </location>
-        <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
+        <image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
       </object>
     </sprite>
     <sprite>

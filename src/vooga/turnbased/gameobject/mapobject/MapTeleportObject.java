@@ -6,12 +6,12 @@ import java.util.Set;
 import vooga.turnbased.gui.GameWindow;
 
 public class MapTeleportObject extends MapObject {
-    Point myDestination;
+    // Point myDestination; // would need to complicate xml for this
 
     public MapTeleportObject (Set<String> allowableModes, String condition, Point location,
-                              Image mapImage, Point destination) {
+                              Image mapImage) {
         super(allowableModes, condition, location, mapImage);
-        myDestination = destination;
+        // myDestination = destination;
     }
 
     /**
@@ -22,7 +22,7 @@ public class MapTeleportObject extends MapObject {
     @Override
     public void interact (MapObject target) {
         super.interact(target);
-        target.setLocation(myDestination);
+        // target.setLocation(myDestination); 
         GameWindow.playSound("TeleportSound");
     }
 }
