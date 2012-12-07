@@ -80,7 +80,7 @@ public class OptionObject extends GameObject {
      * 
      * @param g graphics object it paints to
      */
-    public void paintOption (Graphics g) {
+    public void paint (Graphics g) {
         Font optionFont = new Font("Helvetica", Font.BOLD, FONT_SIZE);
         g.setFont(optionFont);
         g.setColor(myColor);

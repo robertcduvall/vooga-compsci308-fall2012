@@ -28,7 +28,7 @@ import vooga.turnbased.sprites.Sprite;
  * @author RPGs team
  * 
  */
-public class GameManager implements InputAPI {
+public class GameManager implements InputAPI, GameLoop {
 
     private final GamePane myGamePane;
     private GameLogic myGameLogic;
@@ -172,6 +172,7 @@ public class GameManager implements InputAPI {
     /**
      * Updates the actve game mode and handles any events occurring.
      */
+    @Override
     public void update () {
         handleEvents();
         updateGameModes();
@@ -197,6 +198,7 @@ public class GameManager implements InputAPI {
      * @param g
      *        The Graphics object of the offScreenImage.
      */
+    @Override
     public void paint (Graphics g) {
         for (GameMode mode : myGameModes) {
             if (mode.isActive()) {

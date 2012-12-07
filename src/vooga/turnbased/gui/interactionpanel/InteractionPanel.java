@@ -72,7 +72,7 @@ public class InteractionPanel {
     public Image renderImage () {
         initializePanelImage();
         for (OptionObject option : myOptionObjects) {
-            option.paintOption(myImageGraphics);
+            option.paint(myImageGraphics);
         }
         drawBulletPoint(myImageGraphics);
         return myPanelImage;

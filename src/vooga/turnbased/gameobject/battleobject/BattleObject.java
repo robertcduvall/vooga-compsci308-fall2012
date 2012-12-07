@@ -276,7 +276,7 @@ public abstract class BattleObject extends GameObject {
     }
 
     @Override 
-    public void paintOption (Graphics g) {
+    public void paint (Graphics g) {
 
     }
 

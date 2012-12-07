@@ -103,7 +103,7 @@ public class MapMovingObject extends MapObject {
      * paint differently when the object is moving
      * @param g Graphics object onto which the MapObject is painted
      */
-    public void paintOption (Graphics g) {
+    public void paint (Graphics g) {
         Point offset = new Point(getOffset());
         if (isMoving()) {
             offset.x = getOffset().x - myDirection.x * getTileDimension().width + myXOriginInTile;
