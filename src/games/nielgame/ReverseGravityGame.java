@@ -13,11 +13,13 @@ import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 import vooga.platformer.core.PlatformerController;
 import vooga.platformer.core.inputinitializer.KeyControllerOnePlayerInputInitializer;
+import vooga.platformer.gameobject.LevelGoalZone;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.condition.DestroySpecificObjectCondition;
 import vooga.platformer.level.condition.PlayerInZoneCondition;
 import vooga.platformer.level.levelplugin.GravityPlugin;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
+import vooga.platformer.levelfileio.LevelFileIOException;
 import vooga.platformer.util.camera.StaticCamera;
 import vooga.platformer.util.enums.Direction;
 
@@ -63,7 +65,15 @@ public class ReverseGravityGame implements IArcadeGame {
          * the level: gravity is applied upwards, and the player must reach the door to win.
          */
         l.addPlugin(new GravityPlugin(0.5, Direction.UP));
-        l.addCondition(new PlayerInZoneCondition("src/games/nielgame/levels/win-level.xml", 560, 100, 30, 50));
+//        l.addCondition(new PlayerInZoneCondition("src/games/nielgame/levels/win-level.xml", 560, 100, 30, 50));
+        l.addCondition(new PlayerInZoneCondition());
+        try {
+            File levelGoalImage = new File("src/games/nielgame/images/blank_transparent.png");
+            l.addGameObject(new LevelGoalZone(560.0, 100.0, 30.0, 50.0, Integer.MAX_VALUE, levelGoalImage,"src/games/nielgame/levels/win-level.xml"));
+        }
+        catch (IOException e) {
+            throw new LevelFileIOException("Could not find file", e);
+        }
         
         frame.getContentPane().add(controller);
         frame.pack();
