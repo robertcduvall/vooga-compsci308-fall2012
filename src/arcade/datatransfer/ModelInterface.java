@@ -94,6 +94,7 @@ public class ModelInterface {
      */
     public boolean executeLogin (String username, String password) {
         try {
+            myGameCenter.setUser(username);
             return mySocialCenter.logOnUser(username, Encrypter.hashCode(password));
         }
         catch (Exception e) {
