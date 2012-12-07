@@ -33,6 +33,15 @@ public class GameCenter {
     }
 
     /**
+     * sets user for all games.
+     * @param userName
+     */
+    public void setUser(String userName) {
+        for (Game g : myGames) {
+            g.setUser(userName);
+        }
+    }
+    /**
      * initializes the class by reading information from game.xml file.
      */
     public void initialize () {
