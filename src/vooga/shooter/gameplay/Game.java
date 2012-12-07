@@ -28,6 +28,7 @@ import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
+import games.tommygame.levels.Level1;
 import games.tommygame.levels.LostGame;
 import games.tommygame.levels.WonGame;
 import vooga.shooter.level_editor.Level;
@@ -96,7 +97,7 @@ public class Game implements DrawableComponent, IArcadeGame {
             addSprite(myPlayer2);
         }
 
-        Level myCurrentLevel = new MainScreen(this);
+        Level myCurrentLevel = new MainScreen(this, new Level1(this));
         myCanvas.addKeyListener(new KeyboardListener());
         startLevel(myCurrentLevel);
     }
