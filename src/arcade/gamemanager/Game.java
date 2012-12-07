@@ -53,7 +53,7 @@ public class Game {
      * @param doc xml document used to save and load data
      */
     public Game (IArcadeGame gameObject, Document doc) {
-        mySaver = new GameSaver(null, gameObject);
+        mySaver = new GameSaver("", gameObject);
         myGame = gameObject;
         myDocumentManager = new XmlManager();
         myDocument = doc;
@@ -61,6 +61,14 @@ public class Game {
         resetGameInfoList();
     }
 
+    /**
+     * sets user for the game.
+     * @param userName
+     */
+    public void setUser(String userName) {
+        mySaver.setUserInfo(userName);
+    }
+    
     private void resetGameInfoList () {
         myGameInfoList = makeGameInfoList(myGameElement);
     }
