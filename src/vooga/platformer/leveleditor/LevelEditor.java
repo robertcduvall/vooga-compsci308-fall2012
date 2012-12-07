@@ -7,6 +7,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -20,9 +23,11 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import util.ingamemenu.GameButton;
+import vooga.platformer.gameobject.LevelGoalZone;
 import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.condition.DestroySpecificObjectCondition;
 import vooga.platformer.level.condition.NoPlayersRemainLosingCondition;
+import vooga.platformer.level.condition.PlayerInZoneCondition;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
 
 
@@ -130,7 +135,17 @@ public class LevelEditor extends JPanel {
                 idnumber.show(this, getWidth()/2, getHeight()/2);
             }
             else if("PlayerInZoneCondition".equals(con)) {
-                
+                LevelGoalZone zone = null;
+                try{
+                    zone = new LevelGoalZone(0, 0, 0, 0, Integer.MAX_VALUE, new File(DATA_PATH + "Default.png"), path);
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
+                }
+                JPopupMenu pop = new GameObjectEditor(zone);
+                pop.show(this,getWidth()/2,getHeight()/2);
+                myBoard.add(zone);
+                myBoard.addCondition(new PlayerInZoneCondition());
             }
         }
     }

@@ -382,13 +382,23 @@ public class LevelBoard extends JPanel {
     }
 
     /**
-     * Will remove a sprite from the board.
+     * Will remove a GameObject from the board.
      * 
-     * @param sprite The sprite that should
+     * @param obj The GameObject that should
      *        be removed.
      */
     protected void remove (GameObject obj) {
         myGameObjects.remove(obj);
+    }
+    
+    /**
+     * Will add a GameObject to the board
+     * 
+     * @param obj GameObject being added
+     *
+     */
+    protected void add (GameObject obj) {
+        myGameObjects.add(obj);
     }
 
     private class SelectionHelper implements ActionListener {
