@@ -10,9 +10,9 @@ import vooga.turnbased.gamecore.gamemodes.OptionMode;
  * @author rex
  *
  */
-public class TransportOption extends OptionObject {
+public class OptionTransportObject extends OptionObject {
 
-    public TransportOption (Set<String> allowableModes, String condition, String message) {
+    public OptionTransportObject (Set<String> allowableModes, String condition, String message) {
         super(allowableModes, condition, message);
     }
     

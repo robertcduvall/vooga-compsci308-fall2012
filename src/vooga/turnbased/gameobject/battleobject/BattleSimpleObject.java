@@ -13,7 +13,7 @@ import java.util.Set;
  * @author Michael Elgart, Tony
  * 
  */
-public class TestMonster extends BattleObject {
+public class BattleSimpleObject extends BattleObject {
     private final String HEALTH_STAT = "health";
     private final String ATTACK_STAT = "attack";
     private final String DEFENSE_STAT = "defense";
@@ -40,7 +40,7 @@ public class TestMonster extends BattleObject {
      * @param name String name of monster.
      * @param image The image of this testMonster.
      */
-    public TestMonster (Set<String> allowableModes, String condition, Map<String, Number> stats,
+    public BattleSimpleObject (Set<String> allowableModes, String condition, Map<String, Number> stats,
             String name, Image image) {
         super(allowableModes, condition, stats, name, image);
     }

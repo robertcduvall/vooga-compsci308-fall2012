@@ -30,8 +30,8 @@ public class MapObstacleObject extends MapObject {
     @Override
     public void interact (MapObject target) {
         super.interact(target);
-        if (target instanceof MovingMapObject) {
-            ((MovingMapObject) target).setCanMove(false);
+        if (target instanceof MapMovingObject) {
+            ((MapMovingObject) target).setCanMove(false);
         }
     }
 }

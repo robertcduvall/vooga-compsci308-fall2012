@@ -15,7 +15,7 @@ import vooga.turnbased.gui.GamePane;
  * @author rex
  * 
  */
-public class MovingMapObject extends MapObject {
+public class MapMovingObject extends MapObject {
     private static final double SIZE_RELATIVE_TO_TILE = 1;
     private static final double RUN_MULTIPLIER = 2;
     private static final int INITIAL_MOVEMENT_TIME = 600;
@@ -39,7 +39,7 @@ public class MovingMapObject extends MapObject {
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      */
-    public MovingMapObject (Set<String> allowableModes, String condition, Point location,
+    public MapMovingObject (Set<String> allowableModes, String condition, Point location,
                             Image mapImage) {
         super(allowableModes, condition, location, mapImage);
         myMovementTimePerTile = INITIAL_MOVEMENT_TIME;

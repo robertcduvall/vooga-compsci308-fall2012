@@ -62,7 +62,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>NO_ACTION</condition>
         <stats>
           <maxHealth>5</maxHealth>
@@ -76,7 +76,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>NO_ACTION</condition>
         <stats>
           <maxHealth>20</maxHealth>
@@ -116,7 +116,7 @@
       <object>
         <createOn>start</createOn>
         <modes>option</modes>
-        <class>vooga.turnbased.gameobject.optionobject.TransportOption</class>
+        <class>vooga.turnbased.gameobject.optionobject.OptionTransportObject</class>
         <name>Go to map 2!</name>
         <condition>entermap2</condition>
       </object>
@@ -167,7 +167,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>wingame</condition>
         <stats>
           <maxHealth>100</maxHealth>
@@ -278,7 +278,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame1</condition>
         <stats>
           <maxHealth>10</maxHealth>
@@ -293,7 +293,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame2</condition>
         <stats>
           <maxHealth>8</maxHealth>
@@ -307,7 +307,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame3</condition>
         <stats>
           <maxHealth>15</maxHealth>
@@ -321,7 +321,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.TestMonster</class>
+        <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame4</condition>
         <stats>
           <maxHealth>30</maxHealth>

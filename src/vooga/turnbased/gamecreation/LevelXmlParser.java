@@ -260,7 +260,7 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseMapPlayer(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.battleobject.TestMonster"
+        else if ("vooga.turnbased.gameobject.battleobject.BattleSimpleObject"
                 .equals(objectClass)) {
             return (GameObject) parseBattleObject(objectElement);
         }
@@ -272,7 +272,7 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.mapobject.MovingMapObject"
+        else if ("vooga.turnbased.gameobject.mapobject.MapMovingObject"
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
         }
@@ -280,7 +280,7 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.optionobject.TransportOption"
+        else if ("vooga.turnbased.gameobject.optionobject.OptionTransportObject"
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }
