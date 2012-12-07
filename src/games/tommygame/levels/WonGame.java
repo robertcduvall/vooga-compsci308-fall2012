@@ -20,6 +20,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class WonGame extends Level {
 
+    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int NUMBER_OF_STAGES = 1;
     private static final int NUMBER_OF_ENEMIES = 1;
     private static final Dimension ENEMY_DIMENSION = new Dimension(60, 60);
@@ -36,11 +37,9 @@ public class WonGame extends Level {
     }
 
     public void startLevel () {
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("../images/spaceship.gif"));
-        Image enemyImage = imageIcon.getImage();
         myGame.addEnemy(new Enemy(new Point(myGame.getCanvasDimension().width / 2, myGame
                 .getCanvasDimension().height / 2), ENEMY_DIMENSION, myGame
-                .getCanvasDimension(), enemyImage, ENEMY_VELOCITY, ENEMY_DAMAGE));
+                .getCanvasDimension(), ENEMY_IMAGEPATH, ENEMY_VELOCITY, ENEMY_DAMAGE));
     }
 
     @Override

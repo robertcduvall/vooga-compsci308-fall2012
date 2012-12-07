@@ -19,6 +19,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class Level1 extends Level {
 
+    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int NUMBER_OF_STAGES = 1;
     private static final int NUMBER_OF_ENEMIES = 1;
     private static final Dimension ENEMY_DIMENSION = new Dimension(20, 17);
@@ -31,15 +32,15 @@ public class Level1 extends Level {
     public Level1 (Game game) {
         super();
         myGame = game;
-        setNextLevel(new Level2(myGame));
+//        setNextLevel(new Level2(myGame));
+        myNextLevel = null;
     }
 
     public void startLevel () {
-        String imagePath = "vooga/shooter/images/alien.png";
         for (int i = 0; i < NUMBER_OF_STAGES; i++) {
             for (int j = 0; j < NUMBER_OF_ENEMIES; j++) {
                 myGame.addEnemy(new Enemy(new Point(300 + (150 * j), 150 * -i), ENEMY_DIMENSION,
-                                          myGame.getCanvasDimension(), imagePath, ENEMY_VELOCITY,
+                                          myGame.getCanvasDimension(), ENEMY_IMAGEPATH, ENEMY_VELOCITY,
                                           ENEMY_DAMAGE));
             }
         }
