@@ -28,17 +28,16 @@ public class PlatformerController extends JPanel implements Runnable {
     private Thread animator;
 
     public PlatformerController (String firstLevelName, InputInitializer ii) {
-        
+
         this.setFocusable(true);
 
         setupLevel(firstLevelName);
-        
+
         ii.setUpInput(myCurrentLevel.getObjectList(), this);
 
         animator = new Thread(this);
         animator.start();
     }
-    
 
     /**
      * The main update cycle method.
@@ -49,7 +48,7 @@ public class PlatformerController extends JPanel implements Runnable {
         myCurrentLevel.update(elapsedTime);
         PlayState currentState = myCurrentLevel.getLevelStatus();
 
-        if (currentState == PlayState.NEXT_LEVEL) {
+        if (currentState == PlayState.NEXT_LEVEL || currentState == PlayState.GAME_OVER) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
             setupLevel(nextLevelName);
         }
@@ -58,8 +57,7 @@ public class PlatformerController extends JPanel implements Runnable {
     private void setupLevel (String lvlName) {
         myCurrentLevel = LevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
-        mySize = new Dimension((int) cameraBounds.getWidth(),
-                (int) cameraBounds.getHeight());
+        mySize = new Dimension((int) cameraBounds.getWidth(), (int) cameraBounds.getHeight());
         setPreferredSize(mySize);
     }
 
@@ -67,12 +65,13 @@ public class PlatformerController extends JPanel implements Runnable {
     public Dimension getSize () {
         return mySize;
     }
-    
+
     /**
      * Return the current level of this controller
+     * 
      * @return
      */
-    public Level getLevel() {
+    public Level getLevel () {
         return myCurrentLevel;
     }
 
@@ -95,11 +94,13 @@ public class PlatformerController extends JPanel implements Runnable {
     public void paintBlankScreen (Graphics pen) {
         pen.setColor(Color.WHITE);
         pen.fillRect(0, 0, getWidth(), getHeight());
-        
-        /*if (myBackground != null) {
-            pen.drawImage(myBackground.getScaledInstance((int) getWidth(),
-                    (int) getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
-        }*/
+
+        /*
+         * if (myBackground != null) {
+         * pen.drawImage(myBackground.getScaledInstance((int) getWidth(),
+         * (int) getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
+         * }
+         */
     }
 
     private void paintString (Graphics pen) {
@@ -153,8 +154,4 @@ public class PlatformerController extends JPanel implements Runnable {
         }
     }
 
-
-
-
-    
 }

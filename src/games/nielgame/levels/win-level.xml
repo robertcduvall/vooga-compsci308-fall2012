@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>640</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/nielgame/levels/win-levelGameObjects.bin</gameObjectData>
+<conditionData>src/games/nielgame/levels/win-levelConditions.bin</conditionData>
+<pluginData>src/games/nielgame/levels/win-levelPlugins.bin</pluginData>
+</level>
