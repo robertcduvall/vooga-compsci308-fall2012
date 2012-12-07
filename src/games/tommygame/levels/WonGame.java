@@ -20,7 +20,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class WonGame extends Level {
 
-    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
+    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
     private static final int NUMBER_OF_STAGES = 1;
     private static final int NUMBER_OF_ENEMIES = 1;
     private static final Dimension ENEMY_DIMENSION = new Dimension(60, 60);

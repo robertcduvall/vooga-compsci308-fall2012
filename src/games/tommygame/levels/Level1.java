@@ -32,8 +32,7 @@ public class Level1 extends Level {
     public Level1 (Game game) {
         super();
         myGame = game;
-//        setNextLevel(new Level2(myGame));
-        myNextLevel = null;
+        setNextLevel(new Level2(myGame));
     }
 
     public void startLevel () {

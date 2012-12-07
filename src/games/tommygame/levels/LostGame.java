@@ -43,11 +43,6 @@ public class LostGame extends Level {
                 ENEMY_IMAGEPATH, ENEMY_VELOCITY, ENEMY_DAMAGE));
     }
 
-    public void paint (Graphics pen) {
-        pen.drawString(LOST_GAME, myGame.getCanvasDimension().width / 2,
-                       myGame.getCanvasDimension().height / 2);
-    }
-
     @Override
     public boolean winningConditionsMet () {
         return false;
