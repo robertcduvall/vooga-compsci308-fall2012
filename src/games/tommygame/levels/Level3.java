@@ -1,4 +1,4 @@
-package vooga.shooter.implementation;
+package games.tommygame.levels;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -19,6 +19,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class Level3 extends Level {
 
+    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int NUMBER_OF_STAGES = 2;
     private static final int NUMBER_OF_ENEMIES = 3;
     private static final Dimension ENEMY_DIMENSION = new Dimension(20, 17);
@@ -35,11 +36,10 @@ public class Level3 extends Level {
     }
 
     public void startLevel () {
-        String imagePath = "vooga/shooter/images/alien.png";
         for (int i = 0; i < NUMBER_OF_STAGES; i++) {
             for (int j = 0; j < NUMBER_OF_ENEMIES; j++) {
                 myGame.addEnemy(new Enemy(new Point(100 + (150 * j), 200 * -i), ENEMY_DIMENSION,
-                                          myGame.getCanvasDimension(), imagePath, ENEMY_VELOCITY,
+                                          myGame.getCanvasDimension(), ENEMY_IMAGEPATH, ENEMY_VELOCITY,
                                           ENEMY_DAMAGE));
             }
         }

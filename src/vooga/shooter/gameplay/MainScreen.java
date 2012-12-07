@@ -1,14 +1,10 @@
-package vooga.shooter.implementation;
+package vooga.shooter.gameplay;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
-import java.util.List;
-import javax.swing.ImageIcon;
-import vooga.shooter.level_editor.Level;
-import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameObjects.Enemy;
-import vooga.shooter.gameplay.Game;
+import vooga.shooter.level_editor.Level;
+import games.tommygame.levels.Level1;
 
 
 /**
@@ -28,10 +24,10 @@ public class MainScreen extends Level {
     private Game myGame;
     private Level myNextLevel;
 
-    public MainScreen (Game game) {
+    public MainScreen (Game game, Level nextLevel) {
         super();
         myGame = game;
-        setNextLevel(new Level1(myGame));
+        setNextLevel(nextLevel);
     }
 
     public void startLevel () {

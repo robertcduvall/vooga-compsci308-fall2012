@@ -39,6 +39,7 @@ public abstract class Sprite implements SpriteActionInterface {
     private Dimension mySize;
     private Dimension myBounds;
     private Image myImage;
+    private String myImagePath;
     private List<Bullet> myBulletsFired;
     private int myHealth;
     private SpriteMethodMap myMapper;
@@ -47,6 +48,9 @@ public abstract class Sprite implements SpriteActionInterface {
 
 
     /**
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
+     * 
      * Construct a sprite initializing only position, size, and image.
      * Initial health is set to -1 to symbolize a sprite that does not
      * have health.
@@ -69,8 +73,37 @@ public abstract class Sprite implements SpriteActionInterface {
         myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
+    
+    /**
+     * Construct a sprite initializing only position, size, and image.
+     * Initial health is set to -1 to symbolize a sprite that does not
+     * have health.
+     * (something stationary with no health, e.g. barrier).
+     *
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
+     * @param imagePath the path to the image file of the sprite.
+     *          A relative path starting at the src directory.
+     */
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, String imagePath) {
+        myPosition = position;
+        mySize = size;
+        myImagePath = System.getProperty("user.dir") + "/src/" + imagePath;
+        myImage = (new ImageIcon(myImagePath)).getImage();
+        myVelocity = new Point(0, 0);
+        myHealth = Integer.MAX_VALUE;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        myBulletsFired = new ArrayList<Bullet>();
+        setMethods();
+    }
 
     /**
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
+     * 
      * Constructs a sprite with position, size, image, and starting velocity.
      * Initial health is set to -1 to symbolize a sprite that does not
      * have health.
@@ -94,8 +127,39 @@ public abstract class Sprite implements SpriteActionInterface {
         myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
+    
+    /**
+     * Constructs a sprite with position, size, image, and starting velocity.
+     * Initial health is set to -1 to symbolize a sprite that does not
+     * have health.
+     * (something with starting velocity but no health, e.g. moving asteroid).
+     *
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
+     * @param imagePath the path to the image file of the sprite.
+     *          A relative path starting at the src directory.
+     * @param velocity the starting velocity of the sprite
+     */
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, String imagePath, Point velocity) {
+        myPosition = position;
+        mySize = size;
+        myImagePath = System.getProperty("user.dir") + "/src/" + imagePath;
+        myImage = (new ImageIcon(myImagePath)).getImage();
+        myVelocity = new Point(0, 0);
+        myVelocity = velocity;
+        myHealth = Integer.MAX_VALUE;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        myBulletsFired = new ArrayList<Bullet>();
+        setMethods();
+    }
 
     /**
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
+     *          
      * Constructs a sprite with position, size, image, and health.
      * (something with starting health but no starting velocity, e.g. player).
      *
@@ -117,8 +181,37 @@ public abstract class Sprite implements SpriteActionInterface {
         myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
+    
+    /**
+     * Constructs a sprite with position, size, image, and health.
+     * (something with starting health but no starting velocity, e.g. player).
+     *
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
+     * @param imagePath the path to the image file of the sprite.
+     *          A relative path starting at the src directory.
+     * @param health the starting health of the sprite
+     */
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, String imagePath, int health) {
+        myPosition = position;
+        mySize = size;
+        myImagePath = System.getProperty("user.dir") + "/src/" + imagePath;
+        myImage = (new ImageIcon(myImagePath)).getImage();
+        myVelocity = new Point(0, 0);
+        myHealth = health;
+        myVelocity = new Point(0, 0);
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        myBulletsFired = new ArrayList<Bullet>();
+        setMethods();
+    }
 
     /**
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
+     * 
      * Constructs a sprite with position, size, image, velocity, and health.
      * (something with both starting velocity and health, e.g. enemy).
      *
@@ -134,6 +227,32 @@ public abstract class Sprite implements SpriteActionInterface {
         myPosition = position;
         mySize = size;
         myImage = image;
+        myVelocity = velocity;
+        myHealth = health;
+        myBounds = bounds;
+        myMapper = new SpriteMethodMap();
+        myBulletsFired = new ArrayList<Bullet>();
+        setMethods();
+    }
+    
+    /**
+     * Constructs a sprite with position, size, image, velocity, and health.
+     * (something with both starting velocity and health, e.g. enemy).
+     *
+     * @param position the center of the sprite image
+     * @param size the size of the image to display
+     * @param bounds the size of the canvas holding the sprite
+     * @param imagePath the path to the image file of the sprite.
+     *          A relative path starting at the src directory.
+     * @param velocity the starting velocity of the sprite
+     * @param health the starting health of the sprite
+     */
+    public Sprite (Point position, Dimension size,
+            Dimension bounds, String imagePath, Point velocity, int health) {
+        myPosition = position;
+        mySize = size;
+        myImagePath = System.getProperty("user.dir") + "/src/" + imagePath;
+        myImage = (new ImageIcon(myImagePath)).getImage();
         myVelocity = velocity;
         myHealth = health;
         myBounds = bounds;
@@ -437,6 +556,18 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public int getHealth () {
         return myHealth;
+    }
+    
+    /**
+     * Returns a string representing the path to the image
+     * file for the Sprite. The path is relative starting at
+     * the src directory. This is needed for converting to
+     * xml.
+     * 
+     * @return the full path to an image file
+     */
+    public String getImagePath() {
+        return myImagePath;
     }
     
 }

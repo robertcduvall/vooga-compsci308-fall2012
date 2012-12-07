@@ -1,4 +1,4 @@
-package vooga;
+package games;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -70,7 +70,7 @@ public class ButtonGame implements IArcadeGame {
 
     private void endGame () {
         JOptionPane.showMessageDialog(null, "Your score was " + score);
-        myGameSaver.saveGameInfo("score", String.valueOf(score));
+        myGameSaver.saveGameInfo("highscore", String.valueOf(score));
         myFrame.dispose();
     }
 

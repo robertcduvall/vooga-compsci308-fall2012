@@ -29,6 +29,10 @@ public class GameSaver {
     public GameSaver (String userName, IArcadeGame game) {
         setMyGame(game);
         myUserManager = UserManager.getInstance();
+        setUserInfo(userName);
+    }
+    
+    public void setUserInfo(String userName) {
         setMyUserName(userName);
         setMyGameData();
     }

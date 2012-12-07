@@ -1,6 +1,7 @@
-package vooga.shooter.implementation;
+package games.tommygame.levels;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
@@ -17,32 +18,34 @@ import vooga.shooter.gameplay.Game;
  * @author Tommy Petrilak
  * 
  */
-public class MainScreen extends Level {
+public class LostGame extends Level {
 
+    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int NUMBER_OF_STAGES = 1;
-    private static final int NUMBER_OF_ENEMIES = 2;
-    private static final Dimension ENEMY_DIMENSION = new Dimension(150, 150);
+    private static final int NUMBER_OF_ENEMIES = 1;
+    private static final Dimension ENEMY_DIMENSION = new Dimension(60, 51);
     private static final Point ENEMY_VELOCITY = new Point(0, 0);
     private static final int ENEMY_DAMAGE = 1;
+    private static final String LOST_GAME = "YOU LOSE -- THE ALIENS WON";
 
     private Game myGame;
     private Level myNextLevel;
 
-    public MainScreen (Game game) {
+    public LostGame (Game game) {
         super();
         myGame = game;
-        setNextLevel(new Level1(myGame));
+        myNextLevel = null;
     }
 
     public void startLevel () {
-        String imagePath = "vooga/shooter/images/background.gif";
-        myGame.addEnemy(new Enemy(new Point(300, 200), ENEMY_DIMENSION,
-                                  myGame.getCanvasDimension(), imagePath, ENEMY_VELOCITY,
-                                  ENEMY_DAMAGE));
+        myGame.addEnemy(new Enemy(new Point(myGame.getCanvasDimension().width / 2, myGame
+                .getCanvasDimension().height / 2), ENEMY_DIMENSION, myGame.getCanvasDimension(),
+                ENEMY_IMAGEPATH, ENEMY_VELOCITY, ENEMY_DAMAGE));
     }
 
     @Override
     public boolean winningConditionsMet () {
-        return myGame.getEnemies().isEmpty();
+        return false;
     }
+
 }
