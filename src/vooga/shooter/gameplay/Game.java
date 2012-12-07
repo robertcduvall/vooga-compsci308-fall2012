@@ -28,9 +28,8 @@ import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
-import vooga.shooter.implementation.LostGame;
-import vooga.shooter.implementation.MainScreen;
-import vooga.shooter.implementation.WonGame;
+import games.tommygame.levels.LostGame;
+import games.tommygame.levels.WonGame;
 import vooga.shooter.level_editor.Level;
 
 
@@ -50,6 +49,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     private static final String GAME_IMAGEPATH = "../images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
+    private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
 
     private List<ParticleSystem> myParticleSystems;
     private List<Sprite> mySprites;
@@ -58,8 +58,6 @@ public class Game implements DrawableComponent, IArcadeGame {
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
-    private Image myPlayerImage;
-    private ImageIcon myImageIcon;
     private Point myPlayerOneStart;
     private Point myPlayerTwoStart;
     private JFrame myFrame;
@@ -69,7 +67,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-       
+
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
         myGameImage = imageIcon.getImage();
 
@@ -80,13 +78,11 @@ public class Game implements DrawableComponent, IArcadeGame {
         mySprites = new ArrayList<Sprite>();
         myEnemies = new ArrayList<Enemy>();
         myParticleSystems = new ArrayList<ParticleSystem>();
-        myImageIcon = new ImageIcon(this.getClass().getResource("../images/spaceship.gif"));
-        myPlayerImage = myImageIcon.getImage();
         myPlayerOneStart = new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - 50);
         myPlayer =
                 new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
                                                                         myCanvas.getHeight()),
-                           myPlayerImage, PLAYER_HEALTH);
+                           PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
 
@@ -95,7 +91,7 @@ public class Game implements DrawableComponent, IArcadeGame {
             myPlayer2 =
                     new Player(myPlayerTwoStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
                                                                             myCanvas.getHeight()),
-                               myPlayerImage, PLAYER_HEALTH);
+                               PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
             addSprite(myPlayer2);
         }
@@ -162,13 +158,13 @@ public class Game implements DrawableComponent, IArcadeGame {
             }
         }
         Stack<ParticleSystem> remove = new Stack<ParticleSystem>();
-        for(ParticleSystem p: myParticleSystems) {
+        for (ParticleSystem p : myParticleSystems) {
             p.update();
-            if(!p.stillExists()) remove.add(p);
+            if (!p.stillExists()) remove.add(p);
         }
-        for(ParticleSystem p: remove) myParticleSystems.remove(p);
-        
-        System.out.println(myParticleSystems.size());
+        for (ParticleSystem p : remove)
+            myParticleSystems.remove(p);
+
     }
 
     /**
@@ -247,7 +243,8 @@ public class Game implements DrawableComponent, IArcadeGame {
                 e.paint(pen);
             }
         }
-        for(ParticleSystem p:myParticleSystems) p.draw((Graphics2D)pen);
+        for (ParticleSystem p : myParticleSystems)
+            p.draw((Graphics2D) pen);
         getEnemies().removeAll(deadEnemies);
     }
 
