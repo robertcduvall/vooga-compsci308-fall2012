@@ -61,6 +61,14 @@ public class Game {
         resetGameInfoList();
     }
 
+    /**
+     * sets user for the game.
+     * @param userName
+     */
+    public void setUser(String userName) {
+        mySaver.setMyUserName(userName);
+    }
+    
     private void resetGameInfoList () {
         myGameInfoList = makeGameInfoList(myGameElement);
     }
