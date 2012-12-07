@@ -44,7 +44,7 @@ public class EditorPane extends DisplayPane {
     private static final String[] GAME_SETUP = {"Dimension Width: ", "Dimension Height: ",
         "Viewable Width: ", "Viewable Height: ", "Background Image: "};
     private static final String[] GAME_SETUP_DEFAULTS = {"18", "20", "15", "11",
-        "src/vooga/turnbased/resources/image/grass.png"};
+        "src/vooga/turnbased/resources/image/mapobject/grass.png"};
     private static final String[] OBJECTS = {"Class: ", "Condition: ",
         "Images: ", "Stats: ", "Name: "};
     private static final String[] OBJECTS_DEFAULTS = {
