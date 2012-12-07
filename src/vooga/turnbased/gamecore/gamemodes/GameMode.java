@@ -188,10 +188,4 @@ public abstract class GameMode implements GameLoop {
     public void setModeIsOver () {
         isOver = true;
     }
-
-    protected void playModeEntranceSound (String soundFileURL) {
-        getGameManager().turnOffSoundTrack();
-        SoundPlayer p = new SoundPlayer(GameWindow.importString(soundFileURL));
-        p.playOnce();
-    }
 }

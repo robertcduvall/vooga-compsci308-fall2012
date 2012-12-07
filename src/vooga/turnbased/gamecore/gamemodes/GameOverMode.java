@@ -36,7 +36,8 @@ public class GameOverMode extends GameMode {
 
     @Override
     public void initialize () {
-        playModeEntranceSound("GameOverSound");
+        getGameManager().turnOffSoundTrack();
+        GameWindow.playSound("GameOverSound");
     }
 
     @Override

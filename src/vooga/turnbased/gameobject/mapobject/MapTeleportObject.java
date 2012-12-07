@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.Set;
+import vooga.turnbased.gui.GameWindow;
 
 public class MapTeleportObject extends MapObject {
     Point myDestination;
@@ -22,5 +23,6 @@ public class MapTeleportObject extends MapObject {
     public void interact (MapObject target) {
         super.interact(target);
         target.setLocation(myDestination);
+        GameWindow.playSound("TeleportSound");
     }
 }

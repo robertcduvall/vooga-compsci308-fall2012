@@ -85,7 +85,7 @@ public class BattleMode extends GameMode implements InputAPI {
         myMessages.add(myPlayerObject.getStartFightingMessage(true));
         myPlayerObject.initializeStats();
         configureInputHandling();
-        playModeEntranceSound("BattleStartSound");
+        GameWindow.playSound("BattleStartSound");
     }
 
     @Override
@@ -317,7 +317,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     private void endBattle () {
         setModeIsOver();
-        System.out.println("End battle!");
+        // System.out.println("End battle!");
         getGameManager().clearSprite(myLoserSpriteID);
     }
 

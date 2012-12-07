@@ -27,7 +27,8 @@ public class GameWonMode extends GameMode {
 
     @Override
     public void initialize () {
-        playModeEntranceSound("GameWonSound");
+        getGameManager().turnOffSoundTrack();
+        GameWindow.playSound("GameWonSound");
     }
 
     @Override

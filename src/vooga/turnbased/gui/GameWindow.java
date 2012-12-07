@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import util.sound.SoundPlayer;
 
 
 /**
@@ -99,6 +100,16 @@ public class GameWindow extends JFrame {
      */
     public static String importString (String stringName) {
         return myResources.getString(stringName);
+    }
+    
+    /**
+     * play sound on demand
+     * 
+     * @param string string name in resource bundle
+     */
+    public static void playSound (String string) {
+        SoundPlayer p = new SoundPlayer(importString(string));
+        p.playOnce();
     }
 
     /**
