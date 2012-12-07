@@ -22,11 +22,8 @@ public class Enemy extends Sprite {
     private String myImagePath;
 
     /**
-     * @deprecated Please pass in the imagePath instead of an image.
-     * (See the constructor below). We need the imagePath so that we 
-     * can recreate the Enemy from xml data. The original
-     * path of the image source file cannot be retrieved from an Image
-     * object.
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
      * 
      * Constructs an enemy character for the game.
      * @param position the center of the image
@@ -46,14 +43,14 @@ public class Enemy extends Sprite {
      * @param position the center of the image
      * @param size the size of the image
      * @param bounds the size of the canvas
-     * @param imagePath the full path to the image file to use
+     * @param imagePath the path to the image file to use.
+     *          A relative path starting at the src directory
      * @param velocity the starting velocity for the enemy
      * @param health the starting health of the enemy
      */
     public Enemy (Point position, Dimension size, Dimension bounds,
         String imagePath, Point velocity, int health) {
-        super(position, size, bounds, (new ImageIcon(imagePath)).getImage(), velocity, health);
-        this.myImagePath = imagePath;
+        super(position, size, bounds, imagePath, velocity, health);
     }
 
     /**
@@ -121,14 +118,4 @@ public class Enemy extends Sprite {
         getMapper().addPair(HIT_BY_ENEMY, this);
     }
     
-    /**
-     * Get a string representing the full path to the image
-     * file for the Enemy. This is needed for converting to
-     * xml.
-     * 
-     * @return the full path to an image file
-     */
-    public String getImagePath() {
-        return myImagePath;
-    }
 }

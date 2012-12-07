@@ -25,8 +25,7 @@ public class TestLevelFactory extends TestCase {
     public void testLevelStoreAndLoad () {
 
         // Instantiate a level class and add a single enemy to it...
-        String projectPath = System.getProperty("user.dir");
-        String imagePath = projectPath + "/src/vooga/shooter/images/alien.png";
+        String imagePath = "vooga/shooter/images/alien.png";
 
         Level level = new Level(imagePath);
         Enemy enemy = new Enemy(new Point(0, 0), new Dimension(10, 10),
