@@ -46,9 +46,6 @@ public class GameSaver {
     }
     
     protected void setMyGameData () {
-        if (myUserName.equals("")) {
-            myUserName = "Howard";
-        }
     	myGameData = myUserManager.getGame(myUserName, myGame.getName());
     }
     /**

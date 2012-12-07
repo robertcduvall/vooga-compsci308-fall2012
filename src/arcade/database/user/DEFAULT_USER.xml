@@ -1,0 +1,8 @@
+<user>
+<name>DEFAULT_USER</name>
+<firstname>DEFAULT_USER</firstname>
+<lastname>DEFAULT_USER</lastname>
+<password>168c00</password>
+<picture>src/arcade/database/images/default.jpg</picture>
+<credits>0</credits>
+</user>

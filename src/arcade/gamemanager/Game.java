@@ -53,7 +53,7 @@ public class Game {
      * @param doc xml document used to save and load data
      */
     public Game (IArcadeGame gameObject, Document doc) {
-        mySaver = new GameSaver("", gameObject);
+        mySaver = new GameSaver("DEFAULT_USER", gameObject);
         myGame = gameObject;
         myDocumentManager = new XmlManager();
         myDocument = doc;
