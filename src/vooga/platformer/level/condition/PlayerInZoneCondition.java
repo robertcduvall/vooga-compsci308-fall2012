@@ -21,6 +21,20 @@ public class PlayerInZoneCondition implements Condition {
     Rectangle rect;
     String myNextLevelName;
     
+    /**
+     * 
+     * @param inLvlName
+     * @param zonex x position of top left corner
+     * @param zoney y position of top left corner
+     * @param zonewidth zone width
+     * @param zoneheight zone height
+     * 
+     * @deprecated Use default constructor in conjunction with a LevelGoalZone GameObject
+     */
+    public PlayerInZoneCondition(String inLvlName, int zonex, int zoney, int zonewidth, int zoneheight) {
+        rect = new Rectangle(zonex, zoney, zonewidth, zoneheight);
+        myNextLevelName = inLvlName;
+    }
 
     @Override
     public boolean isSatisfied (List<GameObject> objectList) {
@@ -39,18 +53,6 @@ public class PlayerInZoneCondition implements Condition {
         return false;
     }
     
-    /**
-     * 
-     * @param inLvlName
-     * @param zonex x position of top left corner
-     * @param zoney y position of top left corner
-     * @param zonewidth zone width
-     * @param zoneheight zone height
-     */
-    public PlayerInZoneCondition(String inLvlName, int zonex, int zoney, int zonewidth, int zoneheight) {
-        rect = new Rectangle(zonex, zoney, zonewidth, zoneheight);
-        myNextLevelName = inLvlName;
-    }
 
     @Override
     public String getNextLevelName () {
