@@ -424,7 +424,6 @@ public class LevelBoard extends JPanel {
      * And yes, I realize we have 3 different mouse listeners for this class.
      * 
      * @author Paul Dannenberg
-     * @deprecated for not using input team api
      * 
      */
     private class LevelEditorMouseListener extends MouseAdapter {
@@ -451,7 +450,6 @@ public class LevelBoard extends JPanel {
      * 
      * @param currentMode The current mode the editor is in.
      * @param nextMode The next mode the editor is about to transition to.
-     * @deprecated for not using input team api
      */
     private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
         if (currentMode != null && currentMode.getEditorObjects() != null) {
@@ -467,10 +465,7 @@ public class LevelBoard extends JPanel {
      * placement mode) to another mode specified by the parameter
      * <code>nextmode</code>.
      * 
-     * deprecated for not using input team api
-     * 
      * @param nextMode The mode which the editor should switch to.
-     * @deprecated
      */
     public void setMode (IEditorMode nextMode) {
         if (nextMode == null) { throw new IllegalArgumentException(); }
