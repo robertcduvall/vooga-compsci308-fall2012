@@ -1,6 +1,5 @@
 package vooga.platformer.level.condition;
 
-import java.awt.Rectangle;
 import java.util.List;
 import java.util.Map;
 import vooga.platformer.gameobject.GameObject;
@@ -21,31 +20,19 @@ public class PlayerInZoneCondition implements Condition {
 
     private static final long serialVersionUID = 1L;
 
-    private Player pl;
-    private Rectangle rect;
     private String myNextLevelName;
 
+    /**
+     * Instantiating this class and adding it as a level condition will cause
+     * for collisions between and Player instance and any PlayerInZone instance
+     * to be checked. If such a collision occurs, the NextLevelName will be set
+     * to the level specified by the collided LevelGoalZone object. Until such a
+     * collision occurs, the result of getNextLevelName will be null.
+     */
     public PlayerInZoneCondition () {
         /*
          * Empty constructor
          */
-    }
-
-    /**
-     * 
-     * @param inLvlName
-     * @param zonex x position of top left corner
-     * @param zoney y position of top left corner
-     * @param zonewidth zone width
-     * @param zoneheight zone height
-     * 
-     * @deprecated Use default constructor in conjunction with a LevelGoalZone
-     *             GameObject
-     */
-    public PlayerInZoneCondition (String inLvlName, int zonex, int zoney, int zonewidth,
-                                  int zoneheight) {
-        rect = new Rectangle(zonex, zoney, zonewidth, zoneheight);
-        myNextLevelName = inLvlName;
     }
 
     @Override

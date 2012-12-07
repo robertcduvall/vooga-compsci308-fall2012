@@ -8,12 +8,24 @@ import vooga.platformer.gameobject.Player;
 import vooga.platformer.util.enums.PlayState;
 
 
+/**
+ * Adding this Condition to the Level will cause the Level to check if any
+ * Player instances remain in level. If none remain (i.e., the Player has died),
+ * the user is taken to the specified level.
+ * 
+ * @author Grant Oakley (modified)
+ * 
+ */
 public class NoPlayersRemainLosingCondition implements Condition {
+    protected static final String LEVEL_NAME_TAG = "nextlevel";
 
     private static final long serialVersionUID = 1L;
-    protected static final String LEVEL_NAME_TAG = "nextlevel";
     private String myNextLevelName;
 
+    /**
+     * @param nextLevelName level the user should be taken to when this
+     *        condition is satisified
+     */
     public NoPlayersRemainLosingCondition (String nextLevelName) {
         myNextLevelName = nextLevelName;
     }
