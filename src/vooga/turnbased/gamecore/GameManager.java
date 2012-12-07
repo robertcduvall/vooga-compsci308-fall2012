@@ -327,7 +327,9 @@ public class GameManager implements InputAPI, GameLoop {
                 Constructor[] newC = c.getConstructors();
 
                 try {
-                    myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
+                    GameMode newGameMode = (GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs);
+                    myGameModes.add(newGameMode);
+                    newGameMode.resume();
                 }
                 catch (Exception e) {
                     System.out.println("Unable to create mode " + modeName + " of class " +

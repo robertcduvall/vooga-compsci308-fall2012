@@ -26,11 +26,6 @@ public class MapEnemyObject extends MapObject {
     @Override
     public void interact (MapObject m) {
         super.interact(m);
-        if (m instanceof MapPlayerObject) {
-            List <Integer> involvedSpriteIDs = new ArrayList<Integer>();
-            involvedSpriteIDs.add(m.getID());
-            involvedSpriteIDs.add(getID());
-            getMapMode().flagCondition(getConditionFlag(), involvedSpriteIDs);
-        }
+        // do battle specific stuff
     }
 }
