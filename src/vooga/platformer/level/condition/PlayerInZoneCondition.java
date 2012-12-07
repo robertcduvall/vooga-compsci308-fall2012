@@ -21,6 +21,12 @@ public class PlayerInZoneCondition implements Condition {
     Rectangle rect;
     String myNextLevelName;
     
+    public PlayerInZoneCondition() {
+        /*
+         * Empty constructor
+         */
+    }
+    
     /**
      * 
      * @param inLvlName
