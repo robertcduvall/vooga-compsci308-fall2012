@@ -71,7 +71,7 @@ public class User {
     }
 
     
-    public GameData getGameData (String gameName) {
+    protected GameData getGameData (String gameName) {
         for (GameData gd : myGameData) {
             if (gd.getGameInfo("name").equals(gameName)) return gd;
 
