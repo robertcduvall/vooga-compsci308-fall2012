@@ -211,6 +211,16 @@ public class LevelBoard extends JPanel {
     }
 
     /**
+     * Gets the offset of the level board caused by the user scrolling to the
+     * left or right.
+     * 
+     * @return the number of pixels the user has scrolled as integer
+     */
+    public int getOffset () {
+        return myOffset;
+    }
+
+    /**
      * Sets the current location of the mouse cursor that is displayed in the
      * LevelBoard.
      * 
@@ -218,7 +228,7 @@ public class LevelBoard extends JPanel {
      * @param yloc y location of the cursor
      */
     public void setMouseLoc (int xloc, int yloc) {
-        mouseX = xloc;
+        mouseX = xloc + myOffset;
         mouseY = yloc;
     }
 
@@ -240,7 +250,7 @@ public class LevelBoard extends JPanel {
         }
         String mousemsg = "";
         if (myCurrentObject != null) {
-            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2 + myOffset);
+            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
             myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
             myBufferGraphics.drawRect((int) myCurrentObject.getX() - myOffset,
@@ -390,12 +400,12 @@ public class LevelBoard extends JPanel {
     protected void remove (GameObject obj) {
         myGameObjects.remove(obj);
     }
-    
+
     /**
      * Will add a GameObject to the board
      * 
      * @param obj GameObject being added
-     *
+     * 
      */
     protected void add (GameObject obj) {
         myGameObjects.add(obj);
