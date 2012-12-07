@@ -205,7 +205,6 @@ public class GameManager implements InputAPI, GameLoop {
                 mode.paint(g);
             }
         }
-        // myGameModes.get(myGameModes.size()-1).paint(g);
     }
 
     private void handleMouseActions (GameMode mode) {
@@ -301,7 +300,7 @@ public class GameManager implements InputAPI, GameLoop {
                 myGameModes.get(myGameModes.size() - 1).pause();
                 myGameModes.remove(g);
                 myGameModes.add(g);
-                g.resume();
+                g.initialize();
                 return true;
             }
         }
@@ -314,8 +313,6 @@ public class GameManager implements InputAPI, GameLoop {
      * @param event the event that records involved IDs and the event type
      */
     private void handleEvent (ModeEvent event) {
-        // System.out.println("doing event: "+event.getName());
-        // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         if (!modeAlreadyExists(modeName)) {
@@ -329,7 +326,7 @@ public class GameManager implements InputAPI, GameLoop {
                 try {
                     GameMode newGameMode = (GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs);
                     myGameModes.add(newGameMode);
-                    newGameMode.resume();
+                    newGameMode.initialize();
                 }
                 catch (Exception e) {
                     System.out.println("Unable to create mode " + modeName + " of class " +

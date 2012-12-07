@@ -69,7 +69,7 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public MapMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
-        initialize();
+        //initialize();
     }
 
     @Override
@@ -78,19 +78,17 @@ public class MapMode extends GameMode implements InputAPI {
      */
     public void pause () {
         getGameObjects().clear();
-        setInactive();
         // should unregister keyboard input, otherwise leads to issues
     }
 
     @Override
     public void resume () {
-        setActive();
-        acquireGameObjects();
         initialize();
     }
 
     @Override
     public void initialize () {
+        acquireGameObjects();
         setActive();
         int playerID = getGameManager().getPlayerSpriteID();
         setCameraSize(getGameManager().getCameraSize());

@@ -69,7 +69,6 @@ public class BattleMode extends GameMode implements InputAPI {
     public BattleMode (GameManager gameManager, String modeName, List<Integer> involvedIDs) {
         super(gameManager, modeName, involvedIDs);
         myMessages = new ArrayList<String>();
-        // resume(); no need - gm resumes modes when necessary
     }
 
     /**
@@ -77,10 +76,16 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     @Override
     public void initialize () {
+        makeTeams();
         mySelection = OPTION1;
         myPlayerObject = myTeam.getActivePlayer();
         myEnemyObject = myEnemyTeam.getActivePlayer();
-        
+        myMessages.add(myEnemyObject.getStartFightingMessage(false));
+        myEnemyObject.initializeStats();
+        myMessages.add(myPlayerObject.getStartFightingMessage(true));
+        myPlayerObject.initializeStats();
+        configureInputHandling();
+        playModeEntranceSound("BattleStartSound");
     }
 
     @Override
@@ -90,15 +95,6 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void resume () {
-        makeTeams();
-        initialize();
-        myMessages.add(myEnemyObject.getStartFightingMessage(false));
-        myEnemyObject.initializeStats();
-
-        myMessages.add(myPlayerObject.getStartFightingMessage(true));
-        myPlayerObject.initializeStats();
-        configureInputHandling();
-        playModeEntranceSound("BattleStartSound");
     }
 
     /**
@@ -186,7 +182,8 @@ public class BattleMode extends GameMode implements InputAPI {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-
+        Image background = GameWindow.importImage("BattleBackground");
+        g.drawImage(background, 0, 0, width, height, null);
         myEnemyObject.paintStats(g, 0, 0, width / 2, height / HEIGHT_SCALAR);
         myEnemyObject.paintBattleObject(g, width / 2, 0, width / 2, height / HEIGHT_SCALAR);
         myPlayerObject.paintBattleObject(g, 0, height / HEIGHT_SCALAR, width / 2, height /
