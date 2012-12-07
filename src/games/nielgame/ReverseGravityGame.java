@@ -49,7 +49,6 @@ public class ReverseGravityGame implements IArcadeGame {
     
     public void start(String levelName) {
         JFrame frame = new JFrame("Niel's Reverse Gravity Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController(levelName,
                 new KeyControllerOnePlayerInputInitializer());
         

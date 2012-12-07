@@ -34,7 +34,6 @@ public class MarioStyleGame implements IArcadeGame {
     
     public void start(String levelName) {
         JFrame frame = new JFrame("Niel's Mario Style Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController(levelName,
                 new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);
