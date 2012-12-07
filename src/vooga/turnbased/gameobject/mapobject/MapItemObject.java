@@ -15,6 +15,7 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class MapItemObject extends MapObject {
     private static final double SIZE_RELATIVE_TO_TILE = 0.34;
+    private boolean myPickupSoundSwitch;
 
     /**
      * Creates the MapItemObject that will be used in MapMode.
@@ -27,6 +28,7 @@ public class MapItemObject extends MapObject {
     public MapItemObject (Set<String> allowableModes, String condition,
             Point location, Image mapImage) {
         super(allowableModes, condition, location, mapImage);
+        myPickupSoundSwitch = true;
 
     }
 
@@ -38,7 +40,9 @@ public class MapItemObject extends MapObject {
     public void interact (MapObject target) {
         super.interact(target);
         if (target instanceof MapPlayerObject) {
-            GameWindow.playSound("ItemPickupSound");
+            if (myPickupSoundSwitch) {
+                GameWindow.playSound("ItemPickupSound");
+            }
             setVisible(false);
         }
     }
@@ -47,5 +51,9 @@ public class MapItemObject extends MapObject {
     public void paint (Graphics g) {
         paintInProportion(g, getOffset(), getTileDimension(),
                 SIZE_RELATIVE_TO_TILE);
+    }
+
+    public void mute () {
+        myPickupSoundSwitch = false;
     }
 }

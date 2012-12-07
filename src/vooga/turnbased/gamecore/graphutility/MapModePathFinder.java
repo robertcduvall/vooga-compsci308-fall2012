@@ -110,8 +110,10 @@ public class MapModePathFinder extends PathFinder {
      * @return the MapItemObject representing a path indicator
      */
     protected MapItemObject generatePathIndicator (Point p) {
-        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION",
-                                 p, GameWindow.importImage("HighlightPath"));
+        MapItemObject indicator = new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION",
+                                                    p, GameWindow.importImage("HighlightPath"));
+        indicator.mute();
+        return indicator;
     }
 
     /**
