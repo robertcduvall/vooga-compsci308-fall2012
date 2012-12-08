@@ -1,6 +1,7 @@
 package games.AdventureRPG;
 
 import java.awt.Image;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -30,52 +31,52 @@ public class AdventureMob extends BattleObject {
     }
 
     @Override
-    public String doRandomOption (BattleObject target) {
+    public void doRandomOption(BattleObject target, List<String> battleMessages) {
         Random randomGenerator = new Random();
         double random = randomGenerator.nextDouble();
         String message = null;
         if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
-            message = doOption1(target);
+            doOption1(target, battleMessages);
         }
         if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
-            message = doOption2(target);
+            doOption2(target, battleMessages);
         }
         if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
-            message = doOption3(target);
+            doOption3(target, battleMessages);
         }
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
-            message = doOption4(target);
+            doOption4(target, battleMessages);
         }
-        return message;
+        battleMessages.add(message);
     }
 
     @Override
-    public String doOption (int MenuOptionSelected, BattleObject target) {
+    public void doOption (int MenuOptionSelected, BattleObject target, List<String> battleMessages) {
         String message = getName() + " didn't do anything";
         switch (MenuOptionSelected){
-            case 1: message = doOption1(target);
+            case 1: doOption1(target, battleMessages);
             break;
-            case 2: message = doOption2(target);
+            case 2: doOption2(target, battleMessages);
             break;
-            case 3: message = doOption3(target);
+            case 3: doOption3(target, battleMessages);
             break;
-            case 4: message = doOption4(target);
+            case 4: doOption4(target, battleMessages);
             break;
             default: break;
         }
-        return message;
+        battleMessages.add(message);
     }
 
     @Override
-    protected String doOption1 (BattleObject target) {
+    protected void doOption1 (BattleObject target, List<String> battleMessages) {
         //Quick attack
         healMe(4);
-        attackEnemy(target);
-        return (getName() + USED + getOptions()[0]);
+        attackEnemy(target, battleMessages);
+        battleMessages.add((getName() + USED + getOptions()[0]));
     }
 
     @Override
-    protected String doOption2 (BattleObject target) {
+    protected void doOption2 (BattleObject target, List<String> battleMessages) {
         //Concentrate
         healMe(4);
         int oldEnergy = getStat(ENERGY_STAT).intValue();
@@ -86,44 +87,43 @@ public class AdventureMob extends BattleObject {
             int newEnergy = oldEnergy * 5 / 4;
             changeStat(ENERGY_STAT, newEnergy);
         }
-        return (getName() + USED + getOptions()[1]);
+        battleMessages.add((getName() + USED + getOptions()[1]));
     }
 
     @Override
-    protected String doOption3 (BattleObject target) {
+    protected void doOption3 (BattleObject target, List<String> battleMessages) {
         // Powerful Attack
         int damage = getStat(ENERGY_STAT).intValue() + getStat(ATTACK_STAT).intValue();
         attackEnemy(target, damage);
-        return (getName() + USED + getOptions()[2]);
+        battleMessages.add((getName() + USED + getOptions()[2]));
     }
 
     @Override
-    protected String doOption4 (BattleObject target) {
+    protected void doOption4 (BattleObject target, List<String> battleMessages) {
         // Steal Energy
         AdventureMob enemy = (AdventureMob) target;
         int energyReceived = enemy.loseEnergy();
         changeStat(ENERGY_STAT, getStat(ENERGY_STAT).intValue() + energyReceived - 2);
-        return (getName() + USED + getOptions()[3]);
+        battleMessages.add (getName() + USED + getOptions()[3]);
     }
 
     @Override
-    protected void takeDamage (int damageDone) {
+    public void takeDamage (int damageDone, List<String> battleMessages) {
         int healthLost = damageDone - getStat(DEFENSE_STAT).intValue();
         if (healthLost > 0) {
             changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() - healthLost);
         }
-
     }
 
     @Override
-    protected void attackEnemy (BattleObject enemy) {
+    protected void attackEnemy (BattleObject enemy, List<String> battleMessages) {
         AdventureMob target = (AdventureMob) enemy;
-        target.takeDamage(getStat(ATTACK_STAT).intValue());
+        target.takeDamage(getStat(ATTACK_STAT).intValue(), battleMessages);
     }
     
     protected void attackEnemy (BattleObject enemy, int damage){
         AdventureMob target = (AdventureMob) enemy;
-        target.takeDamage(damage);
+        target.takeDamage(damage, null);
     }
     
     protected int loseEnergy () {

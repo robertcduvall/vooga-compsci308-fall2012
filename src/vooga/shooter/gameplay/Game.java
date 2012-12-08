@@ -47,7 +47,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Invaders";
     private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
-    private static final String GAME_IMAGEPATH = "../images/background.gif";
+    private static final String GAME_IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
@@ -70,7 +70,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
         myGameImage = imageIcon.getImage();
     }
@@ -200,9 +199,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      *         sprites if they are colliding, or (2) a bullet from one sprite,
      *         and the other sprite itself
      */
+
     private List<Sprite> collisionCheck (Sprite sprite1, Sprite sprite2) {
         List<Sprite> collidedSprites = new ArrayList<Sprite>();
-
         Rectangle sprite1Edges = new Rectangle(new Point(sprite1.getLeft(), sprite1.getTop()), sprite1.getSize());
         Rectangle sprite2Edges = new Rectangle(new Point(sprite2.getLeft(), sprite2.getTop()), sprite2.getSize());
 
@@ -324,6 +323,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      * 
      * @return dimension of the playable game area
      */
+
     public Dimension getCanvasDimension () {
         return myCanvas.getSize();
     }
