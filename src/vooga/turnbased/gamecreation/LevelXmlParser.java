@@ -292,6 +292,10 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }
+        else if ("vooga.turnbased.gameobject.optionobject.OptionConversationObject"
+                .equals(objectClass)) {
+            return (GameObject) parseOptionObject(objectElement);
+        }
         // }
         return null;
     }

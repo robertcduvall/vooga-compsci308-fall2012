@@ -6,6 +6,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import util.graphicprocessing.FontEffect;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
@@ -25,8 +27,8 @@ public class OptionObject extends GameObject {
     private static final int EPSILON = 10;
     // Amount of change in x, y coordinates when highlighted
     private static final Point DISPLACEMENT = new Point(2, 3);
-    private static final Color HIGHLIGHT_COLOR = Color.CYAN;
-    private static final Color DEFAULT_COLOR = Color.MAGENTA;
+    private Color myHighlightColor;
+    private Color myDefaultColor;
     private Point myPosition;
     private FontMetrics myFontMetrics;
     private Rectangle myRespondRegion;
@@ -44,7 +46,23 @@ public class OptionObject extends GameObject {
     public OptionObject (Set<String> allowableModes, String condition, String message) {
         super(allowableModes, condition, null);
         myMessage = message;
-        myColor = DEFAULT_COLOR;
+        initializeProperties();
+    }
+    
+    /**
+     * default option: quit
+     */
+    public static OptionObject getDefaultOptionObject (String quitMessage) {
+        Set<String> allowableModes = new HashSet<String>();
+        allowableModes.add("option");
+        OptionObject defaultOption = new OptionObject (allowableModes, "NO_ACTION", quitMessage);
+        return defaultOption;
+    }
+    
+    private void initializeProperties() {
+        myHighlightColor = Color.CYAN;
+        myDefaultColor = Color.MAGENTA;
+        myColor = myDefaultColor;
         myIsHighlighted = false;
     }
 
@@ -124,7 +142,7 @@ public class OptionObject extends GameObject {
      */
     public boolean highlight (Point focusPosition) {
         if (myRespondRegion.contains(focusPosition)) {
-            myColor = HIGHLIGHT_COLOR;
+            myColor = myHighlightColor;
             myIsHighlighted = true;
             myPosition.translate(DISPLACEMENT.x, DISPLACEMENT.y);
             return true;
@@ -139,7 +157,7 @@ public class OptionObject extends GameObject {
      */
     public void dehighlight () {
         if (myIsHighlighted) {
-            myColor = DEFAULT_COLOR;
+            myColor = myDefaultColor;
             myIsHighlighted = false;
             myPosition.translate(-DISPLACEMENT.x, -DISPLACEMENT.y);
         }
@@ -185,5 +203,21 @@ public class OptionObject extends GameObject {
         // never clear options
         // sub-classes can change this behavior for the purpose of showing
         // options dynamically
+    }
+    
+    protected void setHighlightColor(Color c) {
+        myHighlightColor = c;
+    }
+    
+    protected void setDefaultColor (Color c) {
+        myDefaultColor = c;
+    }
+    
+    protected Color getColor () {
+        return myColor;
+    }
+    
+    protected Point getPosition() {
+        return myPosition;
     }
 }
