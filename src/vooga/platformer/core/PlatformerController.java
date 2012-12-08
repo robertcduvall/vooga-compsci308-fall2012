@@ -27,6 +27,7 @@ public class PlatformerController extends JPanel implements Runnable {
     private Dimension mySize;
 
     private Thread animator;
+    private InputInitializer myInputInitializer;
 
     public PlatformerController (String firstLevelName, InputInitializer ii) {
 
@@ -34,7 +35,8 @@ public class PlatformerController extends JPanel implements Runnable {
 
         setupLevel(firstLevelName);
 
-        ii.setUpInput(myCurrentLevel.getObjectList(), this);
+        myInputInitializer = ii;
+        myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
 
         animator = new Thread(this);
         animator.start();
@@ -52,7 +54,7 @@ public class PlatformerController extends JPanel implements Runnable {
         if (currentState == PlayState.NEXT_LEVEL || currentState == PlayState.GAME_OVER) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
             setupLevel(nextLevelName);
-            
+            myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
         }
     }
 

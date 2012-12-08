@@ -4,12 +4,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import util.input.core.KeyboardController;
 import vooga.shooter.gameObjects.intelligence.AI;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
+import vooga.shooter.gameplay.inputInitialize.InputTeamSpriteActionAdapter;
 
 /**
  * This class encompasses the basic layout for any sprites that appear in the
@@ -31,6 +34,7 @@ public abstract class Sprite implements SpriteActionInterface {
     protected static final String RIGHT_BOUND = "right";
     protected static final String TOP_BOUND = "top";
     protected static final String BOTTOM_BOUND = "bottom";
+    private static final String BULLET_IMAGEPATH = "vooga/shooter/images/playerbullet.png";
     private static final Dimension BULLET_SIZE = new Dimension(5, 10);
     private static final int BULLET_SPEED = 10;
     private static final int BULLET_DAMAGE = 1;
@@ -46,34 +50,6 @@ public abstract class Sprite implements SpriteActionInterface {
     private boolean isDead = false;
     private AI myAI;
 
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     * 
-     * Construct a sprite initializing only position, size, and image.
-     * Initial health is set to -1 to symbolize a sprite that does not
-     * have health.
-     * (something stationary with no health, e.g. barrier).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myVelocity = new Point(0, 0);
-        myHealth = Integer.MAX_VALUE;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
-    
     /**
      * Construct a sprite initializing only position, size, and image.
      * Initial health is set to -1 to symbolize a sprite that does not
@@ -101,34 +77,6 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     * 
-     * Constructs a sprite with position, size, image, and starting velocity.
-     * Initial health is set to -1 to symbolize a sprite that does not
-     * have health.
-     * (something with starting velocity but no health, e.g. moving asteroid).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     * @param velocity the starting velocity of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image, Point velocity) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myVelocity = velocity;
-        myHealth = Integer.MAX_VALUE;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
-    
-    /**
      * Constructs a sprite with position, size, image, and starting velocity.
      * Initial health is set to -1 to symbolize a sprite that does not
      * have health.
@@ -150,32 +98,6 @@ public abstract class Sprite implements SpriteActionInterface {
         myVelocity = new Point(0, 0);
         myVelocity = velocity;
         myHealth = Integer.MAX_VALUE;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     *          
-     * Constructs a sprite with position, size, image, and health.
-     * (something with starting health but no starting velocity, e.g. player).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     * @param health the starting health of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image, int health) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myHealth = health;
-        myVelocity = new Point(0, 0);
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
         myBulletsFired = new ArrayList<Bullet>();
@@ -207,33 +129,6 @@ public abstract class Sprite implements SpriteActionInterface {
         myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     * 
-     * Constructs a sprite with position, size, image, velocity, and health.
-     * (something with both starting velocity and health, e.g. enemy).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     * @param velocity the starting velocity of the sprite
-     * @param health the starting health of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image, Point velocity, int health) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myVelocity = velocity;
-        myHealth = health;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
     
     /**
      * Constructs a sprite with position, size, image, velocity, and health.
@@ -258,6 +153,16 @@ public abstract class Sprite implements SpriteActionInterface {
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
         myBulletsFired = new ArrayList<Bullet>();
+        initialMethod();
+    }
+
+    private void initialMethod() {
+        myMapper.addPair("stop", new SpriteActionInterface() {
+            public void doAction (Object ... o) {
+                setVelocity(0,0);
+            }
+        });
+
         setMethods();
     }
 
@@ -343,6 +248,32 @@ public abstract class Sprite implements SpriteActionInterface {
     public void doAction (Object ... o) {
 
     }
+    
+    /**
+     * If this is used to add actions other than the default actions, a method must also be added
+     * to InputTeamSpriteActionAdapter, similar to the methods already present there. If any parameters are
+     * needed for the newly added sprite action, they will begin as the second parameter of the doEvent call.
+     *
+     * @param e the key event that triggers the new action
+     * @param act the method that tells the sprite what to do
+     * @param k the keyboard controller used in Game.java
+     * @param a the input adapter used in Game.java
+     */
+    public void addAction(KeyEvent e, SpriteActionInterface act, KeyboardController k, InputTeamSpriteActionAdapter a) {
+        myMapper.addPair(e.toString(), act);
+        try {
+            k.setControl(e.getKeyCode(), KeyboardController.PRESSED, a, act.toString());
+            k.setControl(e.getKeyCode(), KeyboardController.RELEASED, a, "stop");
+        }
+        catch (NoSuchMethodException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        catch (IllegalAccessException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+    }
 
     /**
      * Erases the sprite's image, which will be
@@ -361,11 +292,8 @@ public abstract class Sprite implements SpriteActionInterface {
      * and will be painted during the player's paint method.
      */
     public void fireBullet() {
-        ImageIcon iib = new ImageIcon(this.getClass().getResource(
-                "../images/playerbullet.png"));
-        Image bulletImage = iib.getImage();
 
-        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, bulletImage,
+        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, BULLET_IMAGEPATH,
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
         myBulletsFired.add(b);
