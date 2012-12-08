@@ -10,8 +10,8 @@ import arcade.gamemanager.GameSaver;
  * @author Tony, Rex
  */
 public class TRexGame implements IArcadeGame {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 450;
     
     @Override
     public void runGame (String userPreferences, GameSaver s) {

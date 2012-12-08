@@ -4,11 +4,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import util.sound.SoundPlayer;
 import vooga.turnbased.gamecore.GameLoop;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gui.GameWindow;
+import vooga.turnbased.gui.InputAPI;
 
 
 /**
@@ -19,7 +18,7 @@ import vooga.turnbased.gui.GameWindow;
  * @author rex, Volodymyr
  */
 
-public abstract class GameMode implements GameLoop {
+public abstract class GameMode implements GameLoop, InputAPI {
     private List<GameObject> myGameObjects;
     private final GameManager myGameManager;
     private List<Integer> myInvolvedIDs;
@@ -186,7 +185,16 @@ public abstract class GameMode implements GameLoop {
      */
     public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
 
+    /**
+     * Flag game mode to end and be deleted
+     */
     public void setModeIsOver () {
         isOver = true;
+    }
+    
+    @Override
+    public void configureInputHandling () {
+        getGameManager().resetControllers();
+        getGameManager().configureInputHandling();
     }
 }
