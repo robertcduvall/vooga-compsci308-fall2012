@@ -9,21 +9,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.UpdateStrategy;
+import vooga.platformer.levelfileio.LevelFileIOException;
 
 
 /**
@@ -36,7 +42,8 @@ import vooga.platformer.gameobject.GameObject;
 public class GameObjectEditor extends JPopupMenu {
     private static final int DEFAULT_ICON_WIDTH = 40;
     private GameObject myObject;
-
+    private List<UpdateStrategy> myStrategies;
+    
     /**
      * Opens a new pop up, adds an empty border and adds the
      * info and editable fields
@@ -45,12 +52,49 @@ public class GameObjectEditor extends JPopupMenu {
      */
     public GameObjectEditor (final GameObject obj) {
         myObject = obj;
+        parseStrategies();
         JPanel myTop = getInfoPanel();
         add(myTop);
         JPanel valuePanel = getValuePanel();
         add(valuePanel);
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
     }
+
+    private void parseStrategies () {
+        Scanner s = null;
+        try {
+            s = new Scanner(new File(System.getProperty("user.dir") +
+                                         "/src/vooga/platformer/data/AvailableStrategies.txt"));
+        }
+        catch (FileNotFoundException e) {
+            throw new LevelFileIOException("Could not find the level in the file system", e);
+        }
+        while (s.hasNext()) {
+            String item = s.nextLine();
+            UpdateStrategy us = (UpdateStrategy) createObject(item);
+            myStrategies.add(us);
+        }
+    }
+
+    /**
+     * useful class http://www.java-forums.org/java-lang/7894-object-reflection-creating-new-instances.html
+     * @param className
+     * @return
+     */
+    private Object createObject(String className) {
+        Object object = null;
+        try {
+            Class classDefinition = Class.forName(className);
+            object = classDefinition.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return object;
+     }
 
     /**
      * Gets info about the object that the user can't change 
@@ -174,8 +218,9 @@ public class GameObjectEditor extends JPopupMenu {
 
             @Override
             public void actionPerformed (ActionEvent e) {
-                System.out.println("add strategy");
-                // TODO
+                JPopupMenu jpop = new JPopupMenu();
+                JMenu strategies = new JMenu();
+                
             }
 
         });
