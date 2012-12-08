@@ -382,4 +382,8 @@ public class Game implements DrawableComponent, IArcadeGame {
     public String getName () {
         return GAME_NAME;
     }
+    
+    public Player getPlayer () {
+        return myPlayer;
+    }
 }
