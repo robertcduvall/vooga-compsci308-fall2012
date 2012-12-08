@@ -41,7 +41,7 @@ public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
     private static final String DATA_PATH = System.getProperty("user.dir") +
-                                            "/src/vooga/platformer/data/";
+                                            "/src/games/halo/";
     private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;

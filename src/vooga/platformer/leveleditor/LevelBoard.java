@@ -57,7 +57,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  */
 @SuppressWarnings("serial")
 public class LevelBoard extends JPanel {
-    private static final String DATA_PATH = "/src/vooga/platformer/data/";
+    private static final String DATA_PATH = "/src/vooga/games/halo/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
     private static final String DEFAULT_COLLISION_CHECKER =
             "src/vooga/platformer/collision/collisionEvents.xml";
@@ -293,7 +293,7 @@ public class LevelBoard extends JPanel {
                         new Player(30.0, (double) myHeight / 2, (double) DEFAULT_SIZE,
                                    (double) DEFAULT_SIZE, myObjID++,
                                    new File(System.getProperty("user.dir") + DATA_PATH +
-                                            "Player.png"));
+                                            "masterchief.png"));
                 myGameObjects.add(myPlayer);
             }
             catch (IOException e) {
