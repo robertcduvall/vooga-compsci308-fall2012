@@ -314,56 +314,11 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myEnemies = enemies;
     }
 
-    public Player getPlayer () {
-        return myPlayer;
-    }
     /**
      * 
      * @return dimension of the playable game area
      */
-<<<<<<< HEAD
-    public class KeyboardListener implements KeyListener {
-        private static final int NO_KEYS_PRESSED = -1;
 
-        public KeyboardListener () {
-            super();
-        }
-
-        /**
-         * Sends info about keys pressed to method mapper.
-         */
-        @Override
-        public void keyPressed (KeyEvent e) {
-            myPlayer.doEvent(Integer.toString(e.getKeyCode()), null);
-        }
-
-        /**
-         * Checks if any keys are being pressed. If not, sends to key mapper
-         * that no keys are currently pressed.
-         */
-        @Override
-        public void keyReleased (KeyEvent e) {
-            myPlayer.doEvent(Integer.toString(NO_KEYS_PRESSED), null);
-        }
-
-        @Override
-        public void keyTyped (KeyEvent e) {
-        }
-
-    }
-
-    @Override
-    public void setMouseListener (MouseMotionListener m) {
-
-    }
-
-    @Override
-    public void setKeyboardListener (KeyListener k) {
-
-    }
-
-=======
->>>>>>> e781649fadba09daf373405c50b38a5db3df056b
     public Dimension getCanvasDimension () {
         return myCanvas.getSize();
     }

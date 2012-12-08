@@ -14,21 +14,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import util.particleEngine.Explosion;
 import util.particleEngine.ParticleSystem;
 import vooga.shooter.gameObjects.Bullet;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
+import vooga.shooter.gameplay.inputInitialize.InputTeamSpriteActionAdapter;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.level_editor.Level;
 
-public class SpaceBugs implements DrawableComponent, IArcadeGame {
+public class SpaceBugs extends JComponent implements DrawableComponent, IArcadeGame {
 
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Bugs IV";
@@ -39,8 +43,8 @@ public class SpaceBugs implements DrawableComponent, IArcadeGame {
 
     private List<ParticleSystem> myParticleSystems;
     private List<Sprite> mySprites;
-    private Player myPlayer;
-    private Player myPlayer2;
+    private Player1 myPlayer;
+    private Player2 myPlayer2;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
@@ -48,6 +52,7 @@ public class SpaceBugs implements DrawableComponent, IArcadeGame {
     private Point myPlayerTwoStart;
     private Image myGameImage;
     private JFrame myFrame;
+    private KeyboardController myKeyCont;
 
     /**
      * Game constructor (initializes anything not set in initializeGame())
@@ -76,7 +81,37 @@ public class SpaceBugs implements DrawableComponent, IArcadeGame {
 
         addSprite(myPlayer2);
         Level myCurrentLevel = new StartUp(this);
-        myCanvas.addKeyListener(new KeyboardListener());
+        SpaceBugsActionAdapter inputAdapter;
+        inputAdapter = new SpaceBugsActionAdapter(myPlayer, myPlayer2);
+
+        myKeyCont = new KeyboardController(this);
+        try {
+            myKeyCont.setControl(KeyEvent.VK_F, KeyboardController.PRESSED, inputAdapter, "fireShot1");
+            myKeyCont.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, inputAdapter, "goUp1");
+            myKeyCont.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, inputAdapter, "goDown1");
+            myKeyCont.setControl(KeyEvent.VK_A, KeyboardController.PRESSED, inputAdapter, "goLeft1");
+            myKeyCont.setControl(KeyEvent.VK_D, KeyboardController.PRESSED, inputAdapter, "goRight1");
+            myKeyCont.setControl(KeyEvent.VK_F, KeyboardController.RELEASED, inputAdapter, "stop1");
+            myKeyCont.setControl(KeyEvent.VK_W, KeyboardController.RELEASED, inputAdapter, "stop1");
+            myKeyCont.setControl(KeyEvent.VK_S, KeyboardController.RELEASED, inputAdapter, "stop1");
+            myKeyCont.setControl(KeyEvent.VK_A, KeyboardController.RELEASED, inputAdapter, "stop1");
+            myKeyCont.setControl(KeyEvent.VK_D, KeyboardController.RELEASED, inputAdapter, "stop1");
+            myKeyCont.setControl(KeyEvent.VK_H, KeyboardController.PRESSED, inputAdapter, "fireShot2");
+            myKeyCont.setControl(KeyEvent.VK_I, KeyboardController.PRESSED, inputAdapter, "goUp2");
+            myKeyCont.setControl(KeyEvent.VK_K, KeyboardController.PRESSED, inputAdapter, "goDown2");
+            myKeyCont.setControl(KeyEvent.VK_J, KeyboardController.PRESSED, inputAdapter, "goLeft2");
+            myKeyCont.setControl(KeyEvent.VK_L, KeyboardController.PRESSED, inputAdapter, "goRight2");
+            myKeyCont.setControl(KeyEvent.VK_H, KeyboardController.RELEASED, inputAdapter, "stop2");
+            myKeyCont.setControl(KeyEvent.VK_I, KeyboardController.RELEASED, inputAdapter, "stop2");
+            myKeyCont.setControl(KeyEvent.VK_K, KeyboardController.RELEASED, inputAdapter, "stop2");
+            myKeyCont.setControl(KeyEvent.VK_J, KeyboardController.RELEASED, inputAdapter, "stop2");
+            myKeyCont.setControl(KeyEvent.VK_L, KeyboardController.RELEASED, inputAdapter, "stop2");
+        }
+        catch (NoSuchMethodException e) {
+        }
+        catch (IllegalAccessException e) {
+        }
+        myCanvas.addKeyListener(myKeyCont);
         startLevel(myCurrentLevel);
     }
     
@@ -272,12 +307,7 @@ public class SpaceBugs implements DrawableComponent, IArcadeGame {
         return myPlayer2;
     }
 
-    @Override
-    public void setKeyboardListener (KeyListener k) {
-
-    }
-
-    public Dimension getCanvasDimension () {
+        public Dimension getCanvasDimension () {
         return myCanvas.getSize();
     }
 
@@ -315,10 +345,6 @@ public class SpaceBugs implements DrawableComponent, IArcadeGame {
         @Override
         public void keyTyped (KeyEvent e) {
         }
-    }
-
-    @Override
-    public void setMouseListener (MouseMotionListener m) {
     }
 
     /**
@@ -366,5 +392,15 @@ public class SpaceBugs implements DrawableComponent, IArcadeGame {
             }
         }
         return ret;
+    }
+
+    @Override
+    public void setKeyboardListener (KeyboardController key) {
+        
+    }
+
+    @Override
+    public void setMouseListener (MouseController mouseMotion) {
+        
     }
 }
