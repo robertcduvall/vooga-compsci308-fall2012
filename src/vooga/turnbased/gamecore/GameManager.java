@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import util.sound.SoundPlayer;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecreation.LevelXmlParser;
@@ -63,7 +64,6 @@ public class GameManager implements InputAPI, GameLoop {
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
         initializeGameLevel(xmlPath);
-        configureInputHandling();
     }
 
     /**
@@ -185,11 +185,11 @@ public class GameManager implements InputAPI, GameLoop {
                 finishedModes.add(mode);
             }
         }
-        myGameModes.get(myGameModes.size() - 1).update();
-        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
         for (GameMode mode : finishedModes) {
             killMode(mode);
         }
+        myGameModes.get(myGameModes.size() - 1).update();
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
     }
 
     /**
@@ -226,9 +226,9 @@ public class GameManager implements InputAPI, GameLoop {
     @Override
     public void configureInputHandling () {
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
+            myGamePane.getKeyboardController().setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
                     this, "toggleSoundTrack");
-            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
+            myGamePane.getKeyboardController().setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
                     myGamePane, "returnToMenu");
         }
         catch (NoSuchMethodException e) {
@@ -322,7 +322,6 @@ public class GameManager implements InputAPI, GameLoop {
                 }
                 Class c = myAvailableModeTypes.get(modeName);
                 Constructor[] newC = c.getConstructors();
-
                 try {
                     GameMode newGameMode = (GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs);
                     myGameModes.add(newGameMode);
@@ -378,6 +377,31 @@ public class GameManager implements InputAPI, GameLoop {
      */
     public void turnOffSoundTrack () {
         myGameSoundTrack.stopLoop();
+    }
+    
+    /**
+     * Resets input controllers
+     */
+    public void resetControllers () {
+        myGamePane.resetControllers();
+    }
+    
+    /**
+     * get access to program's keyboard controller
+     * 
+     * @return keyboard controller
+     */
+    public KeyboardController getKeyboardController() {
+        return myGamePane.getKeyboardController();
+    }
+    
+    /**
+     * get access to program's mouse controller
+     * 
+     * @return mouse controller
+     */
+    public MouseController getMouseController() {
+        return myGamePane.getMouseController();
     }
 
     private class MouseAction {
