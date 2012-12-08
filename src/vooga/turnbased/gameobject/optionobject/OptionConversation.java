@@ -24,13 +24,4 @@ public class OptionConversation extends OptionObject {
                 new ConversationPanel(new ArrayList<OptionObject>(), myConversationMessages);
         optionMode.setPanel(panel);
     }
-
-    /*
-    protected void paintMessage (FontEffect fontEffect) {
-        final Color TOP_COLOR = new Color(56, 255, 69);
-        final Color SIDE_COLOR = new Color(20, 150, 20);
-        final int LAYER = 4;
-        fontEffect.threeDimensionEffect(getMessage(), getColor(), TOP_COLOR, SIDE_COLOR, LAYER,
-                                        getPosition());
-    }*/
 }
