@@ -39,5 +39,13 @@ public class TRexGame implements IArcadeGame {
     public String getName () {
         return "The T-Rex Game";
     }
+    
+    /**
+     * for debugging purposes
+     * @param args arguments
+     */
+    public static void main(String[] args) {
+        TRexGameWindow myGameWindow = new TRexGameWindow("The T-Rex Game", "GameSetting", WIDTH, HEIGHT);
+    }
 
 }

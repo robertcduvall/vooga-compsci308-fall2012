@@ -264,6 +264,10 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseBattleObject(objectElement);
         }
+        else if ("games.trexgame.TRexMonster"
+                .equals(objectClass)) {
+            return (GameObject) parseBattleObject(objectElement);
+        }
         else if ("vooga.turnbased.gameobject.mapobject.MapEnemyObject"
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
