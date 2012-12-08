@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>640</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/difangame/levels/level2GameObjects.bin</gameObjectData>
+<conditionData>src/games/difangame/levels/level2Conditions.bin</conditionData>
+<pluginData>src/games/difangame/levels/level2Plugins.bin</pluginData>
+</level>
