@@ -20,7 +20,7 @@ import arcade.gamemanager.GameSaver;
  */
 public class MarioStyleGame implements IArcadeGame {
 
-    private static final String myFirstLevelName = "src/games/lotrgame/levels/00intro.xml";
+    private static final String myFirstLevelName = "src/games/nielgame/levels/mario-style2.xml";
     
     @Override
     public void runGame (String userPreferences, GameSaver s) {
