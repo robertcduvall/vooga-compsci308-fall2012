@@ -22,6 +22,10 @@ public class MapEnemyObject extends MapObject {
             Point location, Image mapImage) {
         super(allowableModes, condition, location, mapImage);
     }
+    
+    public MapEnemyObject (Set<String> allowableModes, String condition, Image mapImage, List<String> locationPoint) {
+    	this(allowableModes, condition, new Point(Integer.parseInt(locationPoint.get(0)), Integer.parseInt(locationPoint.get(1))), mapImage);
+    }
 
     @Override
     public void interact (MapObject m) {

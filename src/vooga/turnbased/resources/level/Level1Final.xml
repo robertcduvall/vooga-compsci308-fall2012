@@ -53,10 +53,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
         <condition>dobattle</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/Nurse.png</image>
       </object>
       <object>
@@ -64,13 +64,17 @@
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>NO_ACTION</condition>
-        <stats>
-          <maxHealth>5</maxHealth>
-          <health>5</health>
-          <defense>2</defense>
-          <attack>3</attack>
-        </stats>
-        <name>Chansey</name>
+        <param>
+          <name>Chansey</name>
+          <statName>maxHealth</statName>
+          <value>5</value>
+          <statName>health</statName>
+          <value>5</value>
+          <statName>defense</statName>
+          <value>2</value>
+          <statName>attack</statName>
+          <value>3</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/113a.gif</image>
       </object>
       <object>
@@ -78,13 +82,17 @@
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>NO_ACTION</condition>
-        <stats>
-          <maxHealth>20</maxHealth>
-          <health>20</health>
-          <defense>4</defense>
-          <attack>6</attack>
-        </stats>
-        <name>Blissey</name>
+        <param>
+          <name>Blissey</name>
+          <statName>maxHealth</statName>
+          <value>20</value>
+          <statName>health</statName>
+          <value>20</value>
+          <statName>defense</statName>
+          <value>4</value>
+          <statName>attack</statName>
+          <value>6</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/242a.gif</image>
       </object>
     </sprite>
@@ -94,10 +102,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/FatMan.png</image>
       </object>
     </sprite>
@@ -107,10 +115,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapItemObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>6</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/coin.png</image>
       </object>
     </sprite>
@@ -120,24 +128,28 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>dooption</condition>
-        <location>
+        <param>
           <x>10</x>
           <y>10</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
       </object>
       <object>
         <createOn>start</createOn>
         <modes>option</modes>
         <class>vooga.turnbased.gameobject.optionobject.OptionTransportObject</class>
-        <name>Go to map 2!</name>
+        <param>
+        	<name>Go to map 2!</name>
+        </param>
         <condition>entermap2</condition>
       </object>
       <object>
         <createOn>start</createOn>
         <modes>option</modes>
         <class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
-        <name>Quit</name>
+        <param>
+        	<name>Quit</name>
+        </param>
         <condition>NO_ACTION</condition>
       </object>
     </sprite>
@@ -147,10 +159,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapTeleportObject</class>
         <condition>entermap2</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
       </object>
       <object>
@@ -158,10 +170,10 @@
         <modes>map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapTeleportObject</class>
         <condition>entermap1</condition>
-        <location>
+        <param>
           <x>10</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/portal.png</image>
       </object>
     </sprite>
@@ -171,10 +183,10 @@
         <modes>map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
         <condition>dobattle</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/L1-Boy.png</image>
       </object>
       <object>
@@ -182,13 +194,17 @@
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>wingame</condition>
-        <stats>
-          <maxHealth>100</maxHealth>
-          <health>100</health>
-          <defense>10</defense>
-          <attack>10</attack>
-        </stats>
-        <name>Da Bozz</name>
+        <param>
+          <name>Da Bozz</name>
+          <statName>maxHealth</statName>
+          <value>100</value>
+          <statName>health</statName>
+          <value>100</value>
+          <statName>defense</statName>
+          <value>10</value>
+          <statName>attack</statName>
+          <value>10</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/trainer066.png</image>
       </object>
     </sprite>
@@ -198,10 +214,10 @@
         <modes>map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>4</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.png</image>
       </object>
     </sprite>
@@ -211,10 +227,10 @@
         <modes>map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/L1-tile-6.png</image>
       </object>
     </sprite>
@@ -235,72 +251,51 @@
         <modes>map1, map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>8</y>
-        </location>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Down.png</source>
           <direction>down</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Down1.png</source>
           <direction>down1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Down2.png</source>
           <direction>down2</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Left.png</source>
           <direction>left</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Left1.png</source>
           <direction>left1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Left2.png</source>
           <direction>left2</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Right.png</source>
           <direction>right</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Right1.png</source>
           <direction>right1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Right2.png</source>
           <direction>right2</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Up.png</source>
           <direction>up</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Up1.png</source>
           <direction>up1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Up2.png</source>
           <direction>up2</direction>
-        </image>
+        </param>
       </object>
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame1</condition>
-        <stats>
-          <maxHealth>10</maxHealth>
-          <health>10</health>
-          <defense>3</defense>
-          <attack>5</attack>
-        </stats>
-        <name>Pikachu</name>
-        <image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
+        <param>
+          <name>Pikachu</name>
+          <statName>maxHealth</statName>
+          <value>10</value>
+          <statName>health</statName>
+          <value>10</value>
+          <statName>defense</statName>
+          <value>3</value>
+          <statName>attack</statName>
+          <value>5</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/025sb.png</image>
       </object>
       <object>
@@ -308,13 +303,17 @@
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame2</condition>
-        <stats>
-          <maxHealth>8</maxHealth>
-          <health>8</health>
-          <defense>5</defense>
-          <attack>3</attack>
-        </stats>
-        <name>Squirtle</name>
+        <param>
+          <name>Squirtle</name>
+          <statName>maxHealth</statName>
+          <value>8</value>
+          <statName>health</statName>
+          <value>8</value>
+          <statName>defense</statName>
+          <value>5</value>
+          <statName>attack</statName>
+          <value>3</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/007b.png</image>
       </object>
       <object>
@@ -322,13 +321,17 @@
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame3</condition>
-        <stats>
-          <maxHealth>15</maxHealth>
-          <health>15</health>
-          <defense>4</defense>
-          <attack>4</attack>
-        </stats>
-        <name>Bulbasaur</name>
+        <param>
+          <name>Bulbasaur</name>
+          <statName>maxHealth</statName>
+          <value>15</value>
+          <statName>health</statName>
+          <value>15</value>
+          <statName>defense</statName>
+          <value>4</value>
+          <statName>attack</statName>
+          <value>4</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/001b.png</image>
       </object>
       <object>
@@ -336,13 +339,17 @@
         <modes>battle</modes>
         <class>vooga.turnbased.gameobject.battleobject.BattleSimpleObject</class>
         <condition>endgame4</condition>
-        <stats>
-          <maxHealth>30</maxHealth>
-          <health>30</health>
-          <defense>5</defense>
-          <attack>10</attack>
-        </stats>
-        <name>Charizard</name>
+        <param>
+          <name>Charizard</name>
+          <statName>maxHealth</statName>
+          <value>30</value>
+          <statName>health</statName>
+          <value>30</value>
+          <statName>defense</statName>
+          <value>5</value>
+          <statName>attack</statName>
+          <value>10</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/006b.png</image>
       </object>
     </player>

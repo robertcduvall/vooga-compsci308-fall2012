@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gui.GamePane;
@@ -49,6 +50,10 @@ public class MapMovingObject extends MapObject {
         myDirection = new Point(0, 0);
         myPreviousLocation = getLocation();
         myCanMove = true;
+    }
+    
+    public MapMovingObject (Set<String> allowableModes, String condition, Image mapImage, List<String> locationPoint) {
+    	this(allowableModes, condition, new Point(Integer.parseInt(locationPoint.get(0)), Integer.parseInt(locationPoint.get(1))), mapImage);
     }
 
     /**

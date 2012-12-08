@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,11 +45,20 @@ public abstract class BattleObject extends GameObject {
     public BattleObject(Set<String> allowableModes, String condition, Map<String, Number>
     stats, String name, Image image) {
         super(allowableModes, condition, image);
-        myDefaultStats = new HashMap<String, Number>();
-        myChangingStats = new HashMap<String, Number>();
         setDefaultStats(stats);
         initializeStats();
         myName = name;
+    }
+    
+    public BattleObject (Set<String> allowableModes, String condition, Image image, List<String> stats) {
+    	super(allowableModes, condition, image);
+    	Map<String, Number> theStats = new HashMap<String, Number>();
+    	for(int i = 2; i < stats.size(); i += 2) {
+    		theStats.put(stats.get(i-1), Double.parseDouble(stats.get(i)));
+    	}
+        setDefaultStats(theStats);
+        initializeStats();
+        myName = stats.get(0);
     }
     
 
@@ -68,6 +78,8 @@ public abstract class BattleObject extends GameObject {
      * @param stats A map of Attributes (Strings) to values (Numbers)
      */
     public void setDefaultStats (Map<String, Number> stats) {
+        myDefaultStats = new HashMap<String, Number>();
+        myChangingStats = new HashMap<String, Number>();
         for (String key:stats.keySet()) {
             myDefaultStats.put(key, stats.get(key));
         }

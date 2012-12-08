@@ -1,6 +1,7 @@
 package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -43,6 +44,10 @@ public class BattleSimpleObject extends BattleObject {
     public BattleSimpleObject (Set<String> allowableModes, String condition, Map<String, Number> stats,
             String name, Image image) {
         super(allowableModes, condition, stats, name, image);
+    }
+    
+    public BattleSimpleObject (Set<String> allowableModes, String condition, Image image, List<String> stats) {
+    	super(allowableModes, condition, image, stats);
     }
 
     @Override

@@ -2,10 +2,17 @@ package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
+
 import util.graphicprocessing.ImageLoop;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
+import vooga.turnbased.gui.GameWindow;
 
 
 /**
@@ -15,7 +22,10 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
  * 
  */
 public class MapPlayerObject extends MapMovingObject {
-
+    private static final String LEFT = "left";
+    private static final String RIGHT = "right";
+    private static final String UP = "up";
+    private static final String DOWN = "down";
     private static final int ANIMATION_FRAME_RATE = 3;
     private Map<String, Image> myImages;
     private Map<String, ImageLoop> myImageLoops;
@@ -40,6 +50,47 @@ public class MapPlayerObject extends MapMovingObject {
         super(allowableModes, condition, coord, mapImages.get(0));
         myImages = mapImages;
         setImage(mapImages.get(myDownLabel));
+    }
+    
+    public MapPlayerObject(Set<String> allowableModes, String condition, Image image, List<String> additionalParams) {
+    	super(allowableModes, condition, new Point(Integer.parseInt(additionalParams.get(0)),Integer.parseInt(additionalParams.get(1))), null);
+    	myImages = new HashMap<String,Image>();
+    	for(int i = 3; i < additionalParams.size(); i+=2) {
+            ImageIcon imageIcon = new ImageIcon(additionalParams.get(i-1));
+    		myImages.put(additionalParams.get(i), imageIcon.getImage());
+    	}
+    	myImageLoops = parseImageLoops(myImages);
+    	setImage(myImages.get(myDownLabel));
+    }
+    
+    private Map<String, ImageLoop> parseImageLoops (Map<String, Image> map) {
+        Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
+        List<Image> leftList = parseImageList(LEFT, map);
+        List<Image> rightList = parseImageList(RIGHT, map);
+        List<Image> upList = parseImageList(UP, map);
+        List<Image> downList = parseImageList(DOWN, map);
+        imageLoops.put(LEFT, new ImageLoop(leftList));
+        imageLoops.put(RIGHT, new ImageLoop(rightList));
+        imageLoops.put(UP, new ImageLoop(upList));
+        imageLoops.put(DOWN, new ImageLoop(downList));
+        return imageLoops;
+    }
+
+    /**
+     * Gets a desired subset of the user's images
+     * 
+     * @param direction - descriptor of the image
+     * @param map - maps images and their names
+     * @return a list of images
+     */
+    private List<Image> parseImageList (String direction, Map<String, Image> map) {
+        List<Image> list = new ArrayList<Image>();
+        for (String key : map.keySet()) {
+            if (key.contains(direction)) {
+                list.add(map.get(key));
+            }
+        }
+        return list;
     }
 
     /**

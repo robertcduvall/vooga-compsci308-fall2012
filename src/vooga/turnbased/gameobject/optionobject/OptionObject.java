@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.List;
 import java.util.Set;
 import util.graphicprocessing.FontEffect;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
@@ -46,6 +48,10 @@ public class OptionObject extends GameObject {
         myMessage = message;
         myColor = DEFAULT_COLOR;
         myIsHighlighted = false;
+    }
+    
+    public OptionObject (Set<String> allowableModes, String condition, Image image, List<String> message) {
+    	this(allowableModes, condition, message.get(0));
     }
 
     /**

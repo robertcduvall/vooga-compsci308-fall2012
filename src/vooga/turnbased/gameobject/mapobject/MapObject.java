@@ -39,6 +39,10 @@ public class MapObject extends GameObject {
         setLocation(location);
         setVisible(true);
     }
+    
+    public MapObject (Set<String> allowableModes, String condition, Image mapImage, List<String> locationPoint) {
+    	this(allowableModes, condition, new Point(Integer.parseInt(locationPoint.get(0)), Integer.parseInt(locationPoint.get(1))), mapImage);
+    }
 
     /**
     * Sets associated MapMode to the given MapMode.

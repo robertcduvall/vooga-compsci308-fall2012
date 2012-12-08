@@ -2,6 +2,7 @@ package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gui.GameWindow;
 
@@ -12,6 +13,10 @@ public class MapTeleportObject extends MapObject {
                               Image mapImage) {
         super(allowableModes, condition, location, mapImage);
         // myDestination = destination;
+    }
+    
+    public MapTeleportObject (Set<String> allowableModes, String condition, Image mapImage, List<String> locationPoint) {
+    	this(allowableModes, condition, new Point(Integer.parseInt(locationPoint.get(0)), Integer.parseInt(locationPoint.get(1))), mapImage);
     }
 
     /**
