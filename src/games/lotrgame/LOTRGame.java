@@ -31,8 +31,6 @@ public class LOTRGame implements IArcadeGame {
         start(myFirstLevelName);
     }
     
-    
-    
     public void start(String levelName) {
         JFrame frame = new JFrame("The Lord of the Rings Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

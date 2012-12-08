@@ -1,0 +1,38 @@
+<collisionEvents>
+	<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.StaticObject</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.Enemy</gameObjectB>
+		<collisionEventClass>vooga.platformer.collision.collisionevent.BrickBounceBack</collisionEventClass>
+	</collisionEvent>
+	<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.StaticObject</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.Player</gameObjectB>
+		<collisionEventClass>vooga.platformer.collision.collisionevent.BrickMovingObject</collisionEventClass>
+	</collisionEvent>
+	<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.StaticObject</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.Bullet</gameObjectB>
+		<collisionEventClass>vooga.platformer.collision.collisionevent.BrickBounceBack</collisionEventClass>
+	</collisionEvent>
+	<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.StaticObject</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.MovingObject</gameObjectB>
+		<collisionEventClass>vooga.platformer.collision.collisionevent.BrickBounceBack</collisionEventClass>
+	</collisionEvent>
+	<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.Enemy</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.Player</gameObjectB>
+		<collisionEventClass>vooga.platformer.collision.collisionevent.EnemyPlayer</collisionEventClass>
+	</collisionEvent>
+	<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.Enemy</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.Bullet</gameObjectB>
+		<collisionEventClass>vooga.platformer.collision.collisionevent.BulletMovingObject</collisionEventClass>
+	</collisionEvent>
+		<collisionEvent>
+		<gameObjectA>vooga.platformer.gameobject.Enemy</gameObjectA>
+		<gameObjectB>vooga.platformer.gameobject.Enemy</gameObjectB>
+		<collisionEventClass>games.yaqigame.collisionevent.BounceBack</collisionEventClass>
+	</collisionEvent>
+
+</collisionEvents>

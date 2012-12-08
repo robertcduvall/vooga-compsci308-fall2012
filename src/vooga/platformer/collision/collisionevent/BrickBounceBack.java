@@ -29,7 +29,6 @@ public class BrickBounceBack extends BrickMovingObject {
     }
 
     private void flipHorizontalVelocity (MovingObject mo) {
-        ((MovingObject) mo).setVelocity(-((MovingObject) mo).getVelocity()
-                .getX(), ((MovingObject) mo).getVelocity().getY());
+        mo.setVelocity(-mo.getVelocity().getX(), mo.getVelocity().getY());
     }
 }

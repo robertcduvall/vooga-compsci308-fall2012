@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,23 +22,6 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 public class Enemy extends Sprite {
 
     private String myImagePath;
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     *             instead. We need the imagePath for xml conversion.
-     * 
-     *             Constructs an enemy character for the game.
-     * @param position the center of the image
-     * @param size the size of the image
-     * @param bounds the size of the canvas
-     * @param image the image to use
-     * @param velocity the starting velocity for the enemy
-     * @param health the starting health of the enemy
-     */
-    public Enemy (Point position, Dimension size, Dimension bounds, Image image, Point velocity,
-                  int health) {
-        super(position, size, bounds, image, velocity, health);
-    }
 
     /**
      * Constructs an enemy character for the game.

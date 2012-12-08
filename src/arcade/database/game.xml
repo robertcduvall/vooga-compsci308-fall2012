@@ -51,4 +51,16 @@
 		<tags/>
 		<filepath>games.trexgame.TRexGame</filepath>
 </game>
+<game id="7">
+		<name>The Lord of the Rings Game</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.lotrgame.LOTRGame</filepath>
+</game>
+<game id="8">
+		<name>Rob's Tenting 2D</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.robsgame.RunRobsGame</filepath>
+</game>
 </gamelist>
