@@ -323,7 +323,6 @@ public class Game implements DrawableComponent, IArcadeGame {
         return GAME_NAME;
     }
     
-<<<<<<< HEAD
     @Override
     public void setMouseListener (MouseMotionListener m) {
         
@@ -364,9 +363,7 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     }
 
-=======
     public Player getPlayer () {
         return myPlayer;
     }
->>>>>>> 99ff08ce21ebeabdfe46c32f6de3045ac2cb5ec4
 }
