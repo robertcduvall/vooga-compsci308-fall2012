@@ -135,7 +135,7 @@ public class MapObject extends GameObject {
      */
     public void interact (MapObject target) {
         if (target instanceof MapPlayerObject) {
-            startConversation(target);
+            reportPlayerInteraction(target);
         }
     }
 
@@ -146,7 +146,7 @@ public class MapObject extends GameObject {
      * @param involvedObject the object involved in the conversation with this
      *        MapObject
      */
-    private void startConversation (MapObject involvedObject) {
+    private void reportPlayerInteraction (MapObject involvedObject) {
         List<Integer> involvedSpriteIDs = new ArrayList<Integer>();
         involvedSpriteIDs.add(this.getID());
         involvedSpriteIDs.add(involvedObject.getID());

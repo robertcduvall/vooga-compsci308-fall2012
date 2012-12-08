@@ -21,7 +21,7 @@ import util.input.core.MouseController;
 public class Canvas extends JApplet {
     private static final Dimension DEFAULT_SIZE = new Dimension(600, 400);
     private static final int ONE_SECOND = 1000;
-    private static final int FRAMES_PER_SECOND = 30;
+    private static final int FRAMES_PER_SECOND = 20;
     private Timer myTimer;
     private DrawableComponent myScreen;
 
@@ -65,10 +65,8 @@ public class Canvas extends JApplet {
      * Sets up input listeners/controllers.
      */
     private void setInputListeners () {
-        addMouseMotionListener(new MouseController(this));
-        addKeyListener(new KeyboardController(this));
-        myScreen.setKeyboardListener(getKeyListeners()[0]);
-        myScreen.setMouseListener(getMouseMotionListeners()[0]);
+//        myScreen.setMouseListener(new MouseController(this));
+//        myScreen.setKeyboardListener(new KeyboardController(this));
     }
 
     /**

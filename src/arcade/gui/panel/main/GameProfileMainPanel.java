@@ -148,7 +148,7 @@ public class GameProfileMainPanel extends AMainPanel {
         String usersAndScoresString = "Top Scorers:\n\n";
         int currentScore;
         for (int i = 0; i < usersAndScoresList.size(); i++) {
-            usersAndScoresString += i + ". " + usersAndScoresList.get(i)[0] + "- " + usersAndScoresList.get(i)[1] + "\n";
+            usersAndScoresString += i + 1  + ". " + usersAndScoresList.get(i)[0] + "- " + usersAndScoresList.get(i)[1] + "\n";
         }
         topScoresArea = new JTextArea(usersAndScoresString, 10, 8);
         topScoresArea.setLineWrap(true);

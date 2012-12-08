@@ -1,55 +1,47 @@
 package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
 import util.ingamemenu.GameButton;
-import util.reflection.Reflection;
-import vooga.platformer.gameobject.GameObject;
-import vooga.platformer.gameobject.StaticObject;
-import vooga.platformer.level.condition.Condition;
+import vooga.platformer.gameobject.LevelGoalZone;
 import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
+import vooga.platformer.level.condition.DestroySpecificObjectCondition;
+import vooga.platformer.level.condition.NoPlayersRemainLosingCondition;
+import vooga.platformer.level.condition.PlayerInZoneCondition;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
+
 
 /**
  * Frame containing all the elements needed to build and save a level
- *
+ * 
  * @author Sam Rang
  */
 @SuppressWarnings("serial")
 public class LevelEditor extends JPanel {
     private static final int OBJECT_BUTTON_SIZE = 40;
     private static final int BUTTON_BAR_WIDTH = 50;
-    private static final String DATA_PATH = System.getProperty("user.dir")+"/src/vooga/platformer/data/";
+    private static final String DATA_PATH = System.getProperty("user.dir") +
+                                            "/src/vooga/platformer/data/";
     private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
@@ -62,9 +54,9 @@ public class LevelEditor extends JPanel {
      * levels. Allows users to drag and drop sprites onto a level as well
      * as set the background image.
      * 
-     * @param parent JPanel containing LevelEditor
+     * @param dim size of the LevelEditor JPanel
      */
-    public LevelEditor(Dimension dim) {
+    public LevelEditor (Dimension dim) {
         setLayout(new BorderLayout());
         setSize(new Dimension(dim));
         myBoard = new LevelBoard(getSize());
@@ -80,63 +72,100 @@ public class LevelEditor extends JPanel {
 
     }
 
-    public KeyListener getKeyListener() {
+    public KeyListener getKeyListener () {
         return myKeyListener;
     }
 
     /**
+     * Adds a LevelPlugin to be applied during level load. These can be things
+     * such as a a background image painter or a non-standard gravity.
      * 
-     * @param plugin
+     * @param plugin LevelPlugin to be applied
      */
-    public void addLevelPlugin(String plugin) {
-        if("SimpleBackgroundPainter".equals(plugin)) {
-            JFileChooser chooser = new
-                    JFileChooser(DATA_PATH);
+    public void addLevelPlugin (String plugin) {
+        if ("SimpleBackgroundPainter".equals(plugin)) {
+            JFileChooser chooser = new JFileChooser(DATA_PATH);
             FileNameExtensionFilter filter =
                     new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(chooser);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                SimpleBackgroundPainter myBackground = new SimpleBackgroundPainter(chooser.getSelectedFile());
+                SimpleBackgroundPainter myBackground =
+                        new SimpleBackgroundPainter(chooser.getSelectedFile());
                 myBoard.addPlugin(myBackground);
             }
         }
-//        else if ("") {
-//            
-//        }
+        // else if ("") {
+        //
+        // }
     }
-    public void addLevelCondtions (String con) {
+
+    public void addLevelConditions (String con) {
+        if ("Clear Conditions".equals(con)) {
+            myBoard.clearConditions();
+            return;
+        }
         JFileChooser chooser = new JFileChooser(DATA_PATH);
-        FileNameExtensionFilter filter =
-                new FileNameExtensionFilter("Level XML Files", "xml");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Level XML Files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            if("DefeatAllEnemiesCondition".equals(con)) {
-                myBoard.addCondition(new DefeatAllEnemiesCondition(chooser.getSelectedFile().getPath()));
+            String abspath = chooser.getSelectedFile().getPath();
+            final String path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());
+            if ("DefeatAllEnemiesCondition".equals(con)) {
+                myBoard.addCondition(new DefeatAllEnemiesCondition(path));
             }
-            else if("DestroySpecificObjectCondition".equals(con)) {
-                System.out.println("haha funny");
+            else if ("NoPlayersRemainLosingCondition".equals(con)) {
+                myBoard.addCondition(new NoPlayersRemainLosingCondition(path));
+            }
+            else if ("DestroySpecificObjectCondition".equals(con)) {
+                JPopupMenu idnumber = valueEntry("Object ID", new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        try {
+                            int id = Integer.parseInt(myTextField.getText());
+                            myBoard.addCondition(new DestroySpecificObjectCondition(path, id));
+                        }
+                        catch (NumberFormatException nfe) {
+                            myTextField.setForeground(Color.RED);
+                            myTextField.setText("Could not parse ID.\nTry again");
+                        }
+                    }
+                });
+                idnumber.show(this, getWidth()/2, getHeight()/2);
+            }
+            else if("PlayerInZoneCondition".equals(con)) {
+                LevelGoalZone zone = null;
+                try{
+                    zone = new LevelGoalZone(0, 0, 0, 0, Integer.MAX_VALUE, new File(DATA_PATH + "Default.png"), path);
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
+                }
+                JPopupMenu pop = new GameObjectEditor(zone);
+                pop.show(this,getWidth()/2,getHeight()/2);
+                myBoard.add(zone);
+                myBoard.addCondition(new PlayerInZoneCondition());
             }
         }
     }
-    private void createListeners() {
+
+    private void createListeners () {
         myKeyListener = myBoard.getKeyListener();
     }
 
-    private GameButton createButton(String objectname) {
+    private GameButton createButton (String objectname) {
         GameButton gb = new GameButton(objectname);
         gb.addMouseListener(myBoard.getButtonListener());
         gb.setButtonSize(OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
         return gb;
     }
 
-    private JPanel createButtonPanel() {
+    private JPanel createButtonPanel () {
         JPanel panel = new JPanel();
         JPanel subpanel = new JPanel();
         subpanel.setLayout(new GridLayout(1, myObjectTypes.size()));
-        subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, 
-                BUTTON_BAR_WIDTH * myObjectTypes.size()));
+        subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, BUTTON_BAR_WIDTH * myObjectTypes.size()));
         for (String type : myObjectTypes) {
             subpanel.add(createButton(type));
         }
@@ -146,38 +175,35 @@ public class LevelEditor extends JPanel {
         return panel;
     }
 
-    protected void save() {
+    protected void save () {
         myBoard.save();
     }
 
-    protected void newLevel() {
+    protected void newLevel () {
         myBoard.clear();
         final JPopupMenu pop = valueEntry("Level Name", new ActionListener() {
-
             @Override
             public void actionPerformed (ActionEvent e) {
                 myBoard.setName(myTextField.getText());
             }
-            
         });
-        pop.show(this, getWidth()/2-50, getHeight()/2-40);
+        pop.show(this, getWidth() / 2 - 50, getHeight() / 2 - 40);
     }
 
-    protected void clear() {
+    protected void clear () {
         myBoard.clear();
     }
 
-    protected void load() {
+    protected void load () {
         JFileChooser chooser = new JFileChooser(DATA_PATH);
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "XML Level files", "xml");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Level files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             myBoard.load(chooser.getSelectedFile().getPath());
         }
     }
-    
+
     private JPopupMenu valueEntry (String askFor, ActionListener onOK) {
         JPopupMenu jpop = new JPopupMenu();
         JLabel askUserFor = new JLabel(askFor + " :");
@@ -189,8 +215,8 @@ public class LevelEditor extends JPanel {
         jpop.add(accept);
         return jpop;
     }
-    
-    private void fillMap() {
+
+    private void fillMap () {
         myObjectTypes = new ArrayList<String>();
         myObjectTypes.add("StaticObject");
         myObjectTypes.add("Enemy");

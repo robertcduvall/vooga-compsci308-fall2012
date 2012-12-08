@@ -31,19 +31,20 @@ public class GameOverMode extends GameMode {
     }
 
     @Override
-    public void resume () {
-        playModeEntranceSound("GameOverSound");
+    public void resume () {   
     }
 
     @Override
     public void initialize () {
+        getGameManager().turnOffSoundTrack();
+        GameWindow.playSound("GameOverSound");
     }
 
     @Override
     public void paint (Graphics g) {
         Image background = GameWindow.importImage("GameOverImage");
         Dimension paneDim = getGameManager().getPaneDimension();
-        g.drawImage(background, 0, 0, paneDim.width, paneDim.width, null);
+        g.drawImage(background, 0, 0, paneDim.width, paneDim.height, null);
     }
 
     @Override
@@ -53,5 +54,4 @@ public class GameOverMode extends GameMode {
     @Override
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
     }
-
 }

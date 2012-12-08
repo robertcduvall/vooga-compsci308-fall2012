@@ -102,7 +102,6 @@ public class SoundPlayer {
                     Thread.sleep(TIME_DELAY);
                 }
                 singlePlayback.close();
-                singlePlayback.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");
@@ -134,13 +133,12 @@ public class SoundPlayer {
                 myLoop.start();
                 while (myIsRunning) {
                     Thread.sleep(TIME_DELAY);
-                    if (myLoop.getState() == Player.Prefetched) {
+                    if (myLoop.getState() == myLoop.Prefetched) {
                         myLoop.setMediaTime(new Time(0));
                         myLoop.start();
                     }
                 }
                 myLoop.close();
-                myLoop.deallocate();
             }
             catch (IOException e) {
                 System.err.println("Error Reading Sound File");

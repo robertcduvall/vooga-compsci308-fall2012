@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 /**
@@ -30,8 +31,8 @@ public class Bullet extends Sprite {
      * @param damage the damage that the bullet will do (to enemy or player)
      */
     public Bullet (Point position, Dimension size, Dimension bounds,
-            Image image, Point velocity, int damage, Sprite owner) {
-        super(position, size, bounds, image, velocity);
+            String imagePath, Point velocity, int damage, Sprite owner) {
+        super(position, size, bounds, imagePath, velocity);
         myDamage = damage;
         myOwner = owner;
     }

@@ -27,6 +27,8 @@ public class OptionMode extends GameMode {
     private static final int NPC_INDEX = 0;
     private static final int PLAYER_INDEX = 1;
     private MapObject myNPC;
+    private MapObject myPlayer;
+    private List<Integer> myInvolvedIDs;
     private InteractionPanel myPanel;
     private Image myPanelImage;
     private Point myOrigin;
@@ -43,7 +45,8 @@ public class OptionMode extends GameMode {
     public OptionMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
-        findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
+        myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
+        myInvolvedIDs = involvedIDs;
         List<OptionObject> options = new ArrayList<OptionObject>();
         myOptions = new HashMap<String, OptionObject>();
         for (GameObject option : getGameObjects()) {
@@ -72,7 +75,6 @@ public class OptionMode extends GameMode {
 
     @Override
     public void resume () {
-        initialize();
     }
 
     @Override
@@ -140,5 +142,13 @@ public class OptionMode extends GameMode {
                 selectedOption.executeOption(this);
             }
         }
+    }
+    
+    public void setPanel(InteractionPanel panel) {
+        myPanel = panel;
+    }
+    
+    public List<Integer> getInvolvedIDs() {
+        return myInvolvedIDs;
     }
 }

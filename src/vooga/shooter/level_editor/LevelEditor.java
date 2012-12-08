@@ -7,6 +7,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.w3c.dom.Document;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import util.xml.XmlUtilities;
 import java.io.*;
 import vooga.shooter.gameObjects.Enemy;
@@ -318,9 +320,16 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         int response = imageChooser.showOpenDialog(null);
         if (response == JFileChooser.APPROVE_OPTION) {
 
+            // The expected imagePath format is a relative path
+            // starting at the src directory. We will change the
+            // full path to match that format.
             String imagePath = imageChooser.getSelectedFile().getPath();
-            //spriteImage not needed since Enemy constructor was deprecated
-            //Image spriteImage = (new ImageIcon(imagePath)).getImage();
+            
+            // A simple check to see if it's a valid path (not foolproof).
+            if (!imagePath.contains("src/")) {
+                throw new LevelEditorException("The image file for sprites must be in the src directory!");
+            }
+            imagePath = imagePath.split("src/")[1];
             
             spriteOptionsPane.display();
             
@@ -395,13 +404,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     @Override
-    public void setMouseListener (MouseMotionListener m) {
+    public void setMouseListener (MouseController m) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void setKeyboardListener (KeyListener k) {
+    public void setKeyboardListener (KeyboardController k) {
         // TODO Auto-generated method stub
 
     }

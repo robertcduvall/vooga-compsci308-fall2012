@@ -29,6 +29,9 @@ public class RandomAI extends AI{
                 VectorCalculator.calculateMagnitude(mySprite.getVelocity());
             int newX = (int)(Math.random()*currentMagnitude);
             int newY = (int)(Math.sqrt((currentMagnitude*currentMagnitude) - (newX*newX)));
+            if (Math.random() > .5) {
+                newY = newY * -1;
+            }
             mySprite.setVelocity(new Point(newX, newY));
             myTimer = 10;
         }

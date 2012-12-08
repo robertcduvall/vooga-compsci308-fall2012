@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import util.sound.SoundPlayer;
 
 
 /**
@@ -34,7 +35,6 @@ public class GameWindow extends JFrame {
     private Container myContentPane;
     private CardLayout myLayout;
     private String myXmlPath;
-    private String myPlayerXml;
 
     /**
      * Constructor construct a game window given the size of the window
@@ -101,6 +101,16 @@ public class GameWindow extends JFrame {
     public static String importString (String stringName) {
         return myResources.getString(stringName);
     }
+    
+    /**
+     * play sound on demand
+     * 
+     * @param string string name in resource bundle
+     */
+    public static void playSound (String string) {
+        SoundPlayer p = new SoundPlayer(importString(string));
+        p.playOnce();
+    }
 
     /**
      * add the ResourceBundle to the canvas
@@ -119,10 +129,6 @@ public class GameWindow extends JFrame {
     public void setXmlPath (String path) {
         myXmlPath = path;
     }
-    
-    public void setPlayerXml (String path) {
-    	myPlayerXml = path;
-    }
 
     /**
      * Returns the string path of the xml file to be loaded.
@@ -131,9 +137,5 @@ public class GameWindow extends JFrame {
      */
     public String getXmlPath () {
         return myXmlPath;
-    }
-    
-    public String getPlayerXml () {
-        return myPlayerXml;
     }
 }

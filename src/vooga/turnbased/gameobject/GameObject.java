@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Set;
 import javax.swing.ImageIcon;
+import vooga.turnbased.gamecore.GameLoop;
 
 
 /**
@@ -15,7 +16,7 @@ import javax.swing.ImageIcon;
  * @author Michael Elgart, volodymyr, Rex
  * 
  */
-public abstract class GameObject {
+public abstract class GameObject implements GameLoop {
 
     protected Image myImage;
     private int myID;
@@ -121,12 +122,14 @@ public abstract class GameObject {
     /**
      * Updates game after some time delay (to be implemented by child classes).
      */
+    @Override
     public abstract void update ();
 
     /**
      * Paints the object
      * @param g The graphics which is used to paint the object.
      */
+    @Override
     public abstract void paint (Graphics g);
 
     /**

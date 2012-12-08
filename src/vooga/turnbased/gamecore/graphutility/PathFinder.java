@@ -13,7 +13,8 @@ import java.util.List;
  * See vooga.turnbased.gamecore.graphutility.MapModePathFinder for an example to
  * extend the class and apply to games etc.
  * 
- * Use template methods in update, so that sub-classes simply need to override
+ * It is designed to be flexible for use in a variety of situations. 
+ * Sub-classes simply need to override
  * methods that deals with specific display of the path
  * 
  * @author Rex Ying
