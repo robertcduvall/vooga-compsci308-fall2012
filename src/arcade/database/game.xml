@@ -32,11 +32,17 @@
 <review>Easy to learn, hard to master :)- Howard</review>
 <review>Howard hax OP- Kannan</review>
 </game>
-<game id="3">
+<game id="4">
 		<name>Niel's Mario Style Game</name>
 		<rating>8</rating>
 		<tags/>
 		<filepath>games.nielgame.MarioStyleGame</filepath>
 <review>Game shuts down arcade on window close :(- Howard</review>
+</game>
+<game id="5">
+		<name>Niel's Reverse Gravity Game</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.nielgame.ReverseGravityGame</filepath>
 </game>
 </gamelist>
