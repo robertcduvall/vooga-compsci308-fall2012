@@ -72,7 +72,6 @@ public class OptionMode extends GameMode {
 
     @Override
     public void resume () {
-        initialize();
     }
 
     @Override
@@ -140,5 +139,9 @@ public class OptionMode extends GameMode {
                 selectedOption.executeOption(this);
             }
         }
+    }
+    
+    public void setPanel(InteractionPanel panel) {
+        myPanel = panel;
     }
 }

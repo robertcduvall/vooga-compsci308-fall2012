@@ -65,9 +65,7 @@ public class LevelXmlParser {
     private static final String PLAYER = "player";
 
     private Document myXmlDocument;
-    private Document myPlayerXmlDocument;
     private Element myDocumentElement;
-    private Element myPlayerElement;
 
     private int myPlayerID;
     private String myStartMode;
@@ -82,13 +80,9 @@ public class LevelXmlParser {
      *        information about player
      * @param gm The game manager of the level that is being parsed
      */
-    public LevelXmlParser (String gameFilePath, String playerFilePath,
-            GameManager gm) {
+    public LevelXmlParser (String gameFilePath,  GameManager gm) {
         myXmlDocument = XmlUtilities.makeDocument(new File(gameFilePath));
         myDocumentElement = myXmlDocument.getDocumentElement();
-        myPlayerXmlDocument = XmlUtilities
-                .makeDocument(new File(playerFilePath));
-        myPlayerElement = myPlayerXmlDocument.getDocumentElement();
         parseSetup();
     }
 
@@ -171,8 +165,8 @@ public class LevelXmlParser {
     public List<Sprite> parseSprites () {
         List<Sprite> toReturn = new ArrayList<Sprite>();
         toReturn.addAll(parseStaticSprites());
-        toReturn.addAll(parseCharacterSprites());
-        toReturn.add(parsePlayerSprite());
+        toReturn.addAll(parseSprites(SPRITE));
+        toReturn.add(parseSprite(PLAYER));
         return toReturn;
     }
 
@@ -211,9 +205,8 @@ public class LevelXmlParser {
      * 
      * @return a list of NPC sprites to populate the game
      */
-    private List<Sprite> parseCharacterSprites () {
-        List<Element> sprites = (List<Element>) XmlUtilities.getElements(
-                myDocumentElement, SPRITE);
+    private List<Sprite> parseSprites (String elementName) {
+        List<Element> sprites = (List<Element>) XmlUtilities.getElements(myDocumentElement, elementName);
         List<Sprite> spriteList = new ArrayList<Sprite>();
         for (Element sprite : sprites) {
             Sprite s = parseSprite(sprite);
@@ -221,14 +214,9 @@ public class LevelXmlParser {
         }
         return spriteList;
     }
-
-    /**
-     * Parses the player's sprite from the player's XML file
-     * 
-     * @return the player's sprite object
-     */
-    private Sprite parsePlayerSprite () {
-        return parseSprite(myPlayerElement);
+    
+    private Sprite parseSprite (String elementName){
+        return parseSprite(XmlUtilities.getElement(myDocumentElement, elementName));
     }
 
     /**
@@ -272,7 +260,7 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseMapPlayer(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.battleobject.TestMonster"
+        else if ("vooga.turnbased.gameobject.battleobject.BattleSimpleObject"
                 .equals(objectClass)) {
             return (GameObject) parseBattleObject(objectElement);
         }
@@ -284,7 +272,15 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.mapobject.MovingMapObject"
+        else if ("vooga.turnbased.gameobject.mapobject.MapMovingObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.mapobject.MapTeleportObject"
+                .equals(objectClass)) {
+            return (GameObject) parseMapObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.mapobject.MapItemObject"
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
         }
@@ -292,7 +288,11 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }
-        else if ("vooga.turnbased.gameobject.optionobject.TransportOption"
+        else if ("vooga.turnbased.gameobject.optionobject.OptionTransportObject"
+                .equals(objectClass)) {
+            return (GameObject) parseOptionObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.optionobject.OptionConversationObject"
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }

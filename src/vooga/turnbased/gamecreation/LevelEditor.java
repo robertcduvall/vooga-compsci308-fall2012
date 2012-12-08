@@ -1,5 +1,6 @@
 package vooga.turnbased.gamecreation;
 
+import java.util.Map;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import util.xml.XmlUtilities;
@@ -10,7 +11,7 @@ import util.xml.XmlUtilities;
  *
  * @author Mark Hoffman
  */
-public class LevelEditor extends Editor {
+public class LevelEditor {
 
     private static final String DIMENSION = "dimension";
     private static final String BACKGROUND_IMAGE = "backgroundImage";
@@ -23,6 +24,7 @@ public class LevelEditor extends Editor {
     private static final String MODES = "modes";
     private static final String HEIGHT = "height";
     private static final String WIDTH = "width";
+    private static final String IMAGE = "image";
     private static final String CAMERA_DIMENSION = "cameraDimension";
     private static final String FORMAT1 = "\\s";
     private static final String FORMAT2 = "\\s*,\\s*";
@@ -32,19 +34,8 @@ public class LevelEditor extends Editor {
     private Element myGameSetupElement;
     private Element myModeElement;
     private Element mySpriteElement;
+    private Element myPlayerElement;
     private String myFileName;
-
-    /**
-     * Instantiates a LevelEditor for modifying an Xml document.
-     *
-     * @param xmlDocument Already formed Xml document for modifying
-     * @param fileName File name (with path) of Xml document
-     */
-    public LevelEditor(Document xmlDocument, String fileName) {
-        super(xmlDocument);
-        myXmlDocument = xmlDocument;
-        myFileName = fileName;
-    }
 
     /**
      * Creates a LevelEditor for a new Xml document.
@@ -64,6 +55,7 @@ public class LevelEditor extends Editor {
         mySpriteElement = XmlUtilities.appendElement(myXmlDocument, myRootElement,
                 "spriteDeclarations");
         myRootElement.appendChild(mySpriteElement);
+        myPlayerElement = XmlUtilities.appendElement(myXmlDocument, mySpriteElement, "player");
         myFileName = fileName;
     }
 
@@ -228,6 +220,57 @@ public class LevelEditor extends Editor {
         XmlUtilities.appendElement(myXmlDocument, objectElement, NAME, name);
     }
 
+    /**
+     * Creates a map object and adds it to a player sprite.
+     * 
+     * @param createOn When to create the object
+     * @param modes Comma-separated modes this object is in
+     * @param mapClass Specific concrete class for the map object
+     * @param condition Event for this map object
+     * @param x Map x-coordinate
+     * @param y Map y-coordinate
+     * @param imagePaths Paths to the Map Image (maps <source, direction>)
+     */
+    public void addMapPlayerObject (String createOn, String modes, String mapClass,
+            String condition, Number x, Number y, Map<String, String> imagePaths) {
+        Element object = XmlUtilities.appendElement(myXmlDocument, myPlayerElement, OBJECT);
+        XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
+        XmlUtilities.appendElement(myXmlDocument, object, CLASS, mapClass);
+        XmlUtilities.appendElement(myXmlDocument, object, CONDITION, condition);
+        Element location = XmlUtilities.appendElement(myXmlDocument, object, "location");
+        XmlUtilities.appendElement(myXmlDocument, location, "x", x.toString());
+        XmlUtilities.appendElement(myXmlDocument, location, "y", y.toString());
+        for (String key : imagePaths.keySet()) {
+            Element image = XmlUtilities.appendElement(myXmlDocument, object, IMAGE);
+            XmlUtilities.appendElement(myXmlDocument, image, "source", key);
+            XmlUtilities.appendElement(myXmlDocument, image, "direction", imagePaths.get(key));
+        }
+    }
+
+    /**
+     * Creates a battle object and adds it to a sprite.
+     * 
+     * @param createOn When to create the object
+     * @param modes Comma-separated modes this object is in
+     * @param battleClass Specific concrete class for the battle object
+     * @param condition Event for the battle object
+     * @param stats map for each battle attribute and value (health, attack, etc.)
+     * @param name Name of the battle object (i.e. Pikachu)
+     * @param imagePath Path to the Battle Image
+     */
+//    public void addBattleObject (String createOn, String modes, String battleClass,
+//            String condition, String stats, String name, String imagePath) {
+//        Element object = XmlUtilities.appendElement(myXmlDocument, myPlayerElement, OBJECT);
+//        XmlUtilities.appendElement(myXmlDocument, object, CREATE_ON, createOn);
+//        XmlUtilities.appendElement(myXmlDocument, object, MODES, modes);
+//        XmlUtilities.appendElement(myXmlDocument, object, CLASS, battleClass);
+//        XmlUtilities.appendElement(myXmlDocument, object, CONDITION, condition);
+//        Element statsElement = XmlUtilities.appendElement(myXmlDocument, object, "stats");
+//        addStatsToXml(myXmlDocument, statsElement, stats);
+//        XmlUtilities.appendElement(myXmlDocument, object, NAME, name);
+//        addImagesToXml(object, imagePath);
+//    }
+
     private void addDimension (String tagName, String width, String height) {
         Element dimension = XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, tagName);
         XmlUtilities.appendElement(myXmlDocument, dimension, WIDTH, width);
@@ -262,6 +305,20 @@ public class LevelEditor extends Editor {
     }
 
     /**
+     * 
+     * @param i Number of maps used for this player.
+     */
+    public void modifyModes (int i) {
+        Element mode = XmlUtilities.getElement(myRootElement, MODES);
+        String content = "";
+        for (int j = 0; j < i; j++) {
+            content = content + ", map" + ((Integer) i).toString();
+        }
+        content = content.substring(2);
+        XmlUtilities.setContent(mode, content);
+    }
+
+    /**
      * Save this Xml Document.
      */
     public void saveXmlDocument () {
@@ -273,5 +330,9 @@ public class LevelEditor extends Editor {
      */
     public Document getXmlDocument () {
         return myXmlDocument;
+    }
+    
+    public Element getPlayerElement () {
+        return myPlayerElement;
     }
 }

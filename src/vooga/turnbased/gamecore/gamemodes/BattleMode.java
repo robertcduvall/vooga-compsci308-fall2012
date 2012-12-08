@@ -17,6 +17,7 @@ import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gui.GamePane;
+import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.InputAPI;
 
 
@@ -36,7 +37,6 @@ public class BattleMode extends GameMode implements InputAPI {
     private BattleObject myPlayerObject;
     private BattleObject myEnemyObject;
     private int myLoserSpriteID;
-    private List<Integer> myInvolvedIDs;
     private List<String> myMessages;
     private int mySelection;
 
@@ -67,10 +67,7 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
     public BattleMode (GameManager gameManager, String modeName, List<Integer> involvedIDs) {
-        super(gameManager, modeName, involvedIDs);
-        myInvolvedIDs = involvedIDs;
-        myMessages = new ArrayList<String>();
-        resume();
+        super(gameManager, modeName, involvedIDs); 
     }
 
     /**
@@ -78,52 +75,50 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     @Override
     public void initialize () {
+        myMessages = new ArrayList<String>();
+        makeTeams();
         mySelection = OPTION1;
         myPlayerObject = myTeam.getActivePlayer();
         myEnemyObject = myEnemyTeam.getActivePlayer();
-        
+        myMessages.add(myEnemyObject.getStartFightingMessage(false));
+        myEnemyObject.initializeStats();
+        myMessages.add(myPlayerObject.getStartFightingMessage(true));
+        myPlayerObject.initializeStats();
+        configureInputHandling();
+        GameWindow.playSound("BattleStartSound");
     }
 
     @Override
     public void pause () {
-        // myTeams.clear();
+        //myTeams.clear();
     }
 
     @Override
     public void resume () {
-        makeTeams();
-        initialize();
-        myMessages.add(myEnemyObject.getStartFightingMessage(false));
-        myEnemyObject.initializeStats();
-
-        myMessages.add(myPlayerObject.getStartFightingMessage(true));
-        myPlayerObject.initializeStats();
-        configureInputHandling();
-        playModeEntranceSound("BattleStartSound");
     }
 
     /**
      * Allows the battle to receive input from the keyboard.
      * Controls include Attack, Defend, Heal, and Charge, set as constants.
      */
+    @Override
     public void configureInputHandling () {
-        // use input api for key handling. notice how you can only invoke
-        // methods w/t parameters...
+        super.configureInputHandling();
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
         int up = KeyEvent.VK_UP;
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(left, KeyboardController.RELEASED, this,
                     "triggerLeftEvent");
-            GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(right, KeyboardController.RELEASED, this,
                     "triggerRightEvent");
-            GamePane.keyboardController.setControl(up, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(up, KeyboardController.RELEASED, this,
                     "triggerUpEvent");
-            GamePane.keyboardController.setControl(down, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(down, KeyboardController.RELEASED, this,
                     "triggerDownEvent");
-            GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(select, KeyboardController.RELEASED, this,
                     "triggerSelectEvent");
         }
         catch (NoSuchMethodException e) {
@@ -137,44 +132,48 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @SuppressWarnings("unchecked")
     private void makeTeams () {
-        // adding player
-        List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
-        myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(1)));
-        myTeam = new Team(myBattleObjects);
-
-        // adding enemy
-        List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
-        enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(myInvolvedIDs.get(0)));
-        myEnemyTeam = new Team(enemyBattleObjects);
+        for (Integer spriteID : getInvolvedIDs()) {
+            if (spriteID == getGameManager().getPlayerSpriteID()) {
+                // adding player;
+                List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
+                myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
+                myTeam = new Team(myBattleObjects);
+            }
+            else {
+                // adding enemy
+                List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
+                enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
+                myEnemyTeam = new Team(enemyBattleObjects);
+            }
+        }
     }
 
     @Override
     public void update () {
+        myPlayerObject = getNextObjectIfDead(myPlayerObject, myTeam);
+        myPlayerObject.update();
+        myEnemyObject = getNextObjectIfDead(myEnemyObject, myEnemyTeam);
+        myEnemyObject.update();
         if (isBattleOver()) {
             endBattle();
         }
-        if (!myPlayerObject.isAlive()) {
-            myMessages.add(myPlayerObject.getDeathMessage());
+    }
+    
+    private BattleObject getNextObjectIfDead (BattleObject teamMember, Team team) {
+        if (!teamMember.isAlive()) {
+            myMessages.add(teamMember.getDeathMessage());
             List<Integer> list = new ArrayList<Integer>();
-            list.add(new Integer(myPlayerObject.getID()));
-            flagCondition(myPlayerObject.getConditionFlag(), list);
-            myTeam.switchPlayer(myTeam.nextPlayer());
-            myPlayerObject = myTeam.getActivePlayer();
-            myMessages.add(myPlayerObject.getStartFightingMessage(true));
-            myPlayerObject.initializeStats();
+            list.add(new Integer(teamMember.getID()));
+            flagCondition(teamMember.getConditionFlag(), list);
+            team.switchPlayer(team.nextPlayer());
+            BattleObject next = team.getActivePlayer();
+            boolean isPlayerControlled = teamMember.getID() == getGameManager().getPlayerSpriteID();
+            myMessages.add(next.getStartFightingMessage(isPlayerControlled));
+            next.initializeStats();
+            return next;
         }
         else {
-            myPlayerObject.update();
-        }
-        if (!myEnemyObject.isAlive()) {
-            myMessages.add(myEnemyObject.getDeathMessage());
-            List<Integer> list = new ArrayList<Integer>();
-            list.add(new Integer(myEnemyObject.getID()));
-            flagCondition(myEnemyObject.getConditionFlag(), list);
-            myEnemyTeam.switchPlayer(myEnemyTeam.nextPlayer());
-            myEnemyObject = myEnemyTeam.getActivePlayer();
-            myMessages.add(myEnemyObject.getStartFightingMessage(false));
-            myEnemyObject.initializeStats();
+            return teamMember;
         }
     }
 
@@ -183,7 +182,8 @@ public class BattleMode extends GameMode implements InputAPI {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-
+        Image background = GameWindow.importImage("BattleBackground");
+        g.drawImage(background, 0, 0, width, height, null);
         myEnemyObject.paintStats(g, 0, 0, width / 2, height / HEIGHT_SCALAR);
         myEnemyObject.paintBattleObject(g, width / 2, 0, width / 2, height / HEIGHT_SCALAR);
         myPlayerObject.paintBattleObject(g, 0, height / HEIGHT_SCALAR, width / 2, height /
@@ -204,10 +204,7 @@ public class BattleMode extends GameMode implements InputAPI {
         Dimension myWindow = getGameManager().getPaneDimension();
         int height = myWindow.height;
         int width = myWindow.width;
-
-        // move this to XML
-        File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Message_Sign.png");
-        Image box = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        Image box = GameWindow.importImage("BattleControlPanel");
         g.drawImage(box, 0, 0, width, height, null);
 
         // draw the messages
@@ -283,8 +280,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void drawArrow (Graphics g, int x, int y, int leftShift, int rightShift, int topShift,
             int bottomShift) {
-        File imageFile = new File("src/vooga/turnbased/resources/image/GUI/Arrow.png");
-        Image arrow = new ImageIcon(imageFile.getAbsolutePath()).getImage();
+        Image arrow = GameWindow.importImage("BattleControlArrow");
         switch (mySelection) {
             case OPTION1:
                 g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
@@ -321,10 +317,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     private void endBattle () {
         setModeIsOver();
-        System.out.println("End battle!");
-        if (!myPlayerObject.isAlive()) {
-            flagCondition(myPlayerObject.getConditionFlag(), new ArrayList<Integer>());
-        }
+        // System.out.println("End battle!");
         getGameManager().clearSprite(myLoserSpriteID);
     }
 
@@ -431,10 +424,8 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void triggerOption (int MenuOptionSelected) {
         String message = myPlayerObject.doOption(MenuOptionSelected, myEnemyObject);
-        
         myMessages.add(message);
         continueBattle();
-        
     }
 
     private class Team {
