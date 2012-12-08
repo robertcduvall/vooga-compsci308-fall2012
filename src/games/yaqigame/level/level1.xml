@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>1871</width>
+<height>480</height>
+<collisionChecker>src/games/yaqigame/collisionevent/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/yaqigame/level/level1GameObjects.bin</gameObjectData>
+<conditionData>src/games/yaqigame/level/level1Conditions.bin</conditionData>
+<pluginData>src/games/yaqigame/level/level1Plugins.bin</pluginData>
+</level>
