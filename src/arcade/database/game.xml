@@ -51,4 +51,10 @@
 		<tags/>
 		<filepath>games.trexgame.TRexGame</filepath>
 </game>
+<game id="7">
+		<name>Space Bugs IV</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.spacebugs.SpaceBugs</filepath>
+</game>
 </gamelist>
