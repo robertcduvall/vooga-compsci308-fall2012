@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import util.sound.SoundPlayer;
+import vooga.turnbased.gamecore.GameLoop;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gui.GameWindow;
+import vooga.turnbased.gui.InputAPI;
 
 
 /**
@@ -17,10 +17,11 @@ import vooga.turnbased.gui.GameWindow;
  * 
  * @author rex, Volodymyr
  */
-// public abstract class GameMode extends Observable {
-public abstract class GameMode {
+
+public abstract class GameMode implements GameLoop, InputAPI {
     private List<GameObject> myGameObjects;
     private final GameManager myGameManager;
+    private List<Integer> myInvolvedIDs;
     private String myModeName;
     private boolean myHasFocus;
     private boolean isActive;
@@ -38,9 +39,11 @@ public abstract class GameMode {
         myGameManager = gm;
         myModeName = modeName;
         myHasFocus = true;
+        myInvolvedIDs = involvedIDs;
         isActive = true;
         isOver = false;
         acquireGameObjects();
+        initialize();
     }
 
     protected void acquireGameObjects () {
@@ -72,6 +75,15 @@ public abstract class GameMode {
     }
 
     /**
+     * Returns IDs of sprites involved in mode's initiation.
+     * 
+     * @return IDs of involved sprites.
+     */
+    public List<Integer> getInvolvedIDs () {
+        return myInvolvedIDs;
+    }
+
+    /**
      * Returns the GameManager currently associated with the mode.
      * 
      * @return myGameManager
@@ -82,10 +94,13 @@ public abstract class GameMode {
     }
 
     /**
-     * Associates the list of involved sprites with the condition detailed in the string.
+     * Associates the list of involved sprites with the condition detailed in
+     * the string.
      * 
-     * @param conditionName String name of condition to be assigned to the sprites.
-     * @param involvedSpriteIDs List of sprites to which the condition will be applied.
+     * @param conditionName String name of condition to be assigned to the
+     *        sprites.
+     * @param involvedSpriteIDs List of sprites to which the condition will be
+     *        applied.
      */
     public void flagCondition (String conditionName, List<Integer> involvedSpriteIDs) {
         myGameManager.flagCondition(conditionName, involvedSpriteIDs);
@@ -111,11 +126,13 @@ public abstract class GameMode {
      * 
      * @param g Graphics.
      */
+    @Override
     public abstract void paint (Graphics g);
 
     /**
      * Method that will update the objects in the GameMode when called.
      */
+    @Override
     public abstract void update ();
 
     /**
@@ -158,7 +175,8 @@ public abstract class GameMode {
     }
 
     /**
-     * Takes mouse input and decides how to deal with this input; to be implemented by child
+     * Takes mouse input and decides how to deal with this input; to be
+     * implemented by child
      * classes.
      * 
      * @param mousePressed int 1 if mouse is pressed, 0 if not.
@@ -167,13 +185,16 @@ public abstract class GameMode {
      */
     public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
 
+    /**
+     * Flag game mode to end and be deleted
+     */
     public void setModeIsOver () {
         isOver = true;
     }
-
-    protected void playModeEntranceSound(String soundFileURL) {
-        getGameManager().turnOffSoundTrack();
-        SoundPlayer p = new SoundPlayer(GameWindow.importString(soundFileURL));
-        p.playOnce();
+    
+    @Override
+    public void configureInputHandling () {
+        getGameManager().resetControllers();
+        getGameManager().configureInputHandling();
     }
 }

@@ -22,7 +22,6 @@ public class MenuPane extends DisplayPane {
 	private final String myDefaultFilePath = "src/vooga/turnbased/resources/level/Level1Final.xml";
 	private final String myDefaultPlayerPath = "src/vooga/turnbased/resources/level/PlayerFinal.xml";
 	private JTextField myXmlTextField;
-	private JTextField myPlayerTextField;
 	private int myTextFieldLength = 65;
 
 	/**
@@ -36,8 +35,6 @@ public class MenuPane extends DisplayPane {
 		createButtons();
 		myXmlTextField = createXMLEntryTextField(myDefaultFilePath);
 		getGameWindow().setXmlPath(myDefaultPlayerPath);
-		myPlayerTextField = createXMLEntryTextField(myDefaultPlayerPath);
-		getGameWindow().setPlayerXml(myDefaultFilePath);
 	}
 
 	/**
@@ -49,10 +46,8 @@ public class MenuPane extends DisplayPane {
 		JButton startButton = new JButton(gameIcon);
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if ((new File(myXmlTextField.getText())).exists() &&
-						(new File(myPlayerTextField.getText())).exists()) {
+				if ((new File(myXmlTextField.getText())).exists()) {
 					getGameWindow().setXmlPath(myXmlTextField.getText());
-					getGameWindow().setPlayerXml(myPlayerTextField.getText());
 					getGameWindow().changeActivePane(GameWindow.GAME);
 				}
 			}
@@ -89,19 +84,6 @@ public class MenuPane extends DisplayPane {
 			}
 		});
 		add(loadXmlButton);
-
-		JButton playerXmlButton = new JButton("Load XML");
-		playerXmlButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser(myDefaultFilePath);
-				int returnVal = fc.showOpenDialog(MenuPane.this);
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					File file = fc.getSelectedFile();
-					myPlayerTextField.setText(file.getPath());
-				}
-			}
-		});
-		add(playerXmlButton);
 	}
 
 	/**
@@ -111,6 +93,7 @@ public class MenuPane extends DisplayPane {
 	public JTextField createXMLEntryTextField(String defaultValue) {
 		JTextField textField = new JTextField(myTextFieldLength);
 		textField.setText(defaultValue);
+		textField.setEditable(false);
 		add(textField);
 		return textField;
 	}

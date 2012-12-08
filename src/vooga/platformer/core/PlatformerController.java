@@ -20,6 +20,7 @@ public class PlatformerController extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
 
     private Level myCurrentLevel;
+    private String myCurrentLevelName;
 
     // TODO: Make this variable hold a LevelFactory
     private Map<String, Point> myStringMap = new HashMap<String, Point>();
@@ -51,10 +52,12 @@ public class PlatformerController extends JPanel implements Runnable {
         if (currentState == PlayState.NEXT_LEVEL || currentState == PlayState.GAME_OVER) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
             setupLevel(nextLevelName);
+            
         }
     }
 
     private void setupLevel (String lvlName) {
+        myCurrentLevelName = lvlName;
         myCurrentLevel = LevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
         mySize = new Dimension((int) cameraBounds.getWidth(), (int) cameraBounds.getHeight());
@@ -153,5 +156,25 @@ public class PlatformerController extends JPanel implements Runnable {
             beforeTime = System.currentTimeMillis();
         }
     }
-
+    
+    /**
+     * Pause game;
+     */
+    public void pause(){
+        myCurrentLevel.pause();
+    }
+    
+    /**
+     * Unpause current Level
+     */
+    public void upause(){
+        myCurrentLevel.unpause();
+    }
+    
+    /**
+     * Replay current level
+     */
+    public void replayCurrentLevel(){
+        setupLevel(myCurrentLevelName);
+    }
 }

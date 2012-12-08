@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import vooga.turnbased.gamecore.GameLoop;
 import vooga.turnbased.gamecore.GameManager;
 
 
@@ -19,7 +20,7 @@ import vooga.turnbased.gamecore.GameManager;
  * 
  * @author Rex, volodymyr
  */
-public class GamePane extends DisplayPane implements Runnable {
+public class GamePane extends DisplayPane implements Runnable, GameLoop {
 
     public static final int MOUSE_PRESSED = 0;
     public static final int MOUSE_RELEASED = 1;
@@ -46,7 +47,7 @@ public class GamePane extends DisplayPane implements Runnable {
      * initialize properties when user switch to game
      */
     public void initialize () {
-        myGameManager = new GameManager(this, getGameWindow().getXmlPath(), getGameWindow().getPlayerXml());
+        myGameManager = new GameManager(this, getGameWindow().getXmlPath());
         myGameThread = new Thread(this);
         myGameThread.setDaemon(true);
         myGameThread.start();
@@ -56,6 +57,7 @@ public class GamePane extends DisplayPane implements Runnable {
     /**
      * update game
      */
+    @Override
     public void update () {
         myGameManager.update();
     }
@@ -64,6 +66,7 @@ public class GamePane extends DisplayPane implements Runnable {
      * Paint gameobjects and background to the canvas using double buffering
      * @param g the graphics pen you are writing with
      */
+    @Override
     public void paint (Graphics g) {
         Image nextFrameImage = createImage(getSize().width, getSize().height);
         Graphics nextFrameGraphics = nextFrameImage.getGraphics();

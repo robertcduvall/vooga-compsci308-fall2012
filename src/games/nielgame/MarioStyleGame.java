@@ -20,7 +20,7 @@ import arcade.gamemanager.GameSaver;
  */
 public class MarioStyleGame implements IArcadeGame {
 
-    private static final String myFirstLevelName = "src/games/nielgame/levels/mario-style2.xml";
+    private static final String myFirstLevelName = "src/games/nielgame/levels/mario-style3.xml";
     
     @Override
     public void runGame (String userPreferences, GameSaver s) {
@@ -34,7 +34,6 @@ public class MarioStyleGame implements IArcadeGame {
     
     public void start(String levelName) {
         JFrame frame = new JFrame("Niel's Mario Style Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController(levelName,
                 new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);

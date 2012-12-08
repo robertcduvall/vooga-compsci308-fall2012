@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import util.sound.SoundPlayer;
 import vooga.turnbased.gamecore.gamemodes.GameMode;
 import vooga.turnbased.gamecreation.LevelXmlParser;
@@ -28,7 +29,7 @@ import vooga.turnbased.sprites.Sprite;
  * @author RPGs team
  * 
  */
-public class GameManager implements InputAPI {
+public class GameManager implements InputAPI, GameLoop {
 
     private final GamePane myGamePane;
     private GameLogic myGameLogic;
@@ -50,7 +51,7 @@ public class GameManager implements InputAPI {
      * @param gameCanvas The GameCanvas it paints to.
      * @param xmlPath String path of xml file to load.
      */
-    public GameManager (GamePane gameCanvas, String xmlPath, String playerXml) {
+    public GameManager (GamePane gameCanvas, String xmlPath) {
         myGamePane = gameCanvas;
         myGameIsOver = false;
 
@@ -62,8 +63,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        initializeGameLevel(xmlPath, playerXml);
-        configureInputHandling();
+        initializeGameLevel(xmlPath);
     }
 
     /**
@@ -74,8 +74,8 @@ public class GameManager implements InputAPI {
      * @param enteringObject
      *        The MapObject which will used for the MapMode of this level.
      */
-    private void initializeGameLevel (String gameFileName, String playerFileName) {
-        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, playerFileName, this);
+    private void initializeGameLevel (String gameFileName) {
+        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, this);
         myMapSize = levelLoader.getMapSize();
         myCameraSize = levelLoader.getCameraSize();
 
@@ -172,6 +172,7 @@ public class GameManager implements InputAPI {
     /**
      * Updates the actve game mode and handles any events occurring.
      */
+    @Override
     public void update () {
         handleEvents();
         updateGameModes();
@@ -184,11 +185,11 @@ public class GameManager implements InputAPI {
                 finishedModes.add(mode);
             }
         }
-        myGameModes.get(myGameModes.size() - 1).update();
-        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
         for (GameMode mode : finishedModes) {
             killMode(mode);
         }
+        myGameModes.get(myGameModes.size() - 1).update();
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
     }
 
     /**
@@ -197,13 +198,13 @@ public class GameManager implements InputAPI {
      * @param g
      *        The Graphics object of the offScreenImage.
      */
+    @Override
     public void paint (Graphics g) {
         for (GameMode mode : myGameModes) {
             if (mode.isActive()) {
                 mode.paint(g);
             }
         }
-        // myGameModes.get(myGameModes.size()-1).paint(g);
     }
 
     private void handleMouseActions (GameMode mode) {
@@ -225,9 +226,9 @@ public class GameManager implements InputAPI {
     @Override
     public void configureInputHandling () {
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
+            myGamePane.getKeyboardController().setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
                     this, "toggleSoundTrack");
-            GamePane.keyboardController.setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
+            myGamePane.getKeyboardController().setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
                     myGamePane, "returnToMenu");
         }
         catch (NoSuchMethodException e) {
@@ -299,7 +300,7 @@ public class GameManager implements InputAPI {
                 myGameModes.get(myGameModes.size() - 1).pause();
                 myGameModes.remove(g);
                 myGameModes.add(g);
-                g.resume();
+                g.initialize();
                 return true;
             }
         }
@@ -312,8 +313,6 @@ public class GameManager implements InputAPI {
      * @param event the event that records involved IDs and the event type
      */
     private void handleEvent (ModeEvent event) {
-        // System.out.println("doing event: "+event.getName());
-        // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         if (!modeAlreadyExists(modeName)) {
@@ -323,9 +322,10 @@ public class GameManager implements InputAPI {
                 }
                 Class c = myAvailableModeTypes.get(modeName);
                 Constructor[] newC = c.getConstructors();
-
                 try {
-                    myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
+                    GameMode newGameMode = (GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs);
+                    myGameModes.add(newGameMode);
+                    newGameMode.initialize();
                 }
                 catch (Exception e) {
                     System.out.println("Unable to create mode " + modeName + " of class " +
@@ -377,6 +377,31 @@ public class GameManager implements InputAPI {
      */
     public void turnOffSoundTrack () {
         myGameSoundTrack.stopLoop();
+    }
+    
+    /**
+     * Resets input controllers
+     */
+    public void resetControllers () {
+        myGamePane.resetControllers();
+    }
+    
+    /**
+     * get access to program's keyboard controller
+     * 
+     * @return keyboard controller
+     */
+    public KeyboardController getKeyboardController() {
+        return myGamePane.getKeyboardController();
+    }
+    
+    /**
+     * get access to program's mouse controller
+     * 
+     * @return mouse controller
+     */
+    public MouseController getMouseController() {
+        return myGamePane.getMouseController();
     }
 
     private class MouseAction {
