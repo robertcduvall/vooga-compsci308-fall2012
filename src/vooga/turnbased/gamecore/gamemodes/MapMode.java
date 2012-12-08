@@ -359,21 +359,22 @@ public class MapMode extends GameMode implements InputAPI {
 
     @Override
     public void configureInputHandling () {
+        super.configureInputHandling();
         try {
-            GamePane.keyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED,
                                                    myPlayer, "moveLeft");
-            GamePane.keyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_UP, KeyboardController.PRESSED,
                                                    myPlayer, "moveUp");
-            GamePane.keyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED,
                                                    myPlayer, "moveRight");
-            GamePane.keyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED,
                                                    myPlayer, "moveDown");
-            GamePane.keyboardController.setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
                                                    myPlayer, "toggleRunning");
             // enable/disable multi-destination feature in PathFinder
-            GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
                                                    myPathFinder, "activateMultiDestination");
-            GamePane.keyboardController.setControl(KeyEvent.VK_SHIFT, KeyboardController.RELEASED,
+            getGameManager().getKeyboardController().setControl(KeyEvent.VK_SHIFT, KeyboardController.RELEASED,
                                                    myPathFinder, "deactivateMultiDestination");
         }
         catch (NoSuchMethodException e) {
@@ -383,7 +384,6 @@ public class MapMode extends GameMode implements InputAPI {
         catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
     }
 
     /**

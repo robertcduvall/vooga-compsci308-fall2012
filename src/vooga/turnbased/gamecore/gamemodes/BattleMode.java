@@ -90,7 +90,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void pause () {
-        // myTeams.clear();
+        //myTeams.clear();
     }
 
     @Override
@@ -101,24 +101,24 @@ public class BattleMode extends GameMode implements InputAPI {
      * Allows the battle to receive input from the keyboard.
      * Controls include Attack, Defend, Heal, and Charge, set as constants.
      */
+    @Override
     public void configureInputHandling () {
-        // use input api for key handling. notice how you can only invoke
-        // methods w/t parameters...
+        super.configureInputHandling();
         int left = KeyEvent.VK_LEFT;
         int right = KeyEvent.VK_RIGHT;
         int up = KeyEvent.VK_UP;
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            GamePane.keyboardController.setControl(left, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(left, KeyboardController.RELEASED, this,
                     "triggerLeftEvent");
-            GamePane.keyboardController.setControl(right, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(right, KeyboardController.RELEASED, this,
                     "triggerRightEvent");
-            GamePane.keyboardController.setControl(up, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(up, KeyboardController.RELEASED, this,
                     "triggerUpEvent");
-            GamePane.keyboardController.setControl(down, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(down, KeyboardController.RELEASED, this,
                     "triggerDownEvent");
-            GamePane.keyboardController.setControl(select, KeyboardController.RELEASED, this,
+            getGameManager().getKeyboardController().setControl(select, KeyboardController.RELEASED, this,
                     "triggerSelectEvent");
         }
         catch (NoSuchMethodException e) {
@@ -134,7 +134,7 @@ public class BattleMode extends GameMode implements InputAPI {
     private void makeTeams () {
         for (Integer spriteID : getInvolvedIDs()) {
             if (spriteID == getGameManager().getPlayerSpriteID()) {
-                // adding player
+                // adding player;
                 List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
                 myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
                 myTeam = new Team(myBattleObjects);
@@ -424,10 +424,8 @@ public class BattleMode extends GameMode implements InputAPI {
 
     private void triggerOption (int MenuOptionSelected) {
         String message = myPlayerObject.doOption(MenuOptionSelected, myEnemyObject);
-        
         myMessages.add(message);
         continueBattle();
-        
     }
 
     private class Team {

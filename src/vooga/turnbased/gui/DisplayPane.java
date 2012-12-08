@@ -2,11 +2,12 @@ package vooga.turnbased.gui;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
-import util.input.factories.ControllerFactory;
 
 @SuppressWarnings("serial")
 /**
@@ -17,14 +18,8 @@ import util.input.factories.ControllerFactory;
  */
 public abstract class DisplayPane extends JPanel {
 
-    /**
-     * The keyboard controller that takes input for our game
-     */
-    public static KeyboardController keyboardController;
-    /**
-     * The mouse input controller that takes input for our game
-     */
-    public static MouseController mouseController;
+    private KeyboardController myKeyboardController;
+    private MouseController myMouseController;
     private GameWindow myGameWindow;
 
     /**
@@ -35,13 +30,8 @@ public abstract class DisplayPane extends JPanel {
         myGameWindow = gameWindow;
         setSize(myGameWindow.getSize());
         enableFocus();
-        setControllers();
-    }
-
-    private void setControllers () {
-        keyboardController =
-                (KeyboardController) ControllerFactory.createKeyboardController(this);
-        mouseController = (MouseController) ControllerFactory.createMouseController(this);
+        myKeyboardController = new KeyboardController(this);
+        myMouseController = new MouseController(this);
     }
 
     /**
@@ -69,5 +59,34 @@ public abstract class DisplayPane extends JPanel {
      * Initializes the pane, however, is currently empty
      */
     public void initialize () {
+    }
+    
+    /**
+     * Reset input controllers
+     */
+    public void resetControllers () {
+        KeyListener[] kl = this.getKeyListeners();
+        for (int i = 0; i < kl.length; i++) {
+            this.removeKeyListener(kl[i]);
+        }
+        myKeyboardController = new KeyboardController(this);
+    }
+    
+    /**
+     * get access to program's keyboard controller
+     * 
+     * @return keyboard controller
+     */
+    public KeyboardController getKeyboardController() {
+        return myKeyboardController;
+    }
+    
+    /**
+     * get access to program's mouse controller
+     * 
+     * @return mouse controller
+     */
+    public MouseController getMouseController() {
+        return myMouseController;
     }
 }
