@@ -28,7 +28,7 @@ import vooga.platformer.util.enums.Direction;
  * This game demonstrates the extensible nature of LevelPlugins and Conditions. I wrote a new LevelPlugin
  * to provide gravity, used it to apply gravity upwards, and wrote a new Condition to let the player win
  * the game by reaching a certain zone in the level. I integrated these new features into the game without
- * touching any existing Level code and using only two lines of "factory code". See the README for more
+ * touching any existing Level code and using only a few lines of "factory code". See the README for more
  * details.
  * @author Niel Lebeck
  *
@@ -49,24 +49,28 @@ public class ReverseGravityGame implements IArcadeGame {
     
     public void start(String levelName) {
         JFrame frame = new JFrame("Niel's Reverse Gravity Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController(levelName,
                 new KeyControllerOnePlayerInputInitializer());
+        
         Level l = controller.getLevel();
         l.setCamera(new StaticCamera(new Dimension(800, 600), new Rectangle(l.getDimension().width,
                 l.getDimension().height)));
         l.addPlugin(new SimpleBackgroundPainter(new File("src/games/nielgame/levels/opposite-land-final-bg.png")));
         l.addCondition(new DestroySpecificObjectCondition("src/games/nielgame/levels/lose-level.xml", 7));
+
         
         /*
-         * The next two lines add my new LevelPlugin and new Condition to the level. Note that only
-         * two lines of "factory code" are needed, and the Level class does not need to be changed
+         * The next few lines add my new LevelPlugin and new Condition to the level. Note that only
+         * a few lines of "factory code" are needed, and the Level class does not need to be changed
          * at all. Also, note that this plugin and condition completely determine the behavior of
-         * the level: gravity is applied upwards, and the player must reach the door to win.
+         * the level: gravity is applied upwards, and the player must reach a level goal zone to win.
          */
         l.addPlugin(new GravityPlugin(0.5, Direction.UP));
-//        l.addCondition(new PlayerInZoneCondition("src/games/nielgame/levels/win-level.xml", 560, 100, 30, 50));
         l.addCondition(new PlayerInZoneCondition());
+        
+        //The PlayerInZoneCondition assumes the existence of a level goal GameObject. There should be
+        //the ability to add a level goal object in the level editor, but that functionality did not
+        //exist when I first designed my level, so it is performed here.
         try {
             File levelGoalImage = new File("src/games/nielgame/images/blank_transparent.png");
             l.addGameObject(new LevelGoalZone(560.0, 100.0, 30.0, 50.0, Integer.MAX_VALUE, levelGoalImage,"src/games/nielgame/levels/win-level.xml"));

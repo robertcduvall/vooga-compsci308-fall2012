@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>1391</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/nielgame/levels/mario-style3GameObjects.bin</gameObjectData>
+<conditionData>src/games/nielgame/levels/mario-style3Conditions.bin</conditionData>
+<pluginData>src/games/nielgame/levels/mario-style3Plugins.bin</pluginData>
+</level>

@@ -4,7 +4,7 @@
 <height>480</height>
 <collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
 <camera>FollowingCamera</camera>
-<gameObjectData>/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelGameObjects.bin</gameObjectData>
-<conditionData>/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelConditions.bin</conditionData>
-<pluginData>/Users/Niel/Documents/workspace/vooga-compsci308-fall2012/src/vooga/platformer/data/testLevelPlugins.bin</pluginData>
+<gameObjectData>src/vooga/platformer/data/testLevelGameObjects.bin</gameObjectData>
+<conditionData>src/vooga/platformer/data/testLevelConditions.bin</conditionData>
+<pluginData>src/vooga/platformer/data/testLevelPlugins.bin</pluginData>
 </level>
