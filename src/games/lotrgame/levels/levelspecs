@@ -1,0 +1,62 @@
+
+level0: 00intro
+- welcome to the the lord of the rings game,
+- created by Michael and Jei
+- to play, walk your player to the right (winning condition)
+
+
+level1: 01ringtext
+- show instructions for next level
+
+
+level2: 02ring
+- walk across the screen and grab the ring (winning condition)
+
+
+level3: 03orkstext
+- show instructions for next level
+
+
+level4: 04orks
+- kill all the orks to proceed
+
+
+level5: 05balrogtext
+- show instructions for next level
+
+
+level6: 06balrog
+- battle the balrog
+- winning condition: when balrog is dead
+
+
+level7: 07ninetext
+- show instructions for next level
+
+level8: 08nine
+- get past the nine
+- dont' have to kill them..but you can
+
+
+level9: 09doomtext
+- show instructions for next level
+
+
+level10: 10doom
+- get past gollum
+- drop ring into mt. doom
+
+
+level11: 11over
+- game over screen; to retry, walk to right...
+- winning condition: walk player to side of screen -> 00intro
+
+- no losing condition
+
+
+
+
+
+
+
+

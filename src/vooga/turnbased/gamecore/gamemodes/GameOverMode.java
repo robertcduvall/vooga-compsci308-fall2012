@@ -54,5 +54,4 @@ public class GameOverMode extends GameMode {
     @Override
     public void processMouseInput (int mousePressed, Point myMousePosition, int myMouseButton) {
     }
-
 }
