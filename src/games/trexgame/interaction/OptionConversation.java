@@ -1,10 +1,10 @@
-package vooga.turnbased.gameobject.optionobject;
+package games.trexgame.interaction;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.OptionMode;
-import vooga.turnbased.gui.interactionpanel.ConversationPanel;
+import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 
