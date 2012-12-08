@@ -46,10 +46,14 @@ public class InteractionPanel {
      */
     public InteractionPanel (List<OptionObject> optionObjects) {
         this();
-        myOptionObjects = optionObjects;
+        setOptions(optionObjects);
         for (int i = 0; i < myOptionObjects.size(); i++) {
             myOptionObjects.get(i).setPosition(myOptionPositions.get(i));
         }
+    }
+
+    protected void setOptions (List<OptionObject> optionObjects) {
+        myOptionObjects = optionObjects;
     }
 
     protected InteractionPanel () {
@@ -57,7 +61,7 @@ public class InteractionPanel {
         myOptionObjects = new ArrayList<OptionObject>();
         myOptionPositions = initializeOptionPositions();
         myBulletPointIndex = 0;
-        myPreviousPosition = null;
+        myPreviousPosition = new Point(0, 0);
         int size = Integer.parseInt(GameWindow.importString("BulletSize"));
         myBulletSize = new Dimension(size, size);
         myBulletPointImage =
@@ -71,6 +75,7 @@ public class InteractionPanel {
      */
     public Image renderImage () {
         initializePanelImage();
+        if (myOptionObjects == null) { return myPanelImage; }
         for (OptionObject option : myOptionObjects) {
             option.paint(myImageGraphics);
         }
@@ -96,6 +101,7 @@ public class InteractionPanel {
      * @return if anything is highlighted (when the focus is on certain option
      */
     public boolean highlightOption (Point position) {
+        if (myOptionObjects == null) { return false; }
         boolean highlighted = false;
         for (int i = 0; i < myOptionObjects.size(); i++) {
             if (myOptionObjects.get(i).highlight(position)) {
@@ -115,6 +121,7 @@ public class InteractionPanel {
      * de-highlight the options
      */
     public void dehighlightOption () {
+        if (myOptionObjects == null) { return; }
         for (OptionObject option : myOptionObjects) {
             option.dehighlight();
         }
@@ -122,6 +129,7 @@ public class InteractionPanel {
     }
 
     private void drawBulletPoint (Graphics g) {
+        if (myOptionObjects == null) { return; }
         int x = myOptionPositions.get(myBulletPointIndex).x - myBulletSize.width;
         int y = myOptionPositions.get(myBulletPointIndex).y - myBulletSize.height / 2;
         g.drawImage(myBulletPointImage, x, y, myBulletSize.width, myBulletSize.height, null);
@@ -143,6 +151,7 @@ public class InteractionPanel {
 
     /**
      * get the size of the Interaction panel
+     * 
      * @return a dimension object representing the size
      */
     public Dimension getPanelSize () {
@@ -176,9 +185,19 @@ public class InteractionPanel {
      * @return an OptionObject that is currently being chosen
      */
     public OptionObject triggerOption (Point focusPosition) {
+        if (myOptionObjects == null) { return null; }
         for (OptionObject option : myOptionObjects) {
             if (option.isTriggered(focusPosition)) { return option; }
         }
         return null;
+    }
+
+    protected void insertOption (OptionObject option, int position) {
+        myOptionObjects.add(option);
+        option.setPosition(myOptionPositions.get(position));
+    }
+
+    protected Point getOptionPosition (int index) {
+        return myOptionPositions.get(index);
     }
 }

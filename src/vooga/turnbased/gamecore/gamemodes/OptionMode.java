@@ -140,4 +140,8 @@ public class OptionMode extends GameMode {
             }
         }
     }
+    
+    public void setPanel(InteractionPanel panel) {
+        myPanel = panel;
+    }
 }
