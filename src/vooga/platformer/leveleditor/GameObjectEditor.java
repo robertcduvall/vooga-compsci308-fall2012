@@ -2,6 +2,7 @@ package vooga.platformer.leveleditor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -17,15 +18,22 @@ import java.util.List;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.UpdateStrategy;
@@ -42,8 +50,8 @@ import vooga.platformer.levelfileio.LevelFileIOException;
 public class GameObjectEditor extends JPopupMenu {
     private static final int DEFAULT_ICON_WIDTH = 40;
     private GameObject myObject;
-    private List<UpdateStrategy> myStrategies;
-    
+    private List<Class> myStrategies;
+
     /**
      * Opens a new pop up, adds an empty border and adds the
      * info and editable fields
@@ -64,15 +72,16 @@ public class GameObjectEditor extends JPopupMenu {
         Scanner s = null;
         try {
             s = new Scanner(new File(System.getProperty("user.dir") +
-                                         "/src/vooga/platformer/data/AvailableStrategies.txt"));
+                    "/src/vooga/platformer/data/AvailableStrategies.txt"));
         }
         catch (FileNotFoundException e) {
             throw new LevelFileIOException("Could not find the level in the file system", e);
         }
         while (s.hasNext()) {
             String item = s.nextLine();
-            UpdateStrategy us = (UpdateStrategy) createObject(item);
-            myStrategies.add(us);
+            Class c = (Class) createObject(item);
+            myStrategies = new ArrayList<Class>();
+            myStrategies.add(c);
         }
     }
 
@@ -82,19 +91,14 @@ public class GameObjectEditor extends JPopupMenu {
      * @return
      */
     private Object createObject(String className) {
-        Object object = null;
+        Class clazz = null;
         try {
-            Class classDefinition = Class.forName(className);
-            object = classDefinition.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return object;
-     }
+        return clazz;
+    }
 
     /**
      * Gets info about the object that the user can't change 
@@ -113,7 +117,7 @@ public class GameObjectEditor extends JPopupMenu {
                 i.getHeight(null) * DEFAULT_ICON_WIDTH / i.getWidth(null), Image.SCALE_DEFAULT)));
         myImage.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         topCenter.add(myImage);
-        
+
         JPanel info = new JPanel();
         info.setLayout(new GridLayout(2, 1, 5, 5));
         JLabel myID = new JLabel("ID:   " + ((Integer)myObject.getId()).toString());
@@ -121,7 +125,7 @@ public class GameObjectEditor extends JPopupMenu {
         JLabel type = new JLabel("GameObject Type: " + myObject.getClass().getSimpleName());
         info.add(type);
         topCenter.add(info);
-        
+
         JLabel prompt = new JLabel("Please enter Doubles:");
         myTop.add(topCenter, BorderLayout.CENTER);
         myTop.add(prompt, BorderLayout.SOUTH);
@@ -218,17 +222,39 @@ public class GameObjectEditor extends JPopupMenu {
 
             @Override
             public void actionPerformed (ActionEvent e) {
-                JPopupMenu jpop = new JPopupMenu();
-                JMenu strategies = new JMenu();
-                
+                System.out.println("add strategy");
+                // TODO
             }
 
         });
+//        final JList list = new JList(myStrategies.toArray());
+////        DefaultListModel myListModel = new DefaultListModel(list);
+//        list.addListSelectionListener(new ListSelectionListener() {
+//            @Override
+//            public void valueChanged (ListSelectionEvent e) {
+//                if (!e.getValueIsAdjusting() && list.getSelectedIndex() >= 0) {
+//                    Class item = myStrategies.get(list.getSelectedIndex());
+//                    try {
+//                        myObject.addStrategy((UpdateStrategy) item.newInstance());
+//                    } catch (InstantiationException e1) {
+//                        e1.printStackTrace();
+//                    } catch (IllegalAccessException e1) {
+//                        // TODO Auto-generated catch block
+//                        e1.printStackTrace();
+//                    }
+//                    System.out.println("here");
+//                }
+//            }
+//        });
+//        JScrollPane addStrategy = new JScrollPane(list);
+//        list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+//        list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+//        list.setVisibleRowCount(4);
         myBottom.add(addStrategy);
         myBottom.add(accept);
         return myBottom;
-    }
 
+    }
     /**
      * shows an error on the popup, doesn't print stack
      * @param msg
