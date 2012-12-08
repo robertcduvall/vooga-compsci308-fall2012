@@ -1,8 +1,8 @@
 <level>
 <levelName>Level</levelName>
-<width>1871</width>
+<width>1005</width>
 <height>480</height>
-<collisionChecker>src/games/yaqigame/collisionevent/collisionEvent.xml</collisionChecker>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
 <camera>FollowingCamera</camera>
 <gameObjectData>src/games/yaqigame/level/level2GameObjects.bin</gameObjectData>
 <conditionData>src/games/yaqigame/level/level2Conditions.bin</conditionData>

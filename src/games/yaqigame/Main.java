@@ -22,7 +22,7 @@ import vooga.platformer.core.inputinitializer.KeyControllerOnePlayerInputInitial
 
 public class Main implements IArcadeGame {
 
-    private static final String LEVEL1 = "src/games/yaqigame/level/level2.xml";
+    private static final String LEVEL1 = "src/games/yaqigame/level/level1.xml";
     private JFrame myFrame;
     private PlatformerController myPanel;
 
@@ -50,8 +50,8 @@ public class Main implements IArcadeGame {
         myPanel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed (KeyEvent e) {
-                myPanel.getLevel().pause();
                 if (e.getKeyCode() == KeyEvent.VK_M) {
+                    myPanel.getLevel().pause();
                     final Menu menu = new Menu(myPanel);
                     GameButton gb1 = new GameButton("blackbutton");
                     gb1.paintString("Back", Color.WHITE);
