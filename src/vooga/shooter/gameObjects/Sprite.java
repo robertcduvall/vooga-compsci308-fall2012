@@ -31,6 +31,7 @@ public abstract class Sprite implements SpriteActionInterface {
     protected static final String RIGHT_BOUND = "right";
     protected static final String TOP_BOUND = "top";
     protected static final String BOTTOM_BOUND = "bottom";
+    private static final String BULLET_IMAGEPATH = "vooga/shooter/images/playerbullet.png";
     private static final Dimension BULLET_SIZE = new Dimension(5, 10);
     private static final int BULLET_SPEED = 10;
     private static final int BULLET_DAMAGE = 1;
@@ -46,34 +47,6 @@ public abstract class Sprite implements SpriteActionInterface {
     private boolean isDead = false;
     private AI myAI;
 
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     * 
-     * Construct a sprite initializing only position, size, and image.
-     * Initial health is set to -1 to symbolize a sprite that does not
-     * have health.
-     * (something stationary with no health, e.g. barrier).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myVelocity = new Point(0, 0);
-        myHealth = Integer.MAX_VALUE;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
-    
     /**
      * Construct a sprite initializing only position, size, and image.
      * Initial health is set to -1 to symbolize a sprite that does not
@@ -101,34 +74,6 @@ public abstract class Sprite implements SpriteActionInterface {
     }
 
     /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     * 
-     * Constructs a sprite with position, size, image, and starting velocity.
-     * Initial health is set to -1 to symbolize a sprite that does not
-     * have health.
-     * (something with starting velocity but no health, e.g. moving asteroid).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     * @param velocity the starting velocity of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image, Point velocity) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myVelocity = velocity;
-        myHealth = Integer.MAX_VALUE;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
-    
-    /**
      * Constructs a sprite with position, size, image, and starting velocity.
      * Initial health is set to -1 to symbolize a sprite that does not
      * have health.
@@ -150,32 +95,6 @@ public abstract class Sprite implements SpriteActionInterface {
         myVelocity = new Point(0, 0);
         myVelocity = velocity;
         myHealth = Integer.MAX_VALUE;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     *          
-     * Constructs a sprite with position, size, image, and health.
-     * (something with starting health but no starting velocity, e.g. player).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     * @param health the starting health of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image, int health) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myHealth = health;
-        myVelocity = new Point(0, 0);
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
         myBulletsFired = new ArrayList<Bullet>();
@@ -207,33 +126,6 @@ public abstract class Sprite implements SpriteActionInterface {
         myBulletsFired = new ArrayList<Bullet>();
         setMethods();
     }
-
-    /**
-     * @deprecated Pass in the imagePath using the constructor below
-     * instead. We need the imagePath for xml conversion.
-     * 
-     * Constructs a sprite with position, size, image, velocity, and health.
-     * (something with both starting velocity and health, e.g. enemy).
-     *
-     * @param position the center of the sprite image
-     * @param size the size of the image to display
-     * @param bounds the size of the canvas holding the sprite
-     * @param image the image of the sprite
-     * @param velocity the starting velocity of the sprite
-     * @param health the starting health of the sprite
-     */
-    public Sprite (Point position, Dimension size,
-            Dimension bounds, Image image, Point velocity, int health) {
-        myPosition = position;
-        mySize = size;
-        myImage = image;
-        myVelocity = velocity;
-        myHealth = health;
-        myBounds = bounds;
-        myMapper = new SpriteMethodMap();
-        myBulletsFired = new ArrayList<Bullet>();
-        setMethods();
-    }
     
     /**
      * Constructs a sprite with position, size, image, velocity, and health.
@@ -258,6 +150,16 @@ public abstract class Sprite implements SpriteActionInterface {
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
         myBulletsFired = new ArrayList<Bullet>();
+        initialMethod();
+    }
+
+    private void initialMethod() {
+        myMapper.addPair("stop", new SpriteActionInterface() {
+            public void doAction (Object ... o) {
+                setVelocity(0,0);
+            }
+        });
+
         setMethods();
     }
 
@@ -361,7 +263,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * and will be painted during the player's paint method.
      */
     public void fireBullet() {
-        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, "vooga/shooter/images/playerbullet.png",
+        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, BULLET_IMAGEPATH,
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
         myBulletsFired.add(b);

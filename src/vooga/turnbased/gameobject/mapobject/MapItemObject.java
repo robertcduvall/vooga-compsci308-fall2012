@@ -53,6 +53,9 @@ public class MapItemObject extends MapObject {
                 SIZE_RELATIVE_TO_TILE);
     }
 
+    /**
+     * stop playing the sound
+     */
     public void mute () {
         myPickupSoundSwitch = false;
     }

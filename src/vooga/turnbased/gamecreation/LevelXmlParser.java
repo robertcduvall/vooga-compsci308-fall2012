@@ -264,6 +264,10 @@ public class LevelXmlParser {
                 .equals(objectClass)) {
             return (GameObject) parseBattleObject(objectElement);
         }
+        else if ("games.trexgame.TRexMonster"
+                .equals(objectClass)) {
+            return (GameObject) parseBattleObject(objectElement);
+        }
         else if ("vooga.turnbased.gameobject.mapobject.MapEnemyObject"
                 .equals(objectClass)) {
             return (GameObject) parseMapObject(objectElement);
@@ -289,6 +293,10 @@ public class LevelXmlParser {
             return (GameObject) parseOptionObject(objectElement);
         }
         else if ("vooga.turnbased.gameobject.optionobject.OptionTransportObject"
+                .equals(objectClass)) {
+            return (GameObject) parseOptionObject(objectElement);
+        }
+        else if ("vooga.turnbased.gameobject.optionobject.OptionConversationObject"
                 .equals(objectClass)) {
             return (GameObject) parseOptionObject(objectElement);
         }

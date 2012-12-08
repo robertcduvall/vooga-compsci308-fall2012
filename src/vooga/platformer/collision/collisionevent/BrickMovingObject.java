@@ -20,8 +20,8 @@ public class BrickMovingObject extends CollisionEvent {
      */
     @Override
     public void applyCollision (Level level, GameObject gameObjectA, GameObject gameObjectB) {
-        StaticObject brick = (StaticObject)gameObjectA;
-        MovingObject moveObj = (MovingObject)gameObjectB;
+        GameObject brick = gameObjectA;
+        MovingObject moveObj = (MovingObject) gameObjectB;
         Rectangle2D intersection = brick.getShape().createIntersection(
                 moveObj.getShape());
         double dy = intersection.getHeight();

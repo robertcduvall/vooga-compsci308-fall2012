@@ -5,11 +5,9 @@ import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseListener;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import javax.swing.JComponent;
 
 
@@ -27,11 +25,12 @@ public class Menu extends JComponent {
      */
     private static final long serialVersionUID = 1L;
     private static final double MENU_SIZE_RATIO = 0.66;
+    private static final int INTERVAL = 20;
     private static final Color TRANSP_COLOR = new Color(160, 100, 100, 100);
     private double myRatio = MENU_SIZE_RATIO;
-    private Map<String, GameButton> myButtonMap = new HashMap<String, GameButton>();
     private JComponent myGameCanvas;
-    private Color myColor;
+    private ArrayList<GameButton> myButtonList = new ArrayList<GameButton>();
+    private Color myColor = Color.WHITE;
 
     /**
      * @param gameCanvas JComponent where the game painted
@@ -40,13 +39,12 @@ public class Menu extends JComponent {
         myGameCanvas = gameCanvas;
         setSize(myGameCanvas.getSize());
         gameCanvas.add(this, BorderLayout.CENTER);
-        setLayout(new GridBagLayout());
         gameCanvas.repaint();
     }
 
     @Override
     protected void paintComponent (Graphics pen) {
-        pen.setColor(Color.WHITE);
+        pen.setColor(myColor);
         double myWidth = getSize().width * myRatio;
         double myHeight = getSize().height * myRatio;
         pen.fillRect((int) ((getSize().width / 2) - (myWidth / 2)),
@@ -67,17 +65,36 @@ public class Menu extends JComponent {
      * @param fileName of the button image
      * @param command name of this button
      */
-    public void addButtons (String fileName, String command, MouseListener ml) {
+    public void addButton (String fileName, String command, MouseListener ml) {
         GameButton gb = new GameButton(fileName, command, ml);
-        myButtonMap.put(command, gb);
-        add(gb, new GridBagConstraints());
+        addButton(gb);
     }
 
     /**
      * @param button to add
      */
-    public void addButtons (GameButton button) {
-        add(button, new GridBagConstraints());
+    public void addButton (GameButton button) {
+        myButtonList.add(button);
+        add(button);
+    }
+
+    public void pack () {
+        Insets insets = myGameCanvas.getInsets();
+        Dimension canvasSize = myGameCanvas.getSize();
+        int numOfButtons = myButtonList.size();
+        int sumOfWidth = INTERVAL * (numOfButtons - 1);
+        for (GameButton gb : myButtonList) {
+            sumOfWidth += gb.getSize().width;
+        }
+        int start = canvasSize.width / 2 - sumOfWidth / 2;
+        int location = 0;
+        for (GameButton gb : myButtonList) {
+            Dimension size = gb.getSize();
+            gb.setBounds(insets.left + start + location, insets.top
+                    + canvasSize.height / 2 - size.height / 2, size.width,
+                    size.height);
+            location += size.width + INTERVAL;
+        }
     }
 
     /**
@@ -93,11 +110,11 @@ public class Menu extends JComponent {
      * @param button will be counted as pressed when player pressing this key
      */
     public void addHotKey (int keyValue, Button button) {
-
+        // TODO
     }
 
     /**
-     * @param color 
+     * @param color
      */
     public void setColor (Color color) {
         myColor = color;

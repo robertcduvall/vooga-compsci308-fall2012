@@ -22,7 +22,7 @@ import vooga.platformer.util.enums.Direction;
 public abstract class CollisionEvent {
     private Class myTypeA;
     private Class myTypeB;
-    private Direction myDirection;
+    private Direction myDirection = Direction.NONE;
     private Dimension2D myIntersectSize = new Dimension();
 
     public CollisionEvent (Class typeA, Class typeB) {
@@ -57,7 +57,7 @@ public abstract class CollisionEvent {
             if (objA.getX() > objB.getX()) { // determine collision direction
                 myDirection = Direction.RIGHT;
             }
-            else {
+            else if (objA.getX() < objB.getX()){
                 myDirection = Direction.LEFT;
             }
         }
@@ -66,7 +66,7 @@ public abstract class CollisionEvent {
             if (objA.getY() > objB.getY()) { // determine collision direction
                 myDirection = Direction.DOWN;
             }
-            else {
+            else if (objA.getY() < objB.getY()){
                 myDirection = Direction.UP;
             }
         }

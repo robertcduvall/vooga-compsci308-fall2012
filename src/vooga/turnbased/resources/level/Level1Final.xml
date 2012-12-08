@@ -139,8 +139,7 @@
         <class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
         <name>Quit</name>
         <condition>NO_ACTION</condition>
-      </object>
-    </sprite>
+      </object></sprite>
     <sprite>
       <object>
         <createOn>start</createOn>

@@ -20,12 +20,14 @@ public class PlatformerController extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
 
     private Level myCurrentLevel;
+    private String myCurrentLevelName;
 
     // TODO: Make this variable hold a LevelFactory
     private Map<String, Point> myStringMap = new HashMap<String, Point>();
     private Dimension mySize;
 
     private Thread animator;
+    private InputInitializer myInputInitializer;
 
     public PlatformerController (String firstLevelName, InputInitializer ii) {
 
@@ -33,7 +35,8 @@ public class PlatformerController extends JPanel implements Runnable {
 
         setupLevel(firstLevelName);
 
-        ii.setUpInput(myCurrentLevel.getObjectList(), this);
+        myInputInitializer = ii;
+        myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
 
         animator = new Thread(this);
         animator.start();
@@ -51,10 +54,12 @@ public class PlatformerController extends JPanel implements Runnable {
         if (currentState == PlayState.NEXT_LEVEL || currentState == PlayState.GAME_OVER) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
             setupLevel(nextLevelName);
+            myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
         }
     }
 
     private void setupLevel (String lvlName) {
+        myCurrentLevelName = lvlName;
         myCurrentLevel = LevelFactory.loadLevel(lvlName);
         Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
         mySize = new Dimension((int) cameraBounds.getWidth(), (int) cameraBounds.getHeight());
@@ -153,5 +158,25 @@ public class PlatformerController extends JPanel implements Runnable {
             beforeTime = System.currentTimeMillis();
         }
     }
-
+    
+    /**
+     * Pause game;
+     */
+    public void pause(){
+        myCurrentLevel.pause();
+    }
+    
+    /**
+     * Unpause current Level
+     */
+    public void upause(){
+        myCurrentLevel.unpause();
+    }
+    
+    /**
+     * Replay current level
+     */
+    public void replayCurrentLevel(){
+        setupLevel(myCurrentLevelName);
+    }
 }
