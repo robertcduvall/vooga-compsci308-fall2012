@@ -60,7 +60,7 @@ public class Player extends Sprite {
      * through KeyEvents or collisions
      */
     @Override
-    void setMethods () {
+    public void setMethods () {
         getMapper().addPair(Integer.toString(KeyEvent.VK_LEFT), new SpriteActionInterface() {
             public void doAction (Object ... o) {
                 if (checkBounds(LEFT_BOUND)) {

@@ -361,11 +361,7 @@ public abstract class Sprite implements SpriteActionInterface {
      * and will be painted during the player's paint method.
      */
     public void fireBullet() {
-        ImageIcon iib = new ImageIcon(this.getClass().getResource(
-                "../images/playerbullet.png"));
-        Image bulletImage = iib.getImage();
-
-        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, bulletImage,
+        Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, "vooga/shooter/images/playerbullet.png",
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
         myBulletsFired.add(b);

@@ -47,7 +47,7 @@ public class Game implements DrawableComponent, IArcadeGame {
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Invaders";
     private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
-    private static final String GAME_IMAGEPATH = "../images/background.gif";
+    private static final String GAME_IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
@@ -69,8 +69,8 @@ public class Game implements DrawableComponent, IArcadeGame {
      */
     public Game () {
 
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
-        myGameImage = imageIcon.getImage();
+        //ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
+        //myGameImage = imageIcon.getImage();
 
     }
 
@@ -179,7 +179,7 @@ public class Game implements DrawableComponent, IArcadeGame {
      *         sprites if they are colliding, or (2) a bullet from one sprite,
      *         and the other sprite itself
      */
-    List<Sprite> collisionCheck (Sprite s1, Sprite s2) {
+    public List<Sprite> collisionCheck (Sprite s1, Sprite s2) {
         List<Sprite> ret = new ArrayList<Sprite>();
 
         // get bounds of both sprites
@@ -301,12 +301,15 @@ public class Game implements DrawableComponent, IArcadeGame {
         myEnemies = enemies;
     }
 
+    public Player getPlayer () {
+        return myPlayer;
+    }
     /**
      * Listens for input and sends input to the method mapper.
      * 
      * @author Stephen Hunt
      */
-    private class KeyboardListener implements KeyListener {
+    public class KeyboardListener implements KeyListener {
         private static final int NO_KEYS_PRESSED = -1;
 
         public KeyboardListener () {
