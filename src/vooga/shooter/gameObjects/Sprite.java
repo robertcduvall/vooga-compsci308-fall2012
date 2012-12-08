@@ -1,11 +1,9 @@
 package vooga.shooter.gameObjects;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -21,7 +19,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
  * limit).
  *
  */
-public abstract class Sprite extends Component implements SpriteActionInterface {
+public abstract class Sprite implements SpriteActionInterface {
 
     protected static final String HIT_BY_BULLET = "hitbybullet";
     protected static final String HIT_BY_ENEMY = "hitbyenemy";
@@ -152,6 +150,16 @@ public abstract class Sprite extends Component implements SpriteActionInterface 
         myBounds = bounds;
         myMapper = new SpriteMethodMap();
         myBulletsFired = new ArrayList<Bullet>();
+        initialMethod();
+    }
+
+    private void initialMethod() {
+        myMapper.addPair("stop", new SpriteActionInterface() {
+            public void doAction (Object ... o) {
+                setVelocity(0,0);
+            }
+        });
+
         setMethods();
     }
 
@@ -434,8 +442,8 @@ public abstract class Sprite extends Component implements SpriteActionInterface 
      * 
      * @return the myBounds
      */
-    public Rectangle getBounds () {
-        return new Rectangle(0, 0, myBounds.width, myBounds.height);
+    public Dimension getBounds () {
+        return myBounds;
     }
     
     /**

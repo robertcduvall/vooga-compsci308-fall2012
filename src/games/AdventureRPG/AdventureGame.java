@@ -1,15 +1,24 @@
-package games.spruillGame;
+package games.AdventureRPG;
 
+import games.trexgame.TRexGameWindow;
 import java.awt.Image;
 import java.util.List;
 import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 
-public class Asteroids implements IArcadeGame{
-
+/**
+ * 
+ * @author Michael Elgart
+ *
+ */
+public class AdventureGame implements IArcadeGame {
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 450;
+    
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        
+        AdventureGameWindow myGameWindow = new AdventureGameWindow("AdventureLand", "GameSetting", WIDTH, HEIGHT);
+
     }
 
     @Override
@@ -26,14 +35,12 @@ public class Asteroids implements IArcadeGame{
 
     @Override
     public String getDescription () {
-        // TODO Auto-generated method stub
-        return null;
+        return "An adventure RPG that demonstrates the flexibility of the RPG's framework battle aspects";
     }
 
     @Override
     public String getName () {
-        // TODO Auto-generated method stub
-        return null;
+        return "Adventure Land";
     }
 
 }
