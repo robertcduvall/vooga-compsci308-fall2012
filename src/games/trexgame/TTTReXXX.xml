@@ -1452,12 +1452,18 @@
         <createOn>start</createOn>
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
-        <condition>talk</condition>
+        <condition>dooption</condition>
         <location>
           <x>6</x>
           <y>8</y>
         </location>
         <image>src/games/trexgame/treasure_box.gif</image>
+      </object><object>
+        <createOn>start</createOn>
+        <modes>option</modes>
+        <class>games.trexgame.interaction.OptionConversation</class>
+        <condition>NO_ACTION</condition>
+        <name>NEXT LEVEL</name>
       </object>
     </sprite>
   </spriteDeclarations>
