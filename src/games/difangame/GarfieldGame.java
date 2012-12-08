@@ -10,7 +10,7 @@ import arcade.gamemanager.GameSaver;
 
 public class GarfieldGame implements IArcadeGame {
     
-    private static final String myFirstLevelName = "src/games/difangame/levels/difantest.xml";
+    private static final String myFirstLevelName = "src/games/difangame/levels/level1.xml";
     
     
     public static void main (String[] args) {
