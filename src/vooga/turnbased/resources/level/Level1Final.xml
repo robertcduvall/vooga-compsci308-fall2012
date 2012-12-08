@@ -139,13 +139,6 @@
         <class>vooga.turnbased.gameobject.optionobject.OptionObject</class>
         <name>Quit</name>
         <condition>NO_ACTION</condition>
-      </object>
-    <object>
-        <createOn>start</createOn>
-        <modes>option</modes>
-        <class>vooga.turnbased.gameobject.optionobject.OptionConversationObject</class>
-        <name>Talk to Prof Oak!</name>
-        <condition>NO_ACTION</condition>
       </object></sprite>
     <sprite>
       <object>
