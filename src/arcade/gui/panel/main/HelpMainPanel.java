@@ -26,7 +26,7 @@ public class HelpMainPanel extends AMainPanel {
         ArcadePanel myPanel = initializeNewPanel();
 
         JLabel helpTitle = new JLabel();
-        helpTitle.setText("The Help Page - Your Guide to the CS:308 Arcade.");
+        helpTitle.setText("The Help Page -- Your Guide to the CS 308 Arcade");
         helpTitle.setForeground(Color.WHITE);
         helpTitle.setVerticalTextPosition(JLabel.CENTER);
         helpTitle.setHorizontalTextPosition(JLabel.CENTER);
@@ -46,11 +46,12 @@ public class HelpMainPanel extends AMainPanel {
         helpTextArea = new JTextArea(helpText, 20, 60);
         helpTextArea.setLineWrap(true);
         helpTextArea.setWrapStyleWord(true);
+        helpTextArea.setEditable(false);
         JScrollPane scrollingHelpTextArea = new JScrollPane(helpTextArea);
 
-        myPanel.setLayout(new MigLayout("flowy"));
-        myPanel.add(helpTitle, "align center");
-        myPanel.add(scrollingHelpTextArea);
+        myPanel.setLayout(new MigLayout("", "[grow]", "[]20[c]"));
+        myPanel.add(helpTitle, "align center, wrap");
+        myPanel.add(scrollingHelpTextArea, "align center");
         return myPanel;
     }
 

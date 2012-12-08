@@ -21,9 +21,11 @@ public class LevelEditor extends Editor {
     private static final String OBJECT = "object";
     private static final String CREATE_ON = "createOn";
     private static final String MODES = "modes";
-    private static final String IMAGE = "image";
     private static final String HEIGHT = "height";
     private static final String WIDTH = "width";
+    private static final String CAMERA_DIMENSION = "cameraDimension";
+    private static final String FORMAT1 = "\\s";
+    private static final String FORMAT2 = "\\s*,\\s*";
 
     private Document myXmlDocument;
     private Element myRootElement;
@@ -65,6 +67,9 @@ public class LevelEditor extends Editor {
         myFileName = fileName;
     }
 
+    /**
+     * Method that initializes battle, gameover, option and map modes.
+     */
     public void initialize () {
         XmlUtilities.appendElement(myXmlDocument, myGameSetupElement, "startMode", "map1");
         Element battleMode = addMode("battle", "vooga.turnbased.gamecore.gamemodes.BattleMode",
@@ -79,6 +84,20 @@ public class LevelEditor extends Editor {
         Element map1 = addMode("map1", "vooga.turnbased.gamecore.gamemodes.MapMode",
                 "entermap1");
         XmlUtilities.appendElement(myModeElement, map1);
+    }
+
+    public void addStaticSprites (String background, int numMaps) {
+        Element sprite = XmlUtilities.appendElement(myXmlDocument, mySpriteElement, "staticSprite");
+        XmlUtilities.appendElement(myXmlDocument, sprite,
+                "class", "vooga.turnbased.gameobject.mapobject.MapObject");
+        XmlUtilities.appendElement(myXmlDocument, sprite, "condition", "NO_ACTION");
+        XmlUtilities.appendElement(myXmlDocument, sprite, "image", background);
+        String maps = "";
+        for (int i = 0; i < numMaps; i++) {
+            maps = maps + ", map" + ((Integer)(i+1)).toString();
+        }
+        maps = maps.substring(2);
+        XmlUtilities.appendElement(myXmlDocument, sprite, "modes", maps);
     }
 
     /**
@@ -105,7 +124,7 @@ public class LevelEditor extends Editor {
      * @param height Describes height of the Camera dimension
      */
     public void addCameraDimension (String width, String height) {
-        addDimension("camaraDimension", width, height);
+        addDimension(CAMERA_DIMENSION, width, height);
     }
 
     /**
@@ -114,7 +133,7 @@ public class LevelEditor extends Editor {
      * @param height New camera dimension height
      */
     public void modifyCameraDimension (String width, String height) {
-        modifyDimension("cameraDimension", width, height);
+        modifyDimension(CAMERA_DIMENSION, width, height);
     }
 
     /**
@@ -127,8 +146,8 @@ public class LevelEditor extends Editor {
     }
 
     /**
-     *
-     * @param imagePath New Image Path
+     * Changes the background image to the image located at the given filepath.
+     * @param imagePath Filepath to new image.
      */
     public void modifyBackgroundImage (String imagePath) {
         Element background = XmlUtilities.getElement(myGameSetupElement, BACKGROUND_IMAGE);
@@ -144,8 +163,8 @@ public class LevelEditor extends Editor {
     public Element addMode (String name, String classMode, String conditions) {
         Element mode = null;
         if (conditions.contains(",")) {
-            conditions.replaceAll("\\s", "");
-            String[] newConditions = conditions.split("\\s*,\\s*");
+            conditions.replaceAll(FORMAT1, "");
+            String[] newConditions = conditions.split(FORMAT2);
             mode = addMode(name, classMode, newConditions);
         }
         else {
@@ -224,9 +243,9 @@ public class LevelEditor extends Editor {
     }
 
     private void addStatsToXml (Document d, Element e, String stats) {
-        if (!stats.equals("")) {
-            stats.replaceAll("\\s", "");
-            String[] allStats = stats.split("\\s*,\\s*");
+        if (!"".equals(stats)) {
+            stats.replaceAll(FORMAT1, "");
+            String[] allStats = stats.split(FORMAT2);
             for (String stat : allStats) {
                 String[] singleStat = stat.split("\\s*:\\s*");
                 XmlUtilities.appendElement(d, e, singleStat[0], singleStat[1]);
@@ -235,8 +254,8 @@ public class LevelEditor extends Editor {
     }
 
     private void addImagesToXml (Element objectElement, String imagePaths) {
-        imagePaths.replaceAll("\\s", "");
-        String[] allImages = imagePaths.split("\\s*,\\s*");
+        imagePaths.replaceAll(FORMAT1, "");
+        String[] allImages = imagePaths.split(FORMAT2);
         for (String image : allImages) {
             XmlUtilities.appendElement(myXmlDocument, objectElement, "image", image);
         }

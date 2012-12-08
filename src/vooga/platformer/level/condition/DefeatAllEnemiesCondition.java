@@ -3,39 +3,42 @@ package vooga.platformer.level.condition;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import util.configstring.ConfigStringParser;
 import vooga.platformer.gameobject.Enemy;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.util.enums.PlayState;
 
+
 /**
- * A win condition that moves to the next level if all enemies are defeated. This
- * code will be broken until someone creates an Enemy class in the GameObject package.
+ * A win condition that moves to the next level if all enemies are defeated.
+ * This
+ * code will be broken until someone creates an Enemy class in the GameObject
+ * package.
+ * 
  * @author Niel Lebeck
- *
+ * 
  */
 public class DefeatAllEnemiesCondition implements Condition {
 
-    private static final long serialVersionUID = 1L;
     protected static final String LEVEL_NAME_TAG = "nextlevel";
+    private static final long serialVersionUID = 1L;
 
     private String myNextLevelName;
-    
+
     /**
      * 
      */
-    public DefeatAllEnemiesCondition() {
-        
+    public DefeatAllEnemiesCondition () {
+
     }
-    
+
     /**
      * 
      * @param nextLevelName next level name
      */
-    public DefeatAllEnemiesCondition(String nextLevelName) {
+    public DefeatAllEnemiesCondition (String nextLevelName) {
         myNextLevelName = nextLevelName;
     }
-    
+
     @Override
     public boolean isSatisfied (List<GameObject> objectList) {
         int numEnemies = 0;

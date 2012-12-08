@@ -35,11 +35,9 @@ public class MainScreen extends Level {
     }
 
     public void startLevel () {
-        ImageIcon imageIcon =
-                new ImageIcon(this.getClass().getResource("../images/background.gif"));
-        Image enemyImage = imageIcon.getImage();
+        String imagePath = "vooga/shooter/images/background.gif";
         myGame.addEnemy(new Enemy(new Point(300, 200), ENEMY_DIMENSION,
-                                  myGame.getCanvasDimension(), enemyImage, ENEMY_VELOCITY,
+                                  myGame.getCanvasDimension(), imagePath, ENEMY_VELOCITY,
                                   ENEMY_DAMAGE));
     }
 

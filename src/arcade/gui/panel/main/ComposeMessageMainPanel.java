@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -64,7 +65,7 @@ public class ComposeMessageMainPanel extends AMainPanel {
                 if (messageArea.getText() != null && messageArea.getText() != "" &&
                         recipientField.getText() != null && recipientField.getText() != "") {
                     messageSent = getArcade().getModelInterface().sendMessage(getArcade().getUsername(),
-                            recipientField.getText(), messageArea.getText());
+                            recipientField.getText(), messageArea.getText(), new Date());
                 }
                 System.out.println(recipientField.getText());
                 System.out.println(messageArea.getText());

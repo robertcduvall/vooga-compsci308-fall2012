@@ -16,6 +16,9 @@ import vooga.turnbased.gui.GameWindow;
 
 /**
  * path finding for a MovingMapObject to go to a target position
+ * An example of how PathFinder could be extended to apply to different games.
+ * All of the methods in this class deal with the specific ways to show the
+ * path in the MapMode of the turnbased game.
  * 
  * @author Rex Ying
  */
@@ -24,9 +27,8 @@ public class MapModePathFinder extends PathFinder {
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
     private MovingMapObject myMovingObject;
+
     // for execution of walking along the path
-    private Point myPreviousLocation;
-    private Point myCurrentLocation;
 
     /**
      * constructor
@@ -36,22 +38,23 @@ public class MapModePathFinder extends PathFinder {
      * @param target target position
      * @param mapSize bottom right corner of the entire map
      */
-    public MapModePathFinder (MapMode map, MovingMapObject object, Point target,
-            Dimension mapSize) {
+    public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
         super(object.getLocation(), target, new Dimension(mapSize));
         initialize(map, object);
         setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
-        myPreviousLocation = getStart();
     }
 
     /**
      * default constructor.
      * needs to add task after constructing using this default one
+     * 
      * @param map The MapMode where this path exists
-     * @param object The MapObject which is will follow the path (i.e. the player)
+     * @param object The MapObject which is will follow the path (i.e. the
+     *        player)
      */
     public MapModePathFinder (MapMode map, MovingMapObject object) {
         super();
+        myHighlightObjects = new ArrayList<MapObject>();
         initialize(map, object);
     }
 
@@ -64,7 +67,6 @@ public class MapModePathFinder extends PathFinder {
     private void initialize (MapMode map, MovingMapObject object) {
         myMap = map;
         myMovingObject = object;
-        myHighlightObjects = new ArrayList<MapObject>();
     }
 
     @Override
@@ -89,14 +91,11 @@ public class MapModePathFinder extends PathFinder {
      */
     public void addTask (MovingMapObject object, Point target, Dimension mapSize) {
         super.addTask(object.getLocation(), target, new Dimension(mapSize));
+        initialize(myMap, object);
     }
 
-    /**
-     * stop the moving process and the highlighted path disappeared
-     */
     @Override
-    public void stop () {
-        super.stop();
+    protected void dehighlightPath () {
         for (MapObject m : myHighlightObjects) {
             m.setVisible(false);
         }
@@ -114,18 +113,15 @@ public class MapModePathFinder extends PathFinder {
     }
 
     /**
-     * highlight the path by generating a series of path indicators
+     * highlight by generating path indicators
      * Could be overridden if other ways of highlighting path are needed
      */
     @Override
-    protected void highlightPath () {
-        super.highlightPath();
-        for (Point p : getImmutablePath()) {
-            MapObject m = generatePathIndicator(p);
-            m.setMapMode(myMap);
-            myMap.addMapObject(p, m);
-            myHighlightObjects.add(m);
-        }
+    protected void highlightPath (Point position) {
+        MapObject m = generatePathIndicator(position);
+        m.setMapMode(myMap);
+        myMap.addMapObject(position, m);
+        myHighlightObjects.add(m);
     }
 
     /**
@@ -135,13 +131,9 @@ public class MapModePathFinder extends PathFinder {
     @Override
     public boolean updatePath () {
         if (!super.updatePath()) { return false; }
-        myCurrentLocation = getPathUsingIndex();
-        Point direction =
-                new Point(myCurrentLocation.x - myPreviousLocation.x, myCurrentLocation.y -
-                                                                      myPreviousLocation.y);
-        if (myMovingObject.tryMove(direction)) {
+        Point currentLocation = getPathUsingIndex();
+        if (myMovingObject.tryMoveTo(currentLocation)) {
             incrementPathIndex();
-            myPreviousLocation = myCurrentLocation;
         }
         return true;
     }

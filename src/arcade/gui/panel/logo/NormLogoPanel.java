@@ -5,6 +5,7 @@ import arcade.gui.panel.ArcadePanel;
 
 
 /**
+ * Class used to create a normal ARCADE logo
  * 
  * @author Michael Deng
  * 
@@ -13,7 +14,6 @@ public class NormLogoPanel extends ALogoPanel {
 
     public NormLogoPanel (Arcade a) {
         super(a);
-
     }
 
     @Override

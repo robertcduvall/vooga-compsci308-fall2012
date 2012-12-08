@@ -21,6 +21,9 @@ public class Bullet extends Sprite {
     private Sprite myOwner;
 
     /**
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
+     * 
      * Constructs a bullet to be shown on the screen.
      * @param position the starting position of the bullet
      * @param size the size of the image to use
@@ -32,6 +35,22 @@ public class Bullet extends Sprite {
     public Bullet (Point position, Dimension size, Dimension bounds,
             Image image, Point velocity, int damage, Sprite owner) {
         super(position, size, bounds, image, velocity);
+        myDamage = damage;
+        myOwner = owner;
+    }
+    
+    /**
+     * Constructs a bullet to be shown on the screen.
+     * @param position the starting position of the bullet
+     * @param size the size of the image to use
+     * @param bounds the bounds of the canvas
+     * @param image the image of the bullet
+     * @param velocity the starting velocity of the bullet
+     * @param damage the damage that the bullet will do (to enemy or player)
+     */
+    public Bullet (Point position, Dimension size, Dimension bounds,
+            String imagePath, Point velocity, int damage, Sprite owner) {
+        super(position, size, bounds, imagePath, velocity);
         myDamage = damage;
         myOwner = owner;
     }

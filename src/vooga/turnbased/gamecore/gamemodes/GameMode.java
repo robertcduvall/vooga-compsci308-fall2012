@@ -167,7 +167,7 @@ public abstract class GameMode {
      */
     public abstract void processMouseInput (int mousePressed, Point mousePosition, int mouseButton);
 
-    protected void setModeIsOver () {
+    public void setModeIsOver () {
         isOver = true;
     }
 

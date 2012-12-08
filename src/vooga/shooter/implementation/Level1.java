@@ -35,17 +35,17 @@ public class Level1 extends Level {
     }
 
     public void startLevel () {
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("../images/alien.png"));
-        Image enemyImage = imageIcon.getImage();
+        String imagePath = "vooga/shooter/images/alien.png";
         for (int i = 0; i < NUMBER_OF_STAGES; i++) {
             for (int j = 0; j < NUMBER_OF_ENEMIES; j++) {
                 myGame.addEnemy(new Enemy(new Point(300 + (150 * j), 150 * -i), ENEMY_DIMENSION,
-                                          myGame.getCanvasDimension(), enemyImage, ENEMY_VELOCITY,
+                                          myGame.getCanvasDimension(), imagePath, ENEMY_VELOCITY,
                                           ENEMY_DAMAGE));
             }
         }
 
     }
+
     @Override
     public boolean winningConditionsMet () {
         return myGame.getEnemies().isEmpty();

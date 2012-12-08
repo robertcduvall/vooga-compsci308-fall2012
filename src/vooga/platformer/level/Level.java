@@ -2,6 +2,7 @@ package vooga.platformer.level;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -124,13 +125,17 @@ public class Level {
             List<GameObject> removalList = new ArrayList<GameObject>();
             for (GameObject go : objectList) {
                 go.update(this, elapsedTime);
+                Rectangle levelBounds = new Rectangle(0, 0, (int)myDimension.getWidth(),
+                        (int)myDimension.getHeight());
+                if (!go.getShape().intersects(levelBounds)) {
+                    go.markForRemoval();
+                }
                 if (go.checkForRemoval()) {
                     removalList.add(go);
                 }
             }
 
             for (int i = removalList.size() - 1; i >= 0; i--) {
-                System.out.println("removing!");
                 objectList.remove(removalList.get(i));
             }
             

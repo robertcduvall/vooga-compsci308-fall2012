@@ -30,7 +30,6 @@ import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.gameobject.Player;
 import vooga.platformer.gameobject.StaticObject;
 import vooga.platformer.level.condition.Condition;
-import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
 import vooga.platformer.level.levelplugin.BackgroundPainter;
 import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.leveleditor.leveldrawer.IEditorObject;
@@ -53,18 +52,18 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  * Represents the main window for the level editor. Will display a collection
  * of Sprites and will oversee the results of all user actions.
  * 
- * @author Paul Dannenberg
  * @author Sam Rang
  * 
  */
+@SuppressWarnings("serial")
 public class LevelBoard extends JPanel {
     private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
-    private static final String DEFAULT_COLLISION_CHECKER = "src/vooga/platformer/collision/collisionEvents.xml";
+    private static final String DEFAULT_COLLISION_CHECKER =
+            "src/vooga/platformer/collision/collisionEvents.xml";
     private static final int DEFAULT_SIZE = 30;
 
     // Editor fields
-    private Collection<String> myAttributes;
     private int myObjID;
     private IEditorMode myCurrentMode;
     private BufferedImage myBuffer;
@@ -85,7 +84,6 @@ public class LevelBoard extends JPanel {
     private GameObject myCurrentObject;
     private Player myPlayer;
     private ImageIcon myBackground;
-    private String myBackgroundPath;
     private String myLevelName;
     private String myCamera;
 
@@ -103,16 +101,10 @@ public class LevelBoard extends JPanel {
         myBackground = new ImageIcon();
         myBuffer = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_RGB);
         myBufferGraphics = myBuffer.createGraphics();
-        myAttributes = getAttributes();
         setupInput();
     }
 
-    private Collection<String> getAttributes () {
-
-        return null;
-    }
-
-    public void initLevelDefaults () {
+    private void initLevelDefaults () {
         myObjID = 0;
         myWidth = getWidth();
         myHeight = getHeight();
@@ -139,8 +131,10 @@ public class LevelBoard extends JPanel {
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
-                    double w = (double)ii.getIconWidth() / (double)ii.getIconHeight() * DEFAULT_SIZE;
-                    double h = (double)ii.getIconHeight() / (double)ii.getIconWidth() * DEFAULT_SIZE;
+                    double w =
+                            (double) ii.getIconWidth() / (double) ii.getIconHeight() * DEFAULT_SIZE;
+                    double h =
+                            (double) ii.getIconHeight() / (double) ii.getIconWidth() * DEFAULT_SIZE;
                     if ("StaticObject".equals(cmmd)) {
                         obj = new StaticObject(x, y, w, h, myObjID++, f);
                     }
@@ -148,14 +142,12 @@ public class LevelBoard extends JPanel {
                         obj = new Enemy(x, y, w, h, myObjID++, f);
                     }
                     else if ("Player".equals(cmmd)) {
-                        if(myPlayer != null) {
+                        if (myPlayer != null) {
                             myGameObjects.remove(myPlayer);
                         }
-                        obj = new Player(x, y, w, h, myObjID++, f);
-                        myPlayer = (Player) obj;
-                    }
-                    else if ("Plugin".equals(cmmd)) {
-                        System.out.println("plugin");
+                        myPlayer = new Player(x, y, w, h, myObjID++, f);
+                        obj = myPlayer;
+
                     }
                     ((PlacementMouseListener) myPlacementManager).setCurrent(obj);
                     myGameObjects.add(obj);
@@ -180,10 +172,20 @@ public class LevelBoard extends JPanel {
         return myPlacementManager;
     }
 
+    /**
+     * Returns the KeyListener object associated with this JPanel.
+     * 
+     * @return reference to the key listener
+     */
     public KeyListener getKeyListener () {
         return myKeyListener;
     }
 
+    /**
+     * Returns the ButtonListener object associated with this JPanel.
+     * 
+     * @return reference to the button listener
+     */
     public MouseListener getButtonListener () {
         return myButtonListener;
     }
@@ -197,12 +199,36 @@ public class LevelBoard extends JPanel {
         return myPlacementManager;
     }
 
+    /**
+     * Sets an offset indicating how far the view has scrolled from the very
+     * left side of the level.
+     * 
+     * @param offset amount by which to offset the view to accommodate for
+     *        scrolling
+     */
     public void setOffset (int offset) {
         myOffset = offset;
     }
 
+    /**
+     * Gets the offset of the level board caused by the user scrolling to the
+     * left or right.
+     * 
+     * @return the number of pixels the user has scrolled as integer
+     */
+    public int getOffset () {
+        return myOffset;
+    }
+
+    /**
+     * Sets the current location of the mouse cursor that is displayed in the
+     * LevelBoard.
+     * 
+     * @param xloc x location of the cursor
+     * @param yloc y location of the cursor
+     */
     public void setMouseLoc (int xloc, int yloc) {
-        mouseX = xloc;
+        mouseX = xloc + myOffset;
         mouseY = yloc;
     }
 
@@ -210,27 +236,27 @@ public class LevelBoard extends JPanel {
      * Updates the buffer preparing for the next paint call.
      */
     public void update () {
-        myCurrentObject = ((PlacementMouseListener)myPlacementManager).getCurrent();
-        if(myWidth <= getWidth() + myOffset) {
+        myCurrentObject = ((PlacementMouseListener) myPlacementManager).getCurrent();
+        if (myWidth <= getWidth() + myOffset) {
             myWidth = getWidth() + myOffset;
         }
         myBufferGraphics.clearRect(0, 0, myBuffer.getWidth(), myBuffer.getHeight());
-        myBufferGraphics.drawImage(myBackground.getImage(), 0, 0, myBuffer.getWidth(), myBuffer.getHeight(),
-                this);
+        myBufferGraphics.drawImage(myBackground.getImage(), 0, 0, myBuffer.getWidth(),
+                                   myBuffer.getHeight(), this);
         for (GameObject obj : myGameObjects) {
             myBufferGraphics.drawImage(obj.getCurrentImage(), (int) obj.getX() - myOffset,
-                    (int) obj.getY(), (int) obj.getWidth(),
-                    (int) obj.getHeight(), null);
+                                       (int) obj.getY(), (int) obj.getWidth(),
+                                       (int) obj.getHeight(), null);
         }
         String mousemsg = "";
         if (myCurrentObject != null) {
-            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2 + myOffset);
+            myCurrentObject.setX(mouseX - myCurrentObject.getWidth() / 2);
             myCurrentObject.setY(mouseY - myCurrentObject.getHeight() / 2);
             myBufferGraphics.setColor(Color.ORANGE);
             myBufferGraphics.drawRect((int) myCurrentObject.getX() - myOffset,
-                    (int) myCurrentObject.getY(),
-                    (int) myCurrentObject.getWidth(),
-                    (int) myCurrentObject.getHeight());
+                                      (int) myCurrentObject.getY(),
+                                      (int) myCurrentObject.getWidth(),
+                                      (int) myCurrentObject.getHeight());
             mousemsg = "Current Sprite = (";
         }
         else {
@@ -252,11 +278,21 @@ public class LevelBoard extends JPanel {
 
     }
 
+    /**
+     * Saves the contents of the LevelBoard. Basic information about the level
+     * (e.g. width and height) are saved as values in an xml document, along
+     * with paths to binary files. These binary files contain the serialized
+     * GameObject, LevelPlugins and Conditions that will be deserialized at
+     * level load time.
+     */
     public void save () {
-        if(myPlayer == null) {
+        if (myPlayer == null) {
             try {
-                myPlayer = new Player (30.0, (double)myHeight/2, (double)DEFAULT_SIZE, (double)DEFAULT_SIZE, myObjID++,
-                        new File(System.getProperty("user.dir")+DATA_PATH+"Player.png"));
+                myPlayer =
+                        new Player(30.0, (double) myHeight / 2, (double) DEFAULT_SIZE,
+                                   (double) DEFAULT_SIZE, myObjID++,
+                                   new File(System.getProperty("user.dir") + DATA_PATH +
+                                            "Player.png"));
                 myGameObjects.add(myPlayer);
             }
             catch (IOException e) {
@@ -275,14 +311,24 @@ public class LevelBoard extends JPanel {
             saveFile = new File(System.getProperty("user.dir") + DATA_PATH, "myLevel.xml");
         }
         LevelFileWriter.writeLevel(saveFile.getPath(), myLevelName, myWidth, myHeight,
-                myGameObjects, myConditions,
-                myPlugins, myCamera,
-                DEFAULT_COLLISION_CHECKER);
+                                   myGameObjects, myConditions, myPlugins, myCamera,
+                                   DEFAULT_COLLISION_CHECKER);
     }
 
+    /**
+     * Loads the contents of the specified level file into the editor.
+     * 
+     * @param path path to the xml file describing this level
+     */
     public void load (String path) {
+        clear();
         LevelFileReader loader = new LevelFileReader(path);
-        myGameObjects = loader.getGameObjects();
+        for (GameObject obj : loader.getGameObjects()) {
+            myGameObjects.add(obj);
+            if (obj instanceof Player) {
+                myPlayer = (Player) obj;
+            }
+        }
         myConditions = loader.getConditions();
         for (LevelPlugin lp : loader.getLevelPlugins()) {
             addPlugin(lp);
@@ -292,8 +338,16 @@ public class LevelBoard extends JPanel {
         myHeight = loader.getHeight();
     }
 
+    /**
+     * Clears the contents of the level entirely.
+     */
     public void clear () {
         myGameObjects.clear();
+        myPlugins.clear();
+        myConditions.clear();
+        myWidth = getWidth();
+        myPlayer = null;
+        myBackground = new ImageIcon();
     }
 
     protected void objectPopupMenu (GameObject g, MouseEvent e) {
@@ -309,7 +363,7 @@ public class LevelBoard extends JPanel {
         j3.addActionListener(sh);
         pop.add(j3);
         pop.show(this.getParent(), (int) (g.getX() + g.getWidth() / 2),
-                (int) (g.getY() + g.getHeight()));
+                 (int) (g.getY() + g.getHeight()));
     }
 
     /**
@@ -320,23 +374,11 @@ public class LevelBoard extends JPanel {
         return Collections.unmodifiableCollection(myGameObjects);
     }
 
-    /**
-     * Adds a sprite to the board. This method does not
-     * check for any conditions (such as sprites being)
-     * added on top of each other.
-     * 
-     * @param obj GameObject being added
-     */
-    protected void addObject (GameObject obj) {
-        myCurrentObject = obj;
-        myGameObjects.add(obj);
-    }
-
-    protected void addPlugin (LevelPlugin plug)  {
+    protected void addPlugin (LevelPlugin plug) {
         myPlugins.add(plug);
         if (plug instanceof BackgroundPainter) {
-            if(null != ((BackgroundPainter)plug).getDefaultImage()) {
-                myBackground = ((BackgroundPainter)plug).getDefaultImage();
+            if (null != ((BackgroundPainter) plug).getDefaultImage()) {
+                myBackground = ((BackgroundPainter) plug).getDefaultImage();
             }
         }
     }
@@ -345,14 +387,28 @@ public class LevelBoard extends JPanel {
         myConditions.add(newCondition);
     }
 
+    protected void clearConditions () {
+        myConditions.clear();
+    }
+
     /**
-     * Will remove a sprite from the board.
+     * Will remove a GameObject from the board.
      * 
-     * @param sprite The sprite that should
+     * @param obj The GameObject that should
      *        be removed.
      */
     protected void remove (GameObject obj) {
         myGameObjects.remove(obj);
+    }
+
+    /**
+     * Will add a GameObject to the board
+     * 
+     * @param obj GameObject being added
+     * 
+     */
+    protected void add (GameObject obj) {
+        myGameObjects.add(obj);
     }
 
     private class SelectionHelper implements ActionListener {
@@ -367,8 +423,11 @@ public class LevelBoard extends JPanel {
             if ("Flip".equals(event.getActionCommand())) {
                 myObject.flipImage();
             }
-            else if ("Add attribute".equals(event.getActionCommand())) {
-                createAttributeWindow();
+            else if ("Edit".equals(event.getActionCommand())) {
+                JPopupMenu pop = new GameObjectEditor(myObject);
+                pop.requestFocus();
+                pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
+                         (int) (myObject.getY() + myObject.getHeight() / 2));
             }
             else if ("Delete".equals(event.getActionCommand())) {
                 myGameObjects.remove(myObject);
@@ -376,22 +435,6 @@ public class LevelBoard extends JPanel {
             else {
                 System.out.println("Added " + event.getActionCommand() + " as an attribute");
             }
-        }
-
-        private void createAttributeWindow () {
-            JPopupMenu pop = new JPopupMenu();
-            for (String att : myAttributes) {
-                JMenuItem j = new JMenuItem(att);
-                j.addActionListener(this);
-                pop.add(j);
-            }
-            pop.show(LevelBoard.this, (int) (myObject.getX() + myObject.getWidth() / 2),
-                    (int) (myObject.getY() + myObject.getHeight() / 2));
-
-            /*
-             * create a list of attributes from the resource file
-             * and get appropriate values for certain attributes.
-             */
         }
     }
 
@@ -404,7 +447,6 @@ public class LevelBoard extends JPanel {
      * 
      */
     private class LevelEditorMouseListener extends MouseAdapter {
-
         @Override
         public void mouseMoved (MouseEvent e) {
             myCurrentMode.sendCursorPosition(e.getX(), e.getY());
@@ -430,7 +472,7 @@ public class LevelBoard extends JPanel {
      * @param nextMode The next mode the editor is about to transition to.
      */
     private void transitionBetweenModes (IEditorMode currentMode, IEditorMode nextMode) {
-        if (currentMode != null) {
+        if (currentMode != null && currentMode.getEditorObjects() != null) {
             Collection<IEditorObject> editorObjectsToKeep = currentMode.getEditorObjects();
             for (IEditorObject objectFromPreviousMode : editorObjectsToKeep) {
                 nextMode.add(objectFromPreviousMode);

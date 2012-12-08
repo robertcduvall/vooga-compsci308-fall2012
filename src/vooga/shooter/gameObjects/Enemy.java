@@ -10,25 +10,23 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
+
 /**
  * Represents an enemy sprite to be used in the game.
  * Enemies start with velocity and health.
- *
+ * 
  * @author Jesse Starr
- * (add your own name as you edit)
+ *         (add your own name as you edit)
  */
 public class Enemy extends Sprite {
-    
+
     private String myImagePath;
 
     /**
-     * @deprecated Please pass in the imagePath instead of an image.
-     * (See the constructor below). We need the imagePath so that we 
-     * can recreate the Enemy from xml data. The original
-     * path of the image source file cannot be retrieved from an Image
-     * object.
+     * @deprecated Pass in the imagePath using the constructor below
+     *             instead. We need the imagePath for xml conversion.
      * 
-     * Constructs an enemy character for the game.
+     *             Constructs an enemy character for the game.
      * @param position the center of the image
      * @param size the size of the image
      * @param bounds the size of the canvas
@@ -36,15 +34,25 @@ public class Enemy extends Sprite {
      * @param velocity the starting velocity for the enemy
      * @param health the starting health of the enemy
      */
-    public Enemy (Point position, Dimension size, Dimension bounds,
-            Image image, Point velocity, int health) {
+    public Enemy (Point position, Dimension size, Dimension bounds, Image image, Point velocity,
+                  int health) {
         super(position, size, bounds, image, velocity, health);
     }
-    
-    public Enemy (Point position, Dimension size, Dimension bounds,
-        String imagePath, Point velocity, int health) {
-        super(position, size, bounds, (new ImageIcon(imagePath)).getImage(), velocity, health);
-        this.myImagePath = imagePath;
+
+    /**
+     * Constructs an enemy character for the game.
+     * 
+     * @param position the center of the image
+     * @param size the size of the image
+     * @param bounds the size of the canvas
+     * @param imagePath the path to the image file to use.
+     *        A relative path starting at the src directory
+     * @param velocity the starting velocity for the enemy
+     * @param health the starting health of the enemy
+     */
+    public Enemy (Point position, Dimension size, Dimension bounds, String imagePath,
+                  Point velocity, int health) {
+        super(position, size, bounds, imagePath, velocity, health);
     }
 
     /**
@@ -52,7 +60,7 @@ public class Enemy extends Sprite {
      * Makes the enemy do something else after moving (e.g. fire a
      * shot).
      */
-    protected void continueUpdate() {
+    protected void continueUpdate () {
         for (Bullet b : getBulletsFired()) {
             b.update();
         }
@@ -60,9 +68,10 @@ public class Enemy extends Sprite {
 
     /**
      * Returns the type of the sprite.
+     * 
      * @return "enemy"
      */
-    public String getType() {
+    public String getType () {
         return ENEMY_TYPE;
     }
 
@@ -89,10 +98,10 @@ public class Enemy extends Sprite {
      */
     @Override
     void setMethods () {
-        //if the enemy is hit by a player's bullet then both
-        //bullet and enemy die
+        // if the enemy is hit by a player's bullet then both
+        // bullet and enemy die
         getMapper().addPair(HIT_BY_BULLET, new SpriteActionInterface() {
-            public void doAction(Object...o) {
+            public void doAction (Object ... o) {
                 String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
                 if (PLAYER_TYPE.equals(bulletOwnerType)) {
                     die();
@@ -102,24 +111,14 @@ public class Enemy extends Sprite {
         });
 
         getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
-            public void doAction(Object...o) {
+            public void doAction (Object ... o) {
                 die();
                 ((Player) o[0]).die();
             }
         });
 
-        //do nothing if an enemy intersects an enemy
+        // do nothing if an enemy intersects an enemy
         getMapper().addPair(HIT_BY_ENEMY, this);
     }
-    
-    /**
-     * Get a string representing the full path to the image
-     * file for the Enemy. This is needed for converting to
-     * xml.
-     * 
-     * @return the full path to an image file
-     */
-    public String getImagePath() {
-        return myImagePath;
-    }
+
 }

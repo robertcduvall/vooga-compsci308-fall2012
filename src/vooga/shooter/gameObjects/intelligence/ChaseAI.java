@@ -3,7 +3,6 @@ package vooga.shooter.gameObjects.intelligence;
 import java.awt.Point;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
-import vooga.shooter.gameplay.Game;
 import util.mathvector.VectorCalculator;
 
 /**
@@ -12,8 +11,8 @@ import util.mathvector.VectorCalculator;
  */
 public class ChaseAI extends AI{
 
-    public ChaseAI (Sprite owner, Game theGame, Player thePlayer) {
-        super(owner, theGame, thePlayer);
+    public ChaseAI (Sprite owner, Player thePlayer) {
+        super(owner, thePlayer);
     }
 
     /**
@@ -21,7 +20,7 @@ public class ChaseAI extends AI{
      * changing the speed as little as possible.
      */
     @Override
-    public void subCalculate (Sprite mySprite, Player myPlayer, Game myGame) {
+    public void subCalculate (Sprite mySprite, Player myPlayer) {
         Point playerVector = new Point(
                 myPlayer.getPosition().x - mySprite.getPosition().x,
                 myPlayer.getPosition().y - mySprite.getPosition().y);

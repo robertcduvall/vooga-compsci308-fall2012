@@ -8,7 +8,7 @@ import vooga.platformer.gameobject.MovingObject;
  */
 public class JumpStrategy implements ControlStrategy {
     private MovingObject myPlayer;
-    private static final double VERTICAL_VELOCITY = -3;
+    private static final double VERTICAL_VELOCITY = -7;
     public JumpStrategy(MovingObject myPlayer) {
         this.myPlayer = myPlayer;
     }

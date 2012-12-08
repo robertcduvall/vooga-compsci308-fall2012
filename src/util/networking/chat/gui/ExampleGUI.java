@@ -41,9 +41,8 @@ public class ExampleGUI extends JPanel implements KeyListener {
     private JTextArea userInput;
     private Map<String, ChatDialog> usersToDialogs;
     
-    public ExampleGUI(ChatClient c, List<String> buddyList){
+    public ExampleGUI(ChatClient c){
         myChatClient = c;
-        usersOnline = buddyList;
         myChatClient.addListener(new ChatListener() {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
@@ -53,7 +52,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
                         tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
                     }
                 }else{
-                    ChatDialog cd = new ChatDialog(e.getMessageBody());
+                    ChatDialog cd = new ChatDialog("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
                     usersToDialogs.put(e.getSender(), cd);
                     tabbedPane.add(e.getSender(), cd);
                     tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
@@ -68,7 +67,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
             @Override
             public void handleUsersUpdateEvent (UsersUpdateEvent e) {
-                updateBuddyList(e.getUsers());
+                updateBuddyList();
                 
             }});
         
@@ -102,9 +101,10 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
 
      private JTextArea initBuddyList () {
-        buddyList = new JTextArea("Buddy List", 5, 15);
+        buddyList = new JTextArea("Users Online:\n\n", 5, 15);
+        usersOnline = myChatClient.getListUsers();
         for (String s: usersOnline){
-            buddyList.append("\n" + s);
+            buddyList.append(s + "\n");
         }
         buddyList.setEditable(false);
         buddyList.setWrapStyleWord(true);
@@ -112,9 +112,12 @@ public class ExampleGUI extends JPanel implements KeyListener {
         return buddyList;
     }
      
-     private void updateBuddyList(List<String> newUsers){
-         usersOnline = newUsers;
-         buddyList = initBuddyList();
+     private void updateBuddyList(){
+         usersOnline = myChatClient.getListUsers();
+         buddyList.setText("Users Online:\n\n");
+         for(String name : usersOnline){
+             buddyList.append(name + "\n");
+         }
      }
      
     protected void newConversation(String userName){
@@ -124,6 +127,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
                               cd);
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
             usersToDialogs.put(userName, cd);
+            System.out.println(userName);
         }    
     }
     
@@ -213,16 +217,22 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased (KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+            sendMessage();
     }
 
     @Override
     public void keyTyped (KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-            sendMessage();
     }
     
     protected void logout(){
         myChatClient.logout();
+        this.setVisible(false);
+        try{
+            ChatApp.class.newInstance().run();
+        }
+        catch(IllegalAccessException w){}
+        catch(InstantiationException ie){}
     }
 }
     

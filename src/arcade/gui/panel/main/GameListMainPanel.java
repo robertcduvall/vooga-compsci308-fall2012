@@ -57,7 +57,9 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             arrayOfGames[i] = myGameList.get(i);
         }
         System.out.println(arrayOfGames);
-        MigLayout layout = new MigLayout("align center, fill");
+//        MigLayout layout = new MigLayout("align center, fill");
+        MigLayout layout = new MigLayout("", "50[center]", "[][]50[]50[]");
+
         myPanel.setLayout(layout);
 
         
@@ -90,14 +92,19 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             }
               
           });
-        ImageIcon icon = new ImageIcon("src/arcade/gui/images/ArcadeClassics.jpg");
+        ImageIcon icon = new ImageIcon("src/arcade/gui/images/ArcadeClassics2.jpg");
         JLabel displayPic = new JLabel(icon);
         
-        myPanel.add(gameSelectLabel, "dock north, span, grow, align center");
-        myPanel.add(listScroller, "span, grow");
-        myPanel.add(displayPic, "span, grow");
-        myPanel.add(goButton, "dock south, span, grow, align center");
+//        myPanel.add(gameSelectLabel, "dock north, span, grow, align center");
+//        myPanel.add(listScroller, "span, grow");
+//        myPanel.add(displayPic, "span, grow");
+//        myPanel.add(goButton, "dock south, span, grow, align center");
 
+        myPanel.add(gameSelectLabel, "align center, wrap");
+        myPanel.add(listScroller, "grow, wrap");
+        myPanel.add(displayPic, "align center, wrap");
+        myPanel.add(goButton, "grow, align center");
+        
         return myPanel;
         
     }

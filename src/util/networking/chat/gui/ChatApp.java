@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.AbstractAction;
@@ -35,14 +36,20 @@ public class ChatApp {
     private static int MAX_USER_CHAR = 12;
     private static JFrame frame; 
     
-    public static void main (String[] args) {
+    public static void main(String[] args){
+        run();
+    }
+    
+    public static void run () {
         try {
-            ChatClient c = new ChatClient("10-182-22-109.wireless.duke.local", new GordonBukspanProtocol());
+            ChatClient c = new ChatClient("wl-10-190-45-7.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
+            while(!c.getListUsers().contains(userName));
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
+            frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             ExampleGUI eg;
-            eg = new ExampleGUI(c, c.getListUsers());
+            eg = new ExampleGUI(c);
             frame.add(eg);
             JMenuBar menuBar = new JMenuBar();
             JMenu menu = new JMenu("File");
@@ -66,7 +73,7 @@ public class ChatApp {
     private static String login (String errorMessage, ChatClient c) {
         JPanel userPassPanel = new JPanel(new GridLayout(3,2));
         JLabel userLabel = new JLabel("Username (<12 char)");
-        JLabel passLabel = new JLabel("Password (<5 char)");
+        JLabel passLabel = new JLabel("Password (>5 char)");
         JTextField userTA = new JTextField(10);
         JPasswordField pass = new JPasswordField(10);
         userPassPanel.add(userLabel);
@@ -112,10 +119,12 @@ public class ChatApp {
                 return login("<html>Error: Password must be at least 5 characters<br><br></html>",c);
             if(login.isSelected()){
                 boolean status = c.loginWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
+                System.out.println("login: " + status);
                 if(!status) return login("<html>Error: Could not login. Please check your server connection.<br><br>", c);
             }
             else{
                 boolean status = c.registerWithTimeout(userName, Encrypter.hashCode(new String(password)), 3000);
+                System.out.println("register: " + status);
                 if(!status) return login("<html>Error: Could not Properly Register. Please Try Again.<br><br>",c);
             }
             return userName;

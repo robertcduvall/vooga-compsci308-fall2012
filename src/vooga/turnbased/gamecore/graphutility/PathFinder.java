@@ -4,16 +4,17 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 
 /**
  * abstract path finder which provides basic functionality of finding path
- * multiple path supported (as the effect of shift+right click in WarCraft)
+ * multiple path supported (as the effect of shift+right click in WarCraft).
  * See vooga.turnbased.gamecore.graphutility.MapModePathFinder for an example to
  * extend the class and apply to games etc.
+ * 
+ * Use template methods in update, so that sub-classes simply need to override
+ * methods that deals with specific display of the path
  * 
  * @author Rex Ying
  * 
@@ -25,7 +26,6 @@ public abstract class PathFinder {
     private boolean myHasTask;
     private boolean myIsHighlighted;
     private boolean myCancelMovement;
-    private Queue<GraphTask> myTaskCache;
     private PathSearch myPathSearch;
     private Point myStart;
     private Point myEnd;
@@ -56,7 +56,6 @@ public abstract class PathFinder {
         myIsMultiDestination = false;
         myHasTask = false;
         myIsHighlighted = false;
-        myTaskCache = new LinkedList<GraphTask>();
         myCancelMovement = false;
         myPathIndex = 0;
     }
@@ -65,9 +64,19 @@ public abstract class PathFinder {
      * this method executes the path search
      */
     public void executeSearch () {
-        myPath = searchPath();
-        if (!pathIsEmpty()) {
+        if (mySize == null) { return; }
+        List<Point> path = searchPath();
+        if (!path.isEmpty()) {
+            if (myIsMultiDestination) {
+                myPath.addAll(path);
+            }
+            else {
+                myPath = path;
+                myPathIndex = 0;
+            }
+            myIsHighlighted = false;
             myHasTask = true;
+            myCancelMovement = false;
         }
     }
 
@@ -79,24 +88,23 @@ public abstract class PathFinder {
      * @param end ending point
      * @param size size of the grid
      */
-    protected void addTask (Point start, Point end, Dimension size) {
-        if (myIsMultiDestination) {
-            myTaskCache.add(new GraphTask(myStart, myEnd, mySize));
+    public void addTask (Point start, Point end, Dimension size) {
+        stop();
+        if (myIsMultiDestination && (myEnd != null)) {
+            myStart = myEnd;
         }
         else {
             myStart = start;
-            myEnd = end;
-            mySize = size;
         }
+        myEnd = end;
+        mySize = size;
     }
 
     /**
      * Use PathSearch for finding path
-     * It can either be a DepthFirstSearch, BreadthFirstSearch, Dijkstra or
-     * BellmanFord
-     * Dijkstra should be used for dense graphs, BellmanFord used for sparse
-     * graph
-     * Default is BFS
+     * It can either be a DepthFirstSearch, BreadthFirstSearch, Dijkstra.
+     * Dijkstra should be used for dense graphs.
+     * Default is BFS.
      * subclasses can set this as different algorithms, see the example of
      * MapModePathFinder
      * 
@@ -119,6 +127,7 @@ public abstract class PathFinder {
 
     /**
      * de-activate multi-Destination functionality
+     * clear the task cache
      */
     public void deactivateMultiDestination () {
         myIsMultiDestination = false;
@@ -166,13 +175,25 @@ public abstract class PathFinder {
     protected abstract void checkObstacles ();
 
     /**
-     * The abstract class does nothing to highlight.
-     * sub-classes will determine how to indicate the path.
-     * It should be called called in the updatePath cycle.
+     * highlight the path by generating a series of path indicators.
+     * called in the updatePath cycle.
      */
-    protected void highlightPath () {
+    private void highlight () {
         myIsHighlighted = true;
+        int highlightIndex = myPathIndex;
+        while (highlightIndex < myPath.size()) {
+            highlightPath(myPath.get(highlightIndex));
+            highlightIndex++;
+        }
     }
+
+    /**
+     * The abstract class of highlighting a particular position
+     * sub-classes will determine how to indicate the path.
+     * 
+     * @param position Highlight the particular position
+     */
+    protected abstract void highlightPath (Point position);
 
     /**
      * used for display of the path.
@@ -184,23 +205,29 @@ public abstract class PathFinder {
      */
     public boolean updatePath () {
         if ((!myHasTask) || myCancelMovement) { return false; }
-
         if (myPathIndex >= getImmutablePath().size()) { return false; }
         if (!myIsHighlighted) {
-            highlightPath();
+            highlight();
         }
         return true;
     }
 
     /**
      * stop the update path process
-     * sub-classes could also override to dehighlight path etc.
+     * sub-classes could also override to de-highlight path etc.
      */
     public void stop () {
-        myCancelMovement = true;
-        myPath.clear();
-        myTaskCache.clear();
+        if (!myIsMultiDestination) {
+            myCancelMovement = true;
+            myPath.clear();
+            dehighlightPath();
+        }
     }
+
+    /**
+     * de-highlight the path when it is no longer needed (canceled movement)
+     */
+    protected abstract void dehighlightPath ();
 
     /**
      * get the path search instance which determines what kind of algorithm is
@@ -251,37 +278,5 @@ public abstract class PathFinder {
      */
     protected Dimension getSize () {
         return mySize;
-    }
-
-    /**
-     * private inner class that describe a path finding task waiting to be
-     * executed.
-     * Used when multi-destination is on
-     * 
-     * @author rex
-     * 
-     */
-    private class GraphTask {
-        private Point start;
-        private Point end;
-        private Dimension size;
-
-        protected GraphTask (Point start, Point end, Dimension size) {
-            this.start = start;
-            this.end = end;
-            this.size = size;
-        }
-
-        protected Point getStart () {
-            return start;
-        }
-
-        protected Point getEnd () {
-            return end;
-        }
-
-        protected Dimension getSize () {
-            return size;
-        }
     }
 }

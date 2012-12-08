@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 
@@ -20,10 +21,13 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  *         (add your own name as you edit)
  */
 public class Player extends Sprite {
-    private static final int SPRITE_MOVEMENT = 10;
+    private static final int SPRITE_MOVEMENT = 7;
     private static final String NO_KEY_PRESSED = "-1";
 
     /**
+     * @deprecated Pass in the imagePath using the constructor below
+     * instead. We need the imagePath for xml conversion.
+     *          
      * Constructs a player for the user to control.
      * 
      * @param position the center of the sprite image
@@ -34,6 +38,21 @@ public class Player extends Sprite {
      */
     public Player (Point position, Dimension size, Dimension bounds, Image image, int health) {
         super(position, size, bounds, image, health);
+    }
+    
+    /**
+     * Constructs an enemy character for the game.
+     * @param position the center of the image
+     * @param size the size of the image
+     * @param bounds the size of the canvas
+     * @param imagePath the path to the image file to use.
+     *          A relative path starting at the src directory
+     * @param velocity the starting velocity for the player
+     * @param health the starting health of the player
+     */
+    public Player (Point position, Dimension size, Dimension bounds,
+        String imagePath, Point velocity, int health) {
+        super(position, size, bounds, imagePath, velocity, health);
     }
 
     /**

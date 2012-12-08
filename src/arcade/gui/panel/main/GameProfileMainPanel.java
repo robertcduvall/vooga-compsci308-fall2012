@@ -28,10 +28,14 @@ public class GameProfileMainPanel extends AMainPanel {
 
     
     //TODO:REFACTORING
+    
+    
     private String gameName;
     private List<String> listOfReviews;
     private List<Integer> listOfRatings;
+    private List<String[]> usersAndScoresList;
     private JTextArea reviewsArea;
+    private JTextArea topScoresArea;
     private int lengthOfAvgRatingTitle = 16;
     private List<String> listOfTags;
     
@@ -49,7 +53,7 @@ public class GameProfileMainPanel extends AMainPanel {
         listOfTags = getArcade().getModelInterface().getGame(gameName).getTags();
         Collections.sort(listOfRatings);
         
-        MigLayout layout = new MigLayout("", "[50%, grow][50%, grow]", "[][][][][][]");
+        MigLayout layout = new MigLayout("", "[][]", "[][][][][][]");
         myPanel.setLayout(layout);
 
         System.out.println(myPanel.getSize());
@@ -138,13 +142,28 @@ public class GameProfileMainPanel extends AMainPanel {
         JLabel reviewsTitleLabel = new JLabel("User Submitted Reviews of this Game: ");
         reviewsTitleLabel.setForeground(Color.WHITE);
         
+        usersAndScoresList = getArcade().getModelInterface().getGameHighScores(gameName);
+        System.out.println(usersAndScoresList);
+        System.out.println(getArcade().getModelInterface().getGameHighScores(gameName));
+        String usersAndScoresString = "Top Scorers:\n\n";
+        int currentScore;
+        for (int i = 0; i < usersAndScoresList.size(); i++) {
+            usersAndScoresString += i + 1  + ". " + usersAndScoresList.get(i)[0] + "- " + usersAndScoresList.get(i)[1] + "\n";
+        }
+        topScoresArea = new JTextArea(usersAndScoresString, 10, 8);
+        topScoresArea.setLineWrap(true);
+        topScoresArea.setWrapStyleWord(true);
+        topScoresArea.setEditable(false);
+        JScrollPane topScoresScrollPane = new JScrollPane(topScoresArea);
+        
         
         myPanel.add(nameOfGame, "wrap, span, align center");
         myPanel.add(profilePic, "grow");
         myPanel.add(averageRatingToDisplay, "wrap");
         myPanel.add(playButton, "wrap, grow, span");
-        myPanel.add(tagsTitle, "split 2, alignx");
+        myPanel.add(tagsTitle, "split 3, flowy");
         myPanel.add(listOfTagsToDisplay);
+        myPanel.add(topScoresScrollPane, "grow");   
         myPanel.add(scrollingDescription, "wrap, grow");
         myPanel.add(reviewsTitleLabel);
         myPanel.add(ratingsTitle, "split 2, alignx");

@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.Image;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 
@@ -12,7 +13,7 @@ import javax.swing.JFrame;
  * The main game frame that switch between menu, game and editor canvases.
  * Also It is responsible to load general game settings from the resource file
  * 
- * @author David, Rex, Tony, volodymyr
+ * @author David, Rex, Tony, volodymyr, Jenni
  **/
 @SuppressWarnings("serial")
 public class GameWindow extends JFrame {
@@ -21,21 +22,23 @@ public class GameWindow extends JFrame {
      */
     public static final String MENU = "0";
     public static final String EDITOR = "1";
-    public static final String GAME = "2";
+    public static final String CONTROLS = "2";
+    public static final String GAME = "3";
 
     /**
      * Location for game configuration resource bundles
      */
-    private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
     private static ResourceBundle myResources;
+    private final String RESOURCES_LOCATION = "vooga.turnbased.resources";
 
     private Container myContentPane;
     private CardLayout myLayout;
+    private String myXmlPath;
+    private String myPlayerXml;
 
     /**
      * Constructor construct a game window given the size of the window
      * 
-     * @param settingsResource the location of the resources
      * @param title The title of the game
      * @param settingsResource name of game configuration file
      * @param width Width of the window
@@ -60,6 +63,7 @@ public class GameWindow extends JFrame {
         myContentPane.setLayout(myLayout);
         myContentPane.add(new MenuPane(this), MENU);
         myContentPane.add(new EditorPane(this), EDITOR);
+        myContentPane.add(new ControlPane(this), CONTROLS);
         myContentPane.add(new GamePane(this), GAME);
         changeActivePane(MENU);
     }
@@ -71,8 +75,8 @@ public class GameWindow extends JFrame {
      */
     public void changeActivePane (String paneName) {
         myLayout.show(myContentPane, paneName);
-        DisplayPane myCurrentPane =
-                (DisplayPane) myContentPane.getComponent(Integer.parseInt(paneName));
+        DisplayPane myCurrentPane = (DisplayPane) myContentPane.getComponent(Integer
+                .parseInt(paneName));
         myCurrentPane.initialize();
     }
 
@@ -105,5 +109,31 @@ public class GameWindow extends JFrame {
      */
     private void addResourceBundle (String resource) {
         myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
+    }
+
+    /**
+     * Sets the xml path to be the given string.
+     * 
+     * @param path String path name to xml level.
+     */
+    public void setXmlPath (String path) {
+        myXmlPath = path;
+    }
+    
+    public void setPlayerXml (String path) {
+    	myPlayerXml = path;
+    }
+
+    /**
+     * Returns the string path of the xml file to be loaded.
+     * 
+     * @return String path.
+     */
+    public String getXmlPath () {
+        return myXmlPath;
+    }
+    
+    public String getPlayerXml () {
+        return myPlayerXml;
     }
 }

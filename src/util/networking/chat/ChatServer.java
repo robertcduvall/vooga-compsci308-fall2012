@@ -54,6 +54,8 @@ public class ChatServer extends Server {
     public ChatServer (ChatProtocol protocol, File database, int maxConnections) 
         throws UnknownHostException {
         super(maxConnections);
+        myDatabase = database;
+        myUserInfo = Collections.synchronizedMap(loadUserInfo());
         ChatService myChatService = new ChatService(protocol);
         try {
             this.addService(myChatService, myChatService.getPort());
@@ -62,8 +64,6 @@ public class ChatServer extends Server {
             System.out.println("Specified port is already in use.");
             e.printStackTrace();
         }
-        myDatabase = database;
-        myUserInfo = Collections.synchronizedMap(loadUserInfo());
     }
 
     /**
