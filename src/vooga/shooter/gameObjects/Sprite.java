@@ -292,7 +292,6 @@ public abstract class Sprite implements SpriteActionInterface {
      * and will be painted during the player's paint method.
      */
     public void fireBullet() {
-
         Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, BULLET_IMAGEPATH,
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
