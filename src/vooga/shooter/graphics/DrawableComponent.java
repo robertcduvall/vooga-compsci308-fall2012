@@ -13,11 +13,12 @@ import java.awt.event.MouseMotionListener;
  * 
  */
 public interface DrawableComponent {
+    
     public void update ();
 
     public void paint (Graphics g);
-
-    public void setMouseListener (MouseMotionListener m);
-
-    public void setKeyboardListener (KeyListener k);
+    
+    public void setKeyboardListener(KeyListener keyListener);
+    
+    public void setMouseListener(MouseMotionListener mouseMotionListener);
 }
