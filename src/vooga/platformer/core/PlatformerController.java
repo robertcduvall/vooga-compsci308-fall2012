@@ -52,6 +52,7 @@ public class PlatformerController extends JPanel implements Runnable {
         if (currentState == PlayState.NEXT_LEVEL || currentState == PlayState.GAME_OVER) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
             setupLevel(nextLevelName);
+            
         }
     }
 
