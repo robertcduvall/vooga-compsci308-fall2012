@@ -62,7 +62,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private Point myPlayerOneStart;
     private JFrame myFrame;
     private Image myGameImage;
-    private KeyboardController myKeyCont;
+    private KeyboardController myKeyContr;
+    InputTeamSpriteActionAdapter inputAdapter;
+
 
     /**
      * Game constructor (initializes anything not set in initializeGame())
@@ -87,6 +89,8 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
                            PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
+        inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
+
 
         Level myCurrentLevel = new MainScreen(this, new Level1(this));
         setupInput();
@@ -100,21 +104,19 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     }
     
     private void setupInput() {
-        InputTeamSpriteActionAdapter inputAdapter;
-        inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
 
-        myKeyCont = new KeyboardController(this);
+        myKeyContr = new KeyboardController(this);
         try {
-            myKeyCont.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, inputAdapter, "fireShot");
-            myKeyCont.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, inputAdapter, "goUp");
-            myKeyCont.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, inputAdapter, "goDown");
-            myKeyCont.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, inputAdapter, "goLeft");
-            myKeyCont.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, inputAdapter, "goRight");
-            myKeyCont.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, inputAdapter, "fireShot");
+            myKeyContr.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, inputAdapter, "goUp");
+            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, inputAdapter, "goDown");
+            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, inputAdapter, "goLeft");
+            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, inputAdapter, "goRight");
+            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, inputAdapter, "stop");
 
         }
         catch (NoSuchMethodException e) {
@@ -125,7 +127,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        myCanvas.addKeyListener(myKeyCont);
+        myCanvas.addKeyListener(myKeyContr);
     }
 
     /**
