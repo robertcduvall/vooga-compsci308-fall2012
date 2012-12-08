@@ -12,6 +12,7 @@ import vooga.shooter.graphics.*;
  * @author Tommy Petrilak
  *
  */
+@SuppressWarnings("serial")
 public class Main extends JFrame {
 
     /**

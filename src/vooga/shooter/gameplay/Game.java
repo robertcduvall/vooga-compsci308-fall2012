@@ -19,6 +19,8 @@ import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import util.particleEngine.Explosion;
 import util.particleEngine.ParticleSystem;
 import vooga.shooter.gameObjects.Bullet;
@@ -322,15 +324,15 @@ public class Game implements DrawableComponent, IArcadeGame {
     public String getName () {
         return GAME_NAME;
     }
-    
-    @Override
-    public void setMouseListener (MouseMotionListener m) {
-        
-    }
 
     @Override
-    public void setKeyboardListener (KeyListener k) {
-        
+    public void setMouseListener (MouseController mouseMotion) {
+        //This is where you'll be given the mouse controller
+    }
+    
+    @Override
+    public void setKeyboardListener (KeyboardController k) {
+        //This is where you'll be given the keyboard controller
     }
 
     private class KeyboardListener implements KeyListener {
@@ -366,4 +368,5 @@ public class Game implements DrawableComponent, IArcadeGame {
     public Player getPlayer () {
         return myPlayer;
     }
+
 }
