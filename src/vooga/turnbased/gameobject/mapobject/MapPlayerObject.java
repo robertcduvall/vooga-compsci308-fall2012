@@ -14,7 +14,7 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
  * @author volodymyr, Rex
  * 
  */
-public class MapPlayerObject extends MovingMapObject {
+public class MapPlayerObject extends MapMovingObject {
 
     private static final int ANIMATION_FRAME_RATE = 3;
     private Map<String, Image> myImages;

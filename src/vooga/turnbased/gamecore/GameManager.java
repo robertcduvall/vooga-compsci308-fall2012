@@ -28,7 +28,7 @@ import vooga.turnbased.sprites.Sprite;
  * @author RPGs team
  * 
  */
-public class GameManager implements InputAPI {
+public class GameManager implements InputAPI, GameLoop {
 
     private final GamePane myGamePane;
     private GameLogic myGameLogic;
@@ -50,7 +50,7 @@ public class GameManager implements InputAPI {
      * @param gameCanvas The GameCanvas it paints to.
      * @param xmlPath String path of xml file to load.
      */
-    public GameManager (GamePane gameCanvas, String xmlPath, String playerXml) {
+    public GameManager (GamePane gameCanvas, String xmlPath) {
         myGamePane = gameCanvas;
         myGameIsOver = false;
 
@@ -62,7 +62,7 @@ public class GameManager implements InputAPI {
         myMouseActions = new LinkedList<MouseAction>();
         myGameLogic = new GameLogic(this);
         myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
-        initializeGameLevel(xmlPath, playerXml);
+        initializeGameLevel(xmlPath);
         configureInputHandling();
     }
 
@@ -74,8 +74,8 @@ public class GameManager implements InputAPI {
      * @param enteringObject
      *        The MapObject which will used for the MapMode of this level.
      */
-    private void initializeGameLevel (String gameFileName, String playerFileName) {
-        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, playerFileName, this);
+    private void initializeGameLevel (String gameFileName) {
+        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, this);
         myMapSize = levelLoader.getMapSize();
         myCameraSize = levelLoader.getCameraSize();
 
@@ -172,6 +172,7 @@ public class GameManager implements InputAPI {
     /**
      * Updates the actve game mode and handles any events occurring.
      */
+    @Override
     public void update () {
         handleEvents();
         updateGameModes();
@@ -197,13 +198,13 @@ public class GameManager implements InputAPI {
      * @param g
      *        The Graphics object of the offScreenImage.
      */
+    @Override
     public void paint (Graphics g) {
         for (GameMode mode : myGameModes) {
             if (mode.isActive()) {
                 mode.paint(g);
             }
         }
-        // myGameModes.get(myGameModes.size()-1).paint(g);
     }
 
     private void handleMouseActions (GameMode mode) {
@@ -299,7 +300,7 @@ public class GameManager implements InputAPI {
                 myGameModes.get(myGameModes.size() - 1).pause();
                 myGameModes.remove(g);
                 myGameModes.add(g);
-                g.resume();
+                g.initialize();
                 return true;
             }
         }
@@ -312,8 +313,6 @@ public class GameManager implements InputAPI {
      * @param event the event that records involved IDs and the event type
      */
     private void handleEvent (ModeEvent event) {
-        // System.out.println("doing event: "+event.getName());
-        // System.out.println("Going to make class: "+myAvailableModeTypes.get(event.getName()));
         String modeName = event.getName();
         List<Integer> myInvolvedIDs = event.getInvolvedIDs();
         if (!modeAlreadyExists(modeName)) {
@@ -325,7 +324,9 @@ public class GameManager implements InputAPI {
                 Constructor[] newC = c.getConstructors();
 
                 try {
-                    myGameModes.add((GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs));
+                    GameMode newGameMode = (GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs);
+                    myGameModes.add(newGameMode);
+                    newGameMode.initialize();
                 }
                 catch (Exception e) {
                     System.out.println("Unable to create mode " + modeName + " of class " +

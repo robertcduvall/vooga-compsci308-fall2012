@@ -10,11 +10,13 @@ import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gameobject.mapobject.MapItemObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.mapobject.MapObstacleObject;
-import vooga.turnbased.gameobject.mapobject.MovingMapObject;
+import vooga.turnbased.gameobject.mapobject.MapMovingObject;
 import vooga.turnbased.gui.GameWindow;
 
 
 /**
+ * Example of how to use PathFinder
+ *
  * path finding for a MovingMapObject to go to a target position
  * An example of how PathFinder could be extended to apply to different games.
  * All of the methods in this class deal with the specific ways to show the
@@ -26,7 +28,7 @@ public class MapModePathFinder extends PathFinder {
 
     private List<MapObject> myHighlightObjects;
     private MapMode myMap;
-    private MovingMapObject myMovingObject;
+    private MapMovingObject myMovingObject;
 
     // for execution of walking along the path
 
@@ -36,10 +38,10 @@ public class MapModePathFinder extends PathFinder {
      * @param map MapMode on which the path finding is applied
      * @param object MapObject to be moved
      * @param target target position
-     * @param mapSize bottom right corner of the entire map
+     * @param size bottom right corner of the entire map
      */
-    public MapModePathFinder (MapMode map, MovingMapObject object, Point target, Dimension mapSize) {
-        super(object.getLocation(), target, new Dimension(mapSize));
+    public MapModePathFinder (MapMode map, MapMovingObject object, Point target, Dimension size) {
+        super(object.getLocation(), target, new Dimension(size));
         initialize(map, object);
         setPathSearch(new BreadthFirstSearch(getStart(), getEnd(), getSize()));
     }
@@ -52,7 +54,7 @@ public class MapModePathFinder extends PathFinder {
      * @param object The MapObject which is will follow the path (i.e. the
      *        player)
      */
-    public MapModePathFinder (MapMode map, MovingMapObject object) {
+    public MapModePathFinder (MapMode map, MapMovingObject object) {
         super();
         myHighlightObjects = new ArrayList<MapObject>();
         initialize(map, object);
@@ -64,7 +66,7 @@ public class MapModePathFinder extends PathFinder {
      * @param map the MapMode instance on which the path should be found
      * @param object the object which needs to find a path
      */
-    private void initialize (MapMode map, MovingMapObject object) {
+    private void initialize (MapMode map, MapMovingObject object) {
         myMap = map;
         myMovingObject = object;
     }
@@ -89,7 +91,7 @@ public class MapModePathFinder extends PathFinder {
      * @param target the target position
      * @param mapSize the size of the map
      */
-    public void addTask (MovingMapObject object, Point target, Dimension mapSize) {
+    public void addTask (MapMovingObject object, Point target, Dimension mapSize) {
         super.addTask(object.getLocation(), target, new Dimension(mapSize));
         initialize(myMap, object);
     }
@@ -108,8 +110,10 @@ public class MapModePathFinder extends PathFinder {
      * @return the MapItemObject representing a path indicator
      */
     protected MapItemObject generatePathIndicator (Point p) {
-        return new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION",
-                                 p, GameWindow.importImage("HighlightPath"));
+        MapItemObject indicator = new MapItemObject(new TreeSet<String>(Arrays.asList(myMap.getName())), "NO_ACTION",
+                                                    p, GameWindow.importImage("HighlightPath"));
+        indicator.mute();
+        return indicator;
     }
 
     /**

@@ -72,7 +72,6 @@ public class OptionMode extends GameMode {
 
     @Override
     public void resume () {
-        initialize();
     }
 
     @Override

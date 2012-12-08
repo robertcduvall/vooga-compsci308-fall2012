@@ -27,6 +27,8 @@ public class GameWonMode extends GameMode {
 
     @Override
     public void initialize () {
+        getGameManager().turnOffSoundTrack();
+        GameWindow.playSound("GameWonSound");
     }
 
     @Override
@@ -35,14 +37,13 @@ public class GameWonMode extends GameMode {
 
     @Override
     public void resume () {
-         playModeEntranceSound("GameWonSound");
     }
 
     @Override
     public void paint (Graphics g) {
         Image background = GameWindow.importImage("GameWonImage");
         Dimension paneDim = getGameManager().getPaneDimension();
-        g.drawImage(background, 0, 0, paneDim.width, paneDim.width, null);
+        g.drawImage(background, 0, 0, paneDim.width, paneDim.height, null);
     }
 
     @Override

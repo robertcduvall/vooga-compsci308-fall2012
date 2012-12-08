@@ -10,11 +10,12 @@ import vooga.turnbased.gui.GamePane;
 
 /**
  * Map objects that can move smoothly, but are nevertheless restricted to tiles.
+ * This class enables smooth movement in a grid system
  * 
  * @author rex
  * 
  */
-public class MovingMapObject extends MapObject {
+public class MapMovingObject extends MapObject {
     private static final double SIZE_RELATIVE_TO_TILE = 1;
     private static final double RUN_MULTIPLIER = 2;
     private static final int INITIAL_MOVEMENT_TIME = 600;
@@ -33,12 +34,12 @@ public class MovingMapObject extends MapObject {
     /**
      * Creates the MovingMapObject that will be used in MapMode.
      * 
-     * @param allowableModes
+     * @param allowableModes Modes the MovingMapObject could potentially be in
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      */
-    public MovingMapObject (Set<String> allowableModes, String condition, Point location,
+    public MapMovingObject (Set<String> allowableModes, String condition, Point location,
                             Image mapImage) {
         super(allowableModes, condition, location, mapImage);
         myMovementTimePerTile = INITIAL_MOVEMENT_TIME;
@@ -177,6 +178,7 @@ public class MovingMapObject extends MapObject {
     }
 
     /**
+     * Try to move the map object in the specified direction by 1 unit
      * 
      * @param dir the direction of movement
      * @return if the move was successful
@@ -206,6 +208,12 @@ public class MovingMapObject extends MapObject {
         }
     }
 
+    /**
+     * Attempt to move to the destination specified
+     * 
+     * @param dest destination
+     * @return if the movement was successful
+     */
     public boolean tryMoveTo (Point dest) {
         Point direction = new Point(dest.x - getLocation().x, dest.y - getLocation().y);
         return tryMove(direction);
@@ -217,8 +225,6 @@ public class MovingMapObject extends MapObject {
      * @param dest the destination on the map
      */
     private void moveTo (Point dest) {
-        // getMapMode().removeMapObject(this);
-        // getMapMode().addMapObject(dest, this);
         setLocation(dest);
         setMoving(true);
     }

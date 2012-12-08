@@ -7,9 +7,9 @@ package util.sound;
  *
  */
 public class Example {
-    public void test () {
+    public static void main (String[] args) {
         try {
-            SoundPlayer p = new SoundPlayer("src/util/sound/sounds/teleport.wav");
+            SoundPlayer p = new SoundPlayer("src/util/sound/sounds/victory_fanfare.wav");
             // every time playOnce is called, a new thread is created. it would
             // be removed after playback is over
             p.playOnce();
