@@ -47,6 +47,8 @@
     </mode>
   </modeDeclarations>
   <spriteDeclarations>
+  
+  	<!-- OBSTACLES -->
     <sprite>
       <object>
         <createOn>start</createOn>
@@ -1322,6 +1324,7 @@
       </object>
     </sprite>
     
+    <!-- ENEMIES -->
     <sprite>
       <object>
         <createOn>start</createOn>
@@ -1354,6 +1357,9 @@
         <image>src/vooga/turnbased/resources/image/battleobject/010.png</image>
       </object>
     </sprite>
+    
+    
+    
     <staticSprite>
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
       <modes>map1</modes>
@@ -1438,7 +1444,7 @@
           <def>100</def>
           <acc>150</acc>
           <eva>45</eva>
-          <crit>.5</crit>
+          <crit>.15</crit>
         </stats>
         <name>Pikachu</name>
         <image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
