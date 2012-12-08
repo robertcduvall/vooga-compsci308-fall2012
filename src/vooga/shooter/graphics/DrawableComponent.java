@@ -3,6 +3,8 @@ package vooga.shooter.graphics;
 import java.awt.Graphics;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 
 
 /**
@@ -18,7 +20,7 @@ public interface DrawableComponent {
 
     public void paint (Graphics g);
     
-    public void setKeyboardListener(KeyListener keyListener);
+    public void setKeyboardListener(KeyboardController key);
     
-    public void setMouseListener(MouseMotionListener mouseMotionListener);
+    public void setMouseListener(MouseController mouseMotion);
 }

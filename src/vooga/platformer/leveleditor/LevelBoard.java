@@ -119,7 +119,8 @@ public class LevelBoard extends JPanel {
     private void setupInput () {
         myPlacementManager = new PlacementMouseListener(this);
 
-        myKeyListener = new ScrollingKeyListener(this);
+        ScrollingKeyInputInitializer kc = new ScrollingKeyInputInitializer(this);
+        myKeyListener = kc.getInputListener();
 
         myButtonListener = new MouseAdapter() {
             @Override
