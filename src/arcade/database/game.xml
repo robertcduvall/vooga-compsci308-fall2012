@@ -57,4 +57,10 @@
 		<tags/>
 		<filepath>games.lotrgame.LOTRGame</filepath>
 </game>
+<game id="8">
+		<name>Rob's Tenting 2D</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.robsgame.RunRobsGame</filepath>
+</game>
 </gamelist>

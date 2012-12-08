@@ -1,7 +1,8 @@
 package vooga.shooter.gameplay;
 
-import arcade.IArcadeGame;
-import arcade.gamemanager.GameSaver;
+import games.tommygame.levels.Level1;
+import games.tommygame.levels.LostGame;
+import games.tommygame.levels.WonGame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,14 +13,14 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
 import util.particleEngine.Explosion;
 import util.particleEngine.ParticleSystem;
 import vooga.shooter.gameObjects.Bullet;
@@ -28,10 +29,9 @@ import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
-import games.tommygame.levels.Level1;
-import games.tommygame.levels.LostGame;
-import games.tommygame.levels.WonGame;
 import vooga.shooter.level_editor.Level;
+import arcade.IArcadeGame;
+import arcade.gamemanager.GameSaver;
 
 
 /**
@@ -51,16 +51,15 @@ public class Game implements DrawableComponent, IArcadeGame {
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
+    private static final int PLAYER_START_HEIGHT = 50;
 
     private List<ParticleSystem> myParticleSystems;
     private List<Sprite> mySprites;
     private Player myPlayer;
-    private Player myPlayer2;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
     private Point myPlayerOneStart;
-    private Point myPlayerTwoStart;
     private JFrame myFrame;
     private Image myGameImage;
 
@@ -74,28 +73,19 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     }
 
-    private void initializeGame (Canvas c, boolean multiplayer) {
+    private void initializeGame (Canvas c) {
         myCanvas = c;
         mySprites = new ArrayList<Sprite>();
         myEnemies = new ArrayList<Enemy>();
         myParticleSystems = new ArrayList<ParticleSystem>();
-        myPlayerOneStart = new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - 50);
+        myPlayerOneStart =
+                new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
         myPlayer =
                 new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
                                                                         myCanvas.getHeight()),
                            PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
-
-        if (multiplayer) {
-            myPlayerTwoStart = new Point(200, 400);
-            myPlayer2 =
-                    new Player(myPlayerTwoStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                            myCanvas.getHeight()),
-                               PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
-
-            addSprite(myPlayer2);
-        }
 
         Level myCurrentLevel = new MainScreen(this, new Level1(this));
         myCanvas.addKeyListener(new KeyboardListener());
@@ -138,34 +128,29 @@ public class Game implements DrawableComponent, IArcadeGame {
         for (Sprite s : getSprites()) {
             s.update();
         }
-        for (Sprite s1 : getSprites()) {
-            for (Sprite s2 : getSprites()) {
-                if (s1.getImage() == null || s2.getImage() == null || s1 == s2) {
+        for (Sprite sprite1 : getSprites()) {
+            for (Sprite sprite2 : getSprites()) {
+                if (sprite1.getImage() == null || sprite2.getImage() == null || sprite1 == sprite2) {
                     continue;
                 }
-                // list of the two sprites that collide
-                // either enemy/player, enemy/enemy, or bullet/sprite
-                List<Sprite> collides = collisionCheck(s1, s2);
-                // if there is a collision
-                if (collides.size() > 0) {
-                    String key = HIT_BY + collides.get(1).getType();
-                    collides.get(0).doEvent(key, collides.get(1));
-                    myParticleSystems.add(new Explosion(collides.get(0).getPosition()));
-                    // might not need this second one if going through
-                    // all combinations of sprites anyway
-                    key = HIT_BY + collides.get(0).getType();
-                    collides.get(1).doEvent(key, collides.get(0));
+                List<Sprite> collisions = collisionCheck(sprite1, sprite2);
+                if (collisions.size() > 0) {
+                    String key = HIT_BY + collisions.get(1).getType();
+                    collisions.get(0).doEvent(key, collisions.get(1));
+                    myParticleSystems.add(new Explosion(collisions.get(0).getPosition()));
                 }
             }
         }
-        Stack<ParticleSystem> remove = new Stack<ParticleSystem>();
+        Stack<ParticleSystem> pSystemToRemove = new Stack<ParticleSystem>();
         for (ParticleSystem p : myParticleSystems) {
             p.update();
-            if (!p.stillExists()) remove.add(p);
+            if (!p.stillExists()) {
+                pSystemToRemove.add(p);
+            }
         }
-        for (ParticleSystem p : remove)
+        for (ParticleSystem p : pSystemToRemove) {
             myParticleSystems.remove(p);
-
+        }
     }
 
     /**
@@ -173,46 +158,43 @@ public class Game implements DrawableComponent, IArcadeGame {
      * Or checks if any of the bullets from either collides with
      * the other sprite.
      * 
-     * @param s1 The first sprite to check.
-     * @param s2 The second sprite to check.
+     * @param sprite1 The first sprite to check.
+     * @param sprite2 The second sprite to check.
      * @return Returns a list of 2 sprites: either (1) the two original
      *         sprites if they are colliding, or (2) a bullet from one sprite,
      *         and the other sprite itself
      */
-    List<Sprite> collisionCheck (Sprite s1, Sprite s2) {
-        List<Sprite> ret = new ArrayList<Sprite>();
+    private List<Sprite> collisionCheck (Sprite sprite1, Sprite sprite2) {
+        List<Sprite> collidedSprites = new ArrayList<Sprite>();
 
-        // get bounds of both sprites
-        Rectangle r1 = new Rectangle(new Point(s1.getLeft(), s1.getTop()), s1.getSize());
-        Rectangle r2 = new Rectangle(new Point(s2.getLeft(), s2.getTop()), s2.getSize());
+        Rectangle sprite1Edges = new Rectangle(new Point(sprite1.getLeft(), sprite1.getTop()), sprite1.getSize());
+        Rectangle sprite2Edges = new Rectangle(new Point(sprite2.getLeft(), sprite2.getTop()), sprite2.getSize());
 
         // checks for collision between 1st and 2nd sprite
-        if (r1.intersects(r2)) {
-            ret.add(s1);
-            ret.add(s2);
-            return ret;
+        if (sprite1Edges.intersects(sprite2Edges)) {
+            collidedSprites.add(sprite1);
+            collidedSprites.add(sprite2);
+            return collidedSprites;
         }
-        // will be bounds for the bullets from sprites
-        Rectangle bulletR;
+        Rectangle bulletEdges;
         // checks for bullets from 1st sprite hitting 2nd sprite
-        for (Bullet b : s1.getBulletsFired()) {
-            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()), b.getSize());
-            if (bulletR.intersects(r2)) {
-                ret.add(s2);
-                ret.add(b);
-                return ret;
+        for (Bullet bullet : sprite1.getBulletsFired()) {
+            bulletEdges = new Rectangle(new Point(bullet.getLeft(), bullet.getTop()), bullet.getSize());
+            if (bulletEdges.intersects(sprite2Edges)) {
+                collidedSprites.add(sprite2);
+                collidedSprites.add(bullet);
+                return collidedSprites;
             }
         }
-        // checks for bullets from 2nd sprite hitting 1st sprite
-        for (Bullet b : s2.getBulletsFired()) {
-            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()), b.getSize());
-            if (bulletR.intersects(r1)) {
-                ret.add(s1);
-                ret.add(b);
-                return ret;
+        for (Bullet bullet : sprite2.getBulletsFired()) {
+            bulletEdges = new Rectangle(new Point(bullet.getLeft(), bullet.getTop()), bullet.getSize());
+            if (bulletEdges.intersects(sprite1Edges)) {
+                collidedSprites.add(sprite1);
+                collidedSprites.add(bullet);
+                return collidedSprites;
             }
         }
-        return ret;
+        return collidedSprites;
     }
 
     /**
@@ -244,8 +226,9 @@ public class Game implements DrawableComponent, IArcadeGame {
                 e.paint(pen);
             }
         }
-        for (ParticleSystem p : myParticleSystems)
+        for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);
+        }
         getEnemies().removeAll(deadEnemies);
     }
 
@@ -302,10 +285,56 @@ public class Game implements DrawableComponent, IArcadeGame {
     }
 
     /**
-     * Listens for input and sends input to the method mapper.
      * 
-     * @author Stephen Hunt
+     * @return dimension of the playable game area
      */
+    public Dimension getCanvasDimension () {
+        return myCanvas.getSize();
+    }
+
+    @Override
+    public void runGame (String userPreferences, GameSaver s) {
+        myFrame = new JFrame(GAME_NAME);
+        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        myCanvas = new Canvas(this);
+        initializeGame(myCanvas);
+        myCanvas.start();
+        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
+        myFrame.pack();
+        myFrame.setVisible(true);
+
+    }
+
+    @Override
+    public List<Image> getScreenshots () {
+        return null;
+    }
+
+    @Override
+    public Image getMainImage () {
+        return myGameImage;
+    }
+
+    @Override
+    public String getDescription () {
+        return GAME_DESCRIPTION;
+    }
+
+    @Override
+    public String getName () {
+        return GAME_NAME;
+    }
+
+    @Override
+    public void setMouseListener (MouseController mouseMotion) {
+        //This is where you'll be given the mouse controller
+    }
+    
+    @Override
+    public void setKeyboardListener (KeyboardController k) {
+        //This is where you'll be given the keyboard controller
+    }
+
     private class KeyboardListener implements KeyListener {
         private static final int NO_KEYS_PRESSED = -1;
 
@@ -336,54 +365,8 @@ public class Game implements DrawableComponent, IArcadeGame {
 
     }
 
-    @Override
-    public void setMouseListener (MouseMotionListener m) {
-
-    }
-
-    @Override
-    public void setKeyboardListener (KeyListener k) {
-
-    }
-
-    public Dimension getCanvasDimension () {
-        return myCanvas.getSize();
-    }
-
-    @Override
-    public void runGame (String userPreferences, GameSaver s) {
-        myFrame = new JFrame(GAME_NAME);
-        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        myCanvas = new Canvas(this);
-        initializeGame(myCanvas, false);
-        myCanvas.start();
-        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
-        myFrame.pack();
-        myFrame.setVisible(true);
-
-    }
-
-    @Override
-    public List<Image> getScreenshots () {
-        return null;
-    }
-
-    @Override
-    public Image getMainImage () {
-        return myGameImage;
-    }
-
-    @Override
-    public String getDescription () {
-        return GAME_DESCRIPTION;
-    }
-
-    @Override
-    public String getName () {
-        return GAME_NAME;
-    }
-    
     public Player getPlayer () {
         return myPlayer;
     }
+
 }
