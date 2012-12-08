@@ -22,7 +22,6 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller = new PlatformerController("src/vooga/platformer/data/Playerinzonetest.xml",
                 new KeyControllerOnePlayerInputInitializer());
-
         frame.getContentPane().add(controller);
         frame.pack();
         paintString(controller);

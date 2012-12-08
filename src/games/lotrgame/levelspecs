@@ -1,13 +1,13 @@
 
-level0: 00intro
+level0: 00intro 
 - welcome to the the lord of the rings game,
 - created by Michael and Jei
 - to play, walk your player to the right (winning condition)
-
+-DONE
 
 level1: 01ringtext
 - show instructions for next level
-
+-DONE
 
 level2: 02ring
 - walk across the screen and grab the ring (winning condition)

@@ -15,8 +15,7 @@ import games.tommygame.levels.Level1;
  */
 public class MainScreen extends Level {
 
-    private static final int NUMBER_OF_STAGES = 1;
-    private static final int NUMBER_OF_ENEMIES = 2;
+    private static final String IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension ENEMY_DIMENSION = new Dimension(150, 150);
     private static final Point ENEMY_VELOCITY = new Point(0, 0);
     private static final int ENEMY_DAMAGE = 1;
@@ -31,9 +30,8 @@ public class MainScreen extends Level {
     }
 
     public void startLevel () {
-        String imagePath = "vooga/shooter/images/background.gif";
         myGame.addEnemy(new Enemy(new Point(300, 200), ENEMY_DIMENSION,
-                                  myGame.getCanvasDimension(), imagePath, ENEMY_VELOCITY,
+                                  myGame.getCanvasDimension(), IMAGEPATH, ENEMY_VELOCITY,
                                   ENEMY_DAMAGE));
     }
 
