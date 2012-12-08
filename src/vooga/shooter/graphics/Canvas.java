@@ -65,8 +65,8 @@ public class Canvas extends JApplet {
      * Sets up input listeners/controllers.
      */
     private void setInputListeners () {
-        myScreen.setMouseListener(new MouseController(this));
-        myScreen.setKeyboardListener(new KeyboardController(this));
+//        myScreen.setMouseListener(new MouseController(this));
+//        myScreen.setKeyboardListener(new KeyboardController(this));
     }
 
     /**
