@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,6 +87,19 @@ public abstract class BattleObject extends GameObject {
         }
     }
     /**
+     * Fetch a particular default stat
+     * @param statName 
+     * @return
+     */
+    public Number getDefaultStat (String statName) {
+        if (myDefaultStats.containsKey(statName)) {
+            return myDefaultStats.get(statName);
+        }
+        else {
+            return 0;
+        }
+    }
+    /**
      * Change the value of the given stat
      * @param statName The stat you'd like to change
      * @param value The value you want to change the stat to
@@ -95,9 +109,18 @@ public abstract class BattleObject extends GameObject {
             myChangingStats.put(statName, value);
         }
         if(myHEALTH.equals(statName)){
-        	myDefaultStats.put(statName, value);
+            myDefaultStats.put(statName, value);
         }
     }
+    /**
+     * Reset all the changing stats back to their default value
+     */
+    protected void resetStats () {
+        for (String stat : myDefaultStats.keySet()) {
+            myChangingStats.put(stat, myDefaultStats.get(stat));
+        }
+    }
+    
 
     /**
      * Get the name of the object
@@ -112,50 +135,51 @@ public abstract class BattleObject extends GameObject {
      * @param target The target enemy of this object, should it choose to attack it.
      * @return Returns the message that describes what was the BattleObject just did
      */
-    public abstract String doRandomOption(BattleObject target);
+    public abstract void doRandomOption(BattleObject target, List<String> battleMessages);
 
     /**
      * This controls the BattleObject and receives which option was selected
      * @param MenuOptionSelected The int of the Option that was selected
      * @param target The target of the option
+     * @param battleMessages 
      * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    public abstract String doOption(int MenuOptionSelected, BattleObject target);
+    public abstract void doOption(int MenuOptionSelected, BattleObject target, List<String> battleMessages);
 
     /**
      * Executes the first option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
      * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    protected abstract String doOption1(BattleObject target);
+    protected abstract void doOption1(BattleObject target, List<String> battleMessages);
 
     /**
      * Executes the second option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
      * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    protected abstract String doOption2(BattleObject target);
+    protected abstract void doOption2(BattleObject target, List<String> battleMessages);
 
     /**
      * Executes the third option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
      * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    protected abstract String doOption3(BattleObject target);
+    protected abstract void doOption3(BattleObject target, List<String> battleMessages);
 
     /**
      * Executes the fourth option for this BattleObject.
      * @param target The target of this move/attack, can be null, depending on implementation.
      * @return Returns a message that describes what the Action was that the BattleObject just took. 
      */
-    protected abstract String doOption4(BattleObject target);
+    protected abstract void doOption4(BattleObject target, List<String> battleMessages);
 
     /**
      * Implement this method to determine how much of the attack done to this monster
      * actually affects its health.
      * @param damageDone The raw damage done by the other monster's attack.
      */
-    protected abstract void takeDamage(int damageDone);
+    public abstract void takeDamage(int damageDone, List<String> battleMessages);
 
     /**
      * Implement this method to determine how to attack the other enemy, depending on
@@ -163,7 +187,7 @@ public abstract class BattleObject extends GameObject {
      * amount of damage is called.
      * @param enemy The other BattleObject which this BattleObject is fighting.
      */
-    protected abstract void attackEnemy(BattleObject enemy);
+    protected abstract void attackEnemy(BattleObject enemy, List<String> battleMessages);
 
     /**
      * Checks to see if this BattleObject has any health left.
@@ -242,9 +266,6 @@ public abstract class BattleObject extends GameObject {
      */
     public void paintStats (Graphics g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g;
-        //g2d.setPaint(Color.CYAN);
-        //g2d.draw3DRect(x, y, width, height, true);
-        //g2d.fill(new Rectangle2D.Double(x, y, width, height));
         int fontSize = calcFontSize(width, height);
         Font font = new Font("Sans_Serif", Font.PLAIN, fontSize);
         FontRenderContext frc = g2d.getFontRenderContext();
