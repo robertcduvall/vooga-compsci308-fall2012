@@ -41,6 +41,10 @@
       <condition>dooption</condition>
     </mode>
     <mode>
+      <name>conversation</name>
+      <class>vooga.turnbased.gamecore.gamemodes.ConversationMode</class>
+      <condition>talk</condition>
+    </mode><mode>
       <name>gameWon</name>
       <class>vooga.turnbased.gamecore.gamemodes.GameWonMode</class>
       <condition>wingame</condition>
@@ -1322,38 +1326,7 @@
       </object>
     </sprite>
     
-    <sprite>
-      <object>
-        <createOn>start</createOn>
-        <modes>map1</modes>
-        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
-        <condition>dobattle</condition>
-        <location>
-          <x>7</x>
-          <y>0</y>
-        </location>
-        <image>src/vooga/turnbased/resources/image/mapobject/lass.png</image>
-      </object>
-      <object>
-        <createOn>start</createOn>
-        <modes>battle</modes>
-        <class>games.trexgame.TRexMonster</class>
-        <condition>NO_ACTION</condition>
-        <stats>
-          <health>350</health>
-		  <maxHealth>350</maxHealth>
-          <MP>50</MP>
-          <maxMP>50</maxMP>
-          <def>100</def>
-          <atk>100</atk>
-          <acc>100</acc>
-          <eva>10</eva>
-          <crit>.1</crit>
-        </stats>
-        <name>Caterpie</name>
-        <image>src/vooga/turnbased/resources/image/battleobject/010.png</image>
-      </object>
-    </sprite>
+    
     <staticSprite>
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
       <modes>map1</modes>
@@ -1443,6 +1416,49 @@
         <name>Pikachu</name>
         <image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
       </object>
-    </player>
+    </player><sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <condition>dobattle</condition>
+        <location>
+          <x>7</x>
+          <y>0</y>
+        </location>
+        <image>src/vooga/turnbased/resources/image/mapobject/lass.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <stats>
+          <health>350</health>
+		  <maxHealth>350</maxHealth>
+          <MP>50</MP>
+          <maxMP>50</maxMP>
+          <def>100</def>
+          <atk>100</atk>
+          <acc>100</acc>
+          <eva>10</eva>
+          <crit>.1</crit>
+        </stats>
+        <name>Caterpie</name>
+        <image>src/vooga/turnbased/resources/image/battleobject/010.png</image>
+      </object>
+    </sprite><sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>talk</condition>
+        <location>
+          <x>6</x>
+          <y>8</y>
+        </location>
+        <image>src/games/trexgame/treasure_box.gif</image>
+      </object>
+    </sprite>
   </spriteDeclarations>
 </rpggame>
