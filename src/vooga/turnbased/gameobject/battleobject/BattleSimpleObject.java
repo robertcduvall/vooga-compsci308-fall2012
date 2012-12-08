@@ -1,6 +1,7 @@
 package vooga.turnbased.gameobject.battleobject;
 
 import java.awt.Image;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class BattleSimpleObject extends BattleObject {
     }
 
     @Override
-    public void takeDamage (int damageDone) {
+    public void takeDamage (int damageDone, List<String> battleMessages) {
         int healthLost = damageDone - getStat(DEFENSE_STAT).intValue();
         if (healthLost > 0) {
             changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() - healthLost);
@@ -54,8 +55,8 @@ public class BattleSimpleObject extends BattleObject {
     }
 
     @Override
-    public void attackEnemy (BattleObject enemy) {
-        enemy.takeDamage(getStat(ATTACK_STAT).intValue());
+    public void attackEnemy (BattleObject enemy, List<String> battleMessages) {
+        enemy.takeDamage(getStat(ATTACK_STAT).intValue(), battleMessages);
     }
 
     @Override
@@ -84,55 +85,52 @@ public class BattleSimpleObject extends BattleObject {
     public String[] getOptions () {
         String[] ret = {"ATTACK", "DEFEND", "CHARGE", "HEAL"};
         return ret;
-
     }
 
     @Override
-    public String doOption1 (BattleObject target) {
-        attackEnemy(target);
-        return (getName() + USED + getOptions()[0]);
+    public void doOption1 (BattleObject target, List<String> battleMessages) {
+        attackEnemy(target, battleMessages);
+        battleMessages.add(getName() + USED + getOptions()[0]);
     }
 
     @Override
-    public String doOption2 (BattleObject target) {
+    public void doOption2 (BattleObject target, List<String> battleMessages) {
         changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() + 1);
-        return (getName() + USED + getOptions()[1]);
+        battleMessages.add(getName() + USED + getOptions()[1]);
     }
 
     @Override
-    public String doOption3 (BattleObject target) {
+    public void doOption3 (BattleObject target, List<String> battleMessages) {
         changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() + 1);
-        return (getName() + USED + getOptions()[2]);
+        battleMessages.add(getName() + USED + getOptions()[2]);
     }
 
     @Override
-    public String doOption4 (BattleObject target) {
+    public void doOption4 (BattleObject target, List<String> battleMessages) {
         setCurrentMessage(getName() + USED + getOptions()[3]);
         changeStat(HEALTH_STAT, getStat(HEALTH_STAT).intValue() + 3);
         if (getStat(HEALTH_STAT).intValue() > getStat(MAX_HEALTH_STAT).intValue()) {
             changeStat(HEALTH_STAT, getStat(MAX_HEALTH_STAT).intValue());
         }
-        return (getName() + USED + getOptions()[3]);
+        battleMessages.add(getName() + USED + getOptions()[3]);
     }
 
     @Override
-    public String doRandomOption (BattleObject target) {
+    public void doRandomOption (BattleObject target, List<String> battleMessages) {
         Random randomGenerator = new Random();
         double random = randomGenerator.nextDouble();
-        String message = null;
         if (random >= OPTION1_LOWER_BOUND && random < OPTION1_UPPER_BOUND) {
-            message = doOption1(target);
+            doOption1(target, battleMessages);
         }
         if (random >= OPTION2_LOWER_BOUND && random < OPTION2_UPPER_BOUND) {
-            message = doOption2(target);
+            doOption2(target, battleMessages);
         }
         if (random >= OPTION3_LOWER_BOUND && random < OPTION3_UPPER_BOUND) {
-            message = doOption3(target);
+            doOption3(target, battleMessages);
         }
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
-            message = doOption4(target);
+            doOption4(target, battleMessages);
         }
-        return message;
     }
 
     @Override
@@ -152,20 +150,18 @@ public class BattleSimpleObject extends BattleObject {
     }
 
     @Override
-    public String doOption (int MenuOptionSelected, BattleObject target) {
-        String message = getName() + " didn't do anything";
+    public void doOption (int MenuOptionSelected, BattleObject target, List<String> battleMessages) {
         switch (MenuOptionSelected){
-            case 1: message = doOption1(target);
+            case 1: doOption1(target, battleMessages);
             break;
-            case 2: message = doOption2(target);
+            case 2: doOption2(target, battleMessages);
             break;
-            case 3: message = doOption3(target);
+            case 3: doOption3(target, battleMessages);
             break;
-            case 4: message = doOption4(target);
+            case 4: doOption4(target, battleMessages);
             break;
             default: break;
         }
-        return message;
     }
 
 
