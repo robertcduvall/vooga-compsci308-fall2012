@@ -67,8 +67,7 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
     public BattleMode (GameManager gameManager, String modeName, List<Integer> involvedIDs) {
-        super(gameManager, modeName, involvedIDs);
-        myMessages = new ArrayList<String>();
+        super(gameManager, modeName, involvedIDs); 
     }
 
     /**
@@ -76,6 +75,7 @@ public class BattleMode extends GameMode implements InputAPI {
      */
     @Override
     public void initialize () {
+        myMessages = new ArrayList<String>();
         makeTeams();
         mySelection = OPTION1;
         myPlayerObject = myTeam.getActivePlayer();

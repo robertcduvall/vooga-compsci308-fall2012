@@ -44,6 +44,7 @@ public abstract class GameMode implements GameLoop {
         isActive = true;
         isOver = false;
         acquireGameObjects();
+        initialize();
     }
 
     protected void acquireGameObjects () {

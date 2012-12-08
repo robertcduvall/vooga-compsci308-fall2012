@@ -39,4 +39,10 @@
 		<filepath>games.nielgame.MarioStyleGame</filepath>
 <review>Game shuts down arcade on window close :(- Howard</review>
 </game>
+<game id="4">
+		<name>The T-Rex Game</name>
+		<rating>10</rating>
+		<tags/>
+		<filepath>games.trexgame.TRexGame</filepath>
+</game>
 </gamelist>
