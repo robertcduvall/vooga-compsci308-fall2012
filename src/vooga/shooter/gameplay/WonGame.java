@@ -20,7 +20,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class WonGame extends Level {
 
-    private static final String BACKGROUND_IMAGEPATH = "vooga/shooter/images/galaxy.png";
+    private static final String BACKGROUND_IMAGEPATH = "vooga/shooter/images/winscreen.gif";
 
     private AbstractGame myGame;
     private Level myNextLevel;
