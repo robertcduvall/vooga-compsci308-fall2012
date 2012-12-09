@@ -2,7 +2,7 @@ package util.input.tests;
 
 public class SpriteTestingInput {
 
-    public static String move () {
+    public String move () {
         System.out.println("move");
         return null;
     }

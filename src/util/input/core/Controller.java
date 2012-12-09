@@ -254,14 +254,13 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
     
-    
     protected void addControlToTable (int action, int type, Object o,
             Method method, String describeButton, String describeAction) {
-        addControlToTable(UKeyCode.codify(action, type),
+        addControlToTable(UKeyCode.codify(type, action),
                 new FlagPair<Object, Method>(o, method), describeButton,
                 describeAction);
     }
-
+    
     protected void addControlToTable (int ukeyCode,
             FlagPair<Object, Method> fPair, String describeButton,
             String describeAction) {
