@@ -4,6 +4,13 @@ import java.net.UnknownHostException;
 import util.datatable.DataTable;
 import util.networking.Server;
 
+
+/**
+ * @author Oren Bukspan
+ * @author Connor Gordon
+ *
+ */
+
 public class DataServer extends Server {
     
     private DataProtocol myDataProtocol;
