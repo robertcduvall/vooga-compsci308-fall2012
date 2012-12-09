@@ -6,10 +6,12 @@ import java.io.File;
 import java.util.HashMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Sprite;
+import vooga.shooter.gameObjects.intelligence.AI;
 
 /**
  * TODO: Add javadoc comments
@@ -32,15 +34,22 @@ public class LevelFactory {
          Level level = (Level) Reflection.createInstance(className, bgImagePath);
          
          // All the children are enemies. We are going to iterate over them
-         Element child = (Element) root.getFirstChild();
-         Element sibling = child;
+         Node child = root.getFirstChild();
+         
+         // make sure the node can be converted to Element
+         while (child.getNodeType() != Node.ELEMENT_NODE) {
+             child = child.getNextSibling();
+         }
+         Element sibling = (Element) child;
          
          while (sibling != null) {
+             
+             // make sure the node can be converted to Element
+             if (sibling.getNodeType() != Node.ELEMENT_NODE) continue;
              
              // Instantiate an enemy from the data in the Element
              Enemy enemy = unpackEnemy(sibling);
              level.addSprite(enemy);
-             
              sibling = (Element) sibling.getNextSibling();
          }
          
@@ -110,6 +119,9 @@ public class LevelFactory {
         // convert health...
         XmlUtilities.appendElement(doc, enemyElement, "health", "value",
                 Integer.toString(enemy.getHealth()));
+        
+        // convert AI (we'll store the class name)
+        XmlUtilities.appendElement(doc, enemyElement, "ai", "name", enemy.getAI().getClass().getName());
 
         return enemyElement;
     }
@@ -149,8 +161,17 @@ public class LevelFactory {
         // parse health...
         Element healthElement = XmlUtilities.getElement(enemyElement, "health");
         int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
-
-        return new Enemy(position, size, bounds, imagePath, velocity, health);
+        
+        // parse ai...
+        Element aiElement = XmlUtilities.getElement(enemyElement, "ai");
+        String aiAsString = XmlUtilities.getAttribute(aiElement, "name");
+        
+        // This part might need some work! Trying to figure stuff out.
+        Enemy enemy = new Enemy(position, size, bounds, imagePath, velocity, health);
+        AI ai = (AI) Reflection.createInstance(aiAsString, enemy);
+        enemy.setAI(ai);
+        
+        return enemy;
     }
 
 }

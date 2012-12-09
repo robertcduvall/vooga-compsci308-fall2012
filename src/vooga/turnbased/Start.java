@@ -36,7 +36,7 @@ public class Start implements IArcadeGame {
     public void runGame (String userPreferences, GameSaver s) {
         int WIDTH = 800;
         int HEIGHT = 600;
-        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT);        
+        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT, userPreferences);        
     }
 
 }
