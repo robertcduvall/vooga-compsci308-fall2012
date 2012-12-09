@@ -3,6 +3,8 @@ package arcade.gamemanager;
 import arcade.IArcadeGame;
 import arcade.usermanager.UserManager;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.imageio.ImageIO;
+import org.imgscalr.Scalr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -237,22 +240,35 @@ public class Game {
      */
     public Image getImage () {
 
-        Image mainImage = myGame.getMainImage();
+        BufferedImage mainImage = null;
+        Image origMainImage = myGame.getMainImage();
 
+        // if image provided, attempt to convert to BufferedImage
+        if (origMainImage != null) {
+            try {
+
+                mainImage = (BufferedImage) origMainImage;
+            }
+            catch (ClassCastException e) {
+                System.out.println("Image casting error!");
+            }
+        }
+
+        // if BufferedImage is null
         if (mainImage == null) {
 
             try {
-                mainImage = ImageIO.read(new File("src/arcade/gui/images/duvallold.gif"));
+                mainImage = ImageIO.read(new File("src/arcade/gui/images/duvallold.png"));
             }
             catch (IOException e) {
-                System.out.println("Could not find main image");
+                System.out.println("Could not find main image!");
             }
-            return mainImage;
 
         }
-        else {
-            return mainImage;
-        }
+
+        // created scaled image
+        BufferedImage scaledImage = Scalr.resize(mainImage, 300);
+        return scaledImage;
 
     }
 
