@@ -16,7 +16,9 @@ import arcade.gamemanager.GameSaver;
  * 
  * @author Kannan Raju
  * @author Howard Chung
- *
+ * This game uses the Platformer team's level editor to create levels and link between them.
+ * Physics and collision detection is handled within the game engine.
+ * Only the starting level needs to be specified in a game-maker's code.
  */
 public class NinjaGame implements IArcadeGame {
 
