@@ -24,6 +24,7 @@ import vooga.platformer.levelfileio.XmlTags;
  * 
  */
 public abstract class CollisionChecker {
+
     private Map<String, HashMap<String, CollisionEvent>> collisionEventsMap =
             new HashMap<String, HashMap<String, CollisionEvent>>();
 
@@ -61,7 +62,6 @@ public abstract class CollisionChecker {
             this.addCollisionEvents(objectAName, objectBName, collisionEventAB);
         }
     }
-
     /**
      * This method detects collisions for all the GameObjects within the Level
      * and return
@@ -82,15 +82,16 @@ public abstract class CollisionChecker {
      * @return
      */
     public CollisionEvent getCollisionEvent (GameObject objectA, GameObject objectB) {
-        if (collisionEventsMap.containsKey(objectA.getClass().getCanonicalName()) &&
-            collisionEventsMap.get(objectA.getClass().getCanonicalName())
-                    .containsKey(objectB.getClass().getCanonicalName())) {
+        if (collisionEventsMap.containsKey(objectA.getClass().getCanonicalName())
+                && collisionEventsMap.get(objectA.getClass().getCanonicalName())
+                        .containsKey(objectB.getClass().getCanonicalName())) {
             return collisionEventsMap.get(objectA.getClass().getCanonicalName())
                     .get(objectB.getClass().getCanonicalName());
         }
-        else if (collisionEventsMap.containsKey(objectB.getClass().getCanonicalName()) &&
-                 collisionEventsMap.get(objectB.getClass().getCanonicalName())
-                         .containsKey(objectA.getClass().getCanonicalName())) {
+        else if (collisionEventsMap
+                .containsKey(objectB.getClass().getCanonicalName())
+                && collisionEventsMap.get(objectB.getClass().getCanonicalName())
+                        .containsKey(objectA.getClass().getCanonicalName())) {
             return collisionEventsMap.get(objectB.getClass().getCanonicalName())
                     .get(objectA.getClass().getCanonicalName());
         }
@@ -105,5 +106,4 @@ public abstract class CollisionChecker {
         }
         collisionEventsMap.get(nameA).put(nameB, collisionEventAB);
     }
-
 }

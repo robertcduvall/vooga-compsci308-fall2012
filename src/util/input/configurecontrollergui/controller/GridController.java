@@ -7,6 +7,10 @@ import java.util.List;
 import util.input.configurecontrollergui.util.Config;
 import util.input.configurecontrollergui.view.RadioButtonView;
 
+/**
+ * @author Amay
+ *
+ */
 public class GridController {
 
     private List<Double> verticalLines;

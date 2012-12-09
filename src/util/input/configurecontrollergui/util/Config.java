@@ -1,8 +1,13 @@
 package util.input.configurecontrollergui.util;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.HashMap;
 
 
+/**
+ * @author Lance, Amay
+ *
+ */
 public class Config {
     /**
      * default canvas width
@@ -28,6 +33,18 @@ public class Config {
     public static final int GRID_NUM_ROWS = 15;
     public static final int GRID_NUM_COLUMNS = 19;
     
+    public static HashMap<Integer, String> gridMappings = new HashMap<Integer, String>();
     
+    public static void initMap() {
+        gridMappings.put(79, "Up Pressed");
+        gridMappings.put(80, "Up Pressed");
+        gridMappings.put(98, "Up Pressed");
+        gridMappings.put(99, "Up Pressed");
+    }
     
+    public static String findButton(int num) {
+        String res = gridMappings.get(num);
+        if (res == null) return "";
+        else return res;
+    }
 }
