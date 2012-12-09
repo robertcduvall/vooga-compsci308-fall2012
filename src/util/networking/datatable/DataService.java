@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import util.datatable.DataTable;
+import util.datatable.exceptions.InvalidXMLTagException;
+import util.datatable.exceptions.RepeatedColumnNameException;
 import util.networking.Server;
 import util.networking.Service;
 import util.networking.chat.ChatCommand;
@@ -82,7 +84,13 @@ public class DataService implements Service{
     }
     
     private void processAddColumns(String input, Socket socket){
-        myDataTable.addNewColumns(myProtocol.getColumns(input));
+        try {
+            myDataTable.addNewColumns(myProtocol.getColumns(input));
+        }
+        catch (RepeatedColumnNameException e) {
+        }
+        catch (InvalidXMLTagException e) {
+        }
     }
     
     private void processClear(String input, Socket socket){

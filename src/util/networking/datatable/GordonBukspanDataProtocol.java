@@ -142,6 +142,27 @@ public class GordonBukspanDataProtocol implements DataProtocol {
     }
 
     @Override
+    public Map<String, Object> getMapEntry (String input) {
+        Document doc;
+        Map<String, Object> mapEntry = new HashMap<String, Object>();
+        try {
+            doc = loadXMLFrom(input);
+            Element root = doc.getDocumentElement();
+            Collection<Element> entries = XmlUtilities.getElements(root, "entry");
+            for (Element entry : entries) {
+                Element key = XmlUtilities.getElement(entry, "keyNew");
+                Element value = XmlUtilities.getElement(entry, "valueNew");
+                mapEntry.put(XmlUtilities.getContent(key), XmlUtilities.getContent(value));
+            }
+        }
+        catch (SAXException e) {
+        }
+        catch (IOException e) {
+        }
+        return mapEntry;
+    }
+
+    @Override
     public String createAddColumns (String[] strArray) {
         Map<String, String> xmlTagMap = new HashMap<String, String>();
         for (String s : strArray) {
@@ -158,6 +179,9 @@ public class GordonBukspanDataProtocol implements DataProtocol {
         Element key = XmlUtilities.makeElement(doc, "key", strKey);
         Element curValue = XmlUtilities.makeElement(doc, "value", (String) value);
         Element current = XmlUtilities.makeElement(doc, "toEdit");
+        current.appendChild(key);
+        current.appendChild(curValue);
+        root.appendChild(current);
         for (String s : mapEntry.keySet()) {
             key = XmlUtilities.makeElement(doc, "keyNew", s);
             curValue = XmlUtilities.makeElement(doc, "valueNew", (String) mapEntry.get(s));
@@ -288,6 +312,29 @@ public class GordonBukspanDataProtocol implements DataProtocol {
         xmlTagMap.put("key", strKey);
         xmlTagMap.put("value", (String) value);
         return xmlFromMap("Find", xmlTagMap);
+    }
+
+    @Override
+    public String createFound (UnmodifiableRowElement row) {
+        String xmlString = null;
+        Document doc = XmlUtilities.makeDocument();
+        Element root = XmlUtilities.makeElement(doc, "Found");
+        Map<String, Object> mapEntry = row.getAllEntries();
+        for (String s : mapEntry.keySet()) {
+            Element key = XmlUtilities.makeElement(doc, "key", s);
+            Element value = XmlUtilities.makeElement(doc, "value", (String) mapEntry.get(s));
+            Element current = XmlUtilities.makeElement(doc, "entry");
+            current.appendChild(key);
+            current.appendChild(value);
+            root.appendChild(current);
+        }
+        doc.appendChild(root);
+        try {
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
+        }
+        catch (TransformerException e) {
+        }
+        return xmlString;
     }
 
     @Override
