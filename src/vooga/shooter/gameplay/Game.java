@@ -63,6 +63,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private JFrame myFrame;
     private Image myGameImage;
     private KeyboardController myKeyContr;
+    private Level myFirstLevel;
     InputTeamSpriteActionAdapter inputAdapter;
 
 
@@ -70,7 +71,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
+        ImageIcon imageIcon = new ImageIcon(GAME_IMAGEPATH);
         myGameImage = imageIcon.getImage();
     }
 
@@ -81,7 +82,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart =
                 new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
-        
         createGame();
         setupInput();
         startLevel(myCurrentLevel);
@@ -96,8 +96,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         addSprite(myPlayer);
         inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
 
-
-        myCurrentLevel = new MainScreen(this, new Level1(this));
+        myCurrentLevel = new MainScreen(this);
     }
 
     private void startLevel (Level level) {
@@ -374,5 +373,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     public Player getPlayer () {
         return myPlayer;
     }
+
 
 }
