@@ -325,25 +325,34 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         JFrame frame = new JFrame("Current Sprite Information");
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
-        JTable table = new JTable(count,6);
+        JTable table = new JTable(count,8);
         table.setShowGrid(true);
         table.setGridColor(Color.BLACK);
        
         table.setValueAt("Index",0,0);
-        table.setValueAt("X Position",0,1);
-        table.setValueAt("Y Position", 0, 2);
-        table.setValueAt("Width",0,3);
-        table.setValueAt("Height", 0, 4);
-        table.setValueAt("Health",0,5);
+        table.setValueAt("Type",0,1);
+        table.setValueAt("X Position",0,2);
+        table.setValueAt("Y Position", 0, 3);
+        table.setValueAt("Width",0,4);
+        table.setValueAt("Height", 0, 5);
+        table.setValueAt("Health",0,6);
+        table.setValueAt("AI",0,7);
         //fill in Sprite attributes
         int index = 1;
         for(Sprite s: myLevel.getSpriteList()) {
+            if(s instanceof Enemy) {
+                table.setValueAt("Enemy", index, 1);
+                table.setValueAt(((Enemy) s).getAI().getClass().getSimpleName(), index, 7);
+            } else {
+                table.setValueAt("Player", index, 1);
+                table.setValueAt("N/A", index, 7);
+            }
             table.setValueAt(index,index, 0);
-            table.setValueAt(s.getLeft(), index, 1);
-            table.setValueAt(s.getTop(), index, 2);
-            table.setValueAt(s.getSize().width, index, 3);
-            table.setValueAt(s.getSize().height, index, 4);
-            table.setValueAt(s.getCurrentHealth(), index, 5);
+            table.setValueAt(s.getLeft(), index, 2);
+            table.setValueAt(s.getTop(), index, 3);
+            table.setValueAt(s.getSize().width, index, 4);
+            table.setValueAt(s.getSize().height, index, 5);
+            table.setValueAt(s.getCurrentHealth(), index, 6);
             index++;
         }
         JScrollPane pane = new JScrollPane(table);
