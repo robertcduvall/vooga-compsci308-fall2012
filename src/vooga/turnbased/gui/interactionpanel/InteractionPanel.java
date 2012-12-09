@@ -21,7 +21,7 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class InteractionPanel {
 
-	private static final int ROW_NUMBER = 4;
+	private static final int ROW_NUMBER = 5;
 	private static final int COLUMN_NUMBER = 2;
 	private static final double MARGIN_PROPORTION = 0.1;
 	private Image myBulletPointImage;
@@ -156,9 +156,10 @@ public class InteractionPanel {
 	}
 
 	private List<Point> initializeOptionPositions() {
+		final int BOTTOM_MARGIN = 20;
 		List<Point> positions = new ArrayList<Point>();
 		int width = myPanelImage.getWidth(null);
-		int height = myPanelImage.getHeight(null);
+		int height = myPanelImage.getHeight(null) - BOTTOM_MARGIN;
 		for (int i = 1; i <= ROW_NUMBER; i++) {
 			for (int j = 0; j < COLUMN_NUMBER; j++) {
 				int xCoordinate = (int) Math.round(MARGIN_PROPORTION * width)
