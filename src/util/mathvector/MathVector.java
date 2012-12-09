@@ -253,6 +253,38 @@ public class MathVector {
 	}
 	
 	/**
+	 * Negates this vector.
+	 */
+	public void negate() {
+		for (int k = 0; k < dimension; k++){
+			myVector[k] = -1*myVector[k];
+		}
+	}
+	
+	/**
+	 * Returns a negated copy of this vector.
+	 * @return
+	 */
+	public MathVector getNegatedCopy() {
+		MathVector copy = new MathVector(this);
+		copy.negate();
+		return copy;
+	}
+	
+	/**
+	 * Returns a MathVector2D object with the first two
+	 * components of this vector. If this vector is
+	 * 1-dimensional, returns a vector with the y-component 
+	 * set to 0 and the x-component set to this vector's value.
+	 * @return
+	 */
+	public MathVector2D getMathVector2D() {
+		if (dimension >= 2){
+			return new MathVector2D(myVector[0], myVector[1]);
+		}
+		return new MathVector2D(myVector[0],0);
+	}
+	/**
 	 * Returns the vector component value at index n. 
 	 * If an invalid index number is passed, then returns 0.0.
 	 * @param n index of component to be retrieved

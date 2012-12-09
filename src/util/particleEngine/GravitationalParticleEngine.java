@@ -7,6 +7,8 @@ import util.mathvector.MathVector2D;
 
 public class GravitationalParticleEngine extends ParticleEngine {
 
+	private static final double radiansToDegreesConversionFactor = 180 / Math.PI;
+	
 	public GravitationalParticleEngine(int density, Image particleImage,
             MathVector2D position, MathVector2D velocity, int tolerance,
             int length, double inputAngleSpan, int numberOfDirections,
@@ -27,7 +29,7 @@ public class GravitationalParticleEngine extends ParticleEngine {
         double velocityAngle = getMainVelocity().calculateAngleInRadians();
         
         Particle newParticle = new GravitationalParticle(startingPosition, particleSize, myImage,
-                velocityMagnitude, velocityAngle, getVariance(),
+                velocityMagnitude, velocityAngle*radiansToDegreesConversionFactor, getVariance(),
                 getDuration(), getRGBAscales(), getRGBAtolerances());
         addParticle(newParticle);
     }
