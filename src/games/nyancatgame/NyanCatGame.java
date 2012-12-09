@@ -8,6 +8,11 @@ import arcade.gamemanager.GameSaver;
 
 /**
  * 
+ * Runs NyanCatGame and allows Arcade to play NyanCatGame.
+ * 
+ * This game showcases the ability of the game-maker to create their own kinds of battles by only
+ * writing one class (as an extension of BattleObject). 
+ * 
  * @author Jenni Mercado
  *
  */
@@ -31,8 +36,7 @@ public class NyanCatGame implements IArcadeGame {
     private void start () {
         GameWindow myGameWindow = new GameWindow("NyanCat saves the day!",
                 "GameSetting", width, height, loadLevelLocation);
-        //myGameWindow.setXmlPath(loadLevelLocation);
-        //myGameWindow.changeActivePane(GameWindow.GAME);
+        myGameWindow.changeActivePane(GameWindow.GAME);
 
     }
 

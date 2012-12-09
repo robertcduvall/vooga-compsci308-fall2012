@@ -10,6 +10,10 @@ import java.util.Collection;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
+/**
+ * @author Lance
+ *
+ */
 public class View extends JComponent {
     
     protected Collection<View> myViewChildren = new ArrayList<View>();
