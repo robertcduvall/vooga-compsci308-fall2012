@@ -21,8 +21,6 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  *         Tommy Petrilak
  */
 public class Player extends Sprite {
-    private static final Player instance = new Player(new Point(300,350), new Dimension(20,20), new Dimension(600,400),
-                                                      "vooga/shooter/images/spaceship.gif", new Point(0,0), 10);
     private static final int SPRITE_MOVEMENT = 7;
     private static final String NO_KEY_PRESSED = "-1";
     
@@ -36,13 +34,9 @@ public class Player extends Sprite {
      * @param velocity the starting velocity for the player
      * @param health the starting health of the player
      */
-    private Player (Point position, Dimension size, Dimension bounds,
+    public Player (Point position, Dimension size, Dimension bounds,
         String imagePath, Point velocity, int health) {
         super(position, size, bounds, imagePath, velocity, health);
-    }
-    
-    public static Player getInstance() {
-        return instance;
     }
 
     /**
