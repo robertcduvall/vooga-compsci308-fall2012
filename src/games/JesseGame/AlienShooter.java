@@ -16,7 +16,7 @@ import vooga.shooter.level_editor.LevelFactory;
  * chase, bounce, and random movement. We can also customize sprite dimensions, appearance, and
  * movement within the level editor.
  *
- * @author Jesse Starr, Tommy Petrilak
+ * @author Jesse Starr
  *
  */
 public class AlienShooter extends AbstractGame{
