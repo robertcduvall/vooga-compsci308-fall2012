@@ -1,6 +1,7 @@
 package arcade.gui.panel;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import arcade.gui.Arcade;
 
 
@@ -8,6 +9,7 @@ import arcade.gui.Arcade;
  * The is the top-level abstract class for the panel hierarchy.
  * 
  * @author Michael Deng
+ * @author Robert Bruce
  * 
  */
 public abstract class AbstractPanelCreator {
@@ -15,19 +17,9 @@ public abstract class AbstractPanelCreator {
     private String myPanelType;
     private Arcade myArcade;
 
-     public AbstractPanelCreator (Arcade a) {
-     System.out.println(this.getClass().toString());
-     myArcade = a;
-     }
-
-//    /**
-//     * Initializes the PanelCreator
-//     * 
-//     * @param a Arcade
-//     */
-//    public void creatorSetup (Arcade a) {
-//        myArcade = a;
-//    }
+    public AbstractPanelCreator (Arcade a) {
+        myArcade = a;
+    }
 
     /**
      * Used by subclasses as the first step in creating a new ArcadePanel
@@ -37,8 +29,20 @@ public abstract class AbstractPanelCreator {
     protected ArcadePanel initializeNewPanel () {
         ArcadePanel newPanel = new ArcadePanel(myArcade, myPanelType);
         newPanel.setBackground(Color.BLACK);
-        return newPanel;
+
+        // set panel to smallest size possible
+        newPanel.setPreferredSize(null);
+
+        return preparePanel(newPanel);
     }
+
+    /**
+     * Implement this with all methods that are common to the panel
+     * 
+     * @param newPanel
+     * @return
+     */
+    abstract protected ArcadePanel preparePanel (ArcadePanel newPanel);
 
     /**
      * Call this method to have this panel creator create you a new panel

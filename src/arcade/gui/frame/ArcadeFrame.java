@@ -23,10 +23,8 @@ public class ArcadeFrame extends JFrame {
         super(frameName);
         myArcade = a;
         myPanels = m;
-        System.out.println("main FRAME created");
 
         addWindowListener(new WindowExitAdapter() {
-
         });
     }
 
@@ -53,7 +51,7 @@ public class ArcadeFrame extends JFrame {
         @Override
         public void windowClosing (WindowEvent e) {
             myArcade.setUsername("");
-            System.out.println("username set to null");
+            System.out.println("Preparing to Exit...");
             System.exit(0);
         }
     }

@@ -1,12 +1,11 @@
 package vooga.platformer.gameobject;
 
-import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import javax.imageio.ImageIO;
-import vooga.platformer.util.ConfigStringParser;
+
+import vooga.platformer.gameobject.strategy.update.MovementUpdateStrategy;
+import vooga.platformer.util.enums.Direction;
 
 
 /**
@@ -18,13 +17,13 @@ public class MovingObject extends GameObject {
 
     private Point2D myVelocity;
     private boolean onGround = false;
+    private Direction myFacingDirection = Direction.RIGHT;
 
-    /**
-     * @param configString String to parse parameters of this player
-     */
-    public MovingObject (String configString) {
-        super(configString);
+    public MovingObject(double inX, double inY, double inWidth, double inHeight, int inId, File defaultImageFile) throws IOException {
+        super(inX, inY, inWidth, inHeight, inId, defaultImageFile);
         myVelocity = new Point2D.Double(0, 0);
+        // all MovingObjects have a MovementUpdateStrategy
+        this.addStrategy("MovementUpdateStrategy", new MovementUpdateStrategy(this));
     }
 
     /**
@@ -41,7 +40,6 @@ public class MovingObject extends GameObject {
     public void setVelocity (double x, double y) {
         myVelocity = new Point2D.Double(x, y);
     }
-
 
     /**
      * set status of this moving object to be on the ground
@@ -62,5 +60,49 @@ public class MovingObject extends GameObject {
      */
     public boolean isOnGround () {
         return onGround;
+    }
+
+    /**
+     * @return the current vertical moving direction of the object
+     */
+    public Direction getVerticalMovingDirection () {
+        if (myVelocity.getY() > 0) {
+            return Direction.DOWN;
+        }
+        else if (myVelocity.getY() < 0) {
+            return Direction.UP;
+        }
+        else {
+            return Direction.STILL;
+        }
+    }
+
+    /**
+     * @return the current horizontal moving direction of the object
+     */
+    public Direction getHorizontalMovingDirection () {
+        if (myVelocity.getX() > 0) {
+            return Direction.RIGHT;
+        }
+        else if (myVelocity.getX() < 0) {
+            return Direction.LEFT;
+        }
+        else {
+            return Direction.STILL;
+        }
+    }
+
+    /**
+     * @return the facing direction of the object
+     */
+    public Direction getFacingDirection () {
+        return myFacingDirection;
+    }
+
+    /**
+     * @param direction Facing Direction of the object
+     */
+    public void setFacingDirection (Direction direction) {
+        myFacingDirection = direction;
     }
 }

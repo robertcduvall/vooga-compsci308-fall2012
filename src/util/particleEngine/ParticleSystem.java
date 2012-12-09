@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import util.mathvector.MathVector2D;
 
 
 /**
@@ -21,13 +22,22 @@ import java.util.Stack;
 public abstract class ParticleSystem {
 
     private List<ParticleEngine> myParticleEngines;
-    protected Point position = new Point(400, 400);
+    protected MathVector2D position;
+    
+    private MathVector2D velocity;
 
-    public ParticleSystem () {
-        myParticleEngines = new ArrayList<ParticleEngine>();
-        setUpParticleEngines();
+    public ParticleSystem (MathVector2D startingPosition) {
+        this(startingPosition, new MathVector2D(10,10));
     }
 
+    public ParticleSystem (MathVector2D startingPosition, MathVector2D startingVelocity){
+    	myParticleEngines = new ArrayList<ParticleEngine>();
+    	position = new MathVector2D(startingPosition);
+    	velocity = new MathVector2D(startingVelocity);
+    	setUpParticleEngines();
+    }
+    
+    
     /**
      * Instantiates the ParticleEngine objects to be tested and adds them to
      * myParticleEngines.
@@ -39,7 +49,7 @@ public abstract class ParticleSystem {
      * 
      * @return
      */
-    public List<ParticleEngine> getParticleEngines () {
+    protected List<ParticleEngine> getParticleEngines () {
         return new ArrayList<ParticleEngine>(myParticleEngines);
     }
 
@@ -54,25 +64,21 @@ public abstract class ParticleSystem {
      * @param length how long the particles will exist before being reset
      */
     protected void addParticleEngine (int density, Image particleImage,
-            Point position, Point velocity, int tolerance, int length,
-            double angleSpan, int numberOfDirections, Boolean loop) {
+            MathVector2D position, MathVector2D velocity, int tolerance, int length,
+            double angleSpan, int numberOfDirections, float[] RGBAscales, float[] RGBAtolerances, Boolean loop) {
         myParticleEngines.add(new ParticleEngine(density, particleImage,
                 position, velocity, tolerance, length, angleSpan,
-                numberOfDirections, loop));
+                numberOfDirections, RGBAscales, RGBAtolerances, loop));
     }
-
-    protected void addParticleEngine (Image particleImage, Point position,
-            Boolean loop) {
-        myParticleEngines
-                .add(new ParticleEngine(particleImage, position, loop));
+    
+    /**
+     * Adds the ParticleEngine pe to the List of ParticleEngine objects.
+     * @param pe
+     */
+    protected void addParticleEngine (ParticleEngine pe){
+    	myParticleEngines.add(pe);
     }
-
-    protected void addParticleEngine (Image particleImage, Point position,
-            double angleSpan, int numberOfDirections, Boolean loop) {
-        myParticleEngines.add(new ParticleEngine(particleImage, position,
-                angleSpan, numberOfDirections, loop));
-    }
-
+    
     public void update () {
         Stack<ParticleEngine> remove = new Stack<ParticleEngine>();
         for (ParticleEngine p : myParticleEngines) {
@@ -91,10 +97,19 @@ public abstract class ParticleSystem {
      * @param moveBy the amount to move the creation point by
      */
     public void move (Point moveBy) {
-        for (ParticleEngine p : myParticleEngines) {
-            p.initialPosition.x += moveBy.x;
-            p.initialPosition.y += moveBy.y;
-        }
+    	MathVector2D movementVector = new MathVector2D(moveBy);
+        move(movementVector);
+    }
+    
+    /**
+     * Moves the creation point (where new particles begin life) by a vector
+     * (implemented as a MathVector2D here)
+     * @param moveBy
+     */
+    public void move (MathVector2D moveBy) {
+    	for (ParticleEngine p : myParticleEngines) {
+    		p.moveStartingPositionByVector(moveBy);
+    	}
     }
 
     public Boolean stillExists() {
@@ -106,8 +121,39 @@ public abstract class ParticleSystem {
             p.draw(g);
     }
 
-    public void setVelocity (Point velocity) {
+    public void setDirection (MathVector2D velocity) {
         for (ParticleEngine p : myParticleEngines)
             p.setVelocity(velocity);
+    }
+    
+    public void setDirection (Point velocity) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setVelocity(new MathVector2D(velocity));
+    }
+    
+    public void setPosition (MathVector2D position) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setStartingPosition(position);
+    }
+    
+    public void setLoop(Boolean setLoopValue) {
+        for (ParticleEngine p : myParticleEngines)
+            p.setLoop(setLoopValue);
+    }
+    
+    public int spriteCount() {
+        int count = 0;
+        for(ParticleEngine p: myParticleEngines) {
+            count += p.getSpriteCount();
+        }
+        return count;
+    }
+    
+    public MathVector2D getVelocity(){
+    	return velocity;
+    }
+    
+    public MathVector2D getPosition(){
+    	return position;
     }
 }

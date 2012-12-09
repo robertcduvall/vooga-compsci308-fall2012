@@ -1,7 +1,7 @@
 package arcade.usermanager;
 
-import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import org.w3c.dom.Document;
@@ -20,7 +20,6 @@ public class UserXMLReader {
     private static ResourceBundle ourResources;
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
-    private String myUserImageFilePath;
     private String myUserBasicFilePath;
 
     /**
@@ -31,7 +30,6 @@ public class UserXMLReader {
         myUserBasicFilePath = ourResources.getString("BasicFilePath");
         myUserMessageFilePath = ourResources.getString("MessageFilePath");
         myUserGameFilePath = ourResources.getString("GameFilePath");
-        myUserImageFilePath = ourResources.getString("ImageFilePath");
     }
 
     /**
@@ -46,9 +44,7 @@ public class UserXMLReader {
         Element el = doc.getDocumentElement();
         String username = XmlUtilities.getChildContent(el, "name");
         String password = XmlUtilities.getChildContent(el, "password");
-        Image picture =
-                XmlUtilities.fileNameToImage(myUserImageFilePath +
-                                             XmlUtilities.getChildContent(el, "picture"));
+        String picture = XmlUtilities.getChildContent(el, "picture");
         int credits = XmlUtilities.getChildContentAsInt(el, "credits");
 
         List<Message> messageList = getMessageList(name);
@@ -102,7 +98,8 @@ public class UserXMLReader {
                 Element ele = (Element) nl.item(i);
                 String sender = XmlUtilities.getChildContent(ele, "sender");
                 String message = XmlUtilities.getChildContent(ele, "content");
-                messageList.add(new Message(sender, message));
+                Date date = new Date(XmlUtilities.getChildContent(ele, "date"));
+                messageList.add(new Message(sender, message, date));
             }
         }
         return messageList;

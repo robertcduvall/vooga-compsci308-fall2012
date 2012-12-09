@@ -4,6 +4,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import util.camera.Camera;
 import util.camera.SizedCamera;
+import util.camera.UpdatableCamera;
 import vooga.platformer.util.Constants;
 import vooga.platformer.util.DimensionDouble;
 
@@ -13,7 +14,7 @@ import vooga.platformer.util.DimensionDouble;
  * 
  * @author Mark Govea
  */
-public class DriftingCamera extends SizedCamera implements Camera {
+public class DriftingCamera extends SizedCamera {
     private DimensionDouble mySpeed;
 
     /**

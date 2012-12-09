@@ -2,7 +2,6 @@ package vooga.shooter.gameObjects;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -17,23 +16,25 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * that will direct their movement.
  * 
  * @author Jesse Starr
- *         (add your own name as you edit)
+ *         Tommy Petrilak
  */
 public class Player extends Sprite {
-    private static final int SPRITE_MOVEMENT = 10;
+    private static final int SPRITE_MOVEMENT = 7;
     private static final String NO_KEY_PRESSED = "-1";
-
+    
     /**
-     * Constructs a player for the user to control.
-     * 
-     * @param position the center of the sprite image
-     * @param size the size of the sprite image
-     * @param bounds the bounds of the canvas
-     * @param image the image to use
-     * @param health the starting health
+     * Constructs an enemy character for the game.
+     * @param position the center of the image
+     * @param size the size of the image
+     * @param bounds the size of the canvas
+     * @param imagePath the path to the image file to use.
+     *          A relative path starting at the src directory
+     * @param velocity the starting velocity for the player
+     * @param health the starting health of the player
      */
-    public Player (Point position, Dimension size, Dimension bounds, Image image, int health) {
-        super(position, size, bounds, image, health);
+    public Player (Point position, Dimension size, Dimension bounds,
+        String imagePath, Point velocity, int health) {
+        super(position, size, bounds, imagePath, velocity, health);
     }
 
     /**
@@ -41,7 +42,7 @@ public class Player extends Sprite {
      * through KeyEvents or collisions
      */
     @Override
-    void setMethods () {
+    public void setMethods () {
         getMapper().addPair(Integer.toString(KeyEvent.VK_LEFT), new SpriteActionInterface() {
             public void doAction (Object ... o) {
                 if (checkBounds(LEFT_BOUND)) {

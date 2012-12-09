@@ -11,11 +11,12 @@ import arcade.gui.Arcade;
 import arcade.gui.components.HintTextField;
 import arcade.gui.panel.ArcadePanel;
 
+
 /**
  * 
  * @author Michael Deng
  * @author Robert Bruce
- *
+ * 
  */
 public class NewUserMainPanel extends AMainPanel implements ActionListener {
 
@@ -94,24 +95,29 @@ public class NewUserMainPanel extends AMainPanel implements ActionListener {
             if (password1.equals(password2) && !password1.isEmpty() && !password2.isEmpty()) {
                 message.setText("Processing...");
 
-                // execute server call
-                if (getArcade().getModelInterface().executeNewUser(username, password1, firstName, lastName)){
-                    
-                    // new user created
-                    getArcade().setUsername(username);
-                    
-                    getArcade().replacePanel("NormUser");
-                    getArcade().replacePanel("NormMain");
-                    getArcade().replacePanel("NormNav");
-                    getArcade().replacePanel("NormSearch");
-                    
-                    
-                    
-                }else {
-                    // new user not created
-                    message.setText("Error. Username is invalid. Please try again.");
+                if (username.length() <= 16) {
+                    // execute server call
+                    if (getArcade().getModelInterface().executeNewUser(username, password1,
+                                                                       firstName, lastName)) {
+
+                        // new user created
+                        getArcade().setUsername(username);
+
+                        getArcade().replacePanel("NormUser");
+                        getArcade().replacePanel("NormMain");
+                        getArcade().replacePanel("NormNav");
+                        getArcade().replacePanel("NormSearch");
+
+                    }
+
+                    else {
+                        // new user not created
+                        message.setText("Error. Username is taken. Please try again.");
+                    }
                 }
-                
+                else {
+                    message.setText("Max username length is 16.");
+                }
 
             }
             else {

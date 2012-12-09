@@ -1,16 +1,90 @@
 <gamelist>
 	<game id="1">
 		<name>Turnbased RPG</name>
-		<rating>3 5 4 3</rating>
 		<filepath>vooga.turnbased.Start</filepath>
-		<review>RPG game. fun fun!</review>
-		<preferences></preferences>
+<rating>3 3 3 3 3 9 10 10 10</rating>
+<tags>fun turnbased dingdong</tags>
+<review>The plotline was excellent, really enjoyed the story, gg- Kannan</review>
+<review>Dat monsta waz real scary-lyke and i haz a lott a funn - SunTzutheConquerer</review>
+<review>- Howard</review>
+<review>Pretty sure this is the best game ever- Howard</review>
+<review>OMG WHJAT A GREAT GAMEE- Howard</review>
+<review>I'M SO EXCITED THIS GAME IS FANTASTIC THE OTHER GAMES ARE THE WORSTSTTT JUST PLAY THIS ONE- Howard</review>
 </game>
 	<game id="2">
 		<name>Space Invaders</name>
-		<rating>4 2 2 3 1</rating>
+		<rating>4 2 2 3 1 9 10 7 7 3 4</rating>
 		<filepath>vooga.shooter.gameplay.Game</filepath>
 		<review>shooter game. haha.</review>
-		<preferences></preferences>
-	</game>
+	<review>game is 2hard- Kannan</review>
+<review>- michaeldeng</review>
+<review>blah blah- michaeldeng</review>
+<tags>fun shooter</tags>
+<review>This game is pretty cool - not gonna lie- Howard</review>
+<review>WHY DOES EVERYTHING GO AWAY WHEN I MISS AN ALIEN?!- Howard</review>
+<review>Deletion test. Also, can't read the text next to bubbles anymore... They must be black.- deleteme</review>
+</game>
+	<game id="3">
+		<name>The Button Game</name>
+		<rating>10 7</rating>
+		<filepath>games.ButtonGame</filepath>
+		<tags>fun</tags>
+<review>Easy to learn, hard to master :)- Howard</review>
+<review>Howard hax OP- Kannan</review>
+</game>
+<game id="4">
+		<name>Niel's Mario Style Game</name>
+		<rating>8</rating>
+		<tags/>
+		<filepath>games.nielgame.MarioStyleGame</filepath>
+<review>Game shuts down arcade on window close :(- Howard</review>
+</game>
+<game id="5">
+		<name>Niel's Reverse Gravity Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.nielgame.ReverseGravityGame</filepath>
+</game>
+<game id="6">
+		<name>The T-Rex Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.trexgame.TRexGame</filepath>
+</game>
+<game id="7">
+		<name>The Lord of the Rings Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.lotrgame.LOTRGame</filepath>
+</game>
+<game id="8">
+		<name>Rob's Tenting 2D</name>
+		<rating/>
+		<tags/>
+		<filepath>games.robsgame.RunRobsGame</filepath>
+</game>
+<game id="9">
+		<name>Space Bugs IV</name>
+		<rating>7</rating>
+		<tags/>
+		<filepath>games.spacebugs.SpaceBugs</filepath>
+</game>
+	<game id="10">
+		<name>The Formic War</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.par24game.SmartEnemyGame</filepath>
+		</game>
+<game id="11">
+		<name>Rob's Snake Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.robssnake.SnakeGame</filepath>
+</game>
+<game id="12">
+		<name>Adventure RPG</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.AdventureRPG.AdventureGame</filepath>
+</game>
 </gamelist>

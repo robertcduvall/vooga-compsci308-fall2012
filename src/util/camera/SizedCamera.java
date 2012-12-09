@@ -10,8 +10,9 @@ import java.awt.geom.Rectangle2D;
  * rectangular window of a specific size within a larger rectangular region.
  * 
  * @author Mark Govea
+ * @author last-minute modifications by Niel
  */
-public abstract class SizedCamera implements Camera {
+public abstract class SizedCamera implements UpdatableCamera {
     private Rectangle2D myBounds;
     private Rectangle2D myOuterBounds;
     private Dimension2D mySize;
@@ -31,13 +32,17 @@ public abstract class SizedCamera implements Camera {
         myBounds = new Rectangle(0, 0, (int) mySize.getWidth(),
                 (int) mySize.getHeight());
     }
+    
+    public void update(long elapsedTime) {
+        obeyOuterBounds();
+    }
 
     @Override
     public Rectangle2D getBounds() {
         if (myOuterBounds.contains(myBounds)) {
             return myBounds;
         }
-        obeyOuterBounds();
+        //obeyOuterBounds();
         return myBounds;
     }
 
@@ -86,7 +91,6 @@ public abstract class SizedCamera implements Camera {
                             outerBounds().getHeight() -
                             getSize().getHeight());
         y = Math.max(y, outerBounds().getY());
-
         getBounds().setRect(x, y, getSize().getWidth(), getSize().getHeight());
     }
 }

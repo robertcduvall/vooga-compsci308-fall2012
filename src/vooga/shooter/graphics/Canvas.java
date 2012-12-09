@@ -3,8 +3,10 @@ package vooga.shooter.graphics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import javax.swing.JApplet;
 import javax.swing.Timer;
 import util.input.core.KeyboardController;
@@ -19,7 +21,7 @@ import util.input.core.MouseController;
 public class Canvas extends JApplet {
     private static final Dimension DEFAULT_SIZE = new Dimension(600, 400);
     private static final int ONE_SECOND = 1000;
-    private static final int FRAMES_PER_SECOND = 15;
+    private static final int FRAMES_PER_SECOND = 20;
     private Timer myTimer;
     private DrawableComponent myScreen;
 
@@ -63,10 +65,11 @@ public class Canvas extends JApplet {
      * Sets up input listeners/controllers.
      */
     private void setInputListeners () {
+
         addMouseMotionListener(new MouseController(this));
         addKeyListener(new KeyboardController(this));
-        myScreen.setKeyboardListener(getKeyListeners()[0]);
-        myScreen.setMouseListener(getMouseMotionListeners()[0]);
+//        myScreen.setKeyboardListener(getKeyListeners()[0]);
+//        myScreen.setMouseListener(getMouseMotionListeners()[0]);
     }
 
     /**
@@ -100,13 +103,17 @@ public class Canvas extends JApplet {
     /**
      * Called by Java to paint the frame
      * 
-     * @param g The graphics object passed by Java, will be cast as
-     *        SpecialGraphics
+     * @param g The graphics object passed by Java
      */
     public void paint (Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getSize().width, getSize().height);
-        myScreen.paint(g);
+        BufferedImage buff = new BufferedImage(getSize().width,
+                getSize().height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = (Graphics2D) buff.getGraphics();
+        g2d.setColor(Color.BLACK);
+        g2d.fillRect(0, 0, getSize().width, getSize().height);
+        myScreen.paint(g2d);
+        Graphics2D graphics = (Graphics2D) g;
+        graphics.drawImage(buff, null, 0, 0);
     }
 
     /**

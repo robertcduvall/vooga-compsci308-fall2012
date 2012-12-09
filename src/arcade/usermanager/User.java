@@ -1,7 +1,6 @@
 package arcade.usermanager;
 
-import java.awt.Image;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -9,19 +8,21 @@ import java.util.List;
  * Represents a User of the arcade.
  * 
  * @author Howard
- *         modified by Difan Zhao, Jei Min Yoo
+ *         modified by Difan Zhao, Jei Min Yoo, Robert Bruce
  * 
  * 
  */
 public class User {
     private String myName;
-    private Image myPicture;
+    private String myPicture;
     private String myPassword;
     private int myCredits;
     private List<Message> myMessages;
     private List<GameData> myGameData;
     private String myFirstName;
     private String myLastName;
+    private boolean myAdminStatus;
+    private UserXMLWriter myXmlWriter;
 
     /**
      * Constructs a new User
@@ -29,7 +30,7 @@ public class User {
      * @param name
      * @param picture
      */
-    public User (String name, String password, Image picture, int credits, List<Message> messages,
+    public User (String name, String password, String picture, int credits, List<Message> messages,
                  List<GameData> gameData, String firstName, String lastName) {
         myName = name;
         myPassword = password;
@@ -39,6 +40,8 @@ public class User {
         myGameData = gameData;
         myFirstName = firstName;
         myLastName = lastName;
+        setMyAdminStatus(false);
+        myXmlWriter=new UserXMLWriter();
 
     }
 
@@ -46,42 +49,71 @@ public class User {
         return myPassword;
     }
 
-    protected String getName () {
+    public String getName () {
         return myName;
     }
 
-    public Image getPicture () {
+    protected String getFirstName () {
+        return myFirstName;
+    }
+
+    protected String getLastName () {
+        return myLastName;
+    }
+
+    public String getPicture () {
         return myPicture;
     }
 
-    protected void setName (String newName) {
-        myName = newName;
+    public void setPicture (String picture) {
+        myPicture = picture;
+        myXmlWriter.updateUserInfo(myName,"picture",picture);
     }
 
-    public GameData getGameData (String gameName) {
+    
+    protected GameData getGameData (String gameName) {
         for (GameData gd : myGameData) {
-            if (gd.getGameInfo("myGameName").equals(gameName)) return gd;
+            if (gd.getGameInfo("name").equals(gameName)) return gd;
 
         }
         return null;
     }
+    
+    protected List<GameData> getAllGameData(){
+        return myGameData;
+    }
+    
+    
 
-    protected List<String> getMyMessage () {
-        List<String> myMessage = new ArrayList<String>();
-        for (Message m : myMessages) {
-            myMessage.add(m.getMessage());
-
-        }
-
-        return myMessage;
+    public List<Message> getMyMessage () {
+        return myMessages;
     }
 
     protected void updateMyMessage (String sender, String content) {
         myMessages.add(new Message(sender, content));
 
     }
+    
+    @SuppressWarnings("deprecation")
+    protected void updateMyMessage (String sender, String content, String myDate) {
+        myMessages.add(new Message(sender, content, new Date(myDate)));
+
+    }
 
     protected void updateMyGame () {
 
+    }
+
+    public String getFullName () {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean isMyAdminStatus () {
+        return myAdminStatus;
+    }
+
+    public void setMyAdminStatus (boolean myAdminStatus) {
+        this.myAdminStatus = myAdminStatus;
     }
 }

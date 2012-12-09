@@ -1,17 +1,19 @@
 package vooga.platformer.level;
 
-import games.platformerdemo.Player;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import util.camera.Camera;
-import util.input.core.Controller;
-import util.input.core.KeyboardController;
+import util.camera.UpdatableCamera;
+import vooga.platformer.collision.BasicCollisionChecker;
 import vooga.platformer.collision.CollisionChecker;
 import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.gameobject.Player;
+import vooga.platformer.level.condition.Condition;
+import vooga.platformer.level.levelplugin.LevelPlugin;
 import vooga.platformer.util.enums.PlayState;
 
 
@@ -21,23 +23,33 @@ import vooga.platformer.util.enums.PlayState;
  * 
  */
 
-public abstract class Level {
+public class Level {
     private List<GameObject> objectList;
     private List<LevelPlugin> pluginList;
     private List<Condition> conditionList;
-    private Camera cam;
+    private UpdatableCamera cam;
     private Dimension myDimension;
     private String myNextLevelName;
     private CollisionChecker myCollisionChecker;
     private Player myPlayer;
+    private boolean myPaused;
+
+    public Level (Dimension levelDim, UpdatableCamera inCam, String collisionFileName) {
+        objectList = new ArrayList<GameObject>();
+        conditionList = new ArrayList<Condition>();
+        pluginList = new ArrayList<LevelPlugin>();
+        myDimension = levelDim;
+        myCollisionChecker = new BasicCollisionChecker(collisionFileName);
+        cam = inCam;
+        myPaused = false;
+    }
 
     /**
      * Paint the level, including all its GameObjects.
      * 
      * @param pen Graphics object to paint on
      */
-    public void paint(Graphics pen) {
-        paintBackground(pen);
+    public void paint (Graphics pen) {
         for (LevelPlugin lp : pluginList) {
             lp.paint(pen, objectList, cam);
         }
@@ -46,28 +58,22 @@ public abstract class Level {
         }
     }
 
-    public Level(Dimension dim, CollisionChecker inChecker, Camera inCam) {
-        objectList = new ArrayList<GameObject>();
-        pluginList = new ArrayList<LevelPlugin>();
-        myDimension = dim;
-        myCollisionChecker = inChecker;
-        cam = inCam;
-    }
-    
     /**
      * Add a LevelPlugin to the level.
+     * 
      * @param lp LevelPlugin to add
      */
-    public void addPlugin(LevelPlugin lp) {
+    public void addPlugin (LevelPlugin lp) {
         pluginList.add(lp);
         Collections.sort(pluginList);
     }
-    
+
     /**
      * Add a Condition to the level.
+     * 
      * @param c Condition to add
      */
-    public void addCondition(Condition c) {
+    public void addCondition (Condition c) {
         conditionList.add(c);
     }
 
@@ -76,7 +82,7 @@ public abstract class Level {
      * 
      * @param d
      */
-    public void setDimension(Dimension d) {
+    public void setDimension (Dimension d) {
         myDimension = d;
     }
 
@@ -85,23 +91,16 @@ public abstract class Level {
      * 
      * @return
      */
-    public Dimension getDimension() {
+    public Dimension getDimension () {
         return myDimension;
     }
-
-    /**
-     * Template method. Paint the background of the level.
-     * 
-     * @param pen Graphics object
-     */
-    public abstract void paintBackground(Graphics pen);
 
     /**
      * Add a GameObject to the level.
      * 
      * @param go GameObject to add
      */
-    public void addGameObject(GameObject go) {
+    public void addGameObject (GameObject go) {
         objectList.add(go);
         Collections.sort(objectList);
     }
@@ -111,7 +110,7 @@ public abstract class Level {
      * 
      * @return
      */
-    public List<GameObject> getObjectList() {
+    public List<GameObject> getObjectList () {
         return objectList;
     }
 
@@ -120,32 +119,51 @@ public abstract class Level {
      * 
      * @param elapsedTime time since last update cycle
      */
-    public void update(long elapsedTime) {
-        List<GameObject> removalList = new ArrayList<GameObject>();
-        for (GameObject go : objectList) {
-            go.update(this, elapsedTime);
-            if (go.checkForRemoval()) {
-                removalList.add(go);
+    public void update (long elapsedTime) {
+        if (!myPaused) {
+            List<GameObject> removalList = new ArrayList<GameObject>();
+            for (GameObject go : objectList) {
+                go.update(this, elapsedTime);
+                Rectangle levelBounds =
+                        new Rectangle(0, 0, (int) myDimension.getWidth(),
+                                      (int) myDimension.getHeight());
+                if (!go.getShape().intersects(levelBounds)) {
+                        go.markForRemoval();
+                }
+                if (go.checkForRemoval()) {
+                    removalList.add(go);
+                }
+            }
+
+            for (int i = removalList.size() - 1; i >= 0; i--) {
+                objectList.remove(removalList.get(i));
+            }
+
+            // modified here
+            myCollisionChecker.checkCollisions(this);
+            cam.update(elapsedTime);
+
+            for (LevelPlugin lp : pluginList) {
+                lp.update(objectList);
             }
         }
-        
-        for (GameObject removeObj : removalList) {
-            objectList.remove(removeObj);
-        }
-        
-        //modified here
-        myCollisionChecker.checkCollisions(this);
-                
-        for (LevelPlugin lp : pluginList) {
-            lp.update(objectList);
-        }
-        
+    }
+
+    /**
+     * Pause the game, temporarily stopping it from updating
+     */
+    public void pause () {
+        myPaused = true;
+    }
+
+    public void unpause () {
+        myPaused = false;
     }
 
     /**
      * @return the current camera of this level
      */
-    public Camera getCamera() {
+    public Camera getCamera () {
         return cam;
     }
 
@@ -154,7 +172,7 @@ public abstract class Level {
      * 
      * @param c
      */
-    public void setCamera(Camera c) {
+    public void setCamera (UpdatableCamera c) {
         cam = c;
     }
 
@@ -162,7 +180,7 @@ public abstract class Level {
      * @return a PlayState representing the progress of the player
      *         through the level.
      */
-    public PlayState getLevelStatus() {
+    public PlayState getLevelStatus () {
         for (Condition c : conditionList) {
             if (c.isSatisfied(objectList)) {
                 setNextLevelName(c.getNextLevelName());
@@ -172,37 +190,28 @@ public abstract class Level {
         return PlayState.IS_PLAYING;
     }
 
-    public void setNextLevelName(String lvlName) {
+    private void setNextLevelName (String lvlName) {
         myNextLevelName = lvlName;
     }
 
     /**
      * @return a string representing the name of the next level to load
      */
-    public String getNextLevelName() {
+    public String getNextLevelName () {
         return myNextLevelName;
     }
 
     /**
-     * Set up the given InputController to manage input for this level. For instance,
-     * associate keyboard presses with actions directing the player object to move. The
-     * Level subclass should have references to objects controlled by input, so that it
-     * can set up the InputController correctly.
-     * @param myInputController
-     */
-    public abstract void setInputController (KeyboardController myInputController);
-    
-    /**
      * @param pl
      */
-    public void setPlayer(Player pl){
+    public void setPlayer (Player pl) {
         myPlayer = pl;
     }
-    
+
     /**
      * @return Player of the game
      */
-    public Player getPlayer(){
+    public Player getPlayer () {
         return myPlayer;
     }
 }

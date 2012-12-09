@@ -4,7 +4,9 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
 import java.awt.image.AffineTransformOp;
@@ -28,7 +30,10 @@ import vooga.platformer.levelfileio.XmlTags;
  * themselves.
  * 
  * @author Grant Oakley
- * 
+ * @deprecated This class has been replaced by GameObjects, which are now used
+ *             both during gameplay and in level editing this allows for
+ *             serialization to be used to save and load levels from the file
+ *             system.
  */
 public class Sprite {
 
@@ -57,7 +62,8 @@ public class Sprite {
      * @param imagePath location of the image in the file system representing
      *        the sprite
      */
-    public Sprite (String className, int x, int y, int width, int height, String spriteID, String imagePath) {
+    public Sprite (String className, int x, int y, int width, int height, String spriteID,
+                   String imagePath) {
         myClass = className;
         myX = x;
         myY = y;
@@ -97,6 +103,16 @@ public class Sprite {
     }
 
     /**
+     * Returns a boolean of whether or not a point is contained by the sprite.
+     * 
+     * @param p Point of interest
+     * @return boolean of whether the point is inside the bounds of the sprite
+     */
+    public boolean contains (Point p) {
+        return p.x >= myX && p.x <= myX + myWidth && p.y >= myY && p.y <= myY + myHeight;
+    }
+
+    /**
      * Using the imagePath, obtains the image for a sprite and
      * paints it to whatever component Graphics g is connected to.
      * 
@@ -107,6 +123,21 @@ public class Sprite {
     public void paint (Graphics g, Component c) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(myImage, myX, myY, myX + myWidth, myY + myHeight, 0, 0,
+                      myImage.getWidth(null), myImage.getHeight(null), c);
+    }
+
+    /**
+     * Paints the sprite at its current position taking into account the
+     * specified offset.
+     * 
+     * @param g graphics used to paint the Sprite
+     * @param c java.awt.Component. It is unclear why this was added to this
+     *        method by an unknown editor.
+     * @param offset offset of the level due to camera scrolling
+     */
+    public void paint (Graphics g, Component c, Integer offset) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.drawImage(myImage, myX - offset, myY, myX - myWidth - offset, myY + myHeight, 0, 0,
                       myImage.getWidth(null), myImage.getHeight(null), c);
     }
 

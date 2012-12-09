@@ -1,15 +1,15 @@
 package arcade.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import arcade.datatransfer.ModelInterface;
-import arcade.gamemanager.GameCenter;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
-import arcade.usermanager.SocialCenter;
+import arcade.usermanager.UserProfile;
 
 
 /**
@@ -28,7 +28,7 @@ import arcade.usermanager.SocialCenter;
 public class Arcade {
 
     // username (unique key) of the user who is logged in
-    private String myUser = "";
+    private String myUsername = "";
     private Map<String, Serializable> mySharedVariables;
 
     private ArcadeFrame myFrame;
@@ -37,7 +37,6 @@ public class Arcade {
     private ResourceBundle myResources;
 
     public Arcade () {
-        System.out.println("got it!");
 
         // initialize things
         myFactory = new CreatorFactory(this);
@@ -87,12 +86,12 @@ public class Arcade {
         String panelRealName = myResources.getString(panelCreatorName);
         ArcadePanel newPanel = createPanel(panelRealName);
         updatePanelinFrame(newPanel);
-        // myFrame.pack();
+
         myFrame.validate();
     }
 
     public String getUsername () {
-        return myUser;
+        return myUsername;
     }
 
     /**
@@ -101,7 +100,7 @@ public class Arcade {
      * @param u
      */
     public void setUsername (String u) {
-        myUser = u;
+        myUsername = u;
     }
 
     /**
@@ -128,6 +127,26 @@ public class Arcade {
      */
     public ModelInterface getModelInterface () {
         return myModelInterface;
+    }
+
+    /**
+     * @deprecated why does this method exist? just call:
+     *  ModelInterface.getUser(Arcade.getUsername);
+     * 
+     * @return The User that is currently logged in.
+     */
+    public UserProfile getCurrentUser () {
+        return myModelInterface.getUser(myUsername);
+        
+    }
+    
+    /**
+     * @deprecated
+     * @param panel
+     * @return
+     */
+    public Dimension getPanelSize(ArcadePanel panel){
+        return myFrame.getPanel(panel.getPanelType()).getSize();
     }
 
 }

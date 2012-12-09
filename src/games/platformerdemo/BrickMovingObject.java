@@ -2,10 +2,9 @@ package games.platformerdemo;
 
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.collision.CollisionEvent;
-import vooga.platformer.gameobject.Brick;
 import vooga.platformer.gameobject.MovingObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
+import vooga.platformer.util.enums.Direction;
 
 
 /**
@@ -30,18 +29,18 @@ public class BrickMovingObject extends CollisionEvent {
         double dy = intersection.getHeight();
         double dx = intersection.getWidth();
 
-        if (this.direction() == CollisionDirection.DOWN) {
+        if (this.direction() == Direction.DOWN) {
             myMovingObject.setY(myMovingObject.getY() - dy);
             // changed here
             myMovingObject.setVelocity(myMovingObject.getVelocity().getX(), 0);
         }
-        else if (this.direction() == CollisionDirection.UP) {
+        else if (this.direction() == Direction.UP) {
             myMovingObject.setY(myMovingObject.getY() + dy);
         }
-        if (this.direction() == CollisionDirection.RIGHT) {
+        if (this.direction() == Direction.RIGHT) {
             resetCenterRight(dx);
         }
-        else if (this.direction() == CollisionDirection.LEFT) {
+        else if (this.direction() == Direction.LEFT) {
             resetCenterLeft(dx);
         }
         myMovingObject.setOnGround();

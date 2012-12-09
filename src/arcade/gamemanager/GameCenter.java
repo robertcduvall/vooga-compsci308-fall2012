@@ -1,60 +1,52 @@
 package arcade.gamemanager;
 
-import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
+import arcade.IArcadeGame;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import util.xml.XmlParser;
 import util.xml.XmlUtilities;
-import arcade.IArcadeGame;
-import arcade.usermanager.SocialCenter;
-import arcade.utility.ReadWriter;
 
 
 /**
- * This class keeps a list of Games and returns appropriate Games at GUI's request.
- * @author Jei Min Yoo
+ * This class keeps a list of Games and returns appropriate Games at GUI's
+ * request.
+ * 
+ * @author Jei Min Yoo, Patrick Royal
  * 
  */
 public class GameCenter {
 
+    /**
+     * File path where game data is stored and retrieved.
+     */
+    public static final String GAME_XML_FILE = "src/arcade/database/game.xml";
     private List<Game> myGames;
-    private String myGameXml = "../vooga-compsci308-fall2012/src/arcade/database/game.xml";
+    private GameSearcher mySearcher;
 
+    /**
+     * Constructor for GameCenter.
+     */
     public GameCenter () {
         initialize();
     }
-    
-    private Document makeDocument(File file) {
-        Document doc = null;
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            doc = db.parse(file);
-        } catch (IOException e) {
-            System.out.println("IOException on file: " + file.toString());
-        } catch (ParserConfigurationException e) {
-            System.out.println("parser error on file: " + file.toString());
-        } catch (SAXException e) {
-            System.out.println("SAXException on file: " + file.toString());
-        }
-        
-        return doc;
-    }
 
+    /**
+     * sets user for all games.
+     * @param userName
+     */
+    public void setUser(String userName) {
+        for (Game g : myGames) {
+            g.setUser(userName);
+        }
+    }
     /**
      * initializes the class by reading information from game.xml file.
      */
     public void initialize () {
         myGames = new ArrayList<Game>();
+        mySearcher = new DefaultGameSearcher(myGames);
         refreshGames();
 
     }
@@ -64,13 +56,16 @@ public class GameCenter {
      */
     private void refreshGames () {
         myGames.clear();
-        Document doc = makeDocument(new File(myGameXml));
-        NodeList nList = doc.getElementsByTagName("filepath");
-        for (int i = 0; i < nList.getLength(); i++) {
-            String filePath = nList.item(i).getTextContent();
+        Document doc = XmlUtilities.makeDocument(GAME_XML_FILE);
+        Collection<Element> games = XmlUtilities.getElements(
+                doc.getDocumentElement());
+        for (Element ele : games) {
+            String filePath = ele.getElementsByTagName(
+                    "filepath").item(0).getTextContent();
             try {
-                IArcadeGame arcade = (IArcadeGame) Class.forName(filePath).newInstance();
-                Game game = new Game(arcade);
+                IArcadeGame arcade = (IArcadeGame)
+                        Class.forName(filePath).newInstance();
+                Game game = new Game(arcade, doc);
                 myGames.add(game);
             }
             catch (IllegalAccessException e) {
@@ -84,51 +79,51 @@ public class GameCenter {
             }
         }
     }
-    
+
     /**
      * returns the list of available games.
+     * 
      * @return list of available games
      */
     public List<String> getGameList () {
-        List<String> gameList = new ArrayList<String>();
-        for (Game game : myGames) {
-            gameList.add(game.getGameName());
-        }
-        return gameList;
+        return mySearcher.getGameList();
     }
 
     /**
-     * returns Game object specified by the game's name. If no game is found, returns null.
+     * returns Game object specified by the game's name. If no game is found,
+     * returns null.
+     * 
      * @param gameName name of requested game
      * @return requested Game object or null if no such game is found
      */
     public Game getGame (String gameName) {
         for (Game gm : myGames) {
-            if (gm.getGameName().equals(gameName)) { return gm; }
+            if (gm.getGameName().equals(gameName)) {
+                return gm;
+            }
         }
         return null;
     }
 
     /**
      * returns a list of games that have the tag.
+     * 
      * @param tag a tag that games have in common
      * @return list of games that have the tag.
      */
     public List<String> getGameListByTagName (String tag) {
-        List<String> gameList = new ArrayList<String>();
-        for (Game gm : myGames) {
-            if (gm.getGenre().contains(tag)) {
-                gameList.add(gm.getGameName());
-            }
-        }
-        return gameList;
+        return mySearcher.getGameListByTagName(tag);
     }
 
-//     public static void main(String args[]) {
+//     public static void main (String args[]) {
 //     System.out.println("haha");
 //     GameCenter gc = new GameCenter();
-//     List<String> list = gc.getGameList();
+//     gc.getGameList();
 //     System.out.println(gc.myGames.size());
-//     gc.getGame("Sample1").runGame();
+//     Game rpg = gc.getGame("Turnbased RPG");
+//     System.out.println(rpg.getGameInfoList());
+//     System.out.println(rpg.getAverageRating());
+//     rpg.getReviews();
+//     System.out.println(gc.getGameListByTagName("shooter"));
 //     }
 }

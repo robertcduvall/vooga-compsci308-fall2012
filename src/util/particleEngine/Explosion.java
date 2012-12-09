@@ -3,43 +3,87 @@ package util.particleEngine;
 import java.awt.Image;
 import java.awt.Point;
 import javax.swing.ImageIcon;
-import util.calculator.VectorCalculator;
-
+import util.mathvector.*;
 
 
 /**
- * Tests an outward-moving particle engine effect. There are 4 "directions of origin" - particles have one of the eight following directions:
- * (-1,-1), (1,1), (-1,1), (1,-1).
+ * This implementation of ParticleSystem provides for an explosion effect by
+ * creating/animating/drawing a large number of reddish orange sprites (there is
+ * some intended variation in color). This system has two types sprites that
+ * move radially outward from it's point of instantiation: explosion particles
+ * and smoke particles. The explosion particles are brighter in color and have
+ * less transparency than the smoke particles, but do not last as long on the
+ * screen - creating an effect of smoke lingering after an explosion.
  * 
- * @author Kathleen
- *      edited by David Spruill
- *
+ * @author David Spruill
+ *         Started by Kathleen
+ * 
  */
-public class Explosion extends ParticleSystem{
+public class Explosion extends ParticleSystem {
 
-	private static Point[] velocities = {new Point(-1,1), new Point(-1,-1), new Point(1,-1), new Point(1,1), new Point(-1,0), new Point(1,0), new Point(0,-1), new Point(0,1)};
-	private static int tolerance = 30;
-	private static int length = 20;
+    /**
+     * Constructs an explosion with a starting position
+     * 
+     * @param startingPosition the position at which to start the explosion
+     */
+    public Explosion (Point startingPosition) {
+        super(new MathVector2D(startingPosition));
+    }
 
-	private static int densityStartNum = 20;
+    // The different velocities that the explosion can take, note that these are
+    // all of magnitude sqrt(8)
+    private static MathVector2D[] velocities = { new MathVector2D(-2, 2),
+            new MathVector2D(-2, -2), new MathVector2D(2, -2),
+            new MathVector2D(2, 2), new MathVector2D(-Math.sqrt(8), 0),
+            new MathVector2D(Math.sqrt(8), 0),
+            new MathVector2D(0, -Math.sqrt(8)),
+            new MathVector2D(0, Math.sqrt(8)) };
 
-	private VectorCalculator vcalculator;
-	
-	@Override
-	protected void setUpParticleEngines() {
-		ImageIcon temp = new ImageIcon(
-				Explosion.class.getResource("explosion.png"));
-		Image explosionImage = temp.getImage();
-                temp = new ImageIcon(
-                        Explosion.class.getResource("smokeParticle.png"));
-                Image smokeImage = temp.getImage();
-		
-		vcalculator = new VectorCalculator();
-		for (int j=0; j<velocities.length; j++){
-			addParticleEngine(densityStartNum+20, explosionImage, position, vcalculator.scaleVelocity(2,velocities[j]), tolerance, length,0.0,5,false);
-			addParticleEngine(densityStartNum, smokeImage, position, vcalculator.scaleVelocity(2,velocities[j]), tolerance, length+15,0.0,1,false);
-		}
+    /**
+     * These following constants define the particleEngine
+     * 
+     * tolerance - the variation allowed in the particles' velocity
+     * length - the average time a particle exists before fading away
+     * numDirections - the number of directions that particles start out at.
+     *                 These are in reference to the origin point of the effect
+     * density - the number of particles to be created for each particleEngine
+     * loop - whether or not the particleEngines will continuously loop
+     */
+    private static int explosionTolerance = 50;
+    private static int explosionLength = 30;
+    private static int explosionDensity = 30;
+    private static int explosionNumDirections = 10;
+    private static boolean explosionLoop = false;
 
-	}
+    private static int smokeTolerance = 50;
+    private static int smokeLength = 50;
+    private static int smokeDensity = 70;
+    private static int smokeNumDirections = 1;
+    private static boolean smokeLoop = false;
+
+    // Each particle is drawn with a RGBA scaling factor that is chosen randomly
+    // from this scale +/- these tolerances
+    private static float[] RGBAscales = { 3.0f, 1.2f, 1.2f, 0.4f };
+    private static float[] RGBAtolerances = { 0.2f, 0.4f, 0.4f, 0.1f };
+
+    @Override
+    protected void setUpParticleEngines () {
+        ImageIcon temp = new ImageIcon(
+                Explosion.class.getResource("orangeParticle.png"));
+        Image explosionImage = temp.getImage();
+        temp = new ImageIcon(Explosion.class.getResource("smokeParticle.png"));
+        Image smokeImage = temp.getImage();
+
+        for (int j = 0; j < velocities.length; j++) {
+            addParticleEngine(smokeDensity, smokeImage, position,
+                    velocities[j], smokeTolerance, smokeLength, 0.0,
+                    smokeNumDirections, RGBAscales, RGBAtolerances, smokeLoop);
+            addParticleEngine(explosionDensity, explosionImage, position,
+                    velocities[j], explosionTolerance, explosionLength, 0.0,
+                    explosionNumDirections, RGBAscales, RGBAtolerances,
+                    explosionLoop);
+        }
+
+    }
 
 }

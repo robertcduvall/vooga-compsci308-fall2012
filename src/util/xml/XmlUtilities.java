@@ -12,16 +12,20 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -61,9 +65,6 @@ import org.w3c.dom.NodeList;
  *         Difan Zhao, Mark Hoffman
  */
 
-// TODO: Include more robust error checking and throw an XmlException when
-// appropriate.
-
 public class XmlUtilities {
 
     /**
@@ -78,10 +79,8 @@ public class XmlUtilities {
         try {
             doc = dbFactory.newDocumentBuilder().newDocument();
         }
-        catch (Exception e) {
-            System.err
-                    .println("ERROR: Could not instantiate a Document element! " + e.getMessage());
-            e.printStackTrace();
+        catch (ParserConfigurationException e) {
+            throw new XmlException("Could not instantiate a Document element!", e);
         }
         return doc;
     }
@@ -101,13 +100,13 @@ public class XmlUtilities {
             doc = dbFactory.newDocumentBuilder().parse(file);
         }
         catch (IOException e) {
-            System.err.println("ERROR: Could not open the file! " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not open the specified file.", e);
         }
-        catch (Exception e) {
-            System.err
-                    .println("ERROR: Could not instantiate a Document element! " + e.getMessage());
-            e.printStackTrace();
+        catch (ParserConfigurationException e) {
+            throw new XmlException("Could not instantiate a Document element!", e);
+        }
+        catch (SAXException e) {
+            throw new XmlException("Error occured while parsing XML document.", e);
         }
 
         return doc;
@@ -422,15 +421,18 @@ public class XmlUtilities {
      */
 
     public static Collection<Element> replaceAllTagNames (Element parent, String oldTag,
-                                                          String newTag) {
-        NodeList nodeList = parent.getElementsByTagName(oldTag);
+                                                          String content) {
+        NodeList nodeList =  parent.getElementsByTagName(oldTag);
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node = nodeList.item(i);
-            node.setNodeValue(newTag);
+            node.setTextContent(content);
+           
         }
         return convertNodeListToCollection(nodeList);
     }
-
+    
+    
+    
     /**
      * Sets an existing attribute of an element. If the attribute did not
      * previously exist, throws a warning and creates it.
@@ -605,7 +607,10 @@ public class XmlUtilities {
      */
     public static String getChildContent (Element parent, String tag) {
         Node child = getElement(parent, tag);
-        return child.getTextContent();
+        if (child != null) {
+            return child.getTextContent();
+        }
+        return null;
     }
 
     /**
@@ -646,6 +651,57 @@ public class XmlUtilities {
      */
     public static Image getChildContentAsImage (Element parent, String tag) {
         return fileNameToImage(getChildContent(parent, tag));
+    }
+    
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name. Note: this can also be done directly via
+     * element.getAttribute()
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute
+     */
+    public static String getAttribute (Element element, String name) {
+        return element.getAttribute(name);
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and converts it to an int.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute (converted to int)
+     */
+
+    public static int getAttributeAsInt (Element element, String name) {
+        return Integer.parseInt(getAttribute(element, name));
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and converts it to a double.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return the value of the attribute (converted to double)
+     */
+    public static double getAttributeAsDouble (Element element, String name) {
+        return Double.parseDouble(getAttribute(element, name));
+    }
+
+    /**
+     * Returns the attribute of an element by the given attribute
+     * name and creates an Image object. We assume that the attribute
+     * is the full pathname to a valid image file.
+     * 
+     * @param element the element from which to get an attribute
+     * @param name the name of the attribute to get
+     * @return an image created from the attribute value
+     */
+    public static Image getAttributeAsImage (Element element, String name) {
+        return fileNameToImage(getAttribute(element, name));
     }
 
     /**
@@ -695,7 +751,7 @@ public class XmlUtilities {
      * keys of the Map, and values, which are the values of the Map.
      * 
      * @param doc Document in which the Element is being created
-     * @param parentElement Xml Element in which to place the contents of the
+     * @param parent Xml Element in which to place the contents of the
      *        map as tags and values
      * @param childElementName name of child element, under which the map
      *        entries will appear
@@ -718,17 +774,8 @@ public class XmlUtilities {
      *         String
      */
     public static String getXmlAsString (Document doc) throws TransformerException {
-        TransformerFactory transfac = TransformerFactory.newInstance();
-        Transformer trans = transfac.newTransformer();
-        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        trans.setOutputProperty(OutputKeys.INDENT, "yes");
-
-        StringWriter sw = new StringWriter();
-        StreamResult result = new StreamResult(sw);
         DOMSource source = new DOMSource(doc);
-        trans.transform(source, result);
-        String xmlString = sw.toString();
-        return xmlString;
+        return documentToString(source);
     }
 
     /**
@@ -741,19 +788,26 @@ public class XmlUtilities {
      *         String
      */
     public static String getXmlAsString (Element element) throws TransformerException {
+        // Make a document and add the element to it
+        // (This is necessary for setting it as a DOMSource).
+        Document doc = makeDocument();
+        doc.appendChild(element);
+        DOMSource source = new DOMSource(doc);
+
+        return documentToString(source);
+    }
+
+    private static String documentToString (DOMSource source)
+                                                             throws TransformerFactoryConfigurationError,
+                                                             TransformerConfigurationException,
+                                                             TransformerException {
         TransformerFactory transfac = TransformerFactory.newInstance();
         Transformer trans = transfac.newTransformer();
         trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         trans.setOutputProperty(OutputKeys.INDENT, "yes");
 
-        // Make a document and add the element to it
-        // (This is necessary for setting it as a DOMSource).
-        Document doc = makeDocument();
-        doc.appendChild(element);
-
         StringWriter sw = new StringWriter();
         StreamResult result = new StreamResult(sw);
-        DOMSource source = new DOMSource(doc);
         trans.transform(source, result);
         String xmlString = sw.toString();
         return xmlString;
@@ -767,25 +821,15 @@ public class XmlUtilities {
      */
 
     public static void write (Document doc, String filePath) {
+        String xmlString;
 
-        FileWriter writer = null;
-        String xmlString = null;
         try {
             xmlString = getXmlAsString(doc);
         }
         catch (TransformerException e) {
-            System.err.println("ERROR: " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not convert Document to a String", e);
         }
-        try {
-            writer = new FileWriter(filePath);
-            writer.write(xmlString);
-            writer.close();
-        }
-        catch (IOException e) {
-            System.err.println("ERROR: could not open file! " + e.getMessage());
-            e.printStackTrace();
-        }
+        writeStringToFile(filePath, xmlString);
     }
 
     /**
@@ -796,24 +840,26 @@ public class XmlUtilities {
      */
 
     public static void write (Element element, String filePath) {
+        String xmlString;
 
-        FileWriter writer = null;
-        String xmlString = null;
         try {
             xmlString = getXmlAsString(element);
         }
         catch (TransformerException e) {
-            System.err.println("ERROR: " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not convert Element to a String", e);
         }
+        writeStringToFile(filePath, xmlString);
+    }
+
+    private static void writeStringToFile (String filePath, String xmlString) {
+        FileWriter writer;
         try {
             writer = new FileWriter(filePath);
             writer.write(xmlString);
             writer.close();
         }
         catch (IOException e) {
-            System.err.println("ERROR: could not open file! " + e.getMessage());
-            e.printStackTrace();
+            throw new XmlException("Could not write to file", e);
         }
     }
 
@@ -835,12 +881,12 @@ public class XmlUtilities {
                      (node.getNodeValue().trim().length() == 0)) {
                 /*
                  * Do nothing. This is a bug fix to keep the warning from being
-                 * thrown for row returns.
+                 * thrown for row returns, which are stored as text elements.
                  */
             }
             else {
-                System.err.println("WARNING: The Node " + node.getNodeName() +
-                                   " could not be converted to element!");
+                throw new XmlException("The Node " + node.getNodeName() +
+                                       " could not be converted to element!");
             }
         }
         return list;

@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>3199</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/lotrsimple/levels/gameGameObjects.bin</gameObjectData>
+<conditionData>src/games/lotrsimple/levels/gameConditions.bin</conditionData>
+<pluginData>src/games/lotrsimple/levels/gamePlugins.bin</pluginData>
+</level>

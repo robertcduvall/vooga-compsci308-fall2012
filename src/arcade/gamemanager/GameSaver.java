@@ -1,66 +1,68 @@
 package arcade.gamemanager;
 
 import arcade.IArcadeGame;
+import arcade.usermanager.GameData;
 import arcade.usermanager.User;
+import arcade.usermanager.UserManager;
 
 
 /**
  * Class that the games use to save preferences and score.
- * GameSaver will update User object.
+ * GameSaver will use the GameData object to save game information.
  * 
  * @author Seon Kang
  * 
  */
 public class GameSaver {
 
-    private User myUser;
+    private String myUserName;
     private IArcadeGame myGame;
+    private UserManager myUserManager;
+    private GameData myGameData;
 
     /**
      * Constructor for GameSaver.
-     */
-    public GameSaver(User user, IArcadeGame game) {
-    	setMyUser(user);
-        myGame = game;
-    }
-
-    protected void setMyUser(User user) {
-    	myUser = user;
-	}
-
-    /**
-     * @author Seon Kang
      * 
-     * @param property
-     * @param value
+     * @param user to whose file we should save the data
+     * @param game the game that will provide the data
      */
-    public void saveUserProperty(String property, String value) {
-    	myUser.getGameData(myGame.getName()).setGameInfo(property, value);
+    public GameSaver (String userName, IArcadeGame game) {
+        setMyGame(game);
+        myUserManager = UserManager.getInstance();
+        setUserInfo(userName);
     }
     
-    public void saveUserProperty(String property, int i) {
-    	saveUserProperty(property, ((Integer) i).toString());
-    }
-    
-	/**
-     * Used by the game, this method updates gameInfo in User's GameData
-     * 
-     * @author Seon Kang
-     * @param userGameInfo preferences
-     */
-    public void saveGameInfo (String userGameInfo) {
-    	saveUserProperty(myUser.getGameData(myGame.getName()).getGameInfoKeyString(),
-    			userGameInfo);
+    public void setUserInfo(String userName) {
+        setMyUserName(userName);
+        setMyGameData();
     }
 
+    protected void setMyUserName (String userName) {
+        myUserName = userName;
+    }
+    
+    protected void setMyGame (IArcadeGame game) {
+    	myGame = game;
+    }
+    
+    protected void setMyGameData () {
+    	myGameData = myUserManager.getGame(myUserName, myGame.getName());
+    }
     /**
-     * Used by the game, this method updates high score for a game in User's
-     * GameData.
-     * @author Seon Kang
-     * @param score score to be saved
+     * 
+     * @param property string describing the user property
+     * @param value string describing the value of that property
      */
-    public void saveHighScore (int score) {
-    	saveUserProperty(myUser.getGameData(myGame.getName()).getHighScoreKeyString(), 
-    			score);
+    public void saveGameInfo (String property, String value) {
+        myGameData.setGameInfo(myUserName, property, value);
+    }
+    
+    /**
+     * 
+     * @param property Name of what you want to load
+     * @return This is the value of the property that you're loading
+     */
+    public String loadGameInfo (String property) {
+    	return myGameData.getGameInfo(property);
     }
 }

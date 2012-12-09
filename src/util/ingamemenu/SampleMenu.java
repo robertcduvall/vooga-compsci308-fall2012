@@ -1,5 +1,6 @@
 package util.ingamemenu;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -69,12 +70,13 @@ public class SampleMenu extends JComponent {
                     };
                     gb3.addMouseListener(gl3);
                     GameButton gb2 = new GameButton("button");
-                    gb2.setString("Do nothing", GameButton.BOTTOM);
+                    gb2.paintString("Do nothing", GameButton.BOTTOM, Color.RED);
                     gb2.setSize(new Dimension(130, 130));
-                    menu.addButtons(gb1);
-                    menu.addButtons(gb3);
-                    menu.addButtons(gb2);
-                    myFrame.pack();
+                    menu.addButton(gb1);
+                    menu.addButton(gb3);
+                    menu.addButton(gb2);
+                    menu.pack();
+                    myFrame.repaint();
                 }
             }
         });

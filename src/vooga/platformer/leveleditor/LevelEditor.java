@@ -1,296 +1,235 @@
 package vooga.platformer.leveleditor;
 
-import org.w3c.dom.Document;
-import util.ingamemenu.GameButton;
-
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import util.ingamemenu.GameButton;
+import vooga.platformer.gameobject.LevelGoalZone;
+import vooga.platformer.level.condition.DefeatAllEnemiesCondition;
+import vooga.platformer.level.condition.DestroySpecificObjectCondition;
+import vooga.platformer.level.condition.NoPlayersRemainLosingCondition;
+import vooga.platformer.level.condition.PlayerInZoneCondition;
+import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
+import vooga.platformer.levelfileio.LevelFileIOException;
+
 
 /**
  * Frame containing all the elements needed to build and save a level
- *
+ * 
  * @author Sam Rang
  */
 @SuppressWarnings("serial")
-public class LevelEditor extends JFrame {
-    private static final Dimension BUTTON_BAR_SIZE = new Dimension(50, 150);
-    private static final Dimension DEFAULT_FRAME_SIZE = new Dimension(640, 480);
-    private static final String IMAGE_PATH = "src/vooga/platformer/data/";
-    private Map<String, List<String>> mySpriteTypes;
-    private JFrame myContainer;
-    private JPanel myViewPane;
-    private boolean myGameIsRunning;
+public class LevelEditor extends JPanel {
+    private static final int OBJECT_BUTTON_SIZE = 40;
+    private static final int BUTTON_BAR_WIDTH = 50;
+    private static final String DATA_PATH = System.getProperty("user.dir") +
+                                            "/src/vooga/platformer/data/";
+    private List<String> myObjectTypes;
     private LevelBoard myBoard;
     private KeyListener myKeyListener;
-    private SelectionMouseListener myMouseListener;
-    private MouseListener myButtonListener;
-    private int myViewOffset;
-
-    public static void main(String[] args) {
-        new LevelEditor();
-    }
+    private JPanel myButtonPanel;
+    private JMenuBar myMenuBar;
+    private JTextField myTextField;
 
     /**
      * Frame containing all the elements needed to save, load, and create
      * levels. Allows users to drag and drop sprites onto a level as well
      * as set the background image.
+     * 
+     * @param dim size of the LevelEditor JPanel
      */
-    public LevelEditor() {
-        super("LevelEditor");
-        myGameIsRunning = true;
-        frameBuild();
+    public LevelEditor (Dimension dim) {
+        setLayout(new BorderLayout());
+        setSize(new Dimension(dim));
+        myBoard = new LevelBoard(getSize());
+        myBoard.setLayout(new BorderLayout());
         fillMap();
         createListeners();
-        createEditPane();
-        createButtonPanel();
-        createTopMenu();
-        pack();
-        setVisible(true);
-        editLoop();
+        addKeyListener(myKeyListener);
+        myButtonPanel = createButtonPanel();
+        myMenuBar = new EditorMenuBar(this);
+        add(myMenuBar, BorderLayout.NORTH);
+        add(myBoard, BorderLayout.CENTER);
+        myBoard.add(myButtonPanel, BorderLayout.SOUTH);
+
     }
 
-    private void editLoop() {
-        while (myGameIsRunning) {
-            repaint();
+    public KeyListener getKeyListener () {
+        return myKeyListener;
+    }
+
+    /**
+     * Adds a LevelPlugin to be applied during level load. These can be things
+     * such as a a background image painter or a non-standard gravity.
+     * 
+     * @param plugin LevelPlugin to be applied
+     */
+    public void addLevelPlugin (String plugin) {
+        if ("SimpleBackgroundPainter".equals(plugin)) {
+            JFileChooser chooser = new JFileChooser(DATA_PATH);
+            FileNameExtensionFilter filter =
+                    new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif", "png");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(chooser);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                SimpleBackgroundPainter myBackground =
+                        new SimpleBackgroundPainter(chooser.getSelectedFile());
+                myBoard.addPlugin(myBackground);
+            }
         }
+        // else if ("") {
+        //
+        // }
     }
 
-    private void frameBuild() {
-        myContainer = this;
-        setPreferredSize(DEFAULT_FRAME_SIZE);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+    public void addLevelConditions (String con) {
+        if ("Clear Conditions".equals(con)) {
+            myBoard.clearConditions();
+            return;
         }
-    }
-
-    private void createListeners() {
-        LevelBoard board = new LevelBoard(DEFAULT_FRAME_SIZE);
-        myBoard = board;
-        myContainer.add(board);
-        myMouseListener = myBoard.getMouseListener();
-        myKeyListener = new KeyAdapter() {
-            @Override 
-            public void keyPressed (KeyEvent arg0) {
-                switch (arg0.getKeyCode()) {
-                    case KeyEvent.VK_LEFT:
-                        if (myViewOffset == 0) {
-                            bumpLeft();
-                        }
-                        else {
-                            myViewOffset -= DEFAULT_FRAME_SIZE.width;
-                        }
-                        break;
-                    case KeyEvent.VK_RIGHT: 
-                        if (myViewOffset == myBoard.getWidth() - DEFAULT_FRAME_SIZE.width) {
-                        }
-                }
-            }
-
-            private void bumpLeft () {
-                System.out.println("Already at beginning!");
-            }
-            private void bumpRight () {
-                System.out.println("Already at end!");
-            }
-        };
-        myButtonListener = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent arg0) {
-                createPopupMenu(arg0.getComponent(), arg0.getX(), arg0.getY());
-            }
-        };
-    }
-
-    private void createEditPane() {
-        JPanel panel = new JPanel() {
-            @Override
-            public void paint(Graphics g) {
-                g.clearRect(0, 0, DEFAULT_FRAME_SIZE.width, DEFAULT_FRAME_SIZE.height);
-                myBoard.paint(g);
-                super.paintComponents(g);
-            }
-        };
-        panel.setLayout(new BorderLayout());
-        myViewPane = panel;
-        panel.addMouseListener(myMouseListener);
-        panel.addMouseMotionListener(myMouseListener);
-        panel.addKeyListener(myKeyListener);
-        myContainer.add(panel);
-        myViewOffset = 0;
-    }
-
-    private GameButton createButton(String spritename) {
-        GameButton gb = new GameButton(spritename);
-        gb.addMouseListener(myButtonListener);
-        return gb;
-    }
-
-    private void createButtonPanel() {
-        JPanel panel = new JPanel();
-        JPanel subpanel = new JPanel();
-        subpanel.setLayout(new GridLayout(mySpriteTypes.size(), 1));
-        subpanel.setPreferredSize(BUTTON_BAR_SIZE);
-        for (String sprite : mySpriteTypes.keySet()) {
-            subpanel.add(createButton(sprite));
-        }
-        subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        panel.add(subpanel, BorderLayout.CENTER);
-        panel.setOpaque(false);
-        panel.addMouseMotionListener(myBoard.getMouseListener());
-        myViewPane.add(panel, BorderLayout.WEST);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        myBoard.update();
-    }
-
-    private void createPopupMenu(final Component comp, final int x,
-            final int y) {
-        JPopupMenu pop = new JPopupMenu();
-        for (String subsprite : mySpriteTypes.get(comp.getName())) {
-            JMenuItem j = new JMenuItem(subsprite);
-            j.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent event) {
-                    // TODO replace null value for spriteID with a unique id value
-                    Sprite s = new Sprite(event.getActionCommand(), x, y, 40, 40,
-                            null, IMAGE_PATH + event.getActionCommand() + ".png");
-                    myBoard.add(s);
-                }
-            });
-            pop.add(j);
-        }
-        pop.show(comp, x, y);
-    }
-
-    private void createTopMenu() {
-        JMenuBar bar = new JMenuBar();
-        JMenu levelMenu = new JMenu("Level");
-        levelMenu.add(new AbstractAction("Load") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                load();
-            }
-        });
-        levelMenu.add(new AbstractAction("Clear") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clear();
-            }
-        });
-        levelMenu.add(new AbstractAction("New") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                newLevel();
-            }
-        });
-        levelMenu.add(new AbstractAction("Save") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                save();
-            }
-        });
-
-        JMenu spriteMenu = new JMenu("Sprite");
-        spriteMenu.add(new AbstractAction("Load") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //load();
-            }
-        });
-        spriteMenu.add(new AbstractAction("New") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //newLevel();
-            }
-        });
-        bar.add(levelMenu);
-        bar.add(spriteMenu);
-        myViewPane.add(bar, BorderLayout.NORTH);
-    }
-
-    protected void save() {
-        myBoard.save();
-    }
-
-    protected void newLevel() {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
-        try {
-            docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
-        } 
-        catch (ParserConfigurationException e) {
-            System.out.println("Directory does not exist, try again");
-            newLevel();
-        }
-        // root elements
-        myBoard = new LevelBoard(DEFAULT_FRAME_SIZE);
-        myViewPane.addMouseListener(myBoard.getMouseListener());
-        myViewPane.addMouseMotionListener(myBoard.getMouseListener());
-    }
-
-    protected void clear() {
-        myBoard.clear();
-    }
-
-    protected void load() {
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "XML Level files", "xml");
+        JFileChooser chooser = new JFileChooser(DATA_PATH);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Level XML Files", "xml");
         chooser.setFileFilter(filter);
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            try {
-                URL myURL = new URL(chooser.getSelectedFile().getPath());
-                myBoard.load(myURL);
-            } 
-            catch (IOException io) {
-                System.out.println("File not found. Try again");
+            String abspath = chooser.getSelectedFile().getPath();
+            final String path;
+            if (abspath.contains("/src/")) {
+                path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());         
+            }
+            else if (abspath.contains("\\src\\")) {
+                path = abspath.substring(abspath.indexOf("\\src\\") + 1, abspath.length());
+            }
+            else {
+                throw new LevelFileIOException("File not saved to src/ directory of the project");
+            }        		
+            if ("DefeatAllEnemiesCondition".equals(con)) {
+                myBoard.addCondition(new DefeatAllEnemiesCondition(path));
+            }
+            else if ("NoPlayersRemainLosingCondition".equals(con)) {
+                myBoard.addCondition(new NoPlayersRemainLosingCondition(path));
+            }
+            else if ("DestroySpecificObjectCondition".equals(con)) {
+                JPopupMenu idnumber = valueEntry("Object ID", new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        try {
+                            int id = Integer.parseInt(myTextField.getText());
+                            myBoard.addCondition(new DestroySpecificObjectCondition(path, id));
+                        }
+                        catch (NumberFormatException nfe) {
+                            myTextField.setForeground(Color.RED);
+                            myTextField.setText("Could not parse ID.\nTry again");
+                        }
+                    }
+                });
+                idnumber.show(this, getWidth()/2, getHeight()/2);
+            }
+            else if("PlayerInZoneCondition".equals(con)) {
+                LevelGoalZone zone = null;
+                try{
+                    zone = new LevelGoalZone(0, 0, 0, 0, Integer.MAX_VALUE, new File(DATA_PATH + "Default.png"), path);
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
+                }
+                JPopupMenu pop = new GameObjectEditor(zone);
+                pop.show(this,getWidth()/2,getHeight()/2);
+                myBoard.add(zone);
+                myBoard.addCondition(new PlayerInZoneCondition());
             }
         }
     }
 
-    private void fillMap() {
-        mySpriteTypes = new HashMap<String, List<String>>();
-        List<String> list = new ArrayList<String>();
-        list.add("Yoshi");
-        list.add("Pink Yoshi");
-        mySpriteTypes.put("Yoshi", list);
-        list = new ArrayList<String>();
-        list.add("Mario");
-        mySpriteTypes.put("Mario", list);
-        list = new ArrayList<String>();
-        list.add("Bowser");
-        list.add("Baby Bowser");
-        mySpriteTypes.put("Bowser", list);
-        list = new ArrayList<String>();
-        list.add("Brick");
-        list.add("Question Block");
-        mySpriteTypes.put("Block", list);
+    private void createListeners () {
+        myKeyListener = myBoard.getKeyListener();
+    }
+
+    private GameButton createButton (String objectname) {
+        GameButton gb = new GameButton(objectname);
+        gb.addMouseListener(myBoard.getButtonListener());
+        gb.setButtonSize(OBJECT_BUTTON_SIZE, OBJECT_BUTTON_SIZE);
+        return gb;
+    }
+
+    private JPanel createButtonPanel () {
+        JPanel panel = new JPanel();
+        JPanel subpanel = new JPanel();
+        subpanel.setLayout(new GridLayout(1, myObjectTypes.size()));
+        subpanel.setSize(new Dimension(BUTTON_BAR_WIDTH, BUTTON_BAR_WIDTH * myObjectTypes.size()));
+        for (String type : myObjectTypes) {
+            subpanel.add(createButton(type));
+        }
+        subpanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        panel.add(subpanel);
+        panel.setOpaque(false);
+        return panel;
+    }
+
+    protected void save () {
+        myBoard.save();
+    }
+
+    protected void newLevel () {
+        myBoard.clear();
+        final JPopupMenu pop = valueEntry("Level Name", new ActionListener() {
+            @Override
+            public void actionPerformed (ActionEvent e) {
+                myBoard.setName(myTextField.getText());
+            }
+        });
+        pop.show(this, getWidth() / 2 - 50, getHeight() / 2 - 40);
+    }
+
+    protected void clear () {
+        myBoard.clear();
+    }
+
+    protected void load () {
+        JFileChooser chooser = new JFileChooser(DATA_PATH);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Level files", "xml");
+        chooser.setFileFilter(filter);
+        int returnVal = chooser.showOpenDialog(chooser);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            myBoard.load(chooser.getSelectedFile().getPath());
+        }
+    }
+
+    private JPopupMenu valueEntry (String askFor, ActionListener onOK) {
+        JPopupMenu jpop = new JPopupMenu();
+        JLabel askUserFor = new JLabel(askFor + " :");
+        myTextField = new JTextField();
+        JButton accept = new JButton("OK");
+        accept.addActionListener(onOK);
+        jpop.add(askUserFor);
+        jpop.add(myTextField);
+        jpop.add(accept);
+        return jpop;
+    }
+
+    private void fillMap () {
+        myObjectTypes = new ArrayList<String>();
+        myObjectTypes.add("StaticObject");
+        myObjectTypes.add("Enemy");
+        myObjectTypes.add("Player");
     }
 }

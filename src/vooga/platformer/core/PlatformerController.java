@@ -1,25 +1,15 @@
 package vooga.platformer.core;
 
-import games.platformerdemo.DemoLevelFactory;
-import games.platformerdemo.Player;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import javax.swing.JComponent;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JPanel;
-import util.ingamemenu.GameButton;
-import util.ingamemenu.Menu;
-import util.input.core.Controller;
-import util.input.core.KeyboardController;
+import vooga.platformer.core.inputinitializer.InputInitializer;
 import vooga.platformer.level.Level;
 import vooga.platformer.level.LevelFactory;
 import vooga.platformer.util.enums.PlayState;
@@ -30,26 +20,26 @@ public class PlatformerController extends JPanel implements Runnable {
     private final int SLEEP_DELAY = 25;
 
     private Level myCurrentLevel;
+    private String myCurrentLevelName;
 
-    //TODO: Make this variable hold a LevelFactory
-    private DemoLevelFactory myLevelFactory;
-    private GameInitializer myGameInitializer;
-    private KeyboardController myInputController;
-    private Player myPlayer;
-    
+    // TODO: Make this variable hold a LevelFactory
+    private Map<String, Point> myStringMap = new HashMap<String, Point>();
+    private Dimension mySize;
+
     private Thread animator;
+    private InputInitializer myInputInitializer;
 
-    public PlatformerController(DemoLevelFactory lf, GameInitializer gi) {
-        myLevelFactory = lf;
-        myGameInitializer = gi;
-        myInputController = null;
-       
-       //this.setFocusable(true);
-        
-        setupLevel(myGameInitializer.getFirstLevelName());
-        myPlayer = myCurrentLevel.getPlayer();
+    public PlatformerController (String firstLevelName, InputInitializer ii) {
+
+        this.setFocusable(true);
+
+        setupLevel(firstLevelName);
+
+        myInputInitializer = ii;
+        myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
+
         animator = new Thread(this);
-        animator.start();        
+        animator.start();
     }
 
     /**
@@ -57,48 +47,91 @@ public class PlatformerController extends JPanel implements Runnable {
      * 
      * @param elapsedTime
      */
-    public void update(long elapsedTime) {
+    public void update (long elapsedTime) {
         myCurrentLevel.update(elapsedTime);
         PlayState currentState = myCurrentLevel.getLevelStatus();
 
-        if (currentState == PlayState.NEXT_LEVEL) {
+        if (currentState == PlayState.NEXT_LEVEL || currentState == PlayState.GAME_OVER) {
             String nextLevelName = myCurrentLevel.getNextLevelName();
             setupLevel(nextLevelName);
-        }
-    }
-    
-    public void setInputController(KeyboardController ic) {
-        myInputController = ic;
-        myCurrentLevel.setInputController(myInputController);
-    }
-    
-    private void setupLevel(String lvlName) {
-        myCurrentLevel = myLevelFactory.loadLevel(lvlName);
-        Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
-        setPreferredSize(new Dimension((int)cameraBounds.getWidth(), (int)cameraBounds.getHeight()));
-        if (myInputController != null) {
-            myCurrentLevel.setInputController(myInputController);
+            myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
         }
     }
 
+    private void setupLevel (String lvlName) {
+        myCurrentLevelName = lvlName;
+        myCurrentLevel = LevelFactory.loadLevel(lvlName);
+        Rectangle2D cameraBounds = myCurrentLevel.getCamera().getBounds();
+        mySize = new Dimension((int) cameraBounds.getWidth(), (int) cameraBounds.getHeight());
+        setPreferredSize(mySize);
+    }
+
     @Override
-    public void paint(Graphics pen) {
+    public Dimension getSize () {
+        return mySize;
+    }
+
+    /**
+     * Return the current level of this controller
+     * 
+     * @return
+     */
+    public Level getLevel () {
+        return myCurrentLevel;
+    }
+
+    @Override
+    public void paint (Graphics pen) {
+        paintBlankScreen(pen);
         myCurrentLevel.paint(pen);
         pen.setColor(Color.BLACK);
-        pen.drawString("Press M to bring up the menu", getSize().width*3/5,getSize().height/4);
-        pen.drawString("If you touch the enemy, you die", getSize().width*3/5,getSize().height/4+10);
-        pen.drawString("If you step on the enemy, the enemy dies", getSize().width*3/5,getSize().height/4+20);
-        
-        for(Component c: getComponents()){
+        paintString(pen);
+        for (Component c : getComponents()) {
             c.paint(pen);
         }
+    }
+
+    /**
+     * Paint the background of game canvas
+     * 
+     * @param pen
+     */
+    public void paintBlankScreen (Graphics pen) {
+        pen.setColor(Color.WHITE);
+        pen.fillRect(0, 0, getWidth(), getHeight());
+
+        /*
+         * if (myBackground != null) {
+         * pen.drawImage(myBackground.getScaledInstance((int) getWidth(),
+         * (int) getHeight(), Image.SCALE_DEFAULT), 0, 0, null);
+         * }
+         */
+    }
+
+    private void paintString (Graphics pen) {
+        for (String s : myStringMap.keySet()) {
+            Point p = myStringMap.get(s);
+            pen.drawString(s, p.x, p.y);
+        }
+    }
+
+    /**
+     * Paint string at (x,y)
+     * 
+     * @param str
+     * @param x coordinate on canvas
+     * @param y coordinate on canvas
+     */
+    public void paintString (String str, int x, int y) {
+        Point location = new Point(x, y);
+        myStringMap.put(str, location);
     }
 
     /**
      * The main game loop
      */
     @Override
-    public void run() {
+    public void run () {
         long beforeTime, timeDiff, sleepTime;
 
         beforeTime = System.currentTimeMillis();
@@ -118,7 +151,8 @@ public class PlatformerController extends JPanel implements Runnable {
 
             try {
                 Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 System.out.println("interrupted!");
             }
             beforeTime = System.currentTimeMillis();
@@ -126,68 +160,24 @@ public class PlatformerController extends JPanel implements Runnable {
     }
     
     /**
-     * This is used to test sample implemented game before registered with input team.
-     * should be //TODO: removed
+     * Pause game;
      */
-    public KeyListener setTemporaryInputListener(){
-        KeyListener kl = new KeyAdapter() {
-            @Override
-            public void keyPressed (KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_LEFT){
-                    myPlayer.getMovingStragety().goLeft();
-                    
-                }
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
-                    myPlayer.getMovingStragety().goRight();
-                }
-                if(e.getKeyCode()==KeyEvent.VK_UP){
-                    myPlayer.getMovingStragety().jump();
-                }
-            }
-
-            public void keyReleased (KeyEvent e) {
-                myPlayer.getMovingStragety().stop();
-            }
-        };
-        MouseMotionListener mml = new MouseAdapter() {
-            @Override
-            public void mouseClicked (MouseEvent e) {
-                //not used so far
-            }
-        };
-        return kl;
+    public void pause(){
+        myCurrentLevel.pause();
     }
     
-    private PlatformerController myCanvas = this;
+    /**
+     * Unpause current Level
+     */
+    public void upause(){
+        myCurrentLevel.unpause();
+    }
     
-    public KeyListener setMenuKeyListener(){
-        KeyListener kl = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_M) {
-                    final Menu menu = new Menu(myCanvas);
-                    GameButton gb1 = new GameButton("greenbutton", "Back");
-                    MouseListener gl = new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent arg0) {
-                            myCanvas.remove(menu);
-                            myCanvas.repaint();
-                        }
-                    };
-                    gb1.addMouseListener(gl);
-                    GameButton gb2 = new GameButton("button", "Exit");
-                    gb2.addMouseListener(new MouseAdapter(){
-                        @Override
-                        public void mouseClicked(MouseEvent arg0) {
-                            System.exit(0);
-                        }
-                    });
-                    gb2.setSize(new Dimension(130, 130));
-                    menu.addButtons(gb1);
-                    menu.addButtons(gb2);
-                }
-            }
-        };
-        return kl;
+    /**
+     * Replay current level
+     */
+    public void replayCurrentLevel(){
+        setupLevel(myCurrentLevelName);
+        myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
     }
 }

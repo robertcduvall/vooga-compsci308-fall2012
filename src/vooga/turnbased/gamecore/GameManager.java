@@ -1,190 +1,163 @@
-/**
- * Manage Game Sprites, and change the game modes when certain events are
- * triggered
- * Check gameover conditions and goals of games
- * 
- * @author rex, Vo
- */
 package vooga.turnbased.gamecore;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import util.imageprocessing.ImageLoop;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
-import vooga.turnbased.gameobject.BattleObject;
+import util.sound.SoundPlayer;
+import vooga.turnbased.gamecore.gamemodes.GameMode;
+import vooga.turnbased.gamecreation.LevelXmlParser;
 import vooga.turnbased.gameobject.GameObject;
-import vooga.turnbased.gameobject.MapObject;
-import vooga.turnbased.gameobject.MapPlayerObject;
-import vooga.turnbased.gameobject.MapTileObject;
-import vooga.turnbased.gameobject.MovingMapObject;
-import vooga.turnbased.gameobject.TestMonster;
 import vooga.turnbased.gui.GamePane;
 import vooga.turnbased.gui.GameWindow;
+import vooga.turnbased.gui.InputAPI;
 import vooga.turnbased.sprites.Sprite;
 
 
 /**
- * GameManager class that manages interations between the map and battle modes
+ * GameManager class that manages interactions between the map and battle modes
  * of the game.
  * 
- * @author Turnbased team
+ * @author RPGs team
  * 
  */
-public class GameManager {
+public class GameManager implements InputAPI, GameLoop {
 
     private final GamePane myGamePane;
-    private MapMode myMapMode; // Fix me once the factory opens!s
-    private BattleMode myBattleMode;
-    private GameMode myCurrentGameMode;
-    // private Factory myFactory;
-    // private MapObject myPlayer;
-    private final boolean isOver;
-    private HashMap<Integer, Sprite> mySprites;
-    private List<ModeEvent> myEvents;
-    private KeyboardController myKeyboardController;
-    private MouseController myMouseController;
+    private GameLogic myGameLogic;
+    private boolean myGameIsOver;
+    private Map<Integer, Sprite> mySprites;
+    private Map<String, Class<? extends GameMode>> myAvailableModeTypes;
+    private List<ModeEvent> myModeEvents;
+    private List<MouseAction> myMouseActions;
+    private List<GameMode> myGameModes;
+    private String myNewMapResource;
+    private int myPlayerSpriteID;
+    private Dimension myMapSize;
+    private Dimension myCameraSize;
+    private SoundPlayer myGameSoundTrack;
 
     /**
      * Constructor of GameManager
      * 
-     * @param gameCanvas
-     *        The GameCanvas it paints to
+     * @param gameCanvas The GameCanvas it paints to.
+     * @param xmlPath String path of xml file to load.
      */
-    public GameManager (GamePane gameCanvas) {
+    public GameManager (GamePane gameCanvas, String xmlPath) {
         myGamePane = gameCanvas;
-        myKeyboardController = gameCanvas.getKeyboardController();
-        myMouseController = gameCanvas.getMouseController();
-        isOver = false;
-        // mySprites =
-        // myFactory.initializeSprites(myGameCanvas.getInitialMapFile());
+        myGameIsOver = false;
+
         mySprites = new HashMap<Integer, Sprite>();
-        myEvents = new LinkedList<ModeEvent>();
-        myMapMode = new MapMode(this, MapObject.class);
-        myBattleMode = new BattleMode(this, BattleObject.class);
-        generateHardcodedLevel();
-        myCurrentGameMode = myMapMode;
-        myCurrentGameMode.init();
-        configureInputHandling();
-    }
+        myAvailableModeTypes = new HashMap<String, Class<? extends GameMode>>();
+        myGameModes = new ArrayList<GameMode>();
 
-    private void generateHardcodedLevel () { // factory will do this job
-        // eventually...
-        myMapMode.setNumDisplayRows(Integer.parseInt(GameWindow.importString("CameraHeight")));
-        myMapMode.setNumDisplayCols(Integer.parseInt(GameWindow.importString("CameraWidth")));
-        myMapMode.setBottomRight(new Point(20, 30));
-        Sprite s = new Sprite();
-        for (int i = 0; i < myMapMode.getBottomRight().x; i++) {
-            for (int j = 0; j < myMapMode.getBottomRight().y; j++) {
-                Point p = new Point(i, j);
-                s = new Sprite();
-                s.addGameObject(new MapTileObject(s.getID(), "NO_ACTION", p, GameWindow
-                        .importImage("GrassImage"), myMapMode));
-                mySprites.put(s.getID(), s);
-            }
-        }
-
-        s = new Sprite();
-        s.addGameObject(new TestMonster(0, "NO_ACTION", 1, 2, 3, GameWindow
-                .importImage("something")));
-        Point center = new Point(5, 5);
-        MovingMapObject test1 =
-                new MovingMapObject(0, "MAP_COLLISION", center,
-                                    GameWindow.importImage("something"), myMapMode);
-
-        s.addGameObject(test1);
-
-        mySprites.put(s.getID(), s);
-
-        s = new Sprite();
-        s.addGameObject(new TestMonster(1, "NO_ACTION", 1, 2, 3, GameWindow
-                .importImage("PlayerImage")));
-
-        mySprites.put(s.getID(), s);
-
-        center = new Point(8, 8);
-        Map<String, Image> images = new HashMap<String, Image>();
-        images.put("left", GameWindow.importImage("PlayerLeft"));
-        images.put("right", GameWindow.importImage("PlayerRight"));
-        images.put("down", GameWindow.importImage("PlayerDown"));
-        images.put("up", GameWindow.importImage("PlayerUp"));
-        Map<String, ImageLoop> imageLoops = new HashMap<String, ImageLoop>();
-        Image left = GameWindow.importImage("PlayerLeft");
-        Image left1 = GameWindow.importImage("PlayerLeft1");
-        Image left2 = GameWindow.importImage("PlayerLeft2");
-        Image right = GameWindow.importImage("PlayerRight");
-        Image right1 = GameWindow.importImage("PlayerRight1");
-        Image right2 = GameWindow.importImage("PlayerRight2");
-        Image up = GameWindow.importImage("PlayerUp");
-        Image up1 = GameWindow.importImage("PlayerUp1");
-        Image up2 = GameWindow.importImage("PlayerUp2");
-        Image down = GameWindow.importImage("PlayerDown");
-        Image down1 = GameWindow.importImage("PlayerDown1");
-        Image down2 = GameWindow.importImage("PlayerDown2");
-        List<Image> leftList = new ArrayList<Image>();
-        leftList.add(left);
-        leftList.add(left1);
-        leftList.add(left2);
-        imageLoops.put("left", new ImageLoop(leftList));
-        List<Image> rightList = new ArrayList<Image>();
-        rightList.add(right);
-        rightList.add(right1);
-        rightList.add(right2);
-        imageLoops.put("right", new ImageLoop(rightList));
-        List<Image> upList = new ArrayList<Image>();
-        upList.add(up);
-        upList.add(up1);
-        upList.add(up2);
-        imageLoops.put("up", new ImageLoop(upList));
-        List<Image> downList = new ArrayList<Image>();
-        downList.add(down);
-        downList.add(down1);
-        downList.add(down2);
-        imageLoops.put("down", new ImageLoop(downList));
-
-        s = new Sprite();
-        MapPlayerObject player =
-                new MapPlayerObject(s.getID(), "MAP_COLLISION", center, images, myMapMode);
-        player.setImageLoops(imageLoops);
-        myMapMode.setPlayer(player);
-        s.addGameObject(player);
-        mySprites.put(s.getID(), s);
+        myModeEvents = new LinkedList<ModeEvent>();
+        myMouseActions = new LinkedList<MouseAction>();
+        myGameLogic = new GameLogic(this);
+        myGameSoundTrack = new SoundPlayer(GameWindow.importString("GameSoundTrack"));
+        initializeGameLevel(xmlPath);
     }
 
     /**
-     * Returns a list of GameObjects of the indicated type.
+     * Starts a new level, and puts the RPG in mapMode in that new level.
      * 
-     * @param c Class of desired GameObjects.
-     * @param <T> Type of class in the list.
-     * @return modeObjects A list of all requested GameObjects within all
-     *         sprites.
+     * @param gameFileName
+     *        The name of the level that will be initialized
+     * @param enteringObject
+     *        The MapObject which will used for the MapMode of this level.
      */
-    public <T extends GameObject> List<T> getGameObjectsOfSpecificMode (Class c) {
-        List<T> modeObjects = new ArrayList<T>();
+    private void initializeGameLevel (String gameFileName) {
+        LevelXmlParser levelLoader = new LevelXmlParser(gameFileName, this);
+        myMapSize = levelLoader.getMapSize();
+        myCameraSize = levelLoader.getCameraSize();
+
+        addSprites(levelLoader.parseSprites());
+
+        myPlayerSpriteID = levelLoader.getPlayerID();
+
+        myAvailableModeTypes = levelLoader.getUserDefinedModes();
+
+        myGameLogic.addEventConditions(levelLoader.getEventConditionMapping());
+
+        startFirstMode(levelLoader.getStartMode());
+    }
+
+    private void startFirstMode (String entryMode) {
+        handleEvent(new ModeEvent(entryMode, new ArrayList<Integer>()));
+    }
+
+    /**
+     * Get the dimension of the map
+     * 
+     * @return
+     */
+    public Dimension getMapSize () {
+        return myMapSize;
+    }
+
+    /**
+     * Get the dimension of the camera window
+     * 
+     * @return
+     */
+    public Dimension getCameraSize () {
+        return myCameraSize;
+    }
+
+    /**
+     * find the Sprite with specific ID
+     * 
+     * @param id ID of the Sprite
+     * @return the Sprite found (null if no Sprite with that ID was found)
+     */
+    public Sprite findSpriteWithID (int id) {
+        return mySprites.get(id);
+    }
+
+    /**
+     * add a list of sprites to the GameManager
+     * 
+     * @param sprites
+     */
+    private void addSprites (List<Sprite> sprites) {
+        for (Sprite s : sprites) {
+            mySprites.put(s.getID(), s);
+        }
+    }
+
+    /**
+     * Get a list of all the GameObjects that belong to the given certain
+     * GameMode
+     * 
+     * @param modeName Name of mode being checked.
+     * @return
+     */
+    public List<GameObject> getGameObjects (String modeName) {
+        List<GameObject> modeObjects = new ArrayList<GameObject>();
         for (Sprite s : mySprites.values()) {
-            modeObjects.addAll(s.getObject(c));
+            modeObjects.addAll(s.getObjects(modeName));
         }
         return modeObjects;
     }
 
     /**
      * Removes the sprite with the given ID from the list of sprites in the
-     * game.
+     * game. Trigger removal of corresponding gameobjects inside each sprite.
      * 
-     * @param spriteID Int ID of sprite to be removed.
+     * @param spriteID
+     *        Int ID of sprite to be removed.
      */
-    public void deleteSprite (int spriteID) {
-        mySprites.remove(spriteID);
+    public void clearSprite (int spriteID) {
+        findSpriteWithID(spriteID).clear();
+        // mySprites.put(spriteID, null);
     }
 
     /**
@@ -193,101 +166,52 @@ public class GameManager {
      * @return isOver True if game is over, false if not.
      */
     public boolean isOver () {
-        return isOver;
+        return myGameIsOver;
     }
 
     /**
      * Updates the actve game mode and handles any events occurring.
      */
+    @Override
     public void update () {
-        myCurrentGameMode.update();
         handleEvents();
+        updateGameModes();
+    }
+
+    private void updateGameModes () {
+        ArrayList<GameMode> finishedModes = new ArrayList<GameMode>();
+        for (GameMode mode : myGameModes) {
+            if (mode.isOver()) {
+                finishedModes.add(mode);
+            }
+        }
+        for (GameMode mode : finishedModes) {
+            killMode(mode);
+        }
+        myGameModes.get(myGameModes.size() - 1).update();
+        handleMouseActions(myGameModes.get(myGameModes.size() - 1));
     }
 
     /**
      * Paints the images to the buffer.
      * 
-     * @param g The Graphics object of the offScreenImage.
+     * @param g
+     *        The Graphics object of the offScreenImage.
      */
+    @Override
     public void paint (Graphics g) {
-        myCurrentGameMode.paint(g);
-    }
-
-    /**
-     * Adds an event to the list of events to handle.
-     * 
-     * @param eventName String name of event to add.
-     * @param involvedSpriteIDs List of integer IDs of sprites involved in given
-     *        action.
-     */
-    public void flagEvent (String eventName, List<Integer> involvedSpriteIDs) {
-        myEvents.add(new ModeEvent(eventName, involvedSpriteIDs));
-    }
-
-    /**
-     * Takes events to be handled and deals with each according to the mode and
-     * sprites involved.
-     */
-    private void handleEvents () {
-        while (!myEvents.isEmpty()) {
-            ModeEvent m = myEvents.remove(0);
-            handleEvent(m.getModeEventName(), m.getEventInvolvedIDs());
-        }
-    }
-
-    private void handleEvent (String eventName, List<Integer> myInvolvedIDs) {
-        if ("NO_ACTION".equals(eventName)) {
-            // do nothing
-        }
-        else if ("MAP_COLLISION".equals(eventName)) {
-            if (myInvolvedIDs.size() >= 2) {// this should be in map mode!
-                changeCurrentMode(myBattleMode);
+        for (GameMode mode : myGameModes) {
+            if (mode.isActive()) {
+                mode.paint(g);
             }
         }
-        else if ("BATTLE_OVER".equals(eventName)) {
-            changeCurrentMode(myMapMode);
+    }
+
+    private void handleMouseActions (GameMode mode) {
+        while (!myMouseActions.isEmpty()) {
+            MouseAction m = myMouseActions.remove(0);
+            mode.processMouseInput(m.myMouseEventType, m.myMousePosition, m.myMouseButton);
         }
-        else {
-            System.err.println("Unrecognized mode event requested.");
-        }
-    }
-
-    /**
-     * Pauses current mode, switches to given GameMode, and begins that mode.
-     * 
-     * @param mode GameMode type to be switched to.
-     */
-    public void changeCurrentMode (GameMode mode) {
-        myCurrentGameMode.pause();
-        myCurrentGameMode = mode;
-        myCurrentGameMode.resume();
-    }
-
-    /**
-     * Passes key input to the GameMode.
-     * 
-     * @param e KeyEvent to be handled.
-     */
-    public void handleKeyPressed (KeyEvent e) {
-        myCurrentGameMode.handleKeyPressed(e);
-    }
-
-    /**
-     * Passes key input to the GameMode.
-     * 
-     * @param e KeyEvent to be handled.
-     */
-    public void handleKeyReleased (KeyEvent e) {
-        myCurrentGameMode.handleKeyReleased(e);
-    }
-
-    /**
-     * Passes mouse input to the GameMode.
-     * 
-     * @param e MouseEvent to be handled.
-     */
-    public void handleMouseClicked (MouseEvent e) {
-        myCurrentGameMode.handleMouseClicked(e);
     }
 
     /**
@@ -299,52 +223,213 @@ public class GameManager {
         return myGamePane.getSize();
     }
 
-    /**
-     * Returns the current time delay for the game window.
-     * 
-     * @return Current time delay.
-     */
-    public int getDelayTime () {
-        return myGamePane.getDelayTime();
+    @Override
+    public void configureInputHandling () {
+        try {
+            myGamePane.getKeyboardController().setControl(KeyEvent.VK_M, KeyboardController.RELEASED,
+                    this, "toggleSoundTrack");
+            myGamePane.getKeyboardController().setControl(KeyEvent.VK_ESCAPE, KeyboardController.PRESSED,
+                    myGamePane, "returnToMenu");
+        }
+        catch (NoSuchMethodException e) {
+            System.out.println("A method was called that does not exist!");
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Returns the current KeyboardController.
+     * Calling this functions sets the next level from the input URI.
      * 
-     * @return KeyboardController in use.
+     * @param uri The location string of where to find the new map file.
      */
-    public KeyboardController getKeyboardController () {
-        return myKeyboardController;
+    public void setNewMapResources (String uri) {
+        myNewMapResource = uri;
     }
 
     /**
-     * Returns the current MouseController.
+     * Get the sprite ID of the player
      * 
-     * @return MouseController in use.
+     * @return
      */
-    public MouseController getMouseController () {
-        return myMouseController;
+    public int getPlayerSpriteID () {
+        return myPlayerSpriteID;
     }
 
-    private void configureInputHandling () {
-        // handle actions that shouldn't be passed down to individual gamemodes,
-        // i.e. game pause
+    protected String getNewMapResource () {
+        return myNewMapResource;
+    }
+
+    /**
+     * Flag an event using the GameLogic
+     * 
+     * @param eventName String name of event to be flagged.
+     * @param involvedSpriteIDs List of IDs of sprites involved in the event.
+     */
+    public void flagCondition (String eventName, List<Integer> involvedSpriteIDs) {
+        myGameLogic.flagCondition(eventName, involvedSpriteIDs);
+    }
+
+    /**
+     * Adds an event to the list of events to handle.
+     * 
+     * @param modeName - String name of event to add.
+     * @param involvedSpriteIDs - List of integer IDs of sprites involved in
+     *        given action.
+     */
+    protected void flagEvent (String modeName, List<Integer> involvedSpriteIDs) {
+        myModeEvents.add(new ModeEvent(modeName, involvedSpriteIDs));
+    }
+
+    /**
+     * Takes events to be handled and deals with each according to the mode and
+     * sprites involved.
+     */
+    private void handleEvents () {
+        while (!myModeEvents.isEmpty()) {
+            ModeEvent m = myModeEvents.remove(0);
+            handleEvent(m);
+        }
+    }
+
+    private boolean modeAlreadyExists (String modeName) {
+        for (GameMode g : myGameModes) {
+            if (modeName.equals(g.getName())) {
+                myGameModes.get(myGameModes.size() - 1).pause();
+                myGameModes.remove(g);
+                myGameModes.add(g);
+                g.initialize();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * handle event that occured after a cycle of update
+     * 
+     * @param event the event that records involved IDs and the event type
+     */
+    private void handleEvent (ModeEvent event) {
+        String modeName = event.getName();
+        List<Integer> myInvolvedIDs = event.getInvolvedIDs();
+        if (!modeAlreadyExists(modeName)) {
+            if (myAvailableModeTypes.containsKey(modeName)) {
+                if (!myGameModes.isEmpty()) {
+                    myGameModes.get(myGameModes.size() - 1).pause();
+                }
+                Class c = myAvailableModeTypes.get(modeName);
+                Constructor[] newC = c.getConstructors();
+                try {
+                    GameMode newGameMode = (GameMode) newC[0].newInstance(this, modeName, myInvolvedIDs);
+                    myGameModes.add(newGameMode);
+                    newGameMode.initialize();
+                }
+                catch (Exception e) {
+                    System.out.println("Unable to create mode " + modeName + " of class " +
+                            c.toString());
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Add a mouse action
+     * 
+     * @param mousePressed int value that indicates what kind of mouse action is
+     *        this (see GamePane for constant values)
+     * @param mousePos the position of the mouse
+     * @param mouseButton the button of the mouse (see KeyEvent constants)
+     */
+    public void addMouseAction (int mousePressed, Point mousePos, int mouseButton) {
+        myMouseActions.add(new MouseAction(mousePressed, mousePos, mouseButton));
+    }
+
+    /**
+     * remove the mode from know modes
+     * 
+     * @param mode the GameMode to be removed
+     */
+    private void killMode (GameMode mode) {
+        myGameModes.remove(mode);
+        if (!myGameModes.isEmpty()) {
+            myGameModes.get(myGameModes.size() - 1).resume();
+        }
+    }
+
+    /**
+     * Toggle the background sound track being played
+     */
+    public void toggleSoundTrack () {
+        if (myGameSoundTrack.loopIsRunning()) {
+            myGameSoundTrack.stopLoop();
+        }
+        else {
+            myGameSoundTrack.startLoop();
+        }
+    }
+
+    /**
+     * Turn off background soundtrack if any.
+     */
+    public void turnOffSoundTrack () {
+        myGameSoundTrack.stopLoop();
+    }
+    
+    /**
+     * Resets input controllers
+     */
+    public void resetControllers () {
+        myGamePane.resetControllers();
+    }
+    
+    /**
+     * get access to program's keyboard controller
+     * 
+     * @return keyboard controller
+     */
+    public KeyboardController getKeyboardController() {
+        return myGamePane.getKeyboardController();
+    }
+    
+    /**
+     * get access to program's mouse controller
+     * 
+     * @return mouse controller
+     */
+    public MouseController getMouseController() {
+        return myGamePane.getMouseController();
+    }
+
+    private class MouseAction {
+        private int myMouseEventType;
+        private Point myMousePosition;
+        private int myMouseButton;
+
+        public MouseAction (int mouseEventType, Point mousePos, int mouseButton) {
+            myMouseEventType = mouseEventType;
+            myMousePosition = mousePos;
+            myMouseButton = mouseButton;
+        }
     }
 
     private class ModeEvent {
         private final String myName;
         private final List<Integer> myInvolvedIDs;
 
-        public ModeEvent (String eventName, List<Integer> involvedIDs) {
-            myName = eventName;
+        public ModeEvent (String modeName, List<Integer> involvedIDs) {
+            myName = modeName;
             myInvolvedIDs = new ArrayList<Integer>(involvedIDs);
         }
 
-        public String getModeEventName () {
+        public String getName () {
             return myName;
         }
 
-        public List<Integer> getEventInvolvedIDs () {
+        public List<Integer> getInvolvedIDs () {
             return myInvolvedIDs;
         }
     }

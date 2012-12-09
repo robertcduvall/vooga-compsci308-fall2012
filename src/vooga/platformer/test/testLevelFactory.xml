@@ -1,0 +1,10 @@
+<level>
+<levelName>Level Name</levelName>
+<width>1000</width>
+<height>1000</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>vooga.platformer.someCamera</camera>
+<gameObjectData>src/vooga/platformer/test/testLevelFactoryGameObjects.bin</gameObjectData>
+<conditionData>src/vooga/platformer/test/testLevelFactoryConditions.bin</conditionData>
+<pluginData>src/vooga/platformer/test/testLevelFactoryPlugins.bin</pluginData>
+</level>

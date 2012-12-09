@@ -32,8 +32,8 @@ public class GameButton extends JComponent {
      */
     public static final int TOP = 2;
     private static final long serialVersionUID = 1L;
-    private static final int DEFAULT_BUTTON_WIDTH = 130;
-    private static final int DEFAULT_BUTTON_HEIGHT = 40;
+    public static final int DEFAULT_BUTTON_WIDTH = 130;
+    public static final int DEFAULT_BUTTON_HEIGHT = 40;
 
     private Image myImg;
     private String myImgName;
@@ -41,6 +41,7 @@ public class GameButton extends JComponent {
     private MouseListener myMouseListener;
     private Dimension mySize;
     private int myStringLocation = CENTER;
+    private Color myStringColor;
 
     /**
      * Create a game button that allows to customize the image of the button.
@@ -63,7 +64,7 @@ public class GameButton extends JComponent {
      */
     public GameButton (String fileName, String command) {
         this(fileName);
-        setString(command);
+        paintString(command);
     }
 
     /**
@@ -74,36 +75,56 @@ public class GameButton extends JComponent {
      * @param ml MouseListener
      */
     public GameButton (String fileName, String command, MouseListener ml) {
-        this(fileName);
+        this(fileName, command);
         addMouseListener(ml);
     }
 
     /**
-     * Set String appears on the button.
+     * Create a game button that allows to customize the image of the button.
      * 
-     * @param command String appears on the button
+     * @param fileName of the button image
+     * @param command String appears on the button.
+     * @param ml MouseListener
+     * @param size of the Button
      */
-    public void setString (String command) {
-        myCommand = command;
+    public GameButton (String fileName, String command, MouseListener ml,
+            Dimension size) {
+        this(fileName, command, ml);
+        setSize(size);
     }
 
     /**
-     * Set String appears on the button.
+     * Paint String on the button.
+     * 
+     * @param command String appears on the button
+     */
+    public void paintString (String command) {
+        paintString(command, Color.BLACK);
+    }
+
+    /**
+     * Paint String on the button.
+     * 
+     * @param command String appears on the button
+     */
+    public void paintString (String command, Color color) {
+        myCommand = command;
+        myStringColor = color;
+    }
+
+    /**
+     * Paint String on the button.
      * 
      * @param command String appears on the button
      * @param location of the String appear on the button
      */
-    public void setString (String command, int location) {
+    public void paintString (String command, int location, Color color) {
         myStringLocation = location;
-        myCommand = command;
+        paintString (command, color);
     }
 
-    @Override
-    protected void paintComponent (Graphics pen) {
-        Dimension myButtonSize = getSize();
-        pen.drawImage(myImg, 0, 0, myButtonSize.width, myButtonSize.height,
-                null);
-        pen.setColor(Color.BLACK);
+    private void paintString (Graphics pen) {
+        pen.setColor(myStringColor);
         if (myStringLocation == CENTER) {
             pen.drawString(myCommand, (getSize().width / 4), (int) (getSize()
                     .getHeight() / 2));
@@ -115,6 +136,14 @@ public class GameButton extends JComponent {
         else if (myStringLocation == TOP) {
             pen.drawString(myCommand, (getSize().width / 4), 10);
         }
+    }
+
+    @Override
+    protected void paintComponent (Graphics pen) {
+        Dimension myButtonSize = getSize();
+        pen.drawImage(myImg, 0, 0, myButtonSize.width, myButtonSize.height,
+                null);
+        paintString(pen);
     }
 
     @Override
@@ -158,8 +187,8 @@ public class GameButton extends JComponent {
     }
 
     /**
-     * @param width 
-     * @param height 
+     * @param width
+     * @param height
      */
     public void setButtonSize (int width, int height) {
         mySize = new Dimension(width, height);

@@ -5,7 +5,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import vooga.platformer.gameobject.GameObject;
 import vooga.platformer.level.Level;
-import vooga.platformer.util.enums.CollisionDirection;
+import vooga.platformer.util.enums.Direction;
 
 
 /**
@@ -20,52 +20,54 @@ import vooga.platformer.util.enums.CollisionDirection;
  * 
  */
 public abstract class CollisionEvent {
-    private GameObject a;
-    private GameObject b;
-    private CollisionDirection myDirection;
-    private Dimension2D myIntersectSize = new Dimension();;
+    private Class myTypeA;
+    private Class myTypeB;
+    private Direction myDirection = Direction.NONE;
+    private Dimension2D myIntersectSize = new Dimension();
 
-    public CollisionEvent (GameObject a, GameObject b) {
-        this.a = a;
-        this.b = b;
-        computeDirection();
+    public CollisionEvent (Class typeA, Class typeB) {
+        myTypeA = typeA;
+        myTypeB = typeB;
     }
 
-    public abstract void applyCollision (Level level);
-
-    protected GameObject a () {
-        return a;
+    public abstract void applyCollision (Level level, GameObject objectA, GameObject objectB);
+    
+    public void apply(Level level, GameObject objectA, GameObject objectB){
+        if(myTypeA.equals(objectA.getClass()) && myTypeB.equals(objectB.getClass())) {
+            computeDirection(objectA, objectB);
+            applyCollision(level, objectA, objectB);
+        }
+        else if (myTypeB.equals(objectA.getClass()) && myTypeA.equals(objectB.getClass())) {
+            computeDirection(objectB, objectA);
+            applyCollision(level, objectB, objectA);
+        }
     }
 
-    protected GameObject b () {
-        return b;
-    }
-
-    protected CollisionDirection direction () {
+    protected Direction direction () {
         return myDirection;
     }
 
-    private void computeDirection () {
-        Rectangle2D intersection = a.getShape()
-                .createIntersection(b.getShape());
-        myIntersectSize.setSize(intersection.getHeight(),
-                intersection.getWidth());
+    private void computeDirection (GameObject objA, GameObject objB) {
+        Rectangle2D intersection = objA.getShape()
+                .createIntersection(objB.getShape());
+        myIntersectSize.setSize(intersection.getWidth(),
+                intersection.getHeight());
         // lateral collision ?
         if (myIntersectSize.getHeight() > myIntersectSize.getWidth()) {
-            if (a.getX() > b.getX()) { // determine collision direction
-                myDirection = CollisionDirection.RIGHT;
+            if (objA.getX() > objB.getX()) { // determine collision direction
+                myDirection = Direction.RIGHT;
             }
-            else {
-                myDirection = CollisionDirection.LEFT;
+            else if (objA.getX() < objB.getX()){
+                myDirection = Direction.LEFT;
             }
         }
         // vertical collision
         else {
-            if (a.getY() > b.getY()) { // determine collision direction
-                myDirection = CollisionDirection.DOWN;
+            if (objA.getY() > objB.getY()) { // determine collision direction
+                myDirection = Direction.DOWN;
             }
-            else {
-                myDirection = CollisionDirection.UP;
+            else if (objA.getY() < objB.getY()){
+                myDirection = Direction.UP;
             }
         }
     }

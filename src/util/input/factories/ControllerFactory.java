@@ -12,15 +12,16 @@ import wiiusej.Wiimote;
 
 /**
  * Create the desired controller here.
- * 
+ *
  * @author Amay
- * 
+ *
  */
+@Deprecated 
 public class ControllerFactory {
 
     /**
      * Use the keyboard as a controller.
-     * 
+     *
      * @param c - The component to which this controller will be added to
      * @return - The Controller object
      */
@@ -32,7 +33,7 @@ public class ControllerFactory {
 
     /**
      * Use the mouse as a controller.
-     * 
+     *
      * @param c - The component to which this controller will be added to
      * @return - The Controller object
      */
@@ -44,18 +45,19 @@ public class ControllerFactory {
 
     /**
      * Use the Wii as a controller.
-     * 
+     *
+     * @param - The controller number
      * @return - The Controller object
      */
     @SuppressWarnings("rawtypes")
-    public static Controller createWiiController () {
+    public static Controller createWiiController (int controllerNum) {
         // Create wii controller
-        return new WiiController();
+        return new WiiController(controllerNum);
     }
 
     /**
      * Use the Android as a controller.
-     * 
+     *
      * @return - The Controller object
      */
     @SuppressWarnings("rawtypes")

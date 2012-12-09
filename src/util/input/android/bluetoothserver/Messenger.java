@@ -23,47 +23,63 @@ public class Messenger {
      * Create a messenger with the active stream connection.
      * 
      * @param stream the active stream connection.
+     * @throws IOException
      */
-    public Messenger (StreamConnection stream) {
-        try {
-            myOutput = stream.openOutputStream();
-        }
-        // should never occur
-        catch (IOException e) {
+    public Messenger (StreamConnection stream) throws IOException {
 
-        }
+        myOutput = stream.openOutputStream();
+
     }
 
     /**
      * Write a message to the active connection.
      * 
      * @param m the message to write
+     * @throws IOException
      */
     public void write (AndroidServerMessage m) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
-        System.out.println("writing android server message");
-        byte[] outBytes;
-        try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(m);
-            byte[] yourBytes = bos.toByteArray();
-            outBytes = yourBytes;
-            myOutput.write(outBytes);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                out.close();
-                bos.close();
-            }
-            // should never occur
-            catch (IOException e) {
+        new WriteThread(m);
+    }
 
+    private class WriteThread implements Runnable {
+        private AndroidServerMessage myMessage;
+
+        public WriteThread (AndroidServerMessage m) {
+            myMessage = m;
+            Thread mThread = new Thread(this);
+            mThread.start();
+        }
+
+        public void run () {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutput out = null;
+            byte[] outBytes;
+            try {
+                out = new ObjectOutputStream(bos);
+                out.writeObject(myMessage);
+                byte[] yourBytes = bos.toByteArray();
+                outBytes = yourBytes;
+                myOutput.write(outBytes);
+            }
+            catch (IOException e) {
+                // should never happen
+            }
+
+            finally {
+                try {
+                    out.close();
+                    bos.close();
+                }
+
+                catch (IOException e) {
+                    // should never happen
+                }
             }
         }
+    }
+
+    private void writeMessage (AndroidServerMessage m) {
+
     }
 
 }

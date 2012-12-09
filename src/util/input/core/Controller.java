@@ -4,32 +4,33 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import util.dataStructures.FlagPair;
 import util.datatable.DataTable;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
+import util.input.inputhelpers.FlagPair;
 import util.input.inputhelpers.UKeyCode;
 
 
 /**
  * This class represents an abstract controller to provide input.
- *
+ * 
  * @author Amay, Lance
- *
+ * 
  * @param <T>
  */
 public abstract class Controller<T> {
 
     protected static final int NO_ACTION = -1;
+    private static final int NUM_COLUMNS = 4;
     private static final String BUTTON_DESCRIPTION = "Button Description";
     private static final String ACTION_DESCRIPTION = "Action Description";
     private static final String KEYCODE = "KeyCode";
     private static final String TUPLE = "Tuple";
-    private static int NUM_COLUMNS = 4;
 
     private String[] myColumnName;
 
@@ -53,7 +54,7 @@ public abstract class Controller<T> {
     /**
      * Create a new Controller with an element that
      * subscribes to its raw data.
-     *
+     * 
      * @param element - The subscribing element
      */
     public Controller (T element) {
@@ -63,7 +64,7 @@ public abstract class Controller<T> {
 
     /**
      * Subscribes a class to this controller's events.
-     *
+     * 
      * @param subscriber - The subscribing class
      */
     public void subscribe (T subscriber) {
@@ -72,7 +73,7 @@ public abstract class Controller<T> {
 
     /**
      * Unsubscribes a class to this controller's events.
-     *
+     * 
      * @param unsubscriber - The unsubscribing class
      */
     public void unSubscribe (T unsubscriber) {
@@ -81,7 +82,7 @@ public abstract class Controller<T> {
 
     /**
      * Object invokes a method every time action and type occur.
-     *
+     * 
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -94,6 +95,7 @@ public abstract class Controller<T> {
      *         set or get a field, or invoke a method, but the currently
      *         executing method does not have access to the definition of
      *         the specified class, field, method or constructor"
+     * @throws InstantiationException
      */
     public void setControl (int action, int type, Object o, String method)
                                                                           throws NoSuchMethodException,
@@ -103,7 +105,7 @@ public abstract class Controller<T> {
 
     /**
      * Class invokes a static method every time action and type occur.
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -133,7 +135,7 @@ public abstract class Controller<T> {
      * Object invokes a method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <object, method> tuple into DataTable
-     *
+     * 
      * @param action - The button to listen for
      * @param type - Pressed or released
      * @param o - The invoking object
@@ -149,25 +151,21 @@ public abstract class Controller<T> {
      *         executing method does not have access to the definition of
      *         the specified class, field, method or constructor"
      */
+    @SuppressWarnings("rawtypes")
     public void setControl (int action, int type, Object o, String method, String describeButton,
                             String describeAction) throws NoSuchMethodException,
                                                   IllegalAccessException {
         Method m = retrieveMethod(o, method);
 
-        Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, m));
-        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
+        addControlToTable(action, type, o, m, describeButton, describeAction);
 
-        myDataTable.addNewRowEntry(dataIn);
-
-        // myDataTable.viewContents();
     }
 
     /**
      * Class invokes a static method every time action and type occur.
      * Inserts button description, action description, keycode, and
      * <class, method> tuple into DataTable
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      * @param c - The invoking Class
@@ -192,16 +190,12 @@ public abstract class Controller<T> {
                             String describeAction) throws NoSuchMethodException,
                                                   IllegalAccessException, InstantiationException {
         Method m = retrieveMethod(c, method);
-
-        Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new FlagPair<Class, Method>(c, m));
-        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-        myDataTable.addNewRowEntry(dataIn);
+        addControlToTable(action, type, c, m, describeButton, describeAction);
     }
 
     /**
      * Set the desired action on or off.
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      */
@@ -213,7 +207,7 @@ public abstract class Controller<T> {
 
     /**
      * Set the desired action on or off.
-     *
+     * 
      * @param action - The controller button/key to listen for
      * @param type - Pressed or released
      */
@@ -223,12 +217,29 @@ public abstract class Controller<T> {
         rowElement.deactivate();
     }
 
+    // ****************************** PROTECTED METHODS
+    // *************************************
     /**
-     * @param e
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * Returns a copy of the DataTable being used to store all the controller data
+     * 
+     * @return
+     * @throws RepeatedColumnNameException
+     * @throws InvalidXMLTagException
      */
+    protected DataTable getUnmodifiableDataTable() throws RepeatedColumnNameException, InvalidXMLTagException {
+        DataTable controlTableCopy = new DataTable();
+        Collection<String> columnNames = myDataTable.getColumnNames();
+        Collection<UnmodifiableRowElement> allControls = myDataTable.getDataRows();
+        for(String columnName: columnNames) {
+            controlTableCopy.addNewColumns(columnName);
+        }
+        for(UnmodifiableRowElement re: allControls) {
+            controlTableCopy.addNewRow(re);
+        }
+        return controlTableCopy;
+    }
+    
+    
     protected void performReflections (Object inputEvent, String method, int actionID)
                                                                                       throws IllegalAccessException,
                                                                                       InvocationTargetException,
@@ -242,29 +253,38 @@ public abstract class Controller<T> {
                                                                    NoSuchMethodException {
         performReflections(null, method, actionID);
     }
+    
+    protected void addControlToTable (int action, int type, Object o,
+            Method method, String describeButton, String describeAction) {
+        addControlToTable(UKeyCode.codify(type, action),
+                new FlagPair<Object, Method>(o, method), describeButton,
+                describeAction);
+    }
+    
+    protected void addControlToTable (int ukeyCode,
+            FlagPair<Object, Method> fPair, String describeButton,
+            String describeAction) {
+        Map<String, Object> dataIn = new HashMap<String, Object>();
+        dataIn.put(TUPLE, fPair);
+        insertInMap(dataIn, describeButton, describeAction, ukeyCode);
 
-    // PRIVATE METHODS
+        myDataTable.addNewRow(dataIn);
+    }
+
+    
+    // ****************************************************************************************
+
+    // ********************************* PRIVATE METHODS
+    // **************************************
 
     @SuppressWarnings("unchecked")
     private FlagPair<Object, Method> getObjectMethodPair (int action, int type) {
         UnmodifiableRowElement r = myDataTable.find("KeyCode", UKeyCode.codify(type, action));
-        FlagPair<Object, Method> rowElement =
-                (FlagPair<Object, Method>) r.getEntry("Tuple");
+        FlagPair<Object, Method> rowElement = (FlagPair<Object, Method>) r.getEntry("Tuple");
         return rowElement;
     }
 
-
-    /**
-     * broadcasts the method to all subscribed elements.
-     *
-     * @param methodName
-     * @param inputEvent
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
-     */
+    // broadcasts the method to all subscribed elements.
     @SuppressWarnings("rawtypes")
     private void broadcastToSubscribers (String methodName, Object inputEvent)
                                                                               throws IllegalAccessException,
@@ -279,17 +299,12 @@ public abstract class Controller<T> {
         }
         for (T subscribedElement : mySubscribedElements) {
             Method method = subscribedElement.getClass().getMethod(methodName, inputType);
-            System.out.println(method);
+
             method.invoke(subscribedElement, inputEvent);
         }
     }
 
-    /**
-     * @param actionID
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     */
+    // Invokes a method using an object based on the actionID
     @SuppressWarnings("unchecked")
     private void invokeMethod (int actionID) throws IllegalAccessException,
                                             IllegalArgumentException, InvocationTargetException {
@@ -297,8 +312,7 @@ public abstract class Controller<T> {
 
         if (r != null) {
 
-            FlagPair<Object, Method> retrieveTuple =
-                    (FlagPair<Object, Method>) r.getEntry("Tuple");
+            FlagPair<Object, Method> retrieveTuple = (FlagPair<Object, Method>) r.getEntry("Tuple");
 
             if (retrieveTuple != null && retrieveTuple.isActive()) {
                 retrieveTuple.getLast().invoke(retrieveTuple.getFirst(), new Object[0]);
@@ -346,7 +360,7 @@ public abstract class Controller<T> {
 
     private void createTable () {
         try {
-            myDataTable.addNewColumn(myColumnName);
+            myDataTable.addNewColumns(myColumnName);
         }
         catch (RepeatedColumnNameException e) {
             e.printStackTrace();

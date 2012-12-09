@@ -21,6 +21,9 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class LoginUserPanel extends AUserPanel {
 
+    private static final int BTN_WIDTH = 100;
+    private static final int BTN_HEIGHT = 30;
+    
     public LoginUserPanel (Arcade a) {
         super(a);
     }
@@ -30,7 +33,9 @@ public class LoginUserPanel extends AUserPanel {
         ArcadePanel myPanel = initializeNewPanel();
 
         JButton loginBut = new JButton("Login");
+        loginBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JButton newuserBut = new JButton("New User");
+        newuserBut.setPreferredSize(new Dimension(BTN_WIDTH, BTN_HEIGHT));
         JLabel welcomeLabel = new JLabel("Welcome to the Arcade!", JLabel.CENTER);
         welcomeLabel.setForeground(Color.WHITE);
 
@@ -58,7 +63,7 @@ public class LoginUserPanel extends AUserPanel {
         myPanel.add(newuserBut, "align left, wrap");
         myPanel.add(welcomeLabel, "align center, span");
 
-        myPanel.setPreferredSize(new Dimension(300, 100));
+//        myPanel.setPreferredSize(new Dimension(300, 100));
 
         return myPanel;
     }

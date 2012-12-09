@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -20,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.Arcade;
 import arcade.gui.panel.ArcadePanel;
@@ -28,24 +31,21 @@ import arcade.gui.panel.ArcadePanel;
  * A subclass of the Main Panel which displays a short, scrolling list
  * of all the Games available in the Arcade. When a Game is selected,
  * the User is taken to the Game's Profile Page.
+ * 
  * @author Kannan
  *
  */
 public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants{
 
+    //TODO:REFACTORING
     private List<String> myGameList;
-    private List<Image> myGameProfilePictures;
     private String gameSelected;
     private JList gameList;
     
     public GameListMainPanel (Arcade a) {
         super(a);
          myGameList = a.getModelInterface().getGameList();
-         /*myGameProfilePictures = new ArrayList<Image>();
-         for (int i = 0; i < myGameList.size(); i++) {
-             myGameProfilePictures.add(a.getGameManager().getGameProfilePicture(myGameList.get(i)));            
-         }*/
-         createPanel();
+
     }
 
     @Override
@@ -56,28 +56,25 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
         }
-        /*String[] theList = new String[10];
-        for (int i = 0; i < 10; i++) {
-            theList[i] = "" + i;
-        }*/
-        
-        MigLayout layout = new MigLayout();
+        System.out.println(arrayOfGames);
+//        MigLayout layout = new MigLayout("align center, fill");
+        MigLayout layout = new MigLayout("", "50[center]", "[][]50[]50[]");
+
         myPanel.setLayout(layout);
 
+        
         JList listOfGames = new JList(arrayOfGames);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
         listOfGames.setVisibleRowCount(3);
         gameList = listOfGames;
-        gameList.setPreferredSize(new Dimension(300, 300));
+
         JScrollPane listScroller = new JScrollPane(gameList, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         
         
-        JLabel label = new JLabel("Select a Game to View: ");
-        label.setForeground(Color.WHITE);
-        label.setLabelFor(listScroller);
-        myPanel.add(label, "dock center");
-        myPanel.add(listScroller, "wrap");
+        JLabel gameSelectLabel = new JLabel("Select a Game to View: ");
+        gameSelectLabel.setForeground(Color.WHITE);
+        gameSelectLabel.setLabelFor(listScroller);
         
         
         JButton goButton = new JButton("Go!");
@@ -95,10 +92,23 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             }
               
           });
+        ImageIcon icon = new ImageIcon("src/arcade/gui/images/ArcadeClassics2.jpg");
+        JLabel displayPic = new JLabel(icon);
         
-        myPanel.add(goButton, "grow");
+//        myPanel.add(gameSelectLabel, "dock north, span, grow, align center");
+//        myPanel.add(listScroller, "span, grow");
+//        myPanel.add(displayPic, "span, grow");
+//        myPanel.add(goButton, "dock south, span, grow, align center");
 
+        myPanel.add(gameSelectLabel, "align center, wrap");
+        myPanel.add(listScroller, "grow, wrap");
+        myPanel.add(displayPic, "align center, wrap");
+        myPanel.add(goButton, "grow, align center");
+        
         return myPanel;
+        
     }
     
 }
+
+

@@ -1,6 +1,7 @@
 package arcade.usermanager;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -19,35 +20,53 @@ public class Test {
     private static UserXMLWriter myXMLWriter;
     private final String successString = "Successful";
     private static ResourceBundle resource;
-    private static SocialCenter mySocialCenter;
+    private static  SocialCenter mySocialCenter;
+    private static UserManager myUserManager;
 
     public static void main (String[] args) throws Exception {
 
         mySocialCenter = new SocialCenter();
-        //testLogOn();
-        //testRegister();
-
-        testSendMessage();
+         
+         //testRegister();
+      //  testDeleteUser();
+       // testSendMessage();
+       myUserManager=UserManager.getInstance();
+        //testGetGame();
+       testReadGameList();
+      //  testModifyXml();
+//       testLogOn();
+//       testGetMessage();
+//       testSendFacebook();
+       
+       
 
     }
 
+    private static void testSendFacebook () {
+        mySocialCenter.sendPost("Howard","testing facebook poster");
+    }
+    
     private static void testSendMessage () {
-        mySocialCenter.sendMessage("Howard", "mdeng1990", "Hi");
+        mySocialCenter.sendMessage("Howard","test", "xin ru zhi shui");
     }
 
     private static void testRegister () throws Exception {
-        boolean status2 = mySocialCenter.registerUser("testuser2", "password");
+        boolean status2 =
+                mySocialCenter.registerUser("testuser3", "password", "firstname", "lastname");
+    }
+    private static void testDeleteUser(){
+        mySocialCenter.deleteUser("testuser3", "password");
     }
 
     private static void testLogOn () throws Exception {
-        boolean status = mySocialCenter.logOnUser("Howard", "password");
+        boolean status = mySocialCenter.logOnUser("test", "364492");
         System.out.println(status);
 
     }
 
     private void testXml () throws IOException {
         myXMLWriter = new UserXMLWriter();
-        myXMLWriter.makeUserXML("counter", "clock", "wise");
+        myXMLWriter.makeUserXML("counter", "clock", "wise", "jesus", "fixyourerrors.");
 
     }
 
@@ -59,5 +78,45 @@ public class Test {
         System.out.println(myUserGameFilePath);
         System.out.println(myUserMessageFilePath);
     }
+    
+    private static void testUserProfile(){
+       //myUserManager.getUserProfile(userName);
+        myUserManager.getAllUserProfile();
+        
+    }
+    
+    private static void testModifyXml(){
+        
+        EditableUserProfile test=myUserManager.getEditableCurrentUser();
+        test.setPicture("haha");
+    }
+    private static void testGetMessage(){
+//        User test=myUserManager.getUser("test");
+//        test.getMyMessage();
+        List<Message> messageList=myUserManager.getMessage();
+        String str="wula";
+        
+    }
+    private static void testGetGame(){
+        User Howard=myUserManager.getUser("Howard");
+        GameData dg=Howard.getGameData("Platformer");
+        dg.setGameInfo("Howard","timesplayed", "5");
+        
+        
+    }
+    
+    private static void testReadGameList(){
+        UserXMLReader reader=new UserXMLReader();
+       
+        
+    }
+    
+    private static void testWriteGame(){
+        UserXMLWriter writer=new UserXMLWriter();
+        writer.appendGame("Howard", "name", "score", "times", "info");
+        
+    }
+    
+   
 
 }

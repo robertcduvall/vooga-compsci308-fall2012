@@ -4,6 +4,7 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import util.camera.Camera;
 import util.camera.SizedCamera;
+import util.camera.UpdatableCamera;
 import vooga.platformer.gameobject.GameObject;
 
 
@@ -15,7 +16,7 @@ import vooga.platformer.gameobject.GameObject;
  * 
  * @author Mark Govea
  */
-public class FollowingCamera extends SizedCamera implements Camera {
+public class FollowingCamera extends SizedCamera {
     private GameObject myTarget;
 
     /**
@@ -57,7 +58,7 @@ public class FollowingCamera extends SizedCamera implements Camera {
     /**
      * Updates the <code>FollowingCamera</code>. Will update the bounds.
      */
-    public void update () {
+    public void update (long elapsedTime) {
         double x = myTarget.getShape().getCenterX() - getSize().getWidth() / 2;
         double y = myTarget.getShape().getCenterY() - getSize().getHeight() / 2;
         getBounds().setRect(x, y, getSize().getWidth(), getSize().getHeight());

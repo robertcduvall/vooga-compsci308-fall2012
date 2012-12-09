@@ -2,7 +2,9 @@ package vooga.turnbased.gameobject;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Set;
 import javax.swing.ImageIcon;
+import vooga.turnbased.gamecore.GameLoop;
 
 
 /**
@@ -11,26 +13,37 @@ import javax.swing.ImageIcon;
  * Thus there will not be any actual classes that implement GameObject directly, but rather
  * BattleObject or MapObject, etc.
  * 
- * @author Michael Elgart
+ * @author Michael Elgart, volodymyr, Rex
  * 
  */
-public abstract class GameObject {
+public abstract class GameObject implements GameLoop {
 
+    protected Image myImage;
     private int myID;
-    private final String myModeEvent;
-    private Image myImage;
+    private Set<String> myAllowableModes;
+    private final String myConditionFlag;
+
 
     /**
      * Construct the new game object.
      * 
-     * @param objectID The ID number of the new object.
-     * @param modeEvent The event describing the current action occurring.
+     * @param allowableModes A set of strings where this Object can exist in. 
+     * @param condition The condition flagged my interacting with this object.
      * @param image The image associated with the new object.
      */
-    public GameObject (int objectID, String modeEvent, Image image) {
-        myID = objectID;
-        myModeEvent = modeEvent;
+    public GameObject (Set<String> allowableModes, String condition, Image image) {
+        myAllowableModes = allowableModes;
+        myConditionFlag = condition;
         setImage(image);
+    }
+
+    /**
+     * Will check to see if this object can exist in this mode.
+     * @param modeName The mode you checking
+     * @return True if this object can exist in the given mode
+     */
+    public boolean isValidMode(String modeName) {
+        return myAllowableModes.contains(modeName);
     }
 
     /**
@@ -56,8 +69,8 @@ public abstract class GameObject {
      * 
      * @return myGameEvent The GameEvent that does with this object.
      */
-    public String getModeEvent () {
-        return myModeEvent;
+    public String getConditionFlag () {
+        return myConditionFlag;
     }
 
     /**
@@ -68,7 +81,7 @@ public abstract class GameObject {
      * @param width Width of image.
      * @param height Height of image.
      */
-    public void paint (Graphics g, int x, int y, int width, int height) {
+    public void drawRectangularImage (Graphics g, int x, int y, int width, int height) {
         g.drawImage(myImage, x, y, width, height, null);
     }
 
@@ -88,6 +101,15 @@ public abstract class GameObject {
         ImageIcon ii = new ImageIcon(this.getClass().getResource(imageLocation));
         myImage = ii.getImage();
     }
+    
+    public void setAllowableModes(String newMode) {
+    	myAllowableModes.clear();
+    	myAllowableModes.add(newMode);
+    }
+    
+    public Set<String> getAllowableModes(){
+    	return myAllowableModes;
+    }
 
     /**
      * Returns image associated with the GameObject.
@@ -99,7 +121,19 @@ public abstract class GameObject {
 
     /**
      * Updates game after some time delay (to be implemented by child classes).
-     * @param delayTime Int amount of time to wait between updates.
      */
-    public abstract void update (int delayTime);
+    @Override
+    public abstract void update ();
+
+    /**
+     * Paints the object
+     * @param g The graphics which is used to paint the object.
+     */
+    @Override
+    public abstract void paint (Graphics g);
+
+    /**
+     * Remove all occurences of this object in the program.
+     */
+    public abstract void clear();
 }
