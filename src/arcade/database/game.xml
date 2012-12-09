@@ -118,4 +118,10 @@
 		<tags/>
 		<filepath>games.DontPlayWithMines.DontPlayWithMines</filepath>
 </game>
+<game id="18">
+		<name>NinjaGame</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.ninjagame.NinjaGame</filepath>
+</game>
 </gamelist>
