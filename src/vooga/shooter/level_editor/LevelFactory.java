@@ -63,6 +63,8 @@ public class LevelFactory {
              if (sibling.getNodeName() == "Player") {
                  
                  player = unpackPlayer(sibling);
+                 level.setPlayer(player);
+                 level.addSprite(player);
                  
              } else {
              
