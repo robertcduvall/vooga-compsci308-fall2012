@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import util.datatable.DataTable;
+import util.datatable.exceptions.InvalidXMLTagException;
+import util.datatable.exceptions.RepeatedColumnNameException;
 import util.networking.Server;
 import util.networking.Service;
 import util.networking.chat.ChatCommand;
@@ -81,7 +83,7 @@ public class DataService implements Service{
         myDataTable.addNewRow(myProtocol.getRowElement(input));
     }
     
-    private void processAddColumns(String input, Socket socket){
+    private void processAddColumns(String input, Socket socket) throws RepeatedColumnNameException, InvalidXMLTagException{
         myDataTable.addNewColumns(myProtocol.getColumns(input));
     }
     
@@ -94,17 +96,22 @@ public class DataService implements Service{
     }
     
     private void processGetDataRows(String input, Socket socket){
-      
+        write(socket, myProtocol.createDataRows(myDataTable.getDataRows()));
     }
-    private void processGetColumnNames(String input, Socket socket){}
-    private void processFound(String input, Socket socket){}
-       
+    private void processGetColumnNames(String input, Socket socket){
+        write(socket, myProtocol.createColumnNames(myDataTable.getColumnNames()));
+    }
+    
     private void processEdit(String input, Socket socket){
-        
+        myDataTable.editRowEntry(myProtocol.getStringKey(input), myProtocol.getObjValue(input), myProtocol.getMapEntry());
     }
-    private void processFind(String input, Socket socket){}
+    
+    private void processFind(String input, Socket socket){
+        String key = myProtocol.getStringKey(input);
+        String value = myProtocol.getObjValue(input);
+        write(socket, myProtocol.createFound(myDataTable.find(key, value)));
+    }
    
-    private void processRowElement(String input, Socket socket){}
     
     
     private void write (Socket socket, String text) {
