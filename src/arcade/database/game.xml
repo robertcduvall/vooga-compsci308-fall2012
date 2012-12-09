@@ -112,4 +112,10 @@
 		<tags/>
 		<filepath>games.wl65game.Game</filepath>
 </game>
+<game id="17">
+		<name>JUSTICE BLASTER</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.zackguygame.ZackGuyGame</filepath>
+</game>
 </gamelist>
