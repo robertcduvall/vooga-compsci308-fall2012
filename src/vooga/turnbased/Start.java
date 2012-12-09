@@ -9,6 +9,9 @@ import arcade.gamemanager.GameSaver;
 
 public class Start implements IArcadeGame {
 
+
+	private final static String myXmlPath = "src/vooga/turnbased/resources/level/Level1Final.xml";
+	
     @Override
     public String getDescription () {
         return "This is the turnbased RPG game.";
@@ -36,7 +39,7 @@ public class Start implements IArcadeGame {
     public void runGame (String userPreferences, GameSaver s) {
         int WIDTH = 800;
         int HEIGHT = 600;
-        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT, userPreferences);        
+        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT, myXmlPath);        
     }
 
 }
