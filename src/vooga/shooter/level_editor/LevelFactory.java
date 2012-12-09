@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameObjects.intelligence.AI;
 
@@ -51,17 +52,28 @@ public class LevelFactory {
          while (child.getNodeType() != Node.ELEMENT_NODE) {
              child = child.getNextSibling();
          }
+         
+         Player player = null;
+         
+         
          Element sibling = (Element) child;
          
          while (sibling != null) {
+                          
+             if (sibling.getNodeName() == "Player") {
+                 
+                 player = unpackPlayer(sibling);
+                 
+             } else {
              
-             // make sure the node can be converted to Element
-             if (sibling.getNodeType() != Node.ELEMENT_NODE) continue;
+                 // Instantiate an enemy from the data in the Element
+                 Enemy enemy = unpackEnemy(sibling, player);
+                 level.addSprite(enemy);
+                 
+             }  
              
-             // Instantiate an enemy from the data in the Element
-             Enemy enemy = unpackEnemy(sibling);
-             level.addSprite(enemy);
              sibling = (Element) sibling.getNextSibling();
+             
          }
          
          return level;
@@ -93,11 +105,15 @@ public class LevelFactory {
         Element root = XmlUtilities.makeElement(doc, "Level",
                 "backgroundImage", level.getBackgroundImagePath());
         doc.appendChild(root);
+        
+        packPlayer(level.getPlayer(), doc, root);
 
         for (Sprite sprite : level.getSpriteList()) {
-            if (sprite.getClass().getName() == Enemy.class.getName()) {
+            if (sprite instanceof Enemy) {
                 Enemy enemy = (Enemy) sprite;
-                packEnemy(enemy, doc, root);
+                if (sprite != null) {
+                    packEnemy(enemy, doc, root);
+                }
             }
         }
 
@@ -107,7 +123,7 @@ public class LevelFactory {
     private static Element packEnemy (Enemy enemy, Document doc, Element root) {
 
         Element enemyElement = XmlUtilities.appendElement(doc, root, "Enemy");
-
+        
         // convert position...
         double pointX = enemy.getPosition().getX();
         double pointY = enemy.getPosition().getY();
@@ -154,7 +170,7 @@ public class LevelFactory {
         return enemyElement;
     }
 
-    private static Enemy unpackEnemy (Element enemyElement) {
+    private static Enemy unpackEnemy (Element enemyElement, Player player) {
 
         // parse position...
         Element positionElement = XmlUtilities.getElement(enemyElement, "position");
@@ -196,10 +212,103 @@ public class LevelFactory {
         
         // This part might need some work! Trying to figure stuff out.
         Enemy enemy = new Enemy(position, size, bounds, imagePath, velocity, health);
-        AI ai = (AI) Reflection.createInstance(aiAsString, enemy);
+        AI ai = (AI) Reflection.createInstance(aiAsString, enemy, player);
         enemy.setAI(ai);
         
         return enemy;
+    }
+    
+    private static Element packPlayer (Player player, Document doc, Element root) {
+
+        if (player == null) {
+            return null;
+        }
+        
+        Element playerElement = XmlUtilities.appendElement(doc, root, "Player");
+                
+        // convert position...
+        double pointX = player.getPosition().getX();
+        double pointY = player.getPosition().getY();
+        HashMap<String, String> positionMap = new HashMap<String, String>();
+        positionMap.put("x", Integer.toString((int) pointX));
+        positionMap.put("y", Integer.toString((int) pointY));
+        XmlUtilities.appendElement(doc, playerElement, "position", positionMap);
+
+        // convert size...
+        double sizeWidth = player.getSize().getWidth();
+        double sizeHeight = player.getSize().getHeight();
+        HashMap<String, String> sizeMap = new HashMap<String, String>();
+        sizeMap.put("width", Integer.toString((int) sizeWidth));
+        sizeMap.put("height", Integer.toString((int) sizeHeight));
+        XmlUtilities.appendElement(doc, playerElement, "size", sizeMap);
+
+        // convert bounds...
+        double boundsWidth = player.getBounds().getWidth();
+        double boundsHeight = player.getBounds().getHeight();
+        HashMap<String, String> boundsMap = new HashMap<String, String>();
+        boundsMap.put("width", Integer.toString((int) boundsWidth));
+        boundsMap.put("height", Integer.toString((int) boundsHeight));
+        XmlUtilities.appendElement(doc, playerElement, "bounds", boundsMap);
+
+        // convert image...
+        XmlUtilities.appendElement(doc, playerElement, "image", "path",
+                player.getImagePath().split("src/")[1]);
+
+        // convert velocity...
+        double velX = player.getVelocity().getX();
+        double velY = player.getVelocity().getY();
+        HashMap<String, String> velMap = new HashMap<String, String>();
+        velMap.put("x", Integer.toString((int) velX));
+        velMap.put("y", Integer.toString((int) velY));
+        XmlUtilities.appendElement(doc, playerElement, "velocity", velMap);
+
+        // convert health...
+        XmlUtilities.appendElement(doc, playerElement, "health", "value",
+                Integer.toString(player.getHealth()));
+        
+        return playerElement;
+    }
+
+    private static Player unpackPlayer (Element playerElement) {
+
+        // parse position...
+        Element positionElement = XmlUtilities.getElement(playerElement, "position");
+        int pointX = XmlUtilities.getAttributeAsInt(positionElement, "x");
+        int pointY = XmlUtilities.getAttributeAsInt(positionElement, "y");
+        Point position = new Point(pointX, pointY);
+
+        // parse size...
+        Element sizeElement = XmlUtilities.getElement(playerElement, "size");
+        int sizeWidth = XmlUtilities.getAttributeAsInt(sizeElement, "width");
+        int sizeHeight = XmlUtilities.getAttributeAsInt(sizeElement, "height");
+        Dimension size = new Dimension(sizeWidth, sizeHeight);
+
+        // parse bounds...
+        Element boundsElement = XmlUtilities.getElement(playerElement, "bounds");
+        int boundsWidth = XmlUtilities
+                .getAttributeAsInt(boundsElement, "width");
+        int boundsHeight = XmlUtilities.getAttributeAsInt(boundsElement,
+                "height");
+        Dimension bounds = new Dimension(boundsWidth, boundsHeight);
+
+        // parse image...
+        Element imageElement = XmlUtilities.getElement(playerElement, "image");
+        String imagePath = imageElement.getAttribute("path");
+
+        // parse velocity...
+        Element velElement = XmlUtilities.getElement(playerElement, "velocity");
+        int velX = XmlUtilities.getAttributeAsInt(velElement, "x");
+        int velY = XmlUtilities.getAttributeAsInt(velElement, "y");
+        Point velocity = new Point(velX, velY);
+
+        // parse health...
+        Element healthElement = XmlUtilities.getElement(playerElement, "health");
+        int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
+        
+        // This part might need some work! Trying to figure stuff out.
+        Player player = new Player(position, size, bounds, imagePath, velocity, health);
+        
+        return player;
     }
 
 }
