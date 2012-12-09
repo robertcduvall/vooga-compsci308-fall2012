@@ -100,4 +100,10 @@
 		<tags/>
 		<filepath>games.nyancatgame.NyanCatGame</filepath>
 </game>
+<game id="15">
+		<name>Asteroids</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.spruillGame.Game.Asteroids</filepath>
+</game>
 </gamelist>

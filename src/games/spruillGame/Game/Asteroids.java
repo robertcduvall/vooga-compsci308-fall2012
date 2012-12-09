@@ -26,6 +26,9 @@ public class Asteroids extends Game implements IArcadeGame {
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         super.runGame(userPreferences, s);
+        super.runGame(userPreferences, s, new Level1(this));
+        super.startLevel(new Level1(this));
+        super.setLoseLevel(new LoseGame(this));
     }
 
     @Override
