@@ -71,7 +71,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
+        ImageIcon imageIcon = new ImageIcon(GAME_IMAGEPATH);
         myGameImage = imageIcon.getImage();
     }
 
