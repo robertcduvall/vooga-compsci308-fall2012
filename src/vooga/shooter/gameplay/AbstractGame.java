@@ -81,10 +81,11 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart =
                 new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
+        //myPlayer = Player.getInstance();
         myPlayer =
-              new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                      myCanvas.getHeight()),
-                      PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
+                new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+                                                                        myCanvas.getHeight()),
+                           PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
         
@@ -94,7 +95,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     }
     
     protected abstract void createGame();
-   
 
     private void startLevel (Level level) {
         myCurrentLevel = level;

@@ -1,6 +1,6 @@
 package games.squareattack.gui;
 
-import games.squareattack.GameManager;
+import games.squareattack.engine.GameManager;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

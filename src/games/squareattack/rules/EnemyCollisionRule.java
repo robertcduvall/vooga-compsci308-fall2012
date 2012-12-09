@@ -1,8 +1,8 @@
 package games.squareattack.rules;
 
-import games.squareattack.GameManager;
+import games.squareattack.engine.GameManager;
+import games.squareattack.engine.SoundManager;
 import games.squareattack.objects.ExternalMathVector2D;
-import games.squareattack.objects.SoundManager;
 import games.squareattack.sprites.Square;
 import java.util.List;
 import util.input.android.events.AndroidVibration;
