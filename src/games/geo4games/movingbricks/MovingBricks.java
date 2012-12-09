@@ -1,4 +1,4 @@
-package games.geo4games.marioinminutes;
+package games.geo4games.movingbricks;
 
 import java.awt.Image;
 import java.io.File;
@@ -9,36 +9,46 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import vooga.platformer.core.PlatformerController;
 import vooga.platformer.core.inputinitializer.KeyControllerOnePlayerInputInitializer;
+import vooga.platformer.gameobject.GameObject;
+import vooga.platformer.level.Level;
 import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 
 
 /**
- * A game written using the platformer engine that requires no additional
- * classes be written. It was completed in only a few minutes to demonstrate how
- * easy the platformer engine makes it to write new games.
+ * A game written to demonstrate adding a strategy to a GameObject.
  * 
  * @author Grant Oakley
  * 
  */
-public class MarioInMinutes implements IArcadeGame {
+public class MovingBricks implements IArcadeGame {
 
-    private static final String FIRST_LEVEL = "src/games/geo4games/marioinminutes/levels/level1.xml";
+    private static final String FIRST_LEVEL = "src/games/geo4games/movingbricks/levels/level1.xml";
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        JFrame frame = new JFrame("Mario in Minutes");
+        JFrame frame = new JFrame("Moving Bricks");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PlatformerController controller =
                 new PlatformerController(FIRST_LEVEL, new KeyControllerOnePlayerInputInitializer());
+        Level myLevel = controller.getLevel();
+        List<GameObject> myGameObjects = myLevel.getObjectList();
+        for (GameObject g : myGameObjects) {
+            if (g.getId() == 4) {
+                g.addStrategy(new SideToSideScrollStrategy(g, 175, 300, 1));
+            }
+            if (g.getId() == 5) {
+                g.addStrategy(new SideToSideScrollStrategy(g, 390, 510, 1));
+            }
+        }
         frame.getContentPane().add(controller);
         frame.pack();
         frame.setVisible(true);
     }
-    
+
     // TODO delete this test method
-    public static void main(String[] args) {
-        MarioInMinutes mim = new MarioInMinutes();
+    public static void main (String[] args) {
+        MovingBricks mim = new MovingBricks();
         mim.runGame("", null);
     }
 
@@ -72,12 +82,12 @@ public class MarioInMinutes implements IArcadeGame {
 
     @Override
     public String getDescription () {
-        return "A simple, Mario-style game built in only a couple minutes using the platformer framework.";
+        return "A very simple game to illustrate update strategies.";
     }
 
     @Override
     public String getName () {
-        return "Mario in Minutes";
+        return "Moving Bricks";
     }
 
 }
