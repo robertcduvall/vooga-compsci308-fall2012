@@ -5,20 +5,17 @@ import java.util.HashMap;
 
 
 /**
+ * The Config file serves as a global
+ * set of constants for the whole
+ * configure controller GUI.
+ * 
  * @author Lance, Amay
  *
  */
 public class Config {
-    /**
-     * default canvas width
-     */
+
     public static final int FRAME_WIDTH = 900;
-    /**
-     * default canvas height
-     */
     public static final int FRAME_HEIGHT = 500;
-    
-    //header stuff
     public static final int HEADER_WIDTH = FRAME_WIDTH;
     public static final int HEADER_HEIGHT = FRAME_HEIGHT/8;
     public static final int HEADER_X_LOC = 0;
