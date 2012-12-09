@@ -20,7 +20,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class LostGame extends Level {
 
-    private static final String BACKGROUND_IMAGEPATH = "vooga/shooter/images/galaxy.png";
+    private static final String BACKGROUND_IMAGEPATH = "vooga/shooter/images/losescreen.gif";
 
     private AbstractGame myGame;
     private Level myNextLevel;
