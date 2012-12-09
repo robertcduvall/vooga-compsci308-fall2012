@@ -6,10 +6,13 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
@@ -29,6 +32,11 @@ import util.networking.chat.ErrorEvent;
 import util.networking.chat.MessageReceivedEvent;
 import util.networking.chat.UsersUpdateEvent;
 
+/**
+ * The ExampleGUI class creates a user interface for the chat client in a panel that can be displayed in a window. 
+ * @author Connor Gordon
+ *
+ */
 
 public class ExampleGUI extends JPanel implements KeyListener {
     
@@ -37,17 +45,20 @@ public class ExampleGUI extends JPanel implements KeyListener {
     private ChatClient myChatClient; 
     private JTabbedPane tabbedPane;
     private JTextArea buddyList;
-    private List<String> usersOnline;
+    private Set<String> usersOnline;
     private JTextArea userInput;
     private Map<String, ChatDialog> usersToDialogs;
     
     public ExampleGUI(ChatClient c){
         myChatClient = c;
+        usersOnline = new TreeSet<String>();
         myChatClient.addListener(new ChatListener() {
 
             public void handleMessageReceivedEvent (MessageReceivedEvent e) {
                 if(usersToDialogs.keySet().contains(e.getSender())){
-                    usersToDialogs.get(e.getSender()).getTextArea().append("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
+                    JTextArea taNewMessage = usersToDialogs.get(e.getSender()).getTextArea();
+                    taNewMessage.append("<" + e.getSender() + ">:     " + e.getMessageBody() + "\n");
+                    taNewMessage.setCaretPosition(taNewMessage.getDocument().getLength());
                     if(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()) != e.getSender()){
                         tabbedPane.setIconAt(tabbedPane.indexOfTab(e.getSender()), createImageIcon("images/chat-icon2.png"));
                     }
@@ -82,7 +93,12 @@ public class ExampleGUI extends JPanel implements KeyListener {
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Welcome", getWelcomePage());
         add(tabbedPane, BorderLayout.CENTER);
-        add(initBuddyList(), BorderLayout.AFTER_LINE_ENDS);
+        
+        JScrollPane buddyScroll = new JScrollPane(initBuddyList());
+        buddyScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        buddyScroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        add(buddyScroll, BorderLayout.AFTER_LINE_ENDS);
+        
         add(initChatInput(), BorderLayout.AFTER_LAST_LINE);
         tabbedPane.addChangeListener(new ChangeListener() {
 
@@ -102,7 +118,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
 
      private JTextArea initBuddyList () {
         buddyList = new JTextArea("Users Online:\n\n", 5, 15);
-        usersOnline = myChatClient.getListUsers();
+        usersOnline.addAll(myChatClient.getListUsers());
         for (String s: usersOnline){
             buddyList.append(s + "\n");
         }
@@ -113,7 +129,7 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
      
      private void updateBuddyList(){
-         usersOnline = myChatClient.getListUsers();
+         usersOnline.clear(); usersOnline.addAll(myChatClient.getListUsers());
          buddyList.setText("Users Online:\n\n");
          for(String name : usersOnline){
              buddyList.append(name + "\n");
@@ -137,7 +153,11 @@ public class ExampleGUI extends JPanel implements KeyListener {
     }
     
     public List<String> getUsersOnline(){
-        return Collections.unmodifiableList(usersOnline);
+        List<String> temp = new ArrayList<String>();
+        for(String s: usersOnline){
+            temp.add(s);
+        }
+        return Collections.unmodifiableList(temp);
     }
     
     private JScrollPane initChatInput(){
@@ -227,7 +247,6 @@ public class ExampleGUI extends JPanel implements KeyListener {
     
     protected void logout(){
         myChatClient.logout();
-        this.setVisible(false);
         try{
             ChatApp.class.newInstance().run();
         }
