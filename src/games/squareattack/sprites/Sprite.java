@@ -8,10 +8,11 @@ import java.awt.Rectangle;
 import util.mathvector.MathVector;
 import util.mathvector.MathVector2D;
 
+
 /**
  * 
  * @author Ben Schwab
- *
+ * 
  */
 public abstract class Sprite {
 
@@ -57,17 +58,15 @@ public abstract class Sprite {
         return getBounds().intersects(other.getBounds());
 
     }
-    
-    public Point getCenter(){
-        return new Point((int)myX, (int)myY);
-    }
 
-   
+    public Point getCenter () {
+        return new Point((int) myX, (int) myY);
+    }
 
     public void setCorner (Point point) {
         myX = point.x + myWidth / 2;
-        myY = point.y +myHeight/2;
-        
+        myY = point.y + myHeight / 2;
+
     }
 
 }
