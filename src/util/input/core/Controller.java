@@ -255,11 +255,14 @@ public abstract class Controller<T> {
     }
     
     
-    protected void addControlToTable (int action, int type, Object o,
+    private void addControlToTable (int action, int type, Object o,
             Method method, String describeButton, String describeAction) {
-        addControlToTable(UKeyCode.codify(action, type),
-                new FlagPair<Object, Method>(o, method), describeButton,
-                describeAction);
+        Map<String, Object> dataIn = new HashMap<String, Object>();
+        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, method));
+        insertInMap(dataIn, describeButton, describeAction,
+                UKeyCode.codify(type, action));
+
+        myDataTable.addNewRow(dataIn);
     }
 
     protected void addControlToTable (int ukeyCode,
