@@ -1,0 +1,66 @@
+<Level backgroundImage="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/kVille1.png">
+<Enemy>
+<position x="333" y="154"/>
+<size height="50" width="25"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/realDevil.png"/>
+<velocity x="0" y="0"/>
+<health value="3"/>
+</Enemy>
+<Enemy>
+<position x="85" y="145"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+<Enemy>
+<position x="122" y="229"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+<Enemy>
+<position x="230" y="271"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+<Enemy>
+<position x="524" y="272"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color_flipped.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+<Enemy>
+<position x="552" y="135"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+<Enemy>
+<position x="156" y="65"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+<Enemy>
+<position x="347" y="56"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="/Users/rwb392/Documents/workspace/VOOGA/src/games/robsgame/images/ram-color.gif"/>
+<velocity x="0" y="0"/>
+<health value="1"/>
+</Enemy>
+</Level>
