@@ -170,6 +170,9 @@ public class OptionMode extends GameMode {
 		if (!myIsDefaultPanelUsed) {
 			myPanelStack.add(myPanel);
 		}
+		else {
+			myIsDefaultPanelUsed = false;
+		}
 		myPanel = panel;
 	}
 
