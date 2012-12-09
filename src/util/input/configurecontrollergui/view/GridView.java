@@ -9,6 +9,7 @@ import util.input.configurecontrollergui.util.Config;
 
 
 /**
+ * A view focused on providing a grid style flexibility. 
  * @author Lance, Amay
  *
  */
@@ -32,13 +33,6 @@ public class GridView extends ResponsiveView{
     }
    
 
-    /**
-     * Decides where the mouse is clicked and determines
-     * whether the click is handled by this view or
-     * one of its children.
-     * 
-     * @param point of the mouse click
-     */
     @Override
     public void mouseClicked (Point point) {
         super.mouseClicked(point);

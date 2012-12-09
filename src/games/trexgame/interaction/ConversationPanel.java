@@ -26,12 +26,14 @@ public class ConversationPanel extends InteractionPanel {
 
     public ConversationPanel (List<OptionObject> options, List<String> messages) {
         super();
-        final int POSITION_INDEX = 4;
+        final int POSITION_INDEX =6;
         myConversationMessages = messages;
-        options.add(makeQuitOption());
+        OptionObject quitOption = makeQuitOption();
+        options.add(quitOption);
         for (int i = 0; i < options.size(); i++) {
             insertOption(options.get(i), i + POSITION_INDEX);
         }
+        options.remove(quitOption);
         setBackground(GameWindow.importString("DialogueBox"));
     }
 

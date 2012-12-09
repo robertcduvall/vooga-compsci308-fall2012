@@ -7,6 +7,12 @@ import vooga.shooter.gameObjects.intelligence.ChaseAI;
 import vooga.shooter.gameObjects.intelligence.RandomAI;
 import vooga.shooter.level_editor.Level;
 
+/**
+ * The third level of the Space Bugs game.
+ * @author Stephen Hunt
+ *
+ */
+
 public class LevelThree extends Level{
     private SpaceBugs myGame;
     
@@ -17,7 +23,7 @@ public class LevelThree extends Level{
     public LevelThree (SpaceBugs game) {
         super();
         myGame = game;
-        setNextLevel(null);
+        setNextLevel(new WinScreen(myGame));
     }
 
     public void startLevel () {
