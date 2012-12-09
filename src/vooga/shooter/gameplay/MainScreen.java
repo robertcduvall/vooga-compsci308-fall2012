@@ -23,10 +23,10 @@ public class MainScreen extends Level {
     private Game myGame;
     private Level myNextLevel;
 
-    public MainScreen (Game game, Level nextLevel) {
+    public MainScreen (Game game) {
         super();
         myGame = game;
-        setNextLevel(nextLevel);
+        setNextLevel(new Level1(myGame));
     }
 
     public void startLevel () {
