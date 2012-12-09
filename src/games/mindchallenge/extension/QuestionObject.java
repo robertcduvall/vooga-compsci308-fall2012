@@ -13,6 +13,13 @@ import java.util.Set;
 import vooga.turnbased.gameobject.GameObject;
 
 
+/**
+ * Custom user-written game object that represents item
+ * in the list of questions in QuestionMode.
+ * 
+ * @author zavidovych
+ *
+ */
 public class QuestionObject extends GameObject {
     private final int QUESTION_FONT_SIZE = 32;
     private final int ANSWER_FONT_SIZE = 24;
@@ -23,10 +30,25 @@ public class QuestionObject extends GameObject {
     private boolean isAnswer;
     private Rectangle myMouseTargetBox;
 
+    /**
+     * Default constructor inherited from game object.
+     * 
+     * @param allowableModes modes to which object belongs
+     * @param condition game condition that object can report
+     * @param image image of the object
+     */
     public QuestionObject (Set<String> allowableModes, String condition, Image image) {
         super(allowableModes, condition, image);
     }
 
+    /**
+     * Constructor for QuestionObject.
+     * 
+     * @param allowableModes modes to which object belongs
+     * @param condition game condition that object can report
+     * @param image image of the object
+     * @param params custom parameters defined in xml
+     */
     public QuestionObject (Set<String> allowableModes, String condition, Image image,
                            List<String> params) {
         this(allowableModes, condition, image);

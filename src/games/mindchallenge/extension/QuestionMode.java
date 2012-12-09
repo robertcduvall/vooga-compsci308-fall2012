@@ -14,12 +14,28 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gui.GameWindow;
 
 
+/**
+ * Custom user-written game mode in which user answers 
+ * questions. By using multiple QuestionModes as nodes in the
+ * graph, and QuestionObjects as edges, conversation trees 
+ * of any complexity can be built.
+ * 
+ * @author zavidovych
+ *
+ */
 public class QuestionMode extends GameMode {
     private static double RELATIVE_DIALOGUE_BOX_SIZE = 0.9;
     private static double DIALOGUE_BOX_DRAWABLE_AREA = 0.8;
     private Rectangle myDialogueBox;
     private int myObjectCount;
 
+    /**
+     * Constructor for question mode
+     * 
+     * @param gm GameManager to interact with game
+     * @param modeName Name of game mode
+     * @param involvedIDs List of involved sprites' ids
+     */
     public QuestionMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
     }

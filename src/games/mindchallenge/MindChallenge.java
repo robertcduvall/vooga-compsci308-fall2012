@@ -8,6 +8,14 @@ import arcade.gamemanager.GameSaver;
 
 
 /**
+ * Walk around, talk to NPCs, answer questions.
+ * 
+ * Features:
+ * 1. Complex game goals (need to complete several tasks before moving to next level)
+ * 2. Multiple levels
+ * 3. Custom graphics and sounds
+ * 4. Custom user-written game mode and its game object (OptionMode.java & OptionObject.java)
+ * 5. Conversation tree
  * 
  * @author volodymyr
  */
