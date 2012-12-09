@@ -258,7 +258,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.AdventureMob</class>
+        <class>games.AdventureRPG.AdventureMob</class>
         <condition>endgame1</condition>
         <param>
           <name>Adventurer</name>
@@ -278,7 +278,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.AdventureMob</class>
+        <class>games.AdventureRPG.AdventureMob</class>
         <condition>endgame2</condition>
         <param>
           <name>Link</name>
@@ -298,7 +298,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.AdventureMob</class>
+        <class>games.AdventureRPG.AdventureMob</class>
         <condition>endgame3</condition>
         <param>
           <name>Metal Link</name>
@@ -318,7 +318,7 @@
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
-        <class>vooga.turnbased.gameobject.battleobject.AdventureMob</class>
+        <class>games.AdventureRPG.AdventureMob</class>
         <condition>endgame4</condition>
         <param>
           <name>Chuck Norris</name>
