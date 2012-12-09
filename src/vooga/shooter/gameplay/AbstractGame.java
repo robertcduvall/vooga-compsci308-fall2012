@@ -89,8 +89,10 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         addSprite(myPlayer);
         
         createGame();
-        setupInput();
         startLevel(myCurrentLevel);
+        myPlayer = myCurrentLevel.getPlayer();
+        setupInput();
+        update();
     }
     
     protected abstract void createGame();
@@ -98,7 +100,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     private void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
-        update();
     }
     
     private void setupInput() {
@@ -159,8 +160,8 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         for (Sprite s : myCurrentLevel.getSpriteList()) {
             s.update();
         }
-        for (Sprite sprite1 : getSprites()) {
-            for (Sprite sprite2 : getSprites()) {
+        for (Sprite sprite1 : myCurrentLevel.getSpriteList()) {
+            for (Sprite sprite2 : myCurrentLevel.getSpriteList()) {
                 if (sprite1.getImage() == null || sprite2.getImage() == null || sprite1 == sprite2) {
                     continue;
                 }
