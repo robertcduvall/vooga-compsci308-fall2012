@@ -266,6 +266,7 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
                 e.paint(pen);
             }
         }
+        myCurrentLevel.paintBackground(pen);
         for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);
         }

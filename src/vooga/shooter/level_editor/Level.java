@@ -130,7 +130,9 @@ public class Level {
         this.myBackgroundImagePath = imagePath;
     }
 
-    
+    public void paintBackground(Graphics pen){
+        pen.drawImage(myBackgroundImage, 0,0,null);
+    }
 
     /**
      * startLevel method will be overridden at the beginning of each Level,
