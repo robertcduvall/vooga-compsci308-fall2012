@@ -1,5 +1,11 @@
 package games.particleEngineMedley;
 
+/**
+ * Constants for the particleEngineMedley package.
+ * 
+ * @author Kathleen
+ *
+ */
 public class Constants {
 
 	public static final String bubbles = "bubbles";

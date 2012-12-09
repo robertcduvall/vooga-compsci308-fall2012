@@ -70,14 +70,14 @@ public class GameFrame extends JFrame {
 
         // Define and add two drop down menu to the menubar
         JMenu gameMenu = new JMenu("Game");
-      
+
         JMenuItem pause = new JMenuItem("Pause/Resume");
         gameMenu.add(pause);
-        pause.addActionListener(new ActionListener(){
+        pause.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                if(gameScreen!=null){
+                if (gameScreen != null) {
                     gameScreen.togglePlay();
                 }
 
