@@ -188,6 +188,9 @@ public class OptionObject extends GameObject {
      * @return if the option should be triggered
      */
     public boolean isTriggered (Point focusPosition) {
+        if (myRespondRegion == null) {
+            return false;
+        }
         return myRespondRegion.contains(focusPosition);
     }
 

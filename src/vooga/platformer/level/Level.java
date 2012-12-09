@@ -44,7 +44,6 @@ public class Level {
         myPaused = false;
     }
 
-    
     /**
      * Paint the level, including all its GameObjects.
      * 
@@ -125,10 +124,11 @@ public class Level {
             List<GameObject> removalList = new ArrayList<GameObject>();
             for (GameObject go : objectList) {
                 go.update(this, elapsedTime);
-                Rectangle levelBounds = new Rectangle(0, 0, (int)myDimension.getWidth(),
-                        (int)myDimension.getHeight());
+                Rectangle levelBounds =
+                        new Rectangle(0, 0, (int) myDimension.getWidth(),
+                                      (int) myDimension.getHeight());
                 if (!go.getShape().intersects(levelBounds)) {
-                    go.markForRemoval();
+                        go.markForRemoval();
                 }
                 if (go.checkForRemoval()) {
                     removalList.add(go);
@@ -138,7 +138,7 @@ public class Level {
             for (int i = removalList.size() - 1; i >= 0; i--) {
                 objectList.remove(removalList.get(i));
             }
-            
+
             // modified here
             myCollisionChecker.checkCollisions(this);
             cam.update(elapsedTime);
@@ -148,15 +148,15 @@ public class Level {
             }
         }
     }
-    
+
     /**
      * Pause the game, temporarily stopping it from updating
      */
-    public void pause() {
+    public void pause () {
         myPaused = true;
     }
-    
-    public void unpause() {
+
+    public void unpause () {
         myPaused = false;
     }
 
