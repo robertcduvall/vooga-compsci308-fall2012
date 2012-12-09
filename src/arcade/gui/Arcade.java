@@ -1,7 +1,6 @@
 package arcade.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.ResourceBundle;
 import arcade.datatransfer.ModelInterface;
 import arcade.gui.frame.ArcadeFrame;
 import arcade.gui.panel.ArcadePanel;
-import arcade.usermanager.UserProfile;
 
 
 /**
@@ -20,7 +18,9 @@ import arcade.usermanager.UserProfile;
  * 
  * It is important to note that this class is solely responsible for
  * managing and altering the base AbstractFrame for the arcade. In other
- * words, it will NOT support getter and setter functionality for the frame.
+ * words, the panels do not interact directly with the frame. This 
+ * class abstracts away all details involved in replacing and positioning
+ * new panels. 
  * 
  * @author Michael Deng
  * 
@@ -127,26 +127,6 @@ public class Arcade {
      */
     public ModelInterface getModelInterface () {
         return myModelInterface;
-    }
-
-    /**
-     * @deprecated why does this method exist? just call:
-     *  ModelInterface.getUser(Arcade.getUsername);
-     * 
-     * @return The User that is currently logged in.
-     */
-    public UserProfile getCurrentUser () {
-        return myModelInterface.getUser(myUsername);
-        
-    }
-    
-    /**
-     * @deprecated
-     * @param panel
-     * @return
-     */
-    public Dimension getPanelSize(ArcadePanel panel){
-        return myFrame.getPanel(panel.getPanelType()).getSize();
     }
 
 }

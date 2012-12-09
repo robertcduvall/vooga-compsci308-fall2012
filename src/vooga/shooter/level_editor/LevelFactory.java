@@ -6,19 +6,32 @@ import java.io.File;
 import java.util.HashMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Sprite;
+import vooga.shooter.gameObjects.intelligence.AI;
 
 /**
- * TODO: Add javadoc comments
+ * A Utility class for loading levels from an XML file
+ * or storing a Level object into an XML file. It will
+ * enocde/decode all the information about the level,
+ * including it's enemy sprites, background image, etc.
  * 
  * @author Alex Browne
  *
  */
 public class LevelFactory {
 
+    /**
+     * Loads a level from an XML document.
+     * 
+     * @param xmlDoc the XML document with all the
+     *          level information.
+     * @return the Level object created from the
+     *          xml data.
+     */
     public static Level loadLevel (Document xmlDoc) {
          Element root = xmlDoc.getDocumentElement();
          
@@ -32,25 +45,49 @@ public class LevelFactory {
          Level level = (Level) Reflection.createInstance(className, bgImagePath);
          
          // All the children are enemies. We are going to iterate over them
-         Element child = (Element) root.getFirstChild();
-         Element sibling = child;
+         Node child = root.getFirstChild();
+         
+         // make sure the node can be converted to Element
+         while (child.getNodeType() != Node.ELEMENT_NODE) {
+             child = child.getNextSibling();
+         }
+         Element sibling = (Element) child;
          
          while (sibling != null) {
+             
+             // make sure the node can be converted to Element
+             if (sibling.getNodeType() != Node.ELEMENT_NODE) continue;
              
              // Instantiate an enemy from the data in the Element
              Enemy enemy = unpackEnemy(sibling);
              level.addSprite(enemy);
-             
              sibling = (Element) sibling.getNextSibling();
          }
          
          return level;
     }
 
+    /**
+     * Loads a level from an XML file.
+     * 
+     * @param xmlDoc the XML file with all the
+     *          level information.
+     * @return the Level object created from the
+     *          xml data.
+     */
     public static Level loadLevel (File xmlFile) {
         return loadLevel(XmlUtilities.makeDocument(xmlFile));
     }
 
+    /**
+     * Converts a Level object to its canonical
+     * xml representation.
+     * 
+     * @param level the Level object to be converted
+     *          to XML.
+     * @return an XML document with all the level
+     *          data.
+     */
     public static Document storeLevel (Level level) {
         Document doc = XmlUtilities.makeDocument();
         Element root = XmlUtilities.makeElement(doc, "Level",
@@ -97,7 +134,7 @@ public class LevelFactory {
 
         // convert image...
         XmlUtilities.appendElement(doc, enemyElement, "image", "path",
-                enemy.getImagePath());
+                enemy.getImagePath().split("src/")[1]);
 
         // convert velocity...
         double velX = enemy.getVelocity().getX();
@@ -110,6 +147,9 @@ public class LevelFactory {
         // convert health...
         XmlUtilities.appendElement(doc, enemyElement, "health", "value",
                 Integer.toString(enemy.getHealth()));
+        
+        // convert AI (we'll store the class name)
+        XmlUtilities.appendElement(doc, enemyElement, "ai", "name", enemy.getAI().getClass().getName());
 
         return enemyElement;
     }
@@ -149,8 +189,17 @@ public class LevelFactory {
         // parse health...
         Element healthElement = XmlUtilities.getElement(enemyElement, "health");
         int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
-
-        return new Enemy(position, size, bounds, imagePath, velocity, health);
+        
+        // parse ai...
+        Element aiElement = XmlUtilities.getElement(enemyElement, "ai");
+        String aiAsString = XmlUtilities.getAttribute(aiElement, "name");
+        
+        // This part might need some work! Trying to figure stuff out.
+        Enemy enemy = new Enemy(position, size, bounds, imagePath, velocity, health);
+        AI ai = (AI) Reflection.createInstance(aiAsString, enemy);
+        enemy.setAI(ai);
+        
+        return enemy;
     }
 
 }

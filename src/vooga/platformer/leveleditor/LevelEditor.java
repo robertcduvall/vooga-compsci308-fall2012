@@ -29,6 +29,7 @@ import vooga.platformer.level.condition.DestroySpecificObjectCondition;
 import vooga.platformer.level.condition.NoPlayersRemainLosingCondition;
 import vooga.platformer.level.condition.PlayerInZoneCondition;
 import vooga.platformer.level.levelplugin.SimpleBackgroundPainter;
+import vooga.platformer.levelfileio.LevelFileIOException;
 
 
 /**
@@ -108,7 +109,16 @@ public class LevelEditor extends JPanel {
         int returnVal = chooser.showOpenDialog(chooser);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             String abspath = chooser.getSelectedFile().getPath();
-            final String path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());
+            final String path;
+            if (abspath.contains("/src/")) {
+                path = abspath.substring(abspath.indexOf("/src/") + 1, abspath.length());         
+            }
+            else if (abspath.contains("\\src\\")) {
+                path = abspath.substring(abspath.indexOf("\\src\\") + 1, abspath.length());
+            }
+            else {
+                throw new LevelFileIOException("File not saved to src/ directory of the project");
+            }        		
             if ("DefeatAllEnemiesCondition".equals(con)) {
                 myBoard.addCondition(new DefeatAllEnemiesCondition(path));
             }

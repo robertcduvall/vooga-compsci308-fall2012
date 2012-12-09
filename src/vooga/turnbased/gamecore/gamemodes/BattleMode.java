@@ -341,8 +341,7 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     private void generateEnemyMove () {
-        String message = myEnemyObject.doRandomOption(myPlayerObject);
-        myMessages.add(message);
+        myEnemyObject.doRandomOption(myPlayerObject, myMessages);
     }
 
     /**
@@ -423,8 +422,7 @@ public class BattleMode extends GameMode implements InputAPI {
     }
 
     private void triggerOption (int MenuOptionSelected) {
-        String message = myPlayerObject.doOption(MenuOptionSelected, myEnemyObject);
-        myMessages.add(message);
+        myPlayerObject.doOption(MenuOptionSelected, myEnemyObject, myMessages);
         continueBattle();
     }
 

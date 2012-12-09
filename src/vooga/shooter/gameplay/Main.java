@@ -1,5 +1,6 @@
 package vooga.shooter.gameplay;
 
+import games.tommygame.levels.Level1;
 import javax.swing.JFrame;
 import arcade.gamemanager.GameSaver;
 import vooga.shooter.gameplay.Game;
@@ -12,6 +13,7 @@ import vooga.shooter.graphics.*;
  * @author Tommy Petrilak
  *
  */
+@SuppressWarnings("serial")
 public class Main extends JFrame {
 
     /**

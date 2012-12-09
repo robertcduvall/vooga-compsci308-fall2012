@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>640</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/ninjagame/levels/ninjalevel2GameObjects.bin</gameObjectData>
+<conditionData>src/games/ninjagame/levels/ninjalevel2Conditions.bin</conditionData>
+<pluginData>src/games/ninjagame/levels/ninjalevel2Plugins.bin</pluginData>
+</level>

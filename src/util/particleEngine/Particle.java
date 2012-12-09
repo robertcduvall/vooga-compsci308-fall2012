@@ -31,7 +31,7 @@ public class Particle {
     private int myVariance;
     private float myRotation; // radians
     private float myRotationalVelocity; // radians/frame
-    private double myAngle;
+    private double myAngle; //in radians
     public double maxDistanceTraveledPerUpdate;
 
     private Random myRandomGenerator;
@@ -46,7 +46,9 @@ public class Particle {
 
     private static final int oneHundred = 100;
     private static final double radiansPerCircle = 2 * Math.PI;
-
+    private static final double radiansToDegreesConversionFactor = 180 / Math.PI; 
+    private static final double degreesToRadiansConversionFactor = Math.PI / 180;
+    
     /**
      * Another version of the constructor that also allows for initial angles to
      * be set for the particle.
@@ -55,7 +57,7 @@ public class Particle {
      * @param size the size of the image to use
      * @param image the image to use
      * @param velocityMagnitude the maximum distance to be traveled per update
-     * @param velocityAngle the angle at which this velocity is to be applied
+     * @param velocityAngle the angle (in radians) at which this velocity is to be applied
      * @param variance the amount which the angle can vary
      * @param duration the number of cycles this particle will exist before
      *        becoming invisible
@@ -70,7 +72,7 @@ public class Particle {
         declareVariables(position, size, image, variance, duration);
         myAngle = velocityAngle;
         maxDistanceTraveledPerUpdate = velocityMagnitude;
-        myVelocity = new MathVector2D(myAngle);
+        myVelocity = new MathVector2D(myAngle*radiansToDegreesConversionFactor);
         myVelocity.scale(velocityMagnitude);
     }
     
@@ -154,12 +156,12 @@ public class Particle {
         calculateAlphachanges();
 	}
 
-	protected void positionUpdate() {
+	public void positionUpdate() {
 		double r = myRandomGenerator.nextInt(2 * myVariance + 1);
         double angleVariation = (r - myVariance) / oneHundred;
         double tempNewAngle = myAngle + radiansPerCircle * angleVariation;
         MathVector2D changeInPosition = new MathVector2D(Math.cos(tempNewAngle), 
-        		Math.sin(tempNewAngle));
+        		-1*Math.sin(tempNewAngle));
         changeInPosition.scale(maxDistanceTraveledPerUpdate);
         movePosition(changeInPosition);
 	}

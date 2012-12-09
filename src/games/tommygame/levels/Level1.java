@@ -29,6 +29,11 @@ public class Level1 extends Level {
     private Game myGame;
     private Level myNextLevel;
 
+    /**
+     * the first level of the game 
+     * 
+     * @param game
+     */
     public Level1 (Game game) {
         super();
         myGame = game;

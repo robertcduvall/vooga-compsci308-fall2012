@@ -6,6 +6,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -74,7 +75,7 @@ public class MultiFieldJOptionPane<K> {
      * 
      * @param key reference for this text field
      * @param label label to place in front of the text field
-     * @param textField drop down menu to be added to the JOptionPane
+     * @param textField text field to be added to the JOptionPane
      */
     public void addField (K key, String label, JTextField textField) {
         addFieldToPanel(key, label, textField);

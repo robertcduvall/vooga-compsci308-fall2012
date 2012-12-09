@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashSet;
@@ -43,23 +44,30 @@ public class OptionObject extends GameObject {
      * @param condition event it triggers
      * @param message The option to be displayed on screen
      */
-    public OptionObject (Set<String> allowableModes, String condition, String message) {
+    public OptionObject (Set<String> allowableModes, String condition,
+            String message) {
         super(allowableModes, condition, null);
         myMessage = message;
         initializeProperties();
     }
-    
+
+    public OptionObject (Set<String> allowableModes, String condition,
+            Image image, List<String> message) {
+        this(allowableModes, condition, message.get(0));
+    }
+
     /**
      * default option: quit
      */
     public static OptionObject getDefaultOptionObject (String quitMessage) {
         Set<String> allowableModes = new HashSet<String>();
         allowableModes.add("option");
-        OptionObject defaultOption = new OptionObject (allowableModes, "NO_ACTION", quitMessage);
+        OptionObject defaultOption = new OptionObject(allowableModes,
+                "NO_ACTION", quitMessage);
         return defaultOption;
     }
-    
-    private void initializeProperties() {
+
+    private void initializeProperties () {
         myHighlightColor = Color.CYAN;
         myDefaultColor = Color.MAGENTA;
         myColor = myDefaultColor;
@@ -121,8 +129,8 @@ public class OptionObject extends GameObject {
         final Color TOP_COLOR = new Color(0, 10, 115);
         final Color SIDE_COLOR = new Color(60, 0, 115);
         final int LAYER = 4;
-        fontEffect.threeDimensionEffect(myMessage, myColor, TOP_COLOR, SIDE_COLOR, LAYER,
-                                        myPosition);
+        fontEffect.threeDimensionEffect(myMessage, myColor, TOP_COLOR,
+                SIDE_COLOR, LAYER, myPosition);
     }
 
     private void calculateRespondRegion () {
@@ -180,6 +188,9 @@ public class OptionObject extends GameObject {
      * @return if the option should be triggered
      */
     public boolean isTriggered (Point focusPosition) {
+        if (myRespondRegion == null) {
+            return false;
+        }
         return myRespondRegion.contains(focusPosition);
     }
 
@@ -204,20 +215,20 @@ public class OptionObject extends GameObject {
         // sub-classes can change this behavior for the purpose of showing
         // options dynamically
     }
-    
-    protected void setHighlightColor(Color c) {
+
+    protected void setHighlightColor (Color c) {
         myHighlightColor = c;
     }
-    
+
     protected void setDefaultColor (Color c) {
         myDefaultColor = c;
     }
-    
+
     protected Color getColor () {
         return myColor;
     }
-    
-    protected Point getPosition() {
+
+    protected Point getPosition () {
         return myPosition;
     }
 }

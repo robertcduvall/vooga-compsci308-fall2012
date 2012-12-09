@@ -2,6 +2,7 @@ package vooga.turnbased.gameobject.mapobject;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 import java.util.Set;
 
 
@@ -22,9 +23,16 @@ public class MapObstacleObject extends MapObject {
      * @param location Location of the obstacle
      * @param mapImage image of the obstacle on the map
      */
-    public MapObstacleObject (Set<String> allowableModes, String condition, Point location,
-                              Image mapImage) {
+    public MapObstacleObject (Set<String> allowableModes, String condition,
+            Point location, Image mapImage) {
         super(allowableModes, condition, location, mapImage);
+    }
+
+    public MapObstacleObject (Set<String> allowableModes, String condition,
+            Image mapImage, List<String> locationPoint) {
+        this(allowableModes, condition, new Point(
+                Integer.parseInt(locationPoint.get(0)),
+                Integer.parseInt(locationPoint.get(1))), mapImage);
     }
 
     @Override
