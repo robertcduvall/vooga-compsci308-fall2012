@@ -20,8 +20,7 @@ public abstract class AI {
     
     public AI(Sprite owner) {
         mySprite = owner;
-        // uncomment when Player is converted to a singleton.
-        //myPlayer = Player.getPlayer();
+        myPlayer = Player.getInstance();
     }
     
     /**
