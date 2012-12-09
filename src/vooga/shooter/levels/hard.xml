@@ -1,0 +1,37 @@
+<Level backgroundImage="">
+<Player>
+<position x="300" y="325"/>
+<size height="20" width="20"/>
+<bounds height="400" width="600"/>
+<image path="vooga/shooter/images/spaceship.gif"/>
+<velocity x="0" y="0"/>
+<health value="10"/>
+</Player>
+<Enemy>
+<position x="357" y="33"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="3"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+<Enemy>
+<position x="200" y="91"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="2"/>
+<ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
+</Enemy>
+<Enemy>
+<position x="450" y="107"/>
+<size height="34" width="25"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="6"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+</Level>

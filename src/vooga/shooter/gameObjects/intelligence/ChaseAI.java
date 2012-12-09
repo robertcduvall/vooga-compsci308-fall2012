@@ -32,5 +32,4 @@ public class ChaseAI extends AI{
                 (int)Math.round((normalized[1]*currentMagnitude)));
         mySprite.setVelocity(moveVector);
     }
-
 }

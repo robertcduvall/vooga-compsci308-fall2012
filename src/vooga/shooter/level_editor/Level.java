@@ -122,7 +122,12 @@ public class Level {
      */
 
     public boolean winningConditionsMet () {
-        return mySprites.isEmpty();
+        for(Sprite s : mySprites){
+            if(s.getType().equals("enemy")){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

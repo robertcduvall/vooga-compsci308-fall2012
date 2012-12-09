@@ -2,7 +2,6 @@ package games.JesseGame;
 
 import java.io.File;
 import vooga.shooter.gameplay.AbstractGame;
-import vooga.shooter.gameplay.SplashLevel;
 import vooga.shooter.level_editor.Level;
 import vooga.shooter.level_editor.LevelFactory;
 
@@ -21,7 +20,7 @@ public class AlienShooter extends AbstractGame{
     
     @Override
     protected void createGame () {
-        myFile = new File("src/vooga/shooter/levels/test.xml");
+        myFile = new File("src/vooga/shooter/levels/hard.xml");
         myStartLevel = LevelFactory.loadLevel(myFile);
         
         setMyCurrentLevel(myStartLevel);

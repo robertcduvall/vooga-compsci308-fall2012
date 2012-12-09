@@ -150,6 +150,7 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
             myCurrentLevel = myCurrentLevel.getNextLevel();
+            myPlayer = myCurrentLevel.getPlayer();
             startLevel(myCurrentLevel);
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
