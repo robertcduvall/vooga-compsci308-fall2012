@@ -14,19 +14,22 @@ import vooga.shooter.gameplay.Game;
 
 
 /**
- * First level (initializes enemies, sets winning conditions)
+ * Third level (initializes enemies, sets winning conditions)
  * 
  * @author Tommy Petrilak
  * 
  */
 public class Level3 extends Level {
 
+    private static final int MAX_NUM_ENEMIES = 4;
     private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int ENEMY_HEALTH = 1;
+    private static final String INVADER_IMAGEPATH = "vooga/shooter/images/invader.jpg";
+    private static final int INVADER_HEALTH = 2;
     private static final String ASTEROID_IMAGEPATH = "vooga/shooter/images/asteroid.gif";
     private static final int ASTEROID_HEALTH = 3;
     private static final int FALLING_STARTING_HEIGHT = 25;
-    private static final Dimension ENEMY_DIMENSION = new Dimension(20, 17);
+    private static final Dimension FALLING_OBJECT_DIMENSION = new Dimension(20, 17);
 
     private Game myGame;
     private Level myNextLevel;
@@ -38,9 +41,9 @@ public class Level3 extends Level {
     private int fallingHealth;
 
     /**
-     * the third level of the game
+     * The second level of the game
      * 
-     * @param game
+     * @param game pass myGame
      */
     public Level3 (Game game) {
         super();
@@ -50,22 +53,31 @@ public class Level3 extends Level {
     }
 
     private int randomNumberOfEnemies () {
-        return myRandom.nextInt(4);
+        int number = myRandom.nextInt(MAX_NUM_ENEMIES);
+        while (number <= 0) {
+            number = myRandom.nextInt(MAX_NUM_ENEMIES);
+        }
+        return number;
     }
 
     private String randomFallingImagePath () {
         ArrayList<String> possibleImages = new ArrayList<String>();
         possibleImages.add(ASTEROID_IMAGEPATH);
+        possibleImages.add(INVADER_IMAGEPATH);
         possibleImages.add(ENEMY_IMAGEPATH);
-        return possibleImages.get(myRandom.nextInt(possibleImages.size()));
+        String imagePath = possibleImages.get(myRandom.nextInt(possibleImages.size()));
+        return imagePath;
     }
 
     private Point randomFallingVelocity () {
-        return new Point(0, myRandom.nextInt(6));
+        ArrayList<Integer> possibleVelocities = new ArrayList<Integer>();
+        possibleVelocities.add(3);
+        return new Point(0, possibleVelocities.get(myRandom.nextInt(possibleVelocities.size())));
     }
 
     private int fallingHealth (String imagePath) {
         if (imagePath.equals(ASTEROID_IMAGEPATH)) { return ASTEROID_HEALTH; }
+        else if (imagePath.equals(INVADER_IMAGEPATH)) { return INVADER_HEALTH; }
         return ENEMY_HEALTH;
     }
 
@@ -76,9 +88,9 @@ public class Level3 extends Level {
 
     public void startLevel () {
         numberOfEnemies = randomNumberOfEnemies();
-        for (int j = 0; j < numberOfEnemies; j++) {
+        for (int i = 0; i < numberOfEnemies; i++) {
             String imagePath = randomFallingImagePath();
-            myGame.addEnemy(new Enemy(randomStartingPosition(), ENEMY_DIMENSION, myGame
+            myGame.addEnemy(new Enemy(randomStartingPosition(), FALLING_OBJECT_DIMENSION, myGame
                     .getCanvasDimension(), imagePath, randomFallingVelocity(),
                                       fallingHealth(imagePath)));
         }

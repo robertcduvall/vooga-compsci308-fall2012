@@ -36,7 +36,7 @@ public abstract class Sprite implements SpriteActionInterface {
     protected static final String BOTTOM_BOUND = "bottom";
     private static final String BULLET_IMAGEPATH = "vooga/shooter/images/playerbullet.png";
     private static final Dimension BULLET_SIZE = new Dimension(5, 10);
-    private static final int BULLET_SPEED = 10;
+    private static final int BULLET_SPEED = 7;
     private static final int BULLET_DAMAGE = 1;
     private Point myPosition;
     private Point myVelocity;

@@ -134,7 +134,6 @@ public class Enemy extends Sprite {
 
         getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                decrementHealth();
                 ((Player) o[0]).decrementHealth();
             }
         });

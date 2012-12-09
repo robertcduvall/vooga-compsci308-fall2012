@@ -47,9 +47,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Invaders";
     private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
-    private static final String GAME_IMAGEPATH = "../images/background.gif";
+    private static final String GAME_IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
-    private static final int PLAYER_HEALTH = 10;
+    private static final int PLAYER_HEALTH = 3;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
     private static final int PLAYER_START_HEIGHT = 50;
 
@@ -104,7 +104,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
         addSprite(myPlayer);
         inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
-
         myCurrentLevel = new MainScreen(this);
     }
 
