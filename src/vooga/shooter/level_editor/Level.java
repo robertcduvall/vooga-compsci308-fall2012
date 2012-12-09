@@ -27,7 +27,8 @@ public class Level {
     private String myBackgroundImagePath;
     private List<Sprite> mySprites;
     private Level myNextLevel;
-
+    private Player myPlayer;
+    
     /**
      * Default constructor
      */
@@ -59,6 +60,14 @@ public class Level {
      */
     public Iterable<Sprite> getSpriteList () {
         return Collections.unmodifiableList(mySprites);
+    }
+    
+    public void setPlayer(Player player) {
+        myPlayer = player;
+    }
+    
+    public Player getPlayer() {
+        return myPlayer;
     }
 
     /**

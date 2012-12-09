@@ -352,8 +352,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             Point velocity = new Point(0,0);
             int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
             Enemy newEnemy = new Enemy(position, size, bounds, imagePath, velocity, health);
-            //AI ai = Reflection.createInstance(spriteOptionsPane.getResult(AI_Key), newEnemy, myLevel.getPlayerList())
-
+            AI ai = (AI) Reflection.createInstance(spriteOptionsPane.getResult(AI_KEY + "AI.java"), newEnemy, myLevel.getPlayer());
+            newEnemy.setAI(ai);
             return newEnemy;
         }
         throw new LevelEditorException("Invalid attributes selected.");
