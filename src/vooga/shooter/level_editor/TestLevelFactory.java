@@ -6,6 +6,7 @@ import javax.xml.transform.TransformerException;
 import junit.framework.TestCase;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
+import vooga.shooter.gameObjects.intelligence.RandomAI;
 
 
 /**
@@ -30,7 +31,9 @@ public class TestLevelFactory extends TestCase {
         Level level = new Level(imagePath);
         Enemy enemy = new Enemy(new Point(0, 0), new Dimension(10, 10),
                 new Dimension(100, 100), imagePath, new Point(0, 0), 10);
+        enemy.setAI(new RandomAI(enemy));
         level.addSprite(enemy);
+        
 
         // Convert the level to an xml string using LevelFactory
         String originalString = null;
@@ -51,13 +54,16 @@ public class TestLevelFactory extends TestCase {
         String newString = null;
         try {
             newString = XmlUtilities.getXmlAsString(LevelFactory
-                    .storeLevel(level));
+                    .storeLevel(newLevel));
         }
         catch (TransformerException e) {
             // TODO Auto-generated catch block
             System.err.println("ERROR: " + e.getMessage());
             e.printStackTrace();
         }
+        
+        System.out.println("original: " + originalString);
+        System.out.println("copy: " + newString);
 
         // make sure neither string is null
         assertTrue("The original level string is not null",
@@ -66,8 +72,8 @@ public class TestLevelFactory extends TestCase {
 
         // if the two strings are identical, we can assume LevelFactory stored
         // and loaded the level correctly.
-        assertEquals("The new level is an exact duplicate of the original",
-                originalString, newString);
+        assertTrue("The new level is an exact duplicate of the original",
+                originalString.equals(newString));
     }
 
 }

@@ -9,6 +9,11 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
+/**
+ * Conversation mode
+ * @author rex
+ *
+ */
 public class ConversationMode extends OptionMode {
 	
 	private List<String> myMessages;
@@ -22,7 +27,7 @@ public class ConversationMode extends OptionMode {
 	    }
 		myMessages = new ArrayList<String>();
 		myMessages.add("You found a Box!!");
-		myMessages.add("in which there is a random guy =.=");
+		myMessages.add("in which is a random guy =.=");
 	    setPanel(new ConversationPanel(options, myMessages));
 	}
 }

@@ -10,7 +10,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -79,10 +81,11 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart =
                 new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
+        //myPlayer = Player.getInstance();
         myPlayer =
-              new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                      myCanvas.getHeight()),
-                      PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
+                new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+                                                                        myCanvas.getHeight()),
+                           PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
         
@@ -92,17 +95,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     }
     
     protected abstract void createGame();
-//        myPlayer =
-//                new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-//                        myCanvas.getHeight()),
-//                        PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
-//
-//        addSprite(myPlayer);
-//        inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
-//
-//
-//        myCurrentLevel = new MainScreen(this, new Level1(this));
-   
 
     private void startLevel (Level level) {
         myCurrentLevel = level;
@@ -246,30 +238,25 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      */
     @Override
     public void paint (Graphics pen) {
-        List<Sprite> deadSprites = new ArrayList<Sprite>();
-        List<Enemy> deadEnemies = new ArrayList<Enemy>();
-
-        for (Sprite s : getSprites()) {
-            if (s.getImage() == null) {
-                deadSprites.add(s);
-            }
-            else {
-                s.paint(pen);
-            }
-        }
-
-        for (Enemy e : getEnemies()) {
-            if (e.getImage() == null) {
-                deadEnemies.add(e);
-            }
-            else {
-                e.paint(pen);
-            }
-        }
+        myCurrentLevel.paintSprites(pen, 0, 0);
+        
+        myCurrentLevel.paintBackground(pen);
+        
         for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);
         }
-        getEnemies().removeAll(deadEnemies);
+        
+        removeDeadSprites();
+    }
+    
+    private void removeDeadSprites(){
+        Set<Sprite> toRemove = new HashSet<Sprite>();
+        for(Sprite s : mySprites){
+            if(s.getImage() == null){
+                toRemove.add(s);
+            }
+        }
+        mySprites.removeAll(toRemove);
     }
 
     /**

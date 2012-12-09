@@ -58,7 +58,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
         }
         System.out.println(arrayOfGames);
 //        MigLayout layout = new MigLayout("align center, fill");
-        MigLayout layout = new MigLayout("", "50[center]", "[][]50[]50[]");
+        MigLayout layout = new MigLayout("", "50[center]", "[]50[][300, grow]50[]");
 
         myPanel.setLayout(layout);
 
@@ -100,9 +100,9 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
 //        myPanel.add(displayPic, "span, grow");
 //        myPanel.add(goButton, "dock south, span, grow, align center");
 
+        myPanel.add(displayPic, "align center, wrap");
         myPanel.add(gameSelectLabel, "align center, wrap");
         myPanel.add(listScroller, "grow, wrap");
-        myPanel.add(displayPic, "align center, wrap");
         myPanel.add(goButton, "grow, align center");
         
         return myPanel;

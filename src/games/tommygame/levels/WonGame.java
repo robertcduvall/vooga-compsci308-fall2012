@@ -11,13 +11,13 @@ import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameplay.Game;
 
-
 /**
- * First level (initializes enemies, sets winning conditions)
+ * Level to appear when you have won the game. 
  * 
  * @author Tommy Petrilak
  * 
  */
+
 public class WonGame extends Level {
 
     private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/spaceship.gif";

@@ -3,6 +3,7 @@ package vooga.turnbased.sprites;
 import java.util.ArrayList;
 import java.util.List;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 
@@ -96,5 +97,15 @@ public class Sprite {
             if (object instanceof OptionObject) { return true; }
         }
         return false;
+    }
+    
+    public List<BattleObject> getBattleObjects() {
+    	List<BattleObject> battleObjects = new ArrayList<BattleObject>();
+    	for (GameObject object: myGameObjects) {
+            if (object instanceof BattleObject) { 
+            	battleObjects.add((BattleObject)object);
+            }
+        }
+        return battleObjects;
     }
 }

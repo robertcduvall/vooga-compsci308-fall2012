@@ -9,6 +9,24 @@ import util.mathvector.MathVector2D;
 import util.particleEngine.ParticleEngine;
 import util.particleEngine.ParticleSystem;
 
+/**
+ * This implementation of ParticleSystem demonstrates a visual effect that is
+ * similar to the fire, but is more complex and composed of multiple particle engines.
+ * This demonstrates the particle engine's flexibility with regards to complexity of 
+ * animations.
+ * 
+ * As with the sunlight, ideally, the water would be rendered with smaller particles
+ * and significantly more particles. However, increasing the number of particles
+ * would be computationally overwhelming, and decreasing the size of the particles
+ * would make the waterfall smaller and harder to see. The balance between number
+ * of particles and particle size that is reflected in the parameter constants hints 
+ * at the fluidity that can be obtained with more and smaller particles 
+ * while maintaining an overall size that is large enough for the viewer 
+ * to observe meaningfully. 
+ * 
+ * @author Kathleen
+ *
+ */
 public class Waterfall extends ParticleSystem{
 
 	private static final MathVector2D default_Initial_Position = new MathVector2D(400, 0);
@@ -27,7 +45,6 @@ public class Waterfall extends ParticleSystem{
 	private static Boolean loop = true;
 	private static float[] RGBAscales = { 0.3f, 0.6f, 0.9f, 0.4f };
 	private static float[] RGBAtolerances = { 0.2f, 0.2f, 0.2f, 0.4f };
-	
 	private static float[] whiteWaterRGBAscales = { 1.0f, 1.0f, 1.0f, 0.2f };
 	
 	private static int mistDensity = 200;
@@ -36,6 +53,10 @@ public class Waterfall extends ParticleSystem{
 	private static float[] mistRGBAtolerances = { 0.0f, 0.2f, 0.2f, 0.3f };
 	
 	private static int sourcePointInterval = 7;
+	private static int mistSourceInterval = 8;
+
+	private static int waterfallHeight = 300;
+	private static int mistTolerance = 30;
 	
 	public Waterfall (MathVector2D initialPosition, MathVector2D initialVelocity, double numOfSourcePoints) {
 		super(initialPosition, initialVelocity);
@@ -51,7 +72,6 @@ public class Waterfall extends ParticleSystem{
 	
 	@Override
 	protected void setUpParticleEngines() {
-		//cyanParticle3.png
 		ImageIcon temp = new ImageIcon(
 				Waterfall.class.getResource("whiteParticle.png"));
 		Image image = temp.getImage();
@@ -66,17 +86,14 @@ public class Waterfall extends ParticleSystem{
 					whiteWaterRGBAscales, mistRGBAtolerances, loop);
 		}
 		
-		/*temp = new ImageIcon(
-				Waterfall.class.getResource("particle2.png"));
-		image = temp.getImage();*/
-		MathVector2D nextPosition = new MathVector2D(getPosition().getX()+5, getPosition().getY()+300);
+		MathVector2D nextPosition = new MathVector2D(getPosition().getX()+ mistSourceInterval / 2, 
+				getPosition().getY()+waterfallHeight);
 		addParticleEngine(mistDensity, image, nextPosition, mistDirectionLeft, 
-				tolerance*3, mistLength, angleSpan, numberOfDirections, 
+				mistTolerance, mistLength, angleSpan, numberOfDirections, 
 				mistRGBAscales, mistRGBAtolerances, loop);
-		nextPosition = new MathVector2D(getPosition().getX()-5, getPosition().getY()+300);
+		nextPosition.addVector(new MathVector2D(-1 * mistSourceInterval, 0));
 		addParticleEngine(mistDensity, image, nextPosition, mistDirectionRight, 
-				tolerance*3, mistLength, angleSpan, numberOfDirections, 
+				mistTolerance, mistLength, angleSpan, numberOfDirections, 
 				mistRGBAscales, mistRGBAtolerances, loop);
 	}
-	
 }

@@ -43,7 +43,6 @@ public class Square extends Sprite {
     private int myMaxSquares;
     private double maxSpeed = 15;
     private double bonusSpeed = 9;
-    
 
     public Square (Dimension size, Point startLocation, Color color) {
         super(size);
@@ -91,12 +90,9 @@ public class Square extends Sprite {
             }
             y += SmallSquare.SIZE;
         }
-        
-       
+
         pen.setColor(Color.WHITE);
         pen.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
-      
-        
 
     }
 
@@ -139,10 +135,10 @@ public class Square extends Sprite {
     }
 
     private void adjustMaxSpeed () {
-        double factor =(double)numSquares/myMaxSquares;
-        double sub = factor*bonusSpeed;
+        double factor = (double) numSquares / myMaxSquares;
+        double sub = factor * bonusSpeed;
         mySpeed = maxSpeed - sub;
-        
+
     }
 
     private void addExternalForces () {
@@ -201,17 +197,16 @@ public class Square extends Sprite {
         myJSVector = (MathVector2D) vector.scale(mySpeed);
     }
 
-
     public void addExternalForce (ExternalMathVector2D force) {
-       
-            externalForces.add(force);
-        
-       
+
+        externalForces.add(force);
+
     }
 
     public MathVector2D getLastMovementVector () {
         return myLastMovementVector;
     }
+    
 
 
 }

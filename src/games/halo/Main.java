@@ -16,7 +16,8 @@ import vooga.platformer.core.inputinitializer.KeyControllerOnePlayerInputInitial
 /**
  * 
  * @author Sam Rang AND Zach Michealov
- *
+ * This games demonstrates how easy it is to create a game using our Level Editor,
+ * and how little code is required to get the game running
  */
 public class Main implements IArcadeGame{
     public static void main (String[] args) {
@@ -26,8 +27,8 @@ public class Main implements IArcadeGame{
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         JFrame frame = new JFrame ("Halo: Combat Devolved");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController("src/games/halo/level0.xml", 
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // needed for proper handling by Arcade
+        PlatformerController controller = new PlatformerController("src/games/halo/level0.xml", // point to the first level
                 new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);
         frame.pack();

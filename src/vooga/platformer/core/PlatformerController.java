@@ -178,5 +178,6 @@ public class PlatformerController extends JPanel implements Runnable {
      */
     public void replayCurrentLevel(){
         setupLevel(myCurrentLevelName);
+        myInputInitializer.setUpInput(myCurrentLevel.getObjectList(), this);
     }
 }

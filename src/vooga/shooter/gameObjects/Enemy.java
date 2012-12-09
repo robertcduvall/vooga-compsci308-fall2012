@@ -18,7 +18,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * Enemies start with velocity and health.
  * 
  * @author Jesse Starr
- *         (add your own name as you edit)
+ * @author Stephen Hunt
  */
 public class Enemy extends Sprite {
     
@@ -39,8 +39,6 @@ public class Enemy extends Sprite {
     }
 
     /**
-     * @deprecated Please pass in an AIType using
-     * the constructor below.
      * Constructs an enemy character for the game.
      * 
      * @param position the center of the image
@@ -82,7 +80,7 @@ public class Enemy extends Sprite {
         for (Bullet b : getBulletsFired()) {
             b.update();
         }
-        if (myAI != null) {
+        if(myAI != null) {
             myAI.calculate();
         }
     }
