@@ -89,7 +89,13 @@ public class GameWindow extends JFrame {
      */
     public static Image importImage (String imageName) {
         String imageFolder = myResources.getString("ImageFolder");
-        ImageIcon imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        ImageIcon imageIcon;
+        try {
+        	imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        }
+        catch (Exception e) {
+        	imageIcon = new ImageIcon(importString(imageName));
+        }
         return imageIcon.getImage();
     }
 

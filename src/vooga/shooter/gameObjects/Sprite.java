@@ -48,7 +48,6 @@ public abstract class Sprite implements SpriteActionInterface {
     private int myHealth;
     private SpriteMethodMap myMapper;
     private boolean isDead = false;
-    private AI myAI;
 
     /**
      * Construct a sprite initializing only position, size, and image.
@@ -210,9 +209,6 @@ public abstract class Sprite implements SpriteActionInterface {
             die();
         }
         else {
-            if (myAI != null) {
-                myAI.calculate();
-            }
             myPosition.translate(myVelocity.x, myVelocity.y);
             continueUpdate();
         }
@@ -453,14 +449,6 @@ public abstract class Sprite implements SpriteActionInterface {
      */
     public void setDead (boolean isDead) {
         this.isDead = isDead;
-    }
-    
-    /**
-     * Sets the AI of the Sprite.
-     * @param newAI the AI to set.
-     */
-    public void setAI (AI newAI) {
-        myAI = newAI;
     }
 
     /**

@@ -10,6 +10,7 @@ import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Sprite;
+import vooga.shooter.gameObjects.intelligence.AI;
 
 /**
  * TODO: Add javadoc comments
@@ -110,6 +111,9 @@ public class LevelFactory {
         // convert health...
         XmlUtilities.appendElement(doc, enemyElement, "health", "value",
                 Integer.toString(enemy.getHealth()));
+        
+        // convert AI (we'll store the class name)
+        XmlUtilities.appendElement(doc, enemyElement, "ai", "name", enemy.getAI().getClass().getName());
 
         return enemyElement;
     }
@@ -149,8 +153,17 @@ public class LevelFactory {
         // parse health...
         Element healthElement = XmlUtilities.getElement(enemyElement, "health");
         int health = XmlUtilities.getAttributeAsInt(healthElement, "value");
-
-        return new Enemy(position, size, bounds, imagePath, velocity, health);
+        
+        // parse ai...
+        Element aiElement = XmlUtilities.getElement(enemyElement, "ai");
+        String aiAsString = XmlUtilities.getAttribute(aiElement, "name");
+        
+        // This part might need some work! Trying to figure stuff out.
+        Enemy enemy = new Enemy(position, size, bounds, imagePath, velocity, health);
+        AI ai = (AI) Reflection.createInstance(aiAsString, enemy);
+        enemy.setAI(ai);
+        
+        return enemy;
     }
 
 }
