@@ -1,5 +1,6 @@
 package vooga.shooter.gameObjects.intelligence;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
@@ -36,6 +37,13 @@ public class RandomAI extends AI{
             myTimer = 10;
         }
         myTimer--;
+        
+        Dimension bounds = mySprite.getBounds();
+        
+        if(!mySprite.checkBounds("right") || !mySprite.checkBounds("left") 
+                || !mySprite.checkBounds("top") || !mySprite.checkBounds("bottom")) {
+            mySprite.setPosition(new Point(bounds.width / 2, bounds.height / 2));
+        }
     }
 
 }

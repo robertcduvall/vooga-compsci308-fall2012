@@ -34,9 +34,4 @@ public class SplashLevel extends Level {
                                   myGame.getCanvasDimension(), IMAGEPATH, ENEMY_VELOCITY,
                                   ENEMY_DAMAGE));
     }
-
-    @Override
-    public boolean winningConditionsMet () {
-        return myGame.getEnemies().isEmpty();
-    }
 }
