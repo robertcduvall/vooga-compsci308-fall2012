@@ -138,6 +138,9 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
                 if (collisions.size() > 0) {
                     String key = HIT_BY + collisions.get(1).getType();
                     collisions.get(0).doEvent(key, collisions.get(1));
+                    if(collisions.get(0).getType().equals("enemy") && collisions.get(1).getType().equals("enemy")){
+                        continue;
+                    }
                     myParticleSystems.add(new Explosion(collisions.get(0).getPosition()));
                 }
             }
