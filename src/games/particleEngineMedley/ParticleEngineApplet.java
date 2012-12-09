@@ -87,37 +87,43 @@ public class ParticleEngineApplet extends JApplet implements MouseInputListener{
         configureActions();
 	}
 	
+	/**
+	 * Configures input events with method calls. (Any suggestions on how to improve the design of this method?)
+	 * 
+	 * @throws NoSuchMethodException
+	 * @throws IllegalAccessException
+	 */
 	private void configureActions() throws NoSuchMethodException, IllegalAccessException {
-		myKeyboardController.setControl(KeyEvent.VK_C, KeyboardController.PRESSED, this, "clearParticleSystems");
-		myKeyboardController.setControl(KeyEvent.VK_B, KeyboardController.PRESSED, this, "addBubbles");
-		myKeyboardController.setControl(KeyEvent.VK_F, KeyboardController.PRESSED, this, "addFire");
-		myKeyboardController.setControl(KeyEvent.VK_I, KeyboardController.PRESSED, this, "addFireworks");
-		myKeyboardController.setControl(KeyEvent.VK_L, KeyboardController.PRESSED, this, "addLight");
-		myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, this, "addSnow");
-		myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, this, "addWaterfall");
-		myKeyboardController.setControl(KeyEvent.VK_1, KeyboardController.PRESSED, this, "setBackground1");
-		myKeyboardController.setControl(KeyEvent.VK_2, KeyboardController.PRESSED, this, "setBackground2");
-		myKeyboardController.setControl(KeyEvent.VK_3, KeyboardController.PRESSED, this, "setBackground3");
+		myKeyboardController.setControl(KeyEvent.VK_C, KeyboardController.PRESSED, this, Constants.clearParticleSystems);
+		myKeyboardController.setControl(KeyEvent.VK_B, KeyboardController.PRESSED, this, Constants.addBubbles);
+		myKeyboardController.setControl(KeyEvent.VK_F, KeyboardController.PRESSED, this, Constants.addFire);
+		myKeyboardController.setControl(KeyEvent.VK_I, KeyboardController.PRESSED, this, Constants.addFireworks);
+		myKeyboardController.setControl(KeyEvent.VK_L, KeyboardController.PRESSED, this, Constants.addLight);
+		myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, this, Constants.addSnow);
+		myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, this, Constants.addWaterfall);
+		myKeyboardController.setControl(KeyEvent.VK_1, KeyboardController.PRESSED, this, Constants.setBackground1);
+		myKeyboardController.setControl(KeyEvent.VK_2, KeyboardController.PRESSED, this, Constants.setBackground2);
+		myKeyboardController.setControl(KeyEvent.VK_3, KeyboardController.PRESSED, this, Constants.setBackground3);
 	}
 	
 	private void setupImageNamePositionMap() {
 		imageNamePositionMap = new HashMap<String, Point>();
-		imageNamePositionMap.put("mountainCliff.png", new Point(0,0));
-		imageNamePositionMap.put("cauldron.png", new Point(250, 300));
-		imageNamePositionMap.put("DukeChapel.png", new Point(0,0));
+		imageNamePositionMap.put(Constants.mountainCliffpng, new Point(0,0));
+		imageNamePositionMap.put(Constants.cauldronpng, new Point(250, 300));
+		imageNamePositionMap.put(Constants.DukeChapelpng, new Point(0,0));
 		backgroundImagePosition = new Point(0,0);
 	}
 	
 	public void setBackground1() {
-		setBackground("mountainCliff.png");
+		setBackground(Constants.mountainCliffpng);
 	}
 	
 	public void setBackground2() {
-		setBackground("cauldron.png");
+		setBackground(Constants.cauldronpng);
 	}
 
 	public void setBackground3() {
-		setBackground("DukeChapel.png");
+		setBackground(Constants.DukeChapelpng);
 	}
 	
 	private void setBackground(String imageName) {
