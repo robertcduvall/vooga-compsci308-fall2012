@@ -36,7 +36,7 @@ public class Player extends Sprite {
      * @param velocity the starting velocity for the player
      * @param health the starting health of the player
      */
-    private Player (Point position, Dimension size, Dimension bounds,
+    public Player (Point position, Dimension size, Dimension bounds,
         String imagePath, Point velocity, int health) {
         super(position, size, bounds, imagePath, velocity, health);
     }

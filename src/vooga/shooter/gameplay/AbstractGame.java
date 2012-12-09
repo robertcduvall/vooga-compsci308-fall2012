@@ -94,7 +94,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     }
     
     protected abstract void createGame();
-   
 
     private void startLevel (Level level) {
         myCurrentLevel = level;
