@@ -18,9 +18,9 @@ public abstract class AI {
     private Sprite mySprite;
     private Player myPlayer;
     
-    public AI(Sprite owner) {
+    public AI(Sprite owner, Player player) {
         mySprite = owner;
-        myPlayer = Player.getInstance();
+        myPlayer = player;
     }
     
     /**
