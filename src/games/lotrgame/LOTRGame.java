@@ -46,7 +46,7 @@ public class LOTRGame implements IArcadeGame {
 
     public void start (String levelName) {
         JFrame frame = new JFrame("The Lord of the Rings Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         PlatformerController controller =
                 new PlatformerController(levelName, new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);
