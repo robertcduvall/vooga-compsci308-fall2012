@@ -32,7 +32,6 @@ import java.util.Map;
 import javax.swing.JPanel;
 import util.input.android.events.AndroidVibration;
 
-//TODO: dynamic controller reassignment
 
 /**
  * 
@@ -83,7 +82,7 @@ public class GameManager extends JPanel implements Runnable {
         myGameArea = new Rectangle(0, 50, GameFrame.GameWidth, GameFrame.GameHeight - 80);
         setUpGame();
         initalizeControllerStrategies();
-
+       
     }
 
     public void setUpGame () {
@@ -109,7 +108,9 @@ public class GameManager extends JPanel implements Runnable {
     }
 
     private void initalizeControllerStrategies () {
-
+        if(controllerSettings.size()>0){
+            redoControllers();
+        }
         for (int i = 0; i < controllers.length; i++) {
             if (ANDROID.equals(controllers[i])) {
                 createAndroidControllerStrategy(i + 1);
@@ -122,6 +123,13 @@ public class GameManager extends JPanel implements Runnable {
             }
         }
 
+    }
+
+    private void redoControllers () {
+        for(ControllerStrategy strat: controllerSettings.values()){
+            strat.replaceTarget(attackerOne);
+        }
+        
     }
 
     private void createKeyboardControllerStrategy (int number, int type) {

@@ -32,7 +32,7 @@ public class EnemyCollisionRule implements GameRule {
        for(Square attacker: myAttackers){
            if(attacker.intersects(myDefender)){
                myDefender.damage();
-               myDefender.addExternalForce(new ExternalMathVector2D((MathVector2D) myDefender.getLastMovementVector().scale(-1.5), .8));
+               myDefender.addExternalForce(new ExternalMathVector2D((MathVector2D) myDefender.getLastMovementVector().scale(-3.5), .8));
                attacker.addExternalForce(new ExternalMathVector2D((MathVector2D) attacker.getLastMovementVector().scale(-5.5), .8));
                mySound.playSound(SoundManager.COLLISION_SOUND);
                myManager.vibrateController(myDefender, new AndroidVibration(450,100,50));
