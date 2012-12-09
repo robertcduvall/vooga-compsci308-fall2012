@@ -106,4 +106,10 @@
 		<tags/>
 		<filepath>games.spruillGame.Game.Asteroids</filepath>
 </game>
+<game id="16">
+		<name>Nyan Cat vs. Veggies</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.wl65game.Game</filepath>
+</game>
 </gamelist>
