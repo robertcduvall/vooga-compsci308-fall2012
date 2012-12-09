@@ -14,13 +14,24 @@ import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameObjects.intelligence.AI;
 
 /**
- * TODO: Add javadoc comments
+ * A Utility class for loading levels from an XML file
+ * or storing a Level object into an XML file. It will
+ * enocde/decode all the information about the level,
+ * including it's enemy sprites, background image, etc.
  * 
  * @author Alex Browne
  *
  */
 public class LevelFactory {
 
+    /**
+     * Load a level from an XML document
+     * 
+     * @param xmlDoc the XML document with all the
+     *          level information.
+     * @return the Level object created from the
+     *          xml data.
+     */
     public static Level loadLevel (Document xmlDoc) {
          Element root = xmlDoc.getDocumentElement();
          
@@ -56,10 +67,27 @@ public class LevelFactory {
          return level;
     }
 
+    /**
+     * Loads a level from an XML file
+     * 
+     * @param xmlDoc the XML file with all the
+     *          level information.
+     * @return the Level object created from the
+     *          xml data.
+     */
     public static Level loadLevel (File xmlFile) {
         return loadLevel(XmlUtilities.makeDocument(xmlFile));
     }
 
+    /**
+     * Converts a Level object to its canonical
+     * xml representation.
+     * 
+     * @param level the Level object to be converted
+     *          to XML.
+     * @return an XML document with all the level
+     *          data
+     */
     public static Document storeLevel (Level level) {
         Document doc = XmlUtilities.makeDocument();
         Element root = XmlUtilities.makeElement(doc, "Level",
