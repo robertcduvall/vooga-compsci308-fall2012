@@ -70,7 +70,7 @@ public class LevelFactory {
                  Enemy enemy = unpackEnemy(sibling, player);
                  level.addSprite(enemy);
                  
-             }  
+             }
              
              sibling = (Element) sibling.getNextSibling();
              
@@ -220,6 +220,8 @@ public class LevelFactory {
     
     private static Element packPlayer (Player player, Document doc, Element root) {
 
+        // here lies the bug. Somehow player is being
+        // passed in as null here.
         if (player == null) {
             return null;
         }
