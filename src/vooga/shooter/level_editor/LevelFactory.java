@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.HashMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
@@ -33,15 +34,22 @@ public class LevelFactory {
          Level level = (Level) Reflection.createInstance(className, bgImagePath);
          
          // All the children are enemies. We are going to iterate over them
-         Element child = (Element) root.getFirstChild();
-         Element sibling = child;
+         Node child = root.getFirstChild();
+         
+         // make sure the node can be converted to Element
+         while (child.getNodeType() != Node.ELEMENT_NODE) {
+             child = child.getNextSibling();
+         }
+         Element sibling = (Element) child;
          
          while (sibling != null) {
+             
+             // make sure the node can be converted to Element
+             if (sibling.getNodeType() != Node.ELEMENT_NODE) continue;
              
              // Instantiate an enemy from the data in the Element
              Enemy enemy = unpackEnemy(sibling);
              level.addSprite(enemy);
-             
              sibling = (Element) sibling.getNextSibling();
          }
          
