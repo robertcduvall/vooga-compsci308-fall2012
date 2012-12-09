@@ -42,6 +42,7 @@ import arcade.gamemanager.GameSaver;
  * @author Stephen Hunt
  * @author Jesse Starr
  * @author guytracy
+ * @author Zachary Hopping
  */
 public abstract class AbstractGame extends JComponent implements DrawableComponent, IArcadeGame {
 
