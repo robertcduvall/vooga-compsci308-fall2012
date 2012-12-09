@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>640</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/brucegame/levels/loseGameObjects.bin</gameObjectData>
+<conditionData>src/games/brucegame/levels/loseConditions.bin</conditionData>
+<pluginData>src/games/brucegame/levels/losePlugins.bin</pluginData>
+</level>
