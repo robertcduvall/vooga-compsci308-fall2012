@@ -8,9 +8,10 @@ import java.awt.geom.Point2D;
 import javax.swing.JComponent;
 
 /**
- * This class describes how to display/initialize
- * the canvas (window screen displayed to the user)
- * for the current program.
+ * This class serves as the
+ * highest level JComponent holding
+ * all the other portions of the
+ * configure controller gui together. 
  * 
  * @author Lance Co Ting Keh
  */
@@ -24,9 +25,7 @@ public class Frame extends JComponent {
      * @param size of the canvas
      */
     public Frame (Dimension size) {
-        // request component size
         setPreferredSize(size);
-        // set component to receive user input
         setFocusable(true);
         requestFocus();
         Point2D rootPosition = new Point2D.Double(0, 0);
@@ -43,7 +42,7 @@ public class Frame extends JComponent {
     }
 
     /**
-     * Adds a view (graph or label) to the root view.
+     * Adds a view to the Top Level View.
      *
      * @param v the view to be added
      */
@@ -52,7 +51,7 @@ public class Frame extends JComponent {
     }
 
     /**
-     * Updates all of the views of this canvas.
+     * Updates the views of the Frame
      */
     public void update() {
         repaint();

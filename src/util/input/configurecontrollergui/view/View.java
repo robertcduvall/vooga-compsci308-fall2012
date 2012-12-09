@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 /**
+ * Generic View class
  * @author Lance
  *
  */
@@ -50,7 +51,7 @@ public class View extends JComponent {
     }
 
     /**
-     * Paints the view and all of its children.
+     * Paints itself and all its children.
      *
      * @param pen used to paint
      */
@@ -75,13 +76,7 @@ public class View extends JComponent {
         myViewChildren.add(v);
     }
     
-    /**
-     * Offsets the position of the view so that
-     * it and its parent do not overlap.
-     * 
-     * @param parentPosition the point to offset this view's
-     *        position to
-     */
+
     public void offsetPosition (Point2D parentPosition) {
         //takes position relative to parent and replaces with absolute position
         myPosition =

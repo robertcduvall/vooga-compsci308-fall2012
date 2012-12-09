@@ -1,6 +1,7 @@
 package arcade.gui.panel.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +32,8 @@ public class GameProfileMainPanel extends AMainPanel {
     
     
     private String gameName;
+    private ImageIcon icon;
+    private JLabel listOfTagsToDisplay;
     private List<String> listOfReviews;
     private List<Integer> listOfRatings;
     private List<String[]> usersAndScoresList;
@@ -53,7 +56,7 @@ public class GameProfileMainPanel extends AMainPanel {
         listOfTags = getArcade().getModelInterface().getGame(gameName).getTags();
         Collections.sort(listOfRatings);
         
-        MigLayout layout = new MigLayout("", "[][]", "[][][][][][]");
+        MigLayout layout = new MigLayout("", "[c][c]");
         myPanel.setLayout(layout);
 
         System.out.println(myPanel.getSize());
@@ -69,10 +72,12 @@ public class GameProfileMainPanel extends AMainPanel {
             }
 
         });
-
-        //ImageIcon icon = new ImageIcon(getArcade().getModelInterface().getGame(gameName).getImage());
-        ImageIcon icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
-        
+        if (getArcade().getModelInterface().getGame(gameName).getImage() != null) {
+            icon = new ImageIcon(getArcade().getModelInterface().getGame(gameName).getImage());
+        }
+        else {
+            icon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
+        }
         JLabel profilePic = new JLabel(icon);
 
         String averageRating = "Average Rating: " + getArcade().getModelInterface().getGame(gameName).getAverageRating();
@@ -127,7 +132,7 @@ public class GameProfileMainPanel extends AMainPanel {
         }
         JLabel tagsTitle = new JLabel("This game has been tagged as: ");
         tagsTitle.setForeground(Color.WHITE);
-        JLabel listOfTagsToDisplay = new JLabel(stringOfTags);
+        listOfTagsToDisplay = new JLabel(stringOfTags);
         listOfTagsToDisplay.setForeground(Color.WHITE);
         
         String stringOfReviews = "";
@@ -158,18 +163,18 @@ public class GameProfileMainPanel extends AMainPanel {
         
         
         myPanel.add(nameOfGame, "wrap, span, align center");
-        myPanel.add(profilePic, "grow");
-        myPanel.add(averageRatingToDisplay, "wrap");
-        myPanel.add(playButton, "wrap, grow, span");
-        myPanel.add(tagsTitle, "split 3, flowy");
-        myPanel.add(listOfTagsToDisplay);
-        myPanel.add(topScoresScrollPane, "grow");   
-        myPanel.add(scrollingDescription, "wrap, grow");
-        myPanel.add(reviewsTitleLabel);
+        myPanel.add(profilePic, "grow, span, align center");
+        myPanel.add(averageRatingToDisplay, "wrap, align center, span");
+        myPanel.add(playButton, "wrap, grow, span, align center");
+        myPanel.add(tagsTitle, "split 3, flowy, align center");
+        myPanel.add(listOfTagsToDisplay, "align center");
+        myPanel.add(topScoresScrollPane, "grow, span, align center");   
+        myPanel.add(scrollingDescription, "wrap, grow, align center, span");
+        myPanel.add(reviewsTitleLabel, "wrap, span, align center");
+        myPanel.add(scrollingReviews, "grow, span, align center, wrap");
         myPanel.add(ratingsTitle, "split 2, alignx");
-        myPanel.add(listOfRatingsToDisplay, "wrap");
-        myPanel.add(scrollingReviews, "grow");
-        myPanel.add(writeReviewAndRatingBut, "grow");
+        myPanel.add(listOfRatingsToDisplay, "wrap, align center, span, grow");
+        myPanel.add(writeReviewAndRatingBut, "grow, span, align center");
         
         
         return myPanel;

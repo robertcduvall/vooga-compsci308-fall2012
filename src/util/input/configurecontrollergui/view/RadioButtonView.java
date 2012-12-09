@@ -7,6 +7,10 @@ import javax.swing.*;
 import util.input.configurecontrollergui.controller.RadioButtonController;
 
 /**
+ * View focused on providing radio button
+ * style flexibility. This class was primarily taken
+ * from the official Java example website.
+ * 
  * @author Lance, Amay
  *
  */

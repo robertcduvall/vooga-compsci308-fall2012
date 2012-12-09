@@ -8,6 +8,8 @@ import util.input.configurecontrollergui.util.Config;
 import util.input.configurecontrollergui.view.RadioButtonView;
 
 /**
+ * This grid controller serves as the logic behind the 
+ * GridView. 
  * @author Amay
  *
  */

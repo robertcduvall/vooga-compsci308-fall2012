@@ -6,6 +6,8 @@ import util.datatable.UnmodifiableRowElement;
 import util.input.core.InputControlModifier;
 
 /**
+ * This RadioButton controller serves as the
+ * Logic behind the RadioButtonView.
  * @author Amay
  *
  */
