@@ -112,4 +112,10 @@
 		<tags/>
 		<filepath>games.wl65game.Game</filepath>
 </game>
+<game id="17">
+		<name>Minefield Walker</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.DontPlayWithMines.DontPlayWithMines</filepath>
+</game>
 </gamelist>
