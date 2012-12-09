@@ -33,6 +33,9 @@ public class RandomAI extends AI{
             if (Math.random() > .5) {
                 newY = newY * -1;
             }
+            if (Math.random() > .5) {
+                newX = newX * -1;
+            }
             mySprite.setVelocity(new Point(newX, newY));
             myTimer = 10;
         }

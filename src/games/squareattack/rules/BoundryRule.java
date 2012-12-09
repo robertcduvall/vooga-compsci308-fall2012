@@ -24,7 +24,7 @@ public class BoundryRule implements GameRule {
         myBottom = boundry.y + boundry.height;
         myRight = boundry.x + boundry.width;
         mySprites = boundryChecks;
-        //System.out.println(myLeft+" "+myTop+" "+myBottom+" "+myRight);
+        // System.out.println(myLeft+" "+myTop+" "+myBottom+" "+myRight);
     }
 
     @Override
@@ -46,10 +46,11 @@ public class BoundryRule implements GameRule {
             if (bounds.x + bounds.width > myRight) {
                 left = myRight - bounds.width;
             }
-            //Rectangle newBounds = new Rectangle(left, top, bounds.width, bounds.height);
-           // System.out.println(newBounds.toString());
-            //s.setBounds(newBounds);
-            s.setCorner(new Point(left,top));
+            // Rectangle newBounds = new Rectangle(left, top, bounds.width,
+            // bounds.height);
+            // System.out.println(newBounds.toString());
+            // s.setBounds(newBounds);
+            s.setCorner(new Point(left, top));
 
         }
 

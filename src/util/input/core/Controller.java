@@ -264,6 +264,7 @@ public abstract class Controller<T> {
     protected void addControlToTable (int ukeyCode,
             FlagPair<Object, Method> fPair, String describeButton,
             String describeAction) {
+        myDataTable.deleteRowEntry(KEYCODE, ukeyCode);
         Map<String, Object> dataIn = new HashMap<String, Object>();
         dataIn.put(TUPLE, fPair);
         insertInMap(dataIn, describeButton, describeAction, ukeyCode);

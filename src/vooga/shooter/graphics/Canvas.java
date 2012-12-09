@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.Timer;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
