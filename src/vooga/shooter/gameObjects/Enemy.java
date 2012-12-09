@@ -77,6 +77,9 @@ public class Enemy extends Sprite {
      * shot).
      */
     protected void continueUpdate () {
+        if(!checkBounds(BOTTOM_BOUND) || !checkBounds(TOP_BOUND)) {
+            decrementHealth();
+        }
         for (Bullet b : getBulletsFired()) {
             b.update();
         }
@@ -123,7 +126,7 @@ public class Enemy extends Sprite {
             public void doAction (Object ... o) {
                 String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
                 if (PLAYER_TYPE.equals(bulletOwnerType)) {
-                    die();
+                    decrementHealth();
                     ((Bullet) o[0]).die();
                 }
             }
@@ -131,8 +134,8 @@ public class Enemy extends Sprite {
 
         getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                die();
-                ((Player) o[0]).die();
+                decrementHealth();
+                ((Player) o[0]).decrementHealth();
             }
         });
 
