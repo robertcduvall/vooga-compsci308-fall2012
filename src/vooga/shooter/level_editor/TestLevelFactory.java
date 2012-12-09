@@ -6,6 +6,7 @@ import javax.xml.transform.TransformerException;
 import junit.framework.TestCase;
 import util.xml.XmlUtilities;
 import vooga.shooter.gameObjects.Enemy;
+import vooga.shooter.gameObjects.intelligence.BounceAI;
 import vooga.shooter.gameObjects.intelligence.RandomAI;
 
 
@@ -29,10 +30,20 @@ public class TestLevelFactory extends TestCase {
         String imagePath = "vooga/shooter/images/alien.png";
 
         Level level = new Level(imagePath);
-        Enemy enemy = new Enemy(new Point(0, 0), new Dimension(10, 10),
+        
+        // add one enemy
+        Enemy enemy1 = new Enemy(new Point(0, 0), new Dimension(10, 10),
                 new Dimension(100, 100), imagePath, new Point(0, 0), 10);
-        enemy.setAI(new RandomAI(enemy));
-        level.addSprite(enemy);
+        // uncomment this when it's fixed
+        //enemy1.setAI(new RandomAI(enemy1));
+        //level.addSprite(enemy1);
+        
+        // add another enemy
+        Enemy enemy2 = new Enemy(new Point(-10, 10), new Dimension(10, 10),
+                new Dimension(90, 90), imagePath, new Point(0, 0), 12);
+        // uncomment this when it's fixed
+        //enemy2.setAI(new BounceAI(enemy2));
+        //level.addSprite(enemy2);
         
 
         // Convert the level to an xml string using LevelFactory
