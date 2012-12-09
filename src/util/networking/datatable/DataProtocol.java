@@ -3,7 +3,7 @@ package util.networking.datatable;
 import java.util.List;
 import java.util.Map;
 import util.datatable.ModifiableRowElement;
-import util.datatable.DataCommand;
+import util.networking.datatable.DataCommand;
 import util.datatable.UnmodifiableRowElement;
 import util.networking.chat.ChatCommand;
 
@@ -24,6 +24,7 @@ public interface DataProtocol {
     String createSave();
     String createLoad(String location);
     String createAddRow (Map<String , Object> mapEntry);
+    String createFind(String strKey, Object value);
     
     int getPort();
     

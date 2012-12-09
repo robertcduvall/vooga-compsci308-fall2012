@@ -24,7 +24,7 @@ public class BoundryRule implements GameRule {
         myBottom = boundry.y + boundry.height;
         myRight = boundry.x + boundry.width;
         mySprites = boundryChecks;
-        System.out.println(myLeft+" "+myTop+" "+myBottom+" "+myRight);
+        //System.out.println(myLeft+" "+myTop+" "+myBottom+" "+myRight);
     }
 
     @Override
