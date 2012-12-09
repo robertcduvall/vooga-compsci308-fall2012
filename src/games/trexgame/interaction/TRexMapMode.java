@@ -19,7 +19,7 @@ public class TRexMapMode extends MapMode {
 		List<Integer> involvedIDs = new ArrayList<Integer>();
 		involvedIDs.add(getPlayer().getID());
 		involvedIDs.add(getPlayer().getID());
-		flagCondition("dooption", involvedIDs);
+		flagCondition("viewstats", involvedIDs);
 	}
 
 	@Override

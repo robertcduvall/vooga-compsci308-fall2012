@@ -45,6 +45,10 @@
       <class>games.trexgame.interaction.ConversationMode</class>
       <condition>talk</condition>
     </mode><mode>
+      <name>stats</name>
+      <class>games.trexgame.interaction.StatsMode</class>
+      <condition>viewstats</condition>
+    </mode><mode>
       <name>gameWon</name>
       <class>vooga.turnbased.gamecore.gamemodes.GameWonMode</class>
       <condition>wingame</condition>

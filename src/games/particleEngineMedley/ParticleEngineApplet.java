@@ -34,11 +34,10 @@ import util.particleEngine.Trail;
 import util.reflection.Reflection;
 
 /**
- * Code borrowed from ParticleEngineTester (authors: Kathleen and David) 
+ * Code for this applet borrowed from ParticleEngineTester (authors: Kathleen and David) 
  * which in turn borrowed code from Prof. Duvall's game applet.
  * 
- * NOTE: the particleEngineMedley package is still under construction. Apologies for some of the
- * messy coding. I will clean it up before my final commit.
+ * See the README for comments. Thanks!
  * 
  * @author Kathleen
  *
@@ -92,17 +91,20 @@ public class ParticleEngineApplet extends JApplet implements MouseInputListener{
 		myKeyboardController.setControl(KeyEvent.VK_C, KeyboardController.PRESSED, this, "clearParticleSystems");
 		myKeyboardController.setControl(KeyEvent.VK_B, KeyboardController.PRESSED, this, "addBubbles");
 		myKeyboardController.setControl(KeyEvent.VK_F, KeyboardController.PRESSED, this, "addFire");
+		myKeyboardController.setControl(KeyEvent.VK_I, KeyboardController.PRESSED, this, "addFireworks");
 		myKeyboardController.setControl(KeyEvent.VK_L, KeyboardController.PRESSED, this, "addLight");
-		myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, this, "addWaterfall");
 		myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, this, "addSnow");
+		myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, this, "addWaterfall");
 		myKeyboardController.setControl(KeyEvent.VK_1, KeyboardController.PRESSED, this, "setBackground1");
 		myKeyboardController.setControl(KeyEvent.VK_2, KeyboardController.PRESSED, this, "setBackground2");
+		myKeyboardController.setControl(KeyEvent.VK_3, KeyboardController.PRESSED, this, "setBackground3");
 	}
 	
 	private void setupImageNamePositionMap() {
 		imageNamePositionMap = new HashMap<String, Point>();
 		imageNamePositionMap.put("mountainCliff.png", new Point(0,0));
 		imageNamePositionMap.put("cauldron.png", new Point(250, 300));
+		imageNamePositionMap.put("DukeChapel.png", new Point(0,0));
 		backgroundImagePosition = new Point(0,0);
 	}
 	
@@ -112,6 +114,10 @@ public class ParticleEngineApplet extends JApplet implements MouseInputListener{
 	
 	public void setBackground2() {
 		setBackground("cauldron.png");
+	}
+
+	public void setBackground3() {
+		setBackground("DukeChapel.png");
 	}
 	
 	private void setBackground(String imageName) {
@@ -242,6 +248,9 @@ public class ParticleEngineApplet extends JApplet implements MouseInputListener{
 		mySystems.add(new Snow(myLastMouseClickPosition));
 	}
 
+    public void addFireworks() {
+    	mySystems.add(new Fireworks(myLastMouseClickPosition));
+    }
     
     @Override
 	public void mouseClicked(MouseEvent e) {
