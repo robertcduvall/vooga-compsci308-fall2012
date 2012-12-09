@@ -6,6 +6,12 @@ import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.intelligence.RandomAI;
 import vooga.shooter.level_editor.Level;
 
+/**
+ * The second level of the Space Bugs game.
+ * @author Stephen Hunt
+ *
+ */
+
 public class LevelTwo extends Level {
     private SpaceBugs myGame;
 

@@ -80,7 +80,9 @@ public class Enemy extends Sprite {
         for (Bullet b : getBulletsFired()) {
             b.update();
         }
-        myAI.calculate();
+        if(myAI != null) {
+            myAI.calculate();
+        }
     }
 
     /**
