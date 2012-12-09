@@ -69,4 +69,10 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
+<game id="10">
+		<name>Square Attack</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.squareattack.PlaySquareAttack</filepath>
+</game>
 </gamelist>

@@ -1,6 +1,6 @@
 package games.squareattack.rules;
 
-import games.squareattack.GameManager;
+import games.squareattack.engine.GameManager;
 import games.squareattack.sprites.WallBall;
 import java.awt.Dimension;
 import java.awt.Point;
