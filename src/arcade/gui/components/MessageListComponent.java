@@ -35,7 +35,9 @@ import arcade.utility.ImageReader;
             myTimeStamp = aMessage.getDateString();
             System.out.println(myTimeStamp);
             myContainer = theContainer;
-            myUser = theContainer.getArcade().getCurrentUser();
+//            myUser = theContainer.getArcade().getCurrentUser(); // @ deprecated
+            myUser = theContainer.getArcade().getModelInterface().getUser(theContainer.getArcade().getUsername());
+
             sendersPic = getSendersPicture();
             this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
             initComponents();
@@ -47,7 +49,9 @@ import arcade.utility.ImageReader;
             mySender = sender;
             myMessage = message;
             myContainer = theContainer;
-            myUser = theContainer.getArcade().getCurrentUser();
+//            myUser = theContainer.getArcade().getCurrentUser(); // @deprecated
+            myUser = theContainer.getArcade().getModelInterface().getUser(theContainer.getArcade().getUsername());
+
             sendersPic = getSendersPicture();
             this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
             initComponents();
