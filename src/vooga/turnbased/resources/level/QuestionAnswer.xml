@@ -61,7 +61,7 @@
           <x>3</x>
           <y>2</y>
         </param>
-        <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
+        <image>src/vooga/turnbased/resources/image/questionanswergame/npc1.png</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -110,7 +110,7 @@
           <x>5</x>
           <y>2</y>
         </param>
-        <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
+        <image>src/vooga/turnbased/resources/image/questionanswergame/npc2.png</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -159,7 +159,7 @@
           <x>7</x>
           <y>2</y>
         </param>
-        <image>src/vooga/turnbased/resources/image/mapobject/ProfOak.png</image>
+        <image>src/vooga/turnbased/resources/image/questionanswergame/npc3.png</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -231,7 +231,7 @@
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
       <modes>map1</modes>
       <condition>NO_ACTION</condition>
-      <image>src/vooga/turnbased/resources/image/mapobject/grass.png</image>
+      <image>src/vooga/turnbased/resources/image/questionanswergame/tile.jpg</image>
     </staticSprite>
     <player>
       <object>
