@@ -8,6 +8,12 @@ import util.input.core.KeyboardController;
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 
+/**
+ * MapMode extension to repond to more input events
+ * 
+ * @author rex
+ * 
+ */
 public class TRexMapMode extends MapMode {
 
 	public TRexMapMode(GameManager gm, String modeName,
@@ -21,10 +27,9 @@ public class TRexMapMode extends MapMode {
 		involvedIDs.add(getPlayer().getID());
 		flagCondition("viewstats", involvedIDs);
 	}
-	
+
 	/**
-	 * cheat key
-	 * for debugging purposes
+	 * cheat key for debugging purposes
 	 */
 	public void jumpToLevelTwo() {
 		List<Integer> involvedIDs = new ArrayList<Integer>();
