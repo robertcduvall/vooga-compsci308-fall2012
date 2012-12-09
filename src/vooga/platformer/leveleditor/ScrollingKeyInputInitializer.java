@@ -41,10 +41,10 @@ public class ScrollingKeyInputInitializer {
     public KeyboardController getInputListener() {
         KeyboardController kc = new KeyboardController(myLevel);
         try {
-            kc.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myLevel, "goLeft");
-            kc.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myLevel, "goRight");
-            kc.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, myLevel, "stop");
-            kc.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, myLevel, "stop");
+            kc.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, this, "goLeft");
+            kc.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, this, "goRight");
+            kc.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, this, "stop");
+            kc.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, this, "stop");
         }
         catch (NoSuchMethodException e) {
             System.out.println("Error initializing KeyboardController: no such method");
@@ -78,7 +78,7 @@ public class ScrollingKeyInputInitializer {
             myAcceleration = 0;
     }
 
-    public void bumpLeft () {
+    private void bumpLeft () {
         System.out.println("Already at beginning!");
         // TODO: add code to animate bumping motion (if there's time, there
         // never is)
