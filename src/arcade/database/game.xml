@@ -130,4 +130,10 @@
 		<tags/>
 		<filepath>games.mindchallenge.MindChallenge</filepath>
 </game>
+<game id="20">
+		<name>The Simple Lord of the Rings Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.lotrsimple.LOTRSimpleGame</filepath>
+</game>
 </gamelist>
