@@ -36,6 +36,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private static final String WIDTH_KEY = "width";
     private static final String HEIGHT_KEY = "height";
     private static final String HEALTH_KEY = "health";
+    private static final String X_VELOCITY_KEY = "xvel";
+    private static final String Y_VELOCITY_KEY = "yvel";
     private static final String SAVE_AS_KEY = "save as";
     private static final String AI_KEY = "AI Type";
     /*The AI types are hard coded at this point because I was unable to find a way to
@@ -125,11 +127,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      */
     private void makeEnemyOptionsPane () {
         spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
-        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(3));
-        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(3));
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position", new NumericJTextField(3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position", new NumericJTextField(3));
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+        spriteOptionsPane.addField(X_VELOCITY_KEY, "X Velocity", new NumericJTextField(3));
+        spriteOptionsPane.addField(Y_VELOCITY_KEY, "Y Velocity", new NumericJTextField(3));
         spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
     }
     
@@ -144,6 +148,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+        spriteOptionsPane.addField(X_VELOCITY_KEY, "X Velocity", new NumericJTextField(3));
+        spriteOptionsPane.addField(Y_VELOCITY_KEY, "Y Velocity", new NumericJTextField(3));
         spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
     }
     
@@ -158,6 +164,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(Integer.toString(s.getSize().width), 3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
+        spriteOptionsPane.addField(X_VELOCITY_KEY, "X Velocity", new NumericJTextField(Integer.toString(s.getVelocity().x),3));
+        spriteOptionsPane.addField(Y_VELOCITY_KEY, "Y Velocity", new NumericJTextField(Integer.toString(s.getVelocity().y),3));
         spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
     }
     
@@ -451,7 +459,8 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             Dimension size = new Dimension(Integer.parseInt(spriteOptionsPane.getResult(WIDTH_KEY)),
                               Integer.parseInt(spriteOptionsPane.getResult(HEIGHT_KEY)));
             Dimension bounds = myCanvas.getSize();
-            Point velocity = new Point(0,0);
+            Point velocity = new Point(Integer.parseInt(spriteOptionsPane.getResult(X_VELOCITY_KEY)),
+                                       Integer.parseInt(spriteOptionsPane.getResult(Y_VELOCITY_KEY)));
             int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
             Enemy newEnemy = new Enemy(position, size, bounds, imagePath, velocity, health);
             AI ai = (AI) Reflection.createInstance("vooga.shooter.gameObjects.intelligence."

@@ -18,7 +18,7 @@ import vooga.shooter.gameObjects.Sprite;
  * Maintains/Updates Sprites contained in a single level of the game
  * (This is derived from a previous cs308 project)
  * 
- * @author Alex Browne, Niel Lebeck, Connor Gordon
+ * @author Alex Browne, Niel Lebeck, Connor Gordon, Zachary Hopping
  *      edited by Tommy Petrilak
  * 
  */
