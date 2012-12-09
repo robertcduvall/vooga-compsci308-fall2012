@@ -230,7 +230,7 @@ public class InteractionPanel {
 	}
 
 	protected OptionObject getOptionByIndex(int index) {
-		if (myOptionObjects == null) {
+		if ((myOptionObjects == null) || myOptionObjects.isEmpty()) {
 			return null;
 		}
 		return myOptionObjects.get(0);

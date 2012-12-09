@@ -11,15 +11,33 @@ import util.input.configurecontrollergui.view.Frame;
 import util.input.configurecontrollergui.view.RadioButtonView;
 import util.input.core.KeyboardController;
 
+/**
+ * This class pops up 2 GUIs:
+ * 1 is a list of current controller mappings of buttons and actions
+ * 2 is a GUI displaying a controller
+ * Clicking on a radio button in the list
+ * and then click on a button in the controller GUI
+ * Pressing "ENTER" assigns this newly clicked button
+ * to the action clicked in the list.
+ * It swaps positions with the older button being clicked in the list as shown when you run the program.
+ * 
+ * There is a Config.java where the developer needs to assign which grid numbers map to a button description
+ * in the GUI created.
+ * This map needs to be complete in order for clicking a button on the GUI to work
+ * 
+ * @author Amay, Lance
+ *
+ */
 public class Main {
 
     private static final Dimension SIZE =
             new Dimension(Config.FRAME_WIDTH, Config.FRAME_HEIGHT);
 
     private static final String TITLE = "Game Settings";
+    private static ViewFactory myViewFactory;
+    private static KeyboardController gameController;
 
     /**
-     * Runs the GEDIVA project
      * 
      * @param args unused inputs
      * @throws InvalidXMLTagException 
@@ -29,7 +47,7 @@ public class Main {
      */
     public static void main (String[] args) throws RepeatedColumnNameException, InvalidXMLTagException, NoSuchMethodException, IllegalAccessException {
         Frame myDisplayFrame = new Frame(SIZE);
-        KeyboardController gameController = new KeyboardController(myDisplayFrame);
+        gameController = new KeyboardController(myDisplayFrame);
         Main randObj = new Main();
         gameController.setControl(KeyEvent.VK_SPACE, KeyEvent.KEY_PRESSED, randObj, "doNothing", "Space Pressed", "DO NOTHING!!");
         gameController.setControl(KeyEvent.VK_UP, KeyEvent.KEY_PRESSED, randObj, "doSomething", "Up Pressed", "DO SOMETHING!!");
@@ -41,19 +59,20 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
         
+        Config.initMap();
 
-        ViewFactory viewFactory = new ViewFactory(myDisplayFrame, gameController);
-        viewFactory.generateHeader();
-        viewFactory.generateGrid();
-        viewFactory.generateRadioButtons();
-        
+        myViewFactory = new ViewFactory(myDisplayFrame, gameController);
+        myViewFactory.generateHeader();
+        myViewFactory.generateGrid();
+        myViewFactory.generateRadioButtons();
+        gameController.setControl(KeyEvent.VK_ENTER, KeyEvent.KEY_PRESSED, myViewFactory, "swap", "Enter Pressed", "SWAP");
     }
     
-    public void doNothing() {
-        System.out.println("I DO NOTHING");
+    public void doNothing() throws NoSuchMethodException, IllegalAccessException {
+        System.out.println("Space called me earlier");
     }
     
     public void doSomething() {
-        System.out.println("Still don't really do anything");
+        System.out.println("Up called me earlier");
     }
 }
