@@ -14,6 +14,10 @@ import vooga.shooter.graphics.DrawableComponent;
  * pointers to each other, level design as well as order can be easily
  * manipulated.
  * 
+ * The levels themselves currently all use Random generation in terms of number
+ * of enemies, types of enemies, and speeds/starting positions so that the game
+ * is different every time it is played.
+ * 
  * This Main method calls the Game class in vooga.shooter.gameplay and uses the
  * characters/gameObjects stored there.
  * 
