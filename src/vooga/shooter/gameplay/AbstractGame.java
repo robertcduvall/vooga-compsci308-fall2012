@@ -37,7 +37,7 @@ import arcade.gamemanager.GameSaver;
 /**
  * Initializes the top-down shooter game and owns all sprites and levels
  * initiated throughout the course of the game.
- * 
+ *
  * @author Tommy Petrilak
  * @author Stephen Hunt
  * @author Jesse Starr
