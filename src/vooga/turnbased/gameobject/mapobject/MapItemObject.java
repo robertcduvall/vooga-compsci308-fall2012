@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gui.GameWindow;
 
@@ -19,8 +20,8 @@ public class MapItemObject extends MapObject {
 
     /**
      * Creates the MapItemObject that will be used in MapMode.
-     *
-     * @param allowableModes 
+     * 
+     * @param allowableModes
      * @param condition GameEvent that can be passed to GameManager.
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
@@ -30,6 +31,13 @@ public class MapItemObject extends MapObject {
         super(allowableModes, condition, location, mapImage);
         myPickupSoundSwitch = true;
 
+    }
+
+    public MapItemObject (Set<String> allowableModes, String condition,
+            Image mapImage, List<String> locationPoint) {
+        this(allowableModes, condition, new Point(
+                Integer.parseInt(locationPoint.get(0)),
+                Integer.parseInt(locationPoint.get(1))), mapImage);
     }
 
     /**

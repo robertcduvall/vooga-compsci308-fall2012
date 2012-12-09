@@ -30,6 +30,11 @@ public class TRexMonster extends BattleObject {
         super(allowableModes, condition, stats, name, image);
     }
     
+    public TRexMonster (Set<String> allowableModes, String condition,
+            Image image, List<String> stats) {
+        super(allowableModes, condition, image, stats);
+    }
+    
     @Override
     public void doRandomOption (BattleObject target, List<String> battleMessages) {
         Random randomGenerator = new Random();

@@ -3,6 +3,7 @@ package vooga.turnbased.gameobject.mapobject;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gamecore.gamemodes.MapMode;
 import vooga.turnbased.gui.GamePane;
@@ -39,8 +40,8 @@ public class MapMovingObject extends MapObject {
      * @param location Location of object on the map.
      * @param mapImage Image of the object.
      */
-    public MapMovingObject (Set<String> allowableModes, String condition, Point location,
-                            Image mapImage) {
+    public MapMovingObject (Set<String> allowableModes, String condition,
+            Point location, Image mapImage) {
         super(allowableModes, condition, location, mapImage);
         myMovementTimePerTile = INITIAL_MOVEMENT_TIME;
         myXOriginInTile = 0;
@@ -49,6 +50,13 @@ public class MapMovingObject extends MapObject {
         myDirection = new Point(0, 0);
         myPreviousLocation = getLocation();
         myCanMove = true;
+    }
+
+    public MapMovingObject (Set<String> allowableModes, String condition,
+            Image mapImage, List<String> locationPoint) {
+        this(allowableModes, condition, new Point(
+                Integer.parseInt(locationPoint.get(0)),
+                Integer.parseInt(locationPoint.get(1))), mapImage);
     }
 
     /**
@@ -71,13 +79,16 @@ public class MapMovingObject extends MapObject {
         if (isMoving()) {
             myTimePassed += delayTime;
         }
-        myXProportion = myDirection.x * ((double) myTimePassed / myMovementTimePerTile);
-        myYProportion = myDirection.y * ((double) myTimePassed / myMovementTimePerTile);
+        myXProportion = myDirection.x
+                * ((double) myTimePassed / myMovementTimePerTile);
+        myYProportion = myDirection.y
+                * ((double) myTimePassed / myMovementTimePerTile);
         // stop movements
         if (myTimePassed >= myMovementTimePerTile) {
             finishMovement();
         }
-        calcScreenDisplacement(getTileDimension().width, getTileDimension().height);
+        calcScreenDisplacement(getTileDimension().width,
+                getTileDimension().height);
     }
 
     /**
@@ -106,8 +117,10 @@ public class MapMovingObject extends MapObject {
     public void paint (Graphics g) {
         Point offset = new Point(getOffset());
         if (isMoving()) {
-            offset.x = getOffset().x - myDirection.x * getTileDimension().width + myXOriginInTile;
-            offset.y = getOffset().y - myDirection.y * getTileDimension().height + myYOriginInTile;
+            offset.x = getOffset().x - myDirection.x * getTileDimension().width
+                    + myXOriginInTile;
+            offset.y = getOffset().y - myDirection.y
+                    * getTileDimension().height + myYOriginInTile;
         }
         paintInProportion(g, offset, getTileDimension(), SIZE_RELATIVE_TO_TILE);
     }
@@ -215,7 +228,8 @@ public class MapMovingObject extends MapObject {
      * @return if the movement was successful
      */
     public boolean tryMoveTo (Point dest) {
-        Point direction = new Point(dest.x - getLocation().x, dest.y - getLocation().y);
+        Point direction = new Point(dest.x - getLocation().x, dest.y
+                - getLocation().y);
         return tryMove(direction);
     }
 

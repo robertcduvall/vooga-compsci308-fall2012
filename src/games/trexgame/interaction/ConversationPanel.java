@@ -1,4 +1,4 @@
-package vooga.turnbased.gui.interactionpanel;
+package games.trexgame.interaction;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.util.List;
 import util.graphicprocessing.FontEffect;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
+import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 
 public class ConversationPanel extends InteractionPanel {

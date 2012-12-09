@@ -1,17 +1,12 @@
 package vooga.shooter.gameObjects;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
-import util.input.core.KeyboardController;
 
 
 /**
@@ -47,7 +42,7 @@ public class Player extends Sprite {
      * through KeyEvents or collisions
      */
     @Override
-    void setMethods () {
+    public void setMethods () {
         getMapper().addPair(Integer.toString(KeyEvent.VK_LEFT), new SpriteActionInterface() {
             public void doAction (Object ... o) {
                 if (checkBounds(LEFT_BOUND)) {
