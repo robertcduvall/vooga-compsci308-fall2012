@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 
 
@@ -56,6 +57,19 @@ public class Level {
      */
     public Iterable<Sprite> getSpriteList () {
         return Collections.unmodifiableList(mySprites);
+    }
+    
+    /**
+     * Returns unmodifiable version of all players contained in the level.
+     * Used for adding AI to Enemies in the Level Editor
+     * @return list of players
+     */
+    public List<Player> getPlayerList () {
+        List<Player> playerList = new ArrayList<Player>();
+        for(Sprite s: mySprites) {
+            if (s instanceof Player) playerList.add((Player) s);
+        }
+        return Collections.unmodifiableList(playerList);
     }
 
     /**
