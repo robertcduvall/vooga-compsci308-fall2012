@@ -36,6 +36,7 @@ public class InteractionPanel {
 	private Graphics myImageGraphics;
 	private List<OptionObject> myOptionObjects;
 	private List<Point> myOptionPositions;
+	private Image myBackground;
 
 	/**
 	 * constructor of Interaction Panel
@@ -56,6 +57,7 @@ public class InteractionPanel {
 	}
 
 	protected InteractionPanel() {
+		setBackground("src/vooga/turnbased/resources/image/GUI/dialogue1.png");
 		initializePanelImage();
 		myOptionObjects = new ArrayList<OptionObject>();
 		myOptionPositions = initializeOptionPositions();
@@ -85,20 +87,21 @@ public class InteractionPanel {
 	}
 
 	protected void initializePanelImage() {
-		try {
-			if (myPanelImage == null) {
-				myPanelImage = ImageIO
-						.read(new File(
-								"src/vooga/turnbased/resources/image/GUI/dialogue1.png"));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		myPanelImage = myBackground;
 		myImageGraphics = myPanelImage.getGraphics();
 	}
 
 	protected void setPanelImage(Image panelImage) {
 		myPanelImage = panelImage;
+	}
+	
+	protected void setBackground(String imageAddress) {
+		try {
+			myBackground = ImageIO.read(new File(
+					imageAddress));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -225,7 +228,7 @@ public class InteractionPanel {
 	protected Point getOptionPosition(int index) {
 		return myOptionPositions.get(index);
 	}
-	
+
 	protected OptionObject getOptionByIndex(int index) {
 		if (myOptionObjects == null) {
 			return null;
