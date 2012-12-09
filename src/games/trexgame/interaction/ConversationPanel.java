@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 import util.graphicprocessing.FontEffect;
+import vooga.turnbased.gameobject.optionobject.OptionBack;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
@@ -45,7 +46,7 @@ public class ConversationPanel extends InteractionPanel {
     }
 
     private OptionObject makeQuitOption () {
-        OptionObject quitOption = OptionObject.getDefaultOptionObject("I don't care~!");
+        OptionObject quitOption = OptionBack.getDefaultOptionObject("I don't care~!");
         return quitOption;
     }
 }
