@@ -301,10 +301,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         
         else if (source == helpBtn) {
-               JOptionPane.showMessageDialog(null, "Left click an existing sprite to select it."   + "\n" +
-                                                      "A selected sprite can be deleted by clicking the delete button." + "\n" +
-                                       "Right click to create a sprite at the pointer's location." + "\n" +
-                                         "Click save to save your level to XML.");
+            JOptionPane.showMessageDialog(null, "Left click an existing sprite to select it."   + "\n" +
+                    "A selected sprite can be deleted by clicking the delete button." + "\n" +
+                    "Right click to create a sprite at the pointer's location." + "\n" +
+                    "Right click the player to edit attributes." + "\n" +
+                    "Click save to save your level to XML." + "\n" );
         }
         
         else {
