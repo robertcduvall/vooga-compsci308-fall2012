@@ -68,16 +68,13 @@
 		<rating>7</rating>
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
-<review>I'm wondering how this stores things!
-
-Will this help me figure it out?!- obukspan</review>
 </game>
 	<game id="10">
 		<name>The Formic War</name>
 		<rating></rating>
 		<tags></tags>
-		<filepath>games.par24game.SmartEnemyGame</filepath></game>
-
+		<filepath>games.par24game.SmartEnemyGame</filepath>
+		</game>
 <game id="11">
 		<name>Rob's Snake Game</name>
 		<rating/>
