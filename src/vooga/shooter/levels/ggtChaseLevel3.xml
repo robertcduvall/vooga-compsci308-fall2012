@@ -12,7 +12,7 @@
 <size height="40" width="40"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="0" y="-5"/>
 <health value="40"/>
 <ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
 </Enemy>
@@ -21,7 +21,7 @@
 <size height="40" width="40"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="2" y="-2"/>
 <health value="40"/>
 <ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
 </Enemy>
@@ -30,7 +30,7 @@
 <size height="40" width="40"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="-2" y="-2"/>
 <health value="40"/>
 <ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
 </Enemy>
@@ -39,7 +39,7 @@
 <size height="40" width="40"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="2" y="2"/>
 <health value="40"/>
 <ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
 </Enemy>
