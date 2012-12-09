@@ -11,8 +11,14 @@ import util.particleEngine.GravitationalParticleEngine;
 import util.particleEngine.ParticleEngine;
 import util.particleEngine.ParticleSystem;
 
+/**
+ * Demonstrates the explosion type of particle engine effect.
+ * 
+ * @author Kathleen
+ *
+ */
 public class Fireworks extends ParticleSystem{
-
+	private static int numberOfParticleEngines = 5;
     private static int myTolerance = 15;
     private static int myLength = 50;
     private static int myDensity = 100;
@@ -38,7 +44,7 @@ public class Fireworks extends ParticleSystem{
 		ImageIcon temp = new ImageIcon(
                 Explosion.class.getResource("orangeParticle.png"));
 		Image myImage = temp.getImage();
-		for (int k = 0; k < 5; k++){
+		for (int k = 0; k < numberOfParticleEngines; k++){
 			addParticleEngine(myDensity, myImage, position, getVelocity().getRotatedCopy(30*k), 
 				myTolerance, myLength, angleSpan, numDirections, RGBAscales, RGBAtolerances, loop);
 		}

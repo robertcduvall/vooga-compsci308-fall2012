@@ -3,24 +3,27 @@ package util.networking.datatable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import util.datatable.ModifiableRowElement;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
-import util.datatable.exceptions.UnrecognizedColumnNameException;
 import util.networking.Client;
-import util.networking.chat.ChatCommand;
 
 public class NetworkedDataTable extends Client {
+    
+    List<DataListener> myDataListeners;
     
     //Client -- Modifier Client
     private DataProtocol myProtocol;
     
     public NetworkedDataTable (DataProtocol d, String host) throws IOException {
         super(host, d.getPort());
+        myDataListeners = new ArrayList<DataListener>();
     }
 
     public void addNewColumns (String strKey) {
@@ -28,6 +31,14 @@ public class NetworkedDataTable extends Client {
         addNewColumns(strArray);
        
         
+    }
+    
+    public void addListener(DataListener l){
+        myDataListeners.add(l);
+    }
+    
+    public void removeListener(DataListener l){
+        myDataListeners.remove(l);
     }
     
     public void addNewColumns (String[] strArray){
@@ -87,7 +98,7 @@ public class NetworkedDataTable extends Client {
     
  
     public void save (String location){
-        send(myProtocol.createSave());
+        send(myProtocol.createSave(location));
     }
 
     public void load (String location) throws
@@ -117,5 +128,38 @@ public class NetworkedDataTable extends Client {
         catch (InvocationTargetException e) {
         }
     }
+    
+    private void processFound(String input){
+        fireFoundRowElementEvent(new UnmodifiableRowElement(myProtocol.getRowElement(input)));
+    }
+    private void processColumnNames(String input){
+        fireColumnNamesEvent(myProtocol.getColumnNames(input));
+    }
+    private void processDataRows(String input){
+        fireDataRowsEvent(myProtocol.getDataRows(input));
+    }
+    
+    private void processUnknown(String input){}
+    
+    
+    private synchronized void fireColumnNamesEvent (Collection<String> names) {
+        ColumnNamesEvent e = new ColumnNamesEvent(this, names);
+        for (DataListener dl : myDataListeners) {
+            dl.handleColumnNamesEvent(e);
+        }
+    }
 
+    private synchronized void fireDataRowsEvent (Collection<UnmodifiableRowElement> dataRows) {
+        DataRowsEvent e = new DataRowsEvent(this, dataRows);
+        for (DataListener dl : myDataListeners) {
+            dl.handleDataRowsEvent(e);
+        }
+    }
+
+    private void fireFoundRowElementEvent (UnmodifiableRowElement element) {
+        FoundRowElementEvent e = new FoundRowElementEvent(this, element);
+        for (DataListener dl : myDataListeners) {
+            dl.handleFoundRowElementEvent(e);
+        }
+    }
 }

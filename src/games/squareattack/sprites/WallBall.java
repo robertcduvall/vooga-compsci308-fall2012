@@ -5,13 +5,14 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+
 /**
  * 
  * @author Ben Schwab
- *
+ * 
  */
 public class WallBall extends Sprite {
-    
+
     private int myRadius;
     private Color myColor = Color.LIGHT_GRAY;
 

@@ -10,13 +10,13 @@ import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameplay.Game;
 
-
 /**
- * First level (initializes enemies, sets winning conditions)
+ * Third level (initializes enemies, sets winning conditions)
  * 
  * @author Tommy Petrilak
  * 
  */
+
 public class Level3 extends Level {
 
     private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";

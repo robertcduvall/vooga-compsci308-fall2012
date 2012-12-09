@@ -248,6 +248,7 @@ public class LevelXmlParser {
         if (XmlUtilities.getChildContent(objectElement, IMAGE) != null) {
             image = XmlUtilities.getChildContentAsImage(objectElement, IMAGE);
         }
+        List<GameObject> childrenObjects = parseChildrenGameObjects(objectElement);
         Element paramElement = XmlUtilities.getElement(objectElement, "param");
         List<Element> parameters = (List<Element>) XmlUtilities
                 .getElements(paramElement);
@@ -260,10 +261,30 @@ public class LevelXmlParser {
                     condition, image);
         }
         else {
-            return (GameObject) Reflection.createInstance(className, modes,
+        	if (childrenObjects.isEmpty()) {
+        		return (GameObject) Reflection.createInstance(className, modes,
                     condition, image, stringParams);
+        	}
+        	else {
+        		return (GameObject) Reflection.createInstance(className, modes,
+                        condition, image, stringParams, childrenObjects);
+        	}
         }
-
+    }
+    
+    private List<GameObject> parseChildrenGameObjects(Element objectElement) {
+        List<GameObject> childrenObjects = new ArrayList<GameObject>();
+        List<Element> childrenObjectElements = (List<Element>) XmlUtilities.getElements(
+        		objectElement, "childobject");
+        if (childrenObjectElements != null) {
+        	for (Element childElement : childrenObjectElements) {
+                GameObject newObject = parseGameObject(childElement);
+                if (newObject != null) {
+                    childrenObjects.add(newObject);
+                }
+        	}
+        }
+        return childrenObjects;
     }
 
     /**

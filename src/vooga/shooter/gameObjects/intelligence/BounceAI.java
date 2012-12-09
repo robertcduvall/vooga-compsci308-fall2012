@@ -13,8 +13,8 @@ public class BounceAI extends AI{
     
     private boolean myGoingRight; // true for right, false for left
 
-    public BounceAI (Sprite owner) {
-        super(owner);
+    public BounceAI (Sprite owner, Player player) {
+        super(owner, player);
         myGoingRight = false;
     }
 

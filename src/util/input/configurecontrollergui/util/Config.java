@@ -1,19 +1,21 @@
 package util.input.configurecontrollergui.util;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.HashMap;
 
 
+/**
+ * The Config file serves as a global
+ * set of constants for the whole
+ * configure controller GUI.
+ * 
+ * @author Lance, Amay
+ *
+ */
 public class Config {
-    /**
-     * default canvas width
-     */
+
     public static final int FRAME_WIDTH = 900;
-    /**
-     * default canvas height
-     */
     public static final int FRAME_HEIGHT = 500;
-    
-    //header stuff
     public static final int HEADER_WIDTH = FRAME_WIDTH;
     public static final int HEADER_HEIGHT = FRAME_HEIGHT/8;
     public static final int HEADER_X_LOC = 0;
@@ -28,6 +30,18 @@ public class Config {
     public static final int GRID_NUM_ROWS = 15;
     public static final int GRID_NUM_COLUMNS = 19;
     
+    public static HashMap<Integer, String> gridMappings = new HashMap<Integer, String>();
     
+    public static void initMap() {
+        gridMappings.put(79, "Up Pressed");
+        gridMappings.put(80, "Up Pressed");
+        gridMappings.put(98, "Up Pressed");
+        gridMappings.put(99, "Up Pressed");
+    }
     
+    public static String findButton(int num) {
+        String res = gridMappings.get(num);
+        if (res == null) return "";
+        else return res;
+    }
 }

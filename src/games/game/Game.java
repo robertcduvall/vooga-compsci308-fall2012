@@ -14,7 +14,11 @@ import arcade.gamemanager.GameSaver;
 
 /**
  * This game is a first person shooter - something none of the game
- * engines supported. I started off ambitious and...well...
+ * engines supported. I started off ambitious and...well... I realize
+ * I probably should have picked a game genre supported by the engine
+ * but I was much too excited about this. Nevertheless, I did use
+ * several utility classes from the repository, namely the particle
+ * engine, the sound utility and the input team's controllers.
  * 
  * @author Paul Dannenberg
  * @author Robert C. Duvall

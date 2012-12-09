@@ -57,7 +57,7 @@
           <x>8</x>
           <y>7</y>
         </param>
-        <image>src/vooga/turnbased/resources/image/mapobject/Nurse.png</image>
+        <image>src/games/AdventureRPG/enemy.png</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -65,7 +65,7 @@
         <class>games.AdventureRPG.AdventureMob</class>
         <condition>NO_ACTION</condition>
         <param>
-          <name>Chansey</name>
+          <name>Warrior</name>
           <statName>maxHealth</statName>
           <value>100</value>
           <statName>health</statName>
@@ -77,7 +77,7 @@
           <statName>energy</statName>
           <value>3</value>
         </param>
-        <image>src/vooga/turnbased/resources/image/battleobject/113a.gif</image>
+        <image>src/games/AdventureRPG/enemy-fight.png</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -85,7 +85,7 @@
         <class>games.AdventureRPG.AdventureMob</class>
         <condition>NO_ACTION</condition>
         <param>
-          <name>Agent</name>
+          <name>Battlemaster</name>
           <statName>maxHealth</statName>
           <value>200</value>
           <statName>health</statName>
@@ -97,7 +97,7 @@
           <statName>energy</statName>
           <value>3</value>
         </param>
-        <image>src/vooga/turnbased/resources/image/battleobject/242a.gif</image>
+        <image>src/games/AdventureRPG/swordsman.gif</image>
       </object>
     </sprite>
     <sprite>
@@ -213,7 +213,7 @@
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
       <modes>map1</modes>
       <condition>NO_ACTION</condition>
-      <image>src/vooga/turnbased/resources/image/mapobject/grass.png</image>
+      <image>src/games/AdventureRPG/dirt.png</image>
     </staticSprite>
     <staticSprite>
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
@@ -301,7 +301,7 @@
         <class>games.AdventureRPG.AdventureMob</class>
         <condition>endgame3</condition>
         <param>
-          <name>Metal Link</name>
+          <name>Bruce</name>
           <statName>maxHealth</statName>
           <value>250</value>
           <statName>health</statName>
@@ -313,7 +313,7 @@
           <statName>energy</statName>
           <value>4</value>
         </param>
-        <image>src/vooga/turnbased/resources/image/battleobject/001b.png</image>
+        <image>src/games/AdventureRPG/diehard.jpg</image>
       </object>
       <object>
         <createOn>start</createOn>
@@ -333,7 +333,7 @@
           <statName>energy</statName>
           <value>5</value>
         </param>
-        <image>src/vooga/turnbased/resources/image/battleobject/006b.png</image>
+        <image>src/games/AdventureRPG/chucknorris.jpg</image>
       </object>
     </player>
   </spriteDeclarations>

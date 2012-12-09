@@ -13,8 +13,8 @@ public class RandomAI extends AI{
 
     private int myTimer;
     
-    public RandomAI (Sprite owner) {
-        super(owner);
+    public RandomAI (Sprite owner, Player player) {
+        super(owner, player);
         myTimer = 0;
     }
 
@@ -31,6 +31,9 @@ public class RandomAI extends AI{
             int newY = (int)(Math.sqrt((currentMagnitude*currentMagnitude) - (newX*newX)));
             if (Math.random() > .5) {
                 newY = newY * -1;
+            }
+            if (Math.random() > .5) {
+                newX = newX * -1;
             }
             mySprite.setVelocity(new Point(newX, newY));
             myTimer = 10;
