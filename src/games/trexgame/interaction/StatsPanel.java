@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.graphicprocessing.FontEffect;
+import vooga.turnbased.gameobject.battleobject.BattleObject;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
@@ -18,23 +19,23 @@ public class StatsPanel extends InteractionPanel{
 	
     private static final int FONT_SIZE = 16;
     private List<String> myStats;
+    private List<BattleObject> myBattleObjects;
 	
-	public StatsPanel() {
+	public StatsPanel(List<BattleObject> battleObjects) {
 		super();
 		myStats = new ArrayList<String>();
-		myStats.add("ATTACK: ");
+		myBattleObjects = battleObjects;
+		writeStats();
 		List<OptionObject> options = new ArrayList<OptionObject>();
 		OptionObject attack = OptionObject.getDefaultOptionObject("ATTACK: ");
 		setBackground(GameWindow.importString("StatsBackround"));
 	}
-    
-	@Override
-	public boolean highlightOption(Point focusPosition) {
-		return false;
-	}
 	
-	@Override
-	public void dehighlightOption() {
+	private void writeStats() {
+		myStats.add("Number of creatures: " + myBattleObjects.size());
+		for (BattleObject battleObject: myBattleObjects) {
+			myStats.add(battleObject.getName() + "has an attack of " + battleObject.getStat("atk"));
+		}
 	}
 	
 	@Override
