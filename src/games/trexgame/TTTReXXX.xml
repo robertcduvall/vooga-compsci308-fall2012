@@ -27,7 +27,7 @@
     </mode>
     <mode>
       <name>map1</name>
-      <class>vooga.turnbased.gamecore.gamemodes.MapMode</class>
+      <class>games.trexgame.interaction.TRexMapMode</class>
       <condition>entermap1</condition>
     </mode>
     <mode>

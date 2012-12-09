@@ -6,10 +6,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
 import util.graphicprocessing.FontEffect;
 import vooga.turnbased.gameobject.optionobject.OptionBack;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
+import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 
@@ -44,6 +50,16 @@ public class ConversationPanel extends InteractionPanel {
         }
         return panelImage;
     }
+    
+	@Override
+	protected void initializePanelImage() {
+		try {
+			setPanelImage(ImageIO.read(new File(GameWindow.importString("DialogueBox"))));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		super.initializePanelImage();
+	}
 
     private OptionObject makeQuitOption () {
         OptionObject quitOption = OptionBack.getDefaultOptionObject("I don't care~!");

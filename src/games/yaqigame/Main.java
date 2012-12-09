@@ -22,7 +22,7 @@ import vooga.platformer.core.inputinitializer.KeyControllerOnePlayerInputInitial
 
 public class Main implements IArcadeGame {
 
-    private static final String LEVEL1 = "src/games/yaqigame/level/level1.xml";
+    private static final String INSTRUCTION = "src/games/yaqigame/level/instruction.xml";
     private JFrame myFrame;
     private PlatformerController myPanel;
 
@@ -31,7 +31,7 @@ public class Main implements IArcadeGame {
      */
     public static void main (String[] args) {
         Main game = new Main();
-        game.startGame(LEVEL1);
+        game.startGame(INSTRUCTION);
     }
 
     public void startGame (String level1) {
@@ -100,7 +100,7 @@ public class Main implements IArcadeGame {
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        startGame(LEVEL1);
+        startGame(INSTRUCTION);
     }
 
     @Override
