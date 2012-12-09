@@ -1,5 +1,6 @@
 package games.JesseGame;
 
+import java.awt.Image;
 import java.io.File;
 import vooga.shooter.gameplay.AbstractGame;
 import vooga.shooter.level_editor.Level;
@@ -39,5 +40,11 @@ public class AlienShooter extends AbstractGame{
     @Override
     public String getDescription(){
         return "Kill the aliens!";
+    }
+
+    @Override
+    public Image getMainImage () {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

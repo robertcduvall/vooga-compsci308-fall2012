@@ -1,0 +1,46 @@
+<Level backgroundImage="/Users/guytracy/Documents/workspace/vooga-compsci308-fall2012/src/vooga/shooter/images/galaxy.gif">
+<Player>
+<position x="290" y="315"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/spaceship.gif"/>
+<velocity x="0" y="0"/>
+<health value="10"/>
+</Player>
+<Enemy>
+<position x="433" y="72"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+<Enemy>
+<position x="290" y="64"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+<Enemy>
+<position x="178" y="59"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+<Enemy>
+<position x="81" y="53"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+</Level>

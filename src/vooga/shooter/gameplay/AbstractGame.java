@@ -46,20 +46,12 @@ import arcade.gamemanager.GameSaver;
 public abstract class AbstractGame extends JComponent implements DrawableComponent, IArcadeGame {
 
     private static final String HIT_BY = "hitby";
-    private static final String GAME_NAME = "Space Invaders";
-    private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
-    private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
-    private static final int PLAYER_HEALTH = 10;
-    private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
-    private static final int PLAYER_START_HEIGHT = 50;
+    private static final String WIN_GAME = "vooga/shooter/images/winscreen.gif";
 
     private List<ParticleSystem> myParticleSystems;
-    private List<Sprite> mySprites;
     private Player myPlayer;
-    private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
-    private Point myPlayerOneStart;
     private JFrame myFrame;
     private Image myGameImage;
     private KeyboardController myKeyContr;
@@ -70,27 +62,15 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      * Game constructor (initializes anything not set in initializeGame())
      */
     public AbstractGame () {
-//        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
-//        myGameImage = imageIcon.getImage();
+        
     }
 
     private void initializeGame (Canvas c) {
         myCanvas = c;
-        mySprites = new ArrayList<Sprite>();
-        myEnemies = new ArrayList<Enemy>();
         myParticleSystems = new ArrayList<ParticleSystem>();
-        myPlayerOneStart =
-                new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
-        myPlayer =
-                new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                        myCanvas.getHeight()),
-                           PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
-
-        addSprite(myPlayer);
         
         createGame();
         startLevel(myCurrentLevel);
-        myPlayer = myCurrentLevel.getPlayer();
         setupInput();
         update();
     }
@@ -100,6 +80,7 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     private void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
+        myPlayer = myCurrentLevel.getPlayer();
     }
     
     private void setupInput() {
@@ -141,7 +122,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      */
     @Override
     public void update () {
-
         if (myPlayer.isDead()) {
             myCurrentLevel.setNextLevel(new LostGame(this));
             myCurrentLevel = myCurrentLevel.getNextLevel();
@@ -149,14 +129,8 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
             startLevel(myCurrentLevel);
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
-            myCurrentLevel = myCurrentLevel.getNextLevel();
-            myPlayer = myCurrentLevel.getPlayer();
-            startLevel(myCurrentLevel);
-        }
-        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
-            myCurrentLevel.setNextLevel(new WonGame(this));
-            myCurrentLevel = myCurrentLevel.getNextLevel();
-            startLevel(myCurrentLevel);
+            startLevel(myCurrentLevel.getNextLevel());
+            setupInput();
         }
         for (Sprite s : myCurrentLevel.getSpriteList()) {
             s.update();
@@ -246,70 +220,10 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);
         }
-        
-        removeDeadSprites();
-    }
-    
-    private void removeDeadSprites(){
-        Set<Sprite> toRemove = new HashSet<Sprite>();
-        for(Sprite s : mySprites){
-            if(s.getImage() == null){
-                toRemove.add(s);
-            }
+
+        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
+            myCurrentLevel.setBackgroundImage(WIN_GAME);
         }
-        mySprites.removeAll(toRemove);
-    }
-
-    /**
-     * Add a sprite to the list of sprites currently existing in the Game.
-     * 
-     * @param sprite to be added to list of existing sprites
-     */
-    public void addSprite (Sprite sprite) {
-        getSprites().add(sprite);
-    }
-
-    /**
-     * Add an enemy to the list of enemies currently existing in the Game.
-     * 
-     * @param enemy to be added to list of existing enemies
-     */
-    public void addEnemy (Enemy enemy) {
-        getEnemies().add(enemy);
-        getSprites().add(enemy);
-    }
-
-    /**
-     * Returns a list of all players/enemies in
-     * the game.
-     * 
-     * @return mySprites
-     */
-    public List<Sprite> getSprites () {
-        return mySprites;
-    }
-
-    /**
-     * @param sprites the new list to set the
-     *        current mySprites to
-     */
-    public void setSprites (List<Sprite> sprites) {
-        mySprites = sprites;
-    }
-
-    /**
-     * @return the myEnemies
-     */
-    public List<Enemy> getEnemies () {
-        return myEnemies;
-    }
-
-    /**
-     * @param enemies the new list of enemies to set
-     *        the current list to
-     */
-    public void setEnemies (List<Enemy> enemies) {
-        myEnemies = enemies;
     }
 
     /**
@@ -323,7 +237,7 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        myFrame = new JFrame(GAME_NAME);
+        myFrame = new JFrame(getName());
         myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         myCanvas = new Canvas(this);
         initializeGame(myCanvas);
@@ -340,19 +254,13 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     }
 
     @Override
-    public Image getMainImage () {
-        return myGameImage;
-    }
+    public abstract Image getMainImage ();
 
     @Override
-    public String getDescription () {
-        return GAME_DESCRIPTION;
-    }
+    public abstract String getDescription();
 
     @Override
-    public String getName () {
-        return GAME_NAME;
-    }
+    public abstract String getName();
 
     @Override
     public void setMouseListener (MouseController mouseMotion) {
