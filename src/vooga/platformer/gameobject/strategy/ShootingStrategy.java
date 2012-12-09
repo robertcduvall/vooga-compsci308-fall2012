@@ -17,7 +17,7 @@ public class ShootingStrategy implements ControlStrategy {
     private static final int Y_OFFSET = 20;
     private GameObject myGO;
     private static final int BULLET_SIZE = 8;
-    private static final int DEFAULT_XVELOCITY = 3;
+    private static final int DEFAULT_XVELOCITY = 10;
     private static final int DEFAULT_YVELOCITY = 0;
     
     private int xvelocity;

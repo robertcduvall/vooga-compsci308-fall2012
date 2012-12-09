@@ -11,9 +11,9 @@ import javax.swing.*;
 public class Main {
 
     public static void main (String[] args) {
-        JFrame frame = new JFrame("Demo Game");
+        JFrame frame = new JFrame("Halo: Combat Devolved");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PlatformerController controller = new PlatformerController("src/games/halo/autumn1.xml",
+        PlatformerController controller = new PlatformerController("src/games/halo/level0.xml",
                 new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);
         frame.pack();

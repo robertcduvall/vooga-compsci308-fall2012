@@ -57,7 +57,7 @@ import vooga.platformer.levelfileio.LevelFileWriter;
  */
 @SuppressWarnings("serial")
 public class LevelBoard extends JPanel {
-    private static final String DATA_PATH = "/src/vooga/games/halo/";
+    private static final String DATA_PATH = "/src/vooga/platformer/data/";
     private static final String DEFAULT_CAMERA = "FollowingCamera";
     private static final String DEFAULT_COLLISION_CHECKER =
             "src/vooga/platformer/collision/collisionEvents.xml";
@@ -132,10 +132,10 @@ public class LevelBoard extends JPanel {
                     ImageIcon ii = new ImageIcon(ImageIO.read(f));
                     double x = LevelBoard.this.getWidth() / 2;
                     double y = LevelBoard.this.getHeight() / 2;
-                    double w =
-                            (double) ii.getIconWidth() / (double) ii.getIconHeight() * DEFAULT_SIZE;
-                    double h =
-                            (double) ii.getIconHeight() / (double) ii.getIconWidth() * DEFAULT_SIZE;
+                    double w =    ii.getIconWidth();
+                           // (double) ii.getIconWidth() / (double) ii.getIconHeight() * DEFAULT_SIZE;
+                    double h = ii.getIconHeight();
+                           // (double) ii.getIconHeight() / (double) ii.getIconWidth() * DEFAULT_SIZE;
                     if ("StaticObject".equals(cmmd)) {
                         obj = new StaticObject(x, y, w, h, myObjID++, f);
                     }
