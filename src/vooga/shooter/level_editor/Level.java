@@ -5,8 +5,11 @@ import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 
 
@@ -57,6 +60,19 @@ public class Level {
     public Iterable<Sprite> getSpriteList () {
         return Collections.unmodifiableList(mySprites);
     }
+    
+    /**
+     * Returns unmodifiable version of all players contained in the level.
+     * Used for adding AI to Enemies in the Level Editor
+     * @return list of players
+     */
+    public List<Player> getPlayerList () {
+        List<Player> playerList = new ArrayList<Player>();
+        for(Sprite s: mySprites) {
+            if (s instanceof Player) playerList.add((Player) s);
+        }
+        return Collections.unmodifiableList(playerList);
+    }
 
     /**
      * Add specified sprite to the level
@@ -89,9 +105,15 @@ public class Level {
      * @param offsetY relative point of origin -y
      */
     public void paintSprites (Graphics g, int offsetX, int offsetY) {
+        Set<Sprite> toRemove = new HashSet<Sprite>();
         for (Sprite s : mySprites) {
+            if(s.getImage() == null){
+                toRemove.add(s);
+            }
             s.paint(g);
         }
+        
+        mySprites.removeAll(toRemove);
     }
 
     /**

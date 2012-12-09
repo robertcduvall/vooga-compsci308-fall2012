@@ -39,8 +39,6 @@ public class Enemy extends Sprite {
     }
 
     /**
-     * @deprecated Please pass in an AIType using
-     * the constructor below.
      * Constructs an enemy character for the game.
      * 
      * @param position the center of the image
@@ -82,9 +80,7 @@ public class Enemy extends Sprite {
         for (Bullet b : getBulletsFired()) {
             b.update();
         }
-        if (myAI != null) {
-            myAI.calculate();
-        }
+        myAI.calculate();
     }
 
     /**
