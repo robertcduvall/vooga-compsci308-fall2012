@@ -27,6 +27,7 @@ public class OptionMode extends GameMode {
     private static final int NPC_INDEX = 0;
     private static final int PLAYER_INDEX = 1;
     private MapObject myNPC;
+    private MapObject myPlayer;
     private InteractionPanel myPanel;
     private Image myPanelImage;
     private Point myOrigin;
@@ -43,7 +44,7 @@ public class OptionMode extends GameMode {
     public OptionMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
-        findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
+        myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
         List<OptionObject> options = new ArrayList<OptionObject>();
         myOptions = new HashMap<String, OptionObject>();
         for (GameObject option : getGameObjects()) {
@@ -103,6 +104,24 @@ public class OptionMode extends GameMode {
         int x = (windowWidth - myPanel.getPanelSize().width) / 2;
         int y = (windowHeight - myPanel.getPanelSize().height) / 2;
         return new Point(x, y);
+    }
+    
+    /**
+     * Return whoever dialogue was initiated with
+     * 
+     * @return id of sprite
+     */
+    public Integer getParticipatingNPCID() {
+        return myNPC.getID();
+    }
+    
+    /**
+     * Return whoever initiated the dialogue
+     * 
+     * @return id of sprite
+     */
+    public Integer getParticipatingPlayerID() {
+        return myPlayer.getID();
     }
 
     @Override

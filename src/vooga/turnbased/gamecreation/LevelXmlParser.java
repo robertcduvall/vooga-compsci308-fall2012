@@ -49,6 +49,7 @@ public class LevelXmlParser {
 	private static final String CAMERA_SIZE = "CameraDimension";
 	private static final String CSV_REGEX = "\\s*,\\s*";
 	private static final String PLAYER = "player";
+	private static final String PARAM = "param";
 
 	private Document myXmlDocument;
 	private Element myDocumentElement;
@@ -248,7 +249,7 @@ public class LevelXmlParser {
 			image = XmlUtilities.getChildContentAsImage(objectElement,
 					IMAGE);
 		}
-		Element paramElement = XmlUtilities.getElement(objectElement, "param");
+		Element paramElement = XmlUtilities.getElement(objectElement, PARAM);
 		List<Element> parameters = (List<Element>) XmlUtilities
 				.getElements(paramElement);
 		List<String> stringParams = new ArrayList<String>();

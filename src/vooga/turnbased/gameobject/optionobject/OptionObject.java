@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import util.graphicprocessing.FontEffect;
@@ -61,6 +62,10 @@ public class OptionObject extends GameObject {
      */
     public void setPosition (Point paintPosition) {
         myPosition = paintPosition;
+    }
+    
+    public Point getPosition() {
+        return myPosition;
     }
 
     /**
@@ -178,6 +183,10 @@ public class OptionObject extends GameObject {
      */
     public void executeOption (OptionMode myOptionMode) {
         myOptionMode.setModeIsOver();
+        List<Integer> involvedIDs = new ArrayList<Integer>();
+        involvedIDs.add(getID());
+        involvedIDs.add(myOptionMode.getParticipatingPlayerID());
+        myOptionMode.flagCondition(getConditionFlag(), involvedIDs);
     }
 
     @Override

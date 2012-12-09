@@ -22,11 +22,6 @@ public class OptionTransportObject extends OptionObject {
     }
     
     public void executeOption(OptionMode optionMode) {
-        List<Integer> involvedIDs = new ArrayList<Integer>();
-        involvedIDs.add(getID());
-        // each teleporter along with the flagged condition needs to supply id of 
-        // teleported sprite (to transfer it), and its id (containing info about destination)
-        // involvedIDs.add(someHowGetPlayersId); 
-        optionMode.flagCondition(getConditionFlag(), involvedIDs);
+        super.executeOption(optionMode);
     }
 }
