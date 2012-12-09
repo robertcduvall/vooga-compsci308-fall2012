@@ -92,7 +92,7 @@ public class SmartEnemyGame extends Game {
             addSprite(myPlayer2);
         }
 
-        Level myCurrentLevel = new MainScreen(this, new Level1(this));
+//        Level myCurrentLevel = new MainScreen(this, new Level1(this));
         myCanvas.addKeyListener(new KeyboardListener());
         startLevel(myCurrentLevel);
     }
