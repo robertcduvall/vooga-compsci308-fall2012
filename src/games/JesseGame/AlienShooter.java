@@ -2,6 +2,8 @@ package games.JesseGame;
 
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import vooga.shooter.gameplay.AbstractGame;
 import vooga.shooter.level_editor.Level;
 import vooga.shooter.level_editor.LevelFactory;
@@ -51,7 +53,16 @@ public class AlienShooter extends AbstractGame{
 
     @Override
     public Image getMainImage () {
-        // TODO Auto-generated method stub
-        return null;
+        File imgpath = new File("src/games/JesseGame/galaxy.gif");
+        Image i = null;
+        try {
+            i = ImageIO.read(imgpath);
+        }
+        catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return i;
     }
 }

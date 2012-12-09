@@ -112,4 +112,16 @@
 		<tags/>
 		<filepath>games.wl65game.Game</filepath>
 </game>
+<game id="17">
+		<name>Crazy Aliens</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.alexjessegame.CrazyAliens</filepath>
+</game>
+<game id="18">
+		<name>Alien Destroyer</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.JesseGame.AlienShooter</filepath>
+</game>
 </gamelist>
