@@ -122,7 +122,6 @@ public class LevelEditor extends JPanel {
             else {
                 throw new LevelFileIOException("File not saved to src/ directory of the project");
             }        		
-            System.out.println(path);
             if ("DefeatAllEnemiesCondition".equals(con)) {
                 myBoard.addCondition(new DefeatAllEnemiesCondition(path));
             }

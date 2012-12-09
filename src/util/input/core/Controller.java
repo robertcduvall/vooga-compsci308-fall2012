@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,13 +219,27 @@ public abstract class Controller<T> {
 
     // ****************************** PROTECTED METHODS
     // *************************************
-
     /**
-     * @param e
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * Returns a copy of the DataTable being used to store all the controller data
+     * 
+     * @return
+     * @throws RepeatedColumnNameException
+     * @throws InvalidXMLTagException
      */
+    protected DataTable getUnmodifiableDataTable() throws RepeatedColumnNameException, InvalidXMLTagException {
+        DataTable controlTableCopy = new DataTable();
+        Collection<String> columnNames = myDataTable.getColumnNames();
+        Collection<UnmodifiableRowElement> allControls = myDataTable.getDataRows();
+        for(String columnName: columnNames) {
+            controlTableCopy.addNewColumns(columnName);
+        }
+        for(UnmodifiableRowElement re: allControls) {
+            controlTableCopy.addNewRow(re);
+        }
+        return controlTableCopy;
+    }
+    
+    
     protected void performReflections (Object inputEvent, String method, int actionID)
                                                                                       throws IllegalAccessException,
                                                                                       InvocationTargetException,
@@ -238,20 +253,30 @@ public abstract class Controller<T> {
                                                                    NoSuchMethodException {
         performReflections(null, method, actionID);
     }
+    
+    
+    protected void addControlToTable (int action, int type, Object o,
+            Method method, String describeButton, String describeAction) {
+        addControlToTable(UKeyCode.codify(action, type),
+                new FlagPair<Object, Method>(o, method), describeButton,
+                describeAction);
+    }
 
+    protected void addControlToTable (int ukeyCode,
+            FlagPair<Object, Method> fPair, String describeButton,
+            String describeAction) {
+        Map<String, Object> dataIn = new HashMap<String, Object>();
+        dataIn.put(TUPLE, fPair);
+        insertInMap(dataIn, describeButton, describeAction, ukeyCode);
+
+        myDataTable.addNewRow(dataIn);
+    }
+
+    
     // ****************************************************************************************
 
     // ********************************* PRIVATE METHODS
     // **************************************
-
-    private void addControlToTable (int action, int type, Object o, Method method,
-                                    String describeButton, String describeAction) {
-        Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, method));
-        insertInMap(dataIn, describeButton, describeAction, UKeyCode.codify(type, action));
-
-        myDataTable.addNewRow(dataIn);
-    }
 
     @SuppressWarnings("unchecked")
     private FlagPair<Object, Method> getObjectMethodPair (int action, int type) {
