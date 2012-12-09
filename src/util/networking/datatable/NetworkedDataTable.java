@@ -31,7 +31,9 @@ public class NetworkedDataTable {
     
     public void deleteRowEntry (String strKey, Object value){} 
     
-    public Collection<String> getColumnNames (){}
+    public Collection<String> getColumnNames (){
+        return null; 
+    }
     
     public void clear(){}
     
@@ -43,11 +45,15 @@ public class NetworkedDataTable {
             Map<String, Object> map) {}
     
    
-    public Collection <UnmodifiableRowElement> getDataRows(){//HAHA BROKEN CODE #i<3networking}
+    public Collection <UnmodifiableRowElement> getDataRows(){
+        return null;
+    }
     
     
     
-    public UnmodifiableRowElement find (String strKey, Object value){}
+    public UnmodifiableRowElement find (String strKey, Object value){
+        return null;
+    }
     
  
     public void save (String location){}
