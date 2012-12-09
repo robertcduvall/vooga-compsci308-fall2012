@@ -12,7 +12,7 @@ import vooga.shooter.gameplay.Game;
 
 
 /**
- * First level (initializes enemies, sets winning conditions)
+ * Second level (initializes enemies, sets winning conditions)
  * 
  * @author Tommy Petrilak
  * 
