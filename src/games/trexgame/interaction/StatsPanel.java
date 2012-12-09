@@ -34,7 +34,7 @@ public class StatsPanel extends InteractionPanel{
 	private void writeStats() {
 		myStats.add("Number of creatures: " + myBattleObjects.size());
 		for (BattleObject battleObject: myBattleObjects) {
-			myStats.add(battleObject.getName() + "has an attack of " + battleObject.getStat("atk"));
+			myStats.add(battleObject.getName() + " has an attack of " + battleObject.getStat("atk"));
 		}
 	}
 	
