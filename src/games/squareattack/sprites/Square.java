@@ -207,6 +207,6 @@ public class Square extends Sprite {
         return myLastMovementVector;
     }
     
-   
+
 
 }

@@ -12,7 +12,7 @@
 <size height="40" width="40"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/asteroid.gif"/>
-<velocity x="0" y="0"/>
+<velocity x="5" y="0"/>
 <health value="40"/>
 <ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
 </Enemy>
@@ -21,7 +21,7 @@
 <size height="40" width="40"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/asteroid.gif"/>
-<velocity x="0" y="0"/>
+<velocity x="0" y="5"/>
 <health value="40"/>
 <ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
 </Enemy>
@@ -30,7 +30,7 @@
 <size height="60" width="60"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/asteroid.gif"/>
-<velocity x="0" y="0"/>
+<velocity x="10" y="0"/>
 <health value="60"/>
 <ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
 </Enemy>
@@ -39,7 +39,7 @@
 <size height="30" width="30"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/asteroid.gif"/>
-<velocity x="0" y="0"/>
+<velocity x="0" y="10"/>
 <health value="30"/>
 <ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
 </Enemy>
@@ -48,7 +48,7 @@
 <size height="80" width="80"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/asteroid.gif"/>
-<velocity x="0" y="0"/>
+<velocity x="10" y="10"/>
 <health value="80"/>
 <ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
 </Enemy>

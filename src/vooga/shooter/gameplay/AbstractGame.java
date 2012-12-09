@@ -41,12 +41,15 @@ import arcade.gamemanager.GameSaver;
  * @author Tommy Petrilak
  * @author Stephen Hunt
  * @author Jesse Starr
- * @author guytracy --mostly just editing and made into abstract class
+ * @author guytracy
+ * @author Zachary Hopping
  */
 public abstract class AbstractGame extends JComponent implements DrawableComponent, IArcadeGame {
 
     private static final String HIT_BY = "hitby";
-    private static final String WIN_GAME = "vooga/shooter/images/winscreen.gif";
+    private static final String WIN_GAME = "src/vooga/shooter/images/winscreen.gif";
+    private static final String LOSE_GAME = "src/vooga/shooter/images/losescreen.gif";
+
 
     private List<ParticleSystem> myParticleSystems;
     private Player myPlayer;
@@ -122,10 +125,20 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      */
     @Override
     public void update () {
+        
+        if (myPlayer.isDead()) {
+            myCurrentLevel.setBackgroundImage(LOSE_GAME);
+        }
+        
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
             startLevel(myCurrentLevel.getNextLevel());
             setupInput();
         }
+        
+        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
+            myCurrentLevel.setBackgroundImage(WIN_GAME);
+        }
+
         for (Sprite s : myCurrentLevel.getSpriteList()) {
             s.update();
         }
@@ -216,10 +229,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         
         for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);
-        }
-
-        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
-            myCurrentLevel.setBackgroundImage(WIN_GAME);
         }
     }
 

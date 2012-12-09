@@ -78,8 +78,8 @@ public class TRexMonster extends BattleObject {
     protected void doOption2 (BattleObject target, List<String> battleMessages) {
         battleMessages.add(getName() + USED + getOptions()[1]);
         resetStats();
-        changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() * 1.3);
-        changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() * 0.7);
+        changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() * 1.5);
+        changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() * 0.6);
         changeStat(EVASION_STAT, getStat(EVASION_STAT).intValue() * 0.5);
     }
 
@@ -89,15 +89,16 @@ public class TRexMonster extends BattleObject {
         resetStats();
         changeStat(DEFENSE_STAT, getStat(DEFENSE_STAT).intValue() * 0.5);
         changeStat(ATTACK_STAT, getStat(ATTACK_STAT).intValue() * 1.5);
-        changeStat(ACCURACY_STAT, getStat(ACCURACY_STAT).intValue() * 1.2);
+        changeStat(ACCURACY_STAT, getStat(ACCURACY_STAT).intValue() * 1.3);
     }
 
     @Override
     protected void doOption4 (BattleObject target, List<String> battleMessages) {
         battleMessages.add(getName() + USED + getOptions()[3]);
         resetStats();
-        changeStat(EVASION_STAT, getStat(EVASION_STAT).intValue() * 2.0);
+        changeStat(EVASION_STAT, getStat(EVASION_STAT).intValue() * 1.8);
         changeStat(ACCURACY_STAT, getStat(ACCURACY_STAT).intValue() * 0.5);
+        changeStat(ACCURACY_STAT, getStat(ATTACK_STAT).intValue() * 0.8);
     }
 
     @Override

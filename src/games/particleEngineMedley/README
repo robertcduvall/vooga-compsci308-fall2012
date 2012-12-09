@@ -1,15 +1,34 @@
+Purpose of Applet: 
+
+This applet demonstrates the three main types of particle engine effects that our particle engine supports: explosions, fire/trail/mist,
+and macro-particle effects (e.g. snow). (Actually, I just made up those 3 category names based on the kinds of particle systems we have
+developed, but they seem appropriate.) The explosions and fire/trail/mist types of particle systems use large quantities of very 
+fine particles to create a larger, usually wispy and smoke-like object, whereas the macro-particle effects uses large particles which 
+are the end-product themselves. 
+
+Implementing a new particleSystem is quite simple. All it requires is 1) implementing the setupParticleEngines method, in which
+the desired number of particleEngine objects are created (with the desired parameters passed through the constructor) and 
+added to the particle system, and 2) hard-coding default parameter variable values (although this step is technically optional, as the 
+ParticleEngine class has its own default values for each parameter).
+
+The versatility in assignment of velocities to particles is also demonstrated in this applet. Explosion type particle systems 
+contain particles with different velocity directions, while the fire/trail/mist and macro-particle effects use a single direction.
+
+A comparison of Waterfall and Fire shows the range of complexity that can be achieved with particle system implementations. Although
+both fall under the same general category of particle engine effects, Waterfall uses 6 different particle engines, whereas Fire 
+only has 1.
+
 Use Instructions:
 
-Open and run ParticleEngineApplet.
+1. Open and run ParticleEngineApplet.
 
-Press one of the following buttons to create a particle system of the
+2. Press one of the following buttons to create a particle system of the
 corresponding type at your last mouse click position.
 
 Particle System hotkeys
 B - bubbles
-F - fire 
-	Note: this effect is not working at the moment
-I - fireworks
+F - fire
+I - fireworks, ring explosion
 L - light 
 	Note: this effect is still under construction.
 S - snow
@@ -20,13 +39,6 @@ W - waterfall with mist
 C - clears all ParticleSystems from the applet
 
 Background hotkeys
-1 - rocky cliff background (works well with the waterfall particle system
+1 - rocky cliff background (works well with the waterfall particle system)
 2 - cauldron (appropriate for the bubbles and fire particle system)
-
-Purpose of Applet: 
-
-This applet demonstrates the three main types of particle engine effects that our particle engine can create: explosions, fire/trail/mist,
-and macro-particle effects (e.g. snow). (Actually, I just made up those 3 category names based on the kinds of particle systems we have
-developed, but they seem appropriate.) The explosions and fire/trail/mist types of particle systems use large quantities of very 
-fine particles to create a larger wispy, smoke-like object, whereas the macro-particle effects uses large particles which are the
-end-product themselves. TO BE CONTINUED... 
+3 - Duke Chapel at night
