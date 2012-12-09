@@ -1,0 +1,55 @@
+<Level backgroundImage="/Users/guytracy/Documents/workspace/vooga-compsci308-fall2012/src/vooga/shooter/images/mars.gif">
+<Player>
+<position x="290" y="263"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/spaceship.gif"/>
+<velocity x="0" y="0"/>
+<health value="10"/>
+</Player>
+<Enemy>
+<position x="111" y="98"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/asteroid.gif"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
+</Enemy>
+<Enemy>
+<position x="219" y="97"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/asteroid.gif"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
+</Enemy>
+<Enemy>
+<position x="476" y="79"/>
+<size height="60" width="60"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/asteroid.gif"/>
+<velocity x="0" y="0"/>
+<health value="60"/>
+<ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
+</Enemy>
+<Enemy>
+<position x="453" y="215"/>
+<size height="30" width="30"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/asteroid.gif"/>
+<velocity x="0" y="0"/>
+<health value="30"/>
+<ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
+</Enemy>
+<Enemy>
+<position x="357" y="109"/>
+<size height="80" width="80"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/asteroid.gif"/>
+<velocity x="0" y="0"/>
+<health value="80"/>
+<ai name="vooga.shooter.gameObjects.intelligence.RandomAI"/>
+</Enemy>
+</Level>
