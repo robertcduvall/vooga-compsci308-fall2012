@@ -42,7 +42,7 @@
     </mode>
     <mode>
       <name>conversation</name>
-      <class>vooga.turnbased.gamecore.gamemodes.ConversationMode</class>
+      <class>games.trexgame.interaction.ConversationMode</class>
       <condition>talk</condition>
     </mode><mode>
       <name>gameWon</name>
@@ -1338,8 +1338,11 @@
           <x>6</x>
           <y>8</y>
         </param>
-        <image>src/games/trexgame/resources/coin.png</image>
+        <image>src/games/trexgame/resources/treasure_box.png</image>
       </object>
+      <object><createOn>start</createOn><modes>conversation</modes><class>games.trexgame.interaction.OptionConversation</class><condition>NO_ACTION</condition>
+      	<param>
+      		<name>More Infomation...</name></param></object>
     </sprite>
 	
 	
