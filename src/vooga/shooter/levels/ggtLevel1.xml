@@ -8,30 +8,39 @@
 <health value="10"/>
 </Player>
 <Enemy>
-<position x="123" y="86"/>
+<position x="197" y="43"/>
 <size height="50" width="50"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="1" y="1"/>
 <health value="50"/>
 <ai name="vooga.shooter.gameObjects.intelligence.BounceAI"/>
 </Enemy>
 <Enemy>
-<position x="247" y="93"/>
+<position x="404" y="73"/>
 <size height="50" width="50"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="1" y="1"/>
 <health value="50"/>
 <ai name="vooga.shooter.gameObjects.intelligence.BounceAI"/>
 </Enemy>
 <Enemy>
-<position x="429" y="98"/>
+<position x="98" y="61"/>
 <size height="50" width="50"/>
 <bounds height="348" width="600"/>
 <image path="vooga/shooter/images/alien.png"/>
-<velocity x="0" y="0"/>
+<velocity x="1" y="1"/>
 <health value="50"/>
+<ai name="vooga.shooter.gameObjects.intelligence.BounceAI"/>
+</Enemy>
+<Enemy>
+<position x="290" y="197"/>
+<size height="80" width="80"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alien.png"/>
+<velocity x="2" y="2"/>
+<health value="60"/>
 <ai name="vooga.shooter.gameObjects.intelligence.BounceAI"/>
 </Enemy>
 </Level>
