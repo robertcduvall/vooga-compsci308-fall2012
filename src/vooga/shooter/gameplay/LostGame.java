@@ -15,7 +15,7 @@ import vooga.shooter.gameplay.Game;
 /**
  * First level (initializes enemies, sets winning conditions)
  * 
- * @author Tommy Petrilak
+ * @author Guy Tracy
  * 
  */
 public class LostGame extends Level {
