@@ -9,8 +9,18 @@ import arcade.gui.panel.AbstractPanelCreator;
 
 
 /**
- * This is the factory for panelcreators and framecreators.
- * It will use reflection to instantiate the components necessary.
+ * This is the factory used to create panelcreators and framecreators. The
+ * factory uses a resource file to know where the panelcreators and
+ * framecreators are saved. The factory uses reflection to instantiate the
+ * requested components. Using the resources file together with reflection
+ * we can ensure that the factory is fully extensible and that this code
+ * does not need to be edited to support new panelcreators and framecreators.
+ * 
+ * It is also important to note that because some panelcreators may be
+ * used over and over again to create the same panel, the factory always
+ * maintains a reference to the panelcreators its has already instantiated;
+ * therefore, the factory never instantiates the same panelcreator more
+ * than once.
  * 
  * 
  * @author Michael Deng
@@ -18,7 +28,8 @@ import arcade.gui.panel.AbstractPanelCreator;
  */
 public class CreatorFactory {
 
-    private static ResourceBundle myResources;
+    private ResourceBundle myResources;
+    private final String myResourcesPath = "arcade.gui.resources.Factory";
 
     private Arcade myArcade;
     private Map<String, AbstractPanelCreator> myPanelCreatorMap;
@@ -26,18 +37,18 @@ public class CreatorFactory {
     /**
      * Constructor for factory
      * 
-     * @param a arcade
+     * @param a reference to the arcade
      */
     public CreatorFactory (Arcade a) {
         myArcade = a;
-        myResources = ResourceBundle.getBundle("arcade.gui.resources.Factory");
+        myResources = ResourceBundle.getBundle(myResourcesPath);
         myPanelCreatorMap = new HashMap<String, AbstractPanelCreator>();
     }
 
     /**
-     * method to create a panelcreator
+     * Public method used to get the requested panelcreator.
      * 
-     * @param panelCreatorName name of the panelcreator
+     * @param panelCreatorName actual name of the requested panelcreator
      * @return returns the requested panelcreator
      */
     public AbstractPanelCreator createPanelCreator (String panelCreatorName) {
@@ -51,9 +62,9 @@ public class CreatorFactory {
     }
 
     /**
-     * method to create a framecreator
+     * Public method used to get the requested framecreator
      * 
-     * @param frameCreatorName name of the framecreator
+     * @param frameCreatorName actual name of the requested framecreator
      * @return returns the requested framecreator
      */
     public AbstractFrameCreator createFrameCreator (String frameCreatorName) {
@@ -61,18 +72,19 @@ public class CreatorFactory {
     }
 
     /**
-     * this method will look up the class in the Factory.properties file
+     * This method will look up the class path in the Factory.properties file
      * 
-     * @param creatorName
-     * @return the full path to the specified class
+     * @param creatorName actual name of the panelcreator or framecreator
+     * @return the relative path to the specified class
      */
     private String retrieveFullClassPath (String creatorName) {
         return myResources.getString(creatorName) + "." + creatorName;
     }
 
     /**
+     * This method instantiates a new panelcreator using the reflection utility.
      * 
-     * @param panelCreatorName name of the panelcreator
+     * @param panelCreatorName actual name of the panelcreator
      * @return a panelcreator
      */
     private AbstractPanelCreator createPanelCreatorInstance (String panelCreatorName) {
@@ -81,8 +93,9 @@ public class CreatorFactory {
     }
 
     /**
+     * This method instantiates a new framecreator using the reflection utility.
      * 
-     * @param frameCreatorName name of the framecreator
+     * @param frameCreatorName actual name of the framecreator
      * @return a framecreator
      */
     private AbstractFrameCreator createFrameCreatorInstance (String frameCreatorName) {
