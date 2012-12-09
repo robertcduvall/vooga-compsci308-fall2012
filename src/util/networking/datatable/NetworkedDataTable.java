@@ -104,7 +104,7 @@ public class NetworkedDataTable extends Client {
     
  
     public void save (String location){
-        send(myProtocol.createSave());
+        send(myProtocol.createSave(location));
     }
 
     public void load (String location) throws
