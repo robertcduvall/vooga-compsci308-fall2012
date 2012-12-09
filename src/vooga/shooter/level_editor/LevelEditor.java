@@ -14,6 +14,7 @@ import util.xml.XmlUtilities;
 import java.io.*;
 import java.util.Vector;
 import vooga.shooter.gameObjects.Enemy;
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameObjects.intelligence.*;
 import vooga.shooter.graphics.*;
@@ -53,6 +54,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
     private File myOpenFile; // currently open file
     private Level myLevel; // level object for editing
+    private Player myPlayer; // required player Sprite
+    
+    private static final Dimension DEFAULT_PLAYER_SIZE = new Dimension(20, 20);
+    private static final int DEFAULT_PLAYER_HEALTH = 10;
+    private static final String DEFAULT_PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
+    private static final int DEFAULT_PLAYER_START_HEIGHT = 75;
+    private static final Point DEFAULT_PLAYER_VELOCITY = new Point(0,0);
 
     /* Toolbar buttons, self-explanatory */
     private JToolBar myToolBar;
@@ -75,8 +83,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     
     public LevelEditor () {
 
-        myLevel = new Level();
-
         mainFrame = new JFrame("Level Editor");
         mainFrame.setPreferredSize(DEFAULT_SIZE);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,12 +90,14 @@ public class LevelEditor implements DrawableComponent, ActionListener {
 
         myCanvas = new Canvas(this);
         myCanvas.start();
+        
+        myLevel = new Level();
+        initializePlayer();
 
         mainFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
         setupToolbars();
         setupChoosers();
-        initializeSpriteOptionsPane();
-        myCurrentSprite = null;
+        makeEnemyOptionsPane();
         myMouseListener = new LevelEditorMouseListener();
         myCanvas.addMouseListener(myMouseListener);
         
@@ -98,8 +106,24 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
-
-    private void initializeSpriteOptionsPane () {
+    
+    /**
+     * Initializes the required player sprite for the level.
+     */
+    private void initializePlayer() {
+        myPlayer =
+                new Player(new Point(myCanvas.getWidth()/2, myCanvas.getHeight() - DEFAULT_PLAYER_START_HEIGHT), DEFAULT_PLAYER_SIZE,
+                           new Dimension(myCanvas.getWidth(), myCanvas.getHeight()),
+                           DEFAULT_PLAYER_IMAGEPATH, DEFAULT_PLAYER_VELOCITY, DEFAULT_PLAYER_HEALTH);
+        myLevel.addSprite(myPlayer);
+        myLevel.setPlayer(myPlayer);
+        myCurrentSprite = myPlayer;
+    }
+    
+    /**
+     * Makes an empty options pane for entering Enemy attributes.
+     */
+    private void makeEnemyOptionsPane () {
         spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
         spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(3));
         spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(3));
@@ -110,10 +134,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
     
     /**
-     * Fills the Sprite Options Pane with location information from a Point
+     * Makes the Sprite Options Pane with location information from a Point
      * @param p point from which we extract location information
      */
-    private void fillSpriteOptionsPane (Point p) {
+    private void makeEnemyOptionsPane (Point p) {
         spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
         spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(p.x), 3));
         spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(p.y), 3));
@@ -124,10 +148,10 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
     
     /**
-     * Fills in values in the Sprite Options Pane based on a sprite's attributes.
+     * Makes values in the Sprite Options Pane based on a sprite's attributes.
      * @param s the selected sprite who's attributes are used to fill the pane
      */
-    private void fillSpriteOptionsPane (Sprite s) {
+    private void makeEnemyOptionsPane (Sprite s) {
         spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Sprite Options");
         spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(s.getLeft()), 3));
         spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(s.getTop()), 3));
@@ -135,6 +159,19 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
         spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
+    }
+    
+    /**
+     * Makes a Player options pane based on the current player's attributes.
+     * @param s the current player sprite
+     */
+    private void makePlayerOptionsPane(Sprite s) {
+        spriteOptionsPane = new MultiFieldJOptionPane<String>(mainFrame, "Player Options");
+        spriteOptionsPane.addField(X_POSITION_KEY, "X Position:", new NumericJTextField(Integer.toString(s.getLeft()), 3));
+        spriteOptionsPane.addField(Y_POSITION_KEY, "Y Position:", new NumericJTextField(Integer.toString(s.getTop()), 3));
+        spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(Integer.toString(s.getSize().width), 3));
+        spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
+        spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
     }
 
     private void setupChoosers () {
@@ -190,10 +227,12 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             myOpenFile = null;
             myLevel = new Level();
             myBackground = null;
+            initializePlayer();
         }
         else if (source == clearBtn) {
             myLevel = new Level();
             myBackground = null;
+            initializePlayer();
         }
         else if (source == saveBtn) {
             if (myOpenFile == null) {
@@ -248,8 +287,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         }
         
         else if (source == deleteSpriteBtn) {
-            myLevel.removeSprite(myCurrentSprite);
-            myCurrentSprite = null;
+            if(myCurrentSprite instanceof Enemy) {
+                myLevel.removeSprite(myCurrentSprite);
+                myCurrentSprite = null;
+            } else {
+                JOptionPane.showMessageDialog(mainFrame, "Error: A level requires a Player! \n" +
+                		"Player sprite may be edited but not deleted.", "DELETE ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
         
         else if (source == showInfoBtn) {
@@ -320,6 +364,54 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         myLevel.removeSprite(myCurrentSprite);
         myLevel.addSprite(newEnemy);
         myCurrentSprite = newEnemy;
+    }
+    
+    /**
+     * Prompts the user to enter new attributes for the player.
+     * Replaces player with new player generated from entered attributes.
+     */
+    private void editPlayer() {
+        myPlayer = makePlayer();
+        myLevel.removeSprite(myCurrentSprite);
+        myLevel.setPlayer(myPlayer);
+        myLevel.addSprite(myPlayer);
+        myCurrentSprite = myPlayer;
+    }
+    
+    /**
+     * Shows image chooser and Player options pane so user can enter new attributes for Player.
+     * Returns a new player object with the given attributes.
+     * @return the new player object
+     */
+    private Player makePlayer() {
+        int response = imageChooser.showOpenDialog(null);
+        if (response == JFileChooser.APPROVE_OPTION) {
+
+            // The expected imagePath format is a relative path
+            // starting at the src directory. We will change the
+            // full path to match that format.
+            String imagePath = imageChooser.getSelectedFile().getPath();
+            
+            // A simple check to see if it's a valid path (not foolproof).
+            if (!imagePath.contains("src/")) {
+                throw new LevelEditorException("The image file for sprites must be in the src directory!");
+            }
+            imagePath = imagePath.split("src/")[1];
+            
+            spriteOptionsPane.display();
+            
+            Point position =
+                    new Point(Integer.parseInt(spriteOptionsPane.getResult(X_POSITION_KEY)),
+                              Integer.parseInt(spriteOptionsPane.getResult(Y_POSITION_KEY)));
+            Dimension size = new Dimension(Integer.parseInt(spriteOptionsPane.getResult(WIDTH_KEY)),
+                              Integer.parseInt(spriteOptionsPane.getResult(HEIGHT_KEY)));
+            Dimension bounds = myCanvas.getSize();
+            Point velocity = new Point(0,0);
+            int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
+            Player newPlayer = new Player(position, size, bounds, imagePath, velocity, health);
+            return newPlayer;
+        }
+        throw new LevelEditorException("Invalid attributes selected.");
     }
 
     /**
@@ -473,10 +565,15 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             else if (e.getButton() == MouseEvent.BUTTON3) {
                 System.out.println("Right click at point (" + e.getX() + ", " + e.getY() + ")");
                 if(myCurrentSprite != null) {
-                    fillSpriteOptionsPane(myCurrentSprite);
-                    editCurrentSprite();
+                    if(myCurrentSprite instanceof Player) {
+                        makePlayerOptionsPane(myCurrentSprite);
+                        editPlayer();
+                    } else {
+                        makeEnemyOptionsPane(myCurrentSprite);
+                        editCurrentSprite();
+                    }
                 } else {
-                    fillSpriteOptionsPane(p);
+                    makeEnemyOptionsPane(p);
                     Enemy newEnemy = makeEnemy();
                     myLevel.addSprite(newEnemy);
                     myCurrentSprite = newEnemy;
