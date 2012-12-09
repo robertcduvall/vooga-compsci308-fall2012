@@ -65,6 +65,8 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private KeyboardController myKeyContr;
     private Level myFirstLevel;
     InputTeamSpriteActionAdapter inputAdapter;
+    private Level wonGame;
+    private Level loseGame;
 
 
     /**
@@ -73,6 +75,14 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     public Game () {
         ImageIcon imageIcon = new ImageIcon(GAME_IMAGEPATH);
         myGameImage = imageIcon.getImage();
+    }
+    protected void setWinLevel( Level level)
+    {
+        wonGame = level;
+    }
+    protected void setLoseLevel(Level level)
+    {
+        loseGame = level;
     }
 
     private void initializeGame (Canvas c) {
@@ -99,7 +109,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myCurrentLevel = new MainScreen(this);
     }
 
-    private void startLevel (Level level) {
+    public void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
         update();
@@ -143,9 +153,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      */
     @Override
     public void update () {
-
         if (myPlayer.isDead()) {
-            myCurrentLevel.setNextLevel(new LostGame(this));
+            if(loseGame==null) myCurrentLevel.setNextLevel(new LostGame(this));
+            else myCurrentLevel.setNextLevel(loseGame);
             myCurrentLevel = myCurrentLevel.getNextLevel();
             myPlayer.setDead(false);
             startLevel(myCurrentLevel);
@@ -155,10 +165,14 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
             startLevel(myCurrentLevel);
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
-            myCurrentLevel.setNextLevel(new WonGame(this));
+            if(wonGame==null)
+                myCurrentLevel.setNextLevel(new WonGame(this));
+            else 
+                myCurrentLevel.setNextLevel(wonGame);
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
         }
+
         for (Sprite s : getSprites()) {
             s.update();
         }
@@ -171,7 +185,10 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
                 if (collisions.size() > 0) {
                     String key = HIT_BY + collisions.get(1).getType();
                     collisions.get(0).doEvent(key, collisions.get(1));
+                    if(!collisions.get(1).getType().equals(collisions.get(0).getType())){
+
                     myParticleSystems.add(new Explosion(collisions.get(0).getPosition()));
+                    }
                 }
             }
         }
@@ -339,7 +356,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myFrame.setVisible(true);
 
     }
-
+    
     @Override
     public List<Image> getScreenshots () {
         return null;
