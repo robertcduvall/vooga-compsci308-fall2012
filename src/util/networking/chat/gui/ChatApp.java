@@ -31,6 +31,12 @@ import util.encrypt.Encrypter;
 import util.networking.chat.ChatClient;
 import util.networking.chat.protocol.GordonBukspanProtocol;
 
+/**
+ * The ChatApp instantiates an ExampleGUI panel into a JFrame and displays it. Handles logging onto server additionally.
+ * @author Connor Gordon
+ *
+ */
+
 public class ChatApp {
 
     private static int MAX_USER_CHAR = 12;
@@ -42,9 +48,8 @@ public class ChatApp {
     
     public static void run () {
         try {
-            ChatClient c = new ChatClient("wl-10-190-45-7.wireless.duke.local", new GordonBukspanProtocol());
+            ChatClient c = new ChatClient("wl-10-190-66-148.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
-            while(!c.getListUsers().contains(userName));
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,7 +61,7 @@ public class ChatApp {
             menuBar.add(menu);
             JMenuItem newConvoItem = new JMenuItem(new NewConversationAction(eg));
             JMenuItem closeConvoItem = new JMenuItem(new CloseConversation(eg));
-            JMenuItem logoutItem = new JMenuItem(new LogoutAction(eg));
+            JMenuItem logoutItem = new JMenuItem(new LogoutAction(eg, frame));
             menu.add(newConvoItem);
             menu.add(closeConvoItem);
             menu.add(logoutItem);
@@ -176,15 +181,18 @@ public class ChatApp {
     
     static class LogoutAction extends AbstractAction {
         private ExampleGUI eg;
-
-        public LogoutAction(ExampleGUI exampleGUI) {
+        private JFrame myFrame;
+        public LogoutAction(ExampleGUI exampleGUI, JFrame f) {
             super("Log Out");
             this.eg = exampleGUI;
+            this.myFrame = f;
         }
 
         @Override
         public void actionPerformed (ActionEvent e) {
+            myFrame.setVisible(false);
             eg.logout();
+            System.exit(0);
         }
     }
 
