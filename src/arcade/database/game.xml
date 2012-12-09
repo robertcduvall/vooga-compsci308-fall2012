@@ -94,4 +94,10 @@
 		<tags/>
 		<filepath>games.squareattack.PlaySquareAttack</filepath>
 </game>
+<game id="14">
+		<name>NyanCat Saves the Day</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.nyancat.NyanCatGame</filepath>
+</game>
 </gamelist>
