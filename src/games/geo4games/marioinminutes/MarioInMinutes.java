@@ -47,7 +47,7 @@ public class MarioInMinutes implements IArcadeGame {
         List<Image> screenShots = new ArrayList<Image>();
         try {
             // TODO take screenshots of the game
-            screenShots.add(ImageIO.read(new File("")));
+            screenShots.add(ImageIO.read(new File("src/games/geo4games/marioinminutes/images/screenshot1.png")));
         }
         catch (IOException e) {
             /*
@@ -55,7 +55,7 @@ public class MarioInMinutes implements IArcadeGame {
              * added so far, or an empty list
              */
         }
-        return null;
+        return screenShots;
     }
 
     @Override
