@@ -7,7 +7,7 @@ public class AdventureGameWindow extends GameWindow {
 
     public AdventureGameWindow (String title, String settingsResource, int width,
             int height) {
-        super(title, settingsResource, width, height);
+        super(title, settingsResource, width, height, settingsResource);
         setXmlPath(myFilePath);
         changeActivePane(GAME);
     }
