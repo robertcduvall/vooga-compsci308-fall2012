@@ -41,32 +41,35 @@
 </game>
 <game id="5">
 		<name>Niel's Reverse Gravity Game</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.nielgame.ReverseGravityGame</filepath>
 </game>
 <game id="6">
 		<name>The T-Rex Game</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.trexgame.TRexGame</filepath>
 </game>
 <game id="7">
 		<name>The Lord of the Rings Game</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.lotrgame.LOTRGame</filepath>
 </game>
 <game id="8">
 		<name>Rob's Tenting 2D</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.robsgame.RunRobsGame</filepath>
 </game>
 <game id="9">
 		<name>Space Bugs IV</name>
-		<rating></rating>
+		<rating>7</rating>
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
+<review>I'm wondering how this stores things!
+
+Will this help me figure it out?!- obukspan</review>
 </game>
 </gamelist>
