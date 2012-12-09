@@ -12,13 +12,7 @@ import util.datatable.ModifiableRowElement;
 import util.datatable.UnmodifiableRowElement;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
-import util.datatable.exceptions.UnrecognizedColumnNameException;
 import util.networking.Client;
-import util.networking.chat.ChatCommand;
-import util.networking.chat.ChatListener;
-import util.networking.chat.ErrorEvent;
-import util.networking.chat.MessageReceivedEvent;
-import util.networking.chat.UsersUpdateEvent;
 
 public class NetworkedDataTable extends Client {
     
@@ -138,10 +132,10 @@ public class NetworkedDataTable extends Client {
     private void processFound(String input){
         fireFoundRowElementEvent(new UnmodifiableRowElement(myProtocol.getRowElement(input)));
     }
-    private void processGetColumnNames(String input){
+    private void processColumnNames(String input){
         fireColumnNamesEvent(myProtocol.getColumnNames(input));
     }
-    private void processGetDataRows(String input){
+    private void processDataRows(String input){
         fireDataRowsEvent(myProtocol.getDataRows(input));
     }
     
