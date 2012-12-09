@@ -37,7 +37,7 @@ public class NumericJTextField extends JTextField {
             char[] numbers = str.toCharArray();
             String newString = "";
             for (int i = 0; i < numbers.length; i++) {
-                if(Character.isDigit(numbers[i])) {
+                if(Character.isDigit(numbers[i]) || ('-' == numbers[i] && i == 0)) {
                     newString = newString + numbers[i];
                 }
             }
