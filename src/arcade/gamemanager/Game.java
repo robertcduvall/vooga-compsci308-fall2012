@@ -3,12 +3,15 @@ package arcade.gamemanager;
 import arcade.IArcadeGame;
 import arcade.usermanager.UserManager;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -229,9 +232,28 @@ public class Game {
 
     /**
      * Returns the thumbnail image associated with the game.
+     * 
+     * @author Michael Deng - modified
      */
     public Image getImage () {
-        return myGame.getMainImage();
+
+        Image mainImage = myGame.getMainImage();
+
+        if (mainImage == null) {
+
+            try {
+                mainImage = ImageIO.read(new File("src/arcade/gui/images/duvallold.gif"));
+            }
+            catch (IOException e) {
+                System.out.println("Could not find main image");
+            }
+            return mainImage;
+
+        }
+        else {
+            return mainImage;
+        }
+
     }
 
     /**
@@ -245,9 +267,17 @@ public class Game {
 
     /**
      * Returns the name of the game.
+     * 
+     * @author Michael Deng - modified
      */
     public String getGameName () {
-        return myGame.getName();
+
+        if (myGame.getName() == null) {
+            return "Untitled";
+        }
+        else {
+            return myGame.getName();
+        }
     }
 
     /**
