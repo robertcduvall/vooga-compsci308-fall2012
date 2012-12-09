@@ -5,10 +5,11 @@ import games.squareattack.sprites.Square;
 import games.squareattack.sprites.WallBall;
 import java.util.List;
 
+
 /**
  * 
  * @author Ben Schwab
- *
+ * 
  */
 public class WallBallCollisionRule implements GameRule {
 
@@ -16,24 +17,26 @@ public class WallBallCollisionRule implements GameRule {
     private Square myDefender;
     private List<WallBall> myWallBalls;
     private PowerBar myPowerBar;
-    public WallBallCollisionRule(List<Square> attackers, Square defender, List<WallBall> wallBalls, PowerBar power){
+
+    public WallBallCollisionRule (List<Square> attackers, Square defender,
+                                  List<WallBall> wallBalls, PowerBar power) {
         myAttackers = attackers;
         myDefender = defender;
         myWallBalls = wallBalls;
-        myPowerBar= power;
+        myPowerBar = power;
     }
 
     @Override
     public void checkRule () {
 
-        for(int i = myWallBalls.size() -1; i>=0; i--){
+        for (int i = myWallBalls.size() - 1; i >= 0; i--) {
             WallBall curBall = myWallBalls.get(i);
-            for(Square attacker: myAttackers){
-                if(attacker.intersects(curBall)){
+            for (Square attacker : myAttackers) {
+                if (attacker.intersects(curBall)) {
                     myWallBalls.remove(curBall);
                 }
             }
-            if(myDefender.intersects(curBall)){
+            if (myDefender.intersects(curBall)) {
                 myWallBalls.remove(curBall);
                 myPowerBar.addPower(20);
             }
@@ -41,7 +44,4 @@ public class WallBallCollisionRule implements GameRule {
 
     }
 
-
 }
-
-

@@ -69,7 +69,8 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
-	<game id="10">
+
+<game id="10">
 		<name>The Formic War</name>
 		<rating></rating>
 		<tags></tags>
@@ -86,5 +87,29 @@
 		<rating></rating>
 		<tags></tags>
 		<filepath>games.AdventureRPG.AdventureGame</filepath>
+</game>
+<game id="13">
+		<name>Square Attack</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.squareattack.PlaySquareAttack</filepath>
+</game>
+<game id="14">
+		<name>NyanCat Saves the Day</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.nyancatgame.NyanCatGame</filepath>
+</game>
+<game id="15">
+		<name>Asteroids</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.spruillGame.Game.Asteroids</filepath>
+</game>
+<game id="16">
+		<name>Nyan Cat vs. Veggies</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.wl65game.Game</filepath>
 </game>
 </gamelist>

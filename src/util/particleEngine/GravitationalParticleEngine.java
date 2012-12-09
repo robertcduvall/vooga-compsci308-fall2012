@@ -29,7 +29,7 @@ public class GravitationalParticleEngine extends ParticleEngine {
         double velocityAngle = getMainVelocity().calculateAngleInRadians();
         
         Particle newParticle = new GravitationalParticle(startingPosition, particleSize, myImage,
-                velocityMagnitude, velocityAngle*radiansToDegreesConversionFactor, getVariance(),
+                velocityMagnitude, velocityAngle, getVariance(),
                 getDuration(), getRGBAscales(), getRGBAtolerances());
         addParticle(newParticle);
     }

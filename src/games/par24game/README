@@ -1,0 +1,53 @@
+README - Patrick Royal (par24)
+
+This game implementation showcases the flexibility and extensibility of the Shooter Game interface,
+with a specific focus on the Artifical Intelligence aspects of the game.  Due to the nature of the
+interface, using different types of AI, or even implementing new AI algorithms, requires only a few
+lines of code to be changed.  This implementation demonstrates the use of three different types of AI,
+two taken from the defaults and one created whole-cloth.
+
+This program contains the following classes:
+
+SmartEnemyGame.java
+	This is the central class that instantiates the game and creates the various levels. It is
+	substantially based off of the Game.java class in Shooter - the only changes required were the
+	addition of a getPlayer() method and a different Level 1.  Everything else was already implemented
+	within the default game.  There were also many other options that could have been changed easily,
+	including the size of the game window, the addition of a multiplayer game, and the graphics.
+
+SmartEnemyMain.java
+	This is simply a class used to test the game without having to open the arcade and log in each time.
+
+Level1.java
+	This class represents the first level that will appear when the game is loaded.  As with the
+	SmartEnemyGame.java class, it is very similar to the default class.  In fact, the only changes
+	required to create this level were different values for parameters and the addition of 1 line of
+	code to specify that the enemies should move according to the RandomAI intelligence module.  This
+	means that the enemies will simply move around the screen at random, making this a very easy level.
+
+Level2.java
+	This class represents the second level that will appear when the game is loaded.  It is identical to
+	the first level, except that the AI now use the ChaseAI intelligence module.  This means that enemies
+	will now move towards the current location of the player at all times.  In order to avoid enemies
+	colliding with one another, there is only one enemy on this level.
+
+Level3.java
+	This represents the third and final level that will appear when the game is loaded.  It is identical to
+	the first and second levels, except that the AI now use the InterceptorAI intelligence module.  This
+	means that enemies will now attempt to plot an intercept course with the player rather than just blindly
+	moving towards them.  More details about this implementation are below.
+
+InterceptorAI.java
+	This class contains the implementation of the InterceptorAI intelligence module.  Whereas RandomAI sets
+	the movement of the AI ship in a random direction at constant velocity, and ChaseAI sets the movement of
+	the AI ship towards the player at a constant velocity, InterceptorAI is somewhat more advanced.  First,
+	the enemy ship plots the vector that would move it directly towards the player.  Then, the enemy ship
+	adds to that the player's velocity vector, causing the ship to track the player more effectively.  This
+	makes it quite hard for the player to evade the AI; indeed, if the speed of the AI exceeds that of the
+	player, then evasion will be impossible in the long run.
+	The ease with which this class was created and used is an excellent example of the modular nature of the
+	Shooter Game interface.  The only work required to implement this was the design of the algorithm itself
+	- connecting the algorithm to the rest of the game required only a few lines of code.  Moreover, the
+	implementation of the Sprites provided all the necessary data to make this algorithm work, so there was
+	no need to create additional methods or classes to store and retrieve relevant data about player
+	position, player velocity, etc. 

@@ -156,7 +156,7 @@ public class Particle {
         calculateAlphachanges();
 	}
 
-	protected void positionUpdate() {
+	public void positionUpdate() {
 		double r = myRandomGenerator.nextInt(2 * myVariance + 1);
         double angleVariation = (r - myVariance) / oneHundred;
         double tempNewAngle = myAngle + radiansPerCircle * angleVariation;

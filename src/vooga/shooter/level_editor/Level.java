@@ -5,8 +5,11 @@ import java.awt.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.Player;
 import vooga.shooter.gameObjects.Sprite;
 
 
@@ -89,9 +92,15 @@ public class Level {
      * @param offsetY relative point of origin -y
      */
     public void paintSprites (Graphics g, int offsetX, int offsetY) {
+        Set<Sprite> toRemove = new HashSet<Sprite>();
         for (Sprite s : mySprites) {
+            if(s.getImage() == null){
+                toRemove.add(s);
+            }
             s.paint(g);
         }
+        
+        mySprites.removeAll(toRemove);
     }
 
     /**
@@ -130,7 +139,9 @@ public class Level {
         this.myBackgroundImagePath = imagePath;
     }
 
-    
+    public void paintBackground(Graphics pen){
+        pen.drawImage(myBackgroundImage, 0,0,null);
+    }
 
     /**
      * startLevel method will be overridden at the beginning of each Level,

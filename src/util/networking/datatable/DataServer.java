@@ -6,7 +6,6 @@ import util.networking.Server;
 
 public class DataServer extends Server {
     
-    private DataTable myDataTable;
     private DataProtocol myDataProtocol;
     
     private final static int DEFAULT_MAX_CONNECTIONS = 1;

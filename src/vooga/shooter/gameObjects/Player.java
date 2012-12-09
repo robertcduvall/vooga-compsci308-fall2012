@@ -12,6 +12,8 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 /**
  * Represents the player(s) to be used in the game.
  * Each player will start with health.
+ * Player is a singleton because only one instance is required and state should be maintained
+ * independent of environment.
  * The player(s) can also be controlled using keys
  * that will direct their movement.
  * 
