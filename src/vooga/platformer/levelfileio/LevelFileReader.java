@@ -180,10 +180,13 @@ public class LevelFileReader {
             throw new LevelFileIOException("File could not be found", e);
         }
         catch (IOException e) {
-            throw new LevelFileIOException("An IO error occurred", e);
+            throw new LevelFileIOException(
+                                           "An IO error occurred, possibly due to trying to load a serialized instance of a class that has been modified.",
+                                           e);
         }
         catch (ClassNotFoundException e) {
-            throw new LevelFileIOException("A class matching the serialized class in the data file could not found.",
+            throw new LevelFileIOException(
+                                           "A class matching the serialized class in the data file could not found.",
                                            e);
         }
         return inputObjects;
