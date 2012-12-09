@@ -69,7 +69,8 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
-	<game id="10">
+
+<game id="10">
 		<name>The Formic War</name>
 		<rating></rating>
 		<tags></tags>
@@ -86,5 +87,11 @@
 		<rating></rating>
 		<tags></tags>
 		<filepath>games.AdventureRPG.AdventureGame</filepath>
+</game>
+<game id="13">
+		<name>Square Attack</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.squareattack.PlaySquareAttack</filepath>
 </game>
 </gamelist>

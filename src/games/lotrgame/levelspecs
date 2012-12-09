@@ -47,13 +47,15 @@ level10: 10doom
 - drop ring into mt. doom
 
 
-level11: 11over
+level11: 11lose
 - game over screen; to retry, walk to right...
 - winning condition: walk player to side of screen -> 00intro
 
 - no losing condition
 
 
+
+level12: 12win
 
 
 

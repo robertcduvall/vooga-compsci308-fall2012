@@ -371,6 +371,7 @@ public class MapMode extends GameMode implements InputAPI {
                                                    myPlayer, "moveDown");
             getGameManager().getKeyboardController().setControl(KeyEvent.VK_R, KeyboardController.PRESSED,
                                                    myPlayer, "toggleRunning");
+            
             // enable/disable multi-destination feature in PathFinder
             getGameManager().getKeyboardController().setControl(KeyEvent.VK_SHIFT, KeyboardController.PRESSED,
                                                    myPathFinder, "activateMultiDestination");

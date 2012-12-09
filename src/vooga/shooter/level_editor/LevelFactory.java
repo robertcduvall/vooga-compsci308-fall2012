@@ -25,7 +25,7 @@ import vooga.shooter.gameObjects.intelligence.AI;
 public class LevelFactory {
 
     /**
-     * Load a level from an XML document
+     * Loads a level from an XML document.
      * 
      * @param xmlDoc the XML document with all the
      *          level information.
@@ -68,7 +68,7 @@ public class LevelFactory {
     }
 
     /**
-     * Loads a level from an XML file
+     * Loads a level from an XML file.
      * 
      * @param xmlDoc the XML file with all the
      *          level information.
@@ -86,7 +86,7 @@ public class LevelFactory {
      * @param level the Level object to be converted
      *          to XML.
      * @return an XML document with all the level
-     *          data
+     *          data.
      */
     public static Document storeLevel (Level level) {
         Document doc = XmlUtilities.makeDocument();
@@ -134,7 +134,7 @@ public class LevelFactory {
 
         // convert image...
         XmlUtilities.appendElement(doc, enemyElement, "image", "path",
-                enemy.getImagePath());
+                enemy.getImagePath().split("src/")[1]);
 
         // convert velocity...
         double velX = enemy.getVelocity().getX();

@@ -38,6 +38,8 @@ public class InterceptorAI extends AI {
         Point playerPosition = new Point(myPlayer.getPosition());
         Point playerVelocity = new Point(myPlayer.getVelocity());
         Point myPosition = new Point(mySprite.getPosition());
+        //First, we apply a version of the chase algorithm, telling the enemy to move
+        //directly towards the player
         Point myNewVelocity = new Point(playerPosition.x - myPosition.x,
                 playerPosition.y - myPosition.y);
         double[] normalized = VectorCalculator.normalizeVector(myNewVelocity);
@@ -46,6 +48,8 @@ public class InterceptorAI extends AI {
         myNewVelocity = new Point(
                 (int) Math.round(normalized[0] * currentMagnitude),
                 (int) Math.round(normalized[1] * currentMagnitude));
+        //Now, we add the player's velocity to the enemy's velocity, so that the enemy
+        //will now move towards where the player will be.
         myNewVelocity.x = Math.max(myNewVelocity.x, myNewVelocity.x + playerVelocity.x);
         myNewVelocity.y = Math.max(myNewVelocity.y, myNewVelocity.y + playerVelocity.y);
         normalized = VectorCalculator.normalizeVector(myNewVelocity);
