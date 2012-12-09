@@ -10,6 +10,7 @@ import java.net.Socket;
 import util.datatable.DataTable;
 import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
+import util.datatable.exceptions.UnrecognizedColumnNameException;
 import util.networking.Server;
 import util.networking.Service;
 import util.networking.chat.ChatCommand;
@@ -102,8 +103,8 @@ public class DataService implements Service{
         write(socket, myProtocol.createColumnNames(myDataTable.getColumnNames()));
     }
     
-    private void processEdit(String input, Socket socket){
-        myDataTable.editRowEntry(myProtocol.getStringKey(input), myProtocol.getObjValue(input), myProtocol.getMapEntry());
+    private void processEdit(String input, Socket socket) throws UnrecognizedColumnNameException{
+        myDataTable.editRowEntry(myProtocol.getStringKey(input), myProtocol.getObjValue(input), myProtocol.getMapEntry(input));
     }
     
     private void processFind(String input, Socket socket){
