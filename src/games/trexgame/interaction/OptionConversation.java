@@ -13,6 +13,12 @@ import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 import vooga.turnbased.sprites.Sprite;
 
+/**
+ * options user can choose in a conversation
+ * 
+ * @author rex
+ * 
+ */
 public class OptionConversation extends OptionObject {
 
 	private static final String STATS_INDICATOR = "*";
@@ -61,11 +67,11 @@ public class OptionConversation extends OptionObject {
 		InteractionPanel panel = new ConversationPanel(myChildrenObjects,
 				myConversationMessages);
 		optionMode.setPanel(panel);
-		
+
 		Sprite playerSprite = optionMode.getGameManager().getPlayerSprite();
 		myBattleObjects = playerSprite.getBattleObjects();
 		for (String stats : myStatsBoosts.keySet()) {
-			for (BattleObject battleObject: myBattleObjects) {
+			for (BattleObject battleObject : myBattleObjects) {
 				battleObject.increaseStat(stats, myStatsBoosts.get(stats));
 			}
 		}

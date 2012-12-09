@@ -11,12 +11,17 @@ import vooga.turnbased.gameobject.mapobject.MapObject;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.sprites.Sprite;
 
-public class StatsMode extends OptionMode{
+/**
+ * a GameMode that displays user stats
+ * 
+ * @author rex
+ * 
+ */
+public class StatsMode extends OptionMode {
 
 	private List<BattleObject> myBattleObjects;
-	
-	public StatsMode(GameManager gm, String modeName,
-			List<Integer> involvedIDs) {
+
+	public StatsMode(GameManager gm, String modeName, List<Integer> involvedIDs) {
 		super(gm, modeName, involvedIDs);
 		Sprite playerSprite = getGameManager().getPlayerSprite();
 		myBattleObjects = playerSprite.getBattleObjects();
