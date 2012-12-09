@@ -123,12 +123,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      */
     @Override
     public void update () {
-        if (myPlayer.isDead()) {
-            myCurrentLevel.setNextLevel(new LostGame(this));
-            myCurrentLevel = myCurrentLevel.getNextLevel();
-            myPlayer.setDead(false);
-            startLevel(myCurrentLevel);
-        }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
             startLevel(myCurrentLevel.getNextLevel());
             setupInput();
