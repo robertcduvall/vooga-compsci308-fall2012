@@ -50,7 +50,7 @@ public class GameManager extends JPanel implements Runnable {
     public enum State {
         Starting, Running, Over, Paused
     }
-    
+
     public static final int GAME_FPS = 35;
     private final int myDelay = 1000 / GAME_FPS;
     private Thread gameThread;
@@ -74,6 +74,7 @@ public class GameManager extends JPanel implements Runnable {
     private TextManager myTextManager = new TextManager(this, false, myScore);
     private String[] controllers;
     private OnScreenText myPauseText;
+    private final int SQUARE_SIZE = 50;
 
     public GameManager (GameFrame parent, String[] controllers) {
         this.setFocusable(true);
@@ -82,23 +83,28 @@ public class GameManager extends JPanel implements Runnable {
         myState = State.Starting;
         myParent = parent;
         myGameArea = new Rectangle(0, 50, GameFrame.GameWidth, GameFrame.GameHeight - 100);
-        attackerOne = new Square(new Dimension(50, 50), new Point(50, 50), Color.RED);
-        attackerTwo = new Square(new Dimension(50, 50), new Point(50, 250), Color.BLUE);
-        attackerThree = new Square(new Dimension(50, 50), new Point(50, 450), Color.YELLOW);
-        defenderOne = new Square(new Dimension(50, 50), new Point(950, 500), Color.GREEN);
+        attackerOne = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(50, 50), Color.RED);
+        attackerTwo = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(50, 250), Color.BLUE);
+        attackerThree = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(50, 450), Color.YELLOW);
+        defenderOne = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(950, 500), Color.GREEN);
         setUpGame();
         myPauseText = new OnScreenText();
-        myPauseText.addText("Game Paused.", Integer.MAX_VALUE, new Point(500,300), 50);
+        myPauseText.addText("Game Paused.", Integer.MAX_VALUE, new Point(500, 300), 50);
 
     }
 
     public void setUpGame () {
-        
+
         myWallBalls.clear();
         myTopMenu = new MenuBar(new Rectangle(0, 0, GameFrame.GameWidth, 50));
         myPowerBar = new PowerBar(new Rectangle(700, 5, 200, 35));
-        myWallBuilder =
-                new WallBuilder(GameFrame.GameWidth, GameFrame.GameHeight, Color.GRAY, myPowerBar);
+        if(myWallBuilder==null){
+            myWallBuilder =
+                    new WallBuilder(GameFrame.GameWidth, GameFrame.GameHeight, Color.GRAY, myPowerBar);
+        }
+        else{
+            myWallBuilder.clearWalls();
+        }
         myTopMenu.addComponent(myPowerBar);
         myPowerBar.addPower(40);
         myScore = new Score(new Rectangle(100, 25, 200, 20));
@@ -113,7 +119,7 @@ public class GameManager extends JPanel implements Runnable {
         if (controllerSettings.size() > 0) {
             redoControllers();
         }
-        else{
+        else {
             for (int i = 0; i < controllers.length; i++) {
                 if (ANDROID.equals(controllers[i])) {
                     createAndroidControllerStrategy(i + 1);
@@ -133,27 +139,26 @@ public class GameManager extends JPanel implements Runnable {
         ControllerStrategy curStrat;
 
         curStrat = controllerSettings.remove(defenderOne);
-        defenderOne = new Square(new Dimension(50, 50), new Point(950, 500), Color.GREEN);
+        defenderOne = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(950, 500), Color.GREEN);
         System.out.println("resetting defender one!");
         resetSquare(defenderOne, curStrat);
 
         curStrat = controllerSettings.remove(attackerOne);
-        attackerOne = new Square(new Dimension(50, 50), new Point(50, 50), Color.RED);
+        attackerOne = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(50, 50), Color.RED);
         resetSquare(attackerOne, curStrat);
 
         curStrat = controllerSettings.remove(attackerTwo);
-        attackerTwo = new Square(new Dimension(50, 50), new Point(50, 250), Color.BLUE);
+        attackerTwo = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(50, 250), Color.BLUE);
         resetSquare(attackerTwo, curStrat);
 
         curStrat = controllerSettings.remove(attackerThree);
-        attackerThree = new Square(new Dimension(50, 50), new Point(50, 450), Color.YELLOW);
+        attackerThree = new Square(new Dimension(SQUARE_SIZE, SQUARE_SIZE), new Point(50, 450), Color.YELLOW);
         resetSquare(attackerThree, curStrat);
 
     }
 
     private void resetSquare (Square newSquare, ControllerStrategy strat) {
         if (strat != null) {
-            System.out.println("replacing strat");
             controllerSettings.put(newSquare, strat);
             strat.setTarget(newSquare);
         }
@@ -180,6 +185,8 @@ public class GameManager extends JPanel implements Runnable {
                 myControllerStategy = new KeyboardControllerStrategy(attackerThree, this, type);
                 controllerSettings.put(attackerThree, myControllerStategy);
                 myAttackers.add(attackerThree);
+                break;
+            default:
                 break;
 
         }
@@ -346,17 +353,15 @@ public class GameManager extends JPanel implements Runnable {
     }
 
     public void togglePlay () {
-        if(myState == State.Paused){
-           
+        if (myState == State.Paused) {
+
             myState = State.Running;
         }
-        else if(myState == State.Running){
-          
+        else if (myState == State.Running) {
+
             myState = State.Paused;
         }
 
     }
-    
-     
 
 }
