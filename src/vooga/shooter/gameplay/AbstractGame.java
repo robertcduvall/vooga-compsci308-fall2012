@@ -48,7 +48,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Invaders";
     private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
-    private static final String GAME_IMAGEPATH = "images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
@@ -71,8 +70,8 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      * Game constructor (initializes anything not set in initializeGame())
      */
     public AbstractGame () {
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
-        myGameImage = imageIcon.getImage();
+//        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
+//        myGameImage = imageIcon.getImage();
     }
 
     private void initializeGame (Canvas c) {
@@ -82,7 +81,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart =
                 new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
-        //myPlayer = Player.getInstance();
         myPlayer =
                 new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
                                                                         myCanvas.getHeight()),
@@ -158,7 +156,7 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
         }
-        for (Sprite s : getSprites()) {
+        for (Sprite s : myCurrentLevel.getSpriteList()) {
             s.update();
         }
         for (Sprite sprite1 : getSprites()) {
@@ -239,9 +237,9 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      */
     @Override
     public void paint (Graphics pen) {
+        myCurrentLevel.paintBackground(pen);
         myCurrentLevel.paintSprites(pen, 0, 0);
         
-        myCurrentLevel.paintBackground(pen);
         
         for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);

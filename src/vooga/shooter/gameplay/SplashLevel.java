@@ -30,7 +30,7 @@ public class SplashLevel extends Level {
     }
     
     public void startLevel () {
-        myGame.addEnemy(new Enemy(new Point(300, 200), ENEMY_DIMENSION,
+        addSprite(new Enemy(new Point(300, 200), ENEMY_DIMENSION,
                                   myGame.getCanvasDimension(), IMAGEPATH, ENEMY_VELOCITY,
                                   ENEMY_DAMAGE));
     }

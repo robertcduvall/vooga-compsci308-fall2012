@@ -21,10 +21,10 @@ public class AlienShooter extends AbstractGame{
     
     @Override
     protected void createGame () {
-        myFile = new File("src/vooga/shooter/levels/level1.xml");
+        myFile = new File("src/vooga/shooter/levels/test.xml");
         myStartLevel = LevelFactory.loadLevel(myFile);
         
-        setMyCurrentLevel(new SplashLevel(this, myStartLevel));
+        setMyCurrentLevel(myStartLevel);
     }
     
     public static void main(String[] args){

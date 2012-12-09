@@ -73,8 +73,19 @@ public class LevelFactory {
                  level.addSprite(enemy);
                  
              }
+             child = sibling.getNextSibling();
              
-             sibling = (Element) sibling.getNextSibling();
+             if(child == null){
+                 break;
+             }
+             
+             while (child.getNodeType() != Node.ELEMENT_NODE) {
+                 child = child.getNextSibling();
+                 if(child == null){
+                     break;
+                 }
+             }
+             sibling = (Element) child;
              
          }
          
