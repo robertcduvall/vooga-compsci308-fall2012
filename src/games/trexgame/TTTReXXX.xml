@@ -1342,11 +1342,13 @@
       </object>
       <object><createOn>start</createOn><modes>conversation</modes><class>games.trexgame.interaction.OptionConversation</class><condition>NO_ACTION</condition>
       	<param>
-      		<name>More Infomation...</name></param></object>
-    </sprite>
-	
-	
-    <!-- ENEMIES -->
+      		<name>More Infomation...</name>
+      		<message>Some misterious guy:</message>
+      		<message>    life is like a game</message>
+      		<message>    but here is the reward</message></param></object><object><createOn>start</createOn><modes>conversation</modes><class>vooga.turnbased.gameobject.optionobject.OptionTransport</class><condition>entermap2</condition>
+      	<param>
+      		<name>NEXT LEVEL</name></param></object>
+    </sprite><!-- ENEMIES -->
     <sprite>
       <object>
         <createOn>start</createOn>
