@@ -21,6 +21,7 @@ public class TRexGame implements IArcadeGame {
 	public void runGame(String userPreferences, GameSaver s) {
 		GameWindow myGameWindow = new GameWindow("The T-Rex Game",
 				RESOURCE_ADDRESS, WIDTH, HEIGHT, myFilePath);
+		myGameWindow.changeActivePane(GameWindow.GAME);
 	}
 
 	@Override
