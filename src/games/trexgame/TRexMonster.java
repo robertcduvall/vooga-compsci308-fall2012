@@ -10,8 +10,8 @@ import vooga.turnbased.gameobject.battleobject.BattleObject;
 public class TRexMonster extends BattleObject {
     private final String HEALTH_STAT = "health";
     private final String MAX_HEALTH_STAT = "maxHealth";
-    private final String MANA_STAT = "MP";
-    private final String MAX_MANA_STAT = "maxMP";
+//    private final String MANA_STAT = "MP";
+//    private final String MAX_MANA_STAT = "maxMP";
     private final String ATTACK_STAT = "atk";
     private final String DEFENSE_STAT = "def";
     private final String EVASION_STAT = "eva";
@@ -19,15 +19,20 @@ public class TRexMonster extends BattleObject {
     private final String CRITICAL_RATE_STAT = "crit";
     private final String USED = " used "; 
     
-    private final double OPTION1_BOUND = .25;
-    private final double OPTION2_BOUND = .5;
-    private final double OPTION3_BOUND = .75;
+    private final double OPTION1_BOUND = .7;
+    private final double OPTION2_BOUND = .8;
+    private final double OPTION3_BOUND = .9;
     private final double OPTION4_BOUND = 1.0;
     
     
     public TRexMonster (Set<String> allowableModes, String condition,
             Map<String, Number> stats, String name, Image image) {
         super(allowableModes, condition, stats, name, image);
+    }
+    
+    public TRexMonster (Set<String> allowableModes, String condition,
+            Image image, List<String> stats) {
+        super(allowableModes, condition, image, stats);
     }
     
     @Override
@@ -155,11 +160,11 @@ public class TRexMonster extends BattleObject {
 
     @Override
     protected String[] getStatLines () {
-        String[] ret = new String[6];
+        String[] ret = new String[5];
         int myHP = getStat(HEALTH_STAT).intValue();
         int myMaxHP = getStat(MAX_HEALTH_STAT).intValue();
-        int myMP = getStat(MANA_STAT).intValue();
-        int myMaxMP = getStat(MAX_MANA_STAT).intValue();
+//        int myMP = getStat(MANA_STAT).intValue();
+//        int myMaxMP = getStat(MAX_MANA_STAT).intValue();
         int myAtk = getStat(ATTACK_STAT).intValue();
         int myDef = getStat(DEFENSE_STAT).intValue();
         int myAcc = getStat(ACCURACY_STAT).intValue();
@@ -167,11 +172,11 @@ public class TRexMonster extends BattleObject {
 //        double myCrit = getStat(CRITICAL_RATE_STAT).doubleValue();
         
         ret[0] = "HP: " + myHP + "/" + myMaxHP;
-        ret[1] = "MP: " + myMP + "/" + myMaxMP;
-        ret[2] = "Attack: " + myAtk;
-        ret[3] = "Defense: " + myDef;
-        ret[4] = "Accuracy: " + myAcc;
-        ret[5] = "Evasion: " + myEva;
+//        ret[1] = "MP: " + myMP + "/" + myMaxMP;
+        ret[1] = "Attack: " + myAtk;
+        ret[2] = "Defense: " + myDef;
+        ret[3] = "Accuracy: " + myAcc;
+        ret[4] = "Evasion: " + myEva;
 //        ret[6] = "Crit Rate: " + myCrit;
         return ret;
     }

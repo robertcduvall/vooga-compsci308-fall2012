@@ -41,22 +41,28 @@
       <condition>dooption</condition>
     </mode>
     <mode>
+      <name>conversation</name>
+      <class>vooga.turnbased.gamecore.gamemodes.ConversationMode</class>
+      <condition>talk</condition>
+    </mode><mode>
       <name>gameWon</name>
       <class>vooga.turnbased.gamecore.gamemodes.GameWonMode</class>
       <condition>wingame</condition>
     </mode>
   </modeDeclarations>
   <spriteDeclarations>
+  
+  	<!-- OBSTACLES -->
     <sprite>
       <object>
         <createOn>start</createOn>
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>0</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -66,10 +72,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -79,10 +85,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>2</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -92,10 +98,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -105,10 +111,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>4</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -118,10 +124,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -131,10 +137,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -144,10 +150,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -157,10 +163,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -170,10 +176,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -183,10 +189,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>10</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -196,10 +202,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -209,10 +215,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>12</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -222,10 +228,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>1</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -235,10 +241,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>2</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -248,10 +254,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -261,10 +267,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>4</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -274,10 +280,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -287,10 +293,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>6</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -300,10 +306,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -313,10 +319,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>8</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -326,10 +332,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -339,10 +345,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>10</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -352,10 +358,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -365,10 +371,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>12</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -378,10 +384,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>13</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -391,10 +397,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>12</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -404,10 +410,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -417,10 +423,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>10</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -430,10 +436,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -443,10 +449,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -456,10 +462,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -469,10 +475,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -482,10 +488,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -495,10 +501,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>4</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -508,10 +514,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -521,10 +527,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>2</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -534,10 +540,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>13</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -547,10 +553,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>12</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -560,10 +566,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -573,10 +579,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>10</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -586,10 +592,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -599,10 +605,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>8</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -612,10 +618,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -625,10 +631,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>6</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -638,10 +644,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -651,10 +657,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>4</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -664,10 +670,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>1</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -677,10 +683,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>2</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -690,10 +696,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -703,10 +709,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>4</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -716,10 +722,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -729,10 +735,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -742,10 +748,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -755,10 +761,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -768,10 +774,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -781,10 +787,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>10</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -794,10 +800,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>3</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -807,10 +813,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>4</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -820,10 +826,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -833,10 +839,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>6</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -846,10 +852,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -859,10 +865,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>8</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -872,10 +878,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -885,10 +891,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>10</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -898,10 +904,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>11</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -911,10 +917,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>10</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -924,10 +930,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -937,10 +943,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -950,10 +956,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -963,10 +969,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -976,10 +982,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -989,10 +995,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>4</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1002,10 +1008,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>11</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1015,10 +1021,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>10</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1028,10 +1034,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1041,10 +1047,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>8</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1054,10 +1060,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1067,10 +1073,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>6</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1080,10 +1086,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>3</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1093,10 +1099,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>4</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1106,10 +1112,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1119,10 +1125,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1132,10 +1138,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1145,10 +1151,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1158,10 +1164,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>5</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1171,10 +1177,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>6</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1184,10 +1190,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1197,10 +1203,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>8</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1210,10 +1216,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>9</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1223,10 +1229,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>8</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1236,10 +1242,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite> 
@@ -1249,10 +1255,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1262,10 +1268,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>9</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1275,10 +1281,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>8</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1288,10 +1294,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>5</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1301,10 +1307,10 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>6</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
@@ -1314,24 +1320,40 @@
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>7</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/tree.png</image>
       </object>
     </sprite>
     
+	<sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>talk</condition>
+        <param>
+          <x>6</x>
+          <y>8</y>
+        </param>
+        <image>src/games/trexgame/resources/coin.png</image>
+      </object>
+    </sprite>
+	
+	
+    <!-- ENEMIES -->
     <sprite>
       <object>
         <createOn>start</createOn>
         <modes>map1</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
         <condition>dobattle</condition>
-        <location>
+        <param>
           <x>7</x>
           <y>0</y>
-        </location>
+        </param>
         <image>src/vooga/turnbased/resources/image/mapobject/lass.png</image>
       </object>
       <object>
@@ -1339,21 +1361,32 @@
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
         <condition>NO_ACTION</condition>
-        <stats>
-          <health>350</health>
-		  <maxHealth>350</maxHealth>
-          <MP>50</MP>
-          <maxMP>50</maxMP>
-          <def>100</def>
-          <atk>100</atk>
-          <acc>100</acc>
-          <eva>10</eva>
-          <crit>.1</crit>
-        </stats>
         <name>Caterpie</name>
+        <param>
+          <name>Caterpie</name>
+          <statName>health</statName>
+  		  <value>350</value>
+          <statName>maxHealth</statName>
+  		  <value>350</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>100</value>
+  		  <statName>def</statName>
+  		  <value>100</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>10</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/010.png</image>
       </object>
     </sprite>
+    
     <staticSprite>
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
       <modes>map1</modes>
@@ -1371,78 +1404,64 @@
         <modes>map1, map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
         <condition>NO_ACTION</condition>
-        <location>
-          <x>0</x>
-          <y>0</y>
-        </location>
-        <image>
+        <param>
+          <x>8</x>
+          <y>8</y>
           <source>src/vooga/turnbased/resources/image/player/Down.png</source>
           <direction>down</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Down1.png</source>
           <direction>down1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Down2.png</source>
           <direction>down2</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Left.png</source>
           <direction>left</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Left1.png</source>
           <direction>left1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Left2.png</source>
           <direction>left2</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Right.png</source>
           <direction>right</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Right1.png</source>
           <direction>right1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Right2.png</source>
           <direction>right2</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Up.png</source>
           <direction>up</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Up1.png</source>
           <direction>up1</direction>
-        </image>
-        <image>
           <source>src/vooga/turnbased/resources/image/player/Up2.png</source>
           <direction>up2</direction>
-        </image>
+        </param>
       </object>
       <object>
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
         <condition>endgame1</condition>
-        <stats>
-          <health>500</health>
-          <maxHealth>500</maxHealth>
-          <MP>80</MP>
-          <maxMP>80</maxMP>
-          <atk>130</atk>
-          <def>100</def>
-          <acc>150</acc>
-          <eva>45</eva>
-          <crit>.5</crit>
-        </stats>
-        <name>Pikachu</name>
+        <param>
+          <name>Pikachu</name>
+          <statName>health</statName>
+  		  <value>500</value>
+          <statName>maxHealth</statName>
+  		  <value>500</value>
+  		  <statName>MP</statName>
+  		  <value>80</value>
+          <statName>maxMP</statName>
+  		  <value>80</value>
+  		  <statName>atk</statName>
+  		  <value>130</value>
+  		  <statName>def</statName>
+  		  <value>100</value>
+  		  <statName>acc</statName>
+  		  <value>150</value>
+  		  <statName>eva</statName>
+  		  <value>45</value>
+  		  <statName>crit</statName>
+  		  <value>.15</value>
+        </param>
         <image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
       </object>
     </player>
+    
   </spriteDeclarations>
 </rpggame>

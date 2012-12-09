@@ -62,16 +62,16 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private Point myPlayerOneStart;
     private JFrame myFrame;
     private Image myGameImage;
-    private KeyboardController myKeyCont;
+    private KeyboardController myKeyContr;
+    InputTeamSpriteActionAdapter inputAdapter;
+
 
     /**
      * Game constructor (initializes anything not set in initializeGame())
      */
     public Game () {
-
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
         myGameImage = imageIcon.getImage();
-
     }
 
     private void initializeGame (Canvas c) {
@@ -81,16 +81,23 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart =
                 new Point(myCanvas.getWidth() / 2, myCanvas.getHeight() - PLAYER_START_HEIGHT);
-        myPlayer =
-                new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                        myCanvas.getHeight()),
-                           PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
-
-        addSprite(myPlayer);
-
-        Level myCurrentLevel = new MainScreen(this, new Level1(this));
+        
+        createGame();
         setupInput();
         startLevel(myCurrentLevel);
+    }
+    
+    private void createGame(){
+        myPlayer =
+            new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+                                                                    myCanvas.getHeight()),
+                       PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
+
+        addSprite(myPlayer);
+        inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
+
+
+        myCurrentLevel = new MainScreen(this, new Level1(this));
     }
 
     private void startLevel (Level level) {
@@ -100,21 +107,19 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     }
     
     private void setupInput() {
-        InputTeamSpriteActionAdapter inputAdapter;
-        inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
 
-        myKeyCont = new KeyboardController(this);
+        myKeyContr = new KeyboardController(this);
         try {
-            myKeyCont.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, inputAdapter, "fireShot");
-            myKeyCont.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, inputAdapter, "goUp");
-            myKeyCont.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, inputAdapter, "goDown");
-            myKeyCont.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, inputAdapter, "goLeft");
-            myKeyCont.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, inputAdapter, "goRight");
-            myKeyCont.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyCont.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, inputAdapter, "fireShot");
+            myKeyContr.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, inputAdapter, "goUp");
+            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, inputAdapter, "goDown");
+            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, inputAdapter, "goLeft");
+            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, inputAdapter, "goRight");
+            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, inputAdapter, "stop");
 
         }
         catch (NoSuchMethodException e) {
@@ -125,7 +130,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        myCanvas.addKeyListener(myKeyCont);
+        myCanvas.addKeyListener(myKeyContr);
     }
 
     /**
@@ -194,9 +199,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      *         sprites if they are colliding, or (2) a bullet from one sprite,
      *         and the other sprite itself
      */
+
     private List<Sprite> collisionCheck (Sprite sprite1, Sprite sprite2) {
         List<Sprite> collidedSprites = new ArrayList<Sprite>();
-
         Rectangle sprite1Edges = new Rectangle(new Point(sprite1.getLeft(), sprite1.getTop()), sprite1.getSize());
         Rectangle sprite2Edges = new Rectangle(new Point(sprite2.getLeft(), sprite2.getTop()), sprite2.getSize());
 
@@ -318,6 +323,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
      * 
      * @return dimension of the playable game area
      */
+
     public Dimension getCanvasDimension () {
         return myCanvas.getSize();
     }

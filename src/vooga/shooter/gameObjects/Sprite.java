@@ -4,12 +4,15 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import util.input.core.KeyboardController;
 import vooga.shooter.gameObjects.intelligence.AI;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteMethodMap;
+import vooga.shooter.gameplay.inputInitialize.InputTeamSpriteActionAdapter;
 
 /**
  * This class encompasses the basic layout for any sprites that appear in the
@@ -245,6 +248,32 @@ public abstract class Sprite implements SpriteActionInterface {
     public void doAction (Object ... o) {
 
     }
+    
+    /**
+     * If this is used to add actions other than the default actions, a method must also be added
+     * to InputTeamSpriteActionAdapter, similar to the methods already present there. If any parameters are
+     * needed for the newly added sprite action, they will begin as the second parameter of the doEvent call.
+     *
+     * @param e the key event that triggers the new action
+     * @param act the method that tells the sprite what to do
+     * @param k the keyboard controller used in Game.java
+     * @param a the input adapter used in Game.java
+     */
+    public void addAction(KeyEvent e, SpriteActionInterface act, KeyboardController k, InputTeamSpriteActionAdapter a) {
+        myMapper.addPair(e.toString(), act);
+        try {
+            k.setControl(e.getKeyCode(), KeyboardController.PRESSED, a, act.toString());
+            k.setControl(e.getKeyCode(), KeyboardController.RELEASED, a, "stop");
+        }
+        catch (NoSuchMethodException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        catch (IllegalAccessException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+    }
 
     /**
      * Erases the sprite's image, which will be
@@ -263,7 +292,6 @@ public abstract class Sprite implements SpriteActionInterface {
      * and will be painted during the player's paint method.
      */
     public void fireBullet() {
-
         Bullet b = new Bullet(new Point(myPosition.x, myPosition.y), BULLET_SIZE, myBounds, BULLET_IMAGEPATH,
                 new Point(0, -BULLET_SPEED), BULLET_DAMAGE, this);
 
