@@ -5,6 +5,10 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 
+/**
+ * @author Lance
+ *
+ */
 public class ResponsiveView extends View{
     
     public ResponsiveView (Point2D position, Dimension size) {
