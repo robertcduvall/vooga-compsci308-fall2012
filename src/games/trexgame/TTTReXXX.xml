@@ -27,7 +27,7 @@
     </mode>
     <mode>
       <name>map1</name>
-      <class>vooga.turnbased.gamecore.gamemodes.MapMode</class>
+      <class>games.trexgame.interaction.TRexMapMode</class>
       <condition>entermap1</condition>
     </mode>
     <mode>
@@ -42,7 +42,7 @@
     </mode>
     <mode>
       <name>conversation</name>
-      <class>vooga.turnbased.gamecore.gamemodes.ConversationMode</class>
+      <class>games.trexgame.interaction.ConversationMode</class>
       <condition>talk</condition>
     </mode><mode>
       <name>gameWon</name>
@@ -1338,11 +1338,18 @@
           <x>6</x>
           <y>8</y>
         </param>
-        <image>src/games/trexgame/resources/coin.png</image>
+        <image>src/games/trexgame/resources/treasure_box.png</image>
       </object>
+      <object><createOn>start</createOn><modes>conversation</modes><class>games.trexgame.interaction.OptionConversation</class><condition>NO_ACTION</condition>
+      	<param>
+      		<name>More Infomation...</name>
+      		<message>Some mysterious guy:</message>
+      		<message>    life is like a game</message>
+      		<message>    but here is the reward</message></param></object><object><createOn>start</createOn><modes>conversation</modes><class>vooga.turnbased.gameobject.optionobject.OptionTransport</class><condition>entermap2</condition>
+      	<param>
+      		<name>NEXT LEVEL</name></param></object>
     </sprite>
-	
-	
+    
     <!-- ENEMIES -->
     <sprite>
       <object>
@@ -1361,7 +1368,6 @@
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
         <condition>NO_ACTION</condition>
-        <name>Caterpie</name>
         <param>
           <name>Caterpie</name>
           <statName>health</statName>
@@ -1386,6 +1392,298 @@
         <image>src/vooga/turnbased/resources/image/battleobject/010.png</image>
       </object>
     </sprite>
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <condition>dobattle</condition>
+        <param>
+          <x>14</x>
+          <y>9</y>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/092s.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Gastly</name>
+          <statName>health</statName>
+  		  <value>300</value>
+          <statName>maxHealth</statName>
+  		  <value>300</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>80</value>
+  		  <statName>def</statName>
+  		  <value>80</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>50</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/092.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Haunter</name>
+          <statName>health</statName>
+  		  <value>400</value>
+          <statName>maxHealth</statName>
+  		  <value>400</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>100</value>
+  		  <statName>def</statName>
+  		  <value>100</value>
+  		  <statName>acc</statName>
+  		  <value>110</value>
+  		  <statName>eva</statName>
+  		  <value>60</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/093.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Gengar</name>
+          <statName>health</statName>
+  		  <value>500</value>
+          <statName>maxHealth</statName>
+  		  <value>500</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>120</value>
+  		  <statName>def</statName>
+  		  <value>90</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>70</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/094.png</image>
+      </object>
+    </sprite>
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <condition>dobattle</condition>
+        <param>
+          <x>2</x>
+          <y>10</y>
+        </param>
+        <image>src/vooga/turnbased/resources/image/mapobject/MrPokemon.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Snorlax</name>
+          <statName>health</statName>
+  		  <value>999</value>
+          <statName>maxHealth</statName>
+  		  <value>999</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>75</value>
+  		  <statName>def</statName>
+  		  <value>200</value>
+  		  <statName>acc</statName>
+  		  <value>110</value>
+  		  <statName>eva</statName>
+  		  <value>10</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/143.png</image>
+      </object>
+    </sprite>
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <condition>dobattle</condition>
+        <param>
+          <x>7</x>
+          <y>8</y>
+        </param>
+        <image>src/vooga/turnbased/resources/image/mapobject/BirdKeeperR.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Elite 1</name>
+          <statName>health</statName>
+  		  <value>800</value>
+          <statName>maxHealth</statName>
+  		  <value>800</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>150</value>
+  		  <statName>def</statName>
+  		  <value>80</value>
+  		  <statName>acc</statName>
+  		  <value>200</value>
+  		  <statName>eva</statName>
+  		  <value>20</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/trainer067.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Elite 2</name>
+          <statName>health</statName>
+  		  <value>555</value>
+          <statName>maxHealth</statName>
+  		  <value>555</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>150</value>
+  		  <statName>def</statName>
+  		  <value>150</value>
+  		  <statName>acc</statName>
+  		  <value>80</value>
+  		  <statName>eva</statName>
+  		  <value>10</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/trainer055.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Elite 3</name>
+          <statName>health</statName>
+  		  <value>300</value>
+          <statName>maxHealth</statName>
+  		  <value>300</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>250</value>
+  		  <statName>def</statName>
+  		  <value>30</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>30</value>
+  		  <statName>crit</statName>
+  		  <value>.1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/trainer050.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>Elite 4</name>
+          <statName>health</statName>
+  		  <value>999</value>
+          <statName>maxHealth</statName>
+  		  <value>999</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>100</value>
+  		  <statName>def</statName>
+  		  <value>100</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>20</value>
+  		  <statName>crit</statName>
+  		  <value>1</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/trainer057.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <name>The T-Rex</name>
+          <statName>health</statName>
+  		  <value>9999</value>
+          <statName>maxHealth</statName>
+  		  <value>9999</value>
+  		  <statName>MP</statName>
+  		  <value>50</value>
+          <statName>maxMP</statName>
+  		  <value>50</value>
+  		  <statName>atk</statName>
+  		  <value>999</value>
+  		  <statName>def</statName>
+  		  <value>999</value>
+  		  <statName>acc</statName>
+  		  <value>99</value>
+  		  <statName>eva</statName>
+  		  <value>99</value>
+  		  <statName>crit</statName>
+  		  <value>.5</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/216.png</image>
+      </object>
+    </sprite>
+    
     
     <staticSprite>
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
@@ -1405,8 +1703,8 @@
         <class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
         <condition>NO_ACTION</condition>
         <param>
-          <x>8</x>
-          <y>8</y>
+          <x>0</x>
+          <y>0</y>
           <source>src/vooga/turnbased/resources/image/player/Down.png</source>
           <direction>down</direction>
           <source>src/vooga/turnbased/resources/image/player/Down1.png</source>
@@ -1439,7 +1737,7 @@
         <class>games.trexgame.TRexMonster</class>
         <condition>endgame1</condition>
         <param>
-          <name>Pikachu</name>
+          <name>Celebi</name>
           <statName>health</statName>
   		  <value>500</value>
           <statName>maxHealth</statName>
@@ -1459,9 +1757,148 @@
   		  <statName>crit</statName>
   		  <value>.15</value>
         </param>
-        <image>src/vooga/turnbased/resources/image/battleobject/025b.png</image>
+        <image>src/vooga/turnbased/resources/image/battleobject/251b.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>endgame1</condition>
+        <param>
+          <name>Mewtwo</name>
+          <statName>health</statName>
+  		  <value>400</value>
+          <statName>maxHealth</statName>
+  		  <value>400</value>
+  		  <statName>MP</statName>
+  		  <value>100</value>
+          <statName>maxMP</statName>
+  		  <value>100</value>
+  		  <statName>atk</statName>
+  		  <value>240</value>
+  		  <statName>def</statName>
+  		  <value>100</value>
+  		  <statName>acc</statName>
+  		  <value>180</value>
+  		  <statName>eva</statName>
+  		  <value>15</value>
+  		  <statName>crit</statName>
+  		  <value>.30</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/150b.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>endgame1</condition>
+        <param>
+          <name>Fluffy</name>
+          <statName>health</statName>
+  		  <value>600</value>
+          <statName>maxHealth</statName>
+  		  <value>600</value>
+  		  <statName>MP</statName>
+  		  <value>100</value>
+          <statName>maxMP</statName>
+  		  <value>100</value>
+  		  <statName>atk</statName>
+  		  <value>120</value>
+  		  <statName>def</statName>
+  		  <value>110</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>45</value>
+  		  <statName>crit</statName>
+  		  <value>.40</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/174sb.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>endgame1</condition>
+        <param>
+          <name>Pichu</name>
+          <statName>health</statName>
+  		  <value>100</value>
+          <statName>maxHealth</statName>
+  		  <value>100</value>
+  		  <statName>MP</statName>
+  		  <value>100</value>
+          <statName>maxMP</statName>
+  		  <value>100</value>
+  		  <statName>atk</statName>
+  		  <value>60</value>
+  		  <statName>def</statName>
+  		  <value>30</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>100</value>
+  		  <statName>crit</statName>
+  		  <value>.20</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/172b.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>endgame1</condition>
+        <param>
+          <name>Charmander</name>
+          <statName>health</statName>
+  		  <value>600</value>
+          <statName>maxHealth</statName>
+  		  <value>600</value>
+  		  <statName>MP</statName>
+  		  <value>100</value>
+          <statName>maxMP</statName>
+  		  <value>100</value>
+  		  <statName>atk</statName>
+  		  <value>150</value>
+  		  <statName>def</statName>
+  		  <value>80</value>
+  		  <statName>acc</statName>
+  		  <value>100</value>
+  		  <statName>eva</statName>
+  		  <value>10</value>
+  		  <statName>crit</statName>
+  		  <value>.80</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/004b.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>endgame1</condition>
+        <param>
+          <name>The Other T-Rex</name>
+          <statName>health</statName>
+  		  <value>8888</value>
+          <statName>maxHealth</statName>
+  		  <value>8888</value>
+  		  <statName>MP</statName>
+  		  <value>100</value>
+          <statName>maxMP</statName>
+  		  <value>100</value>
+  		  <statName>atk</statName>
+  		  <value>888</value>
+  		  <statName>def</statName>
+  		  <value>888</value>
+  		  <statName>acc</statName>
+  		  <value>200</value>
+  		  <statName>eva</statName>
+  		  <value>50</value>
+  		  <statName>crit</statName>
+  		  <value>.3</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/216b.png</image>
       </object>
     </player>
-    
   </spriteDeclarations>
 </rpggame>

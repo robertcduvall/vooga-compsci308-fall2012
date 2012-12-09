@@ -25,7 +25,7 @@ import util.xml.XmlUtilities;
  */
 public class ChatServer extends Server {
 
-    private static final int DEFAULT_MAX_CONNECTIONS = 100;
+    private static final int DEFAULT_MAX_CONNECTIONS = 10;
 
     private File myDatabase;
     private Map<String, String> myUserInfo;

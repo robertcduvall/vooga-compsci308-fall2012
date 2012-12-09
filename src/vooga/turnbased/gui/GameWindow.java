@@ -45,12 +45,13 @@ public class GameWindow extends JFrame {
      * @param width Width of the window
      * @param height Height of the window
      */
-    public GameWindow (String title, String settingsResource, int width, int height) {
+    public GameWindow (String title, String settingsResource, int width, int height, String xmlPath) {
         setTitle(title);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(width, height);
         setResizable(true);
         addResourceBundle(settingsResource);
+        setXmlPath(xmlPath);
         initializeGamePanes();
         setVisible(true);
     }
@@ -62,7 +63,7 @@ public class GameWindow extends JFrame {
         myContentPane = getContentPane();
         myLayout = new CardLayout();
         myContentPane.setLayout(myLayout);
-        myContentPane.add(new MenuPane(this), MENU);
+        myContentPane.add(new MenuPane(this, myXmlPath), MENU);
         myContentPane.add(new EditorPane(this), EDITOR);
         myContentPane.add(new ControlPane(this), CONTROLS);
         myContentPane.add(new GamePane(this), GAME);
@@ -89,7 +90,13 @@ public class GameWindow extends JFrame {
      */
     public static Image importImage (String imageName) {
         String imageFolder = myResources.getString("ImageFolder");
-        ImageIcon imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        ImageIcon imageIcon;
+        try {
+        	imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        }
+        catch (Exception e) {
+        	imageIcon = new ImageIcon(importString(imageName));
+        }
         return imageIcon.getImage();
     }
 

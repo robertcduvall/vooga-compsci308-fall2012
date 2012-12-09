@@ -16,41 +16,48 @@ public class KeyboardControllerStrategy extends ControllerStrategy implements Ke
 
     public static final int WASD = 1;
     public static final int ARROWS = 2;
-    private Square myTarget;
     private KeyboardController myKeyboardController;
+    private int myType;
+    private Square myCurTarget;
+    
 
     public KeyboardControllerStrategy (Square target, JPanel compTarget, int type) {
-        myTarget = target;
+       
         myKeyboardController = new KeyboardController(compTarget);
-        if (type == WASD) {
-            setWASDControls();
-
-        }
-        else {
-            setControls();
-        }
+        myType = type;
         myKeyboardController.subscribe(this);
+        setTarget(target);
     }
 
-    @Override
     public void setControls () {
+        myCurTarget = getTarget();
+       if(myType==WASD){
+           setWASDControls();
+       }
+       else{
+           setArrowControls();
+       }
+
+    }
+
+    public void setArrowControls(){
         try {
-            myKeyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveUp");
-            myKeyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveDown");
-            myKeyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveLeft");
             myKeyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED,
-                                            myTarget, "enableMoveRight");
-            myKeyboardController.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, myTarget,
+                                            myCurTarget, "enableMoveRight");
+            myKeyboardController.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, myCurTarget,
                                             "disableMoveUp");
             myKeyboardController.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED,
-                                            myTarget, "disableMoveDown");
+                                            myCurTarget, "disableMoveDown");
             myKeyboardController.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED,
-                                            myTarget, "disableMoveLeft");
+                                            myCurTarget, "disableMoveLeft");
             myKeyboardController.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED,
-                                            myTarget, "disableMoveRight");
+                                            myCurTarget, "disableMoveRight");
         }
         catch (NoSuchMethodException e) {
 
@@ -60,26 +67,25 @@ public class KeyboardControllerStrategy extends ControllerStrategy implements Ke
 
             e.printStackTrace();
         }
-
     }
-
     public void setWASDControls () {
+        System.out.println("WASD created");
         try {
-            myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveUp");
-            myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveDown");
-            myKeyboardController.setControl(KeyEvent.VK_A, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_A, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveLeft");
-            myKeyboardController.setControl(KeyEvent.VK_D, KeyboardController.PRESSED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_D, KeyboardController.PRESSED, myCurTarget,
                                             "enableMoveRight");
-            myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.RELEASED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_W, KeyboardController.RELEASED, myCurTarget,
                                             "disableMoveUp");
-            myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.RELEASED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_S, KeyboardController.RELEASED, myCurTarget,
                                             "disableMoveDown");
-            myKeyboardController.setControl(KeyEvent.VK_A, KeyboardController.RELEASED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_A, KeyboardController.RELEASED, myCurTarget,
                                             "disableMoveLeft");
-            myKeyboardController.setControl(KeyEvent.VK_D, KeyboardController.RELEASED, myTarget,
+            myKeyboardController.setControl(KeyEvent.VK_D, KeyboardController.RELEASED, myCurTarget,
                                             "disableMoveRight");
         }
         catch (NoSuchMethodException e) {
@@ -105,7 +111,7 @@ public class KeyboardControllerStrategy extends ControllerStrategy implements Ke
 
     @Override
     public void keyTyped (KeyEvent arg0) {
-
+        //System.out.println("typing");
     }
 
 }

@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>1459</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/geo4games/marioinminutes/levels/level1GameObjects.bin</gameObjectData>
+<conditionData>src/games/geo4games/marioinminutes/levels/level1Conditions.bin</conditionData>
+<pluginData>src/games/geo4games/marioinminutes/levels/level1Plugins.bin</pluginData>
+</level>

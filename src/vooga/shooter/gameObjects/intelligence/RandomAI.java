@@ -13,8 +13,8 @@ public class RandomAI extends AI{
 
     private int myTimer;
     
-    public RandomAI (Sprite owner, Player thePlayer) {
-        super(owner, thePlayer);
+    public RandomAI (Sprite owner, Player player) {
+        super(owner, player);
         myTimer = 0;
     }
 
