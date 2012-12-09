@@ -162,6 +162,9 @@ public class OptionMode extends GameMode {
      */
     public void goBack() {
     	//interestingly, firstElement() will not work
+    	if (myPanelStack.isEmpty()) {
+    		setModeIsOver();
+    	}
     	myPanel = myPanelStack.pop();
     }
     
