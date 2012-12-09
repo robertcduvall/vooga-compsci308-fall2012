@@ -1,0 +1,28 @@
+<Level backgroundImage="/Users/guytracy/Documents/workspace/vooga-compsci308-fall2012/src/vooga/shooter/images/coralreef.gif">
+<Player>
+<position x="300" y="273"/>
+<size height="20" width="20"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/spaceship.gif"/>
+<velocity x="0" y="0"/>
+<health value="10"/>
+</Player>
+<Enemy>
+<position x="144" y="46"/>
+<size height="40" width="40"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alienship.gif"/>
+<velocity x="0" y="0"/>
+<health value="40"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+<Enemy>
+<position x="353" y="63"/>
+<size height="50" width="50"/>
+<bounds height="348" width="600"/>
+<image path="vooga/shooter/images/alienship.gif"/>
+<velocity x="0" y="0"/>
+<health value="50"/>
+<ai name="vooga.shooter.gameObjects.intelligence.ChaseAI"/>
+</Enemy>
+</Level>

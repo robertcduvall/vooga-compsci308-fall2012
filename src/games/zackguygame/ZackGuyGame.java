@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.io.File;
 import vooga.shooter.gameObjects.Player;
+import vooga.shooter.gameObjects.Sprite;
 import vooga.shooter.gameplay.AbstractGame;
 import vooga.shooter.gameplay.Game;
 import vooga.shooter.gameplay.MainScreen;
@@ -27,9 +28,20 @@ public class ZackGuyGame extends AbstractGame implements IArcadeGame {
         
         //myFile = new File("src/vooga/shooter/levels/testLevelGuy.xml");
         //Level level1 = LevelFactory.loadLevel(myFile);
-        Level level1 = LevelFactory.loadLevel(new File("src/vooga/shooter/levels/zbhggtLevel1.xml"));
-        Level level2 = LevelFactory.loadLevel(new File("src/vooga/shooter/levels/zbhggtLevel2.xml"));
-        Level level3 = LevelFactory.loadLevel(new File("src/vooga/shooter/levels/zbhggtLevel3.xml"));
+        Level level1 = LevelFactory.loadLevel(new File("src/vooga/shooter/levels/ggtLevel1.xml"));
+        Level level2 = LevelFactory.loadLevel(new File("src/vooga/shooter/levels/ggtLevel2.xml"));
+        Level level3 = LevelFactory.loadLevel(new File("src/vooga/shooter/levels/ggtLevel3.xml"));
+        
+       // Level level1 = new Level();
+        
+        //Sprite myEnemy = new Enemy();
+        //Sprite myPlayer = new Player();
+        //level1.addSprite(myEnemy);
+       // level1.setBackgroundImage("vooga/shooter/images/spaceship.gif");
+        
+       // level1.setPlayer(player);
+
+        
         level1.setNextLevel(level2);
         level2.setNextLevel(level3);
         setMyCurrentLevel(level1);
