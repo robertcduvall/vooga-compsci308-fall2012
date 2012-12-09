@@ -15,11 +15,13 @@ import arcade.gamemanager.GameSaver;
  * 
  */
 public class PlaySquareAttack implements IArcadeGame {
+    private static final String GAME_DESCRIPTION = "Square Attack! is an intense 4 player game of keep away. It supports multiple controller types and uses features of an android touch screen and controller vibrations!" +
+    		"Warning: If you do not have Android phone and the Android app, this game will be stupid. If you don't have a Mac this game will also be stupid. If you never read my manual on how to use an Android controller, this game will also be stupid." +
+    		"So I expect this game will be stupid for everyone except me. (And by stupid, I mean crash.) ";
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         new GameFrame();
-
     }
 
     @Override
@@ -38,7 +40,7 @@ public class PlaySquareAttack implements IArcadeGame {
 
     @Override
     public String getDescription () {
-        return "Square Attack! is an intense 4 player game of keep away. It supports multiple controller types and user features of an android touch screen and controller vibrations!";
+        return GAME_DESCRIPTION;
     }
 
     @Override
@@ -47,9 +49,7 @@ public class PlaySquareAttack implements IArcadeGame {
     }
 
     public static void main (String[] args) {
-
         GameFrame g = new GameFrame();
-
     }
 
 }
