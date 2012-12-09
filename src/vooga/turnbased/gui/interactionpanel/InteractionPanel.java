@@ -22,7 +22,7 @@ import vooga.turnbased.gui.GameWindow;
  */
 public class InteractionPanel {
 
-    private static final int ROW_NUMBER = 3;
+    private static final int ROW_NUMBER = 4;
     private static final int COLUMN_NUMBER = 2;
     private static final double MARGIN_PROPORTION = 0.1;
     private Image myBulletPointImage;

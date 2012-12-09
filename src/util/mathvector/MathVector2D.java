@@ -18,6 +18,12 @@ public class MathVector2D extends MathVector{
 	 *@author Kathleen 
 	 */
 	
+	/**
+	 * WARNING: The variables X and Y refer to the index number of the
+	 * respective coordinates for this vector. These variables were 
+	 * added by David, and I'm not sure why they are public. For 
+	 * now, I'm leaving them in for backwards compatibility.
+	 */
         public static final int X = 0;
         public static final int Y = 1;
     
@@ -47,8 +53,8 @@ public class MathVector2D extends MathVector{
 	 * 				counterclockwise from positive x-axis
 	 * @param magnitude magnitude of vector
 	 */
-	public MathVector2D(double angle){
-		this(Math.cos(angle*Math.PI/180), Math.sin(angle*Math.PI/180));
+	public MathVector2D(double angleInDegrees){
+		this(Math.cos(angleInDegrees*Math.PI/180), Math.sin(angleInDegrees*Math.PI/180));
 	}
 	
 	/**
@@ -62,7 +68,7 @@ public class MathVector2D extends MathVector{
 	/**
 	 * Calculates the angle between the positive x-axis and this 
 	 * vector in radians. Returns a value between 0 (inclusive) and 
-	 * 2pi (exclusive).
+	 * 2pi (exclusive). Returns pi/2 if this vector is the zero-vector.
 	 * @return
 	 */
 	public double calculateAngleInRadians(){
@@ -88,5 +94,24 @@ public class MathVector2D extends MathVector{
 	
 	public double getY(){
 		return getComponent(Y);
+	}
+	
+	/**
+	 * Rotates this vector counterclockwise through the 
+	 * angle angleInDegrees.
+	 * @param angleInDegrees
+	 */
+	public void rotate(double angleInDegrees){
+		double angle = angleInDegrees*Math.PI/180;
+		double newX = Math.cos(angle)*getX()-Math.sin(angle)*getY();
+		double newY = Math.sin(angle)*getX()+Math.cos(angle)*getY();
+		setComponent(X, newX);
+		setComponent(Y, newY);
+	}
+	
+	public MathVector2D getRotatedCopy(double angleInDegrees){
+		MathVector2D copy = new MathVector2D(this);
+		copy.rotate(angleInDegrees);
+		return copy;
 	}
 }
