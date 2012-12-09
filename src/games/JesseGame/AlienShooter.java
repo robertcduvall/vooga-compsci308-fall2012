@@ -5,7 +5,6 @@ import vooga.shooter.gameplay.AbstractGame;
 import vooga.shooter.gameplay.SplashLevel;
 import vooga.shooter.level_editor.Level;
 import vooga.shooter.level_editor.LevelFactory;
-import arcade.IArcadeGame;
 
 /**
  * This code takes advantage of the level factory and creating a custom level
@@ -16,7 +15,7 @@ import arcade.IArcadeGame;
  * @author Jesse Starr, Tommy Petrilak
  *
  */
-public class AlienShooter extends AbstractGame implements IArcadeGame{
+public class AlienShooter extends AbstractGame{
     File myFile;
     Level myStartLevel;
     
@@ -31,5 +30,15 @@ public class AlienShooter extends AbstractGame implements IArcadeGame{
     public static void main(String[] args){
         AbstractGame myGame = new AlienShooter();
         myGame.runGame(null, null);
+    }
+    
+    @Override
+    public String getName(){
+        return "Alien Shooter";
+    }
+    
+    @Override
+    public String getDescription(){
+        return "Kill the aliens!";
     }
 }
