@@ -10,7 +10,7 @@ import games.tommygame.levels.Level1;
 /**
  * First level (initializes enemies, sets winning conditions)
  * 
- * @author Tommy Petrilak
+ * @author Guy Tracy
  * 
  */
 public class SplashLevel extends Level {

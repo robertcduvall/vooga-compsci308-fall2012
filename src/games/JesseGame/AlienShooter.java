@@ -7,6 +7,15 @@ import vooga.shooter.level_editor.Level;
 import vooga.shooter.level_editor.LevelFactory;
 import arcade.IArcadeGame;
 
+/**
+ * This code takes advantage of the level factory and creating a custom level
+ * to use in the game.  It also uses the ability to start a game from a custom 
+ * level chosen by the programmer. The game class uses the input team's packages
+ * to get keyboard input from the user.
+ *
+ * @author Jesse Starr, Tommy Petrilak
+ *
+ */
 public class AlienShooter extends AbstractGame implements IArcadeGame{
     File myFile;
     Level myStartLevel;

@@ -70,8 +70,8 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
      * Game constructor (initializes anything not set in initializeGame())
      */
     public AbstractGame () {
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
-        myGameImage = imageIcon.getImage();
+        //ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(GAME_IMAGEPATH));
+        //myGameImage = imageIcon.getImage();
     }
 
     private void initializeGame (Canvas c) {
