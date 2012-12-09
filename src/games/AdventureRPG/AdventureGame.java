@@ -1,8 +1,9 @@
 package games.AdventureRPG;
 
-import games.trexgame.TRexGameWindow;
 import java.awt.Image;
 import java.util.List;
+
+import vooga.turnbased.gui.GameWindow;
 import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 
@@ -12,12 +13,13 @@ import arcade.gamemanager.GameSaver;
  *
  */
 public class AdventureGame implements IArcadeGame {
+	private final String myFilePath = "src/games/AdventureRPG/AdventureRPGMap.xml";
     private static final int WIDTH = 600;
     private static final int HEIGHT = 450;
     
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        AdventureGameWindow myGameWindow = new AdventureGameWindow("AdventureLand", "GameSetting", WIDTH, HEIGHT);
+        GameWindow myGameWindow = new GameWindow("AdventureLand", "GameSetting", WIDTH, HEIGHT, myFilePath);
 
     }
 
