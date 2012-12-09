@@ -1,4 +1,4 @@
-package util.particleEngine;
+package games.particleEngineMedley;
 
 import java.awt.Image;
 import java.awt.Point;
@@ -6,22 +6,26 @@ import java.awt.Point;
 import javax.swing.ImageIcon;
 
 import util.mathvector.MathVector2D;
+import util.particleEngine.Explosion;
+import util.particleEngine.GravitationalParticleEngine;
+import util.particleEngine.ParticleEngine;
+import util.particleEngine.ParticleSystem;
 
 public class Fireworks extends ParticleSystem{
 
-    private static int myTolerance = 0;
+    private static int myTolerance = 15;
     private static int myLength = 50;
-    private static int myDensity = 70;
-    private static int numDirections = 11;
+    private static int myDensity = 100;
+    private static int numDirections = 21;
     private static boolean loop = false;
-    private static double angleSpan = 90;
+    private static double angleSpan = 200;
     
     //RGBA magic numbers borrowed from Explosion class
     private static float[] RGBAscales = { 3.0f, 1.2f, 1.2f, 0.4f };
     private static float[] RGBAtolerances = { 0.2f, 0.4f, 0.4f, 0.1f };
     
 	public Fireworks(MathVector2D startingPosition) {
-		super(startingPosition, new MathVector2D(0,10));
+		super(new MathVector2D(startingPosition), new MathVector2D(-5,7));
 	}
 	
 	public Fireworks(Point startingPosition){
@@ -34,8 +38,10 @@ public class Fireworks extends ParticleSystem{
 		ImageIcon temp = new ImageIcon(
                 Explosion.class.getResource("orangeParticle.png"));
 		Image myImage = temp.getImage();
-		addParticleEngine(myDensity, myImage, position, getVelocity(), 
+		for (int k = 0; k < 5; k++){
+			addParticleEngine(myDensity, myImage, position, getVelocity().getRotatedCopy(30*k), 
 				myTolerance, myLength, angleSpan, numDirections, RGBAscales, RGBAtolerances, loop);
+		}
 	}
 
     /**
