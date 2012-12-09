@@ -450,7 +450,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             return newEnemy;
         }
         throw new LevelEditorException("Invalid attributes selected.");
-
     }
 
     private void openFile (File file) {
