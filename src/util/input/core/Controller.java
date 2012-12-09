@@ -254,17 +254,13 @@ public abstract class Controller<T> {
         performReflections(null, method, actionID);
     }
     
-    
-    private void addControlToTable (int action, int type, Object o,
+    protected void addControlToTable (int action, int type, Object o,
             Method method, String describeButton, String describeAction) {
-        Map<String, Object> dataIn = new HashMap<String, Object>();
-        dataIn.put(TUPLE, new FlagPair<Object, Method>(o, method));
-        insertInMap(dataIn, describeButton, describeAction,
-                UKeyCode.codify(type, action));
-
-        myDataTable.addNewRow(dataIn);
+        addControlToTable(UKeyCode.codify(type, action),
+                new FlagPair<Object, Method>(o, method), describeButton,
+                describeAction);
     }
-
+    
     protected void addControlToTable (int ukeyCode,
             FlagPair<Object, Method> fPair, String describeButton,
             String describeAction) {
