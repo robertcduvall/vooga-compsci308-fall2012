@@ -124,4 +124,10 @@
 		<tags/>
 		<filepath>games.ninjagame.NinjaGame</filepath>
 </game>
+<game id="19">
+		<name>MindChallenge</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.mindchallenge.MindChallenge</filepath>
+</game>
 </gamelist>
