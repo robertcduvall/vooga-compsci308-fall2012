@@ -88,10 +88,11 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     }
     
     private void createGame(){
-        myPlayer =
-            new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                    myCanvas.getHeight()),
-                       PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
+        myPlayer = Player.getInstance();
+//        myPlayer =
+//            new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+//                                                                    myCanvas.getHeight()),
+//                       PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
         inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);

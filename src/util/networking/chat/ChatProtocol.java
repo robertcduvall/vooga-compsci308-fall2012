@@ -146,7 +146,7 @@ public interface ChatProtocol {
     /**
      * Create String of Register info, formatted according to protocol
      * @param user name of user that is registering
-     * @param password the passworkd that they select
+     * @param password the password that they select
      * @return
      */
     String createRegister (String user, String password);
