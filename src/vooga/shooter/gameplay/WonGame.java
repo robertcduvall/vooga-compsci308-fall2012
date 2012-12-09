@@ -20,12 +20,7 @@ import vooga.shooter.gameplay.Game;
  */
 public class WonGame extends Level {
 
-    private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
-    private static final int NUMBER_OF_STAGES = 1;
-    private static final int NUMBER_OF_ENEMIES = 1;
-    private static final Dimension ENEMY_DIMENSION = new Dimension(60, 60);
-    private static final Point ENEMY_VELOCITY = new Point(0, 0);
-    private static final int ENEMY_DAMAGE = 1;
+    private static final String BACKGROUND_IMAGEPATH = "vooga/shooter/images/galaxy.png";
 
     private AbstractGame myGame;
     private Level myNextLevel;
@@ -34,13 +29,10 @@ public class WonGame extends Level {
         super();
         myGame = game;
         myNextLevel = null;
+        setBackgroundImage(BACKGROUND_IMAGEPATH);
     }
 
-    public void startLevel () {
-        myGame.addEnemy(new Enemy(new Point(myGame.getCanvasDimension().width / 2, myGame
-                .getCanvasDimension().height / 2), ENEMY_DIMENSION, myGame
-                .getCanvasDimension(), ENEMY_IMAGEPATH, ENEMY_VELOCITY, ENEMY_DAMAGE));
-    }
+ 
 
     @Override
     public boolean winningConditionsMet () {
