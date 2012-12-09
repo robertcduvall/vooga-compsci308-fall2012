@@ -130,4 +130,22 @@
 		<tags/>
 		<filepath>games.mindchallenge.MindChallenge</filepath>
 </game>
+<game id="20">
+		<name>The Simple Lord of the Rings Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.lotrsimple.LOTRSimpleGame</filepath>
+</game>
+<game id="21">
+		<name>Mario in Minutes</name>
+		<rating/>
+		<tags/>
+		<filepath>games.geo4games.marioinminutes.MarioInMinutes</filepath>
+</game>
+<game id="21">
+		<name>Moving Bricks</name>
+		<rating/>
+		<tags/>
+		<filepath>games.geo4games.movingbricks.MovingBricks</filepath>
+</game>
 </gamelist>
