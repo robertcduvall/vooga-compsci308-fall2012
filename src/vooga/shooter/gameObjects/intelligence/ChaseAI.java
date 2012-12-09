@@ -11,8 +11,8 @@ import util.mathvector.VectorCalculator;
  */
 public class ChaseAI extends AI{
 
-    public ChaseAI (Sprite owner) {
-        super(owner);
+    public ChaseAI (Sprite owner, Player player) {
+        super(owner, player);
     }
 
     /**

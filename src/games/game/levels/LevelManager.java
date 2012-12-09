@@ -3,9 +3,12 @@ package games.game.levels;
 import games.game.core.IPaintable;
 import games.game.core.IUpdatable;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 import javax.swing.JPanel;
+import util.particleEngine.Explosion;
+import util.particleEngine.ParticleSystem;
 
 
 /**
@@ -68,10 +71,13 @@ public class LevelManager implements IPaintable, IUpdatable {
     }
 
     /**
-     * Displays the final score for the user.
+     * Displays the final score for the user and starts a
+     * 'firework' display.
      */
     private void displayGameOver() {
         myFinalScore = myCurrentLevel.getScore();
+        ParticleSystem fireWorks = new Explosion(new Point());
+        fireWorks.setLoop(true);
     }
 
     /**
