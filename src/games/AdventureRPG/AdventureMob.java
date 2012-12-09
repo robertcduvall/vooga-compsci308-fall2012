@@ -30,6 +30,11 @@ public class AdventureMob extends BattleObject {
         super(allowableModes, condition, stats, name, image);
     }
 
+    public AdventureMob (Set<String> allowableModes, String condition,
+            Image image, List<String> stats) {
+        super(allowableModes, condition, image, stats);
+    }
+
     @Override
     public void doRandomOption(BattleObject target, List<String> battleMessages) {
         Random randomGenerator = new Random();
@@ -47,7 +52,7 @@ public class AdventureMob extends BattleObject {
         if (random >= OPTION4_LOWER_BOUND && random < OPTION4_UPPER_BOUND) {
             doOption4(target, battleMessages);
         }
-        battleMessages.add(message);
+
     }
 
     @Override
@@ -62,15 +67,16 @@ public class AdventureMob extends BattleObject {
             break;
             case 4: doOption4(target, battleMessages);
             break;
-            default: break;
+            default: 
+                battleMessages.add(message);
+                break;
         }
-        battleMessages.add(message);
     }
 
     @Override
     protected void doOption1 (BattleObject target, List<String> battleMessages) {
         //Quick attack
-        healMe(4);
+        healMe(10);
         attackEnemy(target, battleMessages);
         battleMessages.add((getName() + USED + getOptions()[0]));
     }
@@ -78,13 +84,13 @@ public class AdventureMob extends BattleObject {
     @Override
     protected void doOption2 (BattleObject target, List<String> battleMessages) {
         //Concentrate
-        healMe(4);
+        healMe(10);
         int oldEnergy = getStat(ENERGY_STAT).intValue();
         if (oldEnergy <  4) {
             changeStat(ENERGY_STAT, oldEnergy + 2);
         }
         else {
-            int newEnergy = oldEnergy * 5 / 4;
+            int newEnergy = oldEnergy * 5 / 4 + 1;
             changeStat(ENERGY_STAT, newEnergy);
         }
         battleMessages.add((getName() + USED + getOptions()[1]));
@@ -96,11 +102,13 @@ public class AdventureMob extends BattleObject {
         int damage = getStat(ENERGY_STAT).intValue() + getStat(ATTACK_STAT).intValue();
         attackEnemy(target, damage);
         battleMessages.add((getName() + USED + getOptions()[2]));
+        changeStat(ENERGY_STAT, 1);
     }
 
     @Override
     protected void doOption4 (BattleObject target, List<String> battleMessages) {
         // Steal Energy
+        healMe(5);
         AdventureMob enemy = (AdventureMob) target;
         int energyReceived = enemy.loseEnergy();
         changeStat(ENERGY_STAT, getStat(ENERGY_STAT).intValue() + energyReceived - 2);
@@ -149,7 +157,7 @@ public class AdventureMob extends BattleObject {
 
     @Override
     public String getStartFightingMessage (boolean isPlayerControlled) {
-        return getName() + " has engaged in battle!";
+        return getName() + " has engaged!";
     }
 
     @Override
@@ -179,3 +187,4 @@ public class AdventureMob extends BattleObject {
     }
 
 }
+
