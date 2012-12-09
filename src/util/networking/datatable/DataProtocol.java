@@ -19,10 +19,13 @@ public interface DataProtocol {
     String getObjValue(String input);
     Collection<String> getColumnNames(String input);
     Collection<UnmodifiableRowElement> getDataRows(String input);
+    String[] getColumns(String input);
     
     String createAddColumns(String[] strArray);
     String createEdit(String strKey, Object value, Map<String, Object> mapEntry);
     String createDeleteRowEntry(String strKey, Object value);
+    String createDataRows(Collection<UnmodifiableRowElement> rows);
+    String createColumnNames(Collection<String> names);
     String createGetDataRows();
     String createGetColumnNames();
     String createClear();
