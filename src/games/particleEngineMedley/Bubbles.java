@@ -8,12 +8,18 @@ import javax.swing.ImageIcon;
 import util.mathvector.MathVector2D;
 import util.particleEngine.ParticleSystem;
 
+/**
+ * 
+ * @author Kathleen
+ *
+ */
 public class Bubbles extends ParticleSystem {
 	private static final MathVector2D default_Starting_Velocity = new MathVector2D(0,5);
 	
 	private static int numberOfParticleEngines = 1;
 	private static int density = 2;
 	private static Image image;
+	private static String imageName = "bubble.png";
 	private static MathVector2D sourceEndpoint1;
 	private static MathVector2D sourceEndpoint2; //equal to bubblePosition if 
 										   //point-source model is used
@@ -39,6 +45,7 @@ public class Bubbles extends ParticleSystem {
 	 * Bubble spawn sources (i.e. particle engine positions) are positioned 
 	 * randomly along the line between sourceEndpoint1 and sourceEndpoint2.
 	 * 
+	 * This line-source functionality doesn't work at the moment. :\ Sorry!
 	 * @param sourceEndpoint1 one endpoint of line along which bubbles spawn
 	 * @param sourceEndpoint2 the other endpoint of the line along which bubbles spawn
 	 * @param startingVelocity initial velocity of bubbles
@@ -56,14 +63,12 @@ public class Bubbles extends ParticleSystem {
 
 	@Override
 	protected void setUpParticleEngines() {
-		//image retrieval probably needs to be refactored
 		ImageIcon temp = new ImageIcon(
-				Bubbles.class.getResource("bubble.png"));
+				Bubbles.class.getResource(imageName));
 		image = temp.getImage();
 		
 		Random randomGenerator = new Random();
 		for (int k = 0; k < numberOfParticleEngines; k++){
-			//MathVector2D enginePosition = generateRandomSourcePosition(randomGenerator);
 			addParticleEngine(density, image, getPosition(), getVelocity(), 
 					tolerance, length, angleSpan, numberOfDirections, 
 					RGBAscales, RGBAtolerances, loop);
@@ -79,17 +84,6 @@ public class Bubbles extends ParticleSystem {
 					+ sourceEndpoint2.getComponent(k)*differenceFactor);
 		}
 		return returnValue;
-	}
-	
-	/**
-	 * Returns a randomly generated double between a and b.
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	private double randomDouble(double a, double b){
-		Random generator = new Random();
-		return a+generator.nextDouble()*(b-a);
 	}
 
 }

@@ -6,10 +6,19 @@ import java.awt.event.*;
 import javax.swing.*;
 import util.input.configurecontrollergui.controller.RadioButtonController;
 
+/**
+ * View focused on providing radio button
+ * style flexibility. This class was primarily taken
+ * from the official Java example website.
+ * 
+ * @author Lance, Amay
+ *
+ */
 public class RadioButtonView extends JPanel
                              implements ActionListener {
 
     private static RadioButtonController myRadioController;
+    private static String radiobuttonPressed;
 
     public RadioButtonView(RadioButtonController rbc) {
         super(new BorderLayout());
@@ -34,7 +43,16 @@ public class RadioButtonView extends JPanel
  
     /** Listens to the radio buttons. */
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e);
+        for(String buttonDesc: myRadioController.getButtonDescriptions()) {
+            if(e.paramString().contains(buttonDesc)) {
+                radiobuttonPressed = buttonDesc;
+            }
+        }
+        System.out.println(radiobuttonPressed);
+    }
+    
+    public static String getRadioButtonPressed() {
+        return radiobuttonPressed;
     }
  
  

@@ -14,7 +14,23 @@ import arcade.gamemanager.GameSaver;
 
 /**
  * 
+ * This is the game submission for Michael Deng and Jei Min Yoo.
+ * It is a platformer game based off of the Lord of the Rings.
+ * 
+ * This is the SIMPLE version.. showing that the platformer game 
+ * engine can create fun games quickly. 
+ * 
  * @author Michael Deng
+ * @author Jei Min Yoo
+ * 
+ * 
+ *         This game demonstrates the use of the platormer's game engine.
+ *         In this game, we are demonstrating the game engine's ability to:<br>
+ *         - create a bunch of levels <br>
+ *         - set different winning/losing conditions for each level <br>
+ *         - use our own characters and images <br>
+ *         - use the inputs teams functionality <br>
+ *         - make fun games quickly <br>
  *
  */
 public class LOTRSimpleGame implements IArcadeGame {
@@ -35,7 +51,7 @@ public class LOTRSimpleGame implements IArcadeGame {
     
     public void start(String levelName) {
         JFrame frame = new JFrame("The Simple Lord of the Rings Game");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         PlatformerController controller = new PlatformerController(levelName,
                 new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);

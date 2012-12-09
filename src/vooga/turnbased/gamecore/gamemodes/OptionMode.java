@@ -146,10 +146,12 @@ public class OptionMode extends GameMode {
 				setFocus(!myPanel
 						.highlightOption(getPositionOnPanel(mousePosition)));
 			}
-		} else if (mousePressed == GamePane.MOUSE_DRAGGED && hasFocus()) {
-			Point pressedPosition = myPanel.getPreviousPosition();
-			mousePosition.translate(-pressedPosition.x, -pressedPosition.y);
-			myOrigin = mousePosition;
+		} else if (mousePressed == GamePane.MOUSE_DRAGGED) {
+			if (hasFocus()) {
+				Point pressedPosition = myPanel.getPreviousPosition();
+				mousePosition.translate(-pressedPosition.x, -pressedPosition.y);
+				myOrigin = mousePosition;
+			}
 		} else if (mousePressed == GamePane.MOUSE_RELEASED) {
 			myPanel.dehighlightOption();
 		} else {
@@ -167,8 +169,11 @@ public class OptionMode extends GameMode {
 	 * @param panel
 	 */
 	public void setPanel(InteractionPanel panel) {
+		myPanel.dehighlightOption();
 		if (!myIsDefaultPanelUsed) {
 			myPanelStack.add(myPanel);
+		} else {
+			myIsDefaultPanelUsed = false;
 		}
 		myPanel = panel;
 	}

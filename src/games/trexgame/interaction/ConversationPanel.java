@@ -26,12 +26,15 @@ public class ConversationPanel extends InteractionPanel {
 
     public ConversationPanel (List<OptionObject> options, List<String> messages) {
         super();
-        final int POSITION_INDEX = 4;
+        final int POSITION_INDEX =6;
         myConversationMessages = messages;
-        options.add(makeQuitOption());
+        OptionObject quitOption = makeQuitOption();
+        options.add(quitOption);
         for (int i = 0; i < options.size(); i++) {
             insertOption(options.get(i), i + POSITION_INDEX);
         }
+        options.remove(quitOption);
+        setBackground(GameWindow.importString("DialogueBox"));
     }
 
     public Image renderImage () {
@@ -50,16 +53,6 @@ public class ConversationPanel extends InteractionPanel {
         }
         return panelImage;
     }
-    
-	@Override
-	protected void initializePanelImage() {
-		try {
-			setPanelImage(ImageIO.read(new File(GameWindow.importString("DialogueBox"))));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		super.initializePanelImage();
-	}
 
     private OptionObject makeQuitOption () {
         OptionObject quitOption = OptionBack.getDefaultOptionObject("I don't care~!");
