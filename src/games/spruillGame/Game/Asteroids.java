@@ -9,13 +9,34 @@ import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 
 
+/**
+ * This game has 4 levels of an increasing number of asteroids randomly
+ * assaulting you in a field through which you must either dodge or shoot your
+ * way through. As to what design features this implements of the vooga code
+ * base... this implements the interfaces needed to plug into the arcade, and it
+ * utilizes Level architecture from shooters along with that Game class to
+ * control how the levels shift, display to the screen, update, etc.. The
+ * ParticleEngine systems are utilized in the game class, so this inherits that
+ * use as well.
+ * 
+ * @author David Spruill
+ * 
+ */
 @SuppressWarnings("serial")
 public class Asteroids extends Game implements IArcadeGame {
 
+    /**
+     * Contructs this object
+     */
     public Asteroids () {
         super();
     }
 
+    /**
+     * The method called by the arcade that instantiates the game
+     * @param userPreferences the userpreferences to be passed into the game
+     * @param s the gamesaver to save/load this game's state
+     */
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         super.runGame(userPreferences, s);
@@ -25,13 +46,11 @@ public class Asteroids extends Game implements IArcadeGame {
 
     @Override
     public List<Image> getScreenshots () {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Image getMainImage () {
-        // TODO Auto-generated method stub
         return null;
     }
 

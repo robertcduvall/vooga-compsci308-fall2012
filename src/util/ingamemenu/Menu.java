@@ -26,7 +26,7 @@ public class Menu extends JComponent {
     private static final long serialVersionUID = 1L;
     private static final double MENU_SIZE_RATIO = 0.66;
     private static final int INTERVAL = 20;
-    private static final Color TRANSP_COLOR = new Color(160, 100, 100, 100);
+    public static final Color TRANSP_COLOR = new Color(160, 100, 100, 100);
     private double myRatio = MENU_SIZE_RATIO;
     private JComponent myGameCanvas;
     private ArrayList<GameButton> myButtonList = new ArrayList<GameButton>();

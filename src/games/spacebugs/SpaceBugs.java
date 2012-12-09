@@ -32,19 +32,40 @@ import vooga.shooter.graphics.Canvas;
 import vooga.shooter.graphics.DrawableComponent;
 import vooga.shooter.level_editor.Level;
 
+/**
+ * Space Bugs IV
+ * 
+ * This game uses the framework developed by the Top-Down Shooter team, 
+ * with a few changes. I wanted to have the player control two ships
+ * at once, which was not a possibility with the current engine. Thus,
+ * I had to make a specialized Game class (SpaceBugs). The completed game
+ * demonstrates the different AI possibilities in the engine, and
+ * implements the Particle Engine effects. It also uses the input team's 
+ * code to set up non-standard keyboard buttons as movement and shoot inputs.
+ * The game does not currently use levels made through the level editor, as
+ * the level editor was unable to successfully create xml files at this time.
+ * Once the SpaceBugs class was created to deal with the multiple players,
+ * a game took only about 30 minutes to write using our framework.
+ * 
+ * 
+ * @author Stephen Hunt
+ * 
+ * Based off of Game class by Jesse Starr, Tommy Petrilak, and Stephen Hunt
+ *
+ */
+
 public class SpaceBugs extends JComponent implements DrawableComponent, IArcadeGame {
 
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Bugs IV";
-    private static final String GAME_IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
 
     private List<ParticleSystem> myParticleSystems;
     private List<Sprite> mySprites;
-    private Player1 myPlayer;
-    private Player2 myPlayer2;
+    private Player myPlayer;
+    private Player myPlayer2;
     private List<Enemy> myEnemies;
     private Level myCurrentLevel;
     private Canvas myCanvas;
@@ -68,14 +89,14 @@ public class SpaceBugs extends JComponent implements DrawableComponent, IArcadeG
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart = new Point(myCanvas.getWidth() / 4, myCanvas.getHeight() - 50);
         myPlayer =
-            new Player1(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+            new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
                     myCanvas.getHeight()),
                     PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
         myPlayerTwoStart = new Point(myCanvas.getWidth() * 3 / 4, myCanvas.getHeight() - 50);
         myPlayer2 =
-            new Player2(myPlayerTwoStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+            new Player(myPlayerTwoStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
                     myCanvas.getHeight()),
                     PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
@@ -196,8 +217,6 @@ public class SpaceBugs extends JComponent implements DrawableComponent, IArcadeG
                     String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
                     myParticleSystems.add(new Explosion(collides.get(0).getPosition()));
-                    // might not need this second one if going through
-                    // all combinations of sprites anyway
                     key = HIT_BY + collides.get(0).getType();
                     collides.get(1).doEvent(key, collides.get(0));
                 }
