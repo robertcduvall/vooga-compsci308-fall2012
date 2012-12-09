@@ -26,6 +26,7 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
     public AndroidControllerStrategy(Square target, int playerNumber, boolean isDefender, WallBuilder wallBuilder){
        
         myAndroidController = new AndroidController(playerNumber);
+        System.out.println("Creating android strat: "+playerNumber);
         myWallBuilder = wallBuilder;
         AndroidServerMessage msg = new AndroidServerMessage();
         if(isDefender){
@@ -39,7 +40,9 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
         setTarget(target);
     }
     
+    @Override
     public void setControls () {
+        System.out.println("resseting controls android..");
         myCurTarget = getTarget();
         setPlaystationControls();
         setGameboyControls();

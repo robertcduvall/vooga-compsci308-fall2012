@@ -12,16 +12,13 @@ public abstract class ControllerStrategy {
     
     public abstract void setControls();
 
-    public void replaceTarget (Square s) {
-       
-        
-    }
     
     
     public Square getTarget(){
         return myTarget;
     }
     public void setTarget(Square target){
+        System.out.println("resseting target..");
         myTarget = target;
         setControls();
     }
