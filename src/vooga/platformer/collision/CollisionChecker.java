@@ -24,20 +24,28 @@ import vooga.platformer.levelfileio.XmlTags;
  * 
  */
 public abstract class CollisionChecker {
-    private Map<String, HashMap<String, CollisionEvent>> collisionEventsMap = new HashMap<String, HashMap<String, CollisionEvent>>();
+    private Map<String, HashMap<String, CollisionEvent>> collisionEventsMap =
+            new HashMap<String, HashMap<String, CollisionEvent>>();
 
-    public CollisionChecker(String fileName) {
+    public CollisionChecker (String fileName) {
         Document myDocument = XmlUtilities.makeDocument(new File(fileName));
         NodeList collisionEventNodes = myDocument.getElementsByTagName(XmlTags.COLLISIONEVENT);
-        
+
         for (int i = 0; i < collisionEventNodes.getLength(); i++) {
             Node collisionEventNode = collisionEventNodes.item(i);
             Element collisionEventElement = (Element) collisionEventNode;
-   
-            String objectAName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTA).toString();
-            String objectBName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTB).toString();
-            String collisionEventName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.COLLISIONEVENTCLASS).toString();
-            
+
+            String objectAName =
+                    XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTA)
+                            .toString();
+            String objectBName =
+                    XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTB)
+                            .toString();
+            String collisionEventName =
+                    XmlUtilities
+                            .getChildContent(collisionEventElement, XmlTags.COLLISIONEVENTCLASS)
+                            .toString();
+
             Class typeA = null;
             Class typeB = null;
             try {
@@ -47,12 +55,13 @@ public abstract class CollisionChecker {
             catch (ClassNotFoundException e) {
                 throw new LevelFileIOException("CollisionChecker: class not found", e);
             }
-            
-            CollisionEvent collisionEventAB = (CollisionEvent) Reflection.createInstance(
-                    collisionEventName, typeA, typeB);
+
+            CollisionEvent collisionEventAB =
+                    (CollisionEvent) Reflection.createInstance(collisionEventName, typeA, typeB);
             this.addCollisionEvents(objectAName, objectBName, collisionEventAB);
         }
     }
+
     /**
      * This method detects collisions for all the GameObjects within the Level
      * and return
@@ -73,16 +82,15 @@ public abstract class CollisionChecker {
      * @return
      */
     public CollisionEvent getCollisionEvent (GameObject objectA, GameObject objectB) {
-        if (collisionEventsMap.containsKey(objectA.getClass().getCanonicalName())
-                && collisionEventsMap.get(objectA.getClass().getCanonicalName())
-                        .containsKey(objectB.getClass().getCanonicalName())) {
+        if (collisionEventsMap.containsKey(objectA.getClass().getCanonicalName()) &&
+            collisionEventsMap.get(objectA.getClass().getCanonicalName())
+                    .containsKey(objectB.getClass().getCanonicalName())) {
             return collisionEventsMap.get(objectA.getClass().getCanonicalName())
                     .get(objectB.getClass().getCanonicalName());
         }
-        else if (collisionEventsMap
-                .containsKey(objectB.getClass().getCanonicalName())
-                && collisionEventsMap.get(objectB.getClass().getCanonicalName())
-                        .containsKey(objectA.getClass().getCanonicalName())) {
+        else if (collisionEventsMap.containsKey(objectB.getClass().getCanonicalName()) &&
+                 collisionEventsMap.get(objectB.getClass().getCanonicalName())
+                         .containsKey(objectA.getClass().getCanonicalName())) {
             return collisionEventsMap.get(objectB.getClass().getCanonicalName())
                     .get(objectA.getClass().getCanonicalName());
         }

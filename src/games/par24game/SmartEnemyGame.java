@@ -1,6 +1,9 @@
 package games.par24game;
 
 import arcade.gamemanager.GameSaver;
+import games.par24game.levels.Level1;
+import games.tommygame.levels.LostGame;
+import games.tommygame.levels.WonGame;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -10,11 +13,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import util.particleEngine.Explosion;
@@ -27,28 +28,29 @@ import vooga.shooter.gameplay.Game;
 import vooga.shooter.gameplay.MainScreen;
 import vooga.shooter.graphics.Canvas;
 import vooga.shooter.level_editor.Level;
-import games.par24game.levels.Level1;
-import games.tommygame.levels.LostGame;
-import games.tommygame.levels.WonGame;
 
 
 /**
  * Initializes the top-down shooter game and owns all sprites and levels
  * initiated throughout the course of the game.
  * 
- * @author Tommy Petrilak
- * @author Stephen Hunt
- * @author Jesse Starr
+ * @author Tommy Petrilak - superclass
+ * @author Stephen Hunt - superclass
+ * @author Jesse Starr - superclass
+ * @author Patrick Royal
  */
 public class SmartEnemyGame extends Game {
 
+    private static final long serialVersionUID = 1L;
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "The Formic War";
-    private static final String GAME_DESCRIPTION = "Classic top-down shooter game with intelligent enemies";
-    private static final String GAME_IMAGEPATH = "../images/background.gif";
+    private static final String GAME_DESCRIPTION = "Classic top-down shooter " +
+            "game with intelligent enemies";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
     private static final int PLAYER_HEALTH = 10;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
+    private static final int PLAYER1_OFFSET = 50;
+    private static final Point PLAYER2_START = new Point(200, 400);
 
     private List<ParticleSystem> myParticleSystems;
     private List<Sprite> mySprites;
@@ -76,7 +78,7 @@ public class SmartEnemyGame extends Game {
         myEnemies = new ArrayList<Enemy>();
         myParticleSystems = new ArrayList<ParticleSystem>();
         myPlayerOneStart = new Point(myCanvas.getWidth() / 2,
-                myCanvas.getHeight() - 50);
+                myCanvas.getHeight() - PLAYER1_OFFSET);
         myPlayer = new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(
                 myCanvas.getWidth(), myCanvas.getHeight()), PLAYER_IMAGEPATH,
                 new Point(0, 0), PLAYER_HEALTH);
@@ -84,7 +86,7 @@ public class SmartEnemyGame extends Game {
         addSprite(myPlayer);
 
         if (multiplayer) {
-            myPlayerTwoStart = new Point(200, 400);
+            myPlayerTwoStart = PLAYER2_START;
             myPlayer2 = new Player(myPlayerTwoStart, PLAYER_SIZE,
                     new Dimension(myCanvas.getWidth(), myCanvas.getHeight()),
                     PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
@@ -92,9 +94,8 @@ public class SmartEnemyGame extends Game {
             addSprite(myPlayer2);
         }
 
-        Level myCurrentLevel = new MainScreen(this, new Level1(this));
         myCanvas.addKeyListener(new KeyboardListener());
-        startLevel(myCurrentLevel);
+        startLevel(new MainScreen(this, new Level1(this)));
     }
 
     @Override
@@ -128,11 +129,13 @@ public class SmartEnemyGame extends Game {
             myPlayer.setDead(false);
             startLevel(myCurrentLevel);
         }
-        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
+        if (myCurrentLevel.winningConditionsMet() &&
+                myCurrentLevel.getNextLevel() != null) {
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
         }
-        if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
+        if (myCurrentLevel.winningConditionsMet() &&
+                myCurrentLevel.getNextLevel() == null) {
             myCurrentLevel.setNextLevel(new WonGame(this));
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
@@ -152,7 +155,8 @@ public class SmartEnemyGame extends Game {
                 if (collides.size() > 0) {
                     String key = HIT_BY + collides.get(1).getType();
                     collides.get(0).doEvent(key, collides.get(1));
-                    myParticleSystems.add(new Explosion(collides.get(0).getPosition()));
+                    myParticleSystems.add(new Explosion(collides.get(
+                            0).getPosition()));
                     // might not need this second one if going through
                     // all combinations of sprites anyway
                     key = HIT_BY + collides.get(0).getType();
@@ -163,13 +167,15 @@ public class SmartEnemyGame extends Game {
         Stack<ParticleSystem> remove = new Stack<ParticleSystem>();
         for (ParticleSystem p : myParticleSystems) {
             p.update();
-            if (!p.stillExists()) remove.add(p);
+            if (!p.stillExists()) {
+                remove.add(p);
+            }
         }
-        for (ParticleSystem p : remove)
+        for (ParticleSystem p : remove) {
             myParticleSystems.remove(p);
-
+        }
     }
-    
+
     private void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
@@ -191,8 +197,10 @@ public class SmartEnemyGame extends Game {
         List<Sprite> ret = new ArrayList<Sprite>();
 
         // get bounds of both sprites
-        Rectangle r1 = new Rectangle(new Point(s1.getLeft(), s1.getTop()), s1.getSize());
-        Rectangle r2 = new Rectangle(new Point(s2.getLeft(), s2.getTop()), s2.getSize());
+        Rectangle r1 = new Rectangle(new Point(s1.getLeft(), s1.getTop()),
+                s1.getSize());
+        Rectangle r2 = new Rectangle(new Point(s2.getLeft(), s2.getTop()),
+                s2.getSize());
 
         // checks for collision between 1st and 2nd sprite
         if (r1.intersects(r2)) {
@@ -204,7 +212,8 @@ public class SmartEnemyGame extends Game {
         Rectangle bulletR;
         // checks for bullets from 1st sprite hitting 2nd sprite
         for (Bullet b : s1.getBulletsFired()) {
-            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()), b.getSize());
+            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
+                    b.getSize());
             if (bulletR.intersects(r2)) {
                 ret.add(s2);
                 ret.add(b);
@@ -213,7 +222,8 @@ public class SmartEnemyGame extends Game {
         }
         // checks for bullets from 2nd sprite hitting 1st sprite
         for (Bullet b : s2.getBulletsFired()) {
-            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()), b.getSize());
+            bulletR = new Rectangle(new Point(b.getLeft(), b.getTop()),
+                    b.getSize());
             if (bulletR.intersects(r1)) {
                 ret.add(s1);
                 ret.add(b);
@@ -252,8 +262,9 @@ public class SmartEnemyGame extends Game {
                 e.paint(pen);
             }
         }
-        for (ParticleSystem p : myParticleSystems)
+        for (ParticleSystem p : myParticleSystems) {
             p.draw((Graphics2D) pen);
+        }
         getEnemies().removeAll(deadEnemies);
     }
 
@@ -310,6 +321,40 @@ public class SmartEnemyGame extends Game {
     }
 
     /**
+     * @return the myPlayer
+     */
+    public Player getPlayer () {
+        return myPlayer;
+    }
+
+    /**
+     * @return the Canvas dimension
+     */
+    public Dimension getCanvasDimension () {
+        return myCanvas.getSize();
+    }
+
+    @Override
+    public List<Image> getScreenshots () {
+        return null;
+    }
+
+    @Override
+    public Image getMainImage () {
+        return myGameImage;
+    }
+
+    @Override
+    public String getDescription () {
+        return GAME_DESCRIPTION;
+    }
+
+    @Override
+    public String getName () {
+        return GAME_NAME;
+    }
+
+    /**
      * Listens for input and sends input to the method mapper.
      * 
      * @author Stephen Hunt
@@ -342,33 +387,5 @@ public class SmartEnemyGame extends Game {
         public void keyTyped (KeyEvent e) {
         }
 
-    }
-
-    public Dimension getCanvasDimension () {
-        return myCanvas.getSize();
-    }
-
-    @Override
-    public List<Image> getScreenshots () {
-        return null;
-    }
-
-    @Override
-    public Image getMainImage () {
-        return myGameImage;
-    }
-
-    @Override
-    public String getDescription () {
-        return GAME_DESCRIPTION;
-    }
-
-    @Override
-    public String getName () {
-        return GAME_NAME;
-    }
-
-    public Player getPlayer () {
-        return myPlayer;
     }
 }

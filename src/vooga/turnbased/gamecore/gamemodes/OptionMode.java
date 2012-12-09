@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
+
 import vooga.turnbased.gamecore.GameManager;
 import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.mapobject.MapObject;
@@ -34,6 +36,7 @@ public class OptionMode extends GameMode {
     private Point myOrigin;
     private Map<String, OptionObject> myOptions;
     private Rectangle myBounds;
+    private Stack<InteractionPanel> myPanelStack;
 
     /**
      * Constructor.
@@ -44,6 +47,7 @@ public class OptionMode extends GameMode {
      */
     public OptionMode (GameManager gm, String modeName, List<Integer> involvedIDs) {
         super(gm, modeName, involvedIDs);
+        myPanelStack = new Stack<InteractionPanel>();
         myNPC = findMapObjectByIndex(involvedIDs, NPC_INDEX);
         myPlayer = findMapObjectByIndex(involvedIDs, PLAYER_INDEX);
         myInvolvedIDs = involvedIDs;
@@ -144,8 +148,24 @@ public class OptionMode extends GameMode {
         }
     }
     
+    /**
+     * set the panel after pushing the current panel into the panel stack
+     * @param panel
+     */
     public void setPanel(InteractionPanel panel) {
+    	myPanelStack.add(myPanel);
         myPanel = panel;
+    }
+    
+    /**
+     * go back to the previous panel
+     */
+    public void goBack() {
+    	//interestingly, firstElement() will not work
+    	if (myPanelStack.isEmpty()) {
+    		setModeIsOver();
+    	}
+    	myPanel = myPanelStack.pop();
     }
     
     public List<Integer> getInvolvedIDs() {
