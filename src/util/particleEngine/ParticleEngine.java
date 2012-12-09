@@ -34,7 +34,9 @@ public class ParticleEngine {
     private int duration;
     private Boolean loop;
     private double angleSpan;
-
+    
+    private Dimension particleSize;
+    
     private float[] myRGBAscales;
     private float[] myRGBAtolerances;
 
@@ -64,43 +66,36 @@ public class ParticleEngine {
         variance = tolerance;
         duration = length;
         loop = loopValue;
-
+        particleSize = new Dimension(spriteImage.getWidth(null),
+                spriteImage.getHeight(null));
+        
         particles = new ArrayList<Particle>();
 
-        createParticles(angleSpan, numberOfDirections);
+        createParticles(inputAngleSpan, numberOfDirections);
     }
 
     protected void createParticles (double inputAngleSpan, int numberOfDirections) {
         int numberOfOriginLines = Math.max(1, numberOfDirections - 1);
-        int approxNumberOfSpritesPerOriginLine = spriteCount
-                / numberOfOriginLines + numberOfOriginLines;
-
+        int approxNumberOfSpritesPerOriginLine = Math.max(1, spriteCount
+                / numberOfOriginLines);
+        double angleInterval = inputAngleSpan / (double) numberOfOriginLines;
+        MathVector2D nextVelocity;
         for (int i = 0; i < numberOfOriginLines; i++) {
             for (int j = 0; j < approxNumberOfSpritesPerOriginLine; j++) {
-                createParticle(inputAngleSpan, numberOfOriginLines, i);
+            	nextVelocity = new MathVector2D(mainVelocity);
+        		nextVelocity.rotate(i*angleInterval);
+            	createParticle(nextVelocity);
             }
         }
     }
 
-    /**
-     * @param inputAngleSpan
-     * @param numberOfOriginLines
-     * @param i
-     */
-    protected void createParticle (double inputAngleSpan,
-            int numberOfOriginLines, int i) {
-        Dimension particleSize = new Dimension(spriteImage.getWidth(null),
-                spriteImage.getHeight(null));
-        double angleInterval = inputAngleSpan / (double) numberOfOriginLines
-                * Math.PI / 180;
-        double velocityMagnitude = mainVelocity.calculateMagnitude();
-        double velocityAngle = mainVelocity.calculateAngleInRadians();
-
-        MathVector2D startingPosition = new MathVector2D(initialPosition);
-        particles.add(new Particle(startingPosition, particleSize, spriteImage,
-                velocityMagnitude, velocityAngle + angleInterval * i, variance,
-                duration, myRGBAscales, myRGBAtolerances));
-    }
+	private void createParticle(MathVector2D velocity) {
+		Particle temp = new Particle(new MathVector2D(initialPosition), 
+				particleSize, spriteImage, velocity, variance, duration, 
+				myRGBAscales, myRGBAtolerances);
+		particles.add(temp);
+		
+	}
 
     protected void draw (Graphics g) {
         for (Particle p : particles) {
@@ -119,11 +114,11 @@ public class ParticleEngine {
             }
         }
         for (Particle p : remove) {
+            if (loop) createParticle(new MathVector2D(p.getMyVelocity()));
             particles.remove(p);
-            if (loop) createParticle(angleSpan, 1, 0);
         }
     }
-
+    
     protected void addParticle (Particle p){
     	particles.add(p);
     }

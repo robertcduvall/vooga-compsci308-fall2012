@@ -32,8 +32,8 @@ public abstract class ParticleSystem {
 
     public ParticleSystem (MathVector2D startingPosition, MathVector2D startingVelocity){
     	myParticleEngines = new ArrayList<ParticleEngine>();
-    	position = startingPosition;
-    	velocity = startingVelocity;
+    	position = new MathVector2D(startingPosition);
+    	velocity = new MathVector2D(startingVelocity);
     	setUpParticleEngines();
     }
     
@@ -151,5 +151,9 @@ public abstract class ParticleSystem {
     
     public MathVector2D getVelocity(){
     	return velocity;
+    }
+    
+    public MathVector2D getPosition(){
+    	return position;
     }
 }

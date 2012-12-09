@@ -1,5 +1,6 @@
 package games.squareattack.controllers;
 
+
 import games.squareattack.objects.WallBuilder;
 import games.squareattack.sprites.Square;
 import util.input.android.events.AndroidButtonEvent;
@@ -18,12 +19,12 @@ import util.mathvector.MathVector2D;
  *
  */
 public class AndroidControllerStrategy extends ControllerStrategy implements AndroidListener {
-    private Square mySquare;
+    private Square myCurTarget;
     private AndroidController myAndroidController;
     private WallBuilder myWallBuilder;
     
     public AndroidControllerStrategy(Square target, int playerNumber, boolean isDefender, WallBuilder wallBuilder){
-        mySquare = target;
+       
         myAndroidController = new AndroidController(playerNumber);
         myWallBuilder = wallBuilder;
         AndroidServerMessage msg = new AndroidServerMessage();
@@ -35,12 +36,11 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
         }
         myAndroidController.messageServer(msg);
         myAndroidController.subscribe(this);
-        setControls();
-        System.out.println("server should be starting");
+        setTarget(target);
     }
     
-    @Override
     public void setControls () {
+        myCurTarget = getTarget();
         setPlaystationControls();
         setGameboyControls();
         setTouchScreenControls();
@@ -55,28 +55,28 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
     private void setGameboyControls () {
         try {
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.UP,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveUp");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.DOWN,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveDown");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.LEFT,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveLeft");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.RIGHT,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveRight");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.UP,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveUp");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.DOWN,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveDown");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.LEFT,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveLeft");
             myAndroidController.setControl(AndroidButtonEvent.GameBoy.RIGHT,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveRight");
            
 
@@ -95,28 +95,28 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
     private void setPlaystationControls () {
         try {
             myAndroidController.setControl(AndroidButtonEvent.Playstation.UP,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveUp");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.DOWN,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveDown");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.LEFT,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveLeft");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.RIGHT,
-                                           AndroidButtonEvent.BUTTON_PRESSED, mySquare,
+                                           AndroidButtonEvent.BUTTON_PRESSED, myCurTarget,
                     "enableMoveRight");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.UP,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveUp");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.DOWN,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveDown");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.LEFT,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveLeft");
             myAndroidController.setControl(AndroidButtonEvent.Playstation.RIGHT,
-                                           AndroidButtonEvent.BUTTON_RELEASED, mySquare,
+                                           AndroidButtonEvent.BUTTON_RELEASED, myCurTarget,
                     "disableMoveRight");
            
 
@@ -143,7 +143,7 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
        double angle = j.getMyAngle();
         double mag =j.getMyMagnitude();
         MathVector2D vector = new MathVector2D(Math.cos(Math.toRadians(angle))*mag,-Math.sin(Math.toRadians(angle))*mag);
-        mySquare.setMovementVector(vector);
+        myCurTarget.setMovementVector(vector);
         
     }
 
@@ -155,9 +155,7 @@ public class AndroidControllerStrategy extends ControllerStrategy implements And
 
     @Override
     public void onTouchMovement (LineSegment l) {
-       
-       myWallBuilder.buildWall(l);
-        
+       myWallBuilder.buildWall(l);     
     }
 
     @Override
