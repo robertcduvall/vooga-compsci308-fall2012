@@ -77,4 +77,10 @@ Will this help me figure it out?!- obukspan</review>
 		<rating></rating>
 		<tags></tags>
 		<filepath>games.par24game.SmartEnemyGame</filepath></game>
+</game>
+	<game id="11">
+		<name>Adventure RPG</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.AdventureRPG</filepath></game>
 </gamelist>
