@@ -12,13 +12,6 @@ import arcade.gamemanager.GameSaver;
 @SuppressWarnings("serial")
 public class Asteroids extends Game implements IArcadeGame {
 
-    public static void main (String args[]) {
-        Asteroids a = new Asteroids();
-        a.runGame(null, null, new Level1(a));
-        a.startLevel(new Level1(a));
-        a.setLoseLevel(new LoseGame(a));
-    }
-
     public Asteroids () {
         super();
     }
@@ -26,7 +19,6 @@ public class Asteroids extends Game implements IArcadeGame {
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         super.runGame(userPreferences, s);
-        super.runGame(userPreferences, s, new Level1(this));
         super.startLevel(new Level1(this));
         super.setLoseLevel(new LoseGame(this));
     }

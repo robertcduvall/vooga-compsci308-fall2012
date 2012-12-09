@@ -357,21 +357,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
     }
     
-
-    public void runGame (String userPreferences, GameSaver s, Level startLevel) {
-        myFrame = new JFrame(GAME_NAME);
-        myFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        myCanvas = new Canvas(this);
-        myCurrentLevel = startLevel;
-        initializeGame(myCanvas);
-        myCanvas.start();
-        myFrame.getContentPane().add(myCanvas, BorderLayout.CENTER);
-        myFrame.pack();
-        myFrame.setVisible(true);
-
-    }
-
-
     @Override
     public List<Image> getScreenshots () {
         return null;
