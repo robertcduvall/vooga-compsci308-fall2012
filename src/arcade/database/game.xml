@@ -69,4 +69,9 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
+	<game id="10">
+		<name>The Formic War</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.par24game.SmartEnemyGame</filepath></game>
 </gamelist>
