@@ -3,6 +3,11 @@ import java.util.Collection;
 import java.util.EventObject;
 import java.util.List;
 
+/**
+ * ADDITIONAL PROJECT
+ * @author Connor Gordon
+ * @author Oren Bukspan
+ */
 public class ColumnNamesEvent extends EventObject{
     
     Collection<String> myColNames;
