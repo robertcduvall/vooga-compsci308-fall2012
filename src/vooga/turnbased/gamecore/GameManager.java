@@ -433,4 +433,12 @@ public class GameManager implements InputAPI, GameLoop {
             return myInvolvedIDs;
         }
     }
+    
+    /**
+     * get the sprite representing the player
+     * @return player sprite
+     */
+    public Sprite getPlayerSprite() {
+    	return findSpriteWithID(myPlayerSpriteID);
+    }
 }

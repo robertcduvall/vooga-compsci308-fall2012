@@ -18,7 +18,7 @@ public class StatsMode extends OptionMode{
 	public StatsMode(GameManager gm, String modeName,
 			List<Integer> involvedIDs) {
 		super(gm, modeName, involvedIDs);
-		Sprite playerSprite = getGameManager().findSpriteWithID(involvedIDs.get(0));
+		Sprite playerSprite = getGameManager().getPlayerSprite();
 		myBattleObjects = playerSprite.getBattleObjects();
 		setPanel(new StatsPanel(myBattleObjects));
 	}

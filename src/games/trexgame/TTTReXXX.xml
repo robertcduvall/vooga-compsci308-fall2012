@@ -1355,7 +1355,7 @@
       		<message>    life is like a game</message>
       		<message>    but here is the reward</message></param><childobject><createOn>start</createOn><modes>conversation</modes><class>games.trexgame.interaction.OptionConversation</class><condition>entermap2</condition>
       	<param>
-      		<name>OK Thank You!!!!!</name><message>your attack increased</message></param></childobject>
+      		<name>OK Thank You!!!!!</name><message>your attack increased</message><message>*atk 100</message></param></childobject>
       	</object><object><createOn>start</createOn><modes>conversation</modes><class>vooga.turnbased.gameobject.optionobject.OptionTransport</class><condition>entermap2</condition>
       	<param>
       		<name>NEXT LEVEL</name></param></object>
