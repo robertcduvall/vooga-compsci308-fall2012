@@ -11,6 +11,7 @@ import java.util.List;
 
 import util.graphicprocessing.FontEffect;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
+import vooga.turnbased.gui.GameWindow;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
 public class StatsPanel extends InteractionPanel{
@@ -24,6 +25,7 @@ public class StatsPanel extends InteractionPanel{
 		myStats.add("ATTACK: ");
 		List<OptionObject> options = new ArrayList<OptionObject>();
 		OptionObject attack = OptionObject.getDefaultOptionObject("ATTACK: ");
+		setBackground(GameWindow.importString("StatsBackround"));
 	}
     
 	@Override

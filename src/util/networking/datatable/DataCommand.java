@@ -5,17 +5,22 @@ import util.networking.chat.ChatCommand;
 /**
  *
  * @author Oren Bukspan
+ * @author Connor Gordon
  */
 public enum DataCommand {
 
-    ADD_COLUMNS ("ADDCOLUMNS"),
-    ADD_ROW ("ADDROW"),
-    DELETE ("DELETE"),
-    GET ("GET"),
-    EDIT ("EDIT"),
-    FIND ("FIND"),
-    FILE ("FILE"),
-    ROWELEMENT ("ROWELEMENT");;
+    ADD_COLUMNS ("AddColumns"),
+    ADD_ROW ("AddRow"),
+    CLEAR ("Clear"),
+    DELETE ("Delete"),
+    GET_DATA_ROWS ("GetDataRows"),
+    GET_COLUMN_NAMES("GetColumnNames"),
+    EDIT ("Edit"),
+    FIND ("Find"),
+    FILE ("File"),
+    FOUND ("Found"),
+    ROW_ELEMENT ("RowElement"),
+    UNKNOWN ("Unknown");
     
     private String myCommandName;
     
@@ -33,9 +38,8 @@ public enum DataCommand {
      * @return The ChatCommand whose name matches this String.
      */
     public static DataCommand getFromString(String commandName) {
-        String capitalName = commandName.toUpperCase();
         for (DataCommand c : values()) {
-            if (c.myCommandName.equals(capitalName)) {
+            if (c.myCommandName.equals(commandName)) {
                 return c;
             }
         }
