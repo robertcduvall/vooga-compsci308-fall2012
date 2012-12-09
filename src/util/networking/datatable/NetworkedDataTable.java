@@ -45,7 +45,7 @@ public class NetworkedDataTable {
     }
     
     public void deleteRowEntry (String strKey, Object value){
-        myClient.send(myProtocol.createRowEntry(strKey, value));
+        myClient.send(myProtocol.createDeleteRowEntry(strKey, value));
     } 
     
     public Collection<String> getColumnNames (){
