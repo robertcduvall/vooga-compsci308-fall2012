@@ -90,7 +90,6 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
         
         createGame();
         startLevel(myCurrentLevel);
-        myPlayer = myCurrentLevel.getPlayer();
         setupInput();
         update();
     }
@@ -100,6 +99,7 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
     private void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
+        myPlayer = myCurrentLevel.getPlayer();
     }
     
     private void setupInput() {
@@ -149,14 +149,14 @@ public abstract class AbstractGame extends JComponent implements DrawableCompone
             startLevel(myCurrentLevel);
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() != null) {
-            myCurrentLevel = myCurrentLevel.getNextLevel();
+            startLevel(myCurrentLevel.getNextLevel());
             myPlayer = myCurrentLevel.getPlayer();
-            startLevel(myCurrentLevel);
+            update();
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
-            myCurrentLevel.setNextLevel(new WonGame(this));
-            myCurrentLevel = myCurrentLevel.getNextLevel();
-            startLevel(myCurrentLevel);
+            startLevel(new WonGame(this));
+            myPlayer = new Player(myPlayerOneStart, PLAYER_SIZE, myCanvas.getSize(), PLAYER_IMAGEPATH, myPlayerOneStart, 1);
+            
         }
         for (Sprite s : myCurrentLevel.getSpriteList()) {
             s.update();
