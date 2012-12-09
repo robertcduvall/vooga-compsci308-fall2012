@@ -21,8 +21,7 @@ import arcade.gamemanager.GameSaver;
 public class NinjaGame implements IArcadeGame {
 
     private static final String DESCRIPTION = "A game with ninjas, only the strongest" +
-    		"will succeed (tbh its easy-medium difficulty). Basic controls are the arrow keys" +
-    		"and the spacebar for jump. ";
+    		"will succeed (tbh its easy-medium difficulty). Basic controls are the arrow keys";
     private static final String myFirstLevelName = "src/games/ninjagame/levels/ninjalevel1";
     
     @Override
