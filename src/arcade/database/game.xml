@@ -69,16 +69,22 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
-<game id="a">
+	<game id="10">
+		<name>The Formic War</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.par24game.SmartEnemyGame</filepath>
+		</game>
+<game id="11">
 		<name>Rob's Snake Game</name>
 		<rating/>
 		<tags/>
 		<filepath>games.robssnake.SnakeGame</filepath>
 </game>
-<game id="b">
-	<name>The Formic War</name>
-	<rating/>
-	<rating/>
-	<filepath>games.par24game.SmartEnemyGame</filepath>
+	<game id="12">
+		<name>Adventure RPG</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.AdventureRPG</filepath>
 </game>
 </gamelist>
