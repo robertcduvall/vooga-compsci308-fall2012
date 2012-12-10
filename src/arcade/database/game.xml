@@ -27,7 +27,7 @@
 	<game id="3">
 		<name>The Button Game</name>
 		<rating>10 7</rating>
-		<filepath>games.ButtonGame</filepath>
+		<filepath>games.buttongame.ButtonGame</filepath>
 		<tags>fun</tags>
 <review>Easy to learn, hard to master :)- Howard</review>
 <review>Howard hax OP- Kannan</review>

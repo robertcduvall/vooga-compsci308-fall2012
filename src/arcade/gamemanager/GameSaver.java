@@ -31,8 +31,8 @@ public class GameSaver {
         myUserManager = UserManager.getInstance();
         setUserInfo(userName);
     }
-    
-    public void setUserInfo(String userName) {
+
+    public void setUserInfo (String userName) {
         setMyUserName(userName);
         setMyGameData();
     }
@@ -40,14 +40,15 @@ public class GameSaver {
     protected void setMyUserName (String userName) {
         myUserName = userName;
     }
-    
+
     protected void setMyGame (IArcadeGame game) {
-    	myGame = game;
+        myGame = game;
     }
-    
+
     protected void setMyGameData () {
-    	myGameData = myUserManager.getGame(myUserName, myGame.getName());
+        myGameData = myUserManager.getGame(myUserName, myGame.getName());
     }
+
     /**
      * 
      * @param property string describing the user property
@@ -56,13 +57,22 @@ public class GameSaver {
     public void saveGameInfo (String property, String value) {
         myGameData.setGameInfo(myUserName, property, value);
     }
-    
+
+    /**
+     * Saves a user's high score.
+     * 
+     * @param value The high score
+     */
+    public void saveHighScore (String value) {
+        myGameData.setGameInfo(myUserName, "highscore", value);
+    }
+
     /**
      * 
      * @param property Name of what you want to load
      * @return This is the value of the property that you're loading
      */
     public String loadGameInfo (String property) {
-    	return myGameData.getGameInfo(property);
+        return myGameData.getGameInfo(property);
     }
 }
