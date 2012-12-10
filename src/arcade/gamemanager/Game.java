@@ -258,7 +258,7 @@ public class Game {
         if (mainImage == null) {
 
             try {
-                mainImage = ImageIO.read(new File("src/arcade/gui/images/duvallold.png"));
+                mainImage = ImageIO.read(new File("src/arcade/gui/images/dukeshield.png"));
             }
             catch (IOException e) {
                 System.out.println("Could not find main image!");
