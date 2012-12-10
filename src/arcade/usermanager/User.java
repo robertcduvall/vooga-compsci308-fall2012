@@ -23,6 +23,7 @@ public class User {
     private String myLastName;
     private boolean myAdminStatus;
     private UserXMLWriter myXmlWriter;
+    private UserXMLReader myXmlReader;
 
     /**
      * Constructs a new User
@@ -42,6 +43,7 @@ public class User {
         myLastName = lastName;
         setMyAdminStatus(false);
         myXmlWriter = new UserXMLWriter();
+        myXmlReader=new UserXMLReader();
 
     }
 
@@ -69,6 +71,10 @@ public class User {
         myPicture = picture;
         myXmlWriter.updateUserInfo(myName, "picture", picture);
     }
+    
+//    protected void refreshPicture(){
+//        myPicture=myXmlReader.getUserInfo(myName,"picture");
+//    }
 
     /**
      * Gets a GameData object given the name of a game.

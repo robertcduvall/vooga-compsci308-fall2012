@@ -26,7 +26,7 @@ public class GarfieldGame implements IArcadeGame {
     
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        getMainImage();
+       
         start(myFirstLevelName);
        
         

@@ -1,5 +1,7 @@
 package arcade.usermanager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,8 @@ import util.xml.XmlUtilities;
  */
 public class UserXMLReader {
     private static ResourceBundle ourResources;
+    private String myXMLExtension = ".xml";
+    private String myNameTag = "name";
     private String myUserMessageFilePath;
     private String myUserGameFilePath;
     private String myUserBasicFilePath;
@@ -39,22 +43,38 @@ public class UserXMLReader {
      * @return
      */
     public User getUser (String name) {
-        name = name + ".xml";
-        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + name);
+        String extendedName = name + myXMLExtension;
+        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + extendedName);
         Element el = doc.getDocumentElement();
-        String username = XmlUtilities.getChildContent(el, "name");
+        String username = XmlUtilities.getChildContent(el, myNameTag);
         String password = XmlUtilities.getChildContent(el, "password");
         String picture = XmlUtilities.getChildContent(el, "picture");
         int credits = XmlUtilities.getChildContentAsInt(el, "credits");
-
-        List<Message> messageList = getMessageList(name);
-        List<GameData> gameDataList = getGameDataList(name);
         String firstName = XmlUtilities.getChildContent(el, "firstname");
         String lastName = XmlUtilities.getChildContent(el, "lastname");
+
+        List<Message> messageList = getMessageList(extendedName);
+        List<GameData> gameDataList = getGameDataList(extendedName);
         return new User(username, password, picture, credits, messageList, gameDataList, firstName,
                         lastName);
 
     }
+
+    /**
+     * Gets one particular tag of user information
+     * 
+     * @param userName
+     * @param tagname
+     * @return
+     */
+//    public String getUserInfo (String userName, String tagname) {
+//        userName = userName + ourXMLExtension;
+//        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + userName);
+//        Element el = doc.getDocumentElement();
+//        String content = XmlUtilities.getChildContent(el, tagname);
+//        return content;
+//
+//    }
 
     /**
      * Gets a list of GameData objects
@@ -71,7 +91,7 @@ public class UserXMLReader {
             for (int i = 0; i < nl.getLength(); i++) {
                 // get an element
                 Element ele = (Element) nl.item(i);
-                String gameName = XmlUtilities.getChildContent(ele, "name");
+                String gameName = XmlUtilities.getChildContent(ele, myNameTag);
                 String gameInfo = XmlUtilities.getChildContent(ele, "gameinfo");
                 String highScore = XmlUtilities.getChildContent(ele, "highscore");
                 String timesPlayed = XmlUtilities.getChildContent(ele, "timesplayed");
@@ -98,8 +118,16 @@ public class UserXMLReader {
                 Element ele = (Element) nl.item(i);
                 String sender = XmlUtilities.getChildContent(ele, "sender");
                 String message = XmlUtilities.getChildContent(ele, "content");
-                Date date = new Date(XmlUtilities.getChildContent(ele, "date"));
-                messageList.add(new Message(sender, message, date));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+                Date date;
+                try {
+                    date = dateFormat.parse(XmlUtilities.getChildContent(ele, "date"));
+                    messageList.add(new Message(sender, message, date));
+                }
+                catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
         return messageList;

@@ -23,6 +23,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 public class Enemy extends Sprite {
     
     AI myAI;
+    private int damageDone = 0;
 
     /**
      * @return the myAI
@@ -78,7 +79,8 @@ public class Enemy extends Sprite {
      */
     protected void continueUpdate () {
         if(!checkBounds(BOTTOM_BOUND) || !checkBounds(TOP_BOUND)) {
-            decrementHealth();
+            setDamageDone(1);
+            die();
         }
         for (Bullet b : getBulletsFired()) {
             b.update();
@@ -126,7 +128,7 @@ public class Enemy extends Sprite {
             public void doAction (Object ... o) {
                 String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
                 if (PLAYER_TYPE.equals(bulletOwnerType)) {
-                    decrementHealth();
+                    decreaseHealth(1);
                     ((Bullet) o[0]).die();
                 }
             }
@@ -134,7 +136,7 @@ public class Enemy extends Sprite {
 
         getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                ((Player) o[0]).decrementHealth();
+                ((Player) o[0]).decreaseHealth(1);
             }
         });
 
@@ -156,6 +158,20 @@ public class Enemy extends Sprite {
      */
     public AI getAI () {
         return myAI;
+    }
+
+    /**
+     * @return the damageDone
+     */
+    public int getDamageDone () {
+        return damageDone;
+    }
+
+    /**
+     * @param damageDone the damageDone to set
+     */
+    public void setDamageDone (int damageDone) {
+        this.damageDone = damageDone;
     }
 
 }

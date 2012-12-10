@@ -36,6 +36,7 @@ public class EditableUserProfile {
     public void setPicture (String picture) {
         myPicture = picture;
         myXmlWriter.updateUserInfo(myName,"picture",picture);
+        
     }
 
     

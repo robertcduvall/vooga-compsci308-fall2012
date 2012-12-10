@@ -16,7 +16,7 @@ import vooga.shooter.level_editor.Level;
  * 
  */
 public class Level1 extends Level {
-
+    private static final int MIN_NUM_ENEMIES = 0;
     private static final int MAX_NUM_ENEMIES = 2;
     private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int ENEMY_HEALTH = 1;
@@ -24,8 +24,8 @@ public class Level1 extends Level {
     private static final int ASTEROID_HEALTH = 3;
     private static final int FALLING_STARTING_HEIGHT = 25;
     private static final Dimension FALLING_OBJECT_DIMENSION = new Dimension(20, 17);
-    private static final int THREE = 3;
-    private static final int FOUR = 4;
+    private static final int FIRST_POSSIBLE_VELOCITY = 2;
+    private static final int SECOND_POSSIBLE_VELOCITY = 3;
 
     private Game myGame;
     private Level myNextLevel;
@@ -49,7 +49,7 @@ public class Level1 extends Level {
 
     private int randomNumberOfEnemies () {
         int number = myRandom.nextInt(MAX_NUM_ENEMIES);
-        while (number <= 0) {
+        while (number <= MIN_NUM_ENEMIES) {
             number = myRandom.nextInt(MAX_NUM_ENEMIES);
         }
         return number;
@@ -64,8 +64,8 @@ public class Level1 extends Level {
 
     private Point randomFallingVelocity () {
         ArrayList<Integer> possibleVelocities = new ArrayList<Integer>();
-        possibleVelocities.add(THREE);
-        possibleVelocities.add(FOUR);
+        possibleVelocities.add(FIRST_POSSIBLE_VELOCITY);
+        possibleVelocities.add(SECOND_POSSIBLE_VELOCITY);
         return new Point(0, possibleVelocities.get(myRandom.nextInt(possibleVelocities.size())));
     }
 
@@ -92,7 +92,7 @@ public class Level1 extends Level {
 
     @Override
     public boolean winningConditionsMet () {
-        return myGame.getEnemies().isEmpty();
+        return (myGame.getEnemies().isEmpty() && myGame.getPlayer().getHealth() > 0);
     }
 
 }
