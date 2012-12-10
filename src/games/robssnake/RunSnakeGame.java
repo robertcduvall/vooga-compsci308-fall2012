@@ -27,8 +27,7 @@ import vooga.platformer.util.enums.Direction;
 /**
  * 
  * @author Robert Bruce
- * This game uses the platformer level editor with custom
- * conditions and physics / plugins.
+ * 
  */
 public class RunSnakeGame implements IArcadeGame{
     private String levelOneLocation = "src/games/robssnake/levels/level1.xml";
@@ -38,18 +37,14 @@ public class RunSnakeGame implements IArcadeGame{
 
     @Override
     public void runGame (String userPreferences, GameSaver s) {
-        JFrame frame = new JFrame ("RunSnakeGame");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // needed for proper handling by Arcade
+        JFrame frame = new JFrame ("Mario's Mushrooms");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         PlatformerController controller = new PlatformerController(levelOneLocation,
-                new SnakeInputInitializer());
-        Level myLevel = controller.getLevel();
-        Player myPlayer = myLevel.getPlayer();
-        myLevel.addPlugin(new GravityPlugin(0, Direction.UP));
-        myLevel.setCamera(new StaticCamera(myLevel.getDimension(), new Rectangle(myLevel.getDimension().width,
-                myLevel.getDimension().height)));
+                new SnakeInputInitializer());        
         frame.getContentPane().add(controller);
         frame.pack();
         frame.setVisible(true);
+        frame.setSize(controller.getLevel().getDimension());
     }
 
     @Override
@@ -77,12 +72,17 @@ public class RunSnakeGame implements IArcadeGame{
 
     @Override
     public String getDescription () {
-        return "RunSnakeGame isn't done yet. Give it some time.";
+        return "Mario's Mushrooms is a take on the classic game of snake. " +
+        		"As Mario, once you start moving, you can't stop " +
+        		"until you've gotten all the mushrooms!" +
+        		" As you progress, the levels get harder and harder." +
+        		" See how far you can make it, and make sure you avoid the walls! \n\n\n" +
+        		"Game made by Robert Bruce using the Platformer Engine.";
     }
 
     @Override
     public String getName () {
-        return "RunSnakeGame";
+        return "Mario's Mushrooms";
     }
 
 }
