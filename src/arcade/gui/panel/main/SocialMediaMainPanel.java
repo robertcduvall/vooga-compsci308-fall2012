@@ -98,13 +98,13 @@ public class SocialMediaMainPanel extends AMainPanel implements ActionListener {
         statusPostBut.addActionListener(this);
         statusPostBut.setActionCommand(UPDATE_STATUS);
 
-        JButton fbDisconnectBut = new JButton(UNLINK_FACEBOOK);
-        fbDisconnectBut.addActionListener(this);
-        fbDisconnectBut.setActionCommand(UNLINK_FACEBOOK);
-
         JButton tweetBut = new JButton(TWEET);
         tweetBut.addActionListener(this);
         tweetBut.setActionCommand(TWEET);
+        
+        JButton fbDisconnectBut = new JButton(UNLINK_FACEBOOK);
+        fbDisconnectBut.addActionListener(this);
+        fbDisconnectBut.setActionCommand(UNLINK_FACEBOOK);
 
         JButton tweetDisconnectBut = new JButton(UNLINK_TWITTER);
         tweetDisconnectBut.addActionListener(this);

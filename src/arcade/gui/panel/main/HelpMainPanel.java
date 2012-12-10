@@ -10,7 +10,9 @@ import net.miginfocom.swing.MigLayout;
 
 
 /**
- * 
+ * This class is designed to function as a very brief
+ * starting guide for a new CS308 Arcade User. Short and
+ * sweet and to the point.
  * @author Michael Deng and Kannan Raju
  * 
  */
@@ -54,7 +56,10 @@ public class HelpMainPanel extends AMainPanel {
                 "as the informational buttons at the foot of your display.\n\nTo start" +
                 " playing games, go to the 'All Games' page " +
                 "and select a game. Check out the All Users Tab to see what your friend" +
-                "s are up to. You've learned the basics- " +
+                "s are up to. And finally, just as a security precaution, whenever you connect to" +
+                " Social Media through the Arcade, make sure to unlink the connection via the" +
+                " Social Media Center when finished with your" +
+                " session. You've learned the basics- " +
                 "the rest is for you to discover.\n\nPEACE\n-The Arcade Gui Team";
 
         myHelpTextArea = new JTextArea(helpText, myHelpTextAreaHeight, myHelpTextAreaWidth);

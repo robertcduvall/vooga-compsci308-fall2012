@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import net.miginfocom.swing.MigLayout;
@@ -26,6 +27,9 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
 
     private static final String PLAY = "Play";
     private static final String REVIEW = "Review";
+    private static final String TWEET = "Tweet";
+    private static final String UPDATE_STATUS = "Update Status";
+    private String myQuickSocialMediaPost;
     private String myGameName;
     private ImageIcon myGameIcon;
     private JLabel myListOfTagsToDisplay;
@@ -67,14 +71,24 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         myListOfRatings = getArcade().getModelInterface().getGame(myGameName).getRatings();
         myListOfTags = getArcade().getModelInterface().getGame(myGameName).getTags();
         Collections.sort(myListOfRatings);
-
+        myQuickSocialMediaPost = "Playing " + myGameName + "! | via CS:308 Arcade";
+ 
         //create the panel's buttons
         JButton playButton = new JButton(PLAY);
         playButton.addActionListener(this);
         playButton.setActionCommand(PLAY);
+        
         JButton writeReviewAndRatingBut = new JButton("Review/Rate this Game");
         writeReviewAndRatingBut.addActionListener(this);
         writeReviewAndRatingBut.setActionCommand(REVIEW);
+        
+        JButton statusPostBut = new JButton("Post to Facebook");
+        statusPostBut.addActionListener(this);
+        statusPostBut.setActionCommand(UPDATE_STATUS);
+
+        JButton tweetBut = new JButton(TWEET);
+        tweetBut.addActionListener(this);
+        tweetBut.setActionCommand(TWEET);
 
         //generation of complex components
         JLabel profilePic = establishGameProfilePic();
@@ -92,12 +106,20 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         ratingsTitle.setForeground(Color.WHITE);
         JLabel reviewsTitleLabel = new JLabel("User Submitted Reviews of this Game: ");
         reviewsTitleLabel.setForeground(Color.WHITE);
+        JLabel asterisk = new JLabel("*");
+        asterisk.setForeground(Color.WHITE);
+        JLabel unlinkReminder = new JLabel("*Remember to unlink your social media account(s) " +
+                "before you end your Arcade session!");
+        unlinkReminder.setForeground(Color.WHITE);
 
         //add components to panel
         myPanel.add(nameOfGame, "wrap, span, align center");
         myPanel.add(profilePic, "grow, span, align center");
         myPanel.add(averageRatingToDisplay, "wrap, align center, span");
         myPanel.add(playButton, "wrap, grow, span, align center");
+        myPanel.add(tweetBut, "grow, span, align center, split 3");
+        myPanel.add(statusPostBut, "grow, span, align center");
+        myPanel.add(asterisk, "align center, wrap, span");
         myPanel.add(tagsTitle, "split 3, flowy, align center");
         myPanel.add(myListOfTagsToDisplay, "align center");
         myPanel.add(topScoresScrollPane, "grow, span, align center");
@@ -106,7 +128,8 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         myPanel.add(scrollingReviews, "grow, span, align center, wrap");
         myPanel.add(ratingsTitle, "split 2, alignx");
         myPanel.add(listOfRatingsToDisplay, "wrap, align center, span, grow");
-        myPanel.add(writeReviewAndRatingBut, "grow, span, align center");
+        myPanel.add(writeReviewAndRatingBut, "grow, span, align center, wrap");
+        myPanel.add(unlinkReminder, "span, align left");
 
         return myPanel;
 
@@ -205,13 +228,8 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
     }
 
     private JLabel establishGameProfilePic () {
-        if (getArcade().getModelInterface().getGame(myGameName).getImage() != null) {
-            myGameIcon = new ImageIcon(getArcade().
+        myGameIcon = new ImageIcon(getArcade().
                            getModelInterface().getGame(myGameName).getImage());
-        }
-        else {
-            myGameIcon = new ImageIcon("src/arcade/gui/images/Arcade_logo2.png");
-        }
         JLabel profilePic = new JLabel(myGameIcon);
         return profilePic;
     }
@@ -223,6 +241,30 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         }
         if (e.getActionCommand().equals(REVIEW)) {
             getArcade().replacePanel("EnterReviewRating");
+        }
+        if (e.getActionCommand().equals(UPDATE_STATUS)) {
+            String theStatusPost = myQuickSocialMediaPost;
+            boolean statusPostSuccessful =
+                    getArcade().getModelInterface().sendPost(getArcade().getUsername(),
+                                                             theStatusPost);
+            if (statusPostSuccessful) {
+                JOptionPane.showMessageDialog(null, "Status Update was successful!");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Status Update failed Q_Q");
+            }
+        }
+        if (e.getActionCommand().equals(TWEET)) {
+            String theTweet = myQuickSocialMediaPost;
+            boolean tweetSuccessful =
+                    getArcade().getModelInterface().sendTweet(getArcade().getUsername(),
+                                                              theTweet);
+            if (tweetSuccessful) {
+                JOptionPane.showMessageDialog(null, "Tweet was successful!");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Tweet failed Q_Q");
+            }
         }
     }
 }
