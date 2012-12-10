@@ -27,7 +27,7 @@ import arcade.gui.panel.ArcadePanel;
  */
 public class Arcade {
 
-    // username (unique key) of the user who is logged in
+    // username of the user who is logged in
     private String myUsername = "";
     private Map<String, Serializable> mySharedVariables;
 
@@ -35,16 +35,17 @@ public class Arcade {
     private ModelInterface myModelInterface;
     private CreatorFactory myFactory;
     private ResourceBundle myResources;
+    private String myResourcesPath = "arcade.gui.resources.Arcade";
 
     /**
      * Constructor for the top-level Arcade class.
      */
     public Arcade () {
 
-        // initialize things
+        // initialize
         myFactory = new CreatorFactory(this);
         myModelInterface = new ModelInterface(this);
-        myResources = ResourceBundle.getBundle("arcade.gui.resources.Arcade");
+        myResources = ResourceBundle.getBundle(myResourcesPath);
         mySharedVariables = new HashMap<String, Serializable>();
 
         // set up frame
