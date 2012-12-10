@@ -14,7 +14,7 @@ import arcade.gui.panel.ArcadePanel;
 
 
 /**
- * The top-level abstract class for frame creators
+ * The top-level abstract class for the framecreator hierarchy.
  * 
  * @author Michael Deng
  * 
@@ -87,7 +87,6 @@ public abstract class AbstractFrameCreator {
 
         setLayoutManager();
         addSubPanels();
-
     }
 
     /**

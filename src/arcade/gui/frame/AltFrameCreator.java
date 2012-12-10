@@ -32,17 +32,25 @@ public class AltFrameCreator extends MigFrameCreator {
     /**
      * Constructor for AltFrameCreator
      * 
-     * @param a arcade
+     * @param a reference to the arcade
      */
     public AltFrameCreator (Arcade a) {
         super(a);
     }
 
+    /**
+     * Method sets the layout manager to MIG layout
+     */
     @Override
     protected void setLayoutManager () {
         getContentPanel().setLayout(new MigLayout("", "[]0[grow]0[]", "[]0[]0[grow]0[]"));
     }
 
+    /**
+     * Method adds the specified panels to the frame layout. This
+     * method specifies the location and size of each panel in the
+     * layout.
+     */
     @Override
     protected void addSubPanels () {
 

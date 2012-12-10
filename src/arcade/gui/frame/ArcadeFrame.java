@@ -9,16 +9,27 @@ import arcade.gui.panel.ArcadePanel;
 
 
 /**
- * The arcades implementation of a JFrame
+ * The arcade's implementation of a JFrame. It has the
+ * added ability to store (in a map) reference to the
+ * panel holders in the frame.
  * 
  * @author Michael Deng
  * 
  */
 public class ArcadeFrame extends JFrame {
 
+    private static final long serialVersionUID = 1L;
+
     private Arcade myArcade;
     private Map<String, ArcadePanel> myPanels;
 
+    /**
+     * Constructor for an ArcadeFrame
+     * 
+     * @param a reference to the arcade
+     * @param frameName name of this ArcadeFrame
+     * @param m map of references to the frame's holder panels
+     */
     public ArcadeFrame (Arcade a, String frameName, Map<String, ArcadePanel> m) {
         super(frameName);
         myArcade = a;
@@ -35,7 +46,7 @@ public class ArcadeFrame extends JFrame {
      * component.
      * 
      * @param panelType the name of the holder panel
-     * @return
+     * @return a reference to the specified holder panel
      */
     public ArcadePanel getPanel (String panelType) {
         if (myPanels.containsKey(panelType)) {
@@ -46,6 +57,15 @@ public class ArcadeFrame extends JFrame {
         }
     }
 
+    /**
+     * Class responsible for managing the closing
+     * of the ArcadeFrame window. When the window closes,
+     * we want to clear the saved username and exit
+     * the process.
+     * 
+     * @author Michael Deng
+     * 
+     */
     private class WindowExitAdapter extends WindowAdapter {
 
         @Override
