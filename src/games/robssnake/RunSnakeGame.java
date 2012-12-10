@@ -31,7 +31,7 @@ import vooga.platformer.util.enums.Direction;
  * conditions and physics / plugins.
  */
 public class RunSnakeGame implements IArcadeGame{
-    private String levelOneLocation = "src/vooga/platformer/data/aRobTest2.xml";//"src/vooga/platformer/data/robstest.xml";//"src/games/robssnake/snakelvl0.xml"
+    private String levelOneLocation = "src/games/robssnake/levels/level1.xml";
     public static void main (String[] args) {
         new RunSnakeGame().runGame("", null);
     }
