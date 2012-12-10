@@ -1,6 +1,6 @@
 <level>
 <levelName>Level</levelName>
-<width>640</width>
+<width>641</width>
 <height>480</height>
 <collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
 <camera>FollowingCamera</camera>

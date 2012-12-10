@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>641</width>
+<height>480</height>
+<collisionChecker>src/games/robssnake/strategy/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/vooga/platformer/data/aRobTest2GameObjects.bin</gameObjectData>
+<conditionData>src/vooga/platformer/data/aRobTest2Conditions.bin</conditionData>
+<pluginData>src/vooga/platformer/data/aRobTest2Plugins.bin</pluginData>
+</level>
