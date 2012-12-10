@@ -55,6 +55,15 @@ public class UserXMLReader {
                         lastName);
 
     }
+    
+    public String getUserInfo(String name, String tagname){
+        name = name + ".xml";
+        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + name);
+        Element el = doc.getDocumentElement();
+        String content = XmlUtilities.getChildContent(el, tagname);
+        return content;
+        
+    }
 
     /**
      * Gets a list of GameData objects
