@@ -96,9 +96,6 @@ public class LevelEditor extends JPanel {
                 myBoard.addPlugin(myBackground);
             }
         }
-        // else if ("") {
-        //
-        // }
     }
 
     public void addLevelConditions (String con) {
@@ -147,7 +144,7 @@ public class LevelEditor extends JPanel {
             else if("PlayerInZoneCondition".equals(con)) {
                 LevelGoalZone zone = null;
                 try{
-                    zone = new LevelGoalZone(0, 0, 0, 0, Integer.MAX_VALUE, new File(DATA_PATH + "Default.png"), path);
+                    zone = new LevelGoalZone(0, 0, 0, 0, Integer.MAX_VALUE, new File("src/vooga/platformer/data/Default.png"), path);
                 }
                 catch(IOException e) {
                     e.printStackTrace();

@@ -20,6 +20,12 @@ public class RadioButtonView extends JPanel
     private static RadioButtonController myRadioController;
     private static String radiobuttonPressed;
 
+    /**
+     * Initializing a radio button view.
+     * @param position - position of the view.
+     * @param size - size of the view.
+     * @param radioButtonController - radio button controller.
+     */
     public RadioButtonView(RadioButtonController rbc) {
         super(new BorderLayout());
         myRadioController = rbc;

@@ -92,13 +92,13 @@ public class UserXMLWriter {
 
     }
     
-    public void appendGame(String userName, String name, String score, String times, String info){
+    public void appendGame(String userName, String gameName, String score, String times, String info){
         String filePath = myUserGameFilePath + userName + ".xml";
 
         Document doc = XmlUtilities.makeDocument(filePath);
         Element root = doc.getDocumentElement();
         Element message = XmlUtilities.appendElement(doc, root, "game", "");
-        XmlUtilities.appendElement(doc, message, "name", name);
+        XmlUtilities.appendElement(doc, message, "name", gameName);
         XmlUtilities.appendElement(doc, message, "highscore", score);
         XmlUtilities.appendElement(doc, message, "timesplayed", times);
         XmlUtilities.appendElement(doc, message, "gameinfo", info);

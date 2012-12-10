@@ -9,6 +9,11 @@ import vooga.turnbased.gameobject.GameObject;
 import vooga.turnbased.gameobject.optionobject.OptionObject;
 import vooga.turnbased.gui.interactionpanel.InteractionPanel;
 
+/**
+ * Conversation mode
+ * @author rex
+ *
+ */
 public class ConversationMode extends OptionMode {
 	
 	private List<String> myMessages;

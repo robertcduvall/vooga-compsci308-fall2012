@@ -16,6 +16,11 @@ import util.networking.Service;
 import util.networking.chat.ChatCommand;
 import util.networking.chat.ChatServer;
 
+/**
+ * @author Oren Bukspan
+ * @author Connor Gordon
+ *
+ */
 public class DataService implements Service{
 
     private Server myServer; 
