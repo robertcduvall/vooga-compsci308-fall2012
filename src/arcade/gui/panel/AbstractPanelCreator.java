@@ -1,12 +1,11 @@
 package arcade.gui.panel;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import arcade.gui.Arcade;
 
 
 /**
- * The is the top-level abstract class for the panel hierarchy.
+ * The is the top-level abstract class for the panelcreator hierarchy.
  * 
  * @author Michael Deng
  * @author Robert Bruce

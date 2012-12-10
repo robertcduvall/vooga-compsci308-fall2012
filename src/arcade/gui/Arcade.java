@@ -96,7 +96,11 @@ public class Arcade {
     }
 
     /**
-     * This method replaces an old panel with a new panel.
+     * This method replaces an old panel with a new panel. The panels
+     * are "typed" so there is no need to specifiy the location of
+     * the new panel (or which old panel is being replaced). When you specify
+     * the incoming panel, the framework already knows which location
+     * in the frame to place the new panel.
      * 
      * @param panelCreatorName the nickname (as specified in the
      *        Arcade.properties file) of the new panelcreator

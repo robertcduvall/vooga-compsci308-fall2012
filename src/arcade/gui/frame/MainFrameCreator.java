@@ -13,6 +13,7 @@ import arcade.gui.Arcade;
  */
 public class MainFrameCreator extends MigFrameCreator {
 
+    // specifies the sizes for each panel location in the frame
     private static final int LOGO_WIDTH = 300;
     private static final int LOGO_HEIGHT = 100;
     private static final int BLANK_WIDTH = 500;
