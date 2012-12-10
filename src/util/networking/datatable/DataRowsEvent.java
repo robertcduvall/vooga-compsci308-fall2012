@@ -1,5 +1,10 @@
 package util.networking.datatable;
 import java.util.Collection;
+
+/**
+ * @author Connor Gordon
+ * 
+ */
 import java.util.EventObject;
 import util.datatable.UnmodifiableRowElement;
 public class DataRowsEvent extends EventObject {

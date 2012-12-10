@@ -71,6 +71,8 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
 	/**
 	 * Game constructor (initializes anything not set in initializeGame())
+	 * 
+	 * The demo is to show case that the game, the graphics, and the gameObjects work.
 	 */
 	public Game() {
 		// ImageIcon imageIcon = new
@@ -87,7 +89,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 				myCanvas.getHeight() - PLAYER_START_HEIGHT);
 		createGame();
 		setupInput();
-		playAudio();
 		startLevel(myCurrentLevel);
 	}
 
@@ -141,29 +142,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 			e.printStackTrace();
 		}
 		myCanvas.addKeyListener(myKeyContr);
-	}
-
-	/**
-	 * Method to play audio. Originally from http://www.neowin.net/forum/topic/950958-java-inserting-a-sound-clip-into-a-jframe-help/.
-	 */
-	public static void playAudio() {
-		InputStream in = null;
-		AudioStream as = null;
-		try {
-			// create audio data source
-			in = new FileInputStream("src/games/wl65game/song.wav");
-		} catch (FileNotFoundException fnfe) {
-			System.out.println("The audio file was not found");
-		}
-		try {
-			// create audio stream from file stream
-			as = new AudioStream(in);
-		} catch (IOException ie) {
-			System.out.println("Audio stream could not be created");
-		}
-
-		AudioPlayer.player.start(as);
-
 	}
 
 
@@ -415,5 +393,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 	public Player getPlayer() {
 		return myPlayer;
 	}
+	
 
 }

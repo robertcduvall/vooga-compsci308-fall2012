@@ -27,7 +27,7 @@
 	<game id="3">
 		<name>The Button Game</name>
 		<rating>10 7</rating>
-		<filepath>games.ButtonGame</filepath>
+		<filepath>games.buttongame.ButtonGame</filepath>
 		<tags>fun</tags>
 <review>Easy to learn, hard to master :)- Howard</review>
 <review>Howard hax OP- Kannan</review>
@@ -69,19 +69,18 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
-
 <game id="10">
-		<name>The Formic War</name>
-		<rating></rating>
-		<tags></tags>
-		<filepath>games.par24game.SmartEnemyGame</filepath>
-		</game>
-<game id="11">
 		<name>Rob's Snake Game</name>
 		<rating/>
 		<tags/>
-		<filepath>games.robssnake.SnakeGame</filepath>
+		<filepath>games.robssnake.RunSnakeGame</filepath>
 </game>
+<game id="11">
+		<name>The Formic War</name>
+		<rating/>
+		<tags></tags>
+		<filepath>games.par24game.SmartEnemyGame</filepath>
+		</game>
 <game id="12">
 		<name>Adventure RPG</name>
 		<rating></rating>
@@ -111,5 +110,41 @@
 		<rating></rating>
 		<tags/>
 		<filepath>games.wl65game.Game</filepath>
+</game>
+<game id="17">
+		<name>Minefield Walker</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.DontPlayWithMines.DontPlayWithMines</filepath>
+</game>
+<game id="18">
+		<name>NinjaGame</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.ninjagame.NinjaGame</filepath>
+</game>
+<game id="19">
+		<name>MindChallenge</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.mindchallenge.MindChallenge</filepath>
+</game>
+<game id="20">
+		<name>The Simple Lord of the Rings Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.lotrsimple.LOTRSimpleGame</filepath>
+</game>
+<game id="21">
+		<name>Mario in Minutes</name>
+		<rating/>
+		<tags/>
+		<filepath>games.geo4games.marioinminutes.MarioInMinutes</filepath>
+</game>
+<game id="22">
+		<name>Moving Bricks</name>
+		<rating/>
+		<tags/>
+		<filepath>games.geo4games.movingbricks.MovingBricks</filepath>
 </game>
 </gamelist>

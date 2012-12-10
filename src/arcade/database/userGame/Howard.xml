@@ -3,17 +3,17 @@
 		<name>Turnbased RPG</name>
 		<highscore>500</highscore>
 		<timesplayed>0</timesplayed>
-		<gameinfo></gameinfo>
+		<gameinfo/>
 	</game>
 	<game>
 		<name>Space Invaders</name>
 		<highscore>512</highscore>
 		<timesplayed>0</timesplayed>
-		<gameinfo></gameinfo>
+		<gameinfo/>
 	</game>
 	<game>
 		<name>The Button Game</name>
-		<highscore>214</highscore>
+		<highscore>9</highscore>
 		<timesplayed>0</timesplayed>
 		<gameinfo/>
 	</game>

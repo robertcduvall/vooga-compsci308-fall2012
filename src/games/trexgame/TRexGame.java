@@ -8,6 +8,17 @@ import arcade.IArcadeGame;
 import arcade.gamemanager.GameSaver;
 
 /**
+ * Main features: 
+ * new battle mechanism (more stats including critical hit,
+ * evasion etc.); 
+ * conversation tree; 
+ * player stats panel (which shows that the
+ * InteractionPanel can be extended for all in-game panels);
+ * graphics/fonts improvement with little code;
+ * stats boosts as a reward for completing level 1;
+ * Monsters can be either visible/invisible on the map (all of them can trigger
+ * battle with player);
+ * Easy extension of MapMode to respond to more events
  * 
  * @author Tony, Rex
  */

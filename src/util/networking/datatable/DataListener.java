@@ -1,6 +1,10 @@
 package util.networking.datatable;
 
-
+/**
+ * @author Connor Gordon
+ * @author Oren Bukspan
+ *
+ */
 public interface DataListener {
         
         /**

@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>640</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/xidugame/winGameObjects.bin</gameObjectData>
+<conditionData>src/games/xidugame/winConditions.bin</conditionData>
+<pluginData>src/games/xidugame/winPlugins.bin</pluginData>
+</level>

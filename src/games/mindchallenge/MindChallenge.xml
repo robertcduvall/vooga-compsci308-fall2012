@@ -1,0 +1,379 @@
+<?xml version="1.0"?>
+<rpggame>
+  <gameSetup>
+    <dimension>
+      <width>9</width>
+      <height>5</height>
+    </dimension>
+    <cameraDimension>
+      <width>9</width>
+      <height>5</height>
+    </cameraDimension>
+    <backgroundImage>src/vooga/turnbased/resources/image/background.png</backgroundImage>
+    <startMode>map1</startMode>
+    <!-- map is hardcoded, required default value in XMLParser -->
+  </gameSetup>
+  <modeDeclarations>
+    <mode>
+      <name>gameWon</name>
+      <class>vooga.turnbased.gamecore.gamemodes.GameWonMode</class>
+      <condition>wingame</condition>
+    </mode>
+    <mode>
+      <name>gameOver</name>
+      <class>vooga.turnbased.gamecore.gamemodes.GameOverMode</class>
+      <condition>endgame</condition>
+    </mode>
+    <mode>
+      <name>map1</name>
+      <class>vooga.turnbased.gamecore.gamemodes.MapMode</class>
+      <condition>entermap1</condition>
+    </mode>
+    <mode>
+      <name>map2</name>
+      <class>vooga.turnbased.gamecore.gamemodes.MapMode</class>
+      <condition>answer1,answer2,answer3</condition>
+    </mode>
+    <mode>
+      <name>question1</name>
+      <class>games.mindchallenge.extension.QuestionMode</class>
+      <condition>doquestion1</condition>
+    </mode>
+    <mode>
+      <name>question2</name>
+      <class>games.mindchallenge.extension.QuestionMode</class>
+      <condition>doquestion2</condition>
+    </mode>
+    <mode>
+      <name>question3</name>
+      <class>games.mindchallenge.extension.QuestionMode</class>
+      <condition>doquestion3</condition>
+    </mode>
+    <mode>
+      <name>question4</name>
+      <class>games.mindchallenge.extension.QuestionMode</class>
+      <condition>doquestion4</condition>
+    </mode>
+    <mode>
+      <name>question5</name>
+      <class>games.mindchallenge.extension.QuestionMode</class>
+      <condition>doquestion5</condition>
+    </mode>
+  </modeDeclarations>
+  <spriteDeclarations>
+
+
+
+
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>doquestion1</condition>
+        <param>
+          <x>2</x>
+          <y>2</y>
+        </param>
+        <image>src/games/mindChallenge/resources/npc1.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question1</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <message>What is the capital of Ukraine?</message>
+          <answer>0</answer>
+        </param>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question1</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+        	<message>Warsaw</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question1</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Kyiv</message>
+          <answer>1</answer>
+        </param>
+        <condition>answer1</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question1</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Amurica!</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+    </sprite>
+
+
+
+
+
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>doquestion2</condition>
+        <param>
+          <x>4</x>
+          <y>2</y>
+        </param>
+        <image>src/games/mindChallenge/resources/npc2.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question2</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <message>Select correct statement</message>
+          <answer>0</answer>
+        </param>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question2</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Stanford is better than Duke</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question2</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Damage to the endothelium causes vasodilation</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question2</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>VOOGA rpg is awesome</message>
+          <answer>1</answer>
+        </param>
+        <condition>answer2</condition>
+      </object>
+    </sprite>
+
+
+
+
+
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>doquestion3</condition>
+        <param>
+          <x>6</x>
+          <y>2</y>
+        </param>
+        <image>src/games/mindChallenge/resources/npc3.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question3</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <message>Ready to win?</message>
+          <answer>0</answer>
+        </param>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question3</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Yes</message>
+          <answer>1</answer>
+        </param>
+        <condition>doquestion4</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question3</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>No</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question3</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>I'm a potato!</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+    </sprite>
+    
+
+
+
+
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>question4</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <message>Are you sure?</message>
+          <answer>0</answer>
+        </param>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question4</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Yes</message>
+          <answer>1</answer>
+        </param>
+        <condition>answer3</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question4</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>No</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+    </sprite>
+
+
+
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map2</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>doquestion5</condition>
+        <param>
+          <x>8</x>
+          <y>1</y>
+        </param>
+        <image>src/games/mindChallenge/resources/npc4.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question5</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <message>Final question. What is a bird?</message>
+          <answer>0</answer>
+        </param>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question5</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Birds are cool</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question5</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>Word</message>
+          <answer>1</answer>
+        </param>
+        <condition>wingame</condition>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>question5</modes>
+        <class>games.mindchallenge.extension.QuestionObject</class>
+        <param>
+          <message>I'm a potato!</message>
+          <answer>1</answer>
+        </param>
+        <condition>endgame</condition>
+      </object>
+    </sprite>
+
+
+
+    <staticSprite>
+      <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
+      <modes>map2</modes>
+      <condition>NO_ACTION</condition>
+      <image>src/games/mindchallenge/resources/tile.jpg</image>
+    </staticSprite>
+
+
+
+
+    <player>
+      <object>
+        <modes>map1, map2</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <x>1</x>
+          <y>1</y>
+          <source>src/vooga/turnbased/resources/image/player/Down.png</source>
+          <direction>down</direction>
+          <source>src/vooga/turnbased/resources/image/player/Down1.png</source>
+          <direction>down1</direction>
+          <source>src/vooga/turnbased/resources/image/player/Down2.png</source>
+          <direction>down2</direction>
+          <source>src/vooga/turnbased/resources/image/player/Left.png</source>
+          <direction>left</direction>
+          <source>src/vooga/turnbased/resources/image/player/Left1.png</source>
+          <direction>left1</direction>
+          <source>src/vooga/turnbased/resources/image/player/Left2.png</source>
+          <direction>left2</direction>
+          <source>src/vooga/turnbased/resources/image/player/Right.png</source>
+          <direction>right</direction>
+          <source>src/vooga/turnbased/resources/image/player/Right1.png</source>
+          <direction>right1</direction>
+          <source>src/vooga/turnbased/resources/image/player/Right2.png</source>
+          <direction>right2</direction>
+          <source>src/vooga/turnbased/resources/image/player/Up.png</source>
+          <direction>up</direction>
+          <source>src/vooga/turnbased/resources/image/player/Up1.png</source>
+          <direction>up1</direction>
+          <source>src/vooga/turnbased/resources/image/player/Up2.png</source>
+          <direction>up2</direction>
+        </param>
+      </object>
+    </player>
+  </spriteDeclarations>
+</rpggame>
