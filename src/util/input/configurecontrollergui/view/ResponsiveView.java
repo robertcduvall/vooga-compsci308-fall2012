@@ -20,7 +20,10 @@ public class ResponsiveView extends View{
         super(position, size, imageUrl, position);
     }
 
-
+    /**
+     * Method called upon mouseClick event.
+     * @param point - absolute location of click.
+     */
     public void mouseClicked (Point point) {
         for (View child : super.myViewChildren) {
             Point p =

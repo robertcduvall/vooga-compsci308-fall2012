@@ -22,17 +22,34 @@ public class GridView extends ResponsiveView{
     private Dimension myGridImageSize;
     private int myLastButtonPressed;
     
+    /**
+     * Initializing a grid view.
+     * @param position - location of the view.
+     * @param size - size of the view.
+     * @param gridController - grid controller.
+     */
     public GridView (Point2D position, Dimension size, GridController gridController) {
         super(position, size);
         myGridController = gridController;
     }
 
+    /**
+     * Initializing a grid view.
+     * @param position - location of the view.
+     * @param size - size of the view.
+     * @param bgColor -background color of the view.
+     * @param gridController - grid controller.
+     */
     public GridView (Point2D position, Dimension size, String imageUrl, GridController gridController) {
         super(position, size, imageUrl);
         myGridController = gridController;
     }
    
 
+    /**
+     * Method called upon mouseClick event.
+     * @param point - absolute location of click.
+     */
     @Override
     public void mouseClicked (Point point) {
         super.mouseClicked(point);
@@ -41,6 +58,10 @@ public class GridView extends ResponsiveView{
         myLastButtonPressed = gridNum;
     }
     
+    /**
+     * Returns the last button pressed.
+     * @return
+     */
     public int getLastButtonPressed() {
         return myLastButtonPressed;
     }
