@@ -46,7 +46,6 @@ public class Level1 extends Level {
     @Override
     public boolean winningConditionsMet () {
         Boolean areAsteroidsStillThere = false;
-        System.out.println("level1\t" + myGame.getEnemies().size());
         for (Enemy e : myGame.getEnemies()) {
             if (e.getBottom() < myGame.getCanvasDimension().height
                     && !e.isDead()) areAsteroidsStillThere = true;

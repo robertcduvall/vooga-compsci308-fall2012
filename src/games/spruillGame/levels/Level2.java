@@ -36,7 +36,7 @@ public class Level2 extends Level {
         for (int j = 0; j < NUMBER_OF_ENEMIES; j++) {
             myGame.addEnemy(new Enemy(new Point((int) (((float) myGame
                     .getCanvasDimension().width / (float) NUMBER_OF_ENEMIES)
-                    * j), 50),
+                    * j), rand.nextInt(30)+20),
                     ENEMY_DIMENSION, myGame.getCanvasDimension(),
                     ENEMY_IMAGEPATH[rand.nextInt(2)], new Point(
                             rand.nextInt(4) - 2, rand.nextInt(5) + 1),
@@ -48,7 +48,6 @@ public class Level2 extends Level {
     @Override
     public boolean winningConditionsMet () {
         Boolean areAsteroidsStillThere = false;
-        System.out.println("level2\t" + myGame.getEnemies().size());
         for (Enemy e : myGame.getEnemies()) {
             if (e.getBottom() < myGame.getCanvasDimension().height
                     && !e.isDead()) areAsteroidsStillThere = true;
