@@ -70,7 +70,7 @@
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
 <game id="10">
-		<name>Rob's Snake Game</name>
+		<name>Mario's Mushrooms</name>
 		<rating/>
 		<tags/>
 		<filepath>games.robssnake.RunSnakeGame</filepath>
