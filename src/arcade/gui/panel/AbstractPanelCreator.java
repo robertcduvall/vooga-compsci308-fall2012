@@ -8,7 +8,6 @@ import arcade.gui.Arcade;
  * The is the top-level abstract class for the panelcreator hierarchy.
  * 
  * @author Michael Deng
- * @author Robert Bruce
  * 
  */
 public abstract class AbstractPanelCreator {
@@ -16,30 +15,36 @@ public abstract class AbstractPanelCreator {
     private String myPanelType;
     private Arcade myArcade;
 
+    /**
+     * Constructor fo the AbstractPanelCreator
+     * 
+     * @param a reference to the arcade
+     */
     public AbstractPanelCreator (Arcade a) {
         myArcade = a;
     }
 
     /**
-     * Used by subclasses as the first step in creating a new ArcadePanel
+     * Used by subclasses as the first step in creating a new ArcadePanel.
+     * This method create the new arcadepanel and initializes it
+     * for the arcade.
      * 
      * @return a new ArcadePanel
      */
     protected ArcadePanel initializeNewPanel () {
         ArcadePanel newPanel = new ArcadePanel(myArcade, myPanelType);
         newPanel.setBackground(Color.BLACK);
-
-        // set panel to smallest size possible
         newPanel.setPreferredSize(null);
-
         return preparePanel(newPanel);
     }
 
     /**
-     * Implement this with all methods that are common to the panel
+     * Implement this with all methods that are common to all the
+     * panels of this type. This method further prepares the panel
+     * for the arcade.
      * 
-     * @param newPanel
-     * @return
+     * @param newPanel the arcadepanel
+     * @return an arcadepanel
      */
     abstract protected ArcadePanel preparePanel (ArcadePanel newPanel);
 

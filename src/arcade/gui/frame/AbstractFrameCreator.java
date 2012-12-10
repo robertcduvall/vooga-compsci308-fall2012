@@ -30,16 +30,22 @@ public abstract class AbstractFrameCreator {
     private ArcadePanel myContentPanel;
     private Map<String, ArcadePanel> myPanels;
 
+    /**
+     * Constructor for the AbstractFrameCreator
+     * 
+     * @param a reference to the arcade
+     */
     public AbstractFrameCreator (Arcade a) {
         myArcade = a;
         myPanels = new HashMap<String, ArcadePanel>();
     }
 
     /**
-     * this method is the main method that will
-     * set up the jframe.. and get it read to add
+     * This method is the main method that will
+     * set up the Java JFrame. This method is called by the
+     * arcade to create the JFrame.
      * 
-     * @return
+     * @return an ArcadeFrame to use in the arcade
      */
     public ArcadeFrame createFrame () {
 
@@ -59,7 +65,7 @@ public abstract class AbstractFrameCreator {
         myFrame.getContentPane().setLayout(new BorderLayout());
         myFrame.getContentPane().add(myContentPanel, BorderLayout.CENTER);
 
-        // set other things
+        // set other frame-related properties
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         myFrame.setLocationRelativeTo(null);
 
@@ -70,38 +76,39 @@ public abstract class AbstractFrameCreator {
     }
 
     /**
-     * Creates and populates the contentPanel
-     * The contentPanel is fit into the contentPane of the Frame
+     * Creates and populates the contentPanel (which fits into the
+     * contentpane of the ArcadeFrame).
      */
     protected void createContentPanel () {
         myContentPanel = new ArcadePanel(myArcade, "contentpanel");
         myContentPanel.removeAll();
-        // myContentPanel.setPreferredSize(new Dimension(FRAME_WIDTH,
-        // FRAME_HEIGHT));
 
         myContentPanel.setBackground(Color.BLACK);
-        
+
         setLayoutManager();
         addSubPanels();
-        
+
     }
 
     /**
-     * Must be implemented with assignment of layout manager
+     * Must be implemented with assignment of layout manager. This
+     * method specifies which layout manager we are using to layout
+     * the ArcadeFrame.
      */
-    abstract protected void setLayoutManager();
-    
+    abstract protected void setLayoutManager ();
+
     /**
-     * Must be implemented with instructions to add each subpanel
+     * Must be implemented with instructions to add each subpanel. This
+     * method specifies which subpanels are added to the ArcadeFrame
+     * and their locations in the frame.
      */
-    abstract protected void addSubPanels();
-    
-    
-    
-    
+    abstract protected void addSubPanels ();
+
     /**
-     * Call this method on each base panel in the frame
-     * to prepare it for use in the arcade
+     * Call this method on each subpanel in the ArcadeFrame. This method
+     * sets up the subpanel with a scrollpane and a holder panel (so that
+     * panels may be swapped in and out on the fly).
+     * 
      */
     protected void setupPanel (String panelType, ArcadePanel panel) {
 
@@ -118,8 +125,6 @@ public abstract class AbstractFrameCreator {
         Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
         scrollPane.setBorder(border);
 
-        // holder.setAutoscrolls(true);
-
         // add scrollpane to sizing panel
         panel.setLayout(new BorderLayout());
         panel.add(scrollPane, BorderLayout.CENTER);
@@ -127,6 +132,9 @@ public abstract class AbstractFrameCreator {
     }
 
     /**
+     * This is a getter method for the contentpanel
+     * of the ArcadeFrame. Use this method to set the
+     * layout manager for the content panel.
      * 
      * @return reference to the content panel
      */
@@ -135,6 +143,7 @@ public abstract class AbstractFrameCreator {
     }
 
     /**
+     * Getter method for a reference to the arcade.
      * 
      * @return reference to the arcade
      */

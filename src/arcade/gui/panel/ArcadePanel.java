@@ -1,7 +1,5 @@
 package arcade.gui.panel;
 
-import java.awt.Component;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import arcade.gui.Arcade;
 
@@ -47,23 +45,5 @@ public class ArcadePanel extends JPanel {
     public Arcade getArcade () {
         return myArcade;
     }
-
-//    /**
-//     * Getter method for a specific component contained in this panel
-//     * 
-//     * @param name
-//     * @return
-//     */
-//    public JComponent getComponent (String name) {
-//        Component[] allComponents = this.getComponents();
-//        int i = 0;
-//        while (i < allComponents.length) {
-//            if (allComponents[i].getName() != null) {
-//                if (allComponents[i].getName().equals(name)) { return (JComponent) allComponents[i]; }
-//            }
-//            i++;
-//        }
-//        return null;
-//    }
 
 }
