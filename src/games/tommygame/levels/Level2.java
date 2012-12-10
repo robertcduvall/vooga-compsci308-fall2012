@@ -26,7 +26,7 @@ public class Level2 extends Level {
     private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int ENEMY_HEALTH = 1;
     private static final String INVADER_IMAGEPATH = "vooga/shooter/images/invader.jpg";
-    private static final int INVADER_HEALTH = 2;
+    private static final int INVADER_HEALTH = 3;
     private static final int FALLING_STARTING_HEIGHT = 25;
     private static final Dimension FALLING_OBJECT_DIMENSION = new Dimension(20, 17);
     private static final int FIRST_POSSIBLE_VELOCITY = 2;

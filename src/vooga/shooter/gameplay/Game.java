@@ -195,11 +195,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
                 if (collisions.size() > 0) {
                     String key = HIT_BY + collisions.get(1).getType();
                     collisions.get(0).doEvent(key, collisions.get(1));
-                    if (!collisions.get(1).getType().equals(collisions.get(0).getType())) {
-
-                        // myParticleSystems.add(new
-                        // Explosion(collisions.get(0).getPosition()));
-                    }
                 }
             }
         }
