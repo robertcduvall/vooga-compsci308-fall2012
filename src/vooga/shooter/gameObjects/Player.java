@@ -110,7 +110,7 @@ public class Player extends Sprite {
 
         getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                decrementHealth();
+                decreaseHealth(1);
             }
         });
     }

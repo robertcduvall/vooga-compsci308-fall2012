@@ -1,6 +1,5 @@
 package vooga.shooter.gameplay;
 
-import games.tommygame.levels.Level1;
 import games.tommygame.levels.LostGame;
 import games.tommygame.levels.WonGame;
 import java.awt.BorderLayout;
@@ -46,10 +45,11 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Invaders";
-    private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
+    private static final String GAME_DESCRIPTION =
+            "Classic top-down shooter game. \n\n Shoot the Spash Screen image to begin gameplay. \\ Destroy all enemies without letting too many pass!";
     private static final String GAME_IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
-    private static final int PLAYER_HEALTH = 3;
+    private static final int PLAYER_HEALTH = 2;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
     private static final int PLAYER_START_HEIGHT = 50;
 
@@ -182,6 +182,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
         for (Sprite s : getSprites()) {
             s.update();
+        }
+        for (Enemy e : getEnemies()) {
+            myPlayer.decreaseHealth(e.getDamageDone());
         }
         for (Sprite sprite1 : getSprites()) {
             for (Sprite sprite2 : getSprites()) {

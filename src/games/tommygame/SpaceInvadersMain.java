@@ -1,6 +1,5 @@
 package games.tommygame;
 
-import games.tommygame.levels.Level1;
 import javax.swing.JFrame;
 import arcade.gamemanager.GameSaver;
 import vooga.shooter.gameplay.Game;
