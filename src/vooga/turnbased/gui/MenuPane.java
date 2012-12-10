@@ -19,8 +19,6 @@ import javax.swing.JTextField;
  */
 public class MenuPane extends DisplayPane {
 
-	private final String myDefaultFilePath = "src/vooga/turnbased/resources/level/Level1Final.xml";
-	private final String myDefaultPlayerPath = "src/vooga/turnbased/resources/level/PlayerFinal.xml";
 	private JTextField myXmlTextField;
 	private int myTextFieldLength = 65;
 
@@ -30,11 +28,10 @@ public class MenuPane extends DisplayPane {
 	 * @param gameWindow
 	 *            GameWindow on which its components will be displayed
 	 */
-	public MenuPane(GameWindow gameWindow) {
+	public MenuPane(GameWindow gameWindow, String xmlPath) {
 		super(gameWindow);
 		createButtons();
-		myXmlTextField = createXMLEntryTextField(myDefaultFilePath);
-		getGameWindow().setXmlPath(myDefaultPlayerPath);
+		myXmlTextField = createXMLEntryTextField(xmlPath);
 	}
 
 	/**
@@ -75,7 +72,8 @@ public class MenuPane extends DisplayPane {
 		JButton loadXmlButton = new JButton("Load XML");
 		loadXmlButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fc = new JFileChooser(myDefaultFilePath);
+				JFileChooser fc = new JFileChooser(System
+			            .getProperties().getProperty("user.dir"));
 				int returnVal = fc.showOpenDialog(MenuPane.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();

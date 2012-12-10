@@ -7,10 +7,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.w3c.dom.Document;
 import util.gui.MultiFieldJOptionPane;
 import util.gui.NumericJTextField;
+import util.input.core.KeyboardController;
+import util.input.core.MouseController;
+import util.reflection.Reflection;
 import util.xml.XmlUtilities;
 import java.io.*;
+import java.util.Vector;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.Sprite;
+import vooga.shooter.gameObjects.intelligence.*;
 import vooga.shooter.graphics.*;
 import vooga.shooter.graphics.Canvas;
 
@@ -31,6 +36,11 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     private static final String HEIGHT_KEY = "height";
     private static final String HEALTH_KEY = "health";
     private static final String SAVE_AS_KEY = "save as";
+    private static final String AI_KEY = "AI Type";
+    /*The AI types are hard coded at this point because I was unable to find a way to
+     * dynamically load the class names from a file path or otherwise.
+     */
+    private static final String[] AIOptions = {"Bounce", "Chase", "Random"};
 
     private JFrame mainFrame; // The main window
     private JFileChooser levelChooser; // For loading levels
@@ -96,6 +106,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+        spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
     }
     
     /**
@@ -109,6 +120,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(2));
+        spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
     }
     
     /**
@@ -122,6 +134,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
         spriteOptionsPane.addField(WIDTH_KEY, "Width", new NumericJTextField(Integer.toString(s.getSize().width), 3));
         spriteOptionsPane.addField(HEIGHT_KEY, "Height", new NumericJTextField(Integer.toString(s.getSize().height), 3));
         spriteOptionsPane.addField(HEALTH_KEY, "Health", new NumericJTextField(Integer.toString(s.getCurrentHealth()), 2));
+        spriteOptionsPane.addField(AI_KEY, "AI", new JComboBox(AIOptions));
     }
 
     private void setupChoosers () {
@@ -303,7 +316,6 @@ public class LevelEditor implements DrawableComponent, ActionListener {
      * with the newly entered attributes.
      */
     private void editCurrentSprite() {
-        System.out.println("editing");
         Enemy newEnemy = makeEnemy();
         myLevel.removeSprite(myCurrentSprite);
         myLevel.addSprite(newEnemy);
@@ -340,6 +352,7 @@ public class LevelEditor implements DrawableComponent, ActionListener {
             Point velocity = new Point(0,0);
             int health = Integer.parseInt(spriteOptionsPane.getResult(HEALTH_KEY));
             Enemy newEnemy = new Enemy(position, size, bounds, imagePath, velocity, health);
+            //AI ai = Reflection.createInstance(spriteOptionsPane.getResult(AI_Key), newEnemy, myLevel.getPlayerList())
 
             return newEnemy;
         }
@@ -402,13 +415,13 @@ public class LevelEditor implements DrawableComponent, ActionListener {
     }
 
     @Override
-    public void setMouseListener (MouseMotionListener m) {
+    public void setMouseListener (MouseController m) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void setKeyboardListener (KeyListener k) {
+    public void setKeyboardListener (KeyboardController k) {
         // TODO Auto-generated method stub
 
     }

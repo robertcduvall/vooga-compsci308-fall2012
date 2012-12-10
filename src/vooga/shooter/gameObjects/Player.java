@@ -1,22 +1,19 @@
 package vooga.shooter.gameObjects;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
-import util.input.core.KeyboardController;
 
 
 /**
  * Represents the player(s) to be used in the game.
  * Each player will start with health.
+ * Player is a singleton because only one instance is required and state should be maintained
+ * independent of environment.
  * The player(s) can also be controlled using keys
  * that will direct their movement.
  * 
@@ -24,7 +21,7 @@ import util.input.core.KeyboardController;
  *         Tommy Petrilak
  */
 public class Player extends Sprite {
-    private static final int SPRITE_MOVEMENT = 7;
+    private static final int SPRITE_MOVEMENT = 5;
     private static final String NO_KEY_PRESSED = "-1";
     
     /**
@@ -47,7 +44,7 @@ public class Player extends Sprite {
      * through KeyEvents or collisions
      */
     @Override
-    void setMethods () {
+    public void setMethods () {
         getMapper().addPair(Integer.toString(KeyEvent.VK_LEFT), new SpriteActionInterface() {
             public void doAction (Object ... o) {
                 if (checkBounds(LEFT_BOUND)) {
@@ -113,7 +110,7 @@ public class Player extends Sprite {
 
         getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                die();
+                decrementHealth();
             }
         });
     }

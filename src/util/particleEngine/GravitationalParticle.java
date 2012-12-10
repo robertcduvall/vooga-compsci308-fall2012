@@ -8,24 +8,23 @@ import util.mathvector.MathVector2D;
 
 public class GravitationalParticle extends Particle{
 	
-	MathVector2D acceleration;
+	private static MathVector2D acceleration = new MathVector2D(0,-10);
 	
 	public GravitationalParticle (MathVector2D position, Dimension size, Image image,
             double velocityMagnitude, double velocityAngle, int variance,
             int duration, float[] RGBAscales, float[] RGBAtolerances){
 		super(position, size, image, velocityMagnitude, velocityAngle, 
 				variance, duration, RGBAscales, RGBAtolerances);
-		acceleration = new MathVector2D(0, 0.5);
 	}
-	
-	protected void positionUpdate () {
+
+	public void positionUpdate () {
 		movePosition((MathVector2D) getMyVelocity());
 		changeMyVelocity(acceleration);
 	}
 	
 	private void changeMyVelocity(MathVector2D v){
-		MathVector2D newVelocity = new MathVector2D();
-		newVelocity.setVector(getMyVelocity().getVectorSumCopy(v));
+		MathVector2D newVelocity = new MathVector2D(getMyVelocity());
+		newVelocity.addVector(v);
 		setMyVelocity(newVelocity);
 	}
 }

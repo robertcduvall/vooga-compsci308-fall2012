@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.ImageIcon;
+import vooga.shooter.gameObjects.intelligence.AI;
 import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
 
 
@@ -17,11 +18,25 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  * Enemies start with velocity and health.
  * 
  * @author Jesse Starr
- *         (add your own name as you edit)
+ * @author Stephen Hunt
  */
 public class Enemy extends Sprite {
+    
+    AI myAI;
 
-    private String myImagePath;
+    /**
+     * @return the myAI
+     */
+    protected AI getMyAI () {
+        return myAI;
+    }
+
+    /**
+     * @param myAI the myAI to set
+     */
+    protected void setMyAI (AI myAI) {
+        this.myAI = myAI;
+    }
 
     /**
      * Constructs an enemy character for the game.
@@ -38,6 +53,23 @@ public class Enemy extends Sprite {
                   Point velocity, int health) {
         super(position, size, bounds, imagePath, velocity, health);
     }
+    
+    /**
+     * Constructs an enemy character for the game.
+     * 
+     * @param position the center of the image
+     * @param size the size of the image
+     * @param bounds the size of the canvas
+     * @param imagePath the path to the image file to use.
+     *        A relative path starting at the src directory
+     * @param velocity the starting velocity for the enemy
+     * @param health the starting health of the enemy
+     */
+    public Enemy (Point position, Dimension size, Dimension bounds, String imagePath,
+                  Point velocity, int health, AI ai) {
+        super(position, size, bounds, imagePath, velocity, health);
+        myAI = ai;
+    }
 
     /**
      * This method is called after the enemy's position is updated.
@@ -45,8 +77,14 @@ public class Enemy extends Sprite {
      * shot).
      */
     protected void continueUpdate () {
+        if(!checkBounds(BOTTOM_BOUND) || !checkBounds(TOP_BOUND)) {
+            decrementHealth();
+        }
         for (Bullet b : getBulletsFired()) {
             b.update();
+        }
+        if(myAI != null) {
+            myAI.calculate();
         }
     }
 
@@ -88,7 +126,7 @@ public class Enemy extends Sprite {
             public void doAction (Object ... o) {
                 String bulletOwnerType = ((Bullet) o[0]).getOwner().getType();
                 if (PLAYER_TYPE.equals(bulletOwnerType)) {
-                    die();
+                    decrementHealth();
                     ((Bullet) o[0]).die();
                 }
             }
@@ -96,13 +134,28 @@ public class Enemy extends Sprite {
 
         getMapper().addPair(HIT_BY_PLAYER, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                die();
-                ((Player) o[0]).die();
+                ((Player) o[0]).decrementHealth();
             }
         });
 
         // do nothing if an enemy intersects an enemy
         getMapper().addPair(HIT_BY_ENEMY, this);
+    }
+    
+    /**
+     * Sets the AI of the Sprite.
+     * @param newAI the AI to set.
+     */
+    public void setAI (AI newAI) {
+        myAI = newAI;
+    }
+    
+    /**
+     * Sets the AI of the Sprite.
+     * @param newAI the AI to set.
+     */
+    public AI getAI () {
+        return myAI;
     }
 
 }

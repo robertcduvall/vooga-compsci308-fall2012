@@ -24,20 +24,29 @@ import vooga.platformer.levelfileio.XmlTags;
  * 
  */
 public abstract class CollisionChecker {
-    private Map<String, HashMap<String, CollisionEvent>> collisionEventsMap = new HashMap<String, HashMap<String, CollisionEvent>>();
 
-    public CollisionChecker(String fileName) {
+    private Map<String, HashMap<String, CollisionEvent>> collisionEventsMap =
+            new HashMap<String, HashMap<String, CollisionEvent>>();
+
+    public CollisionChecker (String fileName) {
         Document myDocument = XmlUtilities.makeDocument(new File(fileName));
         NodeList collisionEventNodes = myDocument.getElementsByTagName(XmlTags.COLLISIONEVENT);
-        
+
         for (int i = 0; i < collisionEventNodes.getLength(); i++) {
             Node collisionEventNode = collisionEventNodes.item(i);
             Element collisionEventElement = (Element) collisionEventNode;
-   
-            String objectAName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTA).toString();
-            String objectBName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTB).toString();
-            String collisionEventName = XmlUtilities.getChildContent(collisionEventElement, XmlTags.COLLISIONEVENTCLASS).toString();
-            
+
+            String objectAName =
+                    XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTA)
+                            .toString();
+            String objectBName =
+                    XmlUtilities.getChildContent(collisionEventElement, XmlTags.GAMEOBJECTB)
+                            .toString();
+            String collisionEventName =
+                    XmlUtilities
+                            .getChildContent(collisionEventElement, XmlTags.COLLISIONEVENTCLASS)
+                            .toString();
+
             Class typeA = null;
             Class typeB = null;
             try {
@@ -47,9 +56,9 @@ public abstract class CollisionChecker {
             catch (ClassNotFoundException e) {
                 throw new LevelFileIOException("CollisionChecker: class not found", e);
             }
-            
-            CollisionEvent collisionEventAB = (CollisionEvent) Reflection.createInstance(
-                    collisionEventName, typeA, typeB);
+
+            CollisionEvent collisionEventAB =
+                    (CollisionEvent) Reflection.createInstance(collisionEventName, typeA, typeB);
             this.addCollisionEvents(objectAName, objectBName, collisionEventAB);
         }
     }
@@ -97,5 +106,4 @@ public abstract class CollisionChecker {
         }
         collisionEventsMap.get(nameA).put(nameB, collisionEventAB);
     }
-
 }

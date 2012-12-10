@@ -11,6 +11,7 @@ import vooga.turnbased.gui.GameWindow;
  * @author Rex
  */
 public class Main {
+	private final static String myXmlPath = "src/vooga/turnbased/resources/level/Level1Final.xml";
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 
@@ -20,6 +21,6 @@ public class Main {
      * @param args arguments
      */
     public static void main (String[] args) {
-        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT);
+        GameWindow myGameWindow = new GameWindow("Turn-Based RPG", "GameSetting", WIDTH, HEIGHT, myXmlPath);
     }
 }

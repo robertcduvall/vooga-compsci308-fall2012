@@ -3,6 +3,7 @@ package vooga.turnbased.gui;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Image;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -44,12 +45,13 @@ public class GameWindow extends JFrame {
      * @param width Width of the window
      * @param height Height of the window
      */
-    public GameWindow (String title, String settingsResource, int width, int height) {
+    public GameWindow (String title, String settingsResource, int width, int height, String xmlPath) {
         setTitle(title);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(width, height);
         setResizable(true);
         addResourceBundle(settingsResource);
+        setXmlPath(xmlPath);
         initializeGamePanes();
         setVisible(true);
     }
@@ -61,7 +63,7 @@ public class GameWindow extends JFrame {
         myContentPane = getContentPane();
         myLayout = new CardLayout();
         myContentPane.setLayout(myLayout);
-        myContentPane.add(new MenuPane(this), MENU);
+        myContentPane.add(new MenuPane(this, myXmlPath), MENU);
         myContentPane.add(new EditorPane(this), EDITOR);
         myContentPane.add(new ControlPane(this), CONTROLS);
         myContentPane.add(new GamePane(this), GAME);
@@ -88,7 +90,13 @@ public class GameWindow extends JFrame {
      */
     public static Image importImage (String imageName) {
         String imageFolder = myResources.getString("ImageFolder");
-        ImageIcon imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        ImageIcon imageIcon;
+        try {
+        	imageIcon = new ImageIcon(imageFolder + importString(imageName));
+        }
+        catch (Exception e) {
+        	imageIcon = new ImageIcon(importString(imageName));
+        }
         return imageIcon.getImage();
     }
 
@@ -101,7 +109,7 @@ public class GameWindow extends JFrame {
     public static String importString (String stringName) {
         return myResources.getString(stringName);
     }
-    
+
     /**
      * play sound on demand
      * 
@@ -118,7 +126,12 @@ public class GameWindow extends JFrame {
      * @param resource Path to the resource bundle
      */
     private void addResourceBundle (String resource) {
-        myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
+    	try {
+    		myResources = ResourceBundle.getBundle(RESOURCES_LOCATION + "." + resource);
+    	}
+    	catch (MissingResourceException e) {
+    		myResources = ResourceBundle.getBundle(resource);
+    	}
     }
 
     /**

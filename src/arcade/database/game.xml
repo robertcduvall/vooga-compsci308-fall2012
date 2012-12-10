@@ -27,7 +27,7 @@
 	<game id="3">
 		<name>The Button Game</name>
 		<rating>10 7</rating>
-		<filepath>games.ButtonGame</filepath>
+		<filepath>games.buttongame.ButtonGame</filepath>
 		<tags>fun</tags>
 <review>Easy to learn, hard to master :)- Howard</review>
 <review>Howard hax OP- Kannan</review>
@@ -41,26 +41,110 @@
 </game>
 <game id="5">
 		<name>Niel's Reverse Gravity Game</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.nielgame.ReverseGravityGame</filepath>
 </game>
 <game id="6">
 		<name>The T-Rex Game</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.trexgame.TRexGame</filepath>
 </game>
 <game id="7">
 		<name>The Lord of the Rings Game</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.lotrgame.LOTRGame</filepath>
 </game>
 <game id="8">
 		<name>Rob's Tenting 2D</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.robsgame.RunRobsGame</filepath>
+</game>
+<game id="9">
+		<name>Space Bugs IV</name>
+		<rating>7</rating>
+		<tags/>
+		<filepath>games.spacebugs.SpaceBugs</filepath>
+</game>
+<game id="10">
+		<name>Rob's Snake Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.robssnake.RunSnakeGame</filepath>
+</game>
+<game id="11">
+		<name>The Formic War</name>
+		<rating/>
+		<tags></tags>
+		<filepath>games.par24game.SmartEnemyGame</filepath>
+		</game>
+<game id="12">
+		<name>Adventure RPG</name>
+		<rating></rating>
+		<tags></tags>
+		<filepath>games.AdventureRPG.AdventureGame</filepath>
+</game>
+<game id="13">
+		<name>Square Attack</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.squareattack.PlaySquareAttack</filepath>
+</game>
+<game id="14">
+		<name>NyanCat Saves the Day</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.nyancatgame.NyanCatGame</filepath>
+</game>
+<game id="15">
+		<name>Asteroids</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.spruillGame.Game.Asteroids</filepath>
+</game>
+<game id="16">
+		<name>Nyan Cat vs. Veggies</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.wl65game.Game</filepath>
+</game>
+<game id="17">
+		<name>Minefield Walker</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.DontPlayWithMines.DontPlayWithMines</filepath>
+</game>
+<game id="18">
+		<name>NinjaGame</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.ninjagame.NinjaGame</filepath>
+</game>
+<game id="19">
+		<name>MindChallenge</name>
+		<rating></rating>
+		<tags/>
+		<filepath>games.mindchallenge.MindChallenge</filepath>
+</game>
+<game id="20">
+		<name>The Simple Lord of the Rings Game</name>
+		<rating/>
+		<tags/>
+		<filepath>games.lotrsimple.LOTRSimpleGame</filepath>
+</game>
+<game id="21">
+		<name>Mario in Minutes</name>
+		<rating/>
+		<tags/>
+		<filepath>games.geo4games.marioinminutes.MarioInMinutes</filepath>
+</game>
+<game id="22">
+		<name>Moving Bricks</name>
+		<rating/>
+		<tags/>
+		<filepath>games.geo4games.movingbricks.MovingBricks</filepath>
 </game>
 </gamelist>

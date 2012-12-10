@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>2469</width>
+<height>480</height>
+<collisionChecker>src/vooga/platformer/collision/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/halo/level1GameObjects.bin</gameObjectData>
+<conditionData>src/games/halo/level1Conditions.bin</conditionData>
+<pluginData>src/games/halo/level1Plugins.bin</pluginData>
+</level>

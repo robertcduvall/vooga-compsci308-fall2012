@@ -38,30 +38,48 @@ public class Messenger {
      * @throws IOException
      */
     public void write (AndroidServerMessage m) {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
-        byte[] outBytes;
-        try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(m);
-            byte[] yourBytes = bos.toByteArray();
-            outBytes = yourBytes;
-            myOutput.write(outBytes);
-        }
-        catch (IOException e) {
-            // should never happen
+        new WriteThread(m);
+    }
+
+    private class WriteThread implements Runnable {
+        private AndroidServerMessage myMessage;
+
+        public WriteThread (AndroidServerMessage m) {
+            myMessage = m;
+            Thread mThread = new Thread(this);
+            mThread.start();
         }
 
-        finally {
+        public void run () {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutput out = null;
+            byte[] outBytes;
             try {
-                out.close();
-                bos.close();
+                out = new ObjectOutputStream(bos);
+                out.writeObject(myMessage);
+                byte[] yourBytes = bos.toByteArray();
+                outBytes = yourBytes;
+                myOutput.write(outBytes);
             }
-
             catch (IOException e) {
                 // should never happen
             }
+
+            finally {
+                try {
+                    out.close();
+                    bos.close();
+                }
+
+                catch (IOException e) {
+                    // should never happen
+                }
+            }
         }
+    }
+
+    private void writeMessage (AndroidServerMessage m) {
+
     }
 
 }
