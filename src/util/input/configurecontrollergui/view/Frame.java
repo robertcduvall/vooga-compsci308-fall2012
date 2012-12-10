@@ -19,9 +19,7 @@ public class Frame extends JComponent {
     private ResponsiveView myTopLevelView;
 
     /**
-     * Initializes the canvas (window screen)
-     * to be displayed to the user.
-     *
+     * Initializes the main window screen.
      * @param size of the canvas
      */
     public Frame (Dimension size) {
@@ -35,6 +33,9 @@ public class Frame extends JComponent {
         initListener();
     }
 
+    /*
+     * calls paint on the top level view entity.
+     */
     @Override
     public void paint(Graphics g) {
         Graphics2D pen = (Graphics2D) g;
@@ -44,7 +45,7 @@ public class Frame extends JComponent {
     /**
      * Adds a view to the Top Level View.
      *
-     * @param v the view to be added
+     * @param view the view to be added
      */
     public void addView(View v) {
         myTopLevelView.addViewChild(v);

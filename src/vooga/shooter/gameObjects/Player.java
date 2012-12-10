@@ -21,7 +21,7 @@ import vooga.shooter.gameObjects.spriteUtilities.SpriteActionInterface;
  *         Tommy Petrilak
  */
 public class Player extends Sprite {
-    private static final int SPRITE_MOVEMENT = 7;
+    private static final int SPRITE_MOVEMENT = 5;
     private static final String NO_KEY_PRESSED = "-1";
     
     /**
@@ -110,7 +110,7 @@ public class Player extends Sprite {
 
         getMapper().addPair(HIT_BY_ENEMY, new SpriteActionInterface() {
             public void doAction (Object ... o) {
-                die();
+                decrementHealth();
             }
         });
     }

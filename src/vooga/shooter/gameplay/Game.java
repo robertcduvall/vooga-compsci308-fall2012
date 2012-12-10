@@ -47,9 +47,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private static final String HIT_BY = "hitby";
     private static final String GAME_NAME = "Space Invaders";
     private static final String GAME_DESCRIPTION = "Classic top-down shooter game.";
-    private static final String GAME_IMAGEPATH = "../images/background.gif";
+    private static final String GAME_IMAGEPATH = "vooga/shooter/images/background.gif";
     private static final Dimension PLAYER_SIZE = new Dimension(20, 20);
-    private static final int PLAYER_HEALTH = 10;
+    private static final int PLAYER_HEALTH = 3;
     private static final String PLAYER_IMAGEPATH = "vooga/shooter/images/spaceship.gif";
     private static final int PLAYER_START_HEIGHT = 50;
 
@@ -68,7 +68,6 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     private Level wonGame;
     private Level loseGame;
 
-
     /**
      * Game constructor (initializes anything not set in initializeGame())
      */
@@ -76,12 +75,12 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         ImageIcon imageIcon = new ImageIcon(GAME_IMAGEPATH);
         myGameImage = imageIcon.getImage();
     }
-    protected void setWinLevel( Level level)
-    {
+
+    protected void setWinLevel (Level level) {
         wonGame = level;
     }
-    protected void setLoseLevel(Level level)
-    {
+
+    protected void setLoseLevel (Level level) {
         loseGame = level;
     }
 
@@ -96,16 +95,15 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         setupInput();
         startLevel(myCurrentLevel);
     }
-    
-    private void createGame(){
+
+    private void createGame () {
         myPlayer =
-            new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
-                                                                    myCanvas.getHeight()),
-                       PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
+                new Player(myPlayerOneStart, PLAYER_SIZE, new Dimension(myCanvas.getWidth(),
+                                                                        myCanvas.getHeight()),
+                           PLAYER_IMAGEPATH, new Point(0, 0), PLAYER_HEALTH);
 
         addSprite(myPlayer);
         inputAdapter = new InputTeamSpriteActionAdapter(myPlayer);
-
         myCurrentLevel = new MainScreen(this);
     }
 
@@ -114,21 +112,30 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myCurrentLevel.startLevel();
         update();
     }
-    
-    private void setupInput() {
+
+    private void setupInput () {
 
         myKeyContr = new KeyboardController(this);
         try {
-            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, inputAdapter, "fireShot");
+            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, inputAdapter,
+                                  "fireShot");
             myKeyContr.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, inputAdapter, "goUp");
-            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, inputAdapter, "goDown");
-            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, inputAdapter, "goLeft");
-            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, inputAdapter, "goRight");
-            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyContr.setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, inputAdapter, "stop");
-            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, inputAdapter,
+                                  "goDown");
+            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, inputAdapter,
+                                  "goLeft");
+            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, inputAdapter,
+                                  "goRight");
+            myKeyContr.setControl(KeyEvent.VK_SPACE, KeyboardController.RELEASED, inputAdapter,
+                                  "stop");
+            myKeyContr
+                    .setControl(KeyEvent.VK_UP, KeyboardController.RELEASED, inputAdapter, "stop");
+            myKeyContr.setControl(KeyEvent.VK_DOWN, KeyboardController.RELEASED, inputAdapter,
+                                  "stop");
+            myKeyContr.setControl(KeyEvent.VK_LEFT, KeyboardController.RELEASED, inputAdapter,
+                                  "stop");
+            myKeyContr.setControl(KeyEvent.VK_RIGHT, KeyboardController.RELEASED, inputAdapter,
+                                  "stop");
 
         }
         catch (NoSuchMethodException e) {
@@ -154,7 +161,8 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
     @Override
     public void update () {
         if (myPlayer.isDead()) {
-            if(loseGame==null) myCurrentLevel.setNextLevel(new LostGame(this));
+            if (loseGame == null)
+                myCurrentLevel.setNextLevel(new LostGame(this));
             else myCurrentLevel.setNextLevel(loseGame);
             myCurrentLevel = myCurrentLevel.getNextLevel();
             myPlayer.setDead(false);
@@ -165,10 +173,9 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
             startLevel(myCurrentLevel);
         }
         if (myCurrentLevel.winningConditionsMet() && myCurrentLevel.getNextLevel() == null) {
-            if(wonGame==null)
+            if (wonGame == null)
                 myCurrentLevel.setNextLevel(new WonGame(this));
-            else 
-                myCurrentLevel.setNextLevel(wonGame);
+            else myCurrentLevel.setNextLevel(wonGame);
             myCurrentLevel = myCurrentLevel.getNextLevel();
             startLevel(myCurrentLevel);
         }
@@ -185,13 +192,23 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
                 if (collisions.size() > 0) {
                     String key = HIT_BY + collisions.get(1).getType();
                     collisions.get(0).doEvent(key, collisions.get(1));
-                    if(!collisions.get(1).getType().equals(collisions.get(0).getType())){
+                    if (!collisions.get(1).getType().equals(collisions.get(0).getType())) {
 
-                    myParticleSystems.add(new Explosion(collisions.get(0).getPosition()));
+                        // myParticleSystems.add(new
+                        // Explosion(collisions.get(0).getPosition()));
                     }
                 }
             }
         }
+        ArrayList<Sprite> spritesToRemove = new ArrayList<Sprite>();
+        for (Sprite s : getSprites()) {
+            s.update();
+            if (s.getHealth() <= 0) {
+                myParticleSystems.add(new Explosion(s.getPosition()));
+                spritesToRemove.add(s);
+            }
+        }
+        getSprites().removeAll(spritesToRemove);
         Stack<ParticleSystem> pSystemToRemove = new Stack<ParticleSystem>();
         for (ParticleSystem p : myParticleSystems) {
             p.update();
@@ -218,8 +235,10 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
     private List<Sprite> collisionCheck (Sprite sprite1, Sprite sprite2) {
         List<Sprite> collidedSprites = new ArrayList<Sprite>();
-        Rectangle sprite1Edges = new Rectangle(new Point(sprite1.getLeft(), sprite1.getTop()), sprite1.getSize());
-        Rectangle sprite2Edges = new Rectangle(new Point(sprite2.getLeft(), sprite2.getTop()), sprite2.getSize());
+        Rectangle sprite1Edges =
+                new Rectangle(new Point(sprite1.getLeft(), sprite1.getTop()), sprite1.getSize());
+        Rectangle sprite2Edges =
+                new Rectangle(new Point(sprite2.getLeft(), sprite2.getTop()), sprite2.getSize());
 
         // checks for collision between 1st and 2nd sprite
         if (sprite1Edges.intersects(sprite2Edges)) {
@@ -230,7 +249,8 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         Rectangle bulletEdges;
         // checks for bullets from 1st sprite hitting 2nd sprite
         for (Bullet bullet : sprite1.getBulletsFired()) {
-            bulletEdges = new Rectangle(new Point(bullet.getLeft(), bullet.getTop()), bullet.getSize());
+            bulletEdges =
+                    new Rectangle(new Point(bullet.getLeft(), bullet.getTop()), bullet.getSize());
             if (bulletEdges.intersects(sprite2Edges)) {
                 collidedSprites.add(sprite2);
                 collidedSprites.add(bullet);
@@ -238,7 +258,8 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
             }
         }
         for (Bullet bullet : sprite2.getBulletsFired()) {
-            bulletEdges = new Rectangle(new Point(bullet.getLeft(), bullet.getTop()), bullet.getSize());
+            bulletEdges =
+                    new Rectangle(new Point(bullet.getLeft(), bullet.getTop()), bullet.getSize());
             if (bulletEdges.intersects(sprite1Edges)) {
                 collidedSprites.add(sprite1);
                 collidedSprites.add(bullet);
@@ -356,7 +377,7 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
         myFrame.setVisible(true);
 
     }
-    
+
     @Override
     public List<Image> getScreenshots () {
         return null;
@@ -379,17 +400,16 @@ public class Game extends JComponent implements DrawableComponent, IArcadeGame {
 
     @Override
     public void setMouseListener (MouseController mouseMotion) {
-        //This is where you'll be given the mouse controller
+        // This is where you'll be given the mouse controller
     }
-    
+
     @Override
     public void setKeyboardListener (KeyboardController k) {
-        //This is where you'll be given the keyboard controller
+        // This is where you'll be given the keyboard controller
     }
 
     public Player getPlayer () {
         return myPlayer;
     }
-
 
 }

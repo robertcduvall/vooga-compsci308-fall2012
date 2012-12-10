@@ -27,7 +27,7 @@
 	<game id="3">
 		<name>The Button Game</name>
 		<rating>10 7</rating>
-		<filepath>games.ButtonGame</filepath>
+		<filepath>games.buttongame.ButtonGame</filepath>
 		<tags>fun</tags>
 <review>Easy to learn, hard to master :)- Howard</review>
 <review>Howard hax OP- Kannan</review>
@@ -69,19 +69,18 @@
 		<tags/>
 		<filepath>games.spacebugs.SpaceBugs</filepath>
 </game>
-
 <game id="10">
-		<name>The Formic War</name>
-		<rating></rating>
-		<tags></tags>
-		<filepath>games.par24game.SmartEnemyGame</filepath>
-		</game>
-<game id="11">
 		<name>Rob's Snake Game</name>
 		<rating/>
 		<tags/>
-		<filepath>games.robssnake.SnakeGame</filepath>
+		<filepath>games.robssnake.RunSnakeGame</filepath>
 </game>
+<game id="11">
+		<name>The Formic War</name>
+		<rating/>
+		<tags></tags>
+		<filepath>games.par24game.SmartEnemyGame</filepath>
+		</game>
 <game id="12">
 		<name>Adventure RPG</name>
 		<rating></rating>
@@ -142,7 +141,7 @@
 		<tags/>
 		<filepath>games.geo4games.marioinminutes.MarioInMinutes</filepath>
 </game>
-<game id="21">
+<game id="22">
 		<name>Moving Bricks</name>
 		<rating/>
 		<tags/>

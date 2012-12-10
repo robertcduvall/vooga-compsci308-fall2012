@@ -1,0 +1,10 @@
+<level>
+<levelName>Level</levelName>
+<width>810</width>
+<height>480</height>
+<collisionChecker>src/games/robssnake/strategy/collisionEvents.xml</collisionChecker>
+<camera>FollowingCamera</camera>
+<gameObjectData>src/games/robssnake/levels/level4GameObjects.bin</gameObjectData>
+<conditionData>src/games/robssnake/levels/level4Conditions.bin</conditionData>
+<pluginData>src/games/robssnake/levels/level4Plugins.bin</pluginData>
+</level>

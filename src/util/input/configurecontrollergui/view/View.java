@@ -11,7 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 /**
- * Generic View class
+ * Generic View class that contains
+ * basic methods and variables all views
+ * must have.
  * @author Lance
  *
  */
@@ -67,7 +69,6 @@ public class View extends JComponent {
 
     /**
      * Adds a child to this view.
-     * The children are graphs or labels (currently).
      *
      * @param v the view to be added
      */
@@ -88,7 +89,11 @@ public class View extends JComponent {
     }
 
 
-    
+    /**
+     * Converts relative position of the child
+     * to absolute position.
+     * @param parentPosition position of the parent.
+     */
     public Point2D getOffset (){
         return myOffset;
     }
@@ -99,6 +104,9 @@ public class View extends JComponent {
         return myPosition;
     }
     
+    /**
+     * Returns the size of the view.
+     */
     public Dimension getSize(){
         return mySize;
     }
