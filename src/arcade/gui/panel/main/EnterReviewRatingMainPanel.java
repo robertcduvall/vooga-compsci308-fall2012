@@ -1,10 +1,10 @@
 package arcade.gui.panel.main;
 
+import arcade.gui.Arcade;
+import arcade.gui.panel.ArcadePanel;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -12,24 +12,41 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import net.miginfocom.swing.MigLayout;
-import arcade.gui.Arcade;
-import arcade.gui.panel.ArcadePanel;
+
 
 /**
  * This class allows the user to set a rating for a game as well
- * as write up a comment or review for others to see. 
+ * as write up a comment or review for others to see. The user can also
+ * navigate back from the panel if he/she does not want to enter anything.
+ * 
  * @author Kannan
- *
+ * 
  */
 public class EnterReviewRatingMainPanel extends AMainPanel implements ActionListener {
 
-    
-    //TODO:REFACTORING
-    private String gameName;
-    private String ratingToBeSubmitted;
-    private JTextArea reviewArea;
-    private Dimension maxReviewBoxSize = new Dimension(600, 300);
-    
+    private static final String RETURN_TO_PROFILE = "Return to Profile";
+    private static final String SUBMIT = "Submit";
+    private String myGameName;
+    private String myRatingToBeSubmitted;
+    private JTextArea myReviewArea;
+    private final int myReviewTextAreaHeight = 20;
+    private final int myReviewTextAreaWidth = 40;
+    private String myOne = "1";
+    private String myTwo = "2";
+    private String myThree = "3";
+    private String myFour = "4";
+    private String myFive = "5";
+    private String mySix = "6";
+    private String mySeven = "7";
+    private String myEight = "8";
+    private String myNine = "9";
+    private String myTen = "10";
+
+    /**
+     * The Constructor for this class.
+     * 
+     * @param a The Arcade Object being passed down.
+     */
     public EnterReviewRatingMainPanel (Arcade a) {
         super(a);
     }
@@ -37,64 +54,58 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        gameName = (String) getArcade().getVariable("GameName");
+        myGameName = (String) getArcade().getVariable("GameName");
 
         MigLayout layout = new MigLayout("flowy", "[]push[]", "[]10[][][]push[]");
         myPanel.setLayout(layout);
-
-        JLabel titleLabel = new JLabel("Leave your feedback for " + gameName + " below!");
+        
+        //create basic label components
+        JLabel titleLabel = new JLabel("Leave your feedback for " + myGameName + " below!");
         titleLabel.setForeground(Color.WHITE);
         JLabel ratingLabel = new JLabel("Select a Rating:");
         ratingLabel.setForeground(Color.WHITE);
+        JLabel reviewPrompt = new JLabel("Write a review/comment:");
+        reviewPrompt.setForeground(Color.WHITE);
 
-        JRadioButton oneButton = new JRadioButton("1");
-        oneButton.setMnemonic(KeyEvent.VK_B);
-        oneButton.setActionCommand("1");
+        // establish the radio buttons
+        JRadioButton oneButton = new JRadioButton(myOne);
+        oneButton.setActionCommand(myOne);
         oneButton.setForeground(Color.RED);
 
-        JRadioButton twoButton = new JRadioButton("2");
-        twoButton.setMnemonic(KeyEvent.VK_B);
-        twoButton.setActionCommand("2");
+        JRadioButton twoButton = new JRadioButton(myTwo);
+        twoButton.setActionCommand(myTwo);
         twoButton.setForeground(Color.RED);
 
-        JRadioButton threeButton = new JRadioButton("3");
-        threeButton.setMnemonic(KeyEvent.VK_B);
-        threeButton.setActionCommand("3");
+        JRadioButton threeButton = new JRadioButton(myThree);
+        threeButton.setActionCommand(myThree);
         threeButton.setForeground(Color.RED);
 
-        JRadioButton fourButton = new JRadioButton("4");
-        fourButton.setMnemonic(KeyEvent.VK_B);
-        fourButton.setActionCommand("4");
+        JRadioButton fourButton = new JRadioButton(myFour);
+        fourButton.setActionCommand(myFour);
         fourButton.setForeground(Color.RED);
 
-        JRadioButton fiveButton = new JRadioButton("5");
-        fiveButton.setMnemonic(KeyEvent.VK_B);
-        fiveButton.setActionCommand("5");
+        JRadioButton fiveButton = new JRadioButton(myFive);
+        fiveButton.setActionCommand(myFive);
         fiveButton.setForeground(Color.RED);
 
-        JRadioButton sixButton = new JRadioButton("6");
-        sixButton.setMnemonic(KeyEvent.VK_B);
-        sixButton.setActionCommand("6");
+        JRadioButton sixButton = new JRadioButton(mySix);
+        sixButton.setActionCommand(mySix);
         sixButton.setForeground(Color.RED);
 
-        JRadioButton sevenButton = new JRadioButton("7");
-        sevenButton.setMnemonic(KeyEvent.VK_B);
-        sevenButton.setActionCommand("7");
+        JRadioButton sevenButton = new JRadioButton(mySeven);
+        sevenButton.setActionCommand(mySeven);
         sevenButton.setForeground(Color.RED);
 
-        JRadioButton eightButton = new JRadioButton("8");
-        eightButton.setMnemonic(KeyEvent.VK_B);
-        eightButton.setActionCommand("8");
+        JRadioButton eightButton = new JRadioButton(myEight);
+        eightButton.setActionCommand(myEight);
         eightButton.setForeground(Color.RED);
 
-        JRadioButton nineButton = new JRadioButton("9");
-        nineButton.setMnemonic(KeyEvent.VK_B);
-        nineButton.setActionCommand("9");
+        JRadioButton nineButton = new JRadioButton(myNine);
+        nineButton.setActionCommand(myNine);
         nineButton.setForeground(Color.RED);
 
-        JRadioButton tenButton = new JRadioButton("10");
-        tenButton.setMnemonic(KeyEvent.VK_B);
-        tenButton.setActionCommand("10");
+        JRadioButton tenButton = new JRadioButton(myTen);
+        tenButton.setActionCommand(myTen);
         tenButton.setForeground(Color.RED);
 
         // Group the radio buttons.
@@ -121,42 +132,21 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         eightButton.addActionListener(this);
         nineButton.addActionListener(this);
         tenButton.addActionListener(this);
-        
-        JLabel reviewPrompt = new JLabel("Write a review/comment:");
-        reviewPrompt.setForeground(Color.WHITE);
-        reviewArea = new JTextArea("", 20, 40);
-        reviewArea.setLineWrap(true);
-        reviewArea.setWrapStyleWord(true);
-        //reviewArea.setMaximumSize(maxReviewBoxSize);
-        JScrollPane scrollingReview = new JScrollPane(reviewArea);
-        
+
+        myReviewArea = new JTextArea("", myReviewTextAreaHeight, myReviewTextAreaWidth);
+        myReviewArea.setLineWrap(true);
+        myReviewArea.setWrapStyleWord(true);
+        JScrollPane scrollingReview = new JScrollPane(myReviewArea);
+
+        //create button components
         JButton returnToProfileBut = new JButton("Return to Profile Page");
-        returnToProfileBut.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed (ActionEvent arg0) {
-                getArcade().replacePanel("GameProfile");
-            }             
-          });
-        
-        JButton submitBut = new JButton("Submit");
-        submitBut.addActionListener(new ActionListener(){
+        returnToProfileBut.addActionListener(this);
+        returnToProfileBut.setActionCommand(RETURN_TO_PROFILE);
+        JButton submitBut = new JButton(SUBMIT);
+        submitBut.addActionListener(this);
+        submitBut.setActionCommand(SUBMIT);
 
-            @Override
-            public void actionPerformed (ActionEvent arg0) {
-                System.out.println("this is registering");
-                if (ratingToBeSubmitted != null) {
-                    getArcade().getModelInterface().getGame(gameName)
-                            .setRating(Integer.parseInt(ratingToBeSubmitted));
-                }
-                if (reviewArea.getText() != null && reviewArea.getText() != "") {
-                    getArcade().getModelInterface().getGame(gameName).setReview(reviewArea.getText() 
-                                                                                + "- " + getArcade().getUsername());
-                }
-                getArcade().replacePanel("GameProfile");
-            }
-              
-          });
-
+        //add components to Panel
         myPanel.add(titleLabel, "span, align center");
         myPanel.add(ratingLabel, "align center");
         myPanel.add(oneButton, "split 10, align center");
@@ -176,37 +166,51 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
 
         return myPanel;
     }
-
+    @Override
     public void actionPerformed (ActionEvent e) {
-        if (e.getActionCommand() == "1") {
-            ratingToBeSubmitted = "1";
+        if (e.getActionCommand().equals(RETURN_TO_PROFILE)) {
+            getArcade().replacePanel("GameProfile");
         }
-        if (e.getActionCommand() == "2") {
-            ratingToBeSubmitted = "2";
+        if (e.getActionCommand().equals(SUBMIT)) {
+            if (myRatingToBeSubmitted != null) {
+                getArcade().getModelInterface().getGame(myGameName).
+                setRating(Integer.parseInt(myRatingToBeSubmitted));
+            }
+            if (myReviewArea.getText() != null && !myReviewArea.getText().equals("")) {
+                getArcade().getModelInterface().getGame(myGameName).
+                setReview(myReviewArea.getText() + " - " + getArcade().getUsername());
+            }
+            getArcade().replacePanel("GameProfile");
         }
-        if (e.getActionCommand() == "3") {
-            ratingToBeSubmitted = "3";
+        if (e.getActionCommand() == myOne) {
+            myRatingToBeSubmitted = myOne;
         }
-        if (e.getActionCommand() == "4") {
-            ratingToBeSubmitted = "4";
+        if (e.getActionCommand() == myTwo) {
+            myRatingToBeSubmitted = myTwo;
         }
-        if (e.getActionCommand() == "5") {
-            ratingToBeSubmitted = "5";
+        if (e.getActionCommand() == myThree) {
+            myRatingToBeSubmitted = myThree;
         }
-        if (e.getActionCommand() == "6") {
-            ratingToBeSubmitted = "6";
+        if (e.getActionCommand() == myFour) {
+            myRatingToBeSubmitted = myFour;
         }
-        if (e.getActionCommand() == "7") {
-            ratingToBeSubmitted = "7";
+        if (e.getActionCommand() == myFive) {
+            myRatingToBeSubmitted = myFive;
         }
-        if (e.getActionCommand() == "8") {
-            ratingToBeSubmitted = "8";
+        if (e.getActionCommand() == mySix) {
+            myRatingToBeSubmitted = mySix;
         }
-        if (e.getActionCommand() == "9") {
-            ratingToBeSubmitted = "9";
+        if (e.getActionCommand() == mySeven) {
+            myRatingToBeSubmitted = mySeven;
         }
-        if (e.getActionCommand() == "10") {
-            ratingToBeSubmitted = "10";
+        if (e.getActionCommand() == myEight) {
+            myRatingToBeSubmitted = myEight;
+        }
+        if (e.getActionCommand() == myNine) {
+            myRatingToBeSubmitted = myNine;
+        }
+        if (e.getActionCommand() == myTen) {
+            myRatingToBeSubmitted = myTen;
         }
     }
 }
