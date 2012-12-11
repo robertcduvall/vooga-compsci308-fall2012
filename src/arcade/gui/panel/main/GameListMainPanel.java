@@ -17,7 +17,7 @@ import net.miginfocom.swing.MigLayout;
 
 
 /**
- * A subclass of the Main Panel which displays a short, scrolling list
+ * A subclass of the Main Panel which displays a large scrolling list
  * of all the Games available in the Arcade. When a Game is selected,
  * the User is taken to the Game's Profile Page.
  * 
@@ -45,7 +45,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     @Override
     public ArcadePanel createPanel () {
         ArcadePanel myPanel = initializeNewPanel();
-        MigLayout layout = new MigLayout("", "50[center]", "[]50[][300, grow]50[]");
+        MigLayout layout = new MigLayout("", "50[center]", "[][][][250, grow]");
         myPanel.setLayout(layout);
 
         JScrollPane listScroller = createListOfGamesDisplayed();
@@ -71,9 +71,9 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
 
         //add components to panel
         myPanel.add(displayPic, "align center, wrap");
+        myPanel.add(goButton, "grow, align center, wrap");
         myPanel.add(gameSelectLabel, "align center, wrap");
-        myPanel.add(listScroller, "grow, wrap");
-        myPanel.add(goButton, "grow, align center");
+        myPanel.add(listScroller, "grow");
 
         return myPanel;
 
