@@ -113,7 +113,6 @@
 		<filepath>games.wl65game.Game</filepath>
 </game>
 <game id="17">
-<<<<<<< HEAD
 		<name>Crazy Aliens</name>
 		<rating></rating>
 		<tags/>
@@ -124,6 +123,8 @@
 		<rating></rating>
 		<tags/>
 		<filepath>games.JesseGame.AlienShooter</filepath>
+</game>
+<game id="19">
 		<name>JUSTICE BLASTER</name>
 		<rating></rating>
 		<tags/>

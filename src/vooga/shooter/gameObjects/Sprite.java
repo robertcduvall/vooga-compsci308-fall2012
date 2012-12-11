@@ -20,7 +20,8 @@ import vooga.shooter.gameplay.inputInitialize.InputTeamSpriteActionAdapter;
  * extend this class and contain any additional information or behaviors
  * particular to that new type of sprite (e.g. the player could have a health
  * limit).
- *
+ * 
+ * @author Jesse Starr
  */
 public abstract class Sprite implements SpriteActionInterface {
 
