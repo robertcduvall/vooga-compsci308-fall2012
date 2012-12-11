@@ -19,34 +19,13 @@ public abstract class GameSearcher {
     public GameSearcher(List<Game> games) {
         myGames = games;
     }
+
     /**
-     * returns the list of all available games.
-     * 
-     * @return list of all available games
+     * searches list of games by specific criteria. 
+     * @param criteria
+     * @return list of games searched by criteria
      */
-    public List<String> getGameList () {
-        List<String> gameList = new ArrayList<String>();
-        for (Game game : myGames) {
-            gameList.add(game.getGameName());
-        }
-        return gameList;
-    }
-    
-    /**
-     * returns a list of games that have the tag.
-     * 
-     * @param tag a tag that games have in common
-     * @return list of games that have the tag.
-     */
-    public List<String> getGameListByTagName (String tag) {
-        List<String> gameList = new ArrayList<String>();
-        for (Game gm : myGames) {
-            if (gm.getTags().contains(tag)) {
-                gameList.add(gm.getGameName());
-            }
-        }
-        return gameList;
-    }
+    public abstract List<String> search(String criteria);
     
     
 }
