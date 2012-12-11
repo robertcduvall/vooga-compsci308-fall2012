@@ -33,7 +33,7 @@ public class SocialMediaMainPanel extends AMainPanel implements ActionListener {
     private JTextArea myInstructionText;
     private final int myTextToPostHeight = 4;
     private final int myTextToPostWidth = 25;
-    private final int myInstructionTextHeight = 13;
+    private final int myInstructionTextHeight = 10;
     private final int myInstructionTextWidth = 40;
     private final int myMaxTweetLength = 140;
     private final int myPotentiallyMaxStatusLength = 63206;
@@ -71,16 +71,13 @@ public class SocialMediaMainPanel extends AMainPanel implements ActionListener {
                 " or clicking 'Update Status', a tab will open" +
                 " in your browser prompting you for permission" +
                 " for the Arcade to integrate with your Twitter" +
-                " and/or Facebook account.\nBoth websites will" +
+                " and/or Facebook account.\n\nBoth websites will" +
                 " provide you with an acknowledgement of authentication," +
                 " Twitter with a PIN number and Facebook with a success" +
                 " page with a long URL. Take the PIN and the URL for Twitter" +
                 " and Facebook, respectively, and input them into the small" +
                 " popup window eclipse has generated. Once you've done this," +
-                " you should receive confirmation of a succesful post.\n\nFinally," +
-                " when you've finished letting your friends know what you're up to," +
-                " we encourage you to disconnect from the appropriate social media" +
-                " website(s) for personal account security.",
+                " you should receive confirmation of a succesful post!",
                 myInstructionTextHeight, myInstructionTextWidth);
         myInstructionText.setLineWrap(true);
         myInstructionText.setWrapStyleWord(true);
@@ -98,13 +95,13 @@ public class SocialMediaMainPanel extends AMainPanel implements ActionListener {
         statusPostBut.addActionListener(this);
         statusPostBut.setActionCommand(UPDATE_STATUS);
 
-        JButton fbDisconnectBut = new JButton(UNLINK_FACEBOOK);
-        fbDisconnectBut.addActionListener(this);
-        fbDisconnectBut.setActionCommand(UNLINK_FACEBOOK);
-
         JButton tweetBut = new JButton(TWEET);
         tweetBut.addActionListener(this);
         tweetBut.setActionCommand(TWEET);
+        
+        JButton fbDisconnectBut = new JButton(UNLINK_FACEBOOK);
+        fbDisconnectBut.addActionListener(this);
+        fbDisconnectBut.setActionCommand(UNLINK_FACEBOOK);
 
         JButton tweetDisconnectBut = new JButton(UNLINK_TWITTER);
         tweetDisconnectBut.addActionListener(this);

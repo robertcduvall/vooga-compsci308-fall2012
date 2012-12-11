@@ -270,10 +270,6 @@ public abstract class Sprite implements SpriteActionInterface {
             e1.printStackTrace();
         }
     }
-    
-    public void decrementHealth() {
-        this.myHealth -= 1;
-    }
 
     /**
      * Erases the sprite's image, which will be

@@ -36,7 +36,7 @@ public class NinjaGame implements IArcadeGame {
         NinjaGame game = new NinjaGame();
         game.start(myFirstLevelName);
     }
-    
+
     public void start(String levelName) {
         JFrame frame = new JFrame("THE NINJA GAME YEA BUDDY");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

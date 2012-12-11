@@ -21,15 +21,18 @@ import vooga.shooter.gameplay.Game;
  */
 public class Level3 extends Level {
 
+    private static final int MIN_NUM_ENEMIES = 2;
     private static final int MAX_NUM_ENEMIES = 4;
     private static final String ENEMY_IMAGEPATH = "vooga/shooter/images/alien.png";
     private static final int ENEMY_HEALTH = 1;
     private static final String INVADER_IMAGEPATH = "vooga/shooter/images/invader.jpg";
-    private static final int INVADER_HEALTH = 2;
+    private static final int INVADER_HEALTH = 3;
     private static final String ASTEROID_IMAGEPATH = "vooga/shooter/images/asteroid.gif";
-    private static final int ASTEROID_HEALTH = 3;
+    private static final int ASTEROID_HEALTH = 4;
     private static final int FALLING_STARTING_HEIGHT = 25;
     private static final Dimension FALLING_OBJECT_DIMENSION = new Dimension(20, 17);
+    private static final int FIRST_POSSIBLE_VELOCITY = 2;
+    private static final int SECOND_POSSIBLE_VELOCITY = 3;
 
     private Game myGame;
     private Level myNextLevel;
@@ -49,12 +52,12 @@ public class Level3 extends Level {
         super();
         myGame = game;
         myRandom = new Random();
-        setNextLevel(null);
+        setNextLevel(new Level4(myGame));
     }
 
     private int randomNumberOfEnemies () {
         int number = myRandom.nextInt(MAX_NUM_ENEMIES);
-        while (number <= 0) {
+        while (number <= MIN_NUM_ENEMIES) {
             number = myRandom.nextInt(MAX_NUM_ENEMIES);
         }
         return number;
@@ -71,7 +74,8 @@ public class Level3 extends Level {
 
     private Point randomFallingVelocity () {
         ArrayList<Integer> possibleVelocities = new ArrayList<Integer>();
-        possibleVelocities.add(3);
+        possibleVelocities.add(FIRST_POSSIBLE_VELOCITY);
+        possibleVelocities.add(SECOND_POSSIBLE_VELOCITY);
         return new Point(0, possibleVelocities.get(myRandom.nextInt(possibleVelocities.size())));
     }
 
@@ -98,7 +102,7 @@ public class Level3 extends Level {
 
     @Override
     public boolean winningConditionsMet () {
-        return myGame.getEnemies().isEmpty();
+        return (myGame.getEnemies().isEmpty() && myGame.getPlayer().getHealth() > 0);
     }
 
 }

@@ -10,7 +10,9 @@ import net.miginfocom.swing.MigLayout;
 
 
 /**
- * 
+ * This class is designed to function as a very brief
+ * starting guide for a new CS308 Arcade User. Short and
+ * sweet and to the point.
  * @author Michael Deng and Kannan Raju
  * 
  */

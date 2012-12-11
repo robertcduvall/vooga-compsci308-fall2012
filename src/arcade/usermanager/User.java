@@ -72,9 +72,9 @@ public class User {
         myXmlWriter.updateUserInfo(myName, "picture", picture);
     }
     
-    protected void refreshPicture(){
-        myPicture=myXmlReader.getUserInfo(myName,"picture");
-    }
+//    protected void refreshPicture(){
+//        myPicture=myXmlReader.getUserInfo(myName,"picture");
+//    }
 
     /**
      * Gets a GameData object given the name of a game.

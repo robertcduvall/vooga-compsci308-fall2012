@@ -28,7 +28,7 @@ public class UserSearchPanel extends ASearchPanel implements ActionListener {
     private static final String USER = "User";
     private List<String> myUserList;
     private JList myUserSearchedThroughList = new JList();
-    private final int myListVisibleRowCount = 5;
+    private final int myListVisibleRowCount = 4;
     private final int myListSearcherColumnCount = 10;
 
     /**

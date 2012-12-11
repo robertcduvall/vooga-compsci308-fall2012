@@ -30,9 +30,9 @@ public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionLi
     private String[] myRetrievedListOfTaggedGames;
     private String myGameSelected;
     private JList myJListOfGames;
-    private final int myConsolationTextAreaHeight = 10;
+    private final int myConsolationTextAreaHeight = 6;
     private final int myConsolationTextAreaWidth = 10;
-    private final int myGameListVisibleRowCount = 6;
+    private final int myGameListVisibleRowCount = 4;
 
     /**
      * The constructor for this class.
@@ -50,8 +50,8 @@ public class GameTagCompleteSearchPanel extends ASearchPanel implements ActionLi
         myPanel.setLayout(layout);
 
         myRetrievedListOfTaggedGames = (String[]) getArcade().getVariable("taggedGames");
-        JLabel gamesFoundLabel = new JLabel("The following games matched your tag '" +
-                ((String)getArcade().getVariable("tag")) + "' :");
+        JLabel gamesFoundLabel = new JLabel("<html>" + "The following games matched your tag '" +
+                ((String)getArcade().getVariable("tag")) + "': " + "</html>");
 
         //establish internal search panel navigation buttons
         JButton goButton = new JButton("Go to Profile");

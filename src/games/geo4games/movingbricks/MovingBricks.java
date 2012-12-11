@@ -28,7 +28,7 @@ public class MovingBricks implements IArcadeGame {
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         JFrame frame = new JFrame("Moving Bricks");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         PlatformerController controller =
                 new PlatformerController(FIRST_LEVEL, new KeyControllerOnePlayerInputInitializer());
         Level myLevel = controller.getLevel();

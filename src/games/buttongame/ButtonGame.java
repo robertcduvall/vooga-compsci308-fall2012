@@ -3,8 +3,11 @@ package games.buttongame;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,7 +19,7 @@ import arcade.gamemanager.GameSaver;
 
 
 /**
- * A game of patience and endurance.
+ * A game of patience and endurance.  Implements highscore submission.
  * 
  * @author Howard
  * 
@@ -27,7 +30,7 @@ public class ButtonGame implements IArcadeGame {
     private JLabel scoreLabel;
     private int score;
     private GameSaver myGameSaver;
-
+    
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         myFrame = new JFrame("The Button Game");
@@ -81,7 +84,14 @@ public class ButtonGame implements IArcadeGame {
 
     @Override
     public Image getMainImage () {
-        return null;
+        BufferedImage profilepic = null;
+        try {
+            profilepic = ImageIO.read(new File("src/games/buttongame/push-button.jpg"));
+        }
+        catch (IOException e) {
+            System.out.println("Error! Could not find image!");
+        }
+        return profilepic;
     }
 
     @Override

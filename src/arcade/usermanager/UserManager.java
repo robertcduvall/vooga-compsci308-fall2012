@@ -320,7 +320,7 @@ public final class UserManager {
     public UserProfile getUserProfile (String userName) {
         
         User user = getUser(userName);
-        user.refreshPicture();
+        //user.refreshPicture();
         String name = user.getName();
         String picture = user.getPicture();
         String firstName = user.getFirstName();
