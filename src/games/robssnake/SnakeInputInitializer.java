@@ -58,15 +58,15 @@ public class SnakeInputInitializer implements InputInitializer {
             keyControl.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myAdapter, "goLeft");
             keyControl.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myAdapter, "goRight");
             keyControl.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myAdapter, "goDown");
-            //            wiiControl.setControl(WiiController.WIIMOTE_BUTTON_UP, WiiController.BUTTON_PRESSED, myAdapter, "goUp");
-            //            wiiControl.setControl(WiiController.WIIMOTE_BUTTON_LEFT, WiiController.BUTTON_PRESSED, myAdapter, "goLeft");
-            //            wiiControl.setControl(WiiController.WIIMOTE_BUTTON_RIGHT, WiiController.BUTTON_PRESSED, myAdapter, "goRight");
-            //            wiiControl.setControl(WiiController.WIIMOTE_BUTTON_DOWN, WiiController.BUTTON_PRESSED, myAdapter, "goDown");
+            // wiiControl.setControl(WiiController.WIIMOTE_BUTTON_UP, WiiController.BUTTON_PRESSED, myAdapter, "goUp");
+            // wiiControl.setControl(WiiController.WIIMOTE_BUTTON_LEFT, WiiController.BUTTON_PRESSED, myAdapter, "goLeft");
+            // wiiControl.setControl(WiiController.WIIMOTE_BUTTON_RIGHT, WiiController.BUTTON_PRESSED, myAdapter, "goRight");
+            // wiiControl.setControl(WiiController.WIIMOTE_BUTTON_DOWN, WiiController.BUTTON_PRESSED, myAdapter, "goDown");
             //TODO: Add android controller:
-            //            androidController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myAdapter, "goUp");
-            //            androidController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myAdapter, "goLeft");
-            //            androidController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myAdapter, "goRight");
-            //            androidController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myAdapter, "goDown");
+            // androidController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, myAdapter, "goUp");
+            // androidController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, myAdapter, "goLeft");
+            // androidController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, myAdapter, "goRight");
+            // androidController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, myAdapter, "goDown");
         }
         catch (NoSuchMethodException e) {
             System.out.println("Error initializing KeyboardController: no such method");
