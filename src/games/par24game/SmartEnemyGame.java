@@ -95,7 +95,7 @@ public class SmartEnemyGame extends Game {
         }
 
         myCanvas.addKeyListener(new KeyboardListener());
-        startLevel(new MainScreen(this, new Level1(this)));
+        startLevel(new Level1(this));
     }
 
     @Override
@@ -176,7 +176,13 @@ public class SmartEnemyGame extends Game {
         }
     }
 
-    private void startLevel (Level level) {
+    /**
+     * Initializes the first level for the game.  Each level will then
+     * call its successor when it completes
+     * 
+     * @param level the level to be started
+     */
+    public void startLevel (Level level) {
         myCurrentLevel = level;
         myCurrentLevel.startLevel();
         update();

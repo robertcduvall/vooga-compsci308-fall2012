@@ -14,6 +14,11 @@ import util.datatable.exceptions.InvalidXMLTagException;
 import util.datatable.exceptions.RepeatedColumnNameException;
 import util.networking.Client;
 
+/**
+ * @author Oren Bukspan
+ * @author Connor Gordon
+ *
+ */
 public class NetworkedDataTable extends Client {
     
     List<DataListener> myDataListeners;

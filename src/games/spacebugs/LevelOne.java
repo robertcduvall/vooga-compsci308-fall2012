@@ -5,6 +5,11 @@ import java.awt.Point;
 import vooga.shooter.gameObjects.Enemy;
 import vooga.shooter.gameObjects.intelligence.BounceAI;
 import vooga.shooter.level_editor.Level;
+/**
+ * The first level of the Space Bugs game.
+ * @author Stephen Hunt
+ *
+ */
 
 public class LevelOne extends Level {
     

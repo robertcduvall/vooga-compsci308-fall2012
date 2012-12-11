@@ -4,8 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Random;
 import vooga.shooter.gameObjects.Enemy;
-import vooga.shooter.gameplay.Game;
-import vooga.shooter.level_editor.Level;
+import games.spruillGame.Game.Game;
 
 
 public class WonGame extends Level {

@@ -28,7 +28,7 @@ public class MarioInMinutes implements IArcadeGame {
     @Override
     public void runGame (String userPreferences, GameSaver s) {
         JFrame frame = new JFrame("Mario in Minutes");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         PlatformerController controller =
                 new PlatformerController(FIRST_LEVEL, new KeyControllerOnePlayerInputInitializer());
         frame.getContentPane().add(controller);

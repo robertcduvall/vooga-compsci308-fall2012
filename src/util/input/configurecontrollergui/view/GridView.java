@@ -9,6 +9,7 @@ import util.input.configurecontrollergui.util.Config;
 
 
 /**
+ * A view focused on providing a grid style flexibility. 
  * @author Lance, Amay
  *
  */
@@ -21,11 +22,24 @@ public class GridView extends ResponsiveView{
     private Dimension myGridImageSize;
     private int myLastButtonPressed;
     
+    /**
+     * Initializing a grid view.
+     * @param position - location of the view.
+     * @param size - size of the view.
+     * @param gridController - grid controller.
+     */
     public GridView (Point2D position, Dimension size, GridController gridController) {
         super(position, size);
         myGridController = gridController;
     }
 
+    /**
+     * Initializing a grid view.
+     * @param position - location of the view.
+     * @param size - size of the view.
+     * @param bgColor -background color of the view.
+     * @param gridController - grid controller.
+     */
     public GridView (Point2D position, Dimension size, String imageUrl, GridController gridController) {
         super(position, size, imageUrl);
         myGridController = gridController;
@@ -33,11 +47,8 @@ public class GridView extends ResponsiveView{
    
 
     /**
-     * Decides where the mouse is clicked and determines
-     * whether the click is handled by this view or
-     * one of its children.
-     * 
-     * @param point of the mouse click
+     * Method called upon mouseClick event.
+     * @param point - absolute location of click.
      */
     @Override
     public void mouseClicked (Point point) {
@@ -47,6 +58,10 @@ public class GridView extends ResponsiveView{
         myLastButtonPressed = gridNum;
     }
     
+    /**
+     * Returns the last button pressed.
+     * @return
+     */
     public int getLastButtonPressed() {
         return myLastButtonPressed;
     }

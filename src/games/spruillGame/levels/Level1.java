@@ -1,11 +1,10 @@
 package games.spruillGame.levels;
 
+import games.spruillGame.Game.Game;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Random;
 import vooga.shooter.gameObjects.Enemy;
-import vooga.shooter.gameplay.Game;
-import vooga.shooter.level_editor.Level;
 
 
 public class Level1 extends Level {
@@ -35,8 +34,8 @@ public class Level1 extends Level {
         for (int j = 0; j < NUMBER_OF_ENEMIES; j++) {
             myGame.addEnemy(new Enemy(new Point((int) ((float) myGame
                     .getCanvasDimension().width / (float) NUMBER_OF_ENEMIES)
-                    * j, rand.nextInt(NUMBER_OF_ENEMIES) - NUMBER_OF_ENEMIES
-                    - 50), ENEMY_DIMENSION, myGame.getCanvasDimension(),
+                    * j, (int)(rand.nextInt(myGame.getCanvasDimension().height)/(float) NUMBER_OF_ENEMIES)),
+                    ENEMY_DIMENSION, myGame.getCanvasDimension(),
                     ENEMY_IMAGEPATH[rand.nextInt(2)], new Point(
                             rand.nextInt(4) - 2, rand.nextInt(5) + 1),
                     ENEMY_DAMAGE));

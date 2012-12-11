@@ -17,6 +17,10 @@ import util.input.core.Controller;
 
 
 /**
+ * This serves as a factory that
+ * initializes various portions of the 
+ * Control GUI.
+ * 
  * @author Lance, Amay
  *
  */
@@ -26,13 +30,6 @@ public class ViewFactory {
     private GridView myGridView;
     private RadioButtonView myRadioView;
     
-    /**
-     * In charge of populating a canvas on behalf of a controller
-     * Specific to stock
-     * @param canvas to populate
-     * @throws InvalidXMLTagException 
-     * @throws RepeatedColumnNameException 
-     */
     @SuppressWarnings("rawtypes")
     public ViewFactory (Frame frame, Controller gameController) throws RepeatedColumnNameException, InvalidXMLTagException {
         myFrame = frame;

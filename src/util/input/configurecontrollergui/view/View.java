@@ -11,6 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 /**
+ * Generic View class that contains
+ * basic methods and variables all views
+ * must have.
  * @author Lance
  *
  */
@@ -50,7 +53,7 @@ public class View extends JComponent {
     }
 
     /**
-     * Paints the view and all of its children.
+     * Paints itself and all its children.
      *
      * @param pen used to paint
      */
@@ -66,7 +69,6 @@ public class View extends JComponent {
 
     /**
      * Adds a child to this view.
-     * The children are graphs or labels (currently).
      *
      * @param v the view to be added
      */
@@ -75,13 +77,7 @@ public class View extends JComponent {
         myViewChildren.add(v);
     }
     
-    /**
-     * Offsets the position of the view so that
-     * it and its parent do not overlap.
-     * 
-     * @param parentPosition the point to offset this view's
-     *        position to
-     */
+
     public void offsetPosition (Point2D parentPosition) {
         //takes position relative to parent and replaces with absolute position
         myPosition =
@@ -93,7 +89,11 @@ public class View extends JComponent {
     }
 
 
-    
+    /**
+     * Converts relative position of the child
+     * to absolute position.
+     * @param parentPosition position of the parent.
+     */
     public Point2D getOffset (){
         return myOffset;
     }
@@ -104,6 +104,9 @@ public class View extends JComponent {
         return myPosition;
     }
     
+    /**
+     * Returns the size of the view.
+     */
     public Dimension getSize(){
         return mySize;
     }
