@@ -109,16 +109,16 @@ public class BattleNyanObject extends BattleObject {
 
     }
 
-    @Override
-    public void doOption1 (BattleObject target, List<String> battleMessages) {
-        attackEnemy(target, battleMessages);
-        battleMessages.add(getName() + USED + getOptions()[0]);
-    }
-
     private boolean doesNotMiss () {
         Random randomGenerator = new Random();
         double random = randomGenerator.nextDouble();
         return (random < myAccuracy);
+    }
+    
+    @Override
+    public void doOption1 (BattleObject target, List<String> battleMessages) {
+        attackEnemy(target, battleMessages);
+        battleMessages.add(getName() + USED + getOptions()[0]);
     }
 
     @Override
