@@ -61,22 +61,6 @@ public class UserXMLReader {
     }
 
     /**
-     * Gets one particular tag of user information
-     * 
-     * @param userName
-     * @param tagname
-     * @return
-     */
-//    public String getUserInfo (String userName, String tagname) {
-//        userName = userName + ourXMLExtension;
-//        Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + userName);
-//        Element el = doc.getDocumentElement();
-//        String content = XmlUtilities.getChildContent(el, tagname);
-//        return content;
-//
-//    }
-
-    /**
      * Gets a list of GameData objects
      * 
      * @param name with extension of user file
@@ -132,4 +116,20 @@ public class UserXMLReader {
         }
         return messageList;
     }
+
+    /**
+     * Gets one particular tag of user information
+     * 
+     * @param userName
+     * @param tagname
+     * @return
+     */
+    // public String getUserInfo (String userName, String tagname) {
+    // userName = userName + ourXMLExtension;
+    // Document doc = XmlUtilities.makeDocument(myUserBasicFilePath + userName);
+    // Element el = doc.getDocumentElement();
+    // String content = XmlUtilities.getChildContent(el, tagname);
+    // return content;
+    //
+    // }
 }
