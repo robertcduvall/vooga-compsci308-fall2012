@@ -25,7 +25,7 @@ import net.miginfocom.swing.MigLayout;
 public class EnterReviewRatingMainPanel extends AMainPanel implements ActionListener {
 
     private static final String RETURN_TO_PROFILE = "Return to Profile";
-    private static final String SUBMIT = "Submit";
+    private static final String SUBMIT = "Submit!";
     private String myGameName;
     private String myRatingToBeSubmitted;
     private JTextArea myReviewArea;
@@ -161,8 +161,8 @@ public class EnterReviewRatingMainPanel extends AMainPanel implements ActionList
         myPanel.add(tenButton, "wrap, align center");
         myPanel.add(reviewPrompt, "align center");
         myPanel.add(scrollingReview, "align center, grow");
-        myPanel.add(returnToProfileBut, "wrap");
-        myPanel.add(submitBut, "dock south, growy, span, align center");
+        myPanel.add(submitBut, "wrap");
+        myPanel.add(returnToProfileBut, "dock south, growy, span, align center");
 
         return myPanel;
     }

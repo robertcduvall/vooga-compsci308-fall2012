@@ -29,7 +29,7 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
     private List<String> myGameList;
     private String myGameSelected;
     private JList myGameJList;
-    private final int myGameListRowCount = 3;
+    private final int myGameListRowCount = 15;
 
     /**
      * The constructor for this class. The list of games is
