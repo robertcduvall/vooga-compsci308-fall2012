@@ -78,54 +78,54 @@
 <game id="11">
 		<name>The Formic War</name>
 		<rating/>
-		<tags></tags>
+		<tags/>
 		<filepath>games.par24game.SmartEnemyGame</filepath>
 		</game>
 <game id="12">
 		<name>Adventure RPG</name>
-		<rating></rating>
-		<tags></tags>
+		<rating/>
+		<tags/>
 		<filepath>games.AdventureRPG.AdventureGame</filepath>
 </game>
 <game id="13">
 		<name>Square Attack</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.squareattack.PlaySquareAttack</filepath>
 </game>
 <game id="14">
 		<name>NyanCat Saves the Day</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.nyancatgame.NyanCatGame</filepath>
 </game>
 <game id="15">
 		<name>Asteroids</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.spruillGame.Game.Asteroids</filepath>
 </game>
 <game id="16">
 		<name>Nyan Cat vs. Veggies</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.wl65game.Game</filepath>
 </game>
 <game id="17">
 		<name>Minefield Walker</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.DontPlayWithMines.DontPlayWithMines</filepath>
 </game>
 <game id="18">
 		<name>NinjaGame</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.ninjagame.NinjaGame</filepath>
 </game>
 <game id="19">
 		<name>MindChallenge</name>
-		<rating></rating>
+		<rating/>
 		<tags/>
 		<filepath>games.mindchallenge.MindChallenge</filepath>
 </game>
@@ -143,8 +143,9 @@
 </game>
 <game id="22">
 		<name>Moving Bricks</name>
-		<rating/>
+		<rating>10</rating>
 		<tags/>
 		<filepath>games.geo4games.movingbricks.MovingBricks</filepath>
+<review>Probably the most awesome game ever written. - geo4</review>
 </game>
 </gamelist>
