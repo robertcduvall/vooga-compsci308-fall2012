@@ -148,4 +148,10 @@
 		<filepath>games.geo4games.movingbricks.MovingBricks</filepath>
 <review>Probably the most awesome game ever written. - geo4</review>
 </game>
+<game id="23">
+		<name>ChronoTrigger</name>
+		<rating/>
+		<tags/>
+		<filepath>games.chrono.ChronoGame</filepath>
+</game>
 </gamelist>
