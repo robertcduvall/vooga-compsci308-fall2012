@@ -51,7 +51,7 @@ public class RunSnakeGame implements IArcadeGame{
     public List<Image> getScreenshots () {
         List<Image> myScreenShots = new ArrayList<Image>();
         try {
-            myScreenShots.add(ImageIO.read(new File("src/games/halo/images/Screen Shot 2012-12-09 at 12.02.52 PM.png")));
+            myScreenShots.add(ImageIO.read(new File("src/games/robssnake/images/robsscreenshot.png")));
         }
         catch (IOException e) {
             System.out.println("Something went wrong loading a screenshot.");
@@ -62,7 +62,7 @@ public class RunSnakeGame implements IArcadeGame{
     @Override
     public Image getMainImage () {
         try {
-            return ImageIO.read(new File("src/games/halo/images/halo-4-helmet.jpg"));
+            return ImageIO.read(new File("src/games/robssnake/images/robsscreenshot.png"));
         }
         catch (IOException e) {
             System.out.println("Something went wrong loading the main image.");

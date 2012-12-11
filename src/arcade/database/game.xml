@@ -74,7 +74,7 @@
 <game id="10">
 		<name>Mario's Mushrooms</name>
 		<rating/>
-		<tags/>
+		<tags>fun snake mario rob bruce</tags>
 		<filepath>games.robssnake.RunSnakeGame</filepath>
 </game>
 <game id="11">
