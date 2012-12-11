@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import vooga.turnbased.gameobject.GameObject;
+import vooga.turnbased.gui.GameWindow;
 
 
 /**
@@ -95,6 +96,7 @@ public class QuestionObject extends GameObject {
      */
     public void processMouseInput (int mousePressed, Point mousePosition, QuestionMode questionMode) {
         if (myMouseTargetBox.contains(mousePosition) && mousePressed == MOUSE_PRESSED_CODE) {
+            GameWindow.playSound("ClickSound");
             List<Integer> involvedIDs = new ArrayList<Integer>();
             involvedIDs.add(getID());
             involvedIDs.add(questionMode.getPlayerID());
