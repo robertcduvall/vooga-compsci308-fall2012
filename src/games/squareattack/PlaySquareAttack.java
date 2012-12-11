@@ -83,15 +83,13 @@ import arcade.gamemanager.GameSaver;
  *         ====================================================================
  *         Use of Util APIS
  * 
- *         This game uses the MathVector2D class (pretty well written besides
- *         lacking a few useful methods
- *         such as getting an angle from a vector). And the SoundPlayer
- *         (required a wrapper - Sound Manager - to be useful, but I appreciated
+ *         This game uses the MathVector2D class (very well written). And the SoundPlayer
+ *         (required a wrapper - Sound Manager - to be useful, but I appreciated not
  *         having to do low level sound player creation).
  * 
  *         I really wanted to use the particle engine - but man does that thing
  *         chew the framerate ...
- *         and also not have java doc comments.
+ *       
  * 
  *         ====================================================================
  *         A really flexible game engine
