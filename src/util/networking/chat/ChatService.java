@@ -132,8 +132,8 @@ public class ChatService implements Service {
             write(socket, myProtocol.createLoggedIn(user, true));
             addUser(user, socket);
             synchronized (myUsersToSockets) {
-                write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet()
-                        .toArray(new String[0]))));
+                write(socket, myProtocol.createListUsers(Arrays.asList(myUsersToSockets.keySet().toArray(new String[0]))));
+                System.out.println(Arrays.asList(myUsersToSockets.keySet().toArray(new String[0])));
             }
         }
         else {
