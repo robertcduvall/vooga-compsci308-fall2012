@@ -32,7 +32,7 @@
     <mode>
       <name>map2</name>
       <class>vooga.turnbased.gamecore.gamemodes.MapMode</class>
-      <condition>answer1,answer2,answer3</condition>
+      <condition>answer1,answer2,answer3,book</condition>
     </mode>
     <mode>
       <name>question1</name>
@@ -277,6 +277,28 @@
     <sprite>
       <object>
         <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapItemObject</class>
+        <condition>book</condition>
+        <param>
+          <x>1</x>
+          <y>1</y>
+        </param>
+        <image>src/games/mindChallenge/resources/book.png</image>
+      </object>
+    </sprite>
+
+
+    <staticSprite>
+      <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
+      <modes>map2</modes>
+      <condition>NO_ACTION</condition>
+      <image>src/games/mindchallenge/resources/tile.jpg</image>
+    </staticSprite>
+
+    <sprite>
+      <object>
+        <createOn>start</createOn>
         <modes>map2</modes>
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>doquestion5</condition>
@@ -330,15 +352,6 @@
 
 
 
-    <staticSprite>
-      <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
-      <modes>map2</modes>
-      <condition>NO_ACTION</condition>
-      <image>src/games/mindchallenge/resources/tile.jpg</image>
-    </staticSprite>
-
-
-
 
     <player>
       <object>
@@ -346,32 +359,40 @@
         <class>vooga.turnbased.gameobject.mapobject.MapPlayerObject</class>
         <condition>NO_ACTION</condition>
         <param>
-          <x>1</x>
-          <y>1</y>
-          <source>src/vooga/turnbased/resources/image/player/Down.png</source>
+          <x>0</x>
+          <y>0</y>
+          <source>src/games/mindchallenge/resources/angel-0-0.png</source>
           <direction>down</direction>
-          <source>src/vooga/turnbased/resources/image/player/Down1.png</source>
+          <source>src/games/mindchallenge/resources/angel-0-1.png</source>
           <direction>down1</direction>
-          <source>src/vooga/turnbased/resources/image/player/Down2.png</source>
+          <source>src/games/mindchallenge/resources/angel-0-2.png</source>
           <direction>down2</direction>
-          <source>src/vooga/turnbased/resources/image/player/Left.png</source>
+          <source>src/games/mindchallenge/resources/angel-0-3.png</source>
+          <direction>down3</direction>
+          <source>src/games/mindchallenge/resources/angel-1-0.png</source>
           <direction>left</direction>
-          <source>src/vooga/turnbased/resources/image/player/Left1.png</source>
+          <source>src/games/mindchallenge/resources/angel-1-1.png</source>
           <direction>left1</direction>
-          <source>src/vooga/turnbased/resources/image/player/Left2.png</source>
+          <source>src/games/mindchallenge/resources/angel-1-2.png</source>
           <direction>left2</direction>
-          <source>src/vooga/turnbased/resources/image/player/Right.png</source>
+          <source>src/games/mindchallenge/resources/angel-1-3.png</source>
+          <direction>left3</direction>
+          <source>src/games/mindchallenge/resources/angel-2-0.png</source>
           <direction>right</direction>
-          <source>src/vooga/turnbased/resources/image/player/Right1.png</source>
+          <source>src/games/mindchallenge/resources/angel-2-1.png</source>
           <direction>right1</direction>
-          <source>src/vooga/turnbased/resources/image/player/Right2.png</source>
+          <source>src/games/mindchallenge/resources/angel-2-2.png</source>
           <direction>right2</direction>
-          <source>src/vooga/turnbased/resources/image/player/Up.png</source>
+          <source>src/games/mindchallenge/resources/angel-2-3.png</source>
+          <direction>right3</direction>
+          <source>src/games/mindchallenge/resources/angel-3-0.png</source>
           <direction>up</direction>
-          <source>src/vooga/turnbased/resources/image/player/Up1.png</source>
+          <source>src/games/mindchallenge/resources/angel-3-1.png</source>
           <direction>up1</direction>
-          <source>src/vooga/turnbased/resources/image/player/Up2.png</source>
+          <source>src/games/mindchallenge/resources/angel-3-2.png</source>
           <direction>up2</direction>
+          <source>src/games/mindchallenge/resources/angel-3-3.png</source>
+          <direction>up3</direction>
         </param>
       </object>
     </player>
