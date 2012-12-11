@@ -238,6 +238,19 @@
         <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
         <condition>NO_ACTION</condition>
         <param>
+          <x>15</x>
+          <y>2</y>
+        </param>
+        <image>src/games/chrono/resources/grave.png</image>
+      </object>
+    </sprite>
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
           <x>14</x>
           <y>2</y>
         </param>
@@ -279,6 +292,19 @@
         <param>
           <x>11</x>
           <y>2</y>
+        </param>
+        <image>src/games/chrono/resources/grave.png</image>
+      </object>
+    </sprite>
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map1</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapObstacleObject</class>
+        <condition>NO_ACTION</condition>
+        <param>
+          <x>15</x>
+          <y>4</y>
         </param>
         <image>src/games/chrono/resources/grave.png</image>
       </object>
