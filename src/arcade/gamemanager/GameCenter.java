@@ -23,7 +23,7 @@ public class GameCenter {
      */
     public static final String GAME_XML_FILE = "src/arcade/database/game.xml";
     private List<Game> myGames;
-    private GameSearcher mySearcher;
+    private GameSearcherFactory mySearcherFactory;
 
     /**
      * Constructor for GameCenter.
@@ -46,7 +46,7 @@ public class GameCenter {
      */
     public void initialize () {
         myGames = new ArrayList<Game>();
-        mySearcher = new DefaultGameSearcher(myGames);
+        mySearcherFactory = new GameSearcherFactory(myGames);
         refreshGames();
 
     }
@@ -86,7 +86,11 @@ public class GameCenter {
      * @return list of available games
      */
     public List<String> getGameList () {
-        return mySearcher.getGameList();
+        List<String> gameList = new ArrayList<String>();
+        for (Game game : myGames) {
+            gameList.add(game.getGameName());
+        }
+        return gameList;
     }
 
     /**
@@ -105,25 +109,17 @@ public class GameCenter {
         return null;
     }
 
-    /**
-     * returns a list of games that have the tag.
-     * 
-     * @param tag a tag that games have in common
-     * @return list of games that have the tag.
-     */
-    public List<String> getGameListByTagName (String tag) {
-        return mySearcher.getGameListByTagName(tag);
+    public List<String> getGameListByTagName(String tag) {
+        return searchGames("TagSearch",tag);
     }
-
-//     public static void main (String args[]) {
-//     System.out.println("haha");
-//     GameCenter gc = new GameCenter();
-//     gc.getGameList();
-//     System.out.println(gc.myGames.size());
-//     Game rpg = gc.getGame("Turnbased RPG");
-//     System.out.println(rpg.getGameInfoList());
-//     System.out.println(rpg.getAverageRating());
-//     rpg.getReviews();
-//     System.out.println(gc.getGameListByTagName("shooter"));
-//     }
+    /**
+     * returns a list of games by a specific search criteria
+     * @param searchType type of search
+     * @param criteria input regarding type of search
+     * @return
+     */
+    public List<String> searchGames(String searchType, String criteria) {
+        GameSearcher mySearcher = mySearcherFactory.createSearcher(searchType);
+        return mySearcher.search(criteria);
+    }
 }
