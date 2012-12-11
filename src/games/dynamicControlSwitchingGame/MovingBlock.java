@@ -1,4 +1,4 @@
-package util.input.tests;
+package games.dynamicControlSwitchingGame;
 
 /*
  * This applet demonstrates Focus events and Key events. A colored square
@@ -20,15 +20,25 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
+import util.datatable.exceptions.InvalidXMLTagException;
+import util.datatable.exceptions.RepeatedColumnNameException;
+import util.input.configurecontrollergui.RunControlGUISwitcher;
 import util.input.core.KeyboardController;
 import util.input.core.MouseController;
 import util.input.factories.ControllerFactory;
+import util.input.tests.SpriteTestingInput;
 import vooga.platformer.leveleditor.Sprite;
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 
 
-public class InputTester extends Applet implements MouseInputListener {
+/**
+ * Press Space to activate the dynamic control switching
+ * 
+ * @author Amay
+ *
+ */
+public class MovingBlock extends Applet {
     // (Note: MouseListener is implemented only so that
     // the applet can request the input focus when
     // the user clicks on it.)
@@ -80,17 +90,42 @@ public class InputTester extends Applet implements MouseInputListener {
 
     public void configureActions () throws IllegalAccessException, InstantiationException {
         try {
-            myMouseController.setControl(MouseEvent.BUTTON1, MouseController.PRESSED, mainPlayer,
-                                         "move");
+            //myMouseController.setControl(MouseEvent.BUTTON1, MouseController.PRESSED, mainPlayer,
+                                         //"move");
             // myMouseController.setControl(WiiController.WIIMOTE_BUTTON_LEFT,
             // WiiController.BUTTON_PRESSED, mainPlayer, "jump");
-            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, mainPlayer,
-                                       "jump");
+            myKeyController.setControl(KeyEvent.VK_UP, KeyboardController.PRESSED, this,
+                                       "moveUp", "Up Pressed", "move up");
+            myKeyController.setControl(KeyEvent.VK_DOWN, KeyboardController.PRESSED, this,
+                    "moveDown", "Down Pressed", "move down");
+            myKeyController.setControl(KeyEvent.VK_LEFT, KeyboardController.PRESSED, this,
+                    "moveLeft","Left Pressed", "move left");
+            myKeyController.setControl(KeyEvent.VK_RIGHT, KeyboardController.PRESSED, this,
+                    "moveRight", "Right Pressed", "move right");
+            myKeyController.setControl(KeyEvent.VK_W, KeyboardController.PRESSED, this,
+                    "doNothing", "W Pressed", "do nothing");
+            myKeyController.setControl(KeyEvent.VK_A, KeyboardController.PRESSED, this,
+                    "doNothing", "A Pressed", "do nothing");
+            myKeyController.setControl(KeyEvent.VK_S, KeyboardController.PRESSED, this,
+                    "doNothing", "S Pressed", "do nothing");
+            myKeyController.setControl(KeyEvent.VK_D, KeyboardController.PRESSED, this,
+                    "doNothing","D Pressed", "do nothing");
+            myKeyController.setControl(KeyEvent.VK_SPACE, KeyboardController.PRESSED, this,
+                    "launchSwitcher");
         }
         catch (NoSuchMethodException e) {
             //Do nothing
         }
 
+    }
+    
+    public void launchSwitcher() throws NoSuchMethodException, IllegalAccessException, RepeatedColumnNameException, InvalidXMLTagException {
+        RunControlGUISwitcher obj = new RunControlGUISwitcher();
+        obj.initGUISwitcher(myKeyController);
+    }
+    
+    public void doNothing() {
+        //literally does nothing
     }
 
     public void paint (Graphics g) {
@@ -116,13 +151,6 @@ public class InputTester extends Applet implements MouseInputListener {
         g.setColor(squareColor);
         g.fillRect(squareLeft, squareTop, SQUARE_SIZE, SQUARE_SIZE);
 
-        /* If the applet does not have input focus, print a message. */
-
-        if (!focussed) {
-            g.setColor(Color.magenta);
-            g.drawString("Click to activate", 7, 20);
-        }
-
     }  // end paint()
 
     public void focusGained (FocusEvent evt) {
@@ -136,101 +164,30 @@ public class InputTester extends Applet implements MouseInputListener {
         focussed = false;
         repaint();  // redraw without cyan border
     }
-
-    public void keyTyped (KeyEvent evt) {
-        // The user has typed a character, while the
-        // apple thas the input focus. If it is one
-        // of the keys that represents a color, change
-        // the color of the square and redraw the applet.
-
-        char ch = evt.getKeyChar();  // The character typed.
-
-        if (ch == 'B' || ch == 'b') {
-            squareColor = Color.blue;
-            repaint();
-        }
-        else if (ch == 'G' || ch == 'g') {
-            squareColor = Color.green;
-            repaint();
-        }
-        else if (ch == 'R' || ch == 'r') {
-            squareColor = Color.red;
-            repaint();
-        }
-        else if (ch == 'K' || ch == 'k') {
-            squareColor = Color.black;
-            repaint();
-        }
-
-    }  // end keyTyped()
-
-    public void keyPressed (KeyEvent evt) {
-        // Called when the user has pressed a key, which can be
-        // a special key such as an arrow key. If the key pressed
-        // was one of the arrow keys, move the square (but make sure
-        // that it doesn't move off the edge, allowing for a
-        // 3-pixel border all around the applet).
-
-        int key = evt.getKeyCode();  // keyboard code for the key that was
-                                    // pressed
-
-        if (key == KeyEvent.VK_LEFT) {
-            squareLeft -= 8;
-            if (squareLeft < 3) squareLeft = 3;
-            repaint();
-        }
-        else if (key == KeyEvent.VK_RIGHT) {
-            squareLeft += 8;
-            if (squareLeft > getSize().width - 3 - SQUARE_SIZE)
-                squareLeft = getSize().width - 3 - SQUARE_SIZE;
-            repaint();
-        }
-        else if (key == KeyEvent.VK_UP) {
-            squareTop -= 8;
-            if (squareTop < 3) squareTop = 3;
-            repaint();
-        }
-        else if (key == KeyEvent.VK_DOWN) {
-            squareTop += 8;
-            if (squareTop > getSize().height - 3 - SQUARE_SIZE)
-                squareTop = getSize().height - 3 - SQUARE_SIZE;
-            repaint();
-        }
-
-    }  // end keyPressed()
-
-    public void keyReleased (KeyEvent evt) {
-        // empty method, required by the KeyListener Interface
+    
+    public void moveLeft() {
+        squareLeft -= 8;
+        if (squareLeft < 3) squareLeft = 3;
+        repaint();
     }
-
-    public void mousePressed (MouseEvent evt) {
-        // Request the input focus when the user clicks on
-        // the applet. (On most platforms, there is no need
-        // for this. However, Sun's own Java implementation
-        // requires it.)
-        requestFocus();
+    
+    public void moveRight() {
+        squareLeft += 8;
+        if (squareLeft > getSize().width - 3 - SQUARE_SIZE)
+            squareLeft = getSize().width - 3 - SQUARE_SIZE;
+        repaint();
     }
-
-    public void mouseEntered (MouseEvent evt) {
-    }  // Required by the
-
-    public void mouseExited (MouseEvent evt) {
-    }   // MouseListener
-
-    public void mouseReleased (MouseEvent evt) {
-    } // interface.
-
-    public void mouseClicked (MouseEvent evt) {
+    
+    public void moveUp() {
+        squareTop -= 8;
+        if (squareTop < 3) squareTop = 3;
+        repaint();
     }
-
-    @Override
-    public void mouseDragged (MouseEvent e) {
-
+    
+    public void moveDown() {
+        squareTop += 8;
+        if (squareTop > getSize().height - 3 - SQUARE_SIZE)
+            squareTop = getSize().height - 3 - SQUARE_SIZE;
+        repaint();
     }
-
-    @Override
-    public void mouseMoved (MouseEvent e) {
-        System.out.println("Mouse Moved" + e);
-    }
-
 }

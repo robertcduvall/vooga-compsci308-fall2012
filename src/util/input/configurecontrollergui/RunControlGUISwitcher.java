@@ -9,6 +9,7 @@ import util.input.configurecontrollergui.util.Config;
 import util.input.configurecontrollergui.util.ViewFactory;
 import util.input.configurecontrollergui.view.Frame;
 import util.input.configurecontrollergui.view.RadioButtonView;
+import util.input.core.Controller;
 import util.input.core.KeyboardController;
 
 /**
@@ -28,14 +29,25 @@ import util.input.core.KeyboardController;
  * @author Amay, Lance
  *
  */
-public class Main {
+public class RunControlGUISwitcher {
 
     private static final Dimension SIZE =
             new Dimension(Config.FRAME_WIDTH, Config.FRAME_HEIGHT);
 
     private static final String TITLE = "Game Settings";
     private static ViewFactory myViewFactory;
-    private static KeyboardController gameController;
+    private static Controller gameController;
+    private static Frame myDisplayFrame;
+    
+    public RunControlGUISwitcher() {
+        myDisplayFrame = new Frame(SIZE);
+    }
+    
+    public static void main (String[] args) throws NoSuchMethodException, IllegalAccessException, RepeatedColumnNameException, InvalidXMLTagException {
+        RunControlGUISwitcher obj = new RunControlGUISwitcher();
+        KeyboardController testControl = new KeyboardController(myDisplayFrame);
+        obj.initGUISwitcher(testControl);
+    }
 
     /**
      * 
@@ -45,12 +57,10 @@ public class Main {
      * @throws IllegalAccessException 
      * @throws NoSuchMethodException 
      */
-    public static void main (String[] args) throws RepeatedColumnNameException, InvalidXMLTagException, NoSuchMethodException, IllegalAccessException {
-        Frame myDisplayFrame = new Frame(SIZE);
-        gameController = new KeyboardController(myDisplayFrame);
-        Main randObj = new Main();
-        gameController.setControl(KeyEvent.VK_SPACE, KeyEvent.KEY_PRESSED, randObj, "doNothing", "Space Pressed", "DO NOTHING!!");
-        gameController.setControl(KeyEvent.VK_UP, KeyEvent.KEY_PRESSED, randObj, "doSomething", "Up Pressed", "DO SOMETHING!!");
+    public void initGUISwitcher (Controller controller) throws RepeatedColumnNameException, InvalidXMLTagException, NoSuchMethodException, IllegalAccessException {
+        gameController = controller;
+        //gameController.setControl(KeyEvent.VK_SPACE, KeyEvent.KEY_PRESSED, randObj, "doNothing", "Space Pressed", "DO NOTHING!!");
+        ///gameController.setControl(KeyEvent.VK_UP, KeyEvent.KEY_PRESSED, randObj, "doSomething", "Up Pressed", "DO SOMETHING!!");
         // create container that will work with Window manager
         JFrame frame = new JFrame(TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +75,8 @@ public class Main {
         myViewFactory.generateHeader();
         myViewFactory.generateGrid();
         myViewFactory.generateRadioButtons();
-        gameController.setControl(KeyEvent.VK_ENTER, KeyEvent.KEY_PRESSED, myViewFactory, "swap", "Enter Pressed", "SWAP");
+        KeyboardController tempController = new KeyboardController(myDisplayFrame);
+        tempController.setControl(KeyEvent.VK_ENTER, KeyEvent.KEY_PRESSED, myViewFactory, "swap", "Enter Pressed", "SWAP");
     }
     
     public void doNothing() throws NoSuchMethodException, IllegalAccessException {
