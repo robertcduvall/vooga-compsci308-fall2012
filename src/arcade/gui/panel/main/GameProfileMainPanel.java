@@ -82,11 +82,11 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         writeReviewAndRatingBut.addActionListener(this);
         writeReviewAndRatingBut.setActionCommand(REVIEW);
         
-        JButton statusPostBut = new JButton("Post to Facebook");
+        JButton statusPostBut = new JButton("Facebook");
         statusPostBut.addActionListener(this);
         statusPostBut.setActionCommand(UPDATE_STATUS);
 
-        JButton tweetBut = new JButton(TWEET);
+        JButton tweetBut = new JButton("Twitter");
         tweetBut.addActionListener(this);
         tweetBut.setActionCommand(TWEET);
 
@@ -106,8 +106,8 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         ratingsTitle.setForeground(Color.WHITE);
         JLabel reviewsTitleLabel = new JLabel("User Submitted Reviews of this Game: ");
         reviewsTitleLabel.setForeground(Color.WHITE);
-        JLabel asterisk = new JLabel("*");
-        asterisk.setForeground(Color.WHITE);
+        JLabel sharePrompt = new JLabel("*Share on:");
+        sharePrompt.setForeground(Color.WHITE);
         JLabel unlinkReminder = new JLabel("*Remember to unlink your social media account(s) " +
                 "before you end your Arcade session!");
         unlinkReminder.setForeground(Color.WHITE);
@@ -117,9 +117,9 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         myPanel.add(profilePic, "grow, span, align center");
         myPanel.add(averageRatingToDisplay, "wrap, align center, span");
         myPanel.add(playButton, "wrap, grow, span, align center");
-        myPanel.add(tweetBut, "grow, span, align center, split 3");
+        myPanel.add(sharePrompt, "span, align center, split 3");
+        myPanel.add(tweetBut, "grow, span, align center");
         myPanel.add(statusPostBut, "grow, span, align center");
-        myPanel.add(asterisk, "align center, wrap, span");
         myPanel.add(tagsTitle, "split 3, flowy, align center");
         myPanel.add(myListOfTagsToDisplay, "align center");
         myPanel.add(topScoresScrollPane, "grow, span, align center");
@@ -244,6 +244,11 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         }
         if (e.getActionCommand().equals(UPDATE_STATUS)) {
             String theStatusPost = myQuickSocialMediaPost;
+            if (JOptionPane.showConfirmDialog(null, "Post '" + myQuickSocialMediaPost + 
+                    "' to Facebook?", "Facebook Status Confirm",
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+                return;
+            }
             boolean statusPostSuccessful =
                     getArcade().getModelInterface().sendPost(getArcade().getUsername(),
                                                              theStatusPost);
@@ -256,6 +261,11 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         }
         if (e.getActionCommand().equals(TWEET)) {
             String theTweet = myQuickSocialMediaPost;
+            if (JOptionPane.showConfirmDialog(null, "Post '" + myQuickSocialMediaPost +
+                        "' to Twitter?", "Tweet Confirm", JOptionPane.YES_NO_OPTION)
+                        == JOptionPane.NO_OPTION) {
+                return;
+            }
             boolean tweetSuccessful =
                     getArcade().getModelInterface().sendTweet(getArcade().getUsername(),
                                                               theTweet);
