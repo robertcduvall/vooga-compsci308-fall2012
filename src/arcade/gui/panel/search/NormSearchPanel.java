@@ -30,7 +30,7 @@ public class NormSearchPanel extends ASearchPanel implements ActionListener {
     private List<String> myGameList;
     private JList mySearchedThroughList = new JList();
     private String myGameSelected;
-    private final int myListVisibleRowCount = 5;
+    private final int myListVisibleRowCount = 4;
     private final int myListSearcherColumnCount = 10;
 
     /**
