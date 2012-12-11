@@ -106,11 +106,8 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         ratingsTitle.setForeground(Color.WHITE);
         JLabel reviewsTitleLabel = new JLabel("User Submitted Reviews of this Game: ");
         reviewsTitleLabel.setForeground(Color.WHITE);
-        JLabel sharePrompt = new JLabel("*Share on:");
+        JLabel sharePrompt = new JLabel("Share on:");
         sharePrompt.setForeground(Color.WHITE);
-        JLabel unlinkReminder = new JLabel("*Remember to unlink your social media account(s) " +
-                "before you end your Arcade session!");
-        unlinkReminder.setForeground(Color.WHITE);
 
         //add components to panel
         myPanel.add(nameOfGame, "wrap, span, align center");
@@ -129,7 +126,6 @@ public class GameProfileMainPanel extends AMainPanel implements ActionListener {
         myPanel.add(ratingsTitle, "split 2, alignx");
         myPanel.add(listOfRatingsToDisplay, "wrap, align center, span, grow");
         myPanel.add(writeReviewAndRatingBut, "grow, span, align center, wrap");
-        myPanel.add(unlinkReminder, "span, align left");
 
         return myPanel;
 
