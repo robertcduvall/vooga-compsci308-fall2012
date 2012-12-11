@@ -1,6 +1,7 @@
 package games.par24game;
 
 import arcade.gamemanager.GameSaver;
+import games.par24game.levels.Level1;
 import games.tommygame.levels.LostGame;
 import games.tommygame.levels.WonGame;
 import java.awt.BorderLayout;
@@ -94,7 +95,7 @@ public class SmartEnemyGame extends Game {
         }
 
         myCanvas.addKeyListener(new KeyboardListener());
-        startLevel(new MainScreen(this));
+        startLevel(new Level1(this));
     }
 
     @Override
