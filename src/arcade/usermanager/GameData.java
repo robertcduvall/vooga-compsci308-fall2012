@@ -53,8 +53,22 @@ public class GameData {
 
     }
 
+    /**
+     * Sets a certain property of a user's GameInfo.
+     * 
+     * @param userName
+     * @param propertyName
+     * @param content
+     * @return
+     */
     public boolean setGameInfo (String userName, String propertyName, String content) {
-        if (myPropertyMap.containsKey(propertyName)) {
+        if ("highscore".equals(propertyName)) {
+            if (Integer.parseInt(myPropertyMap.get(myHighScore)) > Integer.parseInt(content)) { 
+                return false; }
+        }
+        
+       if (myPropertyMap.containsKey(propertyName)) {
+
             myPropertyMap.put(propertyName, content);
             myXmlWriter.updateGameInfo(userName, getGameInfo("name"), propertyName, content);
 

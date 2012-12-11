@@ -11,7 +11,7 @@ import vooga.turnbased.gameobject.battleobject.BattleObject;
 /**
  * This is a battleobject to be used in the NyanCat Game.
  * 
- * @author Jenni
+ * @author Jenni Mercado
  * 
  */
 public class BattleNyanObject extends BattleObject {
@@ -94,7 +94,7 @@ public class BattleNyanObject extends BattleObject {
             return messages[i];
         }
         else {
-            String[] messages = { name + " has entered the battlefield. ",
+            String[] messages = { name + " has challenged you.",
                     name + " is ready to fight!" };
             return messages[i];
         }
@@ -103,22 +103,22 @@ public class BattleNyanObject extends BattleObject {
 
     @Override
     public String[] getOptions () {
-        String[] ret = { "ATTACK", "CRITICAL ATTACK", "MAGIC ATTACK",
+        String[] ret = { "ATTACK", "POWER ATTACK", "RAINBOW BEAM",
                 "HEALING SPELL" };
         return ret;
 
-    }
-
-    @Override
-    public void doOption1 (BattleObject target, List<String> battleMessages) {
-        attackEnemy(target, battleMessages);
-        battleMessages.add(getName() + USED + getOptions()[0]);
     }
 
     private boolean doesNotMiss () {
         Random randomGenerator = new Random();
         double random = randomGenerator.nextDouble();
         return (random < myAccuracy);
+    }
+    
+    @Override
+    public void doOption1 (BattleObject target, List<String> battleMessages) {
+        attackEnemy(target, battleMessages);
+        battleMessages.add(getName() + USED + getOptions()[0]);
     }
 
     @Override

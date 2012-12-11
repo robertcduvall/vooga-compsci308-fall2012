@@ -263,6 +263,7 @@ public final class UserManager {
      * 
      * @return modifable user class
      */
+    
     public EditableUserProfile getEditableCurrentUser () {
         User user = getUser(getCurrentUserName());
         String name = user.getName();
@@ -273,7 +274,20 @@ public final class UserManager {
         return new EditableUserProfile(name, picture, firstName, lastName);
     }
     
-    /**
+    public void addGameData(String userName, String gameName){
+        getUser(userName).addGameData(gameName);
+        
+    }
+    
+    /** this method violates the not-expose model principle and definitely 
+     * need to be refactored in real world situation
+     * the correct way of doing it should be first get an editable user profile, 
+     * after user is done editing , the gui should ask for an updated copy of 
+     * user profile from the user manager again
+     * 
+     * 
+     * --from the user side
+     * 
      * We actually need to be able to get the User.
      * Stop changing it so we can't.
      * It's messing things up.
@@ -304,7 +318,9 @@ public final class UserManager {
      */
 
     public UserProfile getUserProfile (String userName) {
+        
         User user = getUser(userName);
+        //user.refreshPicture();
         String name = user.getName();
         String picture = user.getPicture();
         String firstName = user.getFirstName();

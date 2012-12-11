@@ -12,7 +12,7 @@ import util.networking.chat.ChatServer;
  */
 public final class ProtocolTester {
 
-    private static final int MAX_CONNECTIONS = 100;
+    private static final int MAX_CONNECTIONS = 10;
 
     private ProtocolTester() {
     }

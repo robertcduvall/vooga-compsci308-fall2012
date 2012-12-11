@@ -4,8 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.Random;
 import vooga.shooter.gameObjects.Enemy;
-import vooga.shooter.gameplay.Game;
-import vooga.shooter.level_editor.Level;
+import games.spruillGame.Game.Game;
 
 
 public class WonGame extends Level {
@@ -13,6 +12,8 @@ public class WonGame extends Level {
     private static final String SCREEN_IMAGEPATH = "games/spruillGame/images/WonGame.png";
     private static final Dimension ENEMY_DIMENSION = new Dimension(728, 50);
     private static final int ENEMY_DAMAGE = 100;
+    private static final int XOFFSET = -80;
+    private static final int YOFFSET = 200;
 
     private Game myGame;
 
@@ -28,7 +29,7 @@ public class WonGame extends Level {
     }
 
     public void startLevel () {
-            myGame.addEnemy(new Enemy(new Point(ENEMY_DIMENSION.width/2,ENEMY_DIMENSION.height/2+200), ENEMY_DIMENSION, myGame
+            myGame.addEnemy(new Enemy(new Point(ENEMY_DIMENSION.width/2+XOFFSET,ENEMY_DIMENSION.height/2+YOFFSET), ENEMY_DIMENSION, myGame
                     .getCanvasDimension(), SCREEN_IMAGEPATH, new Point(0,0), ENEMY_DAMAGE));
 
     }

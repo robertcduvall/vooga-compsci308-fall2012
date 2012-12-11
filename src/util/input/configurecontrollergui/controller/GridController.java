@@ -7,6 +7,12 @@ import java.util.List;
 import util.input.configurecontrollergui.util.Config;
 import util.input.configurecontrollergui.view.RadioButtonView;
 
+/**
+ * This grid controller serves as the logic behind the 
+ * GridView. 
+ * @author Amay
+ *
+ */
 public class GridController {
 
     private List<Double> verticalLines;

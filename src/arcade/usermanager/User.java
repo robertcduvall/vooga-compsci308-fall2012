@@ -23,6 +23,7 @@ public class User {
     private String myLastName;
     private boolean myAdminStatus;
     private UserXMLWriter myXmlWriter;
+    private UserXMLReader myXmlReader;
 
     /**
      * Constructs a new User
@@ -41,7 +42,8 @@ public class User {
         myFirstName = firstName;
         myLastName = lastName;
         setMyAdminStatus(false);
-        myXmlWriter=new UserXMLWriter();
+        myXmlWriter = new UserXMLWriter();
+        myXmlReader=new UserXMLReader();
 
     }
 
@@ -67,10 +69,19 @@ public class User {
 
     public void setPicture (String picture) {
         myPicture = picture;
-        myXmlWriter.updateUserInfo(myName,"picture",picture);
+        myXmlWriter.updateUserInfo(myName, "picture", picture);
     }
-
     
+//    protected void refreshPicture(){
+//        myPicture=myXmlReader.getUserInfo(myName,"picture");
+//    }
+
+    /**
+     * Gets a GameData object given the name of a game.
+     * 
+     * @param gameName
+     * @return
+     */
     protected GameData getGameData (String gameName) {
         for (GameData gd : myGameData) {
             if (gd.getGameInfo("name").equals(gameName)) return gd;
@@ -78,12 +89,20 @@ public class User {
         }
         return null;
     }
-    
-    protected List<GameData> getAllGameData(){
+
+    /**
+     * Adds a new GameData to this user's list, and writes it to XML.
+     * 
+     * @param gameName
+     */
+    public void addGameData (String gameName) {
+        myGameData.add(new GameData(gameName, "", "0", "0"));
+        myXmlWriter.appendGame(myName, gameName, "0", "0", "");
+    }
+
+    protected List<GameData> getAllGameData () {
         return myGameData;
     }
-    
-    
 
     public List<Message> getMyMessage () {
         return myMessages;
@@ -93,7 +112,7 @@ public class User {
         myMessages.add(new Message(sender, content));
 
     }
-    
+
     @SuppressWarnings("deprecation")
     protected void updateMyMessage (String sender, String content, String myDate) {
         myMessages.add(new Message(sender, content, new Date(myDate)));

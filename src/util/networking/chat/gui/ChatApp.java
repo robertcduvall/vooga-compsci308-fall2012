@@ -48,7 +48,7 @@ public class ChatApp {
     
     public static void run () {
         try {
-            ChatClient c = new ChatClient("wl-10-190-66-148.wireless.duke.local", new GordonBukspanProtocol());
+            ChatClient c = new ChatClient("wl-10-190-43-186.wireless.duke.local", new GordonBukspanProtocol());
             String userName = login("", c);
             frame = new JFrame("Greetings, " + userName +"! Chat. Connect. Play.");
             frame.setResizable(false);

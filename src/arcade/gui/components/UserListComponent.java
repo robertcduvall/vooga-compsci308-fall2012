@@ -1,69 +1,63 @@
 package arcade.gui.components;
-
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import net.miginfocom.swing.MigLayout;
 import arcade.gui.panel.ArcadePanel;
 import arcade.usermanager.UserProfile;
-import arcade.utility.ImageReader;
 
+
+/**
+ * A useful example of an ArcadeListComponent.
+ * Displays a user profile picture, user name,
+ * the player's full name, a button to visit
+ * the user's profile page, and a button to
+ * send the user a message.
+ * 
+ * @author Robert Bruce
+ */
 @SuppressWarnings("serial")
-public class UserListComponent extends JComponent implements ActionListener {
+public class UserListComponent extends ArcadeListComponent {
 
     private UserProfile myUser;
-    private String userName;
-    private String userInfo;
-    private ArcadePanel myContainer;
-    private Image profilePic;
     private JButton viewProfileButton;
     private JButton sendMessageButton;
+    private String myUserName;
 
-    public UserListComponent(UserProfile user, ArcadePanel theContainer){
-        this.setLayout(new MigLayout("", "[450][]5[]", "[30][][30]"));
+    public UserListComponent (UserProfile user, ArcadePanel theContainer) {
+        super(user.getUserPicture(), user.getUserName(), user
+                .getUserFirstName() + " " + user.getUserLastName(),
+                theContainer);
         myUser = user;
-        getUserInfo();
-        myContainer = theContainer;
-        profilePic = getUserPicture();
-        this.setPreferredSize(new Dimension(theContainer.getWidth(), 110));
-        initComponents();
+        myUserName = myUser.getUserName();
+        setPreferredSize(new Dimension(theContainer.getWidth(), 110));
     }
 
-    private Image getUserPicture () {
-        String fullLocation = myUser.getUserPicture();
-        String fileName = fullLocation.substring(fullLocation.lastIndexOf("/"));
-        String directoryLocation = fullLocation.substring(0,fullLocation.lastIndexOf("/"));
-        return ImageReader.loadImage(directoryLocation, fileName);
+    public String getUserName () {
+        return myUserName;
     }
 
-    private void getUserInfo () {
-        userName = myUser.getUserName();
-        userInfo = myUser.getUserFirstName()+" "+myUser.getUserLastName();
-    }
-
-    private void initComponents () {
+    @Override
+    protected void initComponents () {
+        setLayout(new MigLayout("", "[450][]5[]", "[30][][30]"));
         viewProfileButton = new JButton("View Profile");
-        viewProfileButton.addActionListener(new ActionListener(){
+        viewProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
                 System.out.println("View profile of " + myUser);
-                myContainer.getArcade().saveVariable("UserName", userName);
+                myContainer.getArcade().saveVariable("UserName",
+                        myUser.getUserName());
                 myContainer.getArcade().replacePanel("UserProfile");
             }
 
         });
         sendMessageButton = new JButton("Send Message");
-        sendMessageButton.addActionListener(new ActionListener(){
+        sendMessageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed (ActionEvent arg0) {
-                System.out.println("Send message to " + userName);
-                myContainer.getArcade().saveVariable("UserName", userName);
+                myContainer.getArcade().saveVariable("UserName",
+                        myUser.getUserName());
                 myContainer.getArcade().replacePanel("SendMessage");
             }
 
@@ -72,29 +66,20 @@ public class UserListComponent extends JComponent implements ActionListener {
         this.add(sendMessageButton);
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.red);
-        g.fillRect(25, 5, this.getWidth()-75, this.getHeight()-5);
-        g.setColor(Color.black);
-        g.fillRect(30, 10, this.getWidth()-85, this.getHeight()-15);
-        g.drawImage(profilePic, 35, 12, 81, 81, Color.black, this);
-        g.setColor(Color.white);
-        g.setFont(new Font("sansserif", Font.BOLD, 32));
-        g.drawString(userName, 125, 60);
-        g.setFont(new Font("sansserif", Font.ITALIC, 18));
-        g.drawString(userInfo, 145, 85); 
-    }
-
     @Override
-    public Dimension getPreferredSize() {
+    public Dimension getPreferredSize () {
         return new Dimension(myContainer.getWidth(), 100);
     }
 
+    /**
+     * Used for sorting. If the other component is also a
+     * UserListComponent, it returns a comparison b/t their
+     * user names. Otherwise, it returns 0.
+     */
     @Override
-    public void actionPerformed (ActionEvent arg0) {
-        // TODO Auto-generated method stub
-
+    public int compareTo (ArcadeListComponent o) {
+        if (o.getClass().equals(this.getClass())) { return myUser.getUserName()
+                .compareTo(((UserListComponent) o).getUserName()); }
+        return 0;
     }
-
 }

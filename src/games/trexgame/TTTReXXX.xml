@@ -23,7 +23,7 @@
     <mode>
       <name>gameOver</name>
       <class>vooga.turnbased.gamecore.gamemodes.GameOverMode</class>
-      <condition>endgame1,endgame2,endgame3,endgame4</condition>
+      <condition>endgame1,endgame2,endgame3,endgame4, endgame5, endgame6</condition>
     </mode>
     <mode>
       <name>map1</name>
@@ -44,6 +44,10 @@
       <name>conversation</name>
       <class>games.trexgame.interaction.ConversationMode</class>
       <condition>talk</condition>
+    </mode><mode>
+      <name>stats</name>
+      <class>games.trexgame.interaction.StatsMode</class>
+      <condition>viewstats</condition>
     </mode><mode>
       <name>gameWon</name>
       <class>vooga.turnbased.gamecore.gamemodes.GameWonMode</class>
@@ -1340,12 +1344,19 @@
         </param>
         <image>src/games/trexgame/resources/treasure_box.png</image>
       </object>
-      <object><createOn>start</createOn><modes>conversation</modes><class>games.trexgame.interaction.OptionConversation</class><condition>NO_ACTION</condition>
-      	<param>
+      <object>
+        <createOn>start</createOn>
+        <modes>conversation</modes>
+        <class>games.trexgame.interaction.OptionConversation</class>
+        <condition>NO_ACTION</condition>
+        <param>
       		<name>More Infomation...</name>
       		<message>Some mysterious guy:</message>
       		<message>    life is like a game</message>
-      		<message>    but here is the reward</message></param></object><object><createOn>start</createOn><modes>conversation</modes><class>vooga.turnbased.gameobject.optionobject.OptionTransport</class><condition>entermap2</condition>
+      		<message>    but here is the reward</message></param><childobject><createOn>start</createOn><modes>conversation</modes><class>games.trexgame.interaction.OptionConversation</class><condition>entermap2</condition>
+      	<param>
+      		<name>OK Thank You!!!!!</name><message>your attack increased</message><message>*atk 100</message></param></childobject>
+      	</object><object><createOn>start</createOn><modes>conversation</modes><class>vooga.turnbased.gameobject.optionobject.OptionTransport</class><condition>entermap2</condition>
       	<param>
       		<name>NEXT LEVEL</name></param></object>
     </sprite>
@@ -1684,6 +1695,34 @@
       </object>
     </sprite>
     
+    <sprite>
+      <object>
+        <createOn>start</createOn>
+        <modes>map2</modes>
+        <class>vooga.turnbased.gameobject.mapobject.MapEnemyObject</class>
+        <condition>dobattle</condition>
+        <param>
+          <x>14</x>
+          <y>14</y>
+        </param>
+        <image>src/games/trexgame/resources/coin.png</image>
+      </object>
+      <object>
+        <createOn>start</createOn>
+        <modes>battle</modes>
+        <class>games.trexgame.TRexMonster</class>
+        <condition>wingame</condition>
+        <param>
+          <name>dead boxx</name>
+          <statName>health</statName>
+  		  <value>0</value>
+          <statName>maxHealth</statName>
+  		  <value>10</value>
+        </param>
+        <image>src/vooga/turnbased/resources/image/battleobject/000.png</image>
+      </object>
+    </sprite>
+    
     
     <staticSprite>
       <class>vooga.turnbased.gameobject.mapobject.MapObject</class>
@@ -1763,7 +1802,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
-        <condition>endgame1</condition>
+        <condition>endgame2</condition>
         <param>
           <name>Mewtwo</name>
           <statName>health</statName>
@@ -1791,7 +1830,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
-        <condition>endgame1</condition>
+        <condition>endgame3</condition>
         <param>
           <name>Fluffy</name>
           <statName>health</statName>
@@ -1819,7 +1858,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
-        <condition>endgame1</condition>
+        <condition>endgame4</condition>
         <param>
           <name>Pichu</name>
           <statName>health</statName>
@@ -1847,7 +1886,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
-        <condition>endgame1</condition>
+        <condition>endgame5</condition>
         <param>
           <name>Charmander</name>
           <statName>health</statName>
@@ -1875,7 +1914,7 @@
         <createOn>start</createOn>
         <modes>battle</modes>
         <class>games.trexgame.TRexMonster</class>
-        <condition>endgame1</condition>
+        <condition>endgame6</condition>
         <param>
           <name>The Other T-Rex</name>
           <statName>health</statName>

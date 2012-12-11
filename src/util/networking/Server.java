@@ -105,8 +105,7 @@ public class Server {
         if (myConnections.size() >= myMaxConnections) {
             try {
                 PrintWriter out = new PrintWriter(s.getOutputStream());
-                out.print("Connection refused; "
-                          + "the server is busy; please try again later.\r\n");
+                out.print("Sorry! We're currently at the maximum number of connections.\r\n");
                 out.flush();
                 s.close();
             }

@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -39,35 +40,40 @@ public class BattleMode extends GameMode implements InputAPI {
     private int myLoserSpriteID;
     private List<String> myMessages;
     private int mySelection;
+    private int myWindowWidth, myWindowHeight;
 
     private final int MESSAGE_NUM = 4;
     private final int HEIGHT_SCALAR = 3;
-    private final double TEXT_SCALAR = 40;
+    private final double TEXT_SIZE_SCALAR = 50;
 
-    private final double SHIFT_LEFT_SCALAR = .15;
-    private final double SHIFT_RIGHT_SCALAR = .60;
-    private final double SHIFT_TOP_SCALAR = .45;
-    private final double SHIFT_BOTTOM_SCALAR = .75;
+    private final double BATTLE_MESSAGE_HORIZONTAL_SCALAR = .07;
+    private final double BATTLE_MESSAGE_VERTICAL_SCALAR = .11;
+
+    private final double SHIFT_LEFT_SCALAR = .1;
+    private final double SHIFT_RIGHT_SCALAR = .55;
+    private final double SHIFT_TOP_SCALAR = .4;
+    private final double SHIFT_BOTTOM_SCALAR = .7;
     private final double ADJUST_ARROW_SCALAR = .80;
-    
+
     private final int OPTION1 = 1;
     private final int OPTION2 = 2;
     private final int OPTION3 = 3;
     private final int OPTION4 = 4;
-    
 
     private final String myMENU_FONT = "Sans_Serif";
 
     /**
      * Constructor for a Battle.
      * 
-     * @param gameManager The parent GameManager that is creating this battle. Will be
+     * @param gameManager The parent GameManager that is creating this battle.
+     *        Will be
      *        alerted when battle ends.
      * @param modeName The name of this BattleMode
      * @param involvedIDs A list of IDs of the sprites involved in this battle.
      */
-    public BattleMode (GameManager gameManager, String modeName, List<Integer> involvedIDs) {
-        super(gameManager, modeName, involvedIDs); 
+    public BattleMode (GameManager gameManager, String modeName,
+            List<Integer> involvedIDs) {
+        super(gameManager, modeName, involvedIDs);
     }
 
     /**
@@ -90,7 +96,7 @@ public class BattleMode extends GameMode implements InputAPI {
 
     @Override
     public void pause () {
-        //myTeams.clear();
+        // myTeams.clear();
     }
 
     @Override
@@ -110,16 +116,16 @@ public class BattleMode extends GameMode implements InputAPI {
         int down = KeyEvent.VK_DOWN;
         int select = KeyEvent.VK_ENTER;
         try {
-            getGameManager().getKeyboardController().setControl(left, KeyboardController.RELEASED, this,
-                    "triggerLeftEvent");
-            getGameManager().getKeyboardController().setControl(right, KeyboardController.RELEASED, this,
-                    "triggerRightEvent");
-            getGameManager().getKeyboardController().setControl(up, KeyboardController.RELEASED, this,
-                    "triggerUpEvent");
-            getGameManager().getKeyboardController().setControl(down, KeyboardController.RELEASED, this,
-                    "triggerDownEvent");
-            getGameManager().getKeyboardController().setControl(select, KeyboardController.RELEASED, this,
-                    "triggerSelectEvent");
+            getGameManager().getKeyboardController().setControl(left,
+                    KeyboardController.RELEASED, this, "triggerLeftEvent");
+            getGameManager().getKeyboardController().setControl(right,
+                    KeyboardController.RELEASED, this, "triggerRightEvent");
+            getGameManager().getKeyboardController().setControl(up,
+                    KeyboardController.RELEASED, this, "triggerUpEvent");
+            getGameManager().getKeyboardController().setControl(down,
+                    KeyboardController.RELEASED, this, "triggerDownEvent");
+            getGameManager().getKeyboardController().setControl(select,
+                    KeyboardController.RELEASED, this, "triggerSelectEvent");
         }
         catch (NoSuchMethodException e) {
             System.out.println("A method was called that does not exist!");
@@ -136,13 +142,15 @@ public class BattleMode extends GameMode implements InputAPI {
             if (spriteID == getGameManager().getPlayerSpriteID()) {
                 // adding player;
                 List<BattleObject> myBattleObjects = new ArrayList<BattleObject>();
-                myBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
+                myBattleObjects
+                        .addAll((List<BattleObject>) getGameObjectsByID(spriteID));
                 myTeam = new Team(myBattleObjects);
             }
             else {
                 // adding enemy
                 List<BattleObject> enemyBattleObjects = new ArrayList<BattleObject>();
-                enemyBattleObjects.addAll((List<BattleObject>) getGameObjectsByID(spriteID));
+                enemyBattleObjects
+                        .addAll((List<BattleObject>) getGameObjectsByID(spriteID));
                 myEnemyTeam = new Team(enemyBattleObjects);
             }
         }
@@ -158,7 +166,7 @@ public class BattleMode extends GameMode implements InputAPI {
             endBattle();
         }
     }
-    
+
     private BattleObject getNextObjectIfDead (BattleObject teamMember, Team team) {
         if (!teamMember.isAlive()) {
             myMessages.add(teamMember.getDeathMessage());
@@ -167,7 +175,8 @@ public class BattleMode extends GameMode implements InputAPI {
             flagCondition(teamMember.getConditionFlag(), list);
             team.switchPlayer(team.nextPlayer());
             BattleObject next = team.getActivePlayer();
-            boolean isPlayerControlled = teamMember.getID() == getGameManager().getPlayerSpriteID();
+            boolean isPlayerControlled = teamMember.getID() == getGameManager()
+                    .getPlayerSpriteID();
             myMessages.add(next.getStartFightingMessage(isPlayerControlled));
             next.initializeStats();
             return next;
@@ -180,32 +189,33 @@ public class BattleMode extends GameMode implements InputAPI {
     @Override
     public void paint (Graphics g) {
         Dimension myWindow = getGameManager().getPaneDimension();
-        int height = myWindow.height;
-        int width = myWindow.width;
+        myWindowHeight = myWindow.height;
+        myWindowWidth = myWindow.width;
         Image background = GameWindow.importImage("BattleBackground");
-        g.drawImage(background, 0, 0, width, height, null);
-        myEnemyObject.paintStats(g, 0, 0, width / 2, height / HEIGHT_SCALAR);
-        myEnemyObject.paintBattleObject(g, width / 2, 0, width / 2, height / HEIGHT_SCALAR);
-        myPlayerObject.paintBattleObject(g, 0, height / HEIGHT_SCALAR, width / 2, height /
-                HEIGHT_SCALAR);
-        myPlayerObject.paintStats(g, width / 2, height / HEIGHT_SCALAR, width / 2, height /
-                HEIGHT_SCALAR);
+        g.drawImage(background, 0, 0, myWindowWidth, myWindowHeight, null);
+        myEnemyObject.paintStats(g, 0, 0, myWindowWidth / 2, myWindowHeight
+                / HEIGHT_SCALAR);
+        myEnemyObject.paintBattleObject(g, myWindowWidth / 2, 0,
+                myWindowWidth / 2, myWindowHeight / HEIGHT_SCALAR);
+        myPlayerObject.paintBattleObject(g, 0, myWindowHeight / HEIGHT_SCALAR,
+                myWindowWidth / 2, myWindowHeight / HEIGHT_SCALAR);
+        myPlayerObject.paintStats(g, myWindowWidth / 2, myWindowHeight
+                / HEIGHT_SCALAR, myWindowWidth / 2, myWindowHeight
+                / HEIGHT_SCALAR);
         paintMenu(g);
     }
 
     /**
-     * Draws the battle messages that display at the bottom of the screen, showing player and
+     * Draws the battle messages that display at the bottom of the screen,
+     * showing player and
      * enemy actions and changes.
      * 
      * @param g Graphics
      */
     public void paintMenu (Graphics g) {
         // paint the message box/battle option menu
-        Dimension myWindow = getGameManager().getPaneDimension();
-        int height = myWindow.height;
-        int width = myWindow.width;
         Image box = GameWindow.importImage("BattleControlPanel");
-        g.drawImage(box, 0, 0, width, height, null);
+        g.drawImage(box, 0, 0, myWindowWidth, myWindowHeight, null);
 
         // draw the messages
         int counter = 0;
@@ -213,20 +223,24 @@ public class BattleMode extends GameMode implements InputAPI {
             counter = myMessages.size() - MESSAGE_NUM;
         }
         Graphics2D g2d = (Graphics2D) g;
-        int fontSize = calculateFontSize(width, height);
+        int fontSize = calculateFontSize();
         Font font = new Font(myMENU_FONT, Font.PLAIN, fontSize);
         FontEffect myFontEffect = new FontEffect(g, font);
         for (int i = 0; counter + i < myMessages.size(); i++) {
             String currentMessage = myMessages.get(counter + i);
-            double horizontalShift = (double) ((width / TEXT_SCALAR) * 3);
-            double verticalShift = (double) (height / TEXT_SCALAR * 4.5);
+            double horizontalShift = (double) ((myWindowWidth * BATTLE_MESSAGE_HORIZONTAL_SCALAR));
+            double verticalShift = (double) (myWindowHeight * BATTLE_MESSAGE_VERTICAL_SCALAR);
             double spacingBetweenLines = (double) 1.2 * fontSize * i;
-            Point paintPosition = new Point((int) horizontalShift, (int) ((2 * height /
-                    HEIGHT_SCALAR + verticalShift + spacingBetweenLines)));
-            myFontEffect.shodowEffect(currentMessage, Color.blue, paintPosition);
+            Point paintPosition = new Point(
+                    (int) horizontalShift,
+                    (int) ((2 * myWindowHeight / HEIGHT_SCALAR + verticalShift + spacingBetweenLines)));
+            myFontEffect
+                    .shodowEffect(currentMessage, Color.blue, paintPosition);
         }
-        g2d.drawImage(box, width / 2, 0, width / 2, height, null);
-        drawOptions(g, width / 2, 2 * height / HEIGHT_SCALAR, width / 2, height / HEIGHT_SCALAR);
+        g2d.drawImage(box, myWindowWidth / 2, 0, myWindowWidth / 2,
+                myWindowHeight, null);
+        drawOptions(g, myWindowWidth / 2, 2 * myWindowHeight / HEIGHT_SCALAR,
+                myWindowWidth / 2, myWindowHeight / HEIGHT_SCALAR);
     }
 
     /**
@@ -238,82 +252,59 @@ public class BattleMode extends GameMode implements InputAPI {
      * @param width the width of this box
      * @param height the height of this box
      */
-    // I would say a point and a dimension, or a rectangle would be more intuitive and readable?
+    // I would say a point and a dimension, or a rectangle would be more
+    // intuitive and readable?
     public void drawOptions (Graphics g, int x, int y, int width, int height) {
         // format positions based on width and height of the box...maybe?
-        int fontSize = calculateFontSize(width, height) * width / height;
-        Font font = new Font(myMENU_FONT, Font.PLAIN, fontSize);
+
+        Font font = new Font(myMENU_FONT, Font.PLAIN, calculateFontSize());
         FontEffect fontEffect = new FontEffect(g, font);
         String[] options = myPlayerObject.getOptions();
         // position determines where the strings are painted
         Point position = null;
         Color mainColor = Color.GRAY;
         Color outlineColor = Color.BLACK;
-        int leftShift = (int) (width * SHIFT_LEFT_SCALAR);
-        int rightShift = (int) (width * SHIFT_RIGHT_SCALAR);
-        int topShift = (int) (height * SHIFT_TOP_SCALAR);
-        int bottomShift = (int) (height * SHIFT_BOTTOM_SCALAR);
+       
+        List<Point> optionLocs = new ArrayList<Point>();
+        optionLocs.add(new Point ((int) (x + width * SHIFT_LEFT_SCALAR), (int) (y + height * SHIFT_TOP_SCALAR)));
+        optionLocs.add(new Point ((int) (x + width * SHIFT_RIGHT_SCALAR), (int) (y + height * SHIFT_TOP_SCALAR)));
+        optionLocs.add(new Point ((int) (x + width * SHIFT_LEFT_SCALAR), (int) (y + height * SHIFT_BOTTOM_SCALAR)));
+        optionLocs.add(new Point ((int) (x + width * SHIFT_RIGHT_SCALAR), (int) (y + height * SHIFT_BOTTOM_SCALAR)));
 
         for (int i = 0; i < options.length; i++) {
             String option = options[i];
-            if (i == 0) {
-                position = new Point(x + leftShift, y + topShift);
-            }
-            else if (i == 1) {
-                position = new Point(x + rightShift, y + topShift);
-            }
-            else if (i == 2) {
-                position = new Point(x + leftShift, y + bottomShift);
-            }
-            else if (i == 3) {
-                position = new Point(x + rightShift, y + bottomShift);
-            }
+            position = optionLocs.get(i);
             try {
-                fontEffect.outlineEffect(option, mainColor, outlineColor, position);
+                fontEffect.outlineEffect(option, mainColor, outlineColor,
+                        position);
             }
             catch (NullPointerException e) {
                 System.err.println("option not recognized");
             }
         }
-        drawArrow(g, x, y, leftShift, rightShift, topShift, bottomShift);
+        drawArrow(g, x, y, optionLocs);
     }
 
-    private void drawArrow (Graphics g, int x, int y, int leftShift, int rightShift, int topShift,
-            int bottomShift) {
+    private void drawArrow (Graphics g, int x, int y, List<Point>optionLocs) {
+        //get arrow image
         Image arrow = GameWindow.importImage("BattleControlArrow");
-        switch (mySelection) {
-            case OPTION1:
-                g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                        (int) (y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
-                        arrow.getWidth(null), arrow.getHeight(null), null);
-                break;
-            case OPTION2:
-                g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                        (int) (y + topShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
-                        arrow.getWidth(null), arrow.getHeight(null), null);
-                break;
-            case OPTION3:
-                g.drawImage(arrow, x + leftShift - arrow.getWidth(null),
-                        (int) (y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
-                        arrow.getWidth(null), arrow.getHeight(null), null);
-                break;
-            case OPTION4:
-                g.drawImage(arrow, x + rightShift - arrow.getWidth(null),
-                        (int) (y + bottomShift - arrow.getHeight(null) * ADJUST_ARROW_SCALAR),
-                        arrow.getWidth(null), arrow.getHeight(null), null);
-                break;
-            default:
-                break;
-        }
+        // draw image
+        g.drawImage(arrow, optionLocs.get(mySelection-1).x - arrow.getWidth(null),
+                (int) (optionLocs.get(mySelection-1).y - arrow.getHeight(null)
+                        * ADJUST_ARROW_SCALAR), arrow.getWidth(null),
+                arrow.getHeight(null), null);
     }
 
-    private int calculateFontSize (int width, int height) {
-        // uses diagonal length of window; kind of faulty sometimes but usually works
-        return (int) (Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2)) / TEXT_SCALAR);
+    private int calculateFontSize () {
+        // uses diagonal length of window; kind of faulty sometimes but usually
+        // works
+        return (int) (Math.sqrt(Math.pow(myWindowHeight, 2)
+                + Math.pow(myWindowWidth, 2)) / TEXT_SIZE_SCALAR);
     }
 
     /**
-     * End a battle and report the event (whether player is dead) to GameManager.
+     * End a battle and report the event (whether player is dead) to
+     * GameManager.
      */
     private void endBattle () {
         setModeIsOver();
@@ -394,13 +385,16 @@ public class BattleMode extends GameMode implements InputAPI {
 
     /**
      * trigger the selected event
-     * @throws Exception When mySelection is greater than 4, selecting an option that
-     * is not supported
+     * 
+     * @throws Exception When mySelection is greater than 4, selecting an option
+     *         that
+     *         is not supported
      */
     public void triggerSelectEvent () throws Exception {
         if (mySelection > 4) {
             myMessages.add("Option does not exist");
-            System.out.println("Error: MySelection on option that does not exist");
+            System.out
+                    .println("Error: MySelection on option that does not exist");
             throw new Exception();
         }
         switch (mySelection) {
@@ -458,9 +452,9 @@ public class BattleMode extends GameMode implements InputAPI {
         }
     }
 
-
     @Override
-    public void processMouseInput (int mousePressed, Point mousePosition, int mouseButton) {
+    public void processMouseInput (int mousePressed, Point mousePosition,
+            int mouseButton) {
     }
 
 }

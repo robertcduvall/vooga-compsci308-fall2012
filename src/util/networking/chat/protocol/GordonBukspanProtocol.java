@@ -157,11 +157,20 @@ public class GordonBukspanProtocol implements ChatProtocol {
 
     @Override
     public String createListUsers (List<String> users) {
-        Map<String, String> xmlTagMap = new HashMap<String, String>();
+        String xmlString = null;
+        Document doc = XmlUtilities.makeDocument();
+        Element root = XmlUtilities.makeElement(doc, "listUsers");
         for (String user : users) {
-            xmlTagMap.put("user", user);
+            Element current = XmlUtilities.makeElement(doc, "user", user);
+            root.appendChild(current);
         }
-        return xmlFromMap("listUsers", xmlTagMap);
+        doc.appendChild(root);
+        try {
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
+        }
+        catch (TransformerException e) {
+        }
+        return xmlString;
     }
 
     @Override

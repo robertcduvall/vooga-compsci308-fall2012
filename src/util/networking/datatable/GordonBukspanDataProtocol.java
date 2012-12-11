@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,19 +16,18 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 import util.datatable.ModifiableRowElement;
 import util.datatable.UnmodifiableRowElement;
-import util.networking.chat.ChatCommand;
-import util.networking.chat.protocol.GordonBukspanProtocol;
 import util.xml.XmlUtilities;
 
+
 /**
- *
+ * 
  * @author Oren Bukspan
  * @author Connor Gordon
  */
 public class GordonBukspanDataProtocol implements DataProtocol {
 
     private static final int PORT = 5679;
-    
+
     @Override
     public DataCommand getType (String input) {
         String commandName;
@@ -50,38 +48,127 @@ public class GordonBukspanDataProtocol implements DataProtocol {
 
     @Override
     public ModifiableRowElement getRowElement (String input) {
-        // TODO Auto-generated method stub
-        return null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Document doc = loadXMLFrom(input);
+            Element root = doc.getDocumentElement();
+            Collection<Element> elements = XmlUtilities.getElements(root, "entry");
+            for (Element e : elements) {
+                Element key = XmlUtilities.getElement(e, "key");
+                Element value = XmlUtilities.getElement(e, "value");
+                map.put(XmlUtilities.getContent(key), XmlUtilities.getContent(value));
+            }
+        }
+        catch (SAXException e) {
+        }
+        catch (IOException e) {
+        }
+        return new ModifiableRowElement(map);
     }
 
     @Override
     public String getStringKey (String input) {
-        // TODO Auto-generated method stub
-        return null;
+        if (getType(input) != DataCommand.EDIT) return getValue(input, "key");
+        String result = null;
+        try {
+            Document doc = loadXMLFrom(input);
+            Element root = doc.getDocumentElement();
+            Element el = XmlUtilities.getElement(root, "toEdit");
+            Element toFind = XmlUtilities.getElement(el, "key");
+            result = XmlUtilities.getContent(toFind);
+        }
+        catch (SAXException e) {
+        }
+        catch (IOException e) {
+        }
+        return result;
     }
 
     @Override
     public String getObjValue (String input) {
-        // TODO Auto-generated method stub
-        return null;
+        if (getType(input) != DataCommand.EDIT) return getValue(input, "value");
+        String result = null;
+        try {
+            Document doc = loadXMLFrom(input);
+            Element root = doc.getDocumentElement();
+            Element el = XmlUtilities.getElement(root, "toEdit");
+            Element toFind = XmlUtilities.getElement(el, "value");
+            result = XmlUtilities.getContent(toFind);
+        }
+        catch (SAXException e) {
+        }
+        catch (IOException e) {
+        }
+        return result;
     }
 
     @Override
     public Collection<String> getColumnNames (String input) {
-        // TODO Auto-generated method stub
-        return null;
+        return getCollectionValues(input, "name");
     }
-    
+
     @Override
     public Collection<UnmodifiableRowElement> getDataRows (String input) {
-        // TODO Auto-generated method stub
-        return null;
+        Collection<UnmodifiableRowElement> result = new ArrayList<UnmodifiableRowElement>();
+
+        Document doc;
+        try {
+            doc = loadXMLFrom(input);
+            Element root = doc.getDocumentElement();
+            Collection<Element> rows = XmlUtilities.getElements(root, "row");
+            for (Element row : rows) {
+                Collection<Element> entries = XmlUtilities.getElements(row, "entry");
+                Map<String, Object> map = new HashMap<String, Object>();
+                for (Element entry : entries) {
+                    Element key = XmlUtilities.getElement(entry, "key");
+                    Element value = XmlUtilities.getElement(entry, "value");
+                    map.put(XmlUtilities.getContent(key), XmlUtilities.getContent(value));
+                }
+                ModifiableRowElement el = new ModifiableRowElement(map);
+                result.add(new UnmodifiableRowElement(el));
+            }
+        }
+        catch (SAXException e) {
+        }
+        catch (IOException e) {
+        }
+        return result;
+    }
+
+    @Override
+    public String[] getColumns (String input) {
+        Collection<String> c = getCollectionValues(input, "column");
+        return c.toArray(new String[0]);
+    }
+
+    @Override
+    public Map<String, Object> getMapEntry (String input) {
+        Document doc;
+        Map<String, Object> mapEntry = new HashMap<String, Object>();
+        try {
+            doc = loadXMLFrom(input);
+            Element root = doc.getDocumentElement();
+            Collection<Element> entries = XmlUtilities.getElements(root, "entry");
+            for (Element entry : entries) {
+                Element key = XmlUtilities.getElement(entry, "keyNew");
+                Element value = XmlUtilities.getElement(entry, "valueNew");
+                mapEntry.put(XmlUtilities.getContent(key), XmlUtilities.getContent(value));
+            }
+        }
+        catch (SAXException e) {
+        }
+        catch (IOException e) {
+        }
+        return mapEntry;
     }
 
     @Override
     public String createAddColumns (String[] strArray) {
-        // TODO Auto-generated method stub
-        return null;
+        Map<String, String> xmlTagMap = new HashMap<String, String>();
+        for (String s : strArray) {
+            xmlTagMap.put("column", s);
+        }
+        return xmlFromMap("AddColumns", xmlTagMap);
     }
 
     @Override
@@ -92,9 +179,12 @@ public class GordonBukspanDataProtocol implements DataProtocol {
         Element key = XmlUtilities.makeElement(doc, "key", strKey);
         Element curValue = XmlUtilities.makeElement(doc, "value", (String) value);
         Element current = XmlUtilities.makeElement(doc, "toEdit");
+        current.appendChild(key);
+        current.appendChild(curValue);
+        root.appendChild(current);
         for (String s : mapEntry.keySet()) {
-            key = XmlUtilities.makeElement(doc, "key", s);
-            curValue = XmlUtilities.makeElement(doc, "value", (String) mapEntry.get(s));
+            key = XmlUtilities.makeElement(doc, "keyNew", s);
+            curValue = XmlUtilities.makeElement(doc, "valueNew", (String) mapEntry.get(s));
             current = XmlUtilities.makeElement(doc, "entry");
             current.appendChild(key);
             current.appendChild(curValue);
@@ -118,6 +208,51 @@ public class GordonBukspanDataProtocol implements DataProtocol {
     }
 
     @Override
+    public String createDataRows (Collection<UnmodifiableRowElement> rows) {
+        String xmlString = null;
+        Document doc = XmlUtilities.makeDocument();
+        Element root = XmlUtilities.makeElement(doc, "DataRows");
+        for (UnmodifiableRowElement row : rows) {
+            Element r = XmlUtilities.makeElement(doc, "row");
+            Map<String, Object> map = row.getAllEntries();
+            for (String s : map.keySet()) {
+                Element key = XmlUtilities.makeElement(doc, "key", s);
+                Element value = XmlUtilities.makeElement(doc, "value", (String) map.get(s));
+                Element entry = XmlUtilities.makeElement(doc, "entry");
+                entry.appendChild(key);
+                entry.appendChild(value);
+                r.appendChild(entry);
+            }
+            root.appendChild(r);
+        }
+        doc.appendChild(root);
+        try {
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
+        }
+        catch (TransformerException e) {
+        }
+        return xmlString;
+    }
+
+    @Override
+    public String createColumnNames (Collection<String> names) {
+        String xmlString = null;
+        Document doc = XmlUtilities.makeDocument();
+        Element root = XmlUtilities.makeElement(doc, "ColumnNames");
+        for (String s : names) {
+            Element name = XmlUtilities.makeElement(doc, "name", s);
+            root.appendChild(name);
+        }
+        doc.appendChild(root);
+        try {
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
+        }
+        catch (TransformerException e) {
+        }
+        return xmlString;
+    }
+
+    @Override
     public String createGetDataRows () {
         Map<String, String> xmlTagMap = new HashMap<String, String>();
         return xmlFromMap("GetDataRows", xmlTagMap);
@@ -135,11 +270,11 @@ public class GordonBukspanDataProtocol implements DataProtocol {
         return xmlFromMap("Clear", xmlTagMap);
     }
 
-   @Override
+    @Override
     public String createSave (String location) {
-       Map<String, String> xmlTagMap = new HashMap<String, String>();
-       xmlTagMap.put("location", location);
-       return xmlFromMap("Save", xmlTagMap);
+        Map<String, String> xmlTagMap = new HashMap<String, String>();
+        xmlTagMap.put("location", location);
+        return xmlFromMap("Save", xmlTagMap);
     }
 
     @Override
@@ -180,11 +315,34 @@ public class GordonBukspanDataProtocol implements DataProtocol {
     }
 
     @Override
+    public String createFound (UnmodifiableRowElement row) {
+        String xmlString = null;
+        Document doc = XmlUtilities.makeDocument();
+        Element root = XmlUtilities.makeElement(doc, "Found");
+        Map<String, Object> mapEntry = row.getAllEntries();
+        for (String s : mapEntry.keySet()) {
+            Element key = XmlUtilities.makeElement(doc, "key", s);
+            Element value = XmlUtilities.makeElement(doc, "value", (String) mapEntry.get(s));
+            Element current = XmlUtilities.makeElement(doc, "entry");
+            current.appendChild(key);
+            current.appendChild(value);
+            root.appendChild(current);
+        }
+        doc.appendChild(root);
+        try {
+            xmlString = XmlUtilities.getXmlAsString(doc).replace("\r\n", "").replace("\n", "");
+        }
+        catch (TransformerException e) {
+        }
+        return xmlString;
+    }
+
+    @Override
     public int getPort () {
         return PORT;
     }
 
- // Protocol helper functions below.
+    // Protocol helper functions below.
 
     private static Document loadXMLFrom (String xml) throws SAXException, IOException {
         return loadXMLFrom(new ByteArrayInputStream(xml.getBytes()));
@@ -253,4 +411,3 @@ public class GordonBukspanDataProtocol implements DataProtocol {
         return xmlString;
     }
 }
-

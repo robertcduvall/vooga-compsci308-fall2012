@@ -19,10 +19,14 @@ public interface DataProtocol {
     String getObjValue(String input);
     Collection<String> getColumnNames(String input);
     Collection<UnmodifiableRowElement> getDataRows(String input);
+    String[] getColumns(String input);
+    Map<String, Object> getMapEntry(String input);
     
     String createAddColumns(String[] strArray);
     String createEdit(String strKey, Object value, Map<String, Object> mapEntry);
     String createDeleteRowEntry(String strKey, Object value);
+    String createDataRows(Collection<UnmodifiableRowElement> rows);
+    String createColumnNames(Collection<String> names);
     String createGetDataRows();
     String createGetColumnNames();
     String createClear();
@@ -30,6 +34,7 @@ public interface DataProtocol {
     String createLoad(String location);
     String createAddRow (Map<String , Object> mapEntry);
     String createFind(String strKey, Object value);
+    String createFound(UnmodifiableRowElement row);
     
     int getPort();
     
