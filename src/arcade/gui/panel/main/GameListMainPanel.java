@@ -85,7 +85,6 @@ public class GameListMainPanel extends AMainPanel implements ScrollPaneConstants
             System.out.println(myGameList.get(i));
             arrayOfGames[i] = myGameList.get(i);
         }
-
         JList listOfGames = new JList(arrayOfGames);
         listOfGames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listOfGames.setLayoutOrientation(JList.VERTICAL);
