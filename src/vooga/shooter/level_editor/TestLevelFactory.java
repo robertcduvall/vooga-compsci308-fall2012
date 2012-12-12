@@ -47,7 +47,6 @@ public class TestLevelFactory extends TestCase {
         // add another enemy
         Enemy enemy2 = new Enemy(new Point(-10, 10), new Dimension(10, 10),
                 new Dimension(90, 90), imagePath, new Point(0, 0), 12);
-        // uncomment this when it's fixed
         enemy2.setAI(new BounceAI(enemy2, player));
         level.addSprite(enemy2);
         
